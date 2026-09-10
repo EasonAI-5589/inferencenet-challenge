@@ -1,0 +1,15 @@
+MetricsAI workflow — Figure 1 (unmodified)
+
+Source: Can AI Master Econometrics? Evidence from Econometrics AI Agent on Expert-Level Tasks
+Authors: Qiang Chen, Tianyang Han, Jin Li, Ye Luo, Zigan Wang, Yuxiao Wu,
+Xiaowei Zhang, and Tuo Zhou
+Version: arXiv:2506.00856v3, 28 January 2026
+Paper: https://arxiv.org/abs/2506.00856v3
+Image: https://arxiv.org/html/2506.00856v3/TablesAndFigures/workflow.png
+License: Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International
+License URL: https://creativecommons.org/licenses/by-nc-nd/4.0/
+Original SHA-256: 26ff4d3ebe15691238b7a74462c2bdafe747f67c904b2cbb738cb298982492ca
+
+Reproduced without modification for this academic Challenge introduction.
+This depicts the related MetricsAI research prototype, not a running integration
+or an official Challenge submission workflow.

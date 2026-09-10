@@ -22,9 +22,9 @@
     <nav class="nav container" aria-label="Main navigation">
       <a class="wordmark" href="#top">Inference<span>Net</span><small>CHALLENGE</small></a>
       <div class="nav-links" id="nav-links">
+        <a href="#examples">Examples</a>
         <a href="#overview">Overview</a>
         <a href="#participate">Participate</a>
-        <a href="#timeline">Timeline</a>
         <a href="#leaderboard">Leaderboard</a>
         <a href="#resources">Resources</a>
       </div>
@@ -44,7 +44,7 @@
       <p class="hero-subtitle">AI agents for empirical research.</p>
       <p class="hero-description">From a research question to reproducible evidence.<br> Exploring what it takes for AI to reproduce published findings.</p>
       <div class="hero-actions">
-        <a class="button primary" href="#overview">Explore the challenge <span aria-hidden="true">↓</span></a>
+        <a class="button primary" href="#examples">Explore a research task <span aria-hidden="true">↓</span></a>
         <a class="button" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener">View benchmark <span aria-hidden="true">↗</span></a>
       </div>
       <p class="launch-note"><span class="status-mark" aria-hidden="true"></span> Challenge preview <span class="separator">/</span> Registration and rules to be announced</p>
@@ -54,11 +54,62 @@
       <span>Economics</span><span>Finance</span><span>Accounting</span><span>Management</span><span>Operations research</span><span>Information systems</span>
     </div>
 
-    <section class="section container" id="overview" aria-labelledby="overview-title">
+    <section class="section container" id="examples" aria-labelledby="examples-title">
       <div class="section-heading">
-        <div><p class="kicker">01 / The challenge</p><h2 id="overview-title">Beyond code.<br> <em>Back to evidence.</em></h2></div>
+        <div><p class="kicker">01 / Inside a task</p><h2 id="examples-title">See the task.<br><em>Follow the analysis.</em></h2></div>
+        <p class="lead">What does empirical research look like for an AI agent? Explore two published examples through their question, inputs and analysis steps.</p>
+      </div>
+      <div class="task-explorer">
+        <div class="sample-tabs" role="tablist" aria-label="Published research examples" hidden>
+          <button type="button" role="tab" id="tab-policy" aria-controls="sample-policy" aria-selected="true" tabindex="0"><span class="tab-number">01</span><span>Seat-belt legislation<small>Policy evaluation</small></span><span class="tab-arrow" aria-hidden="true">↗</span></button>
+          <button type="button" role="tab" id="tab-smoking" aria-controls="sample-smoking" aria-selected="false" tabindex="-1"><span class="tab-number">02</span><span>Smoking &amp; birthweight<small>Observational research</small></span><span class="tab-arrow" aria-hidden="true">↗</span></button>
+        </div>
+
+        <article class="sample-panel" id="sample-policy" aria-labelledby="policy-title">
+          <div class="sample-intro"><div><p class="method-tag">STAGGERED DID · EVENT STUDY</p><h3 id="policy-title">Do seat-belt laws change traffic fatalities?</h3><p class="sample-prompt">Study larger-population states, comparing outcomes around policy adoption.</p></div><a class="source-link" href="https://arxiv.org/html/2506.00856v3#S4.SS2.SSS1" target="_blank" rel="noopener">Published example §IV.B.1 ↗</a></div>
+          <div class="sample-grid">
+            <div class="sample-data">
+              <p class="panel-label">INPUT / STATE–YEAR PANEL</p>
+              <dl class="field-list"><div><dt><code>primary</code></dt><dd>Policy treatment</dd></div><div><dt><code>fatality_rate</code></dt><dd>Outcome → log transform</dd></div><div><dt>State, year, population</dt><dd>Panel &amp; selection roles</dd></div></dl>
+              <div class="design-diagram" role="img" aria-label="Event window: four periods before policy adoption and three after. A design schematic, not estimated results.">
+                <p class="panel-label">DESIGN / EVENT WINDOW</p>
+                <div class="event-window" aria-hidden="true"><span>−4</span><span>−3</span><span>−2</span><span>−1</span><span class="event-zero">0</span><span>+1</span><span>+2</span><span>+3</span></div>
+                <div class="diagram-legend"><span>Before</span><strong>Policy adoption</strong><span>After</span></div>
+              </div>
+            </div>
+            <div class="code-card"><div class="code-heading"><span>ANALYSIS</span><span>Illustrative pseudocode</span></div><pre tabindex="0" aria-label="Policy analysis pseudocode"><code><span class="code-line"><span class="code-comment"># Translate the question into a specification</span></span><span class="code-line">panel = <span class="code-function">read_data</span>(task.data)</span><span class="code-line">states = <span class="code-function">above_median_population</span>(panel, year=1982)</span><span class="code-line">sample = panel.<span class="code-function">for_states</span>(states)</span><span class="code-line">y = <span class="code-function">log</span>(sample[<span class="code-string">"fatality_rate"</span>])</span><span class="code-line">spec = <span class="code-function">EventStudy</span>(treatment=<span class="code-string">"primary"</span>,</span><span class="code-line">    lookback=4, lookforward=3, controls=[],</span><span class="code-line">    fixed_effects=[<span class="code-string">"state"</span>, <span class="code-string">"year"</span>], cluster=<span class="code-string">"state"</span>)</span><span class="code-line">fit = <span class="code-function">staggered_did</span>(sample, y, spec,</span><span class="code-line">    estimator=task.estimator)</span><span class="code-line">result = <span class="code-function">extract</span>(fit, target=<span class="code-string">"Lag_D1"</span>)</span><span class="code-line"><span class="code-function">emit_json</span>(result)</span></code></pre><p class="code-note">Role names and estimator are placeholders; target-term mapping must be specified.</p></div>
+          </div>
+        </article>
+
+        <article class="sample-panel" id="sample-smoking" aria-labelledby="smoking-title">
+          <div class="sample-intro"><div><p class="method-tag">PROPENSITY-SCORE REGRESSION ADJUSTMENT</p><h3 id="smoking-title">How does maternal smoking affect birthweight?</h3><p class="sample-prompt">Adjust for observed covariates and trim both score tails before regression.</p></div><a class="source-link" href="https://arxiv.org/html/2506.00856v3#S5" target="_blank" rel="noopener">Published example §V ↗</a></div>
+          <div class="sample-grid">
+            <div class="sample-data">
+              <p class="panel-label">INPUT / INDIVIDUAL RECORDS</p>
+              <dl class="field-list"><div><dt><code>tobacco</code></dt><dd>Smoking treatment</dd></div><div><dt><code>dbrwt</code></dt><dd>Birthweight outcome</dd></div><div><dt>19 specified covariates</dt><dd>Including 6 categorical fields</dd></div></dl>
+              <div class="design-diagram" role="img" aria-label="Trim the lowest and highest ten percent of propensity scores by quantile. This is a schematic, not a measured distribution.">
+                <p class="panel-label">DESIGN / SCORE QUANTILES</p>
+                <div class="trim-window" aria-hidden="true"><span>10%</span><strong>Retained sample</strong><span>10%</span></div>
+                <div class="diagram-legend"><span>Trim</span><span>Trim</span></div>
+              </div>
+            </div>
+            <div class="code-card"><div class="code-heading"><span>ANALYSIS</span><span>Illustrative pseudocode</span></div><pre tabindex="0" aria-label="Birthweight analysis pseudocode"><code><span class="code-line"><span class="code-comment"># Preserve the requested adjustment method</span></span><span class="code-line">rows = <span class="code-function">prepare_aligned_rows</span>(task.data)</span><span class="code-line">X = <span class="code-function">encode_categories</span>(rows[task.controls],</span><span class="code-line">    columns=task.categorical_fields)</span><span class="code-line">score = <span class="code-function">logit</span>(rows[<span class="code-string">"tobacco"</span>], X, intercept=True)</span><span class="code-line">score = score.<span class="code-function">predict_probability</span>()</span><span class="code-line">lo, hi = <span class="code-function">quantile</span>(score, [0.10, 0.90])</span><span class="code-line">kept = rows.<span class="code-function">assign</span>(score=score)[score.<span class="code-function">between</span>(lo, hi)]</span><span class="code-line">fit = <span class="code-function">ols</span>(<span class="code-string">"dbrwt ~ tobacco + score"</span>,</span><span class="code-line">    data=kept, intercept=True)</span><span class="code-line">result = <span class="code-function">extract</span>(fit, target=<span class="code-string">"tobacco"</span>)</span><span class="code-line"><span class="code-function">emit_json</span>(result)</span></code></pre><p class="code-note">Covariates follow the source prompt; trimming uses score quantiles.</p></div>
+          </div>
+        </article>
+
+        <div class="result-preview"><div><p class="panel-label">OUTPUT / STATISTICAL EVIDENCE</p><p>Return a machine-readable estimate.</p></div><pre aria-label="Illustrative JSON schema, placeholders only"><code>{ <span>"coefficient"</span>: "&lt;estimate&gt;", <span>"standard_error"</span>: "&lt;SE&gt;", <span>"p-value"</span>: "&lt;p&gt;" }</code></pre></div>
+      </div>
+      <p class="example-note">Examples summarized from the <a href="https://arxiv.org/abs/2506.00856v3" target="_blank" rel="noopener">MetricsAI paper</a>. Diagrams and pseudocode explain the tasks; they are not executable solutions or official Challenge tasks. Output values are placeholders.</p>
+    </section>
+
+    <section class="section ruled container" id="overview" aria-labelledby="overview-title">
+      <div class="section-heading">
+        <div><p class="kicker">02 / The benchmark</p><h2 id="overview-title">Beyond code.<br> <em>Back to evidence.</em></h2></div>
         <p class="lead">Running an analysis is one step. Reproducing the finding is the test. InferenceNet connects empirical research tasks, data and statistical results to study what AI can reliably do.</p>
       </div>
+
+      <div class="benchmark-stats" aria-label="Full benchmark coverage"><div><strong>2,644</strong><span>Research tasks</span></div><div><strong>36</strong><span>Academic journals</span></div><div><strong>6</strong><span>Research disciplines</span></div><div><strong>1,000</strong><span>Selected evaluation tasks</span></div></div>
+      <p class="stats-source">Full-benchmark coverage from the <a href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener">InferenceNet data card</a>. The Selected_1000 subset covers 10 journals.</p>
 
       <figure class="research-flow" aria-labelledby="flow-caption">
         <div class="flow-heading"><span>THE RESEARCH–REPLICATION LOOP</span><span>Question → Analysis → Evidence</span></div>
@@ -71,17 +122,14 @@
         <figcaption id="flow-caption"><span>Figure 01</span> From task and data to statistical replication. A conceptual overview of the benchmark; challenge-specific protocols will be announced separately.</figcaption>
       </figure>
 
-      <div class="abstract">
-        <p class="kicker">About InferenceNet</p>
-        <h3>Can AI reproduce empirical research?</h3>
-        <p>The InferenceNet Challenge focuses on how effectively AI models and agents can perform empirical research and reproduce published findings. Building on the InferenceNet benchmark, it brings together social science and AI around a shared question: how can we make automated analysis more reliable?</p>
-        <p>The research benchmark considers both executable analysis and the reproduction of statistical results, including coefficients, standard errors and p-values. The challenge's evaluation protocol, task selection and participation details will be published here as they are confirmed.</p>
-        <a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener">Read the benchmark data card <span aria-hidden="true">↗</span></a>
+      <div class="agent-showcase">
+        <div class="agent-description"><p class="kicker">Related research / MetricsAI</p><h3>Inside an<br> <em>econometrics agent.</em></h3><p>A published view of how the related research prototype organizes its work.</p><a class="text-link" href="https://github.com/HKU-Business-AI-Center/Econometrics-Agent" target="_blank" rel="noopener">Explore the agent code ↗</a><p class="prototype-note">Research prototype. Its architecture is shown for context; Challenge tooling will be announced separately.</p></div>
+        <figure class="agent-figure"><a class="figure-image" href="assets/figures/metricsai-workflow-v3.png" target="_blank" rel="noopener" aria-label="Open full-size MetricsAI workflow"><img src="assets/figures/metricsai-workflow-v3.png" width="1708" height="1355" loading="lazy" decoding="async" alt="MetricsAI workflow linking a user request to planning, tool selection, program execution, reflection on failures and results, with a loop for further dialogue."></a><figcaption>MetricsAI workflow, Figure 1, Chen et al., <a href="https://arxiv.org/abs/2506.00856v3" target="_blank" rel="noopener">Can AI Master Econometrics?</a> (v3, 2026). Original figure, unmodified. <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a> · <a href="assets/figures/ATTRIBUTION.txt">Full attribution</a>.</figcaption></figure>
       </div>
     </section>
 
     <section class="section ruled container" id="participate" aria-labelledby="participate-title">
-      <div class="section-heading"><div><p class="kicker">02 / Take part</p><h2 id="participate-title">Bring your model.<br> <em>Explore the research.</em></h2></div><p class="lead">Start with the benchmark. The participation guide and submission process will follow when the challenge opens.</p></div>
+      <div class="section-heading"><div><p class="kicker">03 / Take part</p><h2 id="participate-title">Bring your model.<br> <em>Explore the research.</em></h2></div><p class="lead">Start with the benchmark. The participation guide and submission process will follow when the challenge opens.</p></div>
       <ol class="participation-steps">
         <li><span class="step-index">01</span><div><h3>Explore the benchmark</h3><p>Read the task descriptions, data card and access conditions to understand the empirical research setting.</p><a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener">Open dataset page <span aria-hidden="true">↗</span></a></div><span class="availability available">Available</span></li>
         <li><span class="step-index">02</span><div><h3>Prepare your approach</h3><p>Challenge rules, evaluation guidance and the starter kit will be linked here.</p></div><span class="availability">Coming soon</span></li>
@@ -90,7 +138,7 @@
     </section>
 
     <section class="section ruled container" id="timeline" aria-labelledby="timeline-title">
-      <div class="section-heading compact"><div><p class="kicker">03 / Important dates</p><h2 id="timeline-title">What's next.</h2></div><p class="lead">The challenge schedule is being finalized.<br> Confirmed dates will be posted here.</p></div>
+      <div class="section-heading compact"><div><p class="kicker">04 / Important dates</p><h2 id="timeline-title">What's next.</h2></div><p class="lead">The challenge schedule is being finalized.<br> Confirmed dates will be posted here.</p></div>
       <ol class="timeline">
         <li><span class="timeline-number">01</span><p>Registration opens</p><strong>To be announced</strong></li>
         <li><span class="timeline-number">02</span><p>Evaluation release</p><strong>To be announced</strong></li>
@@ -100,7 +148,7 @@
     </section>
 
     <section class="section ruled container" id="leaderboard" aria-labelledby="leaderboard-title">
-      <div class="section-heading compact"><div><p class="kicker">04 / Results</p><h2 id="leaderboard-title">A place for<br><em>reproducible progress.</em></h2></div><p class="lead">This space is reserved for the challenge leaderboard. Ranking criteria and results will be added with the official evaluation details.</p></div>
+      <div class="section-heading compact"><div><p class="kicker">05 / Results</p><h2 id="leaderboard-title">A place for<br><em>reproducible progress.</em></h2></div><p class="lead">This space is reserved for the challenge leaderboard. Ranking criteria and results will be added with the official evaluation details.</p></div>
       <div class="leaderboard-shell">
         <div class="leaderboard-header"><h3>Challenge leaderboard</h3><span class="availability">Not yet open</span></div>
         <div class="leaderboard-empty"><span class="empty-mark" aria-hidden="true">—</span><p>No challenge results published yet.</p><span>Evaluation criteria and submissions will appear here.</span></div>
@@ -109,7 +157,7 @@
     </section>
 
     <section class="section ruled container" id="resources" aria-labelledby="resources-title">
-      <div class="section-heading compact"><div><p class="kicker">05 / Keep exploring</p><h2 id="resources-title">Start with the sources.</h2></div></div>
+      <div class="section-heading compact"><div><p class="kicker">06 / Keep exploring</p><h2 id="resources-title">Start with the sources.</h2></div></div>
       <div class="resource-grid">
         <a class="resource" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener"><div><span class="resource-type">HUGGING FACE / DATASET</span><span aria-hidden="true">↗</span></div><h3>InferenceNet benchmark</h3><p>Research tasks, dataset documentation and access requirements.</p><span class="resource-label">Explore the dataset</span></a>
         <a class="resource" href="https://huggingface.co/spaces/CamoAiLab/InferenceNet-Leaderboard" target="_blank" rel="noopener"><div><span class="resource-type">HUGGING FACE / SPACE</span><span aria-hidden="true">↗</span></div><h3>Research leaderboard</h3><p>The existing benchmark leaderboard, separate from this challenge's results.</p><span class="resource-label">View the research benchmark</span></a>
