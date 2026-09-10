@@ -2,7 +2,7 @@
 
 Public website for the InferenceNet Challenge: AI for empirical research.
 
-This repository contains only public static website files. The research workspace and editable source remain in the private NTU-GIFTS-InferenceNet repository. Challenge dates, rules, registration and competition results will be added as confirmed. The displayed Hugging Face leaderboard is the existing research benchmark, separate from future Challenge results. The page lists NTU CCDS, Nanyang Business School and HKU Business School, including the research groups of Ye Luo and Lin William Cong.
+This repository contains only public static website files. The research workspace and editable source remain in the private NTU-GIFTS-InferenceNet repository. Challenge dates, rules, registration and competition results will be added as confirmed. The displayed Hugging Face leaderboard is the existing research benchmark, separate from future Challenge results. The page lists NTU CCDS, Nanyang Business School and HKU Business School, with official school logos and the faculty leadership of the Global InferenceNet Initiative: Ye Luo, Lin William Cong, Yang Liu and Dacheng Tao, as listed by NTU GIFTS.
 
 ## Research examples
 
@@ -19,6 +19,11 @@ Inter and Space Mono fonts are distributed under the SIL Open Font License; the 
 The unmodified MetricsAI workflow (Figure 1, Chen et al., arXiv:2506.00856v3) is
 reproduced for this academic introduction under CC BY-NC-ND 4.0. Full source,
 authorship, license and original hash are in assets/figures/ATTRIBUTION.txt.
+
+The original official CCDS, NBS and HKU Business School logos retain their colors
+and aspect ratios on white plates in both themes. Source URLs, ownership and
+original hashes are in assets/institutions/ATTRIBUTION.txt. Institutional marks
+belong to their respective owners and are not covered by code or font licenses.
 
 ## Leaderboard data
 

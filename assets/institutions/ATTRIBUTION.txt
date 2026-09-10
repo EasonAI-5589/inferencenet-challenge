@@ -1,0 +1,28 @@
+Official institutional logos
+Retrieved 2026-09-11. Original files reproduced without modification.
+Institutional names, logos and trademarks belong to their respective owners.
+These assets are not covered by the website's code or font licenses.
+
+NTU College of Computing and Data Science
+File: ntu-ccds-official.png (475 x 114)
+Owner: Nanyang Technological University, Singapore
+Source page: https://www.ntu.edu.sg/gifts/about
+Original: https://www.ntu.edu.sg/media/images/globalinstituteoffinancetechnologyandsocietygiftslibraries/about/02-ccds.png?sfvrsn=186e0178_0
+SHA-256: e2ef95ead33b72bef1607d754e5ac24016910da8aebdd601196c40f7043ebb22
+
+NTU Nanyang Business School
+File: ntu-nbs-official.jpg (386 x 103)
+Owner: Nanyang Technological University, Singapore
+Source page: https://www.ntu.edu.sg/gifts/about
+Original: https://www.ntu.edu.sg/media/images/globalinstituteoffinancetechnologyandsocietygiftslibraries/about/01-nbs.jpg?sfvrsn=6e1dbcac_0
+SHA-256: 1400cb0fdae0947f1ccace5847346d0c8c6b4e052f6ddee3a49ac19e4977a81c
+
+HKU Business School
+File: hku-business-horizontal.png (2500 x 625)
+Owner: HKU Business School, The University of Hong Kong
+Source page: https://www.hkubs.hku.hk/about-us/overview/visual-identity/
+Original: https://www.hkubs.hku.hk/wp-content/uploads/2025/05/HKUBS_Horizontal_Coloured_Shield_Blue_Text_Logo.png
+SHA-256: 35b327da36ede548a1f5dbd0e9984a02e70c72671d2c27ab27545db59c2089cd
+
+All three marks retain their original colors and aspect ratios. White plates
+preserve the original appearance in either site theme.

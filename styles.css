@@ -101,8 +101,11 @@ h1 em,h2 em,h3 em{font-style:normal;font-weight:inherit;color:inherit}
 .hero-description{font-size:16px;max-width:700px;margin:9px auto 0}
 .eyebrow{font-family:var(--sans);font-weight:600;font-size:11px;letter-spacing:.08em;margin-bottom:21px}
 .eyebrow>span{display:none}
-.hero-affiliations{display:flex;justify-content:center;flex-wrap:wrap;gap:8px 20px;margin-top:23px;font-size:13px;color:var(--soft)}
-.hero-affiliations a:hover{text-decoration:underline;text-underline-offset:4px}
+/* Official institution marks keep their original color, ratio and white plate. */
+.hero-affiliations{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;max-width:780px;margin:28px auto 0}
+.hero-affiliations a{display:flex;align-items:center;justify-content:center;min-height:82px;padding:16px 20px;border:1px solid #e5e7eb;border-radius:7px;background:#fff;transition:border-color .18s,box-shadow .18s}
+.hero-affiliations a:hover{border-color:#b1bbcc;box-shadow:0 3px 12px #1223400d}
+.hero-affiliations img{display:block;width:100%;height:auto;max-width:240px}
 .hero-actions{margin-top:25px}
 .hero .button{font-size:13px}
 .wordmark{letter-spacing:-.035em}
@@ -149,18 +152,29 @@ h1 em,h2 em,h3 em{font-style:normal;font-weight:inherit;color:inherit}
 .leaderboard-note{font-size:12px;line-height:1.8;color:var(--muted);margin-top:18px}
 .leaderboard-note a,.initiative-link a{text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--strong-line)}
 .institution-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
-.institution-grid>a{display:block;padding:24px;border:1px solid var(--line);border-radius:4px}
-.institution-grid>a:hover{background:var(--tint);border-color:var(--strong-line)}
-.institution-abbreviation{font-size:12px;font-weight:700;letter-spacing:.02em;color:var(--soft)}
-.institution-grid h3{font-size:19px;line-height:1.4;margin-top:15px}
+.institution-grid>a{display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line);border-radius:8px;background:var(--surface);transition:border-color .18s,box-shadow .18s}
+.institution-grid>a:hover{border-color:var(--strong-line);box-shadow:0 6px 20px #1223400d}
+.institution-logo{display:flex;align-items:center;justify-content:center;min-height:124px;padding:24px 28px;background:#fff;border-bottom:1px solid #e9ebef}
+.institution-logo img{display:block;width:100%;height:auto;max-width:280px}
+.institution-copy{padding:23px 24px 25px}
+.institution-abbreviation{display:flex;justify-content:space-between;gap:12px;font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--muted)}
+.institution-abbreviation>span{font-size:15px;line-height:1}
+.institution-grid h3{font-size:19px;line-height:1.4;margin-top:12px}
 .institution-grid p{font-size:13px;color:var(--muted);margin-top:11px;line-height:1.7}
-.team-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:32px}
-.team-member{padding-top:25px;border-top:1px solid var(--line)}
-.team-member h3{font-size:18px}
-.team-member h3 a:hover{text-decoration:underline;text-underline-offset:4px}
-.team-member p{font-size:14px;color:var(--soft);margin-top:10px}
-.team-member>span{display:block;font-size:12px;color:var(--muted);margin-top:5px}
-.initiative-link{font-size:13px;color:var(--soft);margin-top:31px}
-@media(max-width:1100px){.section-heading{gap:40px}.sample-intro h3{font-size:22px}.code-card pre{font-size:11px}.institution-grid>a{padding:21px}.institution-grid h3{font-size:17px}}
-@media(max-width:860px){.section{padding-block:52px}.section-heading{gap:18px}.hero{padding-top:45px}.hero-subtitle{font-size:21px}.sample-tabs button{font-size:15px}.sample-intro h3{font-size:23px}.code-card pre{font-size:12px}.institution-grid{grid-template-columns:1fr;gap:15px}.institution-grid>a{padding:22px}.institution-grid h3{font-size:19px;margin-top:9px}.institution-grid p{margin-top:7px}.leaderboard-header{flex-wrap:wrap;gap:16px}.leaderboard-controls>span{width:100%;margin-left:0}}
-@media(max-width:520px){h1{font-size:36px}h2{font-size:28px}.hero{padding-top:36px;padding-bottom:35px}.eyebrow{font-size:9px;letter-spacing:.035em}.hero-subtitle{font-size:19px}.hero-affiliations{font-size:12px;gap:7px 14px}.hero-actions{gap:8px}.hero .button{font-size:11px;gap:9px;padding-inline:12px}.section{padding-block:43px}.sample-tabs button{font-size:12px;padding:17px 13px}.sample-intro h3{font-size:21px}.agent-description h3{font-size:25px}.benchmark-stats strong{font-size:35px}.code-card pre{font-size:11px}.code-note{font-size:10px}.leaderboard-header,.leaderboard-controls{padding:18px}.leaderboard-actions{gap:10px}.leaderboard-controls{font-size:12px}.leaderboard-controls select{width:100%}.leaderboard-note{font-size:11px}.team-grid{grid-template-columns:1fr;gap:24px}.team-member h3{font-size:17px}.resource h3{font-size:19px}}
+.leadership-heading{margin-top:44px}
+.leadership-heading h3{font-size:22px;font-weight:600}
+.leadership-heading p{font-size:14px;line-height:1.8;color:var(--soft);margin-top:8px}
+.leadership-heading a{text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--strong-line)}
+.team-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:23px}
+.team-member{padding:22px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.faculty-role{display:inline-block;padding:4px 8px;border-radius:4px;background:#edf2fb;color:#264873;font-size:11px;font-weight:600;line-height:1.6}
+html[data-theme="dark"] .faculty-role{background:#233047;color:#c6dbff}
+.team-member h4{font-size:18px;font-weight:600;line-height:1.5;letter-spacing:-.02em;margin:17px 0 0}
+.team-member h4 a:hover{text-decoration:underline;text-underline-offset:4px}
+.team-member h4 a>span{font-size:14px;color:var(--muted);white-space:nowrap}
+.team-member p{font-size:13px;color:var(--soft);margin-top:9px;line-height:1.7}
+.faculty-detail{display:block;font-size:12px;color:var(--muted);margin-top:10px;line-height:1.8}
+.initiative-link{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--soft);margin-top:25px}
+@media(max-width:1100px){.section-heading{gap:40px}.sample-intro h3{font-size:22px}.code-card pre{font-size:11px}.institution-copy{padding:21px}.institution-logo{padding-inline:22px}.team-grid{grid-template-columns:1fr 1fr}.institution-grid h3{font-size:17px}}
+@media(max-width:860px){.section{padding-block:52px}.section-heading{gap:18px}.hero{padding-top:45px}.hero-subtitle{font-size:21px}.sample-tabs button{font-size:15px}.sample-intro h3{font-size:23px}.code-card pre{font-size:12px}.institution-grid{grid-template-columns:1fr;gap:15px}.institution-copy{padding:22px}.institution-logo{min-height:116px}.leadership-heading{margin-top:34px}.institution-grid h3{font-size:19px;margin-top:9px}.institution-grid p{margin-top:7px}.leaderboard-header{flex-wrap:wrap;gap:16px}.leaderboard-controls>span{width:100%;margin-left:0}}
+@media(max-width:520px){h1{font-size:36px}h2{font-size:28px}.hero{padding-top:36px;padding-bottom:35px}.eyebrow{font-size:9px;letter-spacing:.035em}.hero-subtitle{font-size:19px}.hero-affiliations{grid-template-columns:1fr 1fr;gap:9px;max-width:370px;margin-top:23px}.hero-affiliations a{min-height:67px;padding:13px}.hero-affiliations a:last-child{grid-column:1/-1;justify-self:center;width:calc((100% - 9px)/2)}.hero-actions{gap:8px}.hero .button{font-size:11px;gap:9px;padding-inline:12px}.section{padding-block:43px}.sample-tabs button{font-size:12px;padding:17px 13px}.sample-intro h3{font-size:21px}.agent-description h3{font-size:25px}.benchmark-stats strong{font-size:35px}.code-card pre{font-size:11px}.code-note{font-size:10px}.leaderboard-header,.leaderboard-controls{padding:18px}.leaderboard-actions{gap:10px}.leaderboard-controls{font-size:12px}.leaderboard-controls select{width:100%}.leaderboard-note{font-size:11px}.team-grid{grid-template-columns:1fr;gap:14px}.team-member h4{font-size:19px}.resource h3{font-size:19px}}
