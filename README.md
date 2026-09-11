@@ -4,6 +4,11 @@ Public website for the InferenceNet Challenge: AI for empirical research.
 
 This repository contains only public static website files. The research workspace and editable source remain in the private NTU-GIFTS-InferenceNet repository. Challenge dates, rules, registration and competition results will be added as confirmed. The displayed Hugging Face leaderboard is the existing research benchmark, separate from future Challenge results. The page lists NTU CCDS, Nanyang Business School and HKU Business School, with official school logos and the faculty leadership of the Global InferenceNet Initiative: Ye Luo, Lin William Cong, Yang Liu and Dacheng Tao, as listed by NTU GIFTS.
 
+The research profiles introduce [NTU GIFTS](https://www.ntu.edu.sg/gifts) and the
+[HKU CAMO Lab for AI-Agents in Business and Economics](https://camo.hku.hk/research-labs/research-labs-lab-for-ai-agents-in-business-and-economics/),
+with official links, research directions and related public projects. Faculty
+cards link to these profiles, which are also reachable through Teams navigation.
+
 ## Research examples
 
 Two published examples from the MetricsAI paper are summarized with explanatory
