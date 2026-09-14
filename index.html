@@ -168,10 +168,25 @@
     </section>
 
     <section class="section ruled container" id="leaderboard" aria-labelledby="leaderboard-title">
-      <div class="section-heading compact"><div><p class="kicker">05 / Results</p><h2 id="leaderboard-title">Research leaderboard</h2></div><p class="lead">Published results from the InferenceNet Hugging Face leaderboard. The table refreshes from the source when you open this page.</p></div>
+      <div class="section-heading compact"><div><p class="kicker">05 / Results</p><h2 id="leaderboard-title">Research leaderboard</h2></div><p class="lead">See how far each approach has climbed toward reliable replication. Change the metric to redraw the ascent and reorder the full table.</p></div>
       <div class="leaderboard-shell">
         <div class="leaderboard-header"><div><h3>InferenceNet benchmark</h3><p id="leaderboard-status" role="status">Saved snapshot · 10 Sep 2026, 20:06 UTC</p></div><div class="leaderboard-actions"><span class="availability" id="leaderboard-count">14 entries</span><button class="button compact-button" type="button" id="leaderboard-refresh" hidden>Refresh data</button></div></div>
         <div class="leaderboard-controls"><label for="leaderboard-sort">Sort by</label><select id="leaderboard-sort" disabled><option value="Partial Replication">Partial Replication</option><option value="Compilation Success">Compilation Success</option><option value="Correct Coefficient Direction">Correct Coefficient Direction</option><option value="Significant Level Correctness">Significant Level Correctness</option></select><span>Higher is better · scores in %</span></div>
+        <section class="leaderboard-ascent" aria-labelledby="ascent-title">
+          <div class="ascent-heading"><div><p class="ascent-kicker">LIVE ASCENT / SELECTED METRIC</p><h3 id="ascent-title">The Inference Peak</h3></div><p>Top 10 approaches on the summit wall.</p></div>
+          <div class="ascent-scene" id="leaderboard-ascent-scene" role="group" aria-label="Top approaches arranged on a mountain by Partial Replication rank">
+            <img class="ascent-mountain-photo" src="assets/figures/inference-peak-v2.png" width="1916" height="821" alt="" aria-hidden="true">
+            <div class="ascent-mist" aria-hidden="true"></div>
+            <div class="ascent-summit" aria-hidden="true"><span class="summit-flag"></span></div>
+            <svg class="ascent-links" id="ascent-links" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+            <div class="ascent-climbers" id="ascent-climbers"></div>
+            <ol class="ascent-callouts ascent-callouts-left" id="ascent-callouts-left" aria-label="Odd-ranked approaches"></ol>
+            <ol class="ascent-callouts ascent-callouts-right" id="ascent-callouts-right" aria-label="Even-ranked approaches"></ol>
+            <p class="ascent-no-script">Enable JavaScript to draw the live ascent. The complete saved table remains available below.</p>
+          </div>
+          <ol class="ascent-mobile" id="ascent-mobile" aria-label="Top approaches"></ol>
+          <div class="ascent-legend"><span><i class="legend-rank"></i> Position shows current rank</span><strong id="ascent-current-metric">Partial Replication</strong></div>
+        </section>
         <div class="table-scroll" tabindex="0" role="region" aria-label="Research leaderboard; scroll horizontally on small screens">
           <table id="leaderboard-table"><caption class="visually-hidden">Public InferenceNet research results. Ordered by the selected metric, descending.</caption><thead><tr><th scope="col">#</th><th scope="col">Model / approach</th><th scope="col" data-metric="Compilation Success">Compilation<br>success</th><th scope="col" data-metric="Partial Replication" aria-sort="descending">Partial<br>replication</th><th scope="col" data-metric="Correct Coefficient Direction">Correct coefficient<br>direction</th><th scope="col" data-metric="Significant Level Correctness">Significant level<br>correctness</th></tr></thead><tbody id="leaderboard-body">
               <tr data-source-order="9"><td>1</td><th scope="row">Deepseek v4 Pro - Codex</th><td>86.3%</td><td>32.8%</td><td>69.3%</td><td>53.6%</td></tr>
