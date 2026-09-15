@@ -120,7 +120,10 @@
       const filename = location.pathname.split('/').pop() || 'index.html';
       const page = ['index.html', 'data.html', 'agent.html', 'leaderboard.html', 'demo.html'].includes(filename)
         ? filename.replace('.html', '') : 'index';
-      dictionaryPromise = fetch(new URL(`assets/i18n/${page}.zh.json`, scriptURL))
+      const dictionaryURL = new URL(`assets/i18n/${page}.zh.json`, scriptURL);
+      // Keep a page's release-tagged script and dictionary on the same version.
+      dictionaryURL.search = new URL(scriptURL).search;
+      dictionaryPromise = fetch(dictionaryURL)
         .then(response => { if (!response.ok) throw new Error('Translation unavailable'); return response.json(); })
         .then(values => {
           if (!values || Array.isArray(values) || typeof values !== 'object' || Object.values(values).some(value => typeof value !== 'string')) {
