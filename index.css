@@ -19,7 +19,8 @@
 .paper-disciplines{margin-top:18px;max-width:420px} /* 4 + 2 pills instead of 5 + 1 */
 .organisers{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 20px}
 .organisers li{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0}
-.organisers a{font-size:15px;font-weight:600;line-height:1.4;letter-spacing:-.01em}
+.organisers a,.organiser-name{font-size:15px;font-weight:600;line-height:1.4;letter-spacing:-.01em}
+.organiser-role{font-size:11px;font-weight:600;line-height:1.5;color:var(--muted)}
 .organisers a:hover{text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--strong-line)}
 .organisers a>span{font-size:13px;color:var(--muted);white-space:nowrap}
 .organiser-affiliation{font-size:12px;line-height:1.6;color:var(--soft)}

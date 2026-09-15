@@ -45,6 +45,10 @@ submitting; verify navigation, images, chart fallbacks and demo controls.
 
 ## Research content
 
+The current Challenge team has two Faculty Leads, Ye Luo and Lin William Cong,
+and two Project Leaders, Yichen Guo and Tianyang Han. Keep the homepage summary,
+Teams cards and Chinese dictionary synchronized when updating this roster.
+
 Challenge dates, rules, registration, prizes and competition results remain
 "To be announced" until confirmed. The public Hugging Face leaderboard is the
 existing research benchmark, separate from future Challenge submissions.
