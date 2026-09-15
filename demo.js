@@ -36,7 +36,8 @@
       const heading = slides[current].querySelector("h2");
       heading.focus({ preventScroll: true });
       const bounds = heading.getBoundingClientRect();
-      if (bounds.top < 0 || bounds.bottom > window.innerHeight) {
+      const headerBottom = document.querySelector(".site-header")?.getBoundingClientRect().bottom || 0;
+      if (bounds.top < headerBottom || bounds.bottom > window.innerHeight) {
         slides[current].scrollIntoView({ block: "start", behavior: "instant" });
       }
     }

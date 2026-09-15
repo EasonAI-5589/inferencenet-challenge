@@ -5,6 +5,8 @@
 Public presentation site for InferenceNet: AI for econometric research. The
 2026-09-15 update brings together Home, Data, Agent, Leaderboard, Demo and Teams, with
 Chinese / English and light / dark controls on every page.
+The six page links are visible by default, including the three-column menu on
+narrow screens. Visitors can collapse it manually; each new page opens it again.
 
 ## Edit the website
 
@@ -36,7 +38,8 @@ screenshot for visual changes.
 
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL;
-Teams uses `assets/i18n/teams.zh.json`. Current tag: `20260915-teams`.
+Teams uses `assets/i18n/teams.zh.json`. The language tag remains `20260915-teams`; shared navigation CSS/JS and
+Demo JS use `20260915-menu`.
 
 English is authored in the HTML. When changing English text, update the matching
 normalized English key and Chinese value in that page's dictionary. Preserve

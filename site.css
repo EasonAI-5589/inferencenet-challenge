@@ -113,8 +113,9 @@ html[data-theme="dark"] .theme-icon{transform:rotate(180deg)}
 .page-meta a{text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--muted);padding-block:6px}
 .page-meta a:hover{text-decoration-color:var(--ink)}
 .page-meta code{font-size:11px}
-html{scroll-padding-top:0} /* the in-page offset is the scroll-margin-top below; styles.css's legacy 106px would stack on it */
-.subnav{position:sticky;top:var(--header-h);z-index:20;background:var(--paper);border-bottom:1px solid var(--line)}
+/* Existing page margins include --header-h; add only the expanded header's extra height. */
+html{scroll-padding-top:max(0px,calc(var(--header-offset,var(--header-h)) - var(--header-h)))}
+.subnav{position:sticky;top:var(--header-offset,var(--header-h));z-index:20;background:var(--paper);border-bottom:1px solid var(--line)}
 .subnav ol,.subnav ul{display:flex;flex-wrap:wrap;gap:0 26px;list-style:none;margin:0 auto;padding:0}
 .subnav a{display:inline-block;padding:15px 0 12px;font-size:13px;line-height:1.4;color:var(--soft);border-bottom:2px solid transparent;margin-bottom:-1px}
 .subnav a:hover,.subnav a[aria-current="location"]{color:var(--ink);border-bottom-color:var(--ink)}

@@ -39,13 +39,32 @@
       menu.setAttribute('aria-expanded', String(open));
       if (symbol) symbol.textContent = open ? '−' : '+';
     };
+    setOpen(true);
     menu.hidden = false;
     menu.addEventListener('click', () => setOpen(menu.getAttribute('aria-expanded') !== 'true'));
-    nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setOpen(false)));
     document.addEventListener('keydown', event => {
-      if (event.key === 'Escape' && nav.classList.contains('open')) { setOpen(false); menu.focus(); }
+      if (event.key === 'Escape' && nav.classList.contains('open')
+        && menu.getClientRects().length && menu.closest('.site-header').contains(document.activeElement)) {
+        setOpen(false); menu.focus();
+      }
     });
-    window.matchMedia('(min-width: 861px)').addEventListener('change', event => { if (event.matches) setOpen(false); });
+  }
+
+  // Navigation can occupy two rows. Only scroll offsets use the measured
+  // height; --header-h continues to control the navigation's minimum height.
+  const header = document.querySelector('.site-header');
+  if (header) {
+    let lastHeight = 0;
+    const syncHeaderOffset = () => {
+      const height = Math.ceil(header.getBoundingClientRect().height);
+      if (height !== lastHeight) {
+        lastHeight = height;
+        document.documentElement.style.setProperty('--header-offset', `${height}px`);
+      }
+    };
+    syncHeaderOffset();
+    if ('ResizeObserver' in window) new ResizeObserver(syncHeaderOffset).observe(header);
+    else window.addEventListener('resize', syncHeaderOffset, { passive: true });
   }
 
   /* Reading progress + subnav scroll-spy ------------------------------------- */

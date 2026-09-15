@@ -14,9 +14,9 @@
   <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <script src="theme.js"></script>
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="site.css?v=20260915-menu">
   <link rel="stylesheet" href="agent.css">
-  <script src="site.js?v=20260915-teams" defer></script>
+  <script src="site.js?v=20260915-menu" defer></script>
   <link rel="stylesheet" href="language.css">
   <script src="language.js?v=20260915-teams" defer></script>
 </head>
@@ -26,7 +26,7 @@
   <header class="site-header">
     <nav class="nav container" aria-label="Main navigation">
       <a class="wordmark" href="index.html">Inference<span>Net</span><small>CHALLENGE</small></a>
-      <div class="nav-links" id="nav-links">
+      <div class="nav-links open" id="nav-links">
         <a href="index.html">Home</a>
         <a href="data.html">Data</a>
         <a href="agent.html" aria-current="page">Agent</a>
@@ -38,7 +38,7 @@
         <button class="theme-toggle" data-theme-toggle aria-label="Switch to dark theme" aria-pressed="false" type="button" hidden>
           <span class="theme-icon" aria-hidden="true"></span><span data-theme-label>Light</span>
         </button>
-        <button class="menu-toggle" type="button" aria-controls="nav-links" aria-expanded="false" hidden>Menu <span aria-hidden="true">+</span></button>
+        <button class="menu-toggle" type="button" aria-controls="nav-links" aria-expanded="true" hidden>Menu <span aria-hidden="true">−</span></button>
       </div>
     </nav>
   </header>
