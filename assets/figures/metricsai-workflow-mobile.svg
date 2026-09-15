@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="mai-fig mai-fig-mobile" viewBox="0 0 780 1290" width="100%" role="img" aria-labelledby="maim-title maim-desc" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title id="maim-title">MetricsAI workflow (Figure 1, Chen et al., 2026), portrait layout</title>
+  <desc id="maim-desc">Portrait layout of the same flowchart for narrow screens. A User Input (Request) flows to Plan Generation, which sends each planned Task into a Task box containing Tool Selection, Program Execution and Reflection. Tool Selection leads to Program Execution; if execution failed, control goes to Reflection and back to Tool Selection. When a task succeeded, control either loops back to the next Task or continues to Result, then to Store and Publish. Result can also start a multi dialogue turn through Intent Recognition, which feeds the next User Input. A Large Language Model exchanges information in both directions with Plan Generation, Tool Selection and Program Execution. Vector redraw of the original hand-drawn figure; content unchanged.</desc>
+  <style>
+    .mai-fig{display:block;height:auto;max-width:100%;
+      --fig-paper:var(--paper,#fff);--fig-ink:var(--ink,#191919);--fig-soft:var(--soft,#555);--fig-muted:var(--muted,#666);
+      --fig-line:var(--line,#dedede);--fig-strong:var(--strong-line,#bbb);--fig-tint:var(--tint,#f5f5f5);--fig-accent:var(--chart-1,#264873)}
+    @media (prefers-color-scheme:dark){.mai-fig{
+      --fig-paper:var(--paper,#111);--fig-ink:var(--ink,#eee);--fig-soft:var(--soft,#bdbdbd);--fig-muted:var(--muted,#aaa);
+      --fig-line:var(--line,#363636);--fig-strong:var(--strong-line,#666);--fig-tint:var(--tint,#222);--fig-accent:var(--chart-1,#8fadd6)}}
+    [data-theme="light"] .mai-fig{
+      --fig-paper:var(--paper,#fff);--fig-ink:var(--ink,#191919);--fig-soft:var(--soft,#555);--fig-muted:var(--muted,#666);
+      --fig-line:var(--line,#dedede);--fig-strong:var(--strong-line,#bbb);--fig-tint:var(--tint,#f5f5f5);--fig-accent:var(--chart-1,#264873)}
+    [data-theme="dark"] .mai-fig{
+      --fig-paper:var(--paper,#111);--fig-ink:var(--ink,#eee);--fig-soft:var(--soft,#bdbdbd);--fig-muted:var(--muted,#aaa);
+      --fig-line:var(--line,#363636);--fig-strong:var(--strong-line,#666);--fig-tint:var(--tint,#222);--fig-accent:var(--chart-1,#8fadd6)}
+    .mai-bg{fill:var(--fig-paper)}
+    .mai-group{fill:var(--fig-tint);stroke:var(--fig-line);stroke-width:1;vector-effect:non-scaling-stroke}
+    .mai-node{fill:var(--fig-paper);stroke:var(--fig-strong);stroke-width:1;vector-effect:non-scaling-stroke}
+    .mai-edge{fill:none;stroke:var(--fig-ink);stroke-width:1;stroke-linejoin:round;stroke-linecap:butt;vector-effect:non-scaling-stroke}
+    .mai-edge.mai-accent{stroke:var(--fig-accent)}
+    .mai-edge.mai-dashed{stroke-dasharray:7 5}
+    .mai-junction{fill:var(--fig-accent)}
+    .mai-arrow-ink{fill:var(--fig-ink)}
+    .mai-arrow-accent{fill:var(--fig-accent)}
+    .mai-fig text{fill:var(--fig-ink);font-family:inherit}
+    .mai-fig-mobile .mai-label{font-size:30px;font-weight:500;text-anchor:middle;letter-spacing:-.01em}
+    .mai-fig-mobile .mai-group-label{font-size:22px;font-weight:600;fill:var(--fig-soft)}
+    .mai-fig-mobile .mai-edge-label{font-size:24px;font-weight:400;fill:var(--fig-soft)}
+    .mai-fig-mobile .mai-edge-label.mai-accent{fill:var(--fig-accent);font-weight:500}
+  </style>
+  <defs>
+    <marker id="maim-arrow-ink" class="mai-arrow-ink" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="11" refX="14" refY="5.5" orient="auto-start-reverse"><path d="M0 0.5 L14 5.5 L0 10.5 Z"/></marker>
+    <marker id="maim-arrow-accent" class="mai-arrow-accent" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="11" refX="14" refY="5.5" orient="auto-start-reverse"><path d="M0 0.5 L14 5.5 L0 10.5 Z"/></marker>
+  </defs>
+
+  <rect class="mai-bg" x="0" y="0" width="780" height="1290"/>
+
+  <!-- Task group (planned sub-task loop) -->
+  <g id="maim-task" class="mai-group-g">
+    <rect class="mai-group" vector-effect="non-scaling-stroke" x="100" y="496" width="310" height="466" rx="8"/>
+    <text class="mai-group-label" x="118" y="528">Task</text>
+  </g>
+
+  <!-- Edges: main control flow -->
+  <g class="mai-edges">
+    <path vector-effect="non-scaling-stroke" class="mai-edge" d="M255 136 V196" marker-end="url(#maim-arrow-ink)"/>
+    <path vector-effect="non-scaling-stroke" class="mai-edge" d="M255 292 V352" marker-end="url(#maim-arrow-ink)"/>
+    <path vector-effect="non-scaling-stroke" class="mai-edge" d="M255 416 V496" marker-end="url(#maim-arrow-ink)"/>
+    <path vector-effect="non-scaling-stroke" class="mai-edge" d="M280 642 V702" marker-end="url(#maim-arrow-ink)"/>
+    <path vector-effect="non-scaling-stroke" class="mai-edge" d="M180 890 H136 V594 H180" marker-end="url(#maim-arrow-ink)"/>
+    <path vector-effect="non-scaling-stroke" class="mai-edge" d="M255 1126 V1186" marker-end="url(#maim-arrow-ink)"/>
+    <path vector-effect="non-scaling-stroke" class="mai-edge" d="M130 1094 H34 V88 H130" marker-end="url(#maim-arrow-ink)"/>
+    <!-- Large Language Model exchanges (both directions) -->
+    <path vector-effect="non-scaling-stroke" class="mai-edge" d="M380 384 H455 V564 H492" marker-start="url(#maim-arrow-ink)" marker-end="url(#maim-arrow-ink)"/>
+    <path vector-effect="non-scaling-stroke" class="mai-edge" d="M380 594 H492" marker-start="url(#maim-arrow-ink)" marker-end="url(#maim-arrow-ink)"/>
+    <path vector-effect="non-scaling-stroke" class="mai-edge" d="M380 750 H455 V624 H492" marker-start="url(#maim-arrow-ink)" marker-end="url(#maim-arrow-ink)"/>
+    <!-- Outcome edges (accent): failed → Reflection; succeeded → Result or next Task -->
+    <path vector-effect="non-scaling-stroke" class="mai-edge mai-accent mai-dashed" d="M280 798 V858" marker-end="url(#maim-arrow-accent)"/>
+    <path vector-effect="non-scaling-stroke" class="mai-edge mai-accent" d="M255 962 V1062" marker-end="url(#maim-arrow-accent)"/>
+    <path vector-effect="non-scaling-stroke" class="mai-edge mai-accent" d="M255 1030 H70 V456 H205 V496" marker-end="url(#maim-arrow-accent)"/>
+    <circle class="mai-junction" cx="255" cy="1030" r="4"/>
+  </g>
+
+  <!-- Edge labels -->
+  <g class="mai-edge-labels">
+    <text class="mai-edge-label mai-accent" x="296" y="836">failed</text>
+    <text class="mai-edge-label mai-accent" x="272" y="1006">succeeded</text>
+    <text class="mai-edge-label" x="34" y="1160">multi dialogue</text>
+  </g>
+
+  <!-- Nodes -->
+  <g class="mai-nodes">
+    <g class="mai-node-g"><rect class="mai-node" vector-effect="non-scaling-stroke" x="130" y="40" width="250" height="96" rx="6"/><text class="mai-label" x="255" y="81">Intent<tspan x="255" y="117">Recognition</tspan></text></g>
+    <g class="mai-node-g"><rect class="mai-node" vector-effect="non-scaling-stroke" x="130" y="196" width="250" height="96" rx="6"/><text class="mai-label" x="255" y="237">User Input<tspan x="255" y="273">(Request)</tspan></text></g>
+    <g class="mai-node-g"><rect class="mai-node" vector-effect="non-scaling-stroke" x="130" y="352" width="250" height="64" rx="6"/><text class="mai-label" x="255" y="394">Plan Generation</text></g>
+    <g class="mai-node-g"><rect class="mai-node" vector-effect="non-scaling-stroke" x="180" y="546" width="200" height="96" rx="6"/><text class="mai-label" x="280" y="587">Tool<tspan x="280" y="623">Selection</tspan></text></g>
+    <g class="mai-node-g"><rect class="mai-node" vector-effect="non-scaling-stroke" x="180" y="702" width="200" height="96" rx="6"/><text class="mai-label" x="280" y="743">Program<tspan x="280" y="779">Execution</tspan></text></g>
+    <g class="mai-node-g"><rect class="mai-node" vector-effect="non-scaling-stroke" x="180" y="858" width="200" height="64" rx="6"/><text class="mai-label" x="280" y="900">Reflection</text></g>
+    <g class="mai-node-g"><rect class="mai-node" vector-effect="non-scaling-stroke" x="130" y="1062" width="250" height="64" rx="6"/><text class="mai-label" x="255" y="1104">Result</text></g>
+    <g class="mai-node-g"><rect class="mai-node" vector-effect="non-scaling-stroke" x="130" y="1186" width="250" height="64" rx="6"/><text class="mai-label" x="255" y="1228">Store &amp; Publish</text></g>
+    <g class="mai-node-g"><rect class="mai-node" vector-effect="non-scaling-stroke" x="492" y="544" width="270" height="100" rx="6"/><text class="mai-label" x="627" y="587">Large Language<tspan x="627" y="623">Model</tspan></text></g>
+  </g>
+</svg>

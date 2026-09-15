@@ -1,0 +1,71 @@
+/* data.css — page-specific rules for data.html. Loaded after site.css; uses the
+ * shared tokens only. Everything else on the page is a DESIGN.md component. */
+
+/* The distribution wrapper is an anchor target; give it the same sticky offset as sections. */
+#distribution{scroll-margin-top:calc(var(--header-h) + 58px)}
+
+/* Stat strips: a label above each strip, and clean row starts for the 8-cell strip. */
+.strip-label{margin:0 0 12px}
+.stat-strip+.strip-label{margin-top:34px}
+.stat-strip.rows .stat:nth-child(4n+1){padding-left:0}
+.stat-strip.rows .stat:nth-child(4n){padding-right:0}
+.stat strong.range{letter-spacing:-.02em}
+.after-strip{margin-top:14px}
+.after-kv{margin-top:24px}
+
+/* The journal chart is the lead visual of the page. */
+.chart.feature{padding:30px 32px 24px}
+.chart.feature .chart-head{margin-bottom:22px}
+.chart.feature .chart-title{font-size:20px}
+.chart.feature .chart-subtitle{font-size:13.5px}
+.chart-stack>*+*{margin-top:20px}
+
+/* Task-package anatomy. */
+.field-groups{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin:0;padding:0;list-style:none}
+.field-groups li{min-width:0;border-top:1px solid var(--line);padding-top:14px}
+.field-groups h4{font-size:12px;font-weight:600;letter-spacing:.02em;line-height:1.5;margin:0 0 10px;color:var(--ink);display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.field-groups p{font-size:12px;line-height:1.7;color:var(--muted);margin:10px 0 0}
+.package-sizes{margin-top:0}
+
+/* Case panels: six tabs sit as a 3 × 2 grid (two per row on phones, from site.css). */
+#cases .tablist [role="tab"]{flex:1 1 calc((100% - 2px) / 3)}
+.case-head{max-width:760px}
+.case-head .kicker{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:12px}
+.case-head h3{font-size:24px;line-height:1.3;letter-spacing:-.02em;font-weight:600;margin:0}
+.case-question{font-size:15px;line-height:1.75;color:var(--soft);margin:12px 0 0}
+.case-grid{margin-top:26px}
+.case-grid h4{font-size:12px;font-weight:600;letter-spacing:.02em;line-height:1.5;margin:0 0 4px;color:var(--ink)}
+.case-grid .kv dd code{overflow-wrap:anywhere}
+.case-grid .pill-list{margin-top:2px}
+.case-instruction{margin-top:24px}
+.case-reference{margin-top:22px;padding-top:18px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px 32px}
+.case-reference .reference-label{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);line-height:1.6;padding-top:6px;flex:0 0 auto}
+.case-reference dl{display:flex;flex-wrap:wrap;gap:8px 32px;margin:0}
+.case-reference dl>div{min-width:0}
+.case-reference dt{font-size:11.5px;line-height:1.5;color:var(--muted)}
+.case-reference dd{margin:0;font-family:var(--mono);font-size:15px;line-height:1.5;color:var(--ink);font-variant-numeric:tabular-nums}
+.case-reference .note{margin:0;max-width:60ch;padding-top:4px}
+.case-links{margin-top:18px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 28px}
+
+/* Provenance: the 64-character digest fits its column at 11px. */
+#provenance .kv dd code{font-size:11px}
+
+@media(max-width:1100px){
+  .field-groups{grid-template-columns:1fr;gap:16px}
+}
+@media(max-width:860px){
+  .stat-strip.rows .stat:nth-child(odd){padding-left:0}
+  .stat-strip.rows .stat:nth-child(even){padding-right:0}
+  .chart.feature{padding:20px 18px 16px}
+  .chart.feature .chart-title{font-size:17px}
+  .case-head h3{font-size:21px}
+}
+@media(max-width:520px){
+  #cases .tablist [role="tab"]{flex-basis:40%}
+  .stat strong.range{font-size:26px}
+  .stat-strip+.strip-label{margin-top:26px}
+  .case-head h3{font-size:20px}
+  .case-question{font-size:14px}
+  .case-reference{gap:10px 20px}
+  .case-reference dl{gap:8px 20px}
+}

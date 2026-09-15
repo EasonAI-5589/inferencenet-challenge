@@ -1,0 +1,955 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="no-referrer">
+  <title>Data — InferenceNet Challenge</title>
+  <meta name="description" content="How the 1,000 Selected_1000 tasks of the InferenceNet benchmark are distributed across journals, methods and fields, what a task package contains, six real tasks, and where every number comes from.">
+  <meta property="og:title" content="InferenceNet Challenge — Data">
+  <meta property="og:description" content="How the 1,000 Selected_1000 tasks of the InferenceNet benchmark are distributed across journals, methods and fields, what a task package contains, six real tasks, and where every number comes from.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="data.css">
+  <script src="site.js" defer></script>
+  <link rel="stylesheet" href="language.css">
+  <script src="language.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress"></span></div>
+  <header class="site-header">
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="wordmark" href="index.html">Inference<span>Net</span><small>CHALLENGE</small></a>
+      <div class="nav-links" id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="data.html" aria-current="page">Data</a>
+        <a href="agent.html">Agent</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="demo.html">Demo</a>
+        <a href="index.html#team">Teams</a>
+      </div>
+      <div class="nav-controls">
+        <button class="theme-toggle" data-theme-toggle aria-label="Switch to dark theme" aria-pressed="false" type="button" hidden>
+          <span class="theme-icon" aria-hidden="true"></span><span data-theme-label>Light</span>
+        </button>
+        <button class="menu-toggle" type="button" aria-controls="nav-links" aria-expanded="false" hidden>Menu <span aria-hidden="true">+</span></button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="page-hero container" aria-labelledby="page-title">
+      <p class="kicker">Data · Selected_1000</p>
+      <h1 id="page-title">The benchmark data, <em>task by task.</em></h1>
+      <p class="lead">InferenceNet turns tables from published economics, finance and management papers into replication tasks. Each task names an outcome, a treatment, the controls, the estimation method and a data file, and asks for the coefficient, standard error and p-value of one reported effect. The full benchmark holds 2,644 tasks from 36 journals; Selected_1000 is the pinned 1,000-task list that the internal study runs on; counts are computed from this list unless another source is explicitly noted.</p>
+      <ul class="page-meta">
+        <li>Hugging Face revision <code>59f9512</code></li>
+        <li>Task list <code>Selected_1000/1000_new.csv</code></li>
+        <li>Counts computed 15 Sep 2026</li>
+        <li><a href="#journals">Jump to journals ↓</a></li>
+      </ul>
+    </section>
+
+    <nav class="subnav" aria-label="On this page">
+      <ol class="container">
+        <li><a href="#scale"><span class="subnav-number">01</span>Scale</a></li>
+        <li><a href="#journals"><span class="subnav-number">02</span>Journals</a></li>
+        <li><a href="#methods"><span class="subnav-number">03</span>Methods</a></li>
+        <li><a href="#fields"><span class="subnav-number">04</span>Fields</a></li>
+        <li><a href="#shape"><span class="subnav-number">05</span>Shape</a></li>
+        <li><a href="#anatomy"><span class="subnav-number">06</span>Anatomy</a></li>
+        <li><a href="#cases"><span class="subnav-number">07</span>Cases</a></li>
+        <li><a href="#provenance"><span class="subnav-number">08</span>Provenance</a></li>
+      </ol>
+    </nav>
+
+    <div id="distribution">
+      <section class="section container" id="scale" aria-labelledby="scale-title">
+        <div class="section-heading">
+          <div>
+            <p class="kicker">01 / Scale</p>
+            <h2 id="scale-title">The full benchmark and the pinned thousand</h2>
+          </div>
+          <p class="lead">The data card describes the whole benchmark. Selected_1000 is the fixed subset that the internal paired study and every chart on this page use, so its counts can be recomputed by anyone from the same CSV.</p>
+        </div>
+        <p class="kicker strip-label">Full benchmark · Hugging Face data card</p>
+        <ul class="stat-strip">
+          <li class="stat"><strong>2,644</strong><span>Research tasks</span><small>planned scale ≈ 10,000</small></li>
+          <li class="stat"><strong>36</strong><span>Academic journals</span></li>
+          <li class="stat"><strong>6</strong><span>Research disciplines</span></li>
+          <li class="stat"><strong class="range">2022–2025</strong><span>Publication years</span><small>mainly</small></li>
+        </ul>
+        <p class="kicker strip-label">Selected_1000 · the evaluated subset</p>
+        <ul class="stat-strip rows">
+          <li class="stat"><strong>1,000</strong><span>Tasks</span><small>pinned task list</small></li>
+          <li class="stat"><strong>15</strong><span>Journals</span></li>
+          <li class="stat"><strong>286</strong><span>Distinct article strings</span><small>as written in the task list</small></li>
+          <li class="stat"><strong>14</strong><span>Raw method labels</span><small>folded into 5 classes</small></li>
+          <li class="stat"><strong>1,000<sup>/1,000</sup></strong><span>Tasks labelled Stata</span><small>reference programs are .do files</small></li>
+          <li class="stat"><strong>5,207</strong><span>Files in the snapshot</span></li>
+          <li class="stat"><strong>54.28<sup>GB</sup></strong><span>Logical size of the snapshot</span></li>
+          <li class="stat"><strong class="range">0001–1125</strong><span>Task id range</span><small>non-contiguous</small></li>
+        </ul>
+      </section>
+
+      <section class="section container ruled" id="journals" aria-labelledby="journals-title">
+        <div class="section-heading">
+          <div>
+            <p class="kicker">02 / Journals</p>
+            <h2 id="journals-title">Fifteen journals, one heavy tail</h2>
+          </div>
+          <p class="lead">Management Science alone supplies 300 of the 1,000 tasks; with the Journal of Economic History (156) and Econometrica (152) the three largest sources cover 608. Business, management and economics journals dominate; law and economics (113) and the finance journals — led by the Journal of Financial Economics (92) — follow. Below the top eight, no journal contributes more than 21 tasks.</p>
+        </div>
+        <div class="chart-stack">
+          <figure class="chart feature" data-chart="barList" id="chart-journals">
+            <figcaption class="chart-head">
+              <h3 class="chart-title">Tasks per journal</h3>
+              <p class="chart-subtitle">All 15 journals in Selected_1000, ranked by task count (n = 1,000).</p>
+            </figcaption>
+            <div class="chart-canvas"></div>
+            <script type="application/json">{
+              "unit": "", "sort": "desc", "ariaLabel": "Tasks per journal, 15 journals ranked by task count",
+              "items": [
+                {"label": "Management Science", "value": 300},
+                {"label": "Journal of Economic History", "value": 156},
+                {"label": "Econometrica", "value": 152},
+                {"label": "The Journal of Law and Economics", "value": 113},
+                {"label": "Journal of Financial Economics", "value": 92},
+                {"label": "American Economic Review", "value": 56},
+                {"label": "Journal of Political Economy", "value": 40},
+                {"label": "Marketing Science", "value": 27},
+                {"label": "Review of Economic Studies", "value": 21},
+                {"label": "Journal of Finance", "value": 13},
+                {"label": "Journal of Financial and Quantitative Analysis", "value": 13},
+                {"label": "Quarterly Journal of Economics", "value": 10},
+                {"label": "The Review of Financial Studies", "value": 3},
+                {"label": "Journal of Health Economics", "value": 3},
+                {"label": "Review of Finance", "value": 1}
+              ]
+            }</script>
+            <details class="chart-table" open>
+              <summary>Data table</summary>
+              <table>
+                <caption>Tasks per journal, Selected_1000 (n = 1,000)</caption>
+                <thead><tr><th scope="col">Journal</th><th scope="col" class="num">Tasks</th><th scope="col" class="num">Share</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row">Management Science</th><td class="num">300</td><td class="num">30.0%</td></tr>
+                  <tr><th scope="row">Journal of Economic History</th><td class="num">156</td><td class="num">15.6%</td></tr>
+                  <tr><th scope="row">Econometrica</th><td class="num">152</td><td class="num">15.2%</td></tr>
+                  <tr><th scope="row">The Journal of Law and Economics</th><td class="num">113</td><td class="num">11.3%</td></tr>
+                  <tr><th scope="row">Journal of Financial Economics</th><td class="num">92</td><td class="num">9.2%</td></tr>
+                  <tr><th scope="row">American Economic Review</th><td class="num">56</td><td class="num">5.6%</td></tr>
+                  <tr><th scope="row">Journal of Political Economy</th><td class="num">40</td><td class="num">4.0%</td></tr>
+                  <tr><th scope="row">Marketing Science</th><td class="num">27</td><td class="num">2.7%</td></tr>
+                  <tr><th scope="row">Review of Economic Studies</th><td class="num">21</td><td class="num">2.1%</td></tr>
+                  <tr><th scope="row">Journal of Finance</th><td class="num">13</td><td class="num">1.3%</td></tr>
+                  <tr><th scope="row">Journal of Financial and Quantitative Analysis</th><td class="num">13</td><td class="num">1.3%</td></tr>
+                  <tr><th scope="row">Quarterly Journal of Economics</th><td class="num">10</td><td class="num">1.0%</td></tr>
+                  <tr><th scope="row">The Review of Financial Studies</th><td class="num">3</td><td class="num">0.3%</td></tr>
+                  <tr><th scope="row">Journal of Health Economics</th><td class="num">3</td><td class="num">0.3%</td></tr>
+                  <tr><th scope="row">Review of Finance</th><td class="num">1</td><td class="num">0.1%</td></tr>
+                </tbody>
+              </table>
+            </details>
+            <p class="chart-source">Source: CamoAiLab/InferenceNet, revision <code>59f9512</code>, task list <code>Selected_1000/1000_new.csv</code>; journal column counted over the 1,000 tasks.</p>
+          </figure>
+
+          <figure class="chart" data-chart="stackedBars" id="chart-journal-methods">
+            <figcaption class="chart-head">
+              <h3 class="chart-title">Method mix inside the eight largest journals</h3>
+              <p class="chart-subtitle">Each bar is one journal scaled to 100%; segments are the five method classes. OLS dominates everywhere except The Journal of Law and Economics, where difference-in-differences and regression discontinuity designs take over.</p>
+            </figcaption>
+            <div class="chart-canvas"></div>
+            <script type="application/json">{
+              "keys": ["OLS", "DID", "IV", "Other", "RDD"], "normalize": true, "ariaLabel": "Method mix inside the eight largest journals, each journal scaled to 100 percent",
+              "rows": [
+                {"label": "Management Science", "parts": [{"key": "OLS", "value": 256}, {"key": "DID", "value": 39}, {"key": "IV", "value": 1}, {"key": "Other", "value": 3}, {"key": "RDD", "value": 1}]},
+                {"label": "Journal of Economic History", "parts": [{"key": "OLS", "value": 155}, {"key": "DID", "value": 1}]},
+                {"label": "Econometrica", "parts": [{"key": "OLS", "value": 109}, {"key": "DID", "value": 7}, {"key": "IV", "value": 26}, {"key": "Other", "value": 9}, {"key": "RDD", "value": 1}]},
+                {"label": "The Journal of Law and Economics", "parts": [{"key": "OLS", "value": 31}, {"key": "DID", "value": 64}, {"key": "IV", "value": 6}, {"key": "RDD", "value": 12}]},
+                {"label": "Journal of Financial Economics", "parts": [{"key": "OLS", "value": 74}, {"key": "DID", "value": 6}, {"key": "IV", "value": 11}, {"key": "Other", "value": 1}]},
+                {"label": "American Economic Review", "parts": [{"key": "OLS", "value": 54}, {"key": "DID", "value": 1}, {"key": "IV", "value": 1}]},
+                {"label": "Journal of Political Economy", "parts": [{"key": "OLS", "value": 32}, {"key": "IV", "value": 3}, {"key": "Other", "value": 3}, {"key": "RDD", "value": 2}]},
+                {"label": "Marketing Science", "parts": [{"key": "OLS", "value": 18}, {"key": "DID", "value": 6}, {"key": "IV", "value": 3}]}
+              ]
+            }</script>
+            <details class="chart-table" open>
+              <summary>Data table</summary>
+              <div class="table-scroll" tabindex="0">
+                <table>
+                  <caption>Method class by journal, eight largest journals (task counts)</caption>
+                  <thead><tr><th scope="col">Journal</th><th scope="col" class="num">OLS</th><th scope="col" class="num">DID</th><th scope="col" class="num">IV</th><th scope="col" class="num">Other</th><th scope="col" class="num">RDD</th><th scope="col" class="num">n</th></tr></thead>
+                  <tbody>
+                    <tr><th scope="row">Management Science</th><td class="num">256</td><td class="num">39</td><td class="num">1</td><td class="num">3</td><td class="num">1</td><td class="num">300</td></tr>
+                    <tr><th scope="row">Journal of Economic History</th><td class="num">155</td><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">156</td></tr>
+                    <tr><th scope="row">Econometrica</th><td class="num">109</td><td class="num">7</td><td class="num">26</td><td class="num">9</td><td class="num">1</td><td class="num">152</td></tr>
+                    <tr><th scope="row">The Journal of Law and Economics</th><td class="num">31</td><td class="num">64</td><td class="num">6</td><td class="num">0</td><td class="num">12</td><td class="num">113</td></tr>
+                    <tr><th scope="row">Journal of Financial Economics</th><td class="num">74</td><td class="num">6</td><td class="num">11</td><td class="num">1</td><td class="num">0</td><td class="num">92</td></tr>
+                    <tr><th scope="row">American Economic Review</th><td class="num">54</td><td class="num">1</td><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">56</td></tr>
+                    <tr><th scope="row">Journal of Political Economy</th><td class="num">32</td><td class="num">0</td><td class="num">3</td><td class="num">3</td><td class="num">2</td><td class="num">40</td></tr>
+                    <tr><th scope="row">Marketing Science</th><td class="num">18</td><td class="num">6</td><td class="num">3</td><td class="num">0</td><td class="num">0</td><td class="num">27</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </details>
+            <p class="chart-source">Source: journal × method cross-tabulation of the pinned task list; classes as defined in section 03.</p>
+          </figure>
+
+          <p class="note">The complete cross-tabulation: task counts for all 15 journals by method class. Rows sum to each journal's n; columns sum to the class totals of section 03.</p>
+          <div class="table-scroll" tabindex="0">
+            <table class="compare-table wide">
+              <caption>All 15 journals by method class (task counts, n = 1,000).</caption>
+              <thead><tr><th scope="col">Journal</th><th scope="col" class="num">OLS</th><th scope="col" class="num">DID</th><th scope="col" class="num">IV</th><th scope="col" class="num">Other</th><th scope="col" class="num">RDD</th><th scope="col" class="num">n</th><th scope="col" class="num">Share</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Management Science</th><td class="num">256</td><td class="num">39</td><td class="num">1</td><td class="num">3</td><td class="num">1</td><td class="num">300</td><td class="num">30.0%</td></tr>
+                <tr><th scope="row">Journal of Economic History</th><td class="num">155</td><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">156</td><td class="num">15.6%</td></tr>
+                <tr><th scope="row">Econometrica</th><td class="num">109</td><td class="num">7</td><td class="num">26</td><td class="num">9</td><td class="num">1</td><td class="num">152</td><td class="num">15.2%</td></tr>
+                <tr><th scope="row">The Journal of Law and Economics</th><td class="num">31</td><td class="num">64</td><td class="num">6</td><td class="num">0</td><td class="num">12</td><td class="num">113</td><td class="num">11.3%</td></tr>
+                <tr><th scope="row">Journal of Financial Economics</th><td class="num">74</td><td class="num">6</td><td class="num">11</td><td class="num">1</td><td class="num">0</td><td class="num">92</td><td class="num">9.2%</td></tr>
+                <tr><th scope="row">American Economic Review</th><td class="num">54</td><td class="num">1</td><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">56</td><td class="num">5.6%</td></tr>
+                <tr><th scope="row">Journal of Political Economy</th><td class="num">32</td><td class="num">0</td><td class="num">3</td><td class="num">3</td><td class="num">2</td><td class="num">40</td><td class="num">4.0%</td></tr>
+                <tr><th scope="row">Marketing Science</th><td class="num">18</td><td class="num">6</td><td class="num">3</td><td class="num">0</td><td class="num">0</td><td class="num">27</td><td class="num">2.7%</td></tr>
+                <tr><th scope="row">Review of Economic Studies</th><td class="num">10</td><td class="num">8</td><td class="num">3</td><td class="num">0</td><td class="num">0</td><td class="num">21</td><td class="num">2.1%</td></tr>
+                <tr><th scope="row">Journal of Finance</th><td class="num">10</td><td class="num">0</td><td class="num">0</td><td class="num">3</td><td class="num">0</td><td class="num">13</td><td class="num">1.3%</td></tr>
+                <tr><th scope="row">Journal of Financial and Quantitative Analysis</th><td class="num">9</td><td class="num">3</td><td class="num">0</td><td class="num">1</td><td class="num">0</td><td class="num">13</td><td class="num">1.3%</td></tr>
+                <tr><th scope="row">Quarterly Journal of Economics</th><td class="num">10</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">10</td><td class="num">1.0%</td></tr>
+                <tr><th scope="row">The Review of Financial Studies</th><td class="num">3</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">3</td><td class="num">0.3%</td></tr>
+                <tr><th scope="row">Journal of Health Economics</th><td class="num">2</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">0</td><td class="num">3</td><td class="num">0.3%</td></tr>
+                <tr><th scope="row">Review of Finance</th><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">0.1%</td></tr>
+              </tbody>
+              <tfoot><tr><th scope="row">All journals</th><td class="num">773</td><td class="num">135</td><td class="num">55</td><td class="num">21</td><td class="num">16</td><td class="num">1,000</td><td class="num">100%</td></tr></tfoot>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="section container ruled" id="methods" aria-labelledby="methods-title">
+        <div class="section-heading">
+          <div>
+            <p class="kicker">03 / Methods</p>
+            <h2 id="methods-title">Five estimation classes</h2>
+          </div>
+          <p class="lead">Three in four tasks are ordinary least squares, usually with fixed effects and clustered errors. Difference-in-differences is the second most common design; instrumental variables and regression discontinuity are rare, and each needs a specific first stage or bandwidth that only the requirement text spells out.</p>
+        </div>
+        <div class="grid-2">
+          <figure class="chart" data-chart="barList" id="chart-methods">
+            <figcaption class="chart-head">
+              <h3 class="chart-title">Estimation method, five classes</h3>
+              <p class="chart-subtitle">Five-class labels over the 1,000 Selected_1000 tasks.</p>
+            </figcaption>
+            <div class="chart-canvas"></div>
+            <script type="application/json">{
+              "unit": "", "sort": "desc", "ariaLabel": "Estimation method in five classes over 1,000 tasks",
+              "items": [
+                {"label": "OLS", "value": 773},
+                {"label": "DID", "value": 135},
+                {"label": "IV", "value": 55},
+                {"label": "Other", "value": 21, "kind": "muted"},
+                {"label": "RDD", "value": 16}
+              ]
+            }</script>
+            <details class="chart-table" open>
+              <summary>Data table</summary>
+              <table>
+                <caption>Estimation method, five classes, Selected_1000 (n = 1,000)</caption>
+                <thead><tr><th scope="col">Class</th><th scope="col" class="num">Tasks</th><th scope="col" class="num">Share</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row">OLS</th><td class="num">773</td><td class="num">77.3%</td></tr>
+                  <tr><th scope="row">DID</th><td class="num">135</td><td class="num">13.5%</td></tr>
+                  <tr><th scope="row">IV</th><td class="num">55</td><td class="num">5.5%</td></tr>
+                  <tr><th scope="row">Other</th><td class="num">21</td><td class="num">2.1%</td></tr>
+                  <tr><th scope="row">RDD</th><td class="num">16</td><td class="num">1.6%</td></tr>
+                </tbody>
+              </table>
+            </details>
+            <p class="chart-source">Class mapping: OLS includes panel OLS; IV includes IV-2SLS; Other = Probit, Logit, Negative binomial, LMM, PSM and Cox proportional hazards.</p>
+          </figure>
+          <div class="table-scroll" tabindex="0">
+            <table class="compare-table">
+              <caption>The 14 raw method labels in the task list and the class each one is folded into (n = 1,000).</caption>
+              <thead><tr><th scope="col">Raw label</th><th scope="col">Class</th><th scope="col" class="num">Tasks</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">OLS</th><td>OLS</td><td class="num">743</td></tr>
+                <tr><th scope="row">panel OLS</th><td>OLS</td><td class="num">30</td></tr>
+                <tr><th scope="row">DID</th><td>DID</td><td class="num">135</td></tr>
+                <tr><th scope="row">IV-2SLS</th><td>IV</td><td class="num">35</td></tr>
+                <tr><th scope="row">IV</th><td>IV</td><td class="num">20</td></tr>
+                <tr><th scope="row">RDD</th><td>RDD</td><td class="num">16</td></tr>
+                <tr><th scope="row">PROBIT</th><td>Other</td><td class="num">7</td></tr>
+                <tr><th scope="row">Negative binomial</th><td>Other</td><td class="num">4</td></tr>
+                <tr><th scope="row">LOGIT</th><td>Other</td><td class="num">3</td></tr>
+                <tr><th scope="row">Probit</th><td>Other</td><td class="num">2</td></tr>
+                <tr><th scope="row">LMM</th><td>Other</td><td class="num">2</td></tr>
+                <tr><th scope="row">PSM</th><td>Other</td><td class="num">1</td></tr>
+                <tr><th scope="row">Cox proportional hazards</th><td>Other</td><td class="num">1</td></tr>
+                <tr><th scope="row">Logit</th><td>Other</td><td class="num">1</td></tr>
+              </tbody>
+              <tfoot><tr><td colspan="3">Labels are printed exactly as they appear in the task list, so PROBIT/Probit and LOGIT/Logit are separate raw labels of the same estimator.</td></tr></tfoot>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="section container ruled" id="fields" aria-labelledby="fields-title">
+        <div class="section-heading">
+          <div>
+            <p class="kicker">04 / Fields</p>
+            <h2 id="fields-title">Five fields, as the publisher counts them</h2>
+          </div>
+          <p class="lead">Economics carries most of the weight, followed by finance and accounting. The field labels come from the publisher's own figure, not from the task list, so they are shown as transcribed rather than recomputed.</p>
+        </div>
+        <div class="grid-2">
+          <figure class="chart" data-chart="barList" id="chart-fields">
+            <figcaption class="chart-head">
+              <h3 class="chart-title">Tasks per field</h3>
+              <p class="chart-subtitle">Five fields, transcribed from the publisher's data-card figure (n = 1,000).</p>
+            </figcaption>
+            <div class="chart-canvas"></div>
+            <script type="application/json">{
+              "unit": "", "sort": "desc", "ariaLabel": "Tasks per field, five fields transcribed from the publisher's data-card figure",
+              "items": [
+                {"label": "Economics", "value": 627},
+                {"label": "Finance & Accounting", "value": 184},
+                {"label": "Management & Strategy", "value": 89},
+                {"label": "Innovation & Information Systems", "value": 67},
+                {"label": "Marketing", "value": 33}
+              ]
+            }</script>
+            <details class="chart-table" open>
+              <summary>Data table</summary>
+              <table>
+                <caption>Tasks per field, publisher's data-card figure (n = 1,000)</caption>
+                <thead><tr><th scope="col">Field</th><th scope="col" class="num">Tasks</th><th scope="col" class="num">Share</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row">Economics</th><td class="num">627</td><td class="num">62.7%</td></tr>
+                  <tr><th scope="row">Finance &amp; Accounting</th><td class="num">184</td><td class="num">18.4%</td></tr>
+                  <tr><th scope="row">Management &amp; Strategy</th><td class="num">89</td><td class="num">8.9%</td></tr>
+                  <tr><th scope="row">Innovation &amp; Information Systems</th><td class="num">67</td><td class="num">6.7%</td></tr>
+                  <tr><th scope="row">Marketing</th><td class="num">33</td><td class="num">3.3%</td></tr>
+                </tbody>
+              </table>
+            </details>
+            <p class="chart-source">Source: transcribed from the field figure on the CamoAiLab/InferenceNet data card, which was drawn from the earlier task list.</p>
+          </figure>
+          <div class="callout caution">
+            <p class="callout-title">Caution</p>
+            <p>These five counts are transcribed from the publisher's data-card figure, which was based on the earlier task list. No field label exists in <code>Selected_1000/1000_new.csv</code>, so the distribution cannot be recomputed from the pinned list and is not recomputed here. Read it as the publisher's description of the subset, not as a column of the task list.</p>
+            <p>The journal distribution in section 02 is the recomputed view of the same question: which literatures the tasks come from.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section container ruled" id="shape" aria-labelledby="shape-title">
+        <div class="section-heading">
+          <div>
+            <p class="kicker">05 / Shape</p>
+            <h2 id="shape-title">What the tasks ask for</h2>
+          </div>
+          <p class="lead">Beyond the method, a task is shaped by the answer it expects and the specification it demands: how significant the published effect is, its sign, how many controls it carries, which estimation details are tagged, and what the data look like. These distributions decide what a model must get right.</p>
+        </div>
+        <div class="stack">
+          <div class="grid-2">
+            <figure class="chart" data-chart="barList" id="chart-pvalues">
+              <figcaption class="chart-head">
+                <h3 class="chart-title">Reference p-value band</h3>
+                <p class="chart-subtitle">Roughly half of the published effects are significant at the 1% level, but 21.8% are not significant even at the 10% level — a model that assumes every reported effect is significant gets that band wrong (n = 997 tasks with a numeric reference p-value).</p>
+              </figcaption>
+              <div class="chart-canvas"></div>
+              <script type="application/json">{
+                "unit": "", "sort": "none", "ariaLabel": "Reference p-value band over 997 tasks",
+                "items": [
+                  {"label": "p < 0.01", "value": 519},
+                  {"label": "0.01 ≤ p < 0.05", "value": 189},
+                  {"label": "0.05 ≤ p < 0.10", "value": 72},
+                  {"label": "p ≥ 0.10", "value": 217}
+                ]
+              }</script>
+              <details class="chart-table" open>
+                <summary>Data table</summary>
+                <table>
+                  <caption>Reference p-value band (n = 997)</caption>
+                  <thead><tr><th scope="col">Band</th><th scope="col" class="num">Tasks</th><th scope="col" class="num">Share</th></tr></thead>
+                  <tbody>
+                    <tr><th scope="row">p &lt; 0.01</th><td class="num">519</td><td class="num">52.1%</td></tr>
+                    <tr><th scope="row">0.01 ≤ p &lt; 0.05</th><td class="num">189</td><td class="num">19.0%</td></tr>
+                    <tr><th scope="row">0.05 ≤ p &lt; 0.10</th><td class="num">72</td><td class="num">7.2%</td></tr>
+                    <tr><th scope="row">p ≥ 0.10</th><td class="num">217</td><td class="num">21.8%</td></tr>
+                  </tbody>
+                </table>
+              </details>
+              <p class="chart-source">Bands follow the leaderboard's Significant Level Correctness metric. Three tasks have no numeric reference p-value.</p>
+            </figure>
+
+            <figure class="chart" data-chart="barList" id="chart-sign">
+              <figcaption class="chart-head">
+                <h3 class="chart-title">Sign of the reference coefficient</h3>
+                <p class="chart-subtitle">Positive effects outnumber negative ones five to three, so getting the sign right is not a coin toss but far from automatic (n = 999 tasks with a numeric reference coefficient).</p>
+              </figcaption>
+              <div class="chart-canvas"></div>
+              <script type="application/json">{
+                "unit": "", "sort": "none", "ariaLabel": "Sign of the reference coefficient over 999 tasks",
+                "items": [
+                  {"label": "Positive", "value": 624},
+                  {"label": "Negative", "value": 375}
+                ]
+              }</script>
+              <details class="chart-table" open>
+                <summary>Data table</summary>
+                <table>
+                  <caption>Sign of the reference coefficient (n = 999)</caption>
+                  <thead><tr><th scope="col">Sign</th><th scope="col" class="num">Tasks</th><th scope="col" class="num">Share</th></tr></thead>
+                  <tbody>
+                    <tr><th scope="row">Positive</th><td class="num">624</td><td class="num">62.5%</td></tr>
+                    <tr><th scope="row">Negative</th><td class="num">375</td><td class="num">37.5%</td></tr>
+                  </tbody>
+                </table>
+              </details>
+              <p class="chart-source">Sign of the reference coefficient in the task list; one task has no numeric reference coefficient.</p>
+            </figure>
+          </div>
+
+          <div class="grid-2">
+            <figure class="chart" data-chart="barList" id="chart-controls">
+              <figcaption class="chart-head">
+                <h3 class="chart-title">Declared control variables per task</h3>
+                <p class="chart-subtitle">Most tasks carry a short control list, but one in five declares nine or more terms, often factor-variable interactions written in Stata syntax (n = 1,000).</p>
+              </figcaption>
+              <div class="chart-canvas"></div>
+              <script type="application/json">{
+                "unit": "", "sort": "none", "ariaLabel": "Declared control variables per task, four bins over 1,000 tasks",
+                "items": [
+                  {"label": "0 controls", "value": 159},
+                  {"label": "1–3 controls", "value": 396},
+                  {"label": "4–8 controls", "value": 231},
+                  {"label": "9+ controls", "value": 214}
+                ]
+              }</script>
+              <details class="chart-table" open>
+                <summary>Data table</summary>
+                <table>
+                  <caption>Declared control variables per task (n = 1,000)</caption>
+                  <thead><tr><th scope="col">Controls</th><th scope="col" class="num">Tasks</th><th scope="col" class="num">Share</th></tr></thead>
+                  <tbody>
+                    <tr><th scope="row">0</th><td class="num">159</td><td class="num">15.9%</td></tr>
+                    <tr><th scope="row">1–3</th><td class="num">396</td><td class="num">39.6%</td></tr>
+                    <tr><th scope="row">4–8</th><td class="num">231</td><td class="num">23.1%</td></tr>
+                    <tr><th scope="row">9+</th><td class="num">214</td><td class="num">21.4%</td></tr>
+                  </tbody>
+                </table>
+              </details>
+              <p class="chart-source">Counted from the <code>control_variables</code> field of the task list.</p>
+            </figure>
+
+            <figure class="chart" data-chart="barList" id="chart-tags">
+              <figcaption class="chart-head">
+                <h3 class="chart-title">Tag families</h3>
+                <p class="chart-subtitle">Tags are multi-label, so counts do not sum to 1,000. Fixed effects and clustered standard errors are the norm; a specification that ignores them may still run and still be wrong (n = 1,000 tasks).</p>
+              </figcaption>
+              <div class="chart-canvas"></div>
+              <script type="application/json">{
+                "unit": "", "sort": "desc", "ariaLabel": "Tag families, tasks carrying each tag family, multi-label over 1,000 tasks",
+                "items": [
+                  {"label": "Fixed effects", "value": 692},
+                  {"label": "Clustered SE", "value": 612},
+                  {"label": "Data processing", "value": 306},
+                  {"label": "Robust SE", "value": 232},
+                  {"label": "DID / event study", "value": 28},
+                  {"label": "Weighted regression", "value": 24},
+                  {"label": "Instrumental variable", "value": 13},
+                  {"label": "Regression discontinuity", "value": 6}
+                ]
+              }</script>
+              <details class="chart-table" open>
+                <summary>Data table</summary>
+                <table>
+                  <caption>Tag families: tasks carrying each family (multi-label, n = 1,000)</caption>
+                  <thead><tr><th scope="col">Tag family</th><th scope="col" class="num">Tasks</th><th scope="col" class="num">Share of tasks</th></tr></thead>
+                  <tbody>
+                    <tr><th scope="row">Fixed effects</th><td class="num">692</td><td class="num">69.2%</td></tr>
+                    <tr><th scope="row">Clustered SE</th><td class="num">612</td><td class="num">61.2%</td></tr>
+                    <tr><th scope="row">Data processing</th><td class="num">306</td><td class="num">30.6%</td></tr>
+                    <tr><th scope="row">Robust SE</th><td class="num">232</td><td class="num">23.2%</td></tr>
+                    <tr><th scope="row">DID / event study</th><td class="num">28</td><td class="num">2.8%</td></tr>
+                    <tr><th scope="row">Weighted regression</th><td class="num">24</td><td class="num">2.4%</td></tr>
+                    <tr><th scope="row">Instrumental variable</th><td class="num">13</td><td class="num">1.3%</td></tr>
+                    <tr><th scope="row">Regression discontinuity</th><td class="num">6</td><td class="num">0.6%</td></tr>
+                  </tbody>
+                </table>
+              </details>
+              <p class="chart-source">Raw tag strings of the task list grouped into families; a task counts once per family.</p>
+            </figure>
+          </div>
+
+          <div class="grid-2">
+            <figure class="chart" data-chart="barList" id="chart-formats">
+              <figcaption class="chart-head">
+                <h3 class="chart-title">Declared input files by format</h3>
+                <p class="chart-subtitle">Almost every task reads a single Stata <code>.dta</code> file; 14 tasks declare more than one input file (1,022 declared files over 1,000 tasks).</p>
+              </figcaption>
+              <div class="chart-canvas"></div>
+              <script type="application/json">{
+                "unit": "", "sort": "desc", "ariaLabel": "Declared input files by format, 1,022 files over 1,000 tasks",
+                "items": [
+                  {"label": ".dta", "value": 1001},
+                  {"label": ".csv", "value": 19},
+                  {"label": "no extension", "value": 1},
+                  {"label": ".xlsx", "value": 1}
+                ]
+              }</script>
+              <details class="chart-table" open>
+                <summary>Data table</summary>
+                <table>
+                  <caption>Declared input files by format (1,022 files over 1,000 tasks)</caption>
+                  <thead><tr><th scope="col">Format</th><th scope="col" class="num">Files</th></tr></thead>
+                  <tbody>
+                    <tr><th scope="row">.dta</th><td class="num">1,001</td></tr>
+                    <tr><th scope="row">.csv</th><td class="num">19</td></tr>
+                    <tr><th scope="row">no extension</th><td class="num">1</td></tr>
+                    <tr><th scope="row">.xlsx</th><td class="num">1</td></tr>
+                  </tbody>
+                </table>
+              </details>
+              <p class="chart-source">Counted from the <code>data_source</code> field of the task list; 14 tasks declare more than one input file.</p>
+            </figure>
+
+            <figure class="chart" id="table-articles">
+              <figcaption class="chart-head">
+                <h3 class="chart-title">Tasks per article, top six</h3>
+                <p class="chart-subtitle">One paper can yield many tasks — one column or row of a table each — so the 1,000 tasks come from 286 distinct article strings, and the six most-mined articles alone account for 167 tasks.</p>
+              </figcaption>
+              <div class="table-scroll" tabindex="0">
+                <table class="compare-table">
+                  <caption>Six articles with the most tasks in Selected_1000 (article strings as written in the task list).</caption>
+                  <thead><tr><th scope="col">Article string</th><th scope="col" class="num">Tasks</th></tr></thead>
+                  <tbody>
+                    <tr><th scope="row">Closing the Gender Profit Gap?</th><td class="num">37</td></tr>
+                    <tr><th scope="row">Deterrence and Compellence in the Parliament</th><td class="num">33</td></tr>
+                    <tr><th scope="row">Institutions-Trade-and-Growth-The-Ancient-Greek-Case-of-Proxenia</th><td class="num">31</td></tr>
+                    <tr><th scope="row">economic-uncertainty-and-divisive-politics-evidence-from-the-dos-espanas</th><td class="num">24</td></tr>
+                    <tr><th scope="row">sovereign-collateral</th><td class="num">21</td></tr>
+                    <tr><th scope="row">Liquidity Effects of Litigation Risk Evidence from a Legal Shock</th><td class="num">21</td></tr>
+                  </tbody>
+                  <tfoot><tr><td colspan="2">286 distinct article strings over 1,000 tasks. Two of these six articles are also cases in section 07 (tasks 0104 and 0145).</td></tr></tfoot>
+                </table>
+              </div>
+            </figure>
+          </div>
+
+          <div>
+            <p class="kicker strip-label">Length of the requirement text</p>
+            <ul class="stat-strip" style="--cols:3">
+              <li class="stat"><strong>27<sup>chars</sup></strong><span>Shortest requirement</span><small>other_requirements field</small></li>
+              <li class="stat"><strong>210<sup>chars</sup></strong><span>Median requirement</span><small>about two sentences</small></li>
+              <li class="stat"><strong>651<sup>chars</sup></strong><span>Longest requirement</span><small>a full estimation recipe</small></li>
+            </ul>
+            <p class="note after-strip">The requirement text is the only free-form part of a task: the sample restriction, the clustering variable, the fixed effects and the bandwidth all live there. Cases in section 07 show requirements from 27 to several hundred characters.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="section container ruled" id="anatomy" aria-labelledby="anatomy-title">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">06 / Anatomy</p>
+          <h2 id="anatomy-title">Inside a task package</h2>
+        </div>
+        <p class="lead">Every task is a small directory: a JSON row, the declared data and a reference Stata program. The model sees a single rendered instruction and the data; the reference program and the reference answer stay on the scorer side.</p>
+      </div>
+      <div class="stack">
+        <div class="grid-2">
+          <div class="stack">
+            <div class="code-panel">
+              <div class="code-panel-head"><span class="code-panel-label">Package layout · task 0001</span><span class="code-panel-meta">3 files · 650,587 B</span></div>
+              <pre tabindex="0" style="--code-max:none"><code>0001/
+├── task_row.json        986 B
+├── data/
+│   └── Data_reg.dta 646,607 B
+└── do/
+    └── task_0001.do   2,994 B
+                   ───────────
+                     650,587 B  ≈ 0.65 MB</code></pre>
+              <p class="code-note"><code>task_row.json</code> holds the task fields and the reference answer; <code>data/</code> is the declared input, mounted read-only at <code>/data</code>; <code>do/</code> is the reference Stata program, never shown to the model. Sizes are the byte counts in the pinned revision: the data file is 99.4% of the package, and the instruction the model receives is smaller than a kilobyte.</p>
+            </div>
+            <div class="code-panel">
+              <div class="code-panel-head"><span class="code-panel-label">Output contract</span><span class="code-panel-meta">/output/&lt;index&gt;_result.json</span></div>
+              <pre tabindex="0" style="--code-max:none"><code>{
+  "coefficient":    &lt;number&gt;,
+  "standard_error": &lt;number&gt;,
+  "p_value":        &lt;number&gt;
+}</code></pre>
+              <p class="code-note">Only these three fields, and they must refer to the requested effect of <code>x</code> on <code>y</code>. Task 0001 writes to <code>/output/1_result.json</code>; the scorer compares the file with the reference triplet.</p>
+            </div>
+          </div>
+          <div>
+            <h3 class="kicker">task_row.json · 14 fields</h3>
+            <ul class="field-groups">
+              <li>
+                <h4>Rendered into the instruction</h4>
+                <ul class="pill-list"><li class="pill">index</li><li class="pill">y</li><li class="pill">x</li><li class="pill">control_variables</li><li class="pill">data_source</li><li class="pill">method</li><li class="pill">other_requirements</li></ul>
+                <p>These seven fields become the one instruction below; <code>index</code> also sets the output path.</p>
+              </li>
+              <li>
+                <h4>Metadata, not part of the instruction text</h4>
+                <ul class="pill-list"><li class="pill">journal</li><li class="pill">article</li><li class="pill">tags</li><li class="pill">notation</li><li class="pill">language</li><li class="pill">sequence_id</li></ul>
+                <p>Used to describe and audit the task: where it comes from, which table cell it reproduces, and which estimation details it is tagged with.</p>
+              </li>
+              <li>
+                <h4>Kept on the scorer side <span class="badge withheld">Withheld</span></h4>
+                <ul class="pill-list"><li class="pill">answer</li><li class="pill">do/task_&lt;id&gt;.do</li></ul>
+                <p>The reference triplet and the reference Stata program are never shown to the model; they exist only for scoring.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="code-panel wrap">
+          <div class="code-panel-head"><span class="code-panel-label">Exact model-visible instruction · task 0001</span><span class="code-panel-meta">as rendered by the evaluator's task loader</span></div>
+          <pre tabindex="0" style="--code-max:none"><code>Please use the panel OLS method to compute the effect of lndispinc on lnexpenditure. You also need to control the following control variables: c.size#i.quarter, c.fam69r#i.quarter, c.fam1012r#i.quarter, c.fam1316r#i.quarter, c.fam17mr#i.quarter, c.fam17fr#i.quarter, i.tfe. Besides, you need to consider the following requirements: Estimate a panel OLS regression of log consumption on log disposable income with household fixed effects, month-year fixed effects, household-composition controls interacted with quarter dummies, and standard errors clustered by household.. You could load the corresponding data from /data/0001/data/Data_reg.dta. At the end of the program, please print the coefficient, standard error, p value of the effect in a json format like {"coefficient": 0.1, "standard_error": 0.1, "p_value": 0.1}, and output the json string as json file to /output/1_result.json</code></pre>
+          <p class="code-note">This is the whole prompt for the task: the controls are Stata factor-variable syntax, the requirement text is pasted verbatim (double full stop included), and the answer format is fixed. Nothing about the journal, the article or the published estimate is included.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container ruled" id="cases" aria-labelledby="cases-title">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">07 / Cases</p>
+          <h2 id="cases-title">Six real tasks</h2>
+        </div>
+        <p class="lead">One task from each of the main designs, taken verbatim from the pinned list: what the paper asked, what the task specifies, and exactly what the model is told. Reference values are shown for 0001 and 0011 only; the other four stay withheld.</p>
+      </div>
+      <div class="tabs">
+        <div class="tablist" role="tablist" aria-label="Task cases" data-tabs-hash>
+          <button role="tab" id="tab-0001" aria-controls="case-0001" aria-selected="true" type="button"><span class="tab-number">0001</span><span>Panel OLS<small>Journal of Economic History</small></span></button>
+          <button role="tab" id="tab-0011" aria-controls="case-0011" aria-selected="false" type="button"><span class="tab-number">0011</span><span>OLS<small>Journal of Economic History</small></span></button>
+          <button role="tab" id="tab-0104" aria-controls="case-0104" aria-selected="false" type="button"><span class="tab-number">0104</span><span>DID<small>The Journal of Law and Economics</small></span></button>
+          <button role="tab" id="tab-0100" aria-controls="case-0100" aria-selected="false" type="button"><span class="tab-number">0100</span><span>IV-2SLS (fuzzy RDD)<small>The Journal of Law and Economics</small></span></button>
+          <button role="tab" id="tab-0145" aria-controls="case-0145" aria-selected="false" type="button"><span class="tab-number">0145</span><span>RDD<small>The Journal of Law and Economics</small></span></button>
+          <button role="tab" id="tab-0194" aria-controls="case-0194" aria-selected="false" type="button"><span class="tab-number">0194</span><span>Probit<small>Journal of Political Economy</small></span></button>
+        </div>
+
+        <div class="tabpanel" id="case-0001">
+          <div class="case-head">
+            <p class="kicker">Task 0001 <span class="pill">Panel OLS</span></p>
+            <h3>Consumption smoothing in interwar Japan</h3>
+            <p class="case-question">How much does a working-class household's consumption move when its disposable income changes? A monthly household panel with household and month-year fixed effects, composition controls interacted with quarter dummies, and household-clustered standard errors.</p>
+          </div>
+          <div class="grid-2 case-grid">
+            <div>
+              <h4>Specification</h4>
+              <dl class="kv ruled-end">
+                <dt>Outcome (y)</dt><dd><code>lnexpenditure</code></dd>
+                <dt>Treatment (x)</dt><dd><code>lndispinc</code></dd>
+                <dt>Controls</dt><dd><code>c.size#i.quarter, c.fam69r#i.quarter, c.fam1012r#i.quarter, c.fam1316r#i.quarter, c.fam17mr#i.quarter, c.fam17fr#i.quarter, i.tfe</code></dd>
+                <dt>Requirements</dt><dd>Estimate a panel OLS regression of log consumption on log disposable income with household fixed effects, month-year fixed effects, household-composition controls interacted with quarter dummies, and standard errors clustered by household.</dd>
+              </dl>
+            </div>
+            <div>
+              <h4>Data and provenance</h4>
+              <dl class="kv ruled-end">
+                <dt>Data source</dt><dd><code>0001/data/Data_reg.dta</code></dd>
+                <dt>Tags</dt><dd><ul class="pill-list"><li class="pill">data processing</li><li class="pill">cluster standard error</li><li class="pill">fixed effect</li></ul></dd>
+                <dt>Journal</dt><dd>Journal of Economic History</dd>
+                <dt>Article</dt><dd>consumption smoothing in the working class households of interwar japan</dd>
+                <dt>Notation</dt><dd>Table 3,Panel A,Row Total consumption</dd>
+              </dl>
+            </div>
+          </div>
+          <details class="code-panel wrap case-instruction">
+            <summary class="code-panel-head"><span class="code-panel-label">Exact model-visible instruction</span><span class="code-panel-meta">as rendered by the task loader</span></summary>
+            <pre tabindex="0" style="--code-max:none"><code>Please use the panel OLS method to compute the effect of lndispinc on lnexpenditure. You also need to control the following control variables: c.size#i.quarter, c.fam69r#i.quarter, c.fam1012r#i.quarter, c.fam1316r#i.quarter, c.fam17mr#i.quarter, c.fam17fr#i.quarter, i.tfe. Besides, you need to consider the following requirements: Estimate a panel OLS regression of log consumption on log disposable income with household fixed effects, month-year fixed effects, household-composition controls interacted with quarter dummies, and standard errors clustered by household.. You could load the corresponding data from /data/0001/data/Data_reg.dta. At the end of the program, please print the coefficient, standard error, p value of the effect in a json format like {"coefficient": 0.1, "standard_error": 0.1, "p_value": 0.1}, and output the json string as json file to /output/1_result.json</code></pre>
+          </details>
+          <div class="case-reference">
+            <span class="reference-label">Reference (scorer side)</span>
+            <dl>
+              <div><dt>coefficient</dt><dd>0.391865</dd></div>
+              <div><dt>standard_error</dt><dd>0.037674</dd></div>
+              <div><dt>p_value</dt><dd>4.20e-21</dd></div>
+            </dl>
+            <p class="note">Rounded to six decimals. Shown because the estimate is printed in the source paper; during evaluation it never leaves the scorer.</p>
+          </div>
+          <div class="case-links">
+            <a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet/blob/59f9512a38e594528807744214a60ee00367434e/Selected_1000/0001/task_row.json" target="_blank" rel="noopener">task_row.json on Hugging Face <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+
+        <div class="tabpanel" id="case-0011">
+          <div class="case-head">
+            <p class="kicker">Task 0011 <span class="pill">OLS</span> <span class="badge real-run">Real run</span></p>
+            <h3>Economic uncertainty and divisive politics (the “two Spains”)</h3>
+            <p class="case-question">How does socio-economic conflict relate to economic policy uncertainty, 1905–1945? OLS with month-clustered standard errors.</p>
+          </div>
+          <div class="grid-2 case-grid">
+            <div>
+              <h4>Specification</h4>
+              <dl class="kv ruled-end">
+                <dt>Outcome (y)</dt><dd><code>EPU0month_simsn_w</code></dd>
+                <dt>Treatment (x)</dt><dd><code>Wscmonth_simsn_w</code></dd>
+                <dt>Controls</dt><dd><code>Wnamonth_simsn_w, Wmimonth_simsn_w, Wremonth_simsn_w</code></dd>
+                <dt>Requirements</dt><dd>Replicate PDF Table 2 column 1: OLS of EPU on the four political division variables for 1905-1945, clustering standard errors by month.</dd>
+              </dl>
+            </div>
+            <div>
+              <h4>Data and provenance</h4>
+              <dl class="kv ruled-end">
+                <dt>Data source</dt><dd><code>0011/data/data_np.dta</code></dd>
+                <dt>Tags</dt><dd><ul class="pill-list"><li class="pill">cluster standard error</li></ul></dd>
+                <dt>Journal</dt><dd>Journal of Economic History</dd>
+                <dt>Article</dt><dd>economic uncertainty and divisive politics evidence from the dos espanas</dd>
+                <dt>Notation</dt><dd>Table 2, Column 1, Row Socioec. conflict</dd>
+              </dl>
+            </div>
+          </div>
+          <details class="code-panel wrap case-instruction">
+            <summary class="code-panel-head"><span class="code-panel-label">Exact model-visible instruction</span><span class="code-panel-meta">as rendered by the task loader</span></summary>
+            <pre tabindex="0" style="--code-max:none"><code>Please use the OLS method to compute the effect of Wscmonth_simsn_w on EPU0month_simsn_w. You also need to control the following control variables: Wnamonth_simsn_w, Wmimonth_simsn_w, Wremonth_simsn_w. Besides, you need to consider the following requirements: Replicate PDF Table 2 column 1: OLS of EPU on the four political division variables for 1905-1945, clustering standard errors by month.. You could load the corresponding data from /data/0011/data/data_np.dta. At the end of the program, please print the coefficient, standard error, p value of the effect in a json format like {"coefficient": 0.1, "standard_error": 0.1, "p_value": 0.1}, and output the json string as json file to /output/11_result.json</code></pre>
+          </details>
+          <div class="case-reference">
+            <span class="reference-label">Reference (scorer side)</span>
+            <dl>
+              <div><dt>coefficient</dt><dd>0.272736</dd></div>
+              <div><dt>standard_error</dt><dd>0.054225</dd></div>
+              <div><dt>p_value</dt><dd>6.90e-07</dd></div>
+            </dl>
+            <p class="note">Rounded to six decimals. Shown because this task is the one walked through on the Agent page; during evaluation it never leaves the scorer.</p>
+          </div>
+          <div class="case-links">
+            <a class="text-link" href="agent.html#walkthrough">Follow the recorded GPT-5.5 run on this task <span aria-hidden="true">→</span></a>
+            <a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet/blob/59f9512a38e594528807744214a60ee00367434e/Selected_1000/0011/task_row.json" target="_blank" rel="noopener">task_row.json on Hugging Face <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+
+        <div class="tabpanel" id="case-0104">
+          <div class="case-head">
+            <p class="kicker">Task 0104 <span class="pill">DID</span></p>
+            <h3>Deterrence and compellence in parliament</h3>
+            <p class="case-question">Did lifting an MP's immunity change how often they submitted formal queries to the government? A difference-in-differences with MP and month-by-year fixed effects, clustered by MP.</p>
+          </div>
+          <div class="grid-2 case-grid">
+            <div>
+              <h4>Specification</h4>
+              <dl class="kv ruled-end">
+                <dt>Outcome (y)</dt><dd><code>Formal Queries (questions)</code></dd>
+                <dt>Treatment (x)</dt><dd><code>Immunity Lifted x Post</code></dd>
+                <dt>Controls</dt><dd><code>MP fixed effects; month-by-year fixed effects</code></dd>
+                <dt>Requirements</dt><dd>Replicate Table 3 for all MPs. The outcome is the number of times an MP submitted a formal query to members of the government, stored as questions in the data. Estimate Immunity Lifted x Post with MP fixed effects and month-by-year fixed effects, clustering standard errors at the MP level.</dd>
+              </dl>
+            </div>
+            <div>
+              <h4>Data and provenance</h4>
+              <dl class="kv ruled-end">
+                <dt>Data source</dt><dd><code>data/data_july_2021.dta</code></dd>
+                <dt>Tags</dt><dd><ul class="pill-list"><li class="pill">difference-in-differences; fixed effects; clustered standard errors</li></ul></dd>
+                <dt>Journal</dt><dd>The Journal of Law and Economics</dd>
+                <dt>Article</dt><dd>Deterrence and Compellence in the Parliament</dd>
+                <dt>Notation</dt><dd>Table 3, Panel B, Column 4, Formal Queries</dd>
+              </dl>
+            </div>
+          </div>
+          <details class="code-panel wrap case-instruction">
+            <summary class="code-panel-head"><span class="code-panel-label">Exact model-visible instruction</span><span class="code-panel-meta">as rendered by the task loader</span></summary>
+            <pre tabindex="0" style="--code-max:none"><code>Please use the DID method to compute the effect of Immunity Lifted x Post on Formal Queries (questions). You also need to control the following control variables: MP fixed effects; month-by-year fixed effects. Besides, you need to consider the following requirements: Replicate Table 3 for all MPs. The outcome is the number of times an MP submitted a formal query to members of the government, stored as questions in the data. Estimate Immunity Lifted x Post with MP fixed effects and month-by-year fixed effects, clustering standard errors at the MP level.. You could load the corresponding data from /data/data/data_july_2021.dta. At the end of the program, please print the coefficient, standard error, p value of the effect in a json format like {"coefficient": 0.1, "standard_error": 0.1, "p_value": 0.1}, and output the json string as json file to /output/104_result.json</code></pre>
+          </details>
+          <div class="case-reference">
+            <span class="reference-label">Reference</span>
+            <span class="badge withheld">Withheld</span>
+            <p class="note">Reference values for this task stay on the scorer side; see the notation pointer for the published table.</p>
+          </div>
+          <div class="case-links">
+            <a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet/blob/59f9512a38e594528807744214a60ee00367434e/Selected_1000/0104/task_row.json" target="_blank" rel="noopener">task_row.json on Hugging Face <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+
+        <div class="tabpanel" id="case-0100">
+          <div class="case-head">
+            <p class="kicker">Task 0100 <span class="pill">IV-2SLS (fuzzy RDD)</span></p>
+            <h3>Patent validity and litigation</h3>
+            <p class="case-question">Does filing an inter partes review make a case more likely to settle? A fuzzy regression discontinuity around the one-year filing deadline, estimated as an IV/2SLS second stage with a triangular kernel and case-clustered errors.</p>
+          </div>
+          <div class="grid-2 case-grid">
+            <div>
+              <h4>Specification</h4>
+              <dl class="kv ruled-end">
+                <dt>Outcome (y)</dt><dd><code>settle</code></dd>
+                <dt>Treatment (x)</dt><dd><code>ipr_file</code></dd>
+                <dt>Controls</dt><dd><code>time2, inter, stay. Mtd, msj, software, lnfamily_size, lnforwardcites_3yr, lnbackwardcites, lnnplcites, sep, npe, lnnb_applicants, lnnb_inventors, lnpat_clm_ct, miss_claim, Instruments, Electrical_eng, Chemistry, Mechanical_eng</code></dd>
+                <dt>Requirements</dt><dd>Replicate Table 2, the [-120, 120] day second-stage fuzzy regression discontinuity estimate. Instrument IPR filing with the discontinuous jump in filing probability in the 10 days before the one-year deadline, use time2 and its interaction with the jump indicator as running-variable controls, apply the triangular kernel weight with bandwidth 120, include the listed patent and case controls, and cluster standard errors by case id.</dd>
+              </dl>
+            </div>
+            <div>
+              <h4>Data and provenance</h4>
+              <dl class="kv ruled-end">
+                <dt>Data source</dt><dd><code>data/filing.dta</code></dd>
+                <dt>Tags</dt><dd><ul class="pill-list"><li class="pill">IV-2SLS</li><li class="pill">regression discontinuity</li><li class="pill">cluster standard error</li><li class="pill">fixed effect</li></ul></dd>
+                <dt>Journal</dt><dd>The Journal of Law and Economics</dd>
+                <dt>Article</dt><dd>Patent Validity and Litigation Evidence from US Inter Partes Review</dd>
+                <dt>Notation</dt><dd>Table 2, [-120, 120] days, Second Stage (Petition Filed)</dd>
+              </dl>
+            </div>
+          </div>
+          <details class="code-panel wrap case-instruction">
+            <summary class="code-panel-head"><span class="code-panel-label">Exact model-visible instruction</span><span class="code-panel-meta">as rendered by the task loader</span></summary>
+            <pre tabindex="0" style="--code-max:none"><code>Please use the IV-2SLS method to compute the effect of ipr_file on settle. You also need to control the following control variables: time2, inter, stay. Mtd, msj, software, lnfamily_size, lnforwardcites_3yr, lnbackwardcites, lnnplcites, sep, npe, lnnb_applicants, lnnb_inventors, lnpat_clm_ct, miss_claim, Instruments, Electrical_eng, Chemistry, Mechanical_eng. Besides, you need to consider the following requirements: Replicate Table 2, the [-120, 120] day second-stage fuzzy regression discontinuity estimate. Instrument IPR filing with the discontinuous jump in filing probability in the 10 days before the one-year deadline, use time2 and its interaction with the jump indicator as running-variable controls, apply the triangular kernel weight with bandwidth 120, include the listed patent and case controls, and cluster standard errors by case id.. You could load the corresponding data from /data/data/filing.dta. At the end of the program, please print the coefficient, standard error, p value of the effect in a json format like {"coefficient": 0.1, "standard_error": 0.1, "p_value": 0.1}, and output the json string as json file to /output/100_result.json</code></pre>
+          </details>
+          <div class="case-reference">
+            <span class="reference-label">Reference</span>
+            <span class="badge withheld">Withheld</span>
+            <p class="note">Reference values for this task stay on the scorer side; see the notation pointer for the published table.</p>
+          </div>
+          <div class="case-links">
+            <a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet/blob/59f9512a38e594528807744214a60ee00367434e/Selected_1000/0100/task_row.json" target="_blank" rel="noopener">task_row.json on Hugging Face <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+
+        <div class="tabpanel" id="case-0145">
+          <div class="case-head">
+            <p class="kicker">Task 0145 <span class="pill">RDD</span></p>
+            <h3>Liquidity effects of litigation risk</h3>
+            <p class="case-question">How did a legal shock change firms' cash holdings? A local-linear regression discontinuity at the cutoff with a triangular kernel, clustered by company.</p>
+          </div>
+          <div class="grid-2 case-grid">
+            <div>
+              <h4>Specification</h4>
+              <dl class="kv ruled-end">
+                <dt>Outcome (y)</dt><dd><code>delta_lcash_scaled</code></dd>
+                <dt>Treatment (x)</dt><dd><code>Trdd</code></dd>
+                <dt>Controls</dt><dd>None declared — the instruction says “There is no control group.”</dd>
+                <dt>Requirements</dt><dd>source-equivalent reconstructed RDD from Oliviero_Park_Zou_JLE_file3.do: local linear regression at cutoff 0 with triangular kernel and row-specific bandwidth; cluster by comp_id.</dd>
+              </dl>
+            </div>
+            <div>
+              <h4>Data and provenance</h4>
+              <dl class="kv ruled-end">
+                <dt>Data source</dt><dd><code>0145/data/Regression3.dta</code></dd>
+                <dt>Tags</dt><dd>None</dd>
+                <dt>Journal</dt><dd>The Journal of Law and Economics</dd>
+                <dt>Article</dt><dd>Liquidity Effects of Litigation Risk Evidence from a Legal Shock</dd>
+                <dt>Notation</dt><dd>Table 5, Row Baseline Row</dd>
+              </dl>
+            </div>
+          </div>
+          <details class="code-panel wrap case-instruction">
+            <summary class="code-panel-head"><span class="code-panel-label">Exact model-visible instruction</span><span class="code-panel-meta">as rendered by the task loader</span></summary>
+            <pre tabindex="0" style="--code-max:none"><code>Please use the RDD method to compute the effect of Trdd on delta_lcash_scaled. There is no control group. Besides, you need to consider the following requirements: source-equivalent reconstructed RDD from Oliviero_Park_Zou_JLE_file3.do: local linear regression at cutoff 0 with triangular kernel and row-specific bandwidth; cluster by comp_id.. You could load the corresponding data from /data/0145/data/Regression3.dta. At the end of the program, please print the coefficient, standard error, p value of the effect in a json format like {"coefficient": 0.1, "standard_error": 0.1, "p_value": 0.1}, and output the json string as json file to /output/145_result.json</code></pre>
+          </details>
+          <div class="case-reference">
+            <span class="reference-label">Reference</span>
+            <span class="badge withheld">Withheld</span>
+            <p class="note">Reference values for this task stay on the scorer side; see the notation pointer for the published table.</p>
+          </div>
+          <div class="case-links">
+            <a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet/blob/59f9512a38e594528807744214a60ee00367434e/Selected_1000/0145/task_row.json" target="_blank" rel="noopener">task_row.json on Hugging Face <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+
+        <div class="tabpanel" id="case-0194">
+          <div class="case-head">
+            <p class="kicker">Task 0194 <span class="pill">Probit</span></p>
+            <h3>Incentives in non-routine analytical team tasks</h3>
+            <p class="case-question">Does a bonus incentive change behaviour? A probit model on the field (non-laboratory) sample.</p>
+          </div>
+          <div class="grid-2 case-grid">
+            <div>
+              <h4>Specification</h4>
+              <dl class="kv ruled-end">
+                <dt>Outcome (y)</dt><dd><code>bonus</code></dd>
+                <dt>Treatment (x)</dt><dd><code>incentive45</code></dd>
+                <dt>Controls</dt><dd>None declared — the instruction says “There is no control group.”</dd>
+                <dt>Requirements</dt><dd>This regression only retains non-laboratory data.</dd>
+              </dl>
+            </div>
+            <div>
+              <h4>Data and provenance</h4>
+              <dl class="kv ruled-end">
+                <dt>Data source</dt><dd><code>0194/data/table.dta</code></dd>
+                <dt>Tags</dt><dd><ul class="pill-list"><li class="pill">cluster standard error</li></ul></dd>
+                <dt>Journal</dt><dd>Journal of Political Economy</dd>
+                <dt>Article</dt><dd>The Effect of Incentives in Nonroutine Analytical Team Tasks</dd>
+                <dt>Notation</dt><dd>Table 2, Column 1</dd>
+              </dl>
+            </div>
+          </div>
+          <details class="code-panel wrap case-instruction">
+            <summary class="code-panel-head"><span class="code-panel-label">Exact model-visible instruction</span><span class="code-panel-meta">as rendered by the task loader</span></summary>
+            <pre tabindex="0" style="--code-max:none"><code>Please use the PROBIT method to compute the effect of incentive45 on bonus. There is no control group. Besides, you need to consider the following requirements: This regression only retains non-laboratory data.. You could load the corresponding data from /data/0194/data/table.dta. At the end of the program, please print the coefficient, standard error, p value of the effect in a json format like {"coefficient": 0.1, "standard_error": 0.1, "p_value": 0.1}, and output the json string as json file to /output/194_result.json</code></pre>
+          </details>
+          <div class="case-reference">
+            <span class="reference-label">Reference</span>
+            <span class="badge withheld">Withheld</span>
+            <p class="note">Reference values for this task stay on the scorer side; see the notation pointer for the published table.</p>
+          </div>
+          <div class="case-links">
+            <a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet/blob/59f9512a38e594528807744214a60ee00367434e/Selected_1000/0194/task_row.json" target="_blank" rel="noopener">task_row.json on Hugging Face <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container ruled" id="provenance" aria-labelledby="provenance-title">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">08 / Provenance</p>
+          <h2 id="provenance-title">Where every number comes from</h2>
+        </div>
+        <p class="lead">Except where another source is explicitly noted, counts on this page are computed directly from one pinned CSV in one pinned dataset revision. Anyone with the same revision can recompute the CSV-based counts; nothing here depends on a model run.</p>
+      </div>
+      <div class="grid-2">
+        <div>
+          <dl class="kv ruled-end">
+            <dt>Dataset repository</dt><dd><a href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener">CamoAiLab/InferenceNet</a> on Hugging Face</dd>
+            <dt>Pinned revision</dt><dd><code>59f9512a38e594528807744214a60ee00367434e</code></dd>
+            <dt>Task list</dt><dd><code>Selected_1000/1000_new.csv</code> · 1,000 rows</dd>
+            <dt>Task list sha256</dt><dd><code>5338c8af548b35dab0e92a63b0acfebb0bc29c7901da4088851025f5709d6bb3</code></dd>
+            <dt>Counts computed</dt><dd>15 Sep 2026, over all 1,000 rows of the pinned list</dd>
+            <dt>Evaluator</dt><dd><a href="https://github.com/YTZSR/chatpilot_evaluator" target="_blank" rel="noopener">YTZSR/chatpilot_evaluator</a> on GitHub — task loading, instruction rendering, execution and scoring</dd>
+          </dl>
+          <div class="callout after-kv">
+            <p class="callout-title">How the counts were computed</p>
+            <p>Journal, method, control, tag and file-format distributions are column counts over the 1,000 rows of the pinned task list; the five method classes fold the 14 raw labels as listed in section 03. Reference-value bands and signs are read from the <code>answer</code> field where it is numeric. The field distribution in section 04 is the one exception: it is transcribed from the publisher's figure, not recomputed.</p>
+          </div>
+        </div>
+        <div class="stack">
+          <div class="table-scroll" tabindex="0">
+            <table class="compare-table">
+              <caption>Answer schema of the 1,000 reference answers.</caption>
+              <thead><tr><th scope="col">Schema</th><th scope="col" class="num">Tasks</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Standard triplet (coefficient, standard_error, p_value)</th><td class="num">998</td></tr>
+                <tr><th scope="row">Composite (multi-regression)</th><td class="num">1</td></tr>
+                <tr><th scope="row">Triplet + n</th><td class="num">1</td></tr>
+              </tbody>
+              <tfoot><tr><td colspan="2">The output contract in section 06 is the standard triplet.</td></tr></tfoot>
+            </table>
+          </div>
+          <div class="table-scroll" tabindex="0">
+            <table class="compare-table">
+              <caption>Scorer reference support: how many tasks carry each reference field (coverage, not model performance).</caption>
+              <thead><tr><th scope="col">Reference field</th><th scope="col" class="num">Supported</th><th scope="col" class="num">Of</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Coefficient and direction</th><td class="num">999</td><td class="num">1,000</td></tr>
+                <tr><th scope="row">Significance band</th><td class="num">997</td><td class="num">1,000</td></tr>
+              </tbody>
+              <tfoot><tr><td colspan="3">Ids listed as unsupported: <code>0346</code>, <code>0915</code>, <code>0917</code>, <code>1050</code>, <code>1109</code>. Coverage per the evaluator's leaderboard documentation.</td></tr></tfoot>
+            </table>
+          </div>
+          <p class="note">Selected_1000 keeps the original task ids, which run from 0001 to 1125 with gaps. The snapshot behind these counts holds 5,207 files and 54.28 GB of data.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <nav class="page-footer-nav" aria-label="Page sequence">
+        <a href="index.html"><small>Previous</small><span><span aria-hidden="true">←</span> Home</span></a>
+        <a href="agent.html"><small>Next</small><span>Agent <span aria-hidden="true">→</span></span></a>
+      </nav>
+    </div>
+  </main>
+  <footer class="site-footer container"><a class="wordmark" href="index.html">Inference<span>Net</span></a><p>AI for econometric research.</p><a href="https://github.com/YTZSR/chatpilot_evaluator/tree/dev-gyc-eval" target="_blank" rel="noopener">Research workspace <small>(collaborator access)</small> <span aria-hidden="true">↗</span></a></footer>
+</body>
+</html>

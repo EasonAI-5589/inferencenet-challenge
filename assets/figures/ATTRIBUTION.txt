@@ -13,3 +13,6 @@ Original SHA-256: 26ff4d3ebe15691238b7a74462c2bdafe747f67c904b2cbb738cb298982492
 Reproduced without modification for this academic Challenge introduction.
 This depicts the related MetricsAI research prototype, not a running integration
 or an official Challenge submission workflow.
+
+metricsai-workflow.svg — vector redraw of the Figure 1 above for on-site display; content unchanged; redrawn 2026-09-15 with the figure author's consent expressed to the project owner.
+metricsai-workflow-mobile.svg — portrait layout of the same redraw for narrow screens (below 640 px); same nodes, labels and arrows; redrawn 2026-09-15 under the same consent.

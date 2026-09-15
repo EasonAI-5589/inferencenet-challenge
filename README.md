@@ -1,45 +1,90 @@
 # InferenceNet Challenge
 
-Public website for the InferenceNet Challenge: AI for empirical research.
+[Live website](https://easonai-5589.github.io/inferencenet-challenge/)
 
-This repository contains only public static website files. The research workspace and editable source remain in the private NTU-GIFTS-InferenceNet repository. Challenge dates, rules, registration and competition results will be added as confirmed. The displayed Hugging Face leaderboard is the existing research benchmark, separate from future Challenge results. The page lists NTU CCDS, Nanyang Business School and HKU Business School, with official school logos and the faculty leadership of the Global InferenceNet Initiative: Ye Luo, Lin William Cong, Yang Liu and Dacheng Tao, as listed by NTU GIFTS.
+Public presentation site for InferenceNet: AI for econometric research. The
+2026-09-15 update brings together Home, Data, Agent, Leaderboard and Demo, with
+Chinese / English and light / dark controls on every page.
 
-The research profiles introduce [NTU GIFTS](https://www.ntu.edu.sg/gifts) and the
-[HKU CAMO Lab for AI-Agents in Business and Economics](https://camo.hku.hk/research-labs/research-labs-lab-for-ai-agents-in-business-and-economics/),
-with official links, research directions and related public projects. Faculty
-cards link to these profiles, which are also reachable through Teams navigation.
+## Edit the website
 
-## Research examples
+This repository contains the editable static files served by GitHub Pages.
+No frontend framework or package installation is required.
 
-Two published examples from the MetricsAI paper are summarized with explanatory
-pseudocode, input roles and conceptual diagrams. They are research examples, not
-official Challenge tasks or executable solutions. JSON values are placeholders.
+```sh
+git clone https://github.com/EasonAI-5589/inferencenet-challenge.git
+cd inferencenet-challenge
+python3 -m http.server 4193 --bind 127.0.0.1
+```
 
-## Design and assets
+Open `http://127.0.0.1:4193/` to preview. Create a branch for your changes and
+submit a pull request against `main`; include the affected page links and a
+screenshot for visual changes.
 
-The initial layout and manual light/dark theme follow the project owner's WorldEcho/WorldSync page, SiriYep/worldecho-worldsync-project-page, commit bfaaf07. The current design uses standard sans-serif headings and compact academic-project sections. The theme module was adapted with a separate preference key. WorldEcho scientific figures, authors and results were not reused.
+| Page or layer | Files |
+|---|---|
+| Home, resources and teams | `index.html`, `index.css` |
+| Dataset distributions and examples | `data.html`, `data.css` |
+| Agent case and evaluation harness | `agent.html`, `agent.css` |
+| Public leaderboard and historical internal studies | `leaderboard.html`, `leaderboard.css` |
+| Guided presentation | `demo.html`, `demo.css`, `demo.js` |
+| Shared layout, navigation and theme | `styles.css`, `site.css`, `site.js`, `theme.js` |
+| Chinese translations and language control | `assets/i18n/*.zh.json`, `language.js`, `language.css` |
+| Charts and mountain leaderboard | `charts.js`, `mountain.js`, `mountain.css` |
+| Public leaderboard synchronization | `leaderboard.js`, `leaderboard-data.js`, `assets/data/` |
 
-Inter and Space Mono fonts are distributed under the SIL Open Font License; the notices are in assets/fonts/.
+English is authored in the HTML. When changing English text, update the matching
+normalized English key and Chinese value in that page's dictionary. Preserve
+code, numerical results and source provenance unless a reviewed correction is
+available. Check both languages, both themes and a narrow viewport before
+submitting; verify navigation, images, chart fallbacks and demo controls.
 
-The unmodified MetricsAI workflow (Figure 1, Chen et al., arXiv:2506.00856v3) is
-reproduced for this academic introduction under CC BY-NC-ND 4.0. Full source,
-authorship, license and original hash are in assets/figures/ATTRIBUTION.txt.
+同事可以直接修改对应页面的 HTML / CSS，并同步更新 `assets/i18n/` 下的中文词典。
+建议每次改动单独开分支、提交 PR，说明页面和修改点；有布局调整时附一张截图。
+`main` 合并后由 GitHub Pages 自动发布。
 
-The original official CCDS, NBS and HKU Business School logos retain their colors
-and aspect ratios on white plates in both themes. Source URLs, ownership and
-original hashes are in assets/institutions/ATTRIBUTION.txt. Institutional marks
-belong to their respective owners and are not covered by code or font licenses.
+## Research content
 
-## Leaderboard data
+Challenge dates, rules, registration, prizes and competition results remain
+"To be announced" until confirmed. The public Hugging Face leaderboard is the
+existing research benchmark, separate from future Challenge submissions.
+The internal paired studies and recorded agent case are labelled exploratory
+or historical; they do not report live experiment status or official Challenge
+results. Statistical definitions are stated beside the internal results.
 
-The public Hugging Face results.csv is fetched anonymously on page load and
-manual refresh. A reviewed 14-entry snapshot is shown immediately and remains
-available if the source is unavailable or JavaScript is disabled. All four
-published metrics retain their 0–100 scale, with one-decimal percentage display;
-Partial Replication is the default descending sort. Capture time and source-file
-provenance are retained in assets/data/leaderboard-provenance.json. The source
-does not specify the sample denominator or evaluation date for this table.
+The site describes the pinned Selected_1000 distribution, curated task examples,
+a recorded GPT-5.5 trajectory, the evaluation harness and a conceptual demo.
+It does not execute models or analysis. Raw datasets, private run directories,
+credentials and research repository history are not part of this repository.
+
+The Leaderboard page anonymously refreshes the public Space's `results.csv`.
+A reviewed 14-entry snapshot remains available if live fetching fails or
+JavaScript is disabled. Source values retain their 0–100 scale and provenance
+is recorded in `assets/data/leaderboard-provenance.json`. The source does not
+specify that table's sample count or evaluation date. Static charts use their
+explicitly dated saved snapshot.
+
+## Attribution
+
+The initial layout and manual theme followed the project owner's WorldEcho /
+WorldSync page (`SiriYep/worldecho-worldsync-project-page`, `bfaaf07`). Its
+scientific figures, authors and results were not reused. Local Inter and Space
+Mono assets retain their SIL Open Font License notices in `assets/fonts/`.
+
+The MetricsAI workflow is attributed to Figure 1 of Chen et al.,
+[Can AI Master Econometrics?](https://arxiv.org/abs/2506.00856v3). The original
+image and the 2026-09-15 vector redraws retain their source and permission notes
+in `assets/figures/ATTRIBUTION.txt`. They illustrate related research.
+
+Official NTU CCDS, Nanyang Business School and HKU Business School marks retain
+their source and ownership notes in `assets/institutions/ATTRIBUTION.txt`.
+Initiative faculty roles and institutional research profiles link their official
+sources. Institutional trademarks are not covered by code or font licenses.
 
 ## Publication
 
-GitHub Pages serves the main branch root. Updates contain only the checked public output from website/dist in the source workspace, never private research files or Git history.
+GitHub Pages serves the `main` branch root. This release copies only the reviewed
+public website build and this collaboration guide. Future synchronization from
+the research workspace must first incorporate changes merged here so colleagues'
+edits are preserved. Never copy private research history or runtime evidence
+into this public repository.

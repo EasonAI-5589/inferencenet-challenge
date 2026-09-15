@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="no-referrer">
+  <title>Agent — InferenceNet Challenge</title>
+  <meta name="description" content="One real recorded GPT-5.5 run on an InferenceNet task: the single-generation program that failed, the Deep Agents trajectory that matched the scorer's reference, and the evaluation harness behind both.">
+  <meta property="og:title" content="InferenceNet Challenge — Agent">
+  <meta property="og:description" content="One real recorded GPT-5.5 run on an InferenceNet task: the single-generation program that failed, the Deep Agents trajectory that matched the scorer's reference, and the evaluation harness behind both.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="agent.css">
+  <script src="site.js" defer></script>
+  <link rel="stylesheet" href="language.css">
+  <script src="language.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress"></span></div>
+  <header class="site-header">
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="wordmark" href="index.html">Inference<span>Net</span><small>CHALLENGE</small></a>
+      <div class="nav-links" id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="data.html">Data</a>
+        <a href="agent.html" aria-current="page">Agent</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="demo.html">Demo</a>
+        <a href="index.html#team">Teams</a>
+      </div>
+      <div class="nav-controls">
+        <button class="theme-toggle" data-theme-toggle aria-label="Switch to dark theme" aria-pressed="false" type="button" hidden>
+          <span class="theme-icon" aria-hidden="true"></span><span data-theme-label>Light</span>
+        </button>
+        <button class="menu-toggle" type="button" aria-controls="nav-links" aria-expanded="false" hidden>Menu <span aria-hidden="true">+</span></button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="page-hero container" aria-labelledby="page-title">
+      <p class="kicker">Agent · One recorded run</p>
+      <h1 id="page-title">How an agent solves a task, <em>and what the harness controls.</em></h1>
+      <p class="lead">One real recorded run of GPT-5.5 on task 0011: the single-generation program that failed, the Deep Agents trajectory that matched the scorer's reference to fifteen decimal places, then the framework that produced both.</p>
+      <ul class="page-meta">
+        <li><span class="badge real-run">Real run</span> GPT-5.5 · <time datetime="2026-09-13">13 Sep 2026</time></li>
+        <li>Task <code>0011</code> · Hugging Face revision <code>59f9512</code></li>
+        <li>Deep Agents 0.7.13 · <code>run_python</code></li>
+        <li><a href="#trajectory">Jump to the trajectory ↓</a></li>
+      </ul>
+    </section>
+
+    <nav class="subnav" aria-label="On this page">
+      <ol class="container">
+        <li><a href="#task"><span class="subnav-number">01</span>Task</a></li>
+        <li><a href="#baseline"><span class="subnav-number">02</span>Arm A</a></li>
+        <li><a href="#trajectory"><span class="subnav-number">03</span>Arm B</a></li>
+        <li><a href="#scoring"><span class="subnav-number">04</span>Scoring</a></li>
+        <li><a href="#framework"><span class="subnav-number">05</span>Framework</a></li>
+        <li><a href="#budgets"><span class="subnav-number">06</span>Budgets</a></li>
+        <li><a href="#evidence"><span class="subnav-number">07</span>Evidence</a></li>
+        <li><a href="#next"><span class="subnav-number">08</span>Next protocol</a></li>
+        <li><a href="#related"><span class="subnav-number">09</span>Related</a></li>
+      </ol>
+    </nav>
+
+    <div id="walkthrough" class="walkthrough">
+    <section class="section container" id="task" aria-labelledby="task-title">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">01 / Task 0011</p>
+          <h2 id="task-title">One column of one published table</h2>
+        </div>
+        <p class="lead">A task is a single reported estimate. The model receives the instruction below and a path to the data; everything else in the task package stays on the scorer side.</p>
+      </div>
+      <div class="grid-2 task-grid">
+        <ul class="card-grid" style="--cols:1">
+          <li class="card">
+            <p class="card-label">Task 0011 · OLS <span class="badge real-run">Real run</span></p>
+            <h3>Economic uncertainty and divisive politics: evidence from the Dos Españas</h3>
+            <p>Economic uncertainty and divisive politics (the &#x27;two Spains&#x27;): how does socio-economic conflict relate to economic policy uncertainty, 1905–1945? OLS with month-clustered standard errors.</p>
+            <dl class="kv">
+              <dt>Journal</dt><dd>Journal of Economic History</dd>
+              <dt>Notation</dt><dd>Table 2, Column 1, Row Socioec. conflict</dd>
+              <dt>Method</dt><dd>OLS</dd>
+              <dt>Outcome <span class="mono">y</span></dt><dd><code>EPU0month_simsn_w</code></dd>
+              <dt>Treatment <span class="mono">x</span></dt><dd><code>Wscmonth_simsn_w</code></dd>
+              <dt>Controls</dt><dd><code>Wnamonth_simsn_w</code> · <code>Wmimonth_simsn_w</code> · <code>Wremonth_simsn_w</code></dd>
+              <dt>Requirement</dt><dd>Replicate PDF Table 2 column 1: OLS of EPU on the four political division variables for 1905-1945, clustering standard errors by month.</dd>
+              <dt>Data file</dt><dd><code>0011/data/data_np.dta</code> · Stata, mounted read-only under <code>/data</code></dd>
+              <dt>Tags</dt><dd><ul class="pill-list"><li class="pill">cluster standard error</li></ul></dd>
+            </dl>
+            <div class="card-footer"><span>Selected_1000 · task 0011</span><a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet/blob/59f9512a38e594528807744214a60ee00367434e/Selected_1000/0011/task_row.json" target="_blank" rel="noopener">Open task_row.json on Hugging Face <span aria-hidden="true">↗</span></a></div>
+          </li>
+        </ul>
+        <div class="code-panel wrap">
+          <div class="code-panel-head"><span class="code-panel-label">model-visible instruction</span><span class="code-panel-meta">verbatim · both arms receive the same text</span></div>
+          <pre tabindex="0" style="--code-max:none"><code>use python language to compute the following task: Please use the OLS method to compute the effect of Wscmonth_simsn_w on EPU0month_simsn_w. You also need to control the following control variables: Wnamonth_simsn_w, Wmimonth_simsn_w, Wremonth_simsn_w. Besides, you need to consider the following requirements: Replicate PDF Table 2 column 1: OLS of EPU on the four political division variables for 1905-1945, clustering standard errors by month.. You could load the corresponding data from /data/0011/data/data_np.dta. At the end of the program, please print the coefficient, standard error, p value of the effect in a json format like {&quot;coefficient&quot;: 0.1, &quot;standard_error&quot;: 0.1, &quot;p_value&quot;: 0.1}, and output the json string as json file to /output/11_result.json
+
+Strict requirements:
+1. Return ```python your_code_here ``` with NO other texts.
+2. Include all necessary imports.
+3. The code must save the final result to the required json path.
+4. The final result json must contain ONLY:
+    {
+    &quot;coefficient&quot;: ...,
+    &quot;standard_error&quot;: ...,
+    &quot;p_value&quot;: ...
+    }
+5. Do NOT save params, pvalues, rsquared, nobs, or any extra fields in the output JSON file.
+6. The coefficient, standard_error, and p_value must correspond to the requested effect of x on y.
+7. If you use statsmodels, extract the coefficient / standard error / p-value for the target regressor only.
+8. If fixed effects are needed, correctly handle categorical variables instead of passing object dtype directly into OLS.
+9. Before regression, ensure variables used in regression are numeric where needed.
+
+your code:</code></pre>
+          <p class="code-note">Rendered by the evaluator's task loader from <code>task_row.json</code>: method, <em>x</em>, <em>y</em>, controls, the requirement sentence, the <code>/data</code> path and the output contract. Leading indentation trimmed; wording unchanged.</p>
+        </div>
+      </div>
+      <div class="callout task-callout"><p class="callout-title">What the model does not see</p>
+        <p><strong>The reference answer.</strong> The triplet (β, SE, p) is held by the scorer and compared only after the final program has been replayed.</p>
+        <p><strong>The reference Stata program.</strong> The task package carries it as <code>do/task_&lt;id&gt;.do</code>; it is never shown to the model.</p>
+        <p><strong>The data itself, until it runs code.</strong> The instruction names a path, not a schema. Arm A writes its program blind; Arm B sees only what its own <code>run_python</code> calls print.</p>
+      </div>
+    </section>
+
+    <section class="section container ruled" id="baseline" aria-labelledby="baseline-title">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">02 / Arm A</p>
+          <h2 id="baseline-title">Single generation: one call, one guess</h2>
+        </div>
+        <p class="lead">The instruction goes to the model once. Whatever comes back is executed once in Docker and scored. Nothing is inspected, nothing is retried.</p>
+      </div>
+      <ul class="stat-strip">
+        <li class="stat"><strong>1</strong><span>Model call</span><small>no tools</small></li>
+        <li class="stat"><strong>0</strong><span>Tool calls</span><small>run_python not exposed</small></li>
+        <li class="stat"><strong>1,788</strong><span>Tokens</span><small>418 in · 1,370 out</small></li>
+        <li class="stat"><strong>20.0<sup>s</sup></strong><span>Wall time</span><small>as recorded for this run</small></li>
+      </ul>
+      <div class="baseline-grid">
+        <div class="prose">
+          <p>The program is careful in the abstract and wrong in the particular. It searches for a year column, then for a clustering column among names such as <code>month</code>, <code>mdate</code> and <code>date</code>, then for any datetime column. The data has none of these: the requirement says <em>clustering by month</em>, but the monthly index in <code>data_np.dta</code> is called <code>tid</code>, a name the model had never seen when it wrote the code. No candidate matched, the program raised <code>ValueError</code> at line 71, and the task was scored as a failed execution (<code>final_execution_failed</code>).</p>
+        </div>
+        <div class="stack tight">
+          <details class="code-panel">
+            <summary class="code-panel-head"><span class="code-panel-label">main.py · Arm A</span><span class="code-panel-meta">single-generation program · 97 lines</span></summary>
+            <pre tabindex="0"><code><span class="code-line">import os</span><span class="code-line">import json</span><span class="code-line">import numpy as np</span><span class="code-line">import pandas as pd</span><span class="code-line">import statsmodels.api as sm</span><span class="code-line"></span><span class="code-line">data_path = &quot;/data/0011/data/data_np.dta&quot;</span><span class="code-line">output_path = &quot;/output/11_result.json&quot;</span><span class="code-line"></span><span class="code-line">df = pd.read_stata(data_path, convert_dates=True)</span><span class="code-line"></span><span class="code-line">y_var = &quot;EPU0month_simsn_w&quot;</span><span class="code-line">target_var = &quot;Wscmonth_simsn_w&quot;</span><span class="code-line">control_vars = [&quot;Wnamonth_simsn_w&quot;, &quot;Wmimonth_simsn_w&quot;, &quot;Wremonth_simsn_w&quot;]</span><span class="code-line">x_vars = [target_var] + control_vars</span><span class="code-line"></span><span class="code-line"># Ensure regression variables are numeric</span><span class="code-line">for var in [y_var] + x_vars:</span><span class="code-line">    df[var] = pd.to_numeric(df[var], errors=&quot;coerce&quot;)</span><span class="code-line"></span><span class="code-line"># Identify / construct year variable for 1905-1945 restriction</span><span class="code-line">year_var = None</span><span class="code-line">for candidate in [&quot;year&quot;, &quot;Year&quot;, &quot;yr&quot;, &quot;YR&quot;]:</span><span class="code-line">    if candidate in df.columns:</span><span class="code-line">        year_var = candidate</span><span class="code-line">        break</span><span class="code-line"></span><span class="code-line">if year_var is None:</span><span class="code-line">    for col in df.columns:</span><span class="code-line">        if np.issubdtype(df[col].dtype, np.datetime64):</span><span class="code-line">            df[&quot;_reg_year&quot;] = df[col].dt.year</span><span class="code-line">            year_var = &quot;_reg_year&quot;</span><span class="code-line">            break</span><span class="code-line"></span><span class="code-line">if year_var is None:</span><span class="code-line">    for candidate in [&quot;date&quot;, &quot;Date&quot;, &quot;month&quot;, &quot;Month&quot;, &quot;mdate&quot;, &quot;Mdate&quot;, &quot;time&quot;, &quot;Time&quot;]:</span><span class="code-line">        if candidate in df.columns:</span><span class="code-line">            s = df[candidate]</span><span class="code-line">            if np.issubdtype(s.dtype, np.number):</span><span class="code-line">                vals = pd.to_numeric(s, errors=&quot;coerce&quot;)</span><span class="code-line">                # Stata monthly dates are months since 1960m1</span><span class="code-line">                converted_year = np.floor(vals / 12 + 1960).astype(&quot;float&quot;)</span><span class="code-line">                if ((converted_year &gt;= 1800) &amp; (converted_year &lt;= 2100)).any():</span><span class="code-line">                    df[&quot;_reg_year&quot;] = converted_year</span><span class="code-line">                    year_var = &quot;_reg_year&quot;</span><span class="code-line">                    break</span><span class="code-line">            else:</span><span class="code-line">                dates = pd.to_datetime(s, errors=&quot;coerce&quot;)</span><span class="code-line">                if dates.notna().any():</span><span class="code-line">                    df[&quot;_reg_year&quot;] = dates.dt.year</span><span class="code-line">                    year_var = &quot;_reg_year&quot;</span><span class="code-line">                    break</span><span class="code-line"></span><span class="code-line">if year_var is None:</span><span class="code-line">    raise ValueError(&quot;Could not identify a year/date variable for restricting the sample to 1905-1945.&quot;)</span><span class="code-line"></span><span class="code-line">df = df[(df[year_var] &gt;= 1905) &amp; (df[year_var] &lt;= 1945)].copy()</span><span class="code-line"></span><span class="code-line"># Identify clustering variable: cluster standard errors by month</span><span class="code-line">cluster_var = None</span><span class="code-line">for candidate in [&quot;month&quot;, &quot;Month&quot;, &quot;mdate&quot;, &quot;Mdate&quot;, &quot;date&quot;, &quot;Date&quot;, &quot;time&quot;, &quot;Time&quot;]:</span><span class="code-line">    if candidate in df.columns:</span><span class="code-line">        cluster_var = candidate</span><span class="code-line">        break</span><span class="code-line"></span><span class="code-line">if cluster_var is None:</span><span class="code-line">    datetime_cols = [col for col in df.columns if np.issubdtype(df[col].dtype, np.datetime64)]</span><span class="code-line">    if datetime_cols:</span><span class="code-line">        cluster_var = datetime_cols[0]</span><span class="code-line">    else:</span><span class="code-line">        raise ValueError(&quot;Could not identify a month/date variable for clustering.&quot;)</span><span class="code-line"></span><span class="code-line"># Prepare estimation sample</span><span class="code-line">reg_cols = [y_var] + x_vars + [cluster_var]</span><span class="code-line">reg_df = df[reg_cols].dropna().copy()</span><span class="code-line"></span><span class="code-line"># Create cluster groups</span><span class="code-line">cluster_data = reg_df[cluster_var]</span><span class="code-line">if np.issubdtype(cluster_data.dtype, np.datetime64):</span><span class="code-line">    groups = cluster_data.dt.to_period(&quot;M&quot;).astype(str)</span><span class="code-line">else:</span><span class="code-line">    groups = cluster_data</span><span class="code-line"></span><span class="code-line">X = sm.add_constant(reg_df[x_vars], has_constant=&quot;add&quot;)</span><span class="code-line">y = reg_df[y_var]</span><span class="code-line"></span><span class="code-line">model = sm.OLS(y, X).fit(cov_type=&quot;cluster&quot;, cov_kwds={&quot;groups&quot;: groups})</span><span class="code-line"></span><span class="code-line">result = {</span><span class="code-line">    &quot;coefficient&quot;: float(model.params[target_var]),</span><span class="code-line">    &quot;standard_error&quot;: float(model.bse[target_var]),</span><span class="code-line">    &quot;p_value&quot;: float(model.pvalues[target_var])</span><span class="code-line">}</span><span class="code-line"></span><span class="code-line">os.makedirs(os.path.dirname(output_path), exist_ok=True)</span><span class="code-line">with open(output_path, &quot;w&quot;) as f:</span><span class="code-line">    json.dump(result, f)</span></code></pre>
+          </details>
+          <div class="code-panel">
+            <div class="code-panel-head"><span class="code-panel-label">stderr · tail</span><span class="code-panel-meta">execution failed · scored as failure</span></div>
+            <pre tabindex="0"><code>Traceback (most recent call last):
+  File &quot;/code/main.py&quot;, line 71, in &lt;module&gt;
+    raise ValueError(&quot;Could not identify a month/date variable for clustering.&quot;)
+ValueError: Could not identify a month/date variable for clustering.</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container ruled" id="trajectory" aria-labelledby="trajectory-title">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">03 / Arm B</p>
+          <h2 id="trajectory-title">Deep Agents harness: look, probe, fit, answer</h2>
+        </div>
+        <p class="lead">Same model, same instruction, plus one execution tool. Each <code>run_python</code> call runs a complete program in a fresh container and returns only stdout, stderr and an exit code. The recorded run below is shown unedited except for redacted data rows and the marked elisions in the stdout excerpts.</p>
+      </div>
+      <ul class="stat-strip">
+        <li class="stat"><strong>4<sup>/ 6</sup></strong><span>Model calls used</span><small>budget 6 per task</small></li>
+        <li class="stat"><strong>3<sup>/ 4</sup></strong><span>Tool calls used</span><small>budget 4 executions</small></li>
+        <li class="stat"><strong>24,476</strong><span>Tokens</span><small>21,039 in · 3,437 out</small></li>
+        <li class="stat"><strong>74.9<sup>s</sup></strong><span>Wall time</span><small>of 600 s per task</small></li>
+      </ul>
+      <div class="callout info trajectory-note"><p class="callout-title">Internal study</p><p>This trajectory is one task from the internal paired study (GPT-5.5, Responses API, reasoning high; run <code>service-three-models-syntaxfix-20260913</code>, executed 13 Sep 2026). It is exploratory material, not a leaderboard result. Raw data rows printed by the agent are omitted and long stdout is excerpted with elisions marked; code, prompts and results are unedited.</p></div>
+
+      <ol class="steps">
+        <li class="step">
+          <div class="step-marker" aria-hidden="true">1</div>
+          <div class="step-body">
+            <div class="step-head"><span class="role-badge model">Model</span><h3 class="step-title">Opens the declared file and prints shape, columns and dtypes</h3><span class="step-meta">call 1 · run_python</span></div>
+            <p>Before writing any regression the model checks that the file exists and how large it is, then prints the shape, the 38 column names and the dtypes. Nothing is assumed about the schema yet.</p>
+            <div class="code-panel">
+              <div class="code-panel-head"><span class="code-panel-label">run_python · code</span><span class="code-panel-meta">8 lines</span></div>
+              <pre tabindex="0"><code><span class="code-line">import os, pandas as pd</span><span class="code-line">path=&#x27;/data/0011/data/data_np.dta&#x27;</span><span class="code-line">print(os.path.exists(path), os.path.getsize(path) if os.path.exists(path) else None)</span><span class="code-line">df=pd.read_stata(path, convert_categoricals=False)</span><span class="code-line">print(df.shape)</span><span class="code-line">print(df.columns.tolist())</span><span class="code-line">print(df.dtypes.head(50))</span><span class="code-line">print(df.head())</span></code></pre>
+            </div>
+          </div>
+        </li>
+        <li class="step reply">
+          <div class="step-marker" aria-hidden="true">↳</div>
+          <div class="step-body">
+            <div class="step-head"><span class="role-badge harness">Harness</span><h3 class="step-title">Returns stdout from a fresh container</h3><span class="step-meta">exit 0 · 0.714 s</span></div>
+            <p>4,550 rows × 38 columns, all numeric. There is a <code>year</code>, a <code>tid</code> and an <code>np</code> column, and every regression variable the instruction names is present, but no column is named <em>month</em>, <em>date</em> or <em>time</em>, and none has a datetime dtype.</p>
+            <details class="code-panel wrap" open>
+              <summary class="code-panel-head"><span class="code-panel-label">stdout · excerpt</span><span class="code-panel-meta">redacted · elisions marked · long lines wrapped</span></summary>
+              <pre tabindex="0" style="--code-max:none"><code>True 753040
+(4550, 38)
+[&#x27;np&#x27;, &#x27;year&#x27;, &#x27;election&#x27;, &#x27;polity2&#x27;, &#x27;gov_change&#x27;, &#x27;iirep&#x27;, &#x27;civilwar&#x27;, &#x27;franco&#x27;, &#x27;censorshipn&#x27;, &#x27;v2mecenefm&#x27;, &#x27;v2meharjrn&#x27;, &#x27;v2meslfcen&#x27;, &#x27;tid&#x27;, &#x27;EPUmonth_simsn_w&#x27;, &#x27;EPr0Umonth_simsn_w&#x27;, &#x27;EPU0month_simsn_w&#x27;, &#x27;Wscmonth_simsn_w&#x27;, &#x27;Wnamonth_simsn_w&#x27;, &#x27;Wremonth_simsn_w&#x27;, &#x27;Wmimonth_simsn_w&#x27;, &#x27;Wsc2month_simsn_w&#x27;, &#x27;Wna2month_simsn_w&#x27;, &#x27;Wre2month_simsn_w&#x27;, &#x27;Wmi2month_simsn_w&#x27;, &#x27;Wsc4month_simsn_w&#x27;, &#x27;Wna4month_simsn_w&#x27;, &#x27;Wre4month_simsn_w&#x27;, &#x27;Wmi4month_simsn_w&#x27;, &#x27;Wag4month_simsn_w&#x27;, &#x27;Wsc6month_simsn_w&#x27;, &#x27;Wna6month_simsn_w&#x27;, &#x27;Wre6month_simsn_w&#x27;, &#x27;Wmi6month_simsn_w&#x27;, &#x27;ag_top_2n_w&#x27;, &#x27;ag_top_28n_w&#x27;, &#x27;v2mecenefm_np_1&#x27;, &#x27;v2meharjrn_np_1&#x27;, &#x27;v2meslfcen_np_1&#x27;]
+np                       int8
+year                  float32
+election              float32
+… [9 dtype lines omitted]
+tid                   float32
+EPUmonth_simsn_w      float32
+EPr0Umonth_simsn_w    float32
+EPU0month_simsn_w     float32
+Wscmonth_simsn_w      float32
+Wnamonth_simsn_w      float32
+Wremonth_simsn_w      float32
+Wmimonth_simsn_w      float32
+… [18 dtype lines omitted]
+dtype: object
+… [5 raw data rows omitted from this public page]</code></pre>
+            </details>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-marker" aria-hidden="true">2</div>
+          <div class="step-body">
+            <div class="step-head"><span class="role-badge model">Model</span><h3 class="step-title">Probes the panel structure: <code>tid</code>, <code>year</code>, <code>np</code></h3><span class="step-meta">call 2 · run_python</span></div>
+            <p>The model prints the year range, how many rows each <code>tid</code> has, the <code>tid</code> × <code>year</code> grouping, the 1905–1945 window and the missing-value counts of the five regression variables.</p>
+            <div class="code-panel">
+              <div class="code-panel-head"><span class="code-panel-label">run_python · code</span><span class="code-panel-meta">17 lines</span></div>
+              <pre tabindex="0"><code><span class="code-line">import pandas as pd, numpy as np</span><span class="code-line">path=&#x27;/data/0011/data/data_np.dta&#x27;</span><span class="code-line">df=pd.read_stata(path, convert_categoricals=False)</span><span class="code-line">print(df[[&#x27;tid&#x27;,&#x27;year&#x27;,&#x27;np&#x27;]].head(30).to_string())</span><span class="code-line">print(df[[&#x27;tid&#x27;,&#x27;year&#x27;,&#x27;np&#x27;]].tail(30).to_string())</span><span class="code-line">print(df[&#x27;year&#x27;].min(), df[&#x27;year&#x27;].max(), df[&#x27;tid&#x27;].min(), df[&#x27;tid&#x27;].max())</span><span class="code-line">print(&#x27;unique years&#x27;, df[&#x27;year&#x27;].nunique(), sorted(df[&#x27;year&#x27;].dropna().unique())[:5], sorted(df[&#x27;year&#x27;].dropna().unique())[-5:])</span><span class="code-line">print(&#x27;rows per tid sample&#x27;)</span><span class="code-line">print(df.groupby(&#x27;tid&#x27;).size().value_counts().head())</span><span class="code-line">print(df.groupby([&#x27;tid&#x27;,&#x27;year&#x27;]).size().head(20))</span><span class="code-line">sub=df[(df.year&gt;=1905)&amp;(df.year&lt;=1945)]</span><span class="code-line">print(&#x27;sub shape&#x27;, sub.shape, &#x27;unique tid&#x27;, sub.tid.nunique(), &#x27;rows/tid&#x27;, sub.groupby(&#x27;tid&#x27;).size().value_counts())</span><span class="code-line">print(sub[[&#x27;tid&#x27;,&#x27;year&#x27;,&#x27;np&#x27;]].head(20).to_string())</span><span class="code-line">print(sub[[&#x27;tid&#x27;,&#x27;year&#x27;,&#x27;np&#x27;]].tail(20).to_string())</span><span class="code-line">vars=[&#x27;EPU0month_simsn_w&#x27;,&#x27;Wscmonth_simsn_w&#x27;,&#x27;Wnamonth_simsn_w&#x27;,&#x27;Wmimonth_simsn_w&#x27;,&#x27;Wremonth_simsn_w&#x27;,&#x27;tid&#x27;]</span><span class="code-line">print(sub[vars].isna().sum())</span><span class="code-line">print(sub[vars].describe().T)</span></code></pre>
+            </div>
+          </div>
+        </li>
+        <li class="step reply">
+          <div class="step-marker" aria-hidden="true">↳</div>
+          <div class="step-body">
+            <div class="step-head"><span class="role-badge harness">Harness</span><h3 class="step-title">Returns the structure of the panel</h3><span class="step-meta">exit 0 · 0.588 s</span></div>
+            <p>Years run 1821–2010 and every <code>tid</code> has exactly two rows (<code>np</code> = 1, 2). The 1905–1945 window holds 984 rows over 492 distinct <code>tid</code> values — twelve per year, so <code>tid</code> is the month index the requirement refers to. Seven rows in the window have missing regressors.</p>
+            <details class="code-panel wrap" open>
+              <summary class="code-panel-head"><span class="code-panel-label">stdout · excerpt</span><span class="code-panel-meta">redacted · elisions marked · long lines wrapped</span></summary>
+              <pre tabindex="0" style="--code-max:none"><code>1821.0 2010.0 1.0 2275.0
+unique years 190 [np.float32(1821.0), np.float32(1822.0), np.float32(1823.0), np.float32(1824.0), np.float32(1825.0)] [np.float32(2006.0), np.float32(2007.0), np.float32(2008.0), np.float32(2009.0), np.float32(2010.0)]
+rows per tid sample
+2    2275
+Name: count, dtype: int64
+tid   year
+1.0   1821.0    2
+2.0   1821.0    2
+… [17 tid × year rows omitted]
+20.0  1823.0    2
+dtype: int64
+sub shape (984, 38) unique tid 492 rows/tid 2    492
+Name: count, dtype: int64
+EPU0month_simsn_w    7
+Wscmonth_simsn_w     7
+Wnamonth_simsn_w     7
+Wmimonth_simsn_w     7
+Wremonth_simsn_w     7
+tid                  0
+dtype: int64
+                   count          mean  ...          75%          max
+EPU0month_simsn_w  977.0  0.000000e+00  ...     0.381628     5.875330
+… [5 describe rows omitted]
+… [100 raw data rows omitted from this public page]</code></pre>
+            </details>
+          </div>
+        </li>
+        <li class="step">
+          <div class="step-marker" aria-hidden="true">3</div>
+          <div class="step-body">
+            <div class="step-head"><span class="role-badge model">Model</span><h3 class="step-title">Fits the OLS clustered by <code>tid</code> and explores variants</h3><span class="step-meta">call 3 · run_python</span></div>
+            <p>Restricts to 1905–1945, clusters by <code>tid</code> and prints the full summary; then compares <code>use_t</code> settings, computes the small-sample correction factor and tries an <code>np</code> fixed-effect variant, all in one execution.</p>
+            <div class="code-panel">
+              <div class="code-panel-head"><span class="code-panel-label">run_python · code</span><span class="code-panel-meta">34 lines · shown in full</span></div>
+              <pre tabindex="0" style="--code-max:none"><code><span class="code-line">import pandas as pd, numpy as np</span><span class="code-line">import statsmodels.api as sm</span><span class="code-line">from scipy import stats</span><span class="code-line">path=&#x27;/data/0011/data/data_np.dta&#x27;</span><span class="code-line">df=pd.read_stata(path, convert_categoricals=False)</span><span class="code-line">y=&#x27;EPU0month_simsn_w&#x27;; xs=[&#x27;Wscmonth_simsn_w&#x27;,&#x27;Wnamonth_simsn_w&#x27;,&#x27;Wmimonth_simsn_w&#x27;,&#x27;Wremonth_simsn_w&#x27;]</span><span class="code-line">sub=df[(df.year&gt;=1905)&amp;(df.year&lt;=1945)].copy()</span><span class="code-line">reg=sub[[y]+xs+[&#x27;tid&#x27;,&#x27;np&#x27;]].apply(pd.to_numeric, errors=&#x27;coerce&#x27;).dropna()</span><span class="code-line">X=sm.add_constant(reg[xs])</span><span class="code-line">model=sm.OLS(reg[y],X).fit(cov_type=&#x27;cluster&#x27;, cov_kwds={&#x27;groups&#x27;:reg[&#x27;tid&#x27;]})</span><span class="code-line">print(model.summary())</span><span class="code-line">print(&#x27;params&#x27;, model.params.to_dict())</span><span class="code-line">print(&#x27;bse&#x27;, model.bse.to_dict())</span><span class="code-line">print(&#x27;p&#x27;, model.pvalues.to_dict())</span><span class="code-line">print(&#x27;use_t&#x27;, model.use_t, &#x27;df_resid&#x27;, model.df_resid)</span><span class="code-line"># get_robustcov_results with use_t true</span><span class="code-line">res=sm.OLS(reg[y],X).fit()</span><span class="code-line">for use_t in [None,True,False]:</span><span class="code-line">    if use_t is None:</span><span class="code-line">        r=res.get_robustcov_results(cov_type=&#x27;cluster&#x27;, groups=reg[&#x27;tid&#x27;])</span><span class="code-line">        label=&#x27;default&#x27;</span><span class="code-line">    else:</span><span class="code-line">        r=res.get_robustcov_results(cov_type=&#x27;cluster&#x27;, groups=reg[&#x27;tid&#x27;], use_t=use_t)</span><span class="code-line">        label=f&#x27;use_t {use_t}&#x27;</span><span class="code-line">    names=r.model.exog_names; i=names.index(&#x27;Wscmonth_simsn_w&#x27;)</span><span class="code-line">    print(label, r.params[i], r.bse[i], r.tvalues[i], r.pvalues[i], &#x27;use_t&#x27;, r.use_t)</span><span class="code-line"># manual Stata correction? </span><span class="code-line">N=len(reg); k=X.shape[1]; G=reg[&#x27;tid&#x27;].nunique()</span><span class="code-line">print(&#x27;N k G&#x27;, N,k,G, &#x27;corr&#x27;, (G/(G-1))*((N-1)/(N-k)))</span><span class="code-line"># np fixed effect include dummy np=2</span><span class="code-line">X2=sm.add_constant(pd.concat([reg[xs], pd.get_dummies(reg[&#x27;np&#x27;].astype(int), prefix=&#x27;np&#x27;, drop_first=True, dtype=float)], axis=1))</span><span class="code-line">for dfcorr in [True,False]:</span><span class="code-line">    r=sm.OLS(reg[y],X2).fit(cov_type=&#x27;cluster&#x27;, cov_kwds={&#x27;groups&#x27;:reg[&#x27;tid&#x27;], &#x27;use_correction&#x27;:True, &#x27;df_correction&#x27;:dfcorr}, use_t=True)</span><span class="code-line">    print(&#x27;npFE dfcorr&#x27;, dfcorr, r.params[&#x27;Wscmonth_simsn_w&#x27;], r.bse[&#x27;Wscmonth_simsn_w&#x27;], r.pvalues[&#x27;Wscmonth_simsn_w&#x27;], r.use_t)</span></code></pre>
+            </div>
+          </div>
+        </li>
+        <li class="step reply">
+          <div class="step-marker" aria-hidden="true">↳</div>
+          <div class="step-body">
+            <div class="step-head"><span class="role-badge harness">Harness</span><h3 class="step-title">Returns the estimates</h3><span class="step-meta">exit 0 · 1.121 s</span></div>
+            <p>Coefficient 0.2727 with clustered standard error 0.054 on 977 observations. The default cluster fit reports a normal-based p-value of 4.91 × 10⁻⁷; the final program switches to <code>use_t=True</code>, which is the p-value the reference records. The recorded stdout is truncated before the variant lines.</p>
+            <details class="code-panel" open>
+              <summary class="code-panel-head"><span class="code-panel-label">stdout · excerpt</span><span class="code-panel-meta">redacted · elisions marked</span></summary>
+              <pre tabindex="0" style="--code-max:none"><code>                            OLS Regression Results
+==============================================================================
+Dep. Variable:      EPU0month_simsn_w   R-squared:                       0.225
+Model:                            OLS   Adj. R-squared:                  0.222
+… [4 summary header lines omitted: Method, Date, Time, Df Model]
+No. Observations:                 977   AIC:                             2533.
+Df Residuals:                     972   BIC:                             2557.
+Covariance Type:              cluster
+====================================================================================
+                       coef    std err          z      P&gt;|z|      [0.025      0.975]
+------------------------------------------------------------------------------------
+const              3.49e-10      0.033   1.07e-08      1.000      -0.064       0.064
+Wscmonth_simsn_w     0.2727      0.054      5.030      0.000       0.166       0.379
+Wnamonth_simsn_w     0.2170      0.048      4.477      0.000       0.122       0.312
+Wmimonth_simsn_w    -0.0031      0.035     -0.088      0.930      -0.071       0.065
+Wremonth_simsn_w     0.1676      0.034      4.961      0.000       0.101       0.234
+… [Omnibus / Durbin-Watson block omitted]
+Notes:
+[1] Standard Errors are robust to cluster correlation (cluster)
+params {&#x27;const&#x27;: 3.4896700067822897e-10, &#x27;Wscmonth_simsn_w&#x27;: 0.27273630753072026, …}
+bse {&#x27;const&#x27;: 0.03269790115695885, &#x27;Wscmonth_simsn_w&#x27;: 0.054224701707830926, …}
+p {&#x27;const&#x27;: 0.9999999914846099, &#x27;Wscmonth_simsn_w&#x27;: 4.911379939713391e-07, …}
+… [stdout truncated in the recorded trace: use_t variants and np fixed-effect variant not preserved]</code></pre>
+            </details>
+          </div>
+        </li>
+        <li class="step is-final">
+          <div class="step-marker" aria-hidden="true">4</div>
+          <div class="step-body">
+            <div class="step-head"><span class="role-badge model">Model</span><h3 class="step-title">Returns exactly one fenced program</h3><span class="step-meta">call 4 · final answer</span></div>
+            <p>The final program hard-codes what the exploration established: read with <code>convert_categoricals=False</code>, coerce to numeric, restrict to 1905–1945, cluster by <code>tid</code> with <code>use_t=True</code>, write only the three required fields to <code>/output/11_result.json</code>. No text outside the fence.</p>
+            <div class="code-panel inverse">
+              <div class="code-panel-head"><span class="code-panel-label">main.py · Arm B</span><span class="code-panel-meta">final program · 42 lines · shown in full</span></div>
+              <pre tabindex="0" style="--code-max:none"><code><span class="code-line">import os</span><span class="code-line">import json</span><span class="code-line">import pandas as pd</span><span class="code-line">import statsmodels.api as sm</span><span class="code-line"></span><span class="code-line">data_path = &quot;/data/0011/data/data_np.dta&quot;</span><span class="code-line">output_path = &quot;/output/11_result.json&quot;</span><span class="code-line"></span><span class="code-line">target_y = &quot;EPU0month_simsn_w&quot;</span><span class="code-line">target_x = &quot;Wscmonth_simsn_w&quot;</span><span class="code-line">controls = [&quot;Wnamonth_simsn_w&quot;, &quot;Wmimonth_simsn_w&quot;, &quot;Wremonth_simsn_w&quot;]</span><span class="code-line">cluster_var = &quot;tid&quot;</span><span class="code-line"></span><span class="code-line">df = pd.read_stata(data_path, convert_categoricals=False)</span><span class="code-line"></span><span class="code-line">df[&quot;year&quot;] = pd.to_numeric(df[&quot;year&quot;], errors=&quot;coerce&quot;)</span><span class="code-line">vars_needed = [target_y, target_x] + controls + [cluster_var]</span><span class="code-line">for var in vars_needed:</span><span class="code-line">    df[var] = pd.to_numeric(df[var], errors=&quot;coerce&quot;)</span><span class="code-line"></span><span class="code-line">df_reg = df[(df[&quot;year&quot;] &gt;= 1905) &amp; (df[&quot;year&quot;] &lt;= 1945)][vars_needed].dropna().copy()</span><span class="code-line"></span><span class="code-line">X = sm.add_constant(df_reg[[target_x] + controls], has_constant=&quot;add&quot;)</span><span class="code-line">y = df_reg[target_y]</span><span class="code-line"></span><span class="code-line">model = sm.OLS(y, X).fit(</span><span class="code-line">    cov_type=&quot;cluster&quot;,</span><span class="code-line">    cov_kwds={&quot;groups&quot;: df_reg[cluster_var]},</span><span class="code-line">    use_t=True</span><span class="code-line">)</span><span class="code-line"></span><span class="code-line">result = {</span><span class="code-line">    &quot;coefficient&quot;: float(model.params[target_x]),</span><span class="code-line">    &quot;standard_error&quot;: float(model.bse[target_x]),</span><span class="code-line">    &quot;p_value&quot;: float(model.pvalues[target_x])</span><span class="code-line">}</span><span class="code-line"></span><span class="code-line">os.makedirs(os.path.dirname(output_path), exist_ok=True)</span><span class="code-line">with open(output_path, &quot;w&quot;) as f:</span><span class="code-line">    json.dump(result, f)</span><span class="code-line"></span><span class="code-line">print(json.dumps(result))</span></code></pre>
+              <p class="code-note">This file, and nothing from the three exploration calls, is what the harness replays and scores.</p>
+            </div>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="section container ruled" id="scoring" aria-labelledby="scoring-title">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">04 / Scoring</p>
+          <h2 id="scoring-title">Clean replay, then the comparison</h2>
+        </div>
+        <p class="lead">The final program is run again from scratch in a new container. Only then does the scorer open the reference triplet it has held all along.</p>
+      </div>
+      <div class="table-scroll" tabindex="0">
+        <table class="compare-table wide score-table">
+          <caption>Task 0011, Arm B: clean-replay prediction against the scorer's reference.</caption>
+          <thead><tr><th scope="col">Statistic</th><th scope="col" class="num">Prediction (replay)</th><th scope="col" class="num">Reference (scorer)</th><th scope="col" class="num">|Δ|</th><th scope="col" class="num">Relative error</th><th scope="col">Perfect threshold</th></tr></thead>
+          <tbody><tr><th scope="row">Coefficient β</th><td class="num mono">0.27273630753072026</td><td class="num mono">0.2727363075307208</td><td class="num mono">5.6 × 10⁻¹⁶</td><td class="num mono">2.0 × 10⁻¹⁵</td><td>relative error ≤&nbsp;1&nbsp;%</td></tr><tr><th scope="row">Standard error</th><td class="num mono">0.054224701707830926</td><td class="num mono">0.0542247017078309</td><td class="num mono">2.8 × 10⁻¹⁷</td><td class="num mono">5.1 × 10⁻¹⁶</td><td>relative error ≤&nbsp;1&nbsp;%</td></tr><tr><th scope="row">p-value</th><td class="num mono">6.899021793750105e-07</td><td class="num mono">6.89902179375e-07</td><td class="num mono">1.0 × 10⁻²⁰</td><td class="num mono">1.5 × 10⁻¹⁴</td><td>|Δp| ≤&nbsp;0.01 absolute</td></tr></tbody>
+        </table>
+      </div>
+      <p class="note score-note">Relative error = |prediction − reference| / |reference|; the p-value is additionally compared on an absolute scale. Internal diagnostic profile local-paper-v1, not the public leaderboard scorer. Both values are shown at the precision recorded in the run; the differences are floating-point rounding. Reference values appear on this site only for tasks 0001 and 0011.</p>
+      <div class="grid-2 scoring-grid">
+        <div class="table-scroll" tabindex="0">
+          <table class="compare-table flags-table">
+            <caption>The five internal flags for this run, profile local-paper-v1.</caption>
+            <thead><tr><th scope="col">Flag</th><th scope="col">Definition</th><th scope="col" class="num">Result</th></tr></thead>
+            <tbody><tr><th scope="row"><code>perfect</code></th><td>β, SE within 1% and p within 0.01</td><td class="num"><span class="flag-true">true</span></td></tr><tr><th scope="row"><code>partial</code></th><td>β, SE relative errors &lt; 5%; no p gate; includes perfect</td><td class="num"><span class="flag-true">true</span></td></tr><tr><th scope="row"><code>coefficient_only</code></th><td>β within 5%</td><td class="num"><span class="flag-true">true</span></td></tr><tr><th scope="row"><code>direction</code></th><td>same sign</td><td class="num"><span class="flag-true">true</span></td></tr><tr><th scope="row"><code>significance</code></th><td>same band and correct direction</td><td class="num"><span class="flag-true">true</span></td></tr></tbody>
+            <tfoot><tr><td colspan="3">Arm A on the same task produced no prediction (<code>final_execution_failed</code>), so none of the five flags can be true and the task stays in the denominator.</td></tr></tfoot>
+          </table>
+        </div>
+        <dl class="kv ruled-end replay-kv">
+          <dt>Replay</dt><dd>Fresh Docker container · <code>/data</code> read-only · result JSON to <code>/output</code> · 90 s · no network</dd>
+          <dt>Execution</dt><dd>succeeded · exit 0 · <code>/output/11_result.json</code> well-formed</dd>
+          <dt>Scoring</dt><dd>scored · reference compared after replay, never during generation</dd>
+          <dt>Profile</dt><dd>local-paper-v1 (internal diagnostic): perfect = coefficient, SE within 1% relative and p within 0.01 absolute; partial = coefficient and SE relative errors &lt; 5%, no p gate (includes perfect); coefficient_only; direction; significance category (with direction gate).</dd>
+        </dl>
+      </div>
+      <ul class="card-grid lessons" style="--cols:3">
+        <li class="card"><p class="card-label">What this run shows · 1</p><h3>Look before you regress</h3><p>Arm A guessed column names it had never seen and raised at line 71. Arm B spent its first call on <code>shape</code>, <code>columns</code> and <code>dtypes</code> — 0.7 s — and never had to guess.</p></li>
+        <li class="card"><p class="card-label">What this run shows · 2</p><h3>Map the requirement text to the data</h3><p>“Clustering by month” names a concept, not a column. Two rows per <code>tid</code>, 492 of them across 41 years: <code>tid</code> is the month. The second call exists to make that mapping explicit.</p></li>
+        <li class="card"><p class="card-label">What this run shows · 3</p><h3>Nothing persists between calls</h3><p>Every <code>run_python</code> starts a new container, so each probe re-reads the file from scratch, and the final program must stand alone — which is exactly what the clean replay checks.</p></li>
+      </ul>
+    </section>
+    </div>
+
+    <section class="section container ruled" id="framework" aria-labelledby="framework-title">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">05 / Framework</p>
+          <h2 id="framework-title">The harness as implemented</h2>
+        </div>
+        <p class="lead">Two arms share one task loader, one execution sandbox and one scorer. The only difference is what happens between the instruction and the final program.</p>
+      </div>
+      <figure class="diagram wide arch" style="--diagram-min:1044px;--diagram-max:1100px">
+        <div class="diagram-scroll" tabindex="0">
+          <svg class="arch-landscape" viewBox="0 0 1044 400" role="img" aria-label="Architecture: the task instruction feeds two arms. Arm A, single generation: model produces one program. Arm B, Deep Agents loop: model and run_python exchange code and results in fresh containers, at most six model calls and four executions, with virtual notes only. Both arms yield one final program, which is replayed in a clean Docker container with /data read-only and /output for the result, then compared by an independent scorer holding the reference, which produces the metrics.">
+            <title>Evaluation harness: task → Arm A or Arm B → final program → clean replay → independent scorer → metrics</title>
+            <defs>
+              <marker id="arch-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L8 4L0 8Z" class="arrow"/></marker>
+              <marker id="arch-arrow-strong" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L8 4L0 8Z" class="arrow strong"/></marker>
+            </defs>
+            <!-- 01 Task -->
+            <rect class="node tint" x="0.5" y="150.5" width="130" height="110" rx="4"/>
+            <text class="t-label" x="14" y="174">01 · Task</text>
+            <text class="t-strong" x="14" y="197">Instruction</text>
+            <text class="t-small" x="14" y="217">method · y · x</text>
+            <text class="t-small" x="14" y="233">controls · rules</text>
+            <text class="t-small" x="14" y="249">/data path · output</text>
+            <text class="t-small" x="0" y="284">answer + .do withheld</text>
+            <!-- Arm A group -->
+            <rect class="group" x="170.5" y="20.5" width="310" height="140" rx="4"/>
+            <text class="t-label" x="184" y="42">02a · Arm A · Single generation</text>
+            <rect class="node brand" x="184.5" y="60.5" width="116" height="80" rx="4"/>
+            <text class="t-strong t-brand" x="198" y="94">Model</text>
+            <text class="t-small" x="198" y="114">1 call</text>
+            <rect class="node" x="350.5" y="60.5" width="116" height="80" rx="4"/>
+            <text class="t-strong" x="364" y="94">Program</text>
+            <text class="t-small" x="364" y="114">one fenced file</text>
+            <path class="edge strong" d="M300 100H348" marker-end="url(#arch-arrow-strong)"/>
+            <!-- Arm B group -->
+            <rect class="group" x="170.5" y="190.5" width="310" height="190" rx="4"/>
+            <text class="t-label" x="184" y="212">02b · Arm B · Deep Agents loop</text>
+            <rect class="node brand" x="184.5" y="230.5" width="116" height="80" rx="4"/>
+            <text class="t-strong t-brand" x="198" y="264">Model</text>
+            <text class="t-small" x="198" y="284">≤ 6 calls</text>
+            <rect class="node" x="350.5" y="230.5" width="116" height="80" rx="4"/>
+            <text class="t-strong" x="364" y="264">run_python</text>
+            <text class="t-small" x="364" y="284">≤ 4 executions</text>
+            <path class="edge strong" d="M300 290H348" marker-end="url(#arch-arrow-strong)"/>
+            <path class="edge strong" d="M350 252H302" marker-end="url(#arch-arrow-strong)"/>
+            <text class="t-small t-edge" x="325" y="246">result</text>
+            <text class="t-small t-edge" x="325" y="306">code</text>
+            <text class="t-small" x="184" y="336">fresh container per call · stdout, stderr, exit code only</text>
+            <text class="t-small" x="184" y="354">virtual notes only · nothing persists between calls</text>
+            <!-- Task → arms -->
+            <path class="edge" d="M131 205H150V100H182" marker-end="url(#arch-arrow)"/>
+            <path class="edge" d="M150 205V270H182" marker-end="url(#arch-arrow)"/>
+            <!-- arms → final program -->
+            <path class="edge" d="M467 100H496V205"/>
+            <path class="edge" d="M481 300H496V205"/>
+            <path class="edge" d="M496 205H510" marker-end="url(#arch-arrow)"/>
+            <text class="t-small" x="502" y="304">final answer</text>
+            <!-- Final program -->
+            <rect class="node" x="512.5" y="150.5" width="130" height="110" rx="4"/>
+            <text class="t-label" x="526" y="174">03 · Output</text>
+            <text class="t-strong" x="526" y="197">Final program</text>
+            <text class="t-small" x="526" y="217">one fenced file</text>
+            <text class="t-small" x="526" y="233">runs from scratch</text>
+            <text class="t-small" x="526" y="249">writes result JSON</text>
+            <path class="edge" d="M643 205H670" marker-end="url(#arch-arrow)"/>
+            <!-- Clean replay -->
+            <rect class="node tint" x="672.5" y="150.5" width="130" height="110" rx="4"/>
+            <text class="t-label" x="686" y="174">04 · Execute</text>
+            <text class="t-strong" x="686" y="197">Clean replay</text>
+            <text class="t-small" x="686" y="217">Docker · 90 s</text>
+            <text class="t-small" x="686" y="233">/data read-only</text>
+            <text class="t-small" x="686" y="249">/output · no network</text>
+            <path class="edge" d="M803 205H830" marker-end="url(#arch-arrow)"/>
+            <!-- Scorer -->
+            <rect class="node ink" x="832.5" y="150.5" width="130" height="110" rx="4"/>
+            <text class="t-label t-inverse" x="846" y="174">05 · Score</text>
+            <text class="t-strong t-inverse" x="846" y="197">Scorer</text>
+            <text class="t-small t-inverse" x="846" y="217">independent</text>
+            <text class="t-small t-inverse" x="846" y="233">reference held</text>
+            <text class="t-small t-inverse" x="846" y="249">here, not shown</text>
+            <text class="t-small" x="832" y="284">β, SE, p compared after replay</text>
+            <path class="edge strong" d="M963 205H978" marker-end="url(#arch-arrow-strong)"/>
+            <!-- Metrics -->
+            <rect class="node" x="980.5" y="170.5" width="63" height="70" rx="4"/>
+            <text class="t-strong" x="1012" y="210" text-anchor="middle">Metrics</text>
+          </svg>
+          <svg class="arch-portrait" viewBox="0 0 330 802" role="img" aria-label="Architecture, portrait layout: the task instruction feeds Arm A (single generation: model produces one program) and Arm B (Deep Agents loop: model and run_python exchange code and results in fresh containers, at most six model calls and four executions, virtual notes only). Both arms yield one final program, replayed in a clean Docker container with /data read-only and /output for the result, then compared by an independent scorer holding the reference, which produces the metrics.">
+            <title>Evaluation harness (portrait): task → Arm A or Arm B → final program → clean replay → independent scorer → metrics</title>
+            <defs>
+              <marker id="arch-arrow-p" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L8 4L0 8Z" class="arrow"/></marker>
+              <marker id="arch-arrow-p-strong" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L8 4L0 8Z" class="arrow strong"/></marker>
+            </defs>
+            <!-- 01 Task -->
+            <rect class="node tint" x="10.5" y="10.5" width="310" height="76" rx="4"/>
+            <text class="t-label" x="24" y="34">01 · Task</text>
+            <text class="t-small" x="172" y="34">answer + .do withheld</text>
+            <text class="t-strong" x="24" y="56">Instruction</text>
+            <text class="t-small" x="24" y="75">method · y · x · controls · rules · /data</text>
+            <!-- Arm A -->
+            <rect class="group" x="10.5" y="112.5" width="310" height="110" rx="4"/>
+            <text class="t-label" x="24" y="134">02a · Arm A · Single generation</text>
+            <rect class="node brand" x="24.5" y="148.5" width="128" height="60" rx="4"/>
+            <text class="t-strong t-brand" x="38" y="174">Model</text>
+            <text class="t-small" x="38" y="194">1 call</text>
+            <rect class="node" x="178.5" y="148.5" width="128" height="60" rx="4"/>
+            <text class="t-strong" x="192" y="174">Program</text>
+            <text class="t-small" x="192" y="194">one fenced file</text>
+            <path class="edge strong" d="M153 178H176" marker-end="url(#arch-arrow-p-strong)"/>
+            <!-- Arm B -->
+            <rect class="group" x="10.5" y="242.5" width="310" height="150" rx="4"/>
+            <text class="t-label" x="24" y="264">02b · Arm B · Deep Agents loop</text>
+            <rect class="node brand" x="24.5" y="278.5" width="128" height="60" rx="4"/>
+            <text class="t-strong t-brand" x="38" y="304">Model</text>
+            <text class="t-small" x="38" y="324">≤ 6 calls</text>
+            <rect class="node" x="178.5" y="278.5" width="128" height="60" rx="4"/>
+            <text class="t-strong" x="192" y="304">run_python</text>
+            <text class="t-small" x="192" y="324">≤ 4 executions</text>
+            <path class="edge strong" d="M153 322H176" marker-end="url(#arch-arrow-p-strong)"/>
+            <path class="edge strong" d="M178 296H155" marker-end="url(#arch-arrow-p-strong)"/>
+            <text class="t-small" x="24" y="362">fresh container per call · stdout, stderr, exit code</text>
+            <text class="t-small" x="24" y="380">virtual notes only · nothing persists between calls</text>
+            <!-- Task → arms -->
+            <path class="edge" d="M165 87V110" marker-end="url(#arch-arrow-p)"/>
+            <path class="edge" d="M300 87V99H327V318H323" marker-end="url(#arch-arrow-p)"/>
+            <!-- arms → final program -->
+            <path class="edge" d="M24 223V232H3V412H165"/>
+            <path class="edge" d="M165 393V412"/>
+            <path class="edge" d="M165 412V430" marker-end="url(#arch-arrow-p)"/>
+            <text class="t-small" x="174" y="408">final answer</text>
+            <!-- 03 Final program -->
+            <rect class="node" x="10.5" y="432.5" width="310" height="60" rx="4"/>
+            <text class="t-label" x="24" y="455">03 · Output</text>
+            <text class="t-strong" x="24" y="478">Final program</text>
+            <text class="t-small" x="180" y="458">one fenced file</text>
+            <text class="t-small" x="180" y="476">runs from scratch</text>
+            <path class="edge" d="M165 493V518" marker-end="url(#arch-arrow-p)"/>
+            <!-- 04 Clean replay -->
+            <rect class="node tint" x="10.5" y="520.5" width="310" height="76" rx="4"/>
+            <text class="t-label" x="24" y="543">04 · Execute</text>
+            <text class="t-strong" x="24" y="566">Clean replay</text>
+            <text class="t-small" x="180" y="543">Docker · 90 s</text>
+            <text class="t-small" x="180" y="561">/data read-only</text>
+            <text class="t-small" x="180" y="579">/output · no network</text>
+            <path class="edge" d="M165 597V622" marker-end="url(#arch-arrow-p)"/>
+            <!-- 05 Scorer -->
+            <rect class="node ink" x="10.5" y="624.5" width="310" height="76" rx="4"/>
+            <text class="t-label t-inverse" x="24" y="647">05 · Score</text>
+            <text class="t-strong t-inverse" x="24" y="670">Scorer</text>
+            <text class="t-small t-inverse" x="180" y="647">independent</text>
+            <text class="t-small t-inverse" x="180" y="665">reference held</text>
+            <text class="t-small t-inverse" x="180" y="683">here, not shown</text>
+            <path class="edge strong" d="M165 701V726" marker-end="url(#arch-arrow-p-strong)"/>
+            <!-- Metrics -->
+            <rect class="node" x="10.5" y="728.5" width="310" height="50" rx="4"/>
+            <text class="t-strong" x="165" y="758" text-anchor="middle">Metrics</text>
+            <text class="t-small" x="24" y="796">β, SE, p compared only after the replay</text>
+          </svg>
+        </div>
+        <figcaption>The harness as implemented in the evaluator package (<code>inferencenet.harness</code>: runner, adapters, budget, study), reusing the existing task loader, Docker execution and scorer. Arm A: one model call, one program. Arm B: Deep Agents 0.7.13 with one execution tool, <code>run_python</code> (the SDK's virtual file tools are scratch notes only, not data access); every execution starts a fresh container and returns execution feedback only. Both arms end in the same clean replay and the same scorer.</figcaption>
+      </figure>
+
+      <div class="grid-2 framework-tables">
+        <div class="table-scroll" tabindex="0">
+          <table class="compare-table pipeline-table">
+            <caption>Pipeline stages, in order. Every planned task stays in the denominator.</caption>
+            <thead><tr><th scope="col">Stage</th><th scope="col">What happens</th></tr></thead>
+            <tbody><tr><th scope="row">Task</th><td>task_row.json → model-visible instruction (method, x, y, controls, requirements, /data path, output contract). Reference answer and the reference Stata program are withheld.</td></tr><tr><th scope="row">Generate</th><td>Baseline: one model call → one fenced Python program. Deep Agents: tool loop (≤6 model calls, ≤4 run_python executions) → one final fenced Python program.</td></tr><tr><th scope="row">Execute</th><td>Final program replayed from scratch in a fresh Docker container: /data read-only, /output for the result JSON, 90 s, 6 GiB, 2 CPU, no network.</td></tr><tr><th scope="row">Score</th><td>Independent scorer compares the prediction JSON with the reference triplet (coefficient, standard_error, p_value). Every planned task stays in the denominator.</td></tr></tbody>
+          </table>
+        </div>
+        <div class="prose framework-note">
+          <h3>What is shared, what differs</h3>
+          <p>The task loader, the container image, the execution limits, the output contract and the scorer are identical for both arms. Arm B adds a loop and a tool; it never exposes reference answers or scores — <code>run_python</code> returns what the program printed, never a score or a reference value.</p>
+          <p>Arms are not cost-matched: Arm B may spend up to six model calls and four executions on a task that Arm A answers in one call. The next protocol below is designed to separate the value of execution feedback from the value of a different first draft.</p>
+        </div>
+      </div>
+
+      <div class="table-scroll" tabindex="0">
+        <table class="compare-table wide arms-table">
+          <caption>The two arms compared, as configured in the harness.</caption>
+          <thead><tr><th scope="col">Aspect</th><th scope="col">Arm A · Single generation</th><th scope="col">Arm B · Deep Agents harness</th></tr></thead>
+          <tbody><tr><th scope="row">Flow</th><td><ol class="inline-list"><li>instruction → model</li><li>model → one fenced <code>python</code> program</li><li>harness executes once in Docker</li><li>scorer compares JSON with reference</li></ol></td><td><ol class="inline-list"><li>Read instruction (same text as baseline) + harness system prompt</li><li>Call run_python to inspect /data (shape, columns, dtypes, sample restrictions)</li><li>Call run_python to fit candidate specifications and print estimates</li><li>Reconcile with the requirement text (e.g. clustering variable, sample window, fixed effects)</li><li>Return exactly one fenced Python program</li><li>Harness replays that program in a clean container and scores the JSON</li></ol></td></tr><tr><th scope="row">Model calls</th><td>1</td><td>≤ 6</td></tr><tr><th scope="row">Tool calls</th><td>0</td><td>≤ 4 <code>run_python</code> executions</td></tr><tr><th scope="row">Tools exposed</th><td>None — the program is the only output</td><td><ul class="inline-list"><li>run_python(code) — runs a complete program in a fresh isolated container and returns stdout/stderr/exit code (execution feedback only)</li><li>virtual file tools (ls / read_file / write_file / edit_file) — scratch notes in SDK state, not the /data filesystem</li></ul></td></tr><tr><th scope="row">Disabled</th><td>Not applicable (no tools)</td><td><ul class="inline-list"><li>sub-agents</li><li>host shell</li><li>network access</li><li>automatic HTTP retries/redirects</li><li>external tracing</li><li>reference answers or scores as feedback</li></ul></td></tr><tr><th scope="row">SDK</th><td>Direct model call</td><td>deepagents 0.7.13 (LangChain / LangGraph)</td></tr><tr><th scope="row">What the model never sees</th><td><ul class="inline-list"><li>column names or dtypes of the data before writing code</li><li>execution errors of its own program</li><li>reference values</li></ul></td><td>Reference values and scores (tool results carry execution feedback only)</td></tr></tbody>
+        </table>
+      </div>
+
+      <div class="grid-2 prompts">
+        <div class="code-panel wrap">
+          <div class="code-panel-head"><span class="code-panel-label">system prompt · Arm B</span><span class="code-panel-meta">verbatim</span></div>
+          <pre tabindex="0"><code>Solve the econometrics task using only its declared inputs. You may call run_python to inspect input data and test complete Python programs. Each call starts a fresh isolated container; Python variables and files from a prior call do not persist. The virtual file tools are notes only, not the /data filesystem. Never search for reference answers. Tool results contain execution feedback only. Return exactly one fenced Python program as your final answer. The program must run from scratch and save the required result JSON. No explanation outside the fence.</code></pre>
+        </div>
+        <div class="code-panel wrap">
+          <div class="code-panel-head"><span class="code-panel-label">run_python · tool docstring</span><span class="code-panel-meta">verbatim · what the model reads about the tool</span></div>
+          <pre tabindex="0"><code>Run a complete Python program in a fresh isolated task container. Declared input data is readable under /data. Print any exploratory findings to stdout. Nothing persists between calls. Final submission must save the task&#x27;s coefficient/standard_error/p_value JSON to /output. No reference answers or evaluation scores are available.</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container ruled" id="budgets" aria-labelledby="budgets-title">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">06 / Budgets</p>
+          <h2 id="budgets-title">Fixed limits, settled at the model boundary</h2>
+        </div>
+        <p class="lead">Every task runs under the same ceilings. Missing usage stops further calls; a gateway error ends the attempt with no automatic retry.</p>
+      </div>
+      <div class="grid-2 budgets-grid">
+        <div class="table-scroll" tabindex="0">
+          <table class="compare-table budgets-table">
+            <caption>Per-task budgets, and what this run on task 0011 actually used.</caption>
+            <thead><tr><th scope="col">Budget</th><th scope="col" class="num">Limit</th><th scope="col" class="num">Arm A, this run</th><th scope="col" class="num">Arm B, this run</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Output tokens per task</th><td class="num">32,768</td><td class="num">1,370</td><td class="num">3,437</td></tr>
+              <tr><th scope="row">Wall time per task</th><td class="num">600 s</td><td class="num">20.0 s</td><td class="num">74.9 s</td></tr>
+              <tr><th scope="row">Time per execution</th><td class="num">90 s</td><td class="num">not recorded</td><td class="num">max 1.121 s</td></tr>
+              <tr><th scope="row">Model calls</th><td class="num">A 1 · B ≤ 6</td><td class="num">1</td><td class="num">4</td></tr>
+              <tr><th scope="row">Tool executions</th><td class="num">A 0 · B ≤ 4</td><td class="num">0</td><td class="num">3</td></tr>
+              <tr><th scope="row">Container</th><td colspan="3">6 GiB RAM · 2 CPU · 256 MiB tmpfs · no network</td></tr>
+              <tr><th scope="row">Retries</th><td colspan="3">None. HTTP 4xx/5xx marks the attempt failed with no automatic retry; the task stays in the denominator.</td></tr>
+            </tbody>
+            <tfoot><tr><td colspan="4">Model-call and tool-execution ceilings are per arm (A = single generation, B = Deep Agents). Wall time is the per-task figure recorded by the harness.</td></tr></tfoot>
+          </table>
+        </div>
+        <div class="stack">
+          <div class="code-panel">
+            <div class="code-panel-head"><span class="code-panel-label">output contract</span><span class="code-panel-meta">/output/&lt;index&gt;_result.json</span></div>
+            <pre tabindex="0"><code>{
+  "coefficient": number,
+  "standard_error": number,
+  "p_value": number
+}</code></pre>
+            <p class="code-note">Only these three fields; they must refer to the requested effect of x on y. For task 0011 the path is <code>/output/11_result.json</code>. A task counts as valid only when the final program exits 0 and writes a well-formed prediction JSON.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container ruled" id="evidence" aria-labelledby="evidence-title">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">07 / Evidence</p>
+          <h2 id="evidence-title">What is recorded, and how it is scored</h2>
+        </div>
+        <p class="lead">Every task leaves a complete, hashed record. The internal study scores it with the local-paper-v1 profile; the public Hugging Face leaderboard uses its own scorer, shown alongside for comparison.</p>
+      </div>
+      <div class="grid-2 evidence-grid">
+        <div>
+          <h3 class="block-title">Recorded per task</h3>
+          <dl class="kv ruled-end mono evidence-list"><dt><code>dispatch.json</code></dt><dd>the dispatch record for the task</dd><dt><code>initial/model/{request.json, response.raw.json, code/main.py}</code></dt><dd>first model request, raw response and the program extracted from it</dd><dt><code>model_calls/&lt;n&gt;/</code></dt><dd>one folder per model call</dd><dt><code>tool_runs/&lt;n&gt;/model/{stdout.txt, stderr.txt, code/main.py}</code></dt><dd>per run_python execution: the code sent, its stdout and stderr</dd><dt><code>trace.json</code></dt><dd>the full message trace of the run</dd><dt><code>final/ + execution receipt</code></dt><dd>clean replay of the final program and its execution receipt, including container cleanup confirmation</dd><dt><code>scoring.json · result.json</code></dt><dd>scoring output and result record, with a SHA-256 for every artifact</dd></dl>
+        </div>
+        <div class="table-scroll" tabindex="0">
+          <table class="compare-table profiles-table">
+            <caption>Two scoring profiles side by side. The internal profile is a diagnostic; it is not verified for parity with the public scorer.</caption>
+            <thead><tr><th scope="col">Check</th><th scope="col">Public Hugging Face leaderboard</th><th scope="col">Internal · local-paper-v1</th></tr></thead>
+            <tbody><tr><th scope="row">Executes</th><td>Compilation Success — code executes without runtime or syntax errors</td><td>valid — executed + well-formed prediction</td></tr><tr><th scope="row">Coefficient within 5 %</th><td>Partial Replication — <span class="nowrap">|β̂−β|/|β| ≤ 5%</span></td><td>coefficient_only — β within 5%</td></tr><tr><th scope="row">β, SE relative errors &lt; 5 %; no p gate</th><td>—</td><td>partial — β, SE relative errors &lt; 5%; no p gate; includes perfect</td></tr><tr><th scope="row">β, SE within 1 %; p within 0.01</th><td>—</td><td>perfect — β, SE within 1% and p within 0.01</td></tr><tr><th scope="row">Direction</th><td>Correct Coefficient Direction — sign(β̂) = sign(β)</td><td>direction — same sign</td></tr><tr><th scope="row">Significance</th><td>Significant Level Correctness — same p-value band: &lt;0.01, [0.01,0.05), [0.05,0.1), [0.1,1]</td><td>significance — same band and correct direction</td></tr></tbody>
+            <tfoot><tr><td colspan="3">Rates on the Leaderboard page = count / paired tasks, one decimal, denominator stated. Internal numbers are always labelled internal or exploratory.</td></tr></tfoot>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container ruled" id="next" aria-labelledby="next-title">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">08 / Next protocol</p>
+          <h2 id="next-title">Shared first draft, with and without feedback</h2>
+        </div>
+        <p class="lead">Isolates the value of execution feedback from the value of a different first draft, which the single-generation vs Deep Agents comparison cannot separate.</p>
+      </div>
+      <ul class="card-grid next-grid">
+        <li class="card">
+          <p class="card-label">Protocol <span class="badge">No scores yet</span></p>
+          <h3>Idea</h3>
+          <p>Both arms start from the same first-draft program. The feedback arm may revise it within a fixed budget using only static syntax checks or execution feedback (stdout/stderr, exit code); it never sees reference values or scores. Final statistics require an independent execution of the selected program and keep the full denominator, including unknown outcomes.</p>
+          <dl class="kv"><dt>Name</dt><dd><code>shared-draft-feedback-v1</code> (harness-v2)</dd></dl>
+        </li>
+        <li class="card">
+          <p class="card-label">Status</p>
+          <h3>Implemented, validated offline</h3>
+          <p>Implemented and validated offline on the research branch; no real model scores yet. Both transports are covered: harness-v2 supports Responses and streaming Chat models in the same paired study.</p>
+        </li>
+        <li class="card tinted">
+          <p class="card-label">Source</p>
+          <h3>Research branch</h3>
+          <p>YTZSR/chatpilot_evaluator, branch codex/shared-draft-feedback-20260914 (commit 79e67da), docs/INFERENCENET.md and docs/FEEDBACK.md</p>
+          <div class="card-footer"><span>Figures will appear on the Leaderboard page once real scores exist.</span></div>
+        </li>
+      </ul>
+    </section>
+
+    <section class="section container ruled" id="related" aria-labelledby="related-title">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">09 / Related research</p>
+          <h2 id="related-title">MetricsAI / Econometrics-Agent</h2>
+        </div>
+        <p class="lead">Domain-specialised research prototype: plan decomposition, econometric tool library, Jupyter execution, error reflection. Shown for context; it is not the harness measured in the internal study.</p>
+      </div>
+      <figure class="related-figure">
+        <picture>
+          <source media="(max-width: 640px)" srcset="assets/figures/metricsai-workflow-mobile.svg">
+          <img src="assets/figures/metricsai-workflow.svg" width="1600" height="1000" loading="lazy" decoding="async" alt="MetricsAI workflow linking a user request to planning, tool selection, program execution, reflection on failures and results, with a loop for further dialogue.">
+        </picture>
+        <figcaption>MetricsAI workflow, redrawn as a vector figure from Figure 1 of Chen et al., <a href="https://arxiv.org/abs/2506.00856v3" target="_blank" rel="noopener">Can AI Master Econometrics?</a> (arXiv:2506.00856v3), with the figure author's consent; content unchanged. Original figure <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a> · <a href="assets/figures/metricsai-workflow-v3.png" target="_blank" rel="noopener">original PNG</a> · <a href="assets/figures/ATTRIBUTION.txt">full attribution</a>.</figcaption>
+      </figure>
+      <div class="related-links">
+        <a class="text-link" href="https://arxiv.org/abs/2506.00856v3" target="_blank" rel="noopener">Paper on arXiv <span aria-hidden="true">↗</span></a>
+        <a class="text-link" href="https://github.com/HKU-Business-AI-Center/Econometrics-Agent" target="_blank" rel="noopener">Econometrics-Agent code on GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
+    <div class="container">
+      <nav class="page-footer-nav" aria-label="Page sequence">
+        <a href="data.html"><small>Previous</small><span><span aria-hidden="true">←</span> Data</span></a>
+        <a href="leaderboard.html"><small>Next</small><span>Leaderboard <span aria-hidden="true">→</span></span></a>
+      </nav>
+    </div>
+  </main>
+  <footer class="site-footer container"><a class="wordmark" href="index.html">Inference<span>Net</span></a><p>AI for econometric research.</p><a href="https://github.com/YTZSR/chatpilot_evaluator/tree/dev-gyc-eval" target="_blank" rel="noopener">Research workspace <small>(collaborator access)</small> <span aria-hidden="true">↗</span></a></footer>
+</body>
+</html>

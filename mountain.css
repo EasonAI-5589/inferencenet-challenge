@@ -1,0 +1,145 @@
+/* Mountain-climb leaderboard. Companion to mountain.js. Uses the site tokens from
+ * styles.css (--paper, --surface, --ink, --soft, --muted, --line, --strong-line, --tint, --sans, --mono)
+ * and defines every colour the drawing needs on the component itself, for light and dark. */
+.mountain{
+  --mtn-sky:#e9eef5;--mtn-sky-low:#ffffff;
+  --mtn-far:#e3e8ef;--mtn-mid:#d2dae4;--mtn-near:#b9c4d1;--mtn-shade:#6f7f93;--mtn-foot:#a2aebd;
+  --mtn-snow:#ffffff;--mtn-cap:#ffffff;--mtn-outline:#4b5665;--mtn-haze:#ffffff;
+  --mtn-line:#7d8794;--mtn-route:#2f3742;--mtn-flag:#d6382a;--mtn-pole:#262a30;
+  --mtn-gold:#e8b421;--mtn-silver:#c9d0da;--mtn-bronze:#c98a52;--mtn-on-gold:#1a1a1a;
+  --mtn-marker:#28313c;--mtn-marker-text:#ffffff;--mtn-marker-ring:#ffffff;--mtn-focus:#191919;
+  --mtn-pill:#20272f;--mtn-pill-text:#ffffff;--mtn-pill-edge:rgba(255,255,255,.55);--mtn-badge:rgba(255,255,255,.16);
+  --mtn-text:#191919;--mtn-muted:#5d6672;--mtn-halo:rgba(255,255,255,.9);--mtn-trail:#1f262e;
+  display:block;margin:0;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);overflow:hidden;font-family:var(--sans,Inter,Arial,sans-serif)}
+html[data-theme="dark"] .mountain{
+  --mtn-sky:#0d121a;--mtn-sky-low:#171b22;
+  --mtn-far:#1e2632;--mtn-mid:#293340;--mtn-near:#38434f;--mtn-shade:#141a22;--mtn-foot:#28313c;
+  --mtn-snow:#d5dde7;--mtn-cap:#c9d2dd;--mtn-outline:#8892a0;--mtn-haze:#171b22;
+  --mtn-line:#6c7684;--mtn-route:#dfe5ec;--mtn-flag:#e4493a;--mtn-pole:#e8e8e8;
+  --mtn-gold:#f2c13d;--mtn-silver:#aeb7c3;--mtn-bronze:#cf925c;--mtn-on-gold:#1a1a1a;
+  --mtn-marker:#e9edf2;--mtn-marker-text:#151515;--mtn-marker-ring:#111111;--mtn-focus:#eeeeee;
+  --mtn-pill:#e9ebee;--mtn-pill-text:#151515;--mtn-pill-edge:rgba(0,0,0,.55);--mtn-badge:rgba(0,0,0,.12);
+  --mtn-text:#eeeeee;--mtn-muted:#a5adb8;--mtn-halo:rgba(17,17,17,.9);--mtn-trail:#e6eaef}
+
+.mountain>script{display:none}
+.mountain-canvas{display:block}
+
+/* Header and caption. */
+.mountain-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:18px 22px 14px;border-bottom:1px solid var(--line)}
+.mountain-title{margin:0;font-size:17px;font-weight:600;letter-spacing:-.015em;line-height:1.35;color:var(--ink)}
+.mountain-subtitle{margin:4px 0 0;font-size:13px;line-height:1.6;color:var(--muted)}
+.mountain-stamp{margin:0;font-family:var(--mono,ui-monospace,monospace);font-size:12px;line-height:1.6;color:var(--muted);white-space:nowrap}
+.mountain-caption{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 20px;padding:12px 22px 14px;border-top:1px solid var(--line);font-size:12px;line-height:1.6;color:var(--muted)}
+.mountain-note{margin:0}
+.mountain-legend{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 16px}
+.mountain-legend li{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.mtn-key{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--mtn-marker);border:2px solid var(--mtn-marker-ring);box-sizing:content-box}
+.mtn-key--gold{background:var(--mtn-gold)}
+.mtn-key--internal{border:1.5px dashed var(--mtn-marker);background:transparent;width:10px;height:10px}
+.mtn-key--trail{width:20px;height:0;border:0;border-top:2px dashed var(--mtn-trail);border-radius:0;background:transparent}
+
+/* Stage: the drawing plus the pill overlay. */
+.mountain-stage{position:relative;display:block;width:100%;line-height:0}
+.mountain-svg{display:block;width:100%;height:auto;font-family:inherit;font-variant-numeric:tabular-nums}
+.mountain-svg text{font-family:inherit;line-height:1}
+
+/* Terrain. */
+.mtn-sky-top{stop-color:var(--mtn-sky)}
+.mtn-sky-low{stop-color:var(--mtn-sky-low)}
+.mtn-haze-top{stop-color:var(--mtn-haze);stop-opacity:0}
+.mtn-haze-low{stop-color:var(--mtn-haze);stop-opacity:.55}
+.mtn-far{fill:var(--mtn-far)}
+.mtn-mid{fill:var(--mtn-mid)}
+.mtn-cap{fill:var(--mtn-cap);opacity:.85}
+.mtn-near{fill:var(--mtn-near)}
+.mtn-snow{fill:var(--mtn-snow)}
+.mtn-shade{fill:var(--mtn-shade);opacity:.28}
+.mtn-stria{fill:none;stroke:var(--mtn-outline);stroke-width:1;opacity:.14;stroke-linejoin:round}
+.mtn-foot{fill:var(--mtn-foot)}
+.mtn-outline{fill:none;stroke:var(--mtn-outline);stroke-width:1;stroke-linejoin:round;opacity:.42}
+.mtn-outline--foot{opacity:.22}
+.mtn-contour{stroke:var(--mtn-line);stroke-width:1;stroke-dasharray:2 7;stroke-linecap:round;opacity:.38}
+.mtn-contour-label{fill:var(--mtn-muted);font-size:12px;paint-order:stroke;stroke:var(--mtn-halo);stroke-width:3px;stroke-linejoin:round}
+.mtn-base{stroke:var(--mtn-line);stroke-width:1}
+.mtn-route{stroke:var(--mtn-route);stroke-width:2.2;stroke-dasharray:0 7;stroke-linecap:round;opacity:.72}
+.mtn-pole{stroke:var(--mtn-pole);stroke-width:2;stroke-linecap:round}
+.mtn-flag{fill:var(--mtn-flag)}
+.mtn-peak-label{fill:var(--mtn-text);font-size:12px;font-weight:500;paint-order:stroke;stroke:var(--mtn-halo);stroke-width:3px;stroke-linejoin:round}
+.mtn-stamp{fill:var(--mtn-muted);font-family:var(--mono,ui-monospace,monospace);font-size:12px}
+
+/* Connectors, trails. */
+.mtn-connector{stroke:var(--mtn-line);stroke-width:1;opacity:.5;transition:opacity .15s,stroke-width .15s}
+.mtn-connector.is-active{stroke:var(--mtn-focus);stroke-width:1.5;opacity:1}
+.mtn-trail-path{stroke:var(--mtn-trail);stroke-width:1.75;stroke-dasharray:6 5;stroke-linecap:round}
+.mtn-trail-head{fill:var(--mtn-trail)}
+.mtn-trail-label{fill:var(--mtn-text);font-size:12px;font-weight:600;paint-order:stroke;stroke:var(--mtn-halo);stroke-width:4px;stroke-linejoin:round}
+
+/* Markers. */
+.mtn-marker{cursor:default}
+.mtn-marker-dot{fill:var(--mtn-marker);stroke:var(--mtn-marker-ring);stroke-width:2;transition:stroke-width .15s}
+.mtn-marker--leader .mtn-marker-dot{fill:var(--mtn-gold);stroke-width:2.5}
+.mtn-marker--silver .mtn-marker-dot{stroke:var(--mtn-silver);stroke-width:3.5}
+.mtn-marker--bronze .mtn-marker-dot{stroke:var(--mtn-bronze);stroke-width:3.5}
+.mtn-marker--waypoint .mtn-marker-dot{fill:var(--mtn-sky-low);stroke:var(--mtn-marker);stroke-width:1.5}
+.mtn-marker-num{fill:var(--mtn-marker-text);font-size:12px;font-weight:700;pointer-events:none}
+.mtn-marker--leader .mtn-marker-num{fill:var(--mtn-on-gold);font-size:14px}
+.mtn-marker-halo{fill:none;stroke:var(--mtn-focus);stroke-width:2;opacity:0;transition:opacity .15s}
+.mtn-marker--leader .mtn-marker-halo{stroke:var(--mtn-gold);stroke-width:1.5;opacity:.55}
+.mtn-marker.is-active .mtn-marker-halo{stroke:var(--mtn-focus);stroke-width:2;opacity:1}
+.mtn-marker-ring{fill:none;stroke:var(--mtn-marker);stroke-width:1.25;stroke-dasharray:3 3}
+.mtn-marker-val{fill:var(--mtn-text);font-size:12px;font-weight:600;paint-order:stroke;stroke:var(--mtn-halo);stroke-width:4px;stroke-linejoin:round;opacity:0;transition:opacity .15s;pointer-events:none}
+.mtn-marker.is-active .mtn-marker-val{opacity:1}
+
+/* Pills: absolute overlay in the wide layout, ranks stacked left (even) and right (odd). */
+.mountain-pills{list-style:none;margin:0;padding:0;position:absolute;inset:0;pointer-events:none;line-height:1}
+.mountain-pill{position:absolute;display:inline-flex;align-items:center;gap:8px;height:28px;padding:0 11px 0 4px;border-radius:14px;background:var(--mtn-pill);color:var(--mtn-pill-text);border:1px solid var(--mtn-pill-edge);font-size:13px;font-weight:600;white-space:nowrap;pointer-events:auto;cursor:default;box-sizing:border-box;transition:transform .15s,border-color .15s}
+.mountain-pill--right{flex-direction:row-reverse;padding:0 4px 0 11px}
+.mountain-pill:hover,.mountain-pill.is-active{border-color:var(--mtn-focus);transform:translateY(-1px)}
+.mountain-pill:focus{outline:none}
+.mountain-pill:focus-visible{outline:2px solid var(--mtn-focus);outline-offset:3px}
+.mountain-pill--internal .mountain-badge{box-shadow:inset 0 0 0 1.5px var(--mtn-pill-edge)}
+.mountain-badge{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--mtn-badge);font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;flex:none}
+.mountain-badge--gold{background:var(--mtn-gold);color:var(--mtn-on-gold)}
+.mountain-badge--silver{background:var(--mtn-silver);color:var(--mtn-on-gold)}
+.mountain-badge--bronze{background:var(--mtn-bronze);color:var(--mtn-on-gold)}
+.mountain-pill-value{display:none}
+/* Narrow desktop (700–1000px container): smaller pills leave the drawing more width. */
+.mountain--narrow .mountain-pill{font-size:12px;padding:0 9px 0 4px}
+.mountain--narrow .mountain-pill--right{padding:0 4px 0 9px}
+.mountain-vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+
+/* Compact layout (container narrower than the breakpoint): 4:3 drawing, pills listed below. */
+.mountain--compact .mountain-head{flex-direction:column;gap:2px;padding:16px 16px 12px}
+.mountain--compact .mountain-stamp{white-space:normal;margin-top:6px}
+.mountain--compact .mountain-caption{padding:12px 16px}
+.mountain--compact .mountain-pills{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:14px 16px 4px;pointer-events:auto;border-top:1px solid var(--line)}
+.mountain--compact .mountain-pill{position:static;display:flex;flex-direction:row;height:auto;min-height:32px;padding:5px 10px 5px 5px;border-radius:16px;white-space:normal;font-size:12px;line-height:1.3;gap:7px}
+.mountain--compact .mountain-pill-label{flex:1 1 auto;min-width:0;overflow-wrap:anywhere}
+.mountain--compact .mountain-pill-value{display:inline;font-variant-numeric:tabular-nums;font-weight:500;opacity:.8;flex:none}
+.mountain--compact .mountain-pill:hover,.mountain--compact .mountain-pill.is-active{transform:none}
+@media(max-width:420px){.mountain--compact .mountain-pills{grid-template-columns:1fr}} /* one column on phones: labels stay on one or two lines */
+
+/* Ranked table (no-JS fallback and screen readers). An authored table with more than
+ * three columns goes inside <div class="mountain-table-wrap"> so it scrolls sideways on phones. */
+.mountain-table-wrap{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}
+.mountain-details{border-top:1px solid var(--line);font-size:13px}
+.mountain-details summary{padding:12px 22px;cursor:pointer;color:var(--soft);font-weight:500}
+.mountain-details summary:hover{background:var(--tint)}
+.mountain-details summary:focus-visible{outline:2px solid var(--ink);outline-offset:-3px}
+.mountain-table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums;text-align:left}
+.mountain-table caption{padding:0 22px 8px;text-align:left;font-size:12px;color:var(--muted)}
+.mountain-table th,.mountain-table td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top}
+.mountain-table thead th{font-size:12px;font-weight:600;color:var(--soft);background:var(--tint)}
+.mountain-table tbody th{font-weight:500}
+.mountain-table tr>*:first-child{padding-left:22px;width:44px;color:var(--muted)}
+.mountain-table tr>*:last-child{padding-right:22px;text-align:right}
+.mountain:not(.mountain--ready) .mountain-canvas{display:none}
+.mountain:not(.mountain--ready):not(.mountain--error):not(:has(.mountain-table)){display:none}
+.mountain:not(.mountain--ready) .mountain-table caption{padding-top:12px}
+.mountain--error .mountain-canvas::before{content:"Leaderboard data could not be read.";display:block;padding:18px 22px;font-size:13px;color:var(--muted)}
+
+@media(prefers-reduced-motion:reduce){.mountain *{transition:none!important}}
+@media(forced-colors:active){
+  .mountain-pill{border-color:ButtonText;forced-color-adjust:none;background:ButtonFace;color:ButtonText}
+  .mtn-marker-dot{stroke:CanvasText}
+}

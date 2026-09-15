@@ -1,0 +1,121 @@
+/* index.css — home page only. Loaded after styles.css, site.css and mountain.css.
+ * Adds the paper-style title block, the news list, the task-gallery summary tile,
+ * the harness study grid and small home-specific spacing. No new tokens. */
+
+/* Hero ------------------------------------------------------------------------ */
+.hero{padding-bottom:40px}
+.hero-subtitle{max-width:760px;margin-inline:auto}
+.hero-actions{max-width:900px;margin-inline:auto}
+
+/* Paper-style title block ------------------------------------------------------ */
+.paper-block{border:1px solid var(--strong-line);border-radius:var(--radius);background:var(--surface);overflow:hidden;margin-bottom:8px}
+.paper-main{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}
+.paper-main>div{padding:30px 34px 32px;min-width:0}
+.paper-main>div+div{border-left:1px solid var(--line)}
+.paper-block .kicker{margin-bottom:12px}
+.paper-block h2{font-size:clamp(22px,2.2vw,27px);line-height:1.3;letter-spacing:-.02em}
+.paper-block h2 em{color:var(--soft);font-weight:500}
+.paper-desc{font-size:14px;line-height:1.75;color:var(--soft);margin-top:12px;max-width:60ch}
+.paper-disciplines{margin-top:18px;max-width:420px} /* 4 + 2 pills instead of 5 + 1 */
+.organisers{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 20px}
+.organisers li{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0}
+.organisers a{font-size:15px;font-weight:600;line-height:1.4;letter-spacing:-.01em}
+.organisers a:hover{text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--strong-line)}
+.organisers a>span{font-size:13px;color:var(--muted);white-space:nowrap}
+.organiser-affiliation{font-size:12px;line-height:1.6;color:var(--soft)}
+.organisers-more{margin:18px 0 0;padding-top:14px;border-top:1px solid var(--line)}
+.organisers-more .text-link{font-size:13px;gap:10px}
+.paper-links{display:flex;flex-wrap:wrap;gap:10px;padding:16px 34px;border-top:1px solid var(--line);background:var(--tint)}
+.paper-links .button{min-height:42px;padding:8px 16px;font-size:13px;gap:14px;background:var(--paper)}
+.paper-links .button:hover{background:var(--surface)}
+
+/* Section 01: five-cell stat strip (3 + 2 below 1000px) --------------------------- */
+.stat-strip.stats-5{--cols:5}
+.stat-strip.stats-5 .stat{display:flex;flex-direction:column}
+.stat-strip.stats-5 .stat span{flex:1 0 auto} /* the mono notes bottom-align across a row */
+.stats-note{margin:14px 0 34px}
+.stats-note code{font-size:11px}
+
+/* Section 02: news list --------------------------------------------------------- */
+.news-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.news-list>li{display:grid;grid-template-columns:150px minmax(0,1fr);gap:8px 24px;padding:18px 0;border-bottom:1px solid var(--line)}
+.news-list time{font-family:var(--mono);font-size:12px;line-height:1.7;color:var(--muted);padding-top:2px;white-space:nowrap}
+.news-list p{font-size:15px;line-height:1.7;color:var(--ink)}
+.news-list .news-links{display:flex;flex-wrap:wrap;gap:6px 22px;margin-top:6px}
+.news-list .news-links .text-link{font-size:13px;gap:10px}
+
+/* Section 03: task gallery ------------------------------------------------------- */
+.gallery .card-label{align-items:center;flex-wrap:wrap;justify-content:flex-start;gap:8px}
+.gallery .card-label .pill{margin-left:auto}
+.gallery-summary{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px 40px;padding:26px 28px}
+.gallery-figure{display:flex;flex-direction:column;min-width:0}
+.gallery-figure strong{font-family:var(--heading);font-size:40px;font-weight:600;letter-spacing:-.03em;line-height:1}
+.gallery-figure span{font-size:13px;line-height:1.6;color:var(--soft);margin-top:8px}
+.gallery-figure small{font-family:var(--mono);font-size:11px;line-height:1.6;color:var(--muted);margin-top:4px}
+.gallery-mix{flex:1 1 320px;min-width:0}
+.gallery-summary .gallery-mix .card-label{margin-bottom:10px}
+.gallery-summary .pill{background:var(--paper)}
+.gallery-link{flex:none;font-size:14px}
+
+/* Section 04: harness study grid ------------------------------------------------- */
+.harness-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:20px;align-items:start}
+.harness-grid .chart-head .badge{margin-left:auto}
+.harness-links{display:flex;flex-wrap:wrap;gap:8px 24px;margin:0}
+.harness-links .text-link{font-size:13px;gap:10px}
+
+/* Section 05: public results ------------------------------------------------------ */
+.mountain-table .num{text-align:right;white-space:nowrap}
+.mountain-table th[scope="row"]{white-space:nowrap}
+.results-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:10px 32px;margin-top:18px}
+.results-foot .chart-source{max-width:72ch;margin:0}
+.results-foot .text-link{flex:none}
+
+/* Section 06: participation steps (status badges in the third column) ------------ */
+.participation-steps .badge{margin-top:5px}
+
+/* Section 10: cite ------------------------------------------------------------------ */
+.cite-grid{--cols:2}
+#cite .card-footer{justify-content:flex-start;gap:8px 22px}
+#cite .card p code{font-size:11px;overflow-wrap:anywhere}
+
+/* Responsive ---------------------------------------------------------------------- */
+@media(max-width:1100px){
+  .stat-strip.stats-5 .stat strong{font-size:32px}
+  .paper-main>div{padding:26px 26px 28px}
+  .paper-links{padding-inline:26px}
+}
+@media(min-width:701px) and (max-width:1100px){
+  .hero-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:640px} /* 2 × 2, no orphan */
+}
+@media(max-width:1000px){
+  .stat-strip.stats-5{--cols:6;--cols-cap:6}
+  .stat-strip.stats-5 .stat{grid-column:span 2;padding-inline:18px}
+  .stat-strip.stats-5 .stat:nth-child(n+4){grid-column:span 3}
+  .stat-strip.stats-5 .stat:first-child,.stat-strip.stats-5 .stat:nth-child(4){padding-left:0}
+  .stat-strip.stats-5 .stat:nth-child(3),.stat-strip.stats-5 .stat:nth-child(5){padding-right:0}
+  .harness-grid{grid-template-columns:1fr}
+}
+@media(max-width:860px){
+  .paper-main{grid-template-columns:1fr}
+  .paper-main>div+div{border-left:0;border-top:1px solid var(--line)}
+  .paper-disciplines{max-width:none}
+  .paper-links .button{flex:1 1 calc(50% - 5px)} /* 2 + 2 */
+  .news-list>li{grid-template-columns:120px minmax(0,1fr)}
+}
+@media(max-width:520px){
+  .paper-main>div{padding:22px 18px 24px}
+  .paper-links{padding:14px 18px}
+  .paper-links .button{min-height:40px;padding-inline:12px;gap:10px}
+  .organisers{grid-template-columns:1fr;gap:14px}
+  .news-list>li{grid-template-columns:1fr;gap:4px;padding:16px 0}
+  .news-list p{font-size:14px}
+  .cite-grid{--cols:1}
+  .gallery-summary{padding:22px 18px}
+  .gallery-figure strong{font-size:34px}
+  .stat-strip.stats-5 .stat{padding-inline:12px}
+  .stat-strip.stats-5 .stat:first-child,.stat-strip.stats-5 .stat:nth-child(4){padding-left:0}
+  .stat-strip.stats-5 .stat:nth-child(3),.stat-strip.stats-5 .stat:nth-child(5){padding-right:0}
+  .stat-strip.stats-5 .stat strong{font-size:28px}
+  .harness-grid .chart-head .badge{margin-left:0} /* under a two-line title, left-aligned */
+  .participation-steps .badge{margin-top:0}
+}

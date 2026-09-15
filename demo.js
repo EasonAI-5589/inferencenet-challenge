@@ -2,16 +2,21 @@
 (() => {
   const slides = Array.from(document.querySelectorAll("[data-step]"));
   const links = Array.from(document.querySelectorAll("[data-step-link]"));
+  const deck = document.querySelector(".demo-deck");
   const controls = document.querySelector(".demo-controls");
   const previous = document.getElementById("previous-step");
   const next = document.getElementById("next-step");
   const status = document.getElementById("step-status");
-  if (!slides.length || !controls || !previous || !next || !status) return;
+  if (!slides.length || !deck || !controls || !previous || !next || !status) return;
 
   let current = 0;
+  // A hash may name a slide or any element inside one; resolve it to the slide that holds it.
   const stepFromHash = () => {
-    const index = slides.findIndex((slide) => `#${slide.id}` === window.location.hash);
-    return index < 0 ? 0 : index;
+    const id = decodeURIComponent(window.location.hash.slice(1));
+    const target = id ? document.getElementById(id) : null;
+    const index = target ? slides.findIndex((slide) => slide === target || slide.contains(target)) : -1;
+    if (index < 0) return { index: 0, target: null };
+    return { index, target: slides[index] === target ? null : target };
   };
 
   function showStep(index, { updateHistory = false, focusHeading = false } = {}) {
@@ -37,6 +42,20 @@
     }
   }
 
+  // Show the slide named by the hash; when the hash names something inside a slide and it
+  // is not already in view (below the sticky header), bring it to the middle of the viewport.
+  const showFromHash = () => {
+    const { index, target } = stepFromHash();
+    showStep(index);
+    if (!target) return;
+    requestAnimationFrame(() => {
+      const header = document.querySelector(".site-header");
+      const top = header ? header.getBoundingClientRect().bottom : 0;
+      const bounds = target.getBoundingClientRect();
+      if (bounds.top < top || bounds.bottom > window.innerHeight) target.scrollIntoView({ block: "center" });
+    });
+  };
+
   links.forEach((link) => link.addEventListener("click", (event) => {
     if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
@@ -46,18 +65,26 @@
   previous.addEventListener("click", () => showStep(current - 1, { updateHistory: true, focusHeading: true }));
   next.addEventListener("click", () => showStep(current + 1, { updateHistory: true, focusHeading: true }));
 
+  // Arrow keys change the step only while focus is on the page body or inside the deck,
+  // never from the header, footer, a form control or an element that scrolls sideways.
   document.addEventListener("keydown", (event) => {
     if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
-    if (event.target.closest("input, textarea, select, [contenteditable='true']")) return;
     if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    const active = document.activeElement;
+    const onBody = !active || active === document.body || active === document.documentElement;
+    if (!onBody) {
+      if (!deck.contains(active)) return;
+      if (active.closest("input, textarea, select, [contenteditable='true']")) return;
+      if (active.scrollWidth > active.clientWidth && getComputedStyle(active).overflowX !== "visible") return;
+    }
     event.preventDefault();
     const index = current + (event.key === "ArrowRight" ? 1 : -1);
     if (index >= 0 && index < slides.length) showStep(index, { updateHistory: true, focusHeading: true });
   });
 
-  window.addEventListener("hashchange", () => showStep(stepFromHash()));
-  window.addEventListener("popstate", () => showStep(stepFromHash()));
-  showStep(stepFromHash());
+  window.addEventListener("hashchange", showFromHash);
+  window.addEventListener("popstate", showFromHash);
+  showFromHash();
   controls.hidden = false;
   document.documentElement.classList.add("demo-enhanced");
 })();

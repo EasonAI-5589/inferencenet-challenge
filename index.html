@@ -6,29 +6,35 @@
   <meta name="color-scheme" content="light">
   <meta name="referrer" content="no-referrer">
   <title>InferenceNet Challenge — AI for Econometric Research</title>
-  <meta name="description" content="Can AI agents reproduce econometric findings? Explore InferenceNet's research tasks, a guided evaluation demo, benchmark data and published research results.">
+  <meta name="description" content="Can AI agents reproduce published econometric findings from the real research data? A benchmark of 2,644 replication tasks, a public leaderboard, a recorded agent trajectory and a guided demo.">
   <meta property="og:title" content="InferenceNet Challenge">
-  <meta property="og:description" content="AI agents for econometric analysis and statistical replication. Explore the benchmark and the guided demo.">
+  <meta property="og:description" content="Can AI agents reproduce published econometric findings from the real research data? A benchmark of 2,644 replication tasks, a public leaderboard, a recorded agent trajectory and a guided demo.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <script src="theme.js"></script>
   <link rel="stylesheet" href="styles.css">
-  <script src="script.js" defer></script>
-  <script type="module" src="leaderboard.js"></script>
+  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="mountain.css">
+  <link rel="stylesheet" href="index.css">
+  <script src="site.js" defer></script>
+  <script type="module" src="mountain.js"></script>
+  <link rel="stylesheet" href="language.css">
+  <script src="language.js" defer></script>
 </head>
 <body>
-  <a class="skip-link" href="#overview">Skip to content</a>
+  <a class="skip-link" href="#main">Skip to content</a>
   <div class="reading-progress" aria-hidden="true"><span id="reading-progress"></span></div>
   <header class="site-header">
     <nav class="nav container" aria-label="Main navigation">
-      <a class="wordmark" href="#top">Inference<span>Net</span><small>CHALLENGE</small></a>
+      <a class="wordmark" href="index.html">Inference<span>Net</span><small>CHALLENGE</small></a>
       <div class="nav-links" id="nav-links">
-        <a href="#demo">Demo</a>
-        <a href="#examples">Examples</a>
-        <a href="#overview">Overview</a>
-        <a href="#leaderboard">Leaderboard</a>
-        <a href="#resources">Resources</a>
-        <a href="#team">Teams</a>
+        <a href="index.html" aria-current="page">Home</a>
+        <a href="data.html">Data</a>
+        <a href="agent.html">Agent</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="demo.html">Demo</a>
+        <a href="index.html#team">Teams</a>
       </div>
       <div class="nav-controls">
         <button class="theme-toggle" data-theme-toggle aria-label="Switch to dark theme" aria-pressed="false" type="button" hidden>
@@ -39,97 +45,84 @@
     </nav>
   </header>
 
-  <main id="top">
+  <main id="main" tabindex="-1">
     <section class="hero container" aria-labelledby="hero-title">
       <p class="eyebrow"><span></span> GLOBAL INFERENCENET INITIATIVE · NTU GIFTS <span></span></p>
       <h1 id="hero-title">InferenceNet Challenge</h1>
-      <p class="hero-subtitle">Can AI agents reproduce econometric findings?</p>
-      <p class="hero-description">From a research question and data to executable analysis and statistical evidence. A benchmark for AI agents in economics, finance and related fields.</p>
-      <div class="hero-affiliations" aria-label="Research institutions">
+      <p class="hero-subtitle">Can AI agents reproduce published econometric findings from the real research data?</p>
+      <p class="hero-description">Each task hands an agent a paper's data, the estimation method and the statistic to reproduce. Its coefficient, standard error and p-value are then compared with the published values.</p>
+      <div class="hero-affiliations" role="group" aria-label="Research institutions">
         <a href="#team"><img src="assets/institutions/ntu-ccds-official.png" width="475" height="114" alt="NTU College of Computing and Data Science"></a>
         <a href="#team"><img src="assets/institutions/ntu-nbs-official.jpg" width="386" height="103" alt="NTU Nanyang Business School"></a>
         <a href="#team"><img src="assets/institutions/hku-business-horizontal.png" width="2500" height="625" alt="HKU Business School"></a>
       </div>
       <div class="hero-actions">
-        <a class="button primary" href="demo.html">Explore the demo <span aria-hidden="true">→</span></a>
-        <a class="button" href="#leaderboard">Research leaderboard <span aria-hidden="true">↓</span></a>
-        <a class="button" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener">Hugging Face dataset <span aria-hidden="true">↗</span></a>
-        <a class="button" href="#resources">Code repositories <span aria-hidden="true">↓</span></a>
+        <a class="button primary" href="data.html">Explore the data <span aria-hidden="true">→</span></a>
+        <a class="button" href="agent.html">See an agent solve a task <span aria-hidden="true">→</span></a>
+        <a class="button" href="leaderboard.html">Leaderboard &amp; the climb <span aria-hidden="true">→</span></a>
+        <a class="button" href="demo.html">Guided demo <span aria-hidden="true">→</span></a>
       </div>
-      <p class="launch-note"><span class="status-mark" aria-hidden="true"></span> Challenge preview <span class="separator">/</span> Registration and rules to be announced</p>
+      <p class="launch-note"><span class="status-mark" aria-hidden="true"></span> Challenge preview <span class="separator" aria-hidden="true">/</span> Registration and rules to be announced</p>
     </section>
 
-    <div class="disciplines container" aria-label="Research disciplines">
-      <span>Economics</span><span>Finance</span><span>Accounting</span><span>Management</span><span>Operations research</span><span>Information systems</span>
-    </div>
-
-    <section class="demo-entry container" id="demo" aria-labelledby="demo-title">
-      <div class="demo-entry-intro"><p class="kicker">A guided walkthrough</p><h2 id="demo-title">See one task, end to end.</h2><p>Follow a policy-evaluation example from the research question to independent scoring. See what the agent does, what the harness controls, and what counts as evidence.</p><a class="text-link" href="demo.html">Open interactive demo <span aria-hidden="true">→</span></a></div>
-      <ol class="demo-route">
-        <li><a href="demo.html#task"><span class="route-number">01</span><div><h3>Define the task</h3><p>Question, data &amp; research design</p></div><span class="route-arrow" aria-hidden="true">↗</span></a></li>
-        <li><a href="demo.html#harness"><span class="route-number">02</span><div><h3>Run the analysis</h3><p>Model, tools &amp; execution conditions</p></div><span class="route-arrow" aria-hidden="true">↗</span></a></li>
-        <li><a href="demo.html#prediction"><span class="route-number">03</span><div><h3>Collect the evidence</h3><p>Coefficient, standard error &amp; p-value</p></div><span class="route-arrow" aria-hidden="true">↗</span></a></li>
-        <li><a href="demo.html#scoring"><span class="route-number">04</span><div><h3>Evaluate replication</h3><p>Independent comparison with reference values</p></div><span class="route-arrow" aria-hidden="true">↗</span></a></li>
-      </ol>
-      <p class="demo-entry-note">A conceptual walkthrough using a published example. Step through with the arrow keys; each step has a shareable link.</p>
-    </section>
-
-    <section class="section container" id="examples" aria-labelledby="examples-title">
-      <div class="section-heading">
-        <div><p class="kicker">01 / Inside a task</p><h2 id="examples-title">Research task examples</h2></div>
-        <p class="lead">What does econometric analysis require from an AI agent? Explore two published examples through their question, inputs and analysis steps.</p>
-      </div>
-      <div class="task-explorer">
-        <div class="sample-tabs" role="tablist" aria-label="Published research examples" hidden>
-          <button type="button" role="tab" id="tab-policy" aria-controls="sample-policy" aria-selected="true" tabindex="0"><span class="tab-number">01</span><span>Seat-belt legislation<small>Policy evaluation</small></span><span class="tab-arrow" aria-hidden="true">↗</span></button>
-          <button type="button" role="tab" id="tab-smoking" aria-controls="sample-smoking" aria-selected="false" tabindex="-1"><span class="tab-number">02</span><span>Smoking &amp; birthweight<small>Observational research</small></span><span class="tab-arrow" aria-hidden="true">↗</span></button>
+    <section class="paper-block container" aria-labelledby="paper-title">
+      <div class="paper-main">
+        <div class="paper-about">
+          <p class="kicker">The benchmark</p>
+          <h2 id="paper-title">InferenceNet <em>— published findings as replication tasks</em></h2>
+          <p class="paper-desc">2,644 replication tasks drawn from 36 journals across 6 disciplines. Each task packages a published finding as its research data, the estimation method, the controls and requirements, and the target statistic. The paper's reference answer and reference program stay on the scorer side; the model sees only the instruction and the data.</p>
+          <ul class="pill-list paper-disciplines" aria-label="Research disciplines">
+            <li class="pill">Economics</li><li class="pill">Finance</li><li class="pill">Accounting</li><li class="pill">Management</li><li class="pill">Operations research</li><li class="pill">Information systems</li>
+          </ul>
         </div>
-
-        <article class="sample-panel" id="sample-policy" aria-labelledby="policy-title">
-          <div class="sample-intro"><div><p class="method-tag">STAGGERED DID · EVENT STUDY</p><h3 id="policy-title">Do seat-belt laws change traffic fatalities?</h3><p class="sample-prompt">Study larger-population states, comparing outcomes around policy adoption.</p></div><a class="source-link" href="https://arxiv.org/html/2506.00856v3#S4.SS2.SSS1" target="_blank" rel="noopener">Published example §IV.B.1 ↗</a></div>
-          <div class="sample-grid">
-            <div class="sample-data">
-              <p class="panel-label">INPUT / STATE–YEAR PANEL</p>
-              <dl class="field-list"><div><dt><code>primary</code></dt><dd>Policy treatment</dd></div><div><dt><code>fatality_rate</code></dt><dd>Outcome → log transform</dd></div><div><dt>State, year, population</dt><dd>Panel &amp; selection roles</dd></div></dl>
-              <div class="design-diagram" role="img" aria-label="Event window: four periods before policy adoption and three after. A design schematic, not estimated results.">
-                <p class="panel-label">DESIGN / EVENT WINDOW</p>
-                <div class="event-window" aria-hidden="true"><span>−4</span><span>−3</span><span>−2</span><span>−1</span><span class="event-zero">0</span><span>+1</span><span>+2</span><span>+3</span></div>
-                <div class="diagram-legend"><span>Before</span><strong>Policy adoption</strong><span>After</span></div>
-              </div>
-            </div>
-            <div class="code-card"><div class="code-heading"><span>ANALYSIS</span><span>Illustrative pseudocode</span></div><pre tabindex="0" aria-label="Policy analysis pseudocode"><code><span class="code-line"><span class="code-comment"># Translate the question into a specification</span></span><span class="code-line">panel = <span class="code-function">read_data</span>(task.data)</span><span class="code-line">states = <span class="code-function">above_median_population</span>(panel, year=1982)</span><span class="code-line">sample = panel.<span class="code-function">for_states</span>(states)</span><span class="code-line">y = <span class="code-function">log</span>(sample[<span class="code-string">"fatality_rate"</span>])</span><span class="code-line">spec = <span class="code-function">EventStudy</span>(treatment=<span class="code-string">"primary"</span>,</span><span class="code-line">    lookback=4, lookforward=3, controls=[],</span><span class="code-line">    fixed_effects=[<span class="code-string">"state"</span>, <span class="code-string">"year"</span>], cluster=<span class="code-string">"state"</span>)</span><span class="code-line">fit = <span class="code-function">staggered_did</span>(sample, y, spec,</span><span class="code-line">    estimator=task.estimator)</span><span class="code-line">result = <span class="code-function">extract</span>(fit, target=<span class="code-string">"Lag_D1"</span>)</span><span class="code-line"><span class="code-function">emit_json</span>(result)</span></code></pre><p class="code-note">Role names and estimator are placeholders; target-term mapping must be specified.</p></div>
-          </div>
-        </article>
-
-        <article class="sample-panel" id="sample-smoking" aria-labelledby="smoking-title">
-          <div class="sample-intro"><div><p class="method-tag">PROPENSITY-SCORE REGRESSION ADJUSTMENT</p><h3 id="smoking-title">How does maternal smoking affect birthweight?</h3><p class="sample-prompt">Adjust for observed covariates and trim both score tails before regression.</p></div><a class="source-link" href="https://arxiv.org/html/2506.00856v3#S5" target="_blank" rel="noopener">Published example §V ↗</a></div>
-          <div class="sample-grid">
-            <div class="sample-data">
-              <p class="panel-label">INPUT / INDIVIDUAL RECORDS</p>
-              <dl class="field-list"><div><dt><code>tobacco</code></dt><dd>Smoking treatment</dd></div><div><dt><code>dbrwt</code></dt><dd>Birthweight outcome</dd></div><div><dt>19 specified covariates</dt><dd>Including 6 categorical fields</dd></div></dl>
-              <div class="design-diagram" role="img" aria-label="Trim the lowest and highest ten percent of propensity scores by quantile. This is a schematic, not a measured distribution.">
-                <p class="panel-label">DESIGN / SCORE QUANTILES</p>
-                <div class="trim-window" aria-hidden="true"><span>10%</span><strong>Retained sample</strong><span>10%</span></div>
-                <div class="diagram-legend"><span>Trim</span><span>Trim</span></div>
-              </div>
-            </div>
-            <div class="code-card"><div class="code-heading"><span>ANALYSIS</span><span>Illustrative pseudocode</span></div><pre tabindex="0" aria-label="Birthweight analysis pseudocode"><code><span class="code-line"><span class="code-comment"># Preserve the requested adjustment method</span></span><span class="code-line">rows = <span class="code-function">prepare_aligned_rows</span>(task.data)</span><span class="code-line">X = <span class="code-function">encode_categories</span>(rows[task.controls],</span><span class="code-line">    columns=task.categorical_fields)</span><span class="code-line">score = <span class="code-function">logit</span>(rows[<span class="code-string">"tobacco"</span>], X, intercept=True)</span><span class="code-line">score = score.<span class="code-function">predict_probability</span>()</span><span class="code-line">lo, hi = <span class="code-function">quantile</span>(score, [0.10, 0.90])</span><span class="code-line">kept = rows.<span class="code-function">assign</span>(score=score)[score.<span class="code-function">between</span>(lo, hi)]</span><span class="code-line">fit = <span class="code-function">ols</span>(<span class="code-string">"dbrwt ~ tobacco + score"</span>,</span><span class="code-line">    data=kept, intercept=True)</span><span class="code-line">result = <span class="code-function">extract</span>(fit, target=<span class="code-string">"tobacco"</span>)</span><span class="code-line"><span class="code-function">emit_json</span>(result)</span></code></pre><p class="code-note">Covariates follow the source prompt; trimming uses score quantiles.</p></div>
-          </div>
-        </article>
-
-        <div class="result-preview"><div><p class="panel-label">OUTPUT / STATISTICAL EVIDENCE</p><p>Return a machine-readable estimate.</p></div><pre aria-label="Illustrative JSON schema, placeholders only"><code>{ <span>"coefficient"</span>: "&lt;estimate&gt;", <span>"standard_error"</span>: "&lt;SE&gt;", <span>"p_value"</span>: "&lt;p&gt;" }</code></pre></div>
+        <div class="paper-organisers">
+          <p class="kicker">Organized by</p>
+          <ul class="organisers">
+            <li><a href="https://www.hkubs.hku.hk/people/ye-luo/" target="_blank" rel="noopener">Ye Luo <span aria-hidden="true">↗</span></a><span class="organiser-affiliation">HKU Business School, The University of Hong Kong</span></li>
+            <li><a href="https://www.ntu.edu.sg/business/news-events/news/story-detail/meet-prof-will-cong" target="_blank" rel="noopener">Lin William Cong <span aria-hidden="true">↗</span></a><span class="organiser-affiliation">Nanyang Business School &amp; CCDS, NTU</span></li>
+            <li><a href="https://dr.ntu.edu.sg/entities/person/Liu-Yang" target="_blank" rel="noopener">Yang Liu <span aria-hidden="true">↗</span></a><span class="organiser-affiliation">College of Computing and Data Science, NTU</span></li>
+            <li><a href="https://dr.ntu.edu.sg/entities/person/Tao-Dacheng" target="_blank" rel="noopener">Dacheng Tao <span aria-hidden="true">↗</span></a><span class="organiser-affiliation">College of Computing and Data Science, NTU</span></li>
+          </ul>
+          <p class="organisers-more"><a class="text-link" href="#team">Roles, labs and institutions in Teams <span aria-hidden="true">↓</span></a></p>
+        </div>
       </div>
-      <p class="example-note">Examples summarized from the <a href="https://arxiv.org/abs/2506.00856v3" target="_blank" rel="noopener">MetricsAI paper</a>. Diagrams and pseudocode explain the tasks; they are not executable solutions or official Challenge tasks. Output values are placeholders.</p>
+      <div class="paper-links" role="group" aria-label="Benchmark resources">
+        <a class="button" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener">Dataset <span aria-hidden="true">↗</span></a>
+        <a class="button" href="https://huggingface.co/spaces/CamoAiLab/InferenceNet-Leaderboard" target="_blank" rel="noopener">Leaderboard <span aria-hidden="true">↗</span></a>
+        <a class="button" href="https://arxiv.org/abs/2506.00856v3" target="_blank" rel="noopener">MetricsAI paper <span aria-hidden="true">↗</span></a>
+        <a class="button" href="https://github.com/EasonAI-5589/inferencenet-challenge" target="_blank" rel="noopener">Website source <span aria-hidden="true">↗</span></a>
+      </div>
     </section>
 
-    <section class="section ruled container" id="overview" aria-labelledby="overview-title">
+    <nav class="subnav" aria-label="On this page">
+      <ol class="container">
+        <li><a href="#overview"><span class="subnav-number">01</span>The question</a></li>
+        <li><a href="#news"><span class="subnav-number">02</span>News</a></li>
+        <li><a href="#tasks"><span class="subnav-number">03</span>Tasks</a></li>
+        <li><a href="#harness"><span class="subnav-number">04</span>Harness</a></li>
+        <li><a href="#results"><span class="subnav-number">05</span>Results</a></li>
+        <li><a href="#participate"><span class="subnav-number">06</span>Take part</a></li>
+        <li><a href="#timeline"><span class="subnav-number">07</span>Timeline</a></li>
+        <li><a href="#resources"><span class="subnav-number">08</span>Resources</a></li>
+        <li><a href="#team"><span class="subnav-number">09</span>Teams</a></li>
+        <li><a href="#cite"><span class="subnav-number">10</span>Cite</a></li>
+      </ol>
+    </nav>
+
+    <section class="section container" id="overview" aria-labelledby="overview-title">
       <div class="section-heading">
-        <div><p class="kicker">02 / The benchmark</p><h2 id="overview-title">Benchmark overview</h2></div>
-        <p class="lead">Running an analysis is one step. Reproducing the finding is the test. InferenceNet connects empirical research tasks, data and statistical results to study what AI can reliably do.</p>
+        <div><p class="kicker">01 / The question</p><h2 id="overview-title">Run the analysis, reproduce the finding</h2></div>
+        <p class="lead">A task is a published result with its research data attached. The agent receives the estimation method, the outcome and treatment variables, the controls and the paper's requirements, writes and runs a program, and returns one coefficient, its standard error and its p-value. An independent scorer compares that triplet with the published values; the reference answer and the reference program are never shown to the model.</p>
       </div>
 
-      <div class="benchmark-stats" aria-label="Full benchmark coverage"><div><strong>2,644</strong><span>Research tasks</span></div><div><strong>36</strong><span>Academic journals</span></div><div><strong>6</strong><span>Research disciplines</span></div><div><strong>1,000</strong><span>Selected evaluation tasks</span></div></div>
-      <p class="stats-source">Full-benchmark coverage from the <a href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener">InferenceNet data card</a>. The Selected_1000 subset covers 10 journals.</p>
+      <ul class="stat-strip stats-5">
+        <li class="stat"><strong>2,644</strong><span>Research tasks</span><small>full benchmark</small></li>
+        <li class="stat"><strong>36</strong><span>Academic journals</span><small>full benchmark</small></li>
+        <li class="stat"><strong>6</strong><span>Research disciplines</span><small>full benchmark</small></li>
+        <li class="stat"><strong>1,000</strong><span>Selected evaluation tasks</span><small>pinned task list</small></li>
+        <li class="stat"><strong>15</strong><span>Journals in Selected_1000</span><small>revision 59f9512</small></li>
+      </ul>
+      <p class="note stats-note">Full-benchmark coverage from the <a href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener">InferenceNet data card</a>; Selected_1000 counts computed from the pinned task list <code>Selected_1000/1000_new.csv</code> at Hugging Face revision <code>59f9512</code>.</p>
 
       <figure class="research-flow" aria-labelledby="flow-caption">
         <div class="flow-heading"><span>THE RESEARCH–REPLICATION LOOP</span><span>Question → Analysis → Evidence</span></div>
@@ -137,116 +130,251 @@
           <li><div class="stage-top"><span class="stage-number">01</span><span class="stage-arrow" aria-hidden="true">→</span></div><h3>Research task</h3><p>A question.<br> A dataset.<br> An empirical method.</p><div class="stage-bottom"><span class="file-mark" aria-hidden="true">≡</span> Published research</div></li>
           <li><div class="stage-top"><span class="stage-number">02</span><span class="stage-arrow" aria-hidden="true">→</span></div><h3>Model or agent</h3><p>Interpret the task.<br> Plan the analysis.<br> Generate the code.</p><div class="stage-bottom"><span class="file-mark" aria-hidden="true">⌘</span> AI-assisted reasoning</div></li>
           <li><div class="stage-top"><span class="stage-number">03</span><span class="stage-arrow" aria-hidden="true">→</span></div><h3>Empirical analysis</h3><p>Work with the data.<br> Execute the method.<br> Produce estimates.</p><div class="stage-bottom"><span class="file-mark" aria-hidden="true">ƒ</span> Executable analysis</div></li>
-          <li class="evidence-stage"><div class="stage-top"><span class="stage-number">04</span><span class="stage-arrow" aria-hidden="true">↗</span></div><h3>Replication evidence</h3><p>Compare the estimates<br> with the published<br> statistical findings.</p><div class="stat-symbols" aria-label="Coefficients, standard errors, p-values"><span>β</span><span>SE</span><span>p</span></div></li>
+          <li class="evidence-stage"><div class="stage-top"><span class="stage-number">04</span><span class="stage-arrow" aria-hidden="true">↗</span></div><h3>Replication evidence</h3><p>Compare the estimates<br> with the published<br> statistical findings.</p><div class="stat-symbols" role="img" aria-label="Coefficients, standard errors, p-values"><span>β</span><span>SE</span><span>p</span></div></li>
         </ol>
         <figcaption id="flow-caption"><span>Figure 01</span> From task and data to statistical replication. A conceptual overview of the benchmark; challenge-specific protocols will be announced separately.</figcaption>
       </figure>
+    </section>
 
-      <div class="agent-showcase">
-        <div class="agent-description"><p class="kicker">Related research / MetricsAI</p><h3>MetricsAI workflow</h3><p>A published view of how the related research prototype organizes its work.</p><a class="text-link" href="https://github.com/HKU-Business-AI-Center/Econometrics-Agent" target="_blank" rel="noopener">Explore the agent code ↗</a><p class="prototype-note">Research prototype. Its architecture is shown for context; Challenge tooling will be announced separately.</p></div>
-        <figure class="agent-figure"><a class="figure-image" href="assets/figures/metricsai-workflow-v3.png" target="_blank" rel="noopener" aria-label="Open full-size MetricsAI workflow"><img src="assets/figures/metricsai-workflow-v3.png" width="1708" height="1355" loading="lazy" decoding="async" alt="MetricsAI workflow linking a user request to planning, tool selection, program execution, reflection on failures and results, with a loop for further dialogue."></a><figcaption>MetricsAI workflow, Figure 1, Chen et al., <a href="https://arxiv.org/abs/2506.00856v3" target="_blank" rel="noopener">Can AI Master Econometrics?</a> (v3, 2026). Original figure, unmodified. <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a> · <a href="assets/figures/ATTRIBUTION.txt">Full attribution</a>.</figcaption></figure>
+    <section class="section container ruled" id="news" aria-labelledby="news-title">
+      <div class="section-heading">
+        <div><p class="kicker">02 / News</p><h2 id="news-title">Recent updates</h2></div>
+        <p class="lead">What has been added to the Challenge site, most recent first.</p>
       </div>
-    </section>
-
-    <section class="section ruled container" id="participate" aria-labelledby="participate-title">
-      <div class="section-heading"><div><p class="kicker">03 / Take part</p><h2 id="participate-title">Participation</h2></div><p class="lead">Start with the benchmark. The participation guide and submission process will follow when the challenge opens.</p></div>
-      <ol class="participation-steps">
-        <li><span class="step-index">01</span><div><h3>Explore the benchmark</h3><p>Read the task descriptions, data card and access conditions to understand the empirical research setting.</p><a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener">Open dataset page <span aria-hidden="true">↗</span></a></div><span class="availability available">Available</span></li>
-        <li><span class="step-index">02</span><div><h3>Prepare your approach</h3><p>Challenge rules, evaluation guidance and the starter kit will be linked here.</p></div><span class="availability">Coming soon</span></li>
-        <li><span class="step-index">03</span><div><h3>Join the challenge</h3><p>Registration and submission instructions will appear here once confirmed.</p></div><span class="availability">Coming soon</span></li>
+      <ol class="news-list">
+        <li><time datetime="2026-09-15">15 Sep 2026</time><div><p>Data, Agent and Leaderboard pages added, with a mountain leaderboard and a recorded agent trajectory.</p><p class="news-links"><a class="text-link" href="data.html">Data <span aria-hidden="true">→</span></a><a class="text-link" href="agent.html">Agent <span aria-hidden="true">→</span></a><a class="text-link" href="leaderboard.html">Leaderboard <span aria-hidden="true">→</span></a></p></div></li>
+        <li><time datetime="2026-09-14">14 Sep 2026</time><div><p>Guided demo published.</p><p class="news-links"><a class="text-link" href="demo.html">Guided demo <span aria-hidden="true">→</span></a></p></div></li>
+        <li><time datetime="2026-09-11">11 Sep 2026</time><div><p>Challenge website launched with the synchronized public leaderboard and research teams.</p></div></li>
+        <li><time datetime="2026-09-10">10 Sep 2026</time><div><p>Public leaderboard snapshot (14 entries) synchronized from Hugging Face.</p><p class="news-links"><a class="text-link" href="https://huggingface.co/spaces/CamoAiLab/InferenceNet-Leaderboard" target="_blank" rel="noopener">CamoAiLab / InferenceNet-Leaderboard <span aria-hidden="true">↗</span></a></p></div></li>
       </ol>
     </section>
 
-    <section class="section ruled container" id="timeline" aria-labelledby="timeline-title">
-      <div class="section-heading compact"><div><p class="kicker">04 / Important dates</p><h2 id="timeline-title">Timeline</h2></div><p class="lead">The challenge schedule is being finalized.<br> Confirmed dates will be posted here.</p></div>
-      <ol class="timeline">
-        <li><span class="timeline-number">01</span><p>Registration opens</p><strong>To be announced</strong></li>
-        <li><span class="timeline-number">02</span><p>Evaluation release</p><strong>To be announced</strong></li>
-        <li><span class="timeline-number">03</span><p>Submission deadline</p><strong>To be announced</strong></li>
-        <li><span class="timeline-number">04</span><p>Results &amp; findings</p><strong>To be announced</strong></li>
-      </ol>
-    </section>
-
-    <section class="section ruled container" id="leaderboard" aria-labelledby="leaderboard-title">
-      <div class="section-heading compact"><div><p class="kicker">05 / Results</p><h2 id="leaderboard-title">Research leaderboard</h2></div><p class="lead">See how far each approach has climbed toward reliable replication. Change the metric to redraw the ascent and reorder the full table.</p></div>
-      <div class="leaderboard-shell">
-        <div class="leaderboard-header"><div><h3>InferenceNet benchmark</h3><p id="leaderboard-status" role="status">Saved snapshot · 10 Sep 2026, 20:06 UTC</p></div><div class="leaderboard-actions"><span class="availability" id="leaderboard-count">14 entries</span><button class="button compact-button" type="button" id="leaderboard-refresh" hidden>Refresh data</button></div></div>
-        <div class="leaderboard-controls"><label for="leaderboard-sort">Sort by</label><select id="leaderboard-sort" disabled><option value="Partial Replication">Partial Replication</option><option value="Compilation Success">Compilation Success</option><option value="Correct Coefficient Direction">Correct Coefficient Direction</option><option value="Significant Level Correctness">Significant Level Correctness</option></select><span>Higher is better · scores in %</span></div>
-        <section class="leaderboard-ascent" aria-labelledby="ascent-title">
-          <div class="ascent-heading"><div><p class="ascent-kicker">LIVE ASCENT / SELECTED METRIC</p><h3 id="ascent-title">The Inference Peak</h3></div><p>Top 10 approaches on the summit wall.</p></div>
-          <div class="ascent-scene" id="leaderboard-ascent-scene" role="group" aria-label="Top approaches arranged on a mountain by Partial Replication rank">
-            <img class="ascent-mountain-photo" src="assets/figures/inference-peak-v2.png" width="1916" height="821" alt="" aria-hidden="true">
-            <div class="ascent-mist" aria-hidden="true"></div>
-            <div class="ascent-summit" aria-hidden="true"><span class="summit-flag"></span></div>
-            <svg class="ascent-links" id="ascent-links" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
-            <div class="ascent-climbers" id="ascent-climbers"></div>
-            <ol class="ascent-callouts ascent-callouts-left" id="ascent-callouts-left" aria-label="Odd-ranked approaches"></ol>
-            <ol class="ascent-callouts ascent-callouts-right" id="ascent-callouts-right" aria-label="Even-ranked approaches"></ol>
-            <p class="ascent-no-script">Enable JavaScript to draw the live ascent. The complete saved table remains available below.</p>
+    <section class="section container ruled" id="tasks" aria-labelledby="tasks-title">
+      <div class="section-heading">
+        <div><p class="kicker">03 / Tasks</p><h2 id="tasks-title">Six real tasks from Selected_1000</h2></div>
+        <p class="lead">Each tile is a task from the pinned task list: the plain-English question, the estimation method and the journal. Reference values stay withheld except for tasks 0001 and 0011, which the Data and Agent pages walk through in full.</p>
+      </div>
+      <ul class="card-grid gallery" id="examples">
+        <li class="card">
+          <p class="card-label">Task 0001 <span class="pill">Panel OLS</span></p>
+          <h3>Consumption smoothing in interwar Japan</h3>
+          <p>How much does a working-class household's consumption move when its disposable income changes? A monthly household panel with household and month-year fixed effects, composition controls interacted with quarter dummies, and household-clustered standard errors.</p>
+          <div class="card-footer"><span>Journal of Economic History</span><a class="text-link" href="data.html#cases">Open the case <span aria-hidden="true">→</span></a></div>
+        </li>
+        <li class="card">
+          <p class="card-label">Task 0011 <span class="badge real-run">Real run</span><span class="pill">OLS</span></p>
+          <h3>Economic uncertainty and divisive politics (the ‘two Spains’)</h3>
+          <p>How does socio-economic conflict relate to economic policy uncertainty, 1905–1945? OLS with month-clustered standard errors.</p>
+          <div class="card-footer"><span>Journal of Economic History</span><a class="text-link" href="agent.html">Watch the run <span aria-hidden="true">→</span></a></div>
+        </li>
+        <li class="card">
+          <p class="card-label">Task 0104 <span class="pill">DID</span></p>
+          <h3>Deterrence and compellence in parliament</h3>
+          <p>Did lifting an MP's immunity change how often they submitted formal queries to the government? A difference-in-differences with MP and month-by-year fixed effects, clustered by MP.</p>
+          <div class="card-footer"><span>The Journal of Law and Economics</span><a class="text-link" href="data.html#cases">Open the case <span aria-hidden="true">→</span></a></div>
+        </li>
+        <li class="card">
+          <p class="card-label">Task 0100 <span class="pill">IV-2SLS (fuzzy RDD)</span></p>
+          <h3>Patent validity and litigation</h3>
+          <p>Does filing an inter partes review make a case more likely to settle? A fuzzy regression discontinuity around the one-year filing deadline, estimated as an IV/2SLS second stage with a triangular kernel and case-clustered errors.</p>
+          <div class="card-footer"><span>The Journal of Law and Economics</span><a class="text-link" href="data.html#cases">Open the case <span aria-hidden="true">→</span></a></div>
+        </li>
+        <li class="card">
+          <p class="card-label">Task 0145 <span class="pill">RDD</span></p>
+          <h3>Liquidity effects of litigation risk</h3>
+          <p>How did a legal shock change firms' cash holdings? A local-linear regression discontinuity at the cutoff with a triangular kernel, clustered by company.</p>
+          <div class="card-footer"><span>The Journal of Law and Economics</span><a class="text-link" href="data.html#cases">Open the case <span aria-hidden="true">→</span></a></div>
+        </li>
+        <li class="card">
+          <p class="card-label">Task 0194 <span class="pill">Probit</span></p>
+          <h3>Incentives in non-routine analytical team tasks</h3>
+          <p>Does a bonus incentive change behavior? A probit model on the field (non-laboratory) sample.</p>
+          <div class="card-footer"><span>Journal of Political Economy</span><a class="text-link" href="data.html#cases">Open the case <span aria-hidden="true">→</span></a></div>
+        </li>
+        <li class="card tinted gallery-summary">
+          <div class="gallery-figure"><strong>1,000</strong><span>tasks in Selected_1000</span><small>15 journals · pinned task list · revision 59f9512</small></div>
+          <div class="gallery-mix">
+            <p class="card-label">Estimation methods · five classes</p>
+            <ul class="pill-list" aria-label="Tasks per estimation method"><li class="pill">OLS 773</li><li class="pill">DID 135</li><li class="pill">IV 55</li><li class="pill">RDD 16</li><li class="pill">Other 21</li></ul>
           </div>
-          <ol class="ascent-mobile" id="ascent-mobile" aria-label="Top approaches"></ol>
-          <div class="ascent-legend"><span><i class="legend-rank"></i> Position shows current rank</span><strong id="ascent-current-metric">Partial Replication</strong></div>
-        </section>
-        <div class="table-scroll" tabindex="0" role="region" aria-label="Research leaderboard; scroll horizontally on small screens">
-          <table id="leaderboard-table"><caption class="visually-hidden">Public InferenceNet research results. Ordered by the selected metric, descending.</caption><thead><tr><th scope="col">#</th><th scope="col">Model / approach</th><th scope="col" data-metric="Compilation Success">Compilation<br>success</th><th scope="col" data-metric="Partial Replication" aria-sort="descending">Partial<br>replication</th><th scope="col" data-metric="Correct Coefficient Direction">Correct coefficient<br>direction</th><th scope="col" data-metric="Significant Level Correctness">Significant level<br>correctness</th></tr></thead><tbody id="leaderboard-body">
-              <tr data-source-order="9"><td>1</td><th scope="row">Deepseek v4 Pro - Codex</th><td>86.3%</td><td>32.8%</td><td>69.3%</td><td>53.6%</td></tr>
-              <tr data-source-order="4"><td>2</td><th scope="row">GPT 5.5 - Codex</th><td>99.5%</td><td>26.4%</td><td>86.5%</td><td>62.0%</td></tr>
-              <tr data-source-order="11"><td>3</td><th scope="row">GPT 4o - MetricsAI</th><td>84.5%</td><td>22.7%</td><td>61.0%</td><td>40.5%</td></tr>
-              <tr data-source-order="10"><td>4</td><th scope="row">GPT 4o - MetaGPT</th><td>67.4%</td><td>22.0%</td><td>57.8%</td><td>36.8%</td></tr>
-              <tr data-source-order="5"><td>5</td><th scope="row">DeepSeek v4 Pro - MetaGPT</th><td>67.4%</td><td>14.4%</td><td>57.8%</td><td>38.2%</td></tr>
-              <tr data-source-order="3"><td>6</td><th scope="row">GPT 5.5 - MetricsAI</th><td>52.1%</td><td>14.2%</td><td>46.5%</td><td>33.6%</td></tr>
-              <tr data-source-order="0"><td>7</td><th scope="row">GPT 5.5 - Python</th><td>36.7%</td><td>12.1%</td><td>30.7%</td><td>22.2%</td></tr>
-              <tr data-source-order="2"><td>8</td><th scope="row">GPT 5.5 - MetaGPT</th><td>55.0%</td><td>11.4%</td><td>48.5%</td><td>32.5%</td></tr>
-              <tr data-source-order="7"><td>9</td><th scope="row">Deepseek v4 Pro - Python</th><td>25.3%</td><td>8.4%</td><td>21.0%</td><td>15.9%</td></tr>
-              <tr data-source-order="8"><td>10</td><th scope="row">Deepseek v4 Pro - Stata</th><td>20.3%</td><td>8.1%</td><td>17.2%</td><td>14.0%</td></tr>
-              <tr data-source-order="1"><td>11</td><th scope="row">GPT 5.5 - Stata</th><td>35.9%</td><td>6.5%</td><td>21.0%</td><td>11.0%</td></tr>
-              <tr data-source-order="6"><td>12</td><th scope="row">Deepseek v4 Pro - MetricsAI</th><td>13.2%</td><td>5.7%</td><td>13.2%</td><td>10.1%</td></tr>
-              <tr data-source-order="12"><td>13</td><th scope="row">GPT 4o - Python</th><td>7.0%</td><td>3.4%</td><td>5.9%</td><td>4.9%</td></tr>
-              <tr data-source-order="13"><td>14</td><th scope="row">GPT 4o - Stata</th><td>1.1%</td><td>0.2%</td><td>1.0%</td><td>0.6%</td></tr>
-            </tbody></table>
-        </div>
-        <div class="leaderboard-footer"><p>Source: CamoAiLab / InferenceNet-Leaderboard</p><a class="text-link" href="https://huggingface.co/spaces/CamoAiLab/InferenceNet-Leaderboard" target="_blank" rel="noopener">Open Hugging Face leaderboard ↗</a></div>
-      </div>
-      <p class="leaderboard-note">These are existing research benchmark results. Challenge submissions will be listed separately. The source does not specify a sample count or evaluation date for this table. <a href="https://camoailab-inferencenet-leaderboard.static.hf.space/results.csv" target="_blank" rel="noopener">Source CSV</a> · <a href="assets/data/leaderboard-provenance.json">Snapshot provenance</a>.</p>
+          <a class="text-link gallery-link" href="data.html#methods">Explore the distribution <span aria-hidden="true">→</span></a>
+        </li>
+      </ul>
     </section>
 
-    <section class="section ruled container" id="resources" aria-labelledby="resources-title">
-      <div class="section-heading compact"><div><p class="kicker">06 / Resources</p><h2 id="resources-title">Code and datasets</h2></div><p class="lead">Project code, the related research agent, benchmark data and the original leaderboard.</p></div>
+    <section class="section container ruled" id="harness" aria-labelledby="harness-title">
+      <div class="section-heading">
+        <div><p class="kicker">04 / Harness</p><h2 id="harness-title">Same model, far more findings reproduced</h2></div>
+        <p class="lead">In an internal paired study, GPT-5.6 Sol ran every Selected_1000 task twice: once as a single generated program, and once inside a fixed Deep Agents harness that may inspect the data and test programs before answering. Same instruction, same container, same scorer.</p>
+      </div>
+      <div class="harness-grid">
+        <figure class="chart" data-chart="pairedBars" id="chart-harness">
+          <figcaption class="chart-head">
+            <h3 class="chart-title">GPT-5.6 Sol: single generation vs Deep Agents</h3>
+            <span class="badge audited">Audited</span>
+            <p class="chart-subtitle">Rates over 1,000 paired tasks; internal local-paper-v1 diagnostic scoring. Delta in percentage points after the second bar.</p>
+          </figcaption>
+          <div class="chart-canvas"></div>
+          <script type="application/json">{
+            "seriesLabels": ["Single generation", "Deep Agents"], "unit": "%", "max": 100, "decimals": 1, "showDelta": true,
+            "ariaLabel": "GPT-5.6 Sol, single generation versus Deep Agents, four rates over 1,000 paired tasks",
+            "groups": [
+              {"label": "Valid", "a": 55.6, "b": 90.9},
+              {"label": "Coefficient only", "a": 42.9, "b": 69.7},
+              {"label": "Direction", "a": 53.6, "b": 87.6},
+              {"label": "Significance", "a": 47.3, "b": 77.5}
+            ]
+          }</script>
+          <details class="chart-table" open>
+            <summary>Data table</summary>
+            <div class="table-scroll" tabindex="0" role="region" aria-labelledby="chart-harness-caption">
+            <table>
+              <caption id="chart-harness-caption">GPT-5.6 Sol paired study, rates = count / 1,000.</caption>
+              <thead><tr><th scope="col">Metric</th><th scope="col" class="num">Single generation</th><th scope="col" class="num">Deep Agents</th><th scope="col" class="num">Δ pts</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Valid</th><td class="num">55.6% (556)</td><td class="num">90.9% (909)</td><td class="num">+35.3</td></tr>
+                <tr><th scope="row">Coefficient only</th><td class="num">42.9% (429)</td><td class="num">69.7% (697)</td><td class="num">+26.8</td></tr>
+                <tr><th scope="row">Direction</th><td class="num">53.6% (536)</td><td class="num">87.6% (876)</td><td class="num">+34.0</td></tr>
+                <tr><th scope="row">Significance</th><td class="num">47.3% (473)</td><td class="num">77.5% (775)</td><td class="num">+30.2</td></tr>
+              </tbody>
+            </table>
+            </div>
+          </details>
+          <p class="chart-source">Valid = program exited 0 with a well-formed prediction; Coefficient only = coefficient within 5% relative error of the reference; Direction = same sign as the reference; Significance = same p-value band and correct direction. Metric names follow the internal local-paper-v1 profile, as on the Leaderboard page.</p>
+        </figure>
+        <div class="stack">
+          <dl class="kv ruled-end">
+            <dt>Model</dt><dd>GPT-5.6 Sol, complete 1,000-task paired study</dd>
+            <dt>Tasks</dt><dd>Selected_1000 at Hugging Face revision <code>59f9512</code></dd>
+            <dt>Baseline arm</dt><dd>One model call → one program → executed once</dd>
+            <dt>Harness arm</dt><dd>Deep Agents 0.7.13 loop with <code>run_python</code>: at most 6 model calls and 4 executions; the final program is replayed in a clean container</dd>
+            <dt>Budgets</dt><dd>32,768 output tokens · 600 s per task · 6 GiB RAM · 2 CPU · no network</dd>
+            <dt>Never visible</dt><dd>Reference values, the reference program, any score</dd>
+          </dl>
+          <div class="callout info"><p class="callout-title">Internal study</p><p>Internal exploratory study, local diagnostic scoring, not official leaderboard results. Arms are not cost-matched: the harness may use up to 6 model calls and 4 tool executions per task. Every planned task stays in the denominator.</p></div>
+          <p class="harness-links"><a class="text-link" href="leaderboard.html#climb">See the climb on the leaderboard <span aria-hidden="true">→</span></a><a class="text-link" href="agent.html">Watch a recorded trajectory <span aria-hidden="true">→</span></a></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container ruled" id="results" aria-labelledby="results-title">
+      <div class="section-heading">
+        <div><p class="kicker">05 / Results</p><h2 id="results-title">Fourteen climbers, one summit</h2></div>
+        <p class="lead">This page ranks the 14 model–approach pairs of the public Hugging Face leaderboard by Partial Replication: the target treatment coefficient reproduced within a 5% relative error. Published research results by CamoAiLab / HKU CAMO on a 0–100 scale; the summit is 100%; the current leader stands at 32.8%.</p>
+      </div>
+      <figure class="mountain" data-mountain id="public-climb">
+        <script type="application/json">{
+          "title": "Public research leaderboard",
+          "subtitle": "14 model–approach pairs climbing on Partial Replication",
+          "metric": "Partial Replication",
+          "unit": "%",
+          "max": 100,
+          "date": "Snapshot 10 Sep 2026",
+          "peakLabel": "100% · every task replicated",
+          "caption": "Source: CamoAiLab / InferenceNet-Leaderboard results.csv",
+          "items": [
+            { "rank": 1, "label": "Deepseek v4 Pro - Codex", "value": 32.8, "group": "DeepSeek", "kind": "public" },
+            { "rank": 2, "label": "GPT 5.5 - Codex", "value": 26.4, "group": "OpenAI", "kind": "public" },
+            { "rank": 3, "label": "GPT 4o - MetricsAI", "value": 22.7, "group": "OpenAI", "kind": "public" },
+            { "rank": 4, "label": "GPT 4o - MetaGPT", "value": 22.0, "group": "OpenAI", "kind": "public" },
+            { "rank": 5, "label": "DeepSeek v4 Pro - MetaGPT", "value": 14.4, "group": "DeepSeek", "kind": "public" },
+            { "rank": 6, "label": "GPT 5.5 - MetricsAI", "value": 14.2, "group": "OpenAI", "kind": "public" },
+            { "rank": 7, "label": "GPT 5.5 - Python", "value": 12.1, "group": "OpenAI", "kind": "public" },
+            { "rank": 8, "label": "GPT 5.5 - MetaGPT", "value": 11.4, "group": "OpenAI", "kind": "public" },
+            { "rank": 9, "label": "Deepseek v4 Pro - Python", "value": 8.4, "group": "DeepSeek", "kind": "public" },
+            { "rank": 10, "label": "Deepseek v4 Pro - Stata", "value": 8.1, "group": "DeepSeek", "kind": "public" },
+            { "rank": 11, "label": "GPT 5.5 - Stata", "value": 6.5, "group": "OpenAI", "kind": "public" },
+            { "rank": 12, "label": "Deepseek v4 Pro - MetricsAI", "value": 5.7, "group": "DeepSeek", "kind": "public" },
+            { "rank": 13, "label": "GPT 4o - Python", "value": 3.4, "group": "OpenAI", "kind": "public" },
+            { "rank": 14, "label": "GPT 4o - Stata", "value": 0.2, "group": "OpenAI", "kind": "public" }
+          ]
+        }</script>
+        <div class="mountain-canvas"></div>
+        <div class="mountain-table-wrap" tabindex="0" role="region" aria-label="Ranked list, all four published metrics">
+        <table class="mountain-table">
+          <caption>Public research leaderboard, 14 entries, snapshot 10 Sep 2026.</caption>
+          <thead><tr><th scope="col">#</th><th scope="col">Model / approach</th><th scope="col" class="num">Compilation Success</th><th scope="col" class="num">Partial Replication</th><th scope="col" class="num">Correct Coefficient Direction</th><th scope="col" class="num">Significant Level Correctness</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><th scope="row">Deepseek v4 Pro - Codex</th><td class="num">86.3%</td><td class="num">32.8%</td><td class="num">69.3%</td><td class="num">53.6%</td></tr>
+            <tr><td>2</td><th scope="row">GPT 5.5 - Codex</th><td class="num">99.5%</td><td class="num">26.4%</td><td class="num">86.5%</td><td class="num">62.0%</td></tr>
+            <tr><td>3</td><th scope="row">GPT 4o - MetricsAI</th><td class="num">84.5%</td><td class="num">22.7%</td><td class="num">61.0%</td><td class="num">40.5%</td></tr>
+            <tr><td>4</td><th scope="row">GPT 4o - MetaGPT</th><td class="num">67.4%</td><td class="num">22.0%</td><td class="num">57.8%</td><td class="num">36.8%</td></tr>
+            <tr><td>5</td><th scope="row">DeepSeek v4 Pro - MetaGPT</th><td class="num">67.4%</td><td class="num">14.4%</td><td class="num">57.8%</td><td class="num">38.2%</td></tr>
+            <tr><td>6</td><th scope="row">GPT 5.5 - MetricsAI</th><td class="num">52.1%</td><td class="num">14.2%</td><td class="num">46.5%</td><td class="num">33.6%</td></tr>
+            <tr><td>7</td><th scope="row">GPT 5.5 - Python</th><td class="num">36.7%</td><td class="num">12.1%</td><td class="num">30.7%</td><td class="num">22.2%</td></tr>
+            <tr><td>8</td><th scope="row">GPT 5.5 - MetaGPT</th><td class="num">55.0%</td><td class="num">11.4%</td><td class="num">48.5%</td><td class="num">32.5%</td></tr>
+            <tr><td>9</td><th scope="row">Deepseek v4 Pro - Python</th><td class="num">25.3%</td><td class="num">8.4%</td><td class="num">21.0%</td><td class="num">15.9%</td></tr>
+            <tr><td>10</td><th scope="row">Deepseek v4 Pro - Stata</th><td class="num">20.3%</td><td class="num">8.1%</td><td class="num">17.2%</td><td class="num">14.0%</td></tr>
+            <tr><td>11</td><th scope="row">GPT 5.5 - Stata</th><td class="num">35.9%</td><td class="num">6.5%</td><td class="num">21.0%</td><td class="num">11.0%</td></tr>
+            <tr><td>12</td><th scope="row">Deepseek v4 Pro - MetricsAI</th><td class="num">13.2%</td><td class="num">5.7%</td><td class="num">13.2%</td><td class="num">10.1%</td></tr>
+            <tr><td>13</td><th scope="row">GPT 4o - Python</th><td class="num">7.0%</td><td class="num">3.4%</td><td class="num">5.9%</td><td class="num">4.9%</td></tr>
+            <tr><td>14</td><th scope="row">GPT 4o - Stata</th><td class="num">1.1%</td><td class="num">0.2%</td><td class="num">1.0%</td><td class="num">0.6%</td></tr>
+          </tbody>
+        </table>
+        </div>
+      </figure>
+      <div class="results-foot">
+        <p class="chart-source">Published research results by CamoAiLab / HKU CAMO on the 0–100 scale; not Challenge standings. Source: <a href="https://camoailab-inferencenet-leaderboard.static.hf.space/results.csv" target="_blank" rel="noopener">results.csv</a> · <a href="https://huggingface.co/spaces/CamoAiLab/InferenceNet-Leaderboard" target="_blank" rel="noopener">InferenceNet-Leaderboard Space</a> · <a href="assets/data/leaderboard-provenance.json">snapshot provenance</a>. Model names are printed as the source spells them. Sorted by Partial Replication; ties keep source order; all four published metrics share the 0–100 scale, and the source does not bind this table to a sample count or evaluation date.</p>
+        <a class="text-link" href="leaderboard.html#public">Open the full leaderboard <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+
+    <section class="section container ruled" id="participate" aria-labelledby="participate-title">
+      <div class="section-heading"><div><p class="kicker">06 / Take part</p><h2 id="participate-title">Participation</h2></div><p class="lead">Start with the benchmark. The participation guide and submission process will follow when the challenge opens.</p></div>
+      <ol class="participation-steps">
+        <li><span class="step-index">01</span><div><h3>Explore the benchmark</h3><p>Read the task descriptions, data card and access conditions to understand the empirical research setting.</p><a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener">Open dataset page <span aria-hidden="true">↗</span></a></div></li>
+        <li><span class="step-index">02</span><div><h3>Prepare your approach</h3><p>Challenge rules, evaluation guidance and the starter kit will be linked here.</p></div><span class="badge tba">To be announced</span></li>
+        <li><span class="step-index">03</span><div><h3>Join the challenge</h3><p>Registration and submission instructions will appear here once confirmed.</p></div><span class="badge tba">To be announced</span></li>
+      </ol>
+    </section>
+
+    <section class="section container ruled" id="timeline" aria-labelledby="timeline-title">
+      <div class="section-heading compact"><div><p class="kicker">07 / Timeline</p><h2 id="timeline-title">Timeline</h2></div><p class="lead">The challenge schedule is being finalized.<br> Confirmed dates will be posted here.</p></div>
+      <ol class="timeline">
+        <li><span class="timeline-number">01</span><p>Registration opens</p><strong><span class="badge tba">To be announced</span></strong></li>
+        <li><span class="timeline-number">02</span><p>Evaluation release</p><strong><span class="badge tba">To be announced</span></strong></li>
+        <li><span class="timeline-number">03</span><p>Submission deadline</p><strong><span class="badge tba">To be announced</span></strong></li>
+        <li><span class="timeline-number">04</span><p>Results &amp; findings</p><strong><span class="badge tba">To be announced</span></strong></li>
+      </ol>
+    </section>
+
+    <section class="section container ruled" id="resources" aria-labelledby="resources-title">
+      <div class="section-heading compact"><div><p class="kicker">08 / Resources</p><h2 id="resources-title">Code and datasets</h2></div><p class="lead">Project code, the related research agent, benchmark data and the original leaderboard.</p></div>
       <div class="resource-grid">
-        <a class="resource" href="https://github.com/EasonAI-5589/NTU-GIFTS-InferenceNet" target="_blank" rel="noopener"><div><span class="resource-type">GITHUB / PROJECT WORKSPACE</span><span aria-hidden="true">↗</span></div><h3>NTU-GIFTS-InferenceNet</h3><p>Project source, evaluation entry points and documentation.</p><span class="resource-label">Private repository · collaborator access</span></a>
+        <a class="resource" href="https://github.com/YTZSR/chatpilot_evaluator/tree/dev-gyc-eval" target="_blank" rel="noopener"><div><span class="resource-type">GITHUB / EVALUATION FRAMEWORK</span><span aria-hidden="true">↗</span></div><h3>InferenceNet evaluation framework</h3><p>Unified evaluation package, command-line entry points and documentation on dev-gyc-eval.</p><span class="resource-label">Private repository · collaborator access</span></a>
         <a class="resource" href="https://github.com/HKU-Business-AI-Center/Econometrics-Agent" target="_blank" rel="noopener"><div><span class="resource-type">GITHUB / RESEARCH AGENT</span><span aria-hidden="true">↗</span></div><h3>MetricsAI / Econometrics-Agent</h3><p>Public implementation associated with the MetricsAI paper.</p><span class="resource-label">Browse agent code</span></a>
         <a class="resource" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener"><div><span class="resource-type">HUGGING FACE / DATASET</span><span aria-hidden="true">↗</span></div><h3>InferenceNet dataset</h3><p>Research tasks, dataset documentation and access requirements.</p><span class="resource-label">Open benchmark data</span></a>
         <a class="resource" href="https://huggingface.co/spaces/CamoAiLab/InferenceNet-Leaderboard" target="_blank" rel="noopener"><div><span class="resource-type">HUGGING FACE / LEADERBOARD</span><span aria-hidden="true">↗</span></div><h3>InferenceNet leaderboard</h3><p>Published benchmark results and the data synchronized above.</p><span class="resource-label">Open the original leaderboard</span></a>
       </div>
-      <p class="resource-extra"><a class="text-link" href="https://github.com/EasonAI-5589/inferencenet-challenge" target="_blank" rel="noopener">Public website repository ↗</a></p>
+      <p class="resource-extra"><a class="text-link" href="https://github.com/EasonAI-5589/inferencenet-challenge" target="_blank" rel="noopener">Public website repository <span aria-hidden="true">↗</span></a></p>
     </section>
 
-    <section class="section ruled container" id="team" aria-labelledby="team-title">
-      <div class="section-heading compact"><div><p class="kicker">07 / Institutions and teams</p><h2 id="team-title">Research teams</h2></div><p class="lead">NTU's College of Computing and Data Science and Nanyang Business School, together with HKU Business School.</p></div>
+    <section class="section container ruled" id="team" aria-labelledby="team-title">
+      <div class="section-heading compact"><div><p class="kicker">09 / Teams</p><h2 id="team-title">Research teams</h2></div><p class="lead">NTU's College of Computing and Data Science and Nanyang Business School, together with HKU Business School.</p></div>
       <div class="institution-grid">
         <a href="https://www.ntu.edu.sg/computing" target="_blank" rel="noopener"><div class="institution-logo"><img src="assets/institutions/ntu-ccds-official.png" width="475" height="114" alt="NTU College of Computing and Data Science" loading="lazy"></div><div class="institution-copy"><span class="institution-abbreviation">NTU · CCDS <span aria-hidden="true">↗</span></span><h3>College of Computing and Data Science</h3><p>Nanyang Technological University, Singapore</p></div></a>
         <a href="https://www.ntu.edu.sg/business" target="_blank" rel="noopener"><div class="institution-logo"><img src="assets/institutions/ntu-nbs-official.jpg" width="386" height="103" alt="NTU Nanyang Business School" loading="lazy"></div><div class="institution-copy"><span class="institution-abbreviation">NTU · NBS <span aria-hidden="true">↗</span></span><h3>Nanyang Business School</h3><p>Nanyang Technological University, Singapore</p></div></a>
         <a href="https://www.hkubs.hku.hk/" target="_blank" rel="noopener"><div class="institution-logo"><img src="assets/institutions/hku-business-horizontal.png" width="2500" height="625" alt="HKU Business School" loading="lazy"></div><div class="institution-copy"><span class="institution-abbreviation">HKU <span aria-hidden="true">↗</span></span><h3>HKU Business School</h3><p>The University of Hong Kong</p></div></a>
       </div>
       <div class="leadership-heading"><h3 id="leadership-title">Project leadership</h3><p>Faculty leadership of the <a href="https://www.ntu.edu.sg/gifts/research-and-innovation" target="_blank" rel="noopener">Global InferenceNet Initiative</a>, as listed by NTU GIFTS.</p></div>
-      <div class="team-grid" aria-labelledby="leadership-title">
-        <article class="team-member"><span class="faculty-role">Faculty Lead</span><h4><a href="https://www.hkubs.hku.hk/people/ye-luo/" target="_blank" rel="noopener">Ye Luo <span aria-hidden="true">↗</span></a></h4><p>HKU Business School</p><span class="faculty-detail">Associate Professor<br>The University of Hong Kong</span><a class="faculty-group-link" href="#hku-ai-agents-lab">AI-Agents Lab · Lab Director ↓</a></article>
-        <article class="team-member"><span class="faculty-role">Faculty Co-Lead</span><h4><a href="https://www.ntu.edu.sg/business/news-events/news/story-detail/meet-prof-will-cong" target="_blank" rel="noopener">Lin William Cong <span aria-hidden="true">↗</span></a></h4><p>Nanyang Business School &amp; CCDS, NTU</p><span class="faculty-detail">President's Chair Professor of Finance, Computing and Data Science</span><a class="faculty-group-link" href="#ntu-gifts">GIFTS · Founding Director ↓</a></article>
-        <article class="team-member"><span class="faculty-role">Faculty Co-Lead</span><h4><a href="https://dr.ntu.edu.sg/entities/person/Liu-Yang" target="_blank" rel="noopener">Yang Liu <span aria-hidden="true">↗</span></a></h4><p>College of Computing and Data Science</p><span class="faculty-detail">Nanyang Technological University, Singapore</span></article>
-        <article class="team-member"><span class="faculty-role">Faculty Co-Lead</span><h4><a href="https://dr.ntu.edu.sg/entities/person/Tao-Dacheng" target="_blank" rel="noopener">Dacheng Tao <span aria-hidden="true">↗</span></a></h4><p>College of Computing and Data Science</p><span class="faculty-detail">Nanyang Technological University, Singapore</span></article>
+      <div class="team-grid" role="group" aria-labelledby="leadership-title">
+        <article class="team-member"><span class="pill">Faculty Lead</span><h4><a href="https://www.hkubs.hku.hk/people/ye-luo/" target="_blank" rel="noopener">Ye Luo <span aria-hidden="true">↗</span></a></h4><p>HKU Business School</p><span class="faculty-detail">Associate Professor<br>The University of Hong Kong</span><a class="faculty-group-link" href="#hku-ai-agents-lab">AI-Agents Lab · Lab Director <span aria-hidden="true">↓</span></a></article>
+        <article class="team-member"><span class="pill">Faculty Co-Lead</span><h4><a href="https://www.ntu.edu.sg/business/news-events/news/story-detail/meet-prof-will-cong" target="_blank" rel="noopener">Lin William Cong <span aria-hidden="true">↗</span></a></h4><p>Nanyang Business School &amp; CCDS, NTU</p><span class="faculty-detail">President's Chair Professor of Finance, Computing and Data Science</span><a class="faculty-group-link" href="#ntu-gifts">GIFTS · Founding Director <span aria-hidden="true">↓</span></a></article>
+        <article class="team-member"><span class="pill">Faculty Co-Lead</span><h4><a href="https://dr.ntu.edu.sg/entities/person/Liu-Yang" target="_blank" rel="noopener">Yang Liu <span aria-hidden="true">↗</span></a></h4><p>College of Computing and Data Science</p><span class="faculty-detail">Nanyang Technological University, Singapore</span></article>
+        <article class="team-member"><span class="pill">Faculty Co-Lead</span><h4><a href="https://dr.ntu.edu.sg/entities/person/Tao-Dacheng" target="_blank" rel="noopener">Dacheng Tao <span aria-hidden="true">↗</span></a></h4><p>College of Computing and Data Science</p><span class="faculty-detail">Nanyang Technological University, Singapore</span></article>
       </div>
       <section class="research-groups" id="labs" aria-labelledby="labs-title">
-        <div class="leadership-heading"><h3 id="labs-title">Research institutes &amp; labs</h3><p>Explore the research programmes of NTU GIFTS and HKU's AI-Agents Lab.</p></div>
+        <div class="leadership-heading"><h3 id="labs-title">Research institutes &amp; labs</h3><p>Explore the research programs of NTU GIFTS and HKU's AI-Agents Lab.</p></div>
         <div class="research-group-grid">
           <article class="research-group" id="ntu-gifts" aria-labelledby="gifts-title">
             <p class="group-affiliation">Nanyang Technological University, Singapore</p>
             <h4 id="gifts-title">NTU GIFTS</h4>
             <p class="group-name">Global Institute of Finance, Technology, and Society</p>
-            <p class="group-lead">Founding Director · <a href="https://www.ntu.edu.sg/gifts/about" target="_blank" rel="noopener">Lin William Cong ↗</a></p>
+            <p class="group-lead">Founding Director · <a href="https://www.ntu.edu.sg/gifts/about" target="_blank" rel="noopener">Lin William Cong <span aria-hidden="true">↗</span></a></p>
             <p class="group-description">A university-wide institute jointly anchored by Nanyang Business School and CCDS. GIFTS brings together research in AI, finance and the digital economy, connecting academic work with industry collaboration and policy.</p>
             <ul class="group-topics" aria-label="GIFTS research areas"><li>AI &amp; the digital economy</li><li>Financial technology</li><li>Economic simulation</li></ul>
             <div class="group-project"><h5>Related initiatives</h5><p><strong>Global InferenceNet</strong> develops benchmarks and training infrastructure for research agents. The <strong>Economic World Models Initiative</strong> studies simulated economies, markets and interactions between human and AI agents.</p></div>
-            <div class="group-links"><a class="text-link" href="https://www.ntu.edu.sg/gifts" target="_blank" rel="noopener">Visit GIFTS ↗</a><a class="text-link" href="https://www.ntu.edu.sg/gifts/research-and-innovation" target="_blank" rel="noopener">Research initiatives ↗</a></div>
+            <div class="group-links"><a class="text-link" href="https://www.ntu.edu.sg/gifts" target="_blank" rel="noopener">Visit GIFTS <span aria-hidden="true">↗</span></a><a class="text-link" href="https://www.ntu.edu.sg/gifts/research-and-innovation" target="_blank" rel="noopener">Research initiatives <span aria-hidden="true">↗</span></a></div>
           </article>
           <article class="research-group" id="hku-ai-agents-lab" aria-labelledby="hku-lab-title">
             <p class="group-affiliation">The University of Hong Kong · CAMO</p>
@@ -256,13 +384,38 @@
             <p class="group-description">Part of HKU's Centre for AI, Management and Organization (CAMO), the lab develops AI agents for business and economics. Its research spans multi-agent systems, specialist agents with domain expertise, and the effects of AI on people, firms and organizations.</p>
             <ul class="group-topics" aria-label="HKU AI-Agents Lab research areas"><li>Multi-agent systems</li><li>Domain-specific agents</li><li>AI &amp; organizations</li></ul>
             <div class="group-project"><h5>Related project</h5><p><strong>Econometric AI</strong> develops agents for econometric research and education, including analysis planning, code generation and execution. The lab's project page links to the public <strong>Econometrics-Agent</strong> code and <strong>InferenceNet</strong> dataset.</p></div>
-            <div class="group-links"><a class="text-link" href="https://camo.hku.hk/research-labs/research-labs-lab-for-ai-agents-in-business-and-economics/" target="_blank" rel="noopener">Visit the lab ↗</a><a class="text-link" href="https://camo.hku.hk/" target="_blank" rel="noopener">Explore HKU CAMO ↗</a></div>
+            <div class="group-links"><a class="text-link" href="https://camo.hku.hk/research-labs/research-labs-lab-for-ai-agents-in-business-and-economics/" target="_blank" rel="noopener">Visit the lab <span aria-hidden="true">↗</span></a><a class="text-link" href="https://camo.hku.hk/" target="_blank" rel="noopener">Explore HKU CAMO <span aria-hidden="true">↗</span></a></div>
           </article>
         </div>
       </section>
-      <p class="initiative-link"><a href="https://www.ntu.edu.sg/gifts/research-and-innovation" target="_blank" rel="noopener">Explore the initiative at NTU GIFTS ↗</a><a href="assets/institutions/ATTRIBUTION.txt" target="_blank" rel="noopener">Logo sources ↗</a></p>
+      <p class="initiative-link"><a href="https://www.ntu.edu.sg/gifts/research-and-innovation" target="_blank" rel="noopener">Explore the initiative at NTU GIFTS <span aria-hidden="true">↗</span></a><a href="assets/institutions/ATTRIBUTION.txt">Logo sources</a></p>
     </section>
+
+    <section class="section container ruled" id="cite" aria-labelledby="cite-title">
+      <div class="section-heading compact"><div><p class="kicker">10 / Cite</p><h2 id="cite-title">How to cite</h2></div><p class="lead">The benchmark is published on Hugging Face by CamoAiLab; the related MetricsAI paper describes the HKU econometrics agent shown here for context. Links only; use the citation format each source provides.</p></div>
+      <ul class="card-grid cite-grid">
+        <li class="card">
+          <p class="card-label">Dataset</p>
+          <h3>InferenceNet on Hugging Face</h3>
+          <p>CamoAiLab/InferenceNet: data card, task packages and the Selected_1000 task list. Selected_1000 counts on this site are computed from the pinned revision <code>59f9512a38e594528807744214a60ee00367434e</code>; full-benchmark totals follow the data card and leaderboard figures follow the 10 Sep 2026 snapshot.</p>
+          <div class="card-footer"><a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener">Data card <span aria-hidden="true">↗</span></a><a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet/tree/59f9512a38e594528807744214a60ee00367434e" target="_blank" rel="noopener">Pinned revision <span aria-hidden="true">↗</span></a></div>
+        </li>
+        <li class="card">
+          <p class="card-label">Related paper</p>
+          <h3>Can AI Master Econometrics? Evidence from Econometrics AI Agent on Expert-Level Tasks</h3>
+          <p>Qiang Chen, Tianyang Han, Jin Li, Ye Luo, Zigan Wang, Yuxiao Wu, Xiaowei Zhang and Tuo Zhou. arXiv:2506.00856, version 3 (28 January 2026). The MetricsAI workflow and the public Econometrics-Agent code accompany the paper.</p>
+          <div class="card-footer"><a class="text-link" href="https://arxiv.org/abs/2506.00856v3" target="_blank" rel="noopener">arXiv:2506.00856 <span aria-hidden="true">↗</span></a><a class="text-link" href="https://github.com/HKU-Business-AI-Center/Econometrics-Agent" target="_blank" rel="noopener">Econometrics-Agent code <span aria-hidden="true">↗</span></a></div>
+        </li>
+      </ul>
+    </section>
+
+    <div class="container">
+      <nav class="page-footer-nav" aria-label="Page sequence">
+        <a href="demo.html"><small>Previous</small><span><span aria-hidden="true">←</span> Demo</span></a>
+        <a href="data.html"><small>Next</small><span>Data <span aria-hidden="true">→</span></span></a>
+      </nav>
+    </div>
   </main>
-  <footer class="site-footer container"><a class="wordmark" href="#top">Inference<span>Net</span></a><p>AI for econometric research.</p><a href="https://github.com/EasonAI-5589/NTU-GIFTS-InferenceNet" target="_blank" rel="noopener">Research workspace <small>(collaborator access)</small> <span aria-hidden="true">↗</span></a></footer>
+  <footer class="site-footer container"><a class="wordmark" href="index.html">Inference<span>Net</span></a><p>AI for econometric research.</p><a href="https://github.com/YTZSR/chatpilot_evaluator/tree/dev-gyc-eval" target="_blank" rel="noopener">Research workspace <small>(collaborator access)</small> <span aria-hidden="true">↗</span></a></footer>
 </body>
 </html>

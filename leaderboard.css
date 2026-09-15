@@ -1,0 +1,101 @@
+/* leaderboard.css — page layer for leaderboard.html. Loads after site.css and
+ * mountain.css. Adds only what the shared system lacks: medal ranks and a
+ * sorted-column emphasis on the live table, a figure meta row, and the delta /
+ * grouped comparison tables. Medal colours mirror the mountain component's own
+ * tokens (mountain.css) so the table and the drawing agree. */
+
+/* Live table: medals, monospace figures, sorted column ------------------------ */
+#leaderboard-table{--medal-gold:#e8b421;--medal-silver:#c9d0da;--medal-bronze:#c98a52;--medal-ink:#1a1a1a}
+html[data-theme="dark"] #leaderboard-table{--medal-gold:#f2c13d;--medal-silver:#aeb7c3;--medal-bronze:#cf925c}
+#leaderboard-table tbody td:nth-child(n+3){font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--soft)}
+#leaderboard-table tbody tr:nth-child(-n+3)>td:first-child{position:relative;isolation:isolate;font-weight:700;color:var(--medal-ink)}
+#leaderboard-table tbody tr:nth-child(-n+3)>td:first-child::before{content:"";position:absolute;z-index:-1;left:50%;top:50%;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;background:var(--medal)}
+#leaderboard-table tbody tr:nth-child(1)>td:first-child{--medal:var(--medal-gold)}
+#leaderboard-table tbody tr:nth-child(2)>td:first-child{--medal:var(--medal-silver)}
+#leaderboard-table tbody tr:nth-child(3)>td:first-child{--medal:var(--medal-bronze)}
+#leaderboard-table tbody tr:nth-child(1)>th{font-weight:600}
+/* The header carries aria-sort (set by leaderboard.js); the column below follows it. */
+#leaderboard-table thead th[aria-sort="descending"]{background:var(--brand-tint)}
+#leaderboard-table:has(thead th:nth-child(3)[aria-sort="descending"]) tbody td:nth-child(3),
+#leaderboard-table:has(thead th:nth-child(4)[aria-sort="descending"]) tbody td:nth-child(4),
+#leaderboard-table:has(thead th:nth-child(5)[aria-sort="descending"]) tbody td:nth-child(5),
+#leaderboard-table:has(thead th:nth-child(6)[aria-sort="descending"]) tbody td:nth-child(6){background:var(--brand-tint);color:var(--ink);font-weight:600}
+.leaderboard-shell{background:var(--surface)}
+.leaderboard-footer .text-link{font-size:13px}
+/* Controls: the sort select and the refresh button share one height, type size and
+ * boundary. The boundary is the select's only affordance, so it gets a 3:1 line
+ * (page-scoped, like the medal colours above); dark theme reuses --strong-line. */
+.leaderboard-shell{--control-line:#8c8c8c}
+html[data-theme="dark"] .leaderboard-shell{--control-line:var(--strong-line)}
+.leaderboard-controls select,#leaderboard-refresh{min-height:42px;font-size:14px;border-radius:var(--radius);border-color:var(--control-line)}
+#leaderboard-refresh{padding:8px 16px}
+/* Sighted cue that the live table scrolls sideways; shown only where it does (see the
+ * table media queries below; leaderboard.js hides it again when everything fits). */
+.lb-scroll-hint{display:none;margin:0;padding:9px 28px;border-bottom:1px solid var(--line);font-size:12px;line-height:1.6;color:var(--muted)}
+.lb-scroll-hint[hidden]{display:none}
+
+/* Figure meta row (badge + provenance line above a figure) --------------------- */
+.lb-figure-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin:0 0 14px;font-size:12px;line-height:1.6;color:var(--muted)}
+.lb-figure-meta strong{font-weight:500;color:var(--soft)}
+.lb-after{margin-top:28px}
+.lb-after-tight{margin-top:18px}
+
+/* Delta and grouped comparison tables ------------------------------------------ */
+.compare-table .delta{font-weight:600;color:var(--ink)}
+.compare-table .count{display:block;font-family:var(--mono);font-size:10.5px;line-height:1.5;font-weight:400;color:var(--muted)}
+.compare-table thead th[colspan]{text-align:center;border-bottom-color:var(--strong-line)}
+.compare-table thead th[rowspan]{vertical-align:bottom}
+.compare-table thead tr+tr th{font-weight:500}
+.lb-groups tbody+tbody>tr:first-child>*{border-top:1px solid var(--strong-line)}
+.lb-groups tbody th[rowspan]{vertical-align:top}
+.lb-run-meta{display:block;font-family:var(--mono);font-size:10.5px;line-height:1.6;font-weight:400;color:var(--muted);margin-top:6px;white-space:nowrap}
+.lb-groups .badge{margin-left:6px}
+.lb-groups tbody th.arm{font-weight:400;color:var(--soft);white-space:nowrap}
+.lb-groups tbody tr:last-child th.arm{color:var(--ink);font-weight:500}
+.lb-definitions dt{white-space:nowrap}
+
+/* By-approach panels: three-up down to 861px (site.css would leave the third panel
+ * orphaned on its own row between 861 and 1100px); cards are flex columns so the
+ * "Data table" toggle sits on the card bottom even when a panel has fewer rows. */
+#by-approach .chart{display:flex;flex-direction:column}
+#by-approach .chart-canvas{flex:1 0 auto}
+@media(min-width:861px) and (max-width:1100px){#by-approach .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* Live table widths. styles.css pins the table at 860px; below 1000px the six columns
+ * fit the container once the model column is allowed to shrink, so no scrolling until
+ * phones. On phones the rank and model cells stay put and the metrics scroll past a
+ * visible cut edge. */
+@media(max-width:1100px){.lb-run-meta{white-space:normal}}
+@media(max-width:1000px){
+  #leaderboard-table{min-width:0}
+  #leaderboard-table tr>*:nth-child(2){min-width:180px}
+  #leaderboard-table th,#leaderboard-table td{padding:14px 12px}
+}
+@media(max-width:860px){
+  .lb-figure-meta{margin-bottom:12px}
+  .lb-after{margin-top:22px}
+}
+@media(max-width:600px){
+  .lb-scroll-hint:not([hidden]){display:block}
+  #leaderboard-table{min-width:640px}
+  #leaderboard-table tr>*:nth-child(2){min-width:140px;white-space:normal}
+  #leaderboard-table th,#leaderboard-table td{padding:12px 10px}
+  #leaderboard-table tr>*:first-child,#leaderboard-table tbody tr:nth-child(-n+3)>td:first-child{position:sticky;left:0;z-index:1}
+  #leaderboard-table tr>*:nth-child(2){position:sticky;left:45px;z-index:1;border-right:1px solid var(--line)}
+}
+@media(max-width:520px){
+  .lb-scroll-hint{padding-inline:18px}
+  .lb-definitions dt{white-space:normal}
+  #leaderboard-table tbody tr:nth-child(-n+3)>td:first-child::before{width:24px;height:24px;margin:-12px 0 0 -12px}
+}
+@media(forced-colors:active){
+  #leaderboard-table tbody tr:nth-child(-n+3)>td:first-child::before{border:1px solid CanvasText;background:Canvas}
+  #leaderboard-table tbody tr:nth-child(-n+3)>td:first-child{color:CanvasText}
+}
+
+/* Three-cell stat strip: three across on wide screens, one column on phones. -- */
+.lb-strip{--cols:3}
+@media(max-width:600px){.lb-strip{--cols:1}.lb-strip .stat{padding-inline:0}}
+/* Caveat list rendered as prose without a wrapper. */
+ul.lb-list{margin:0;padding-left:20px;font-size:15px;line-height:1.8;color:var(--soft);max-width:68ch}
+ul.lb-list li+li{margin-top:6px}

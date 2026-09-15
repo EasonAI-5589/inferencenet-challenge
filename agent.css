@@ -1,0 +1,109 @@
+/* agent.html — page-specific layout on top of site.css. No new tokens; only
+ * composition of the shared components (steps, code panels, tables, diagram). */
+
+/* 01 · Task: card beside the instruction panel; the "what the model does not
+ * see" callout runs under both as one three-column strip */
+.task-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:24px}
+.task-grid .card h3{font-size:18px}
+.task-grid .kv dd .pill-list{margin-top:2px}
+.task-callout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px 28px;margin-top:24px}
+.task-callout .callout-title{grid-column:1/-1}
+.task-callout p+p{margin-top:0}
+
+/* 02 · Arm A: paragraph beside the collapsed program and the stderr tail */
+.baseline-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:28px;align-items:start;margin-top:30px}
+.baseline-grid>*,.task-grid>*,.scoring-grid>*,.framework-tables>*,.budgets-grid>*,.evidence-grid>*,.prompts>*{min-width:0}
+.baseline-grid .prose p{font-size:15px}
+
+/* 03 · Arm B: budget strip, internal-study note, timeline. Harness replies use a
+ * return glyph instead of repeating the call number on the rail. */
+.trajectory-note{margin:26px 0 34px}
+.step.reply .step-marker{background:var(--tint);color:var(--muted);border-color:var(--line);font-family:var(--sans);font-size:16px;line-height:1}
+.step-title code{font-size:.92em}
+.step-body>p code{font-size:12.5px}
+html[data-theme="dark"] .step.is-final .code-panel.inverse{border-color:var(--brand)}
+
+/* 04 · Scoring: comparison table, its note, flags, lessons */
+.score-table td.mono{font-family:var(--mono);font-size:12px}
+.score-note{margin:10px 0 0;max-width:80ch}
+.nowrap{white-space:nowrap}
+.flag-true{font-weight:600;color:var(--ink)}
+.flag-true::before{content:"\2713\00a0";color:var(--brand)}
+.scoring-grid{margin-top:28px;gap:28px}
+.replay-kv{align-self:start}
+.lessons{margin-top:30px}
+.lessons .card h3{font-size:16px}
+.lessons .card p{margin-top:8px}
+
+/* 05 · Framework: diagram, tables, prompts. The portrait drawing replaces the
+ * 1044px landscape one wherever the landscape would have to scroll. */
+.arch .group{fill:none;stroke:var(--line);stroke-width:1;stroke-dasharray:5 4}
+.arch .t-edge{text-anchor:middle;font-size:11px}
+.arch .arch-portrait{display:none}
+.diagram.wide .diagram-scroll svg.arch-portrait{min-width:0;max-width:440px}
+.arch .arch-portrait .t-small{font-size:12.5px}
+.arch .node.ink+text,.arch .t-inverse.t-small{fill:var(--paper);opacity:.85}
+.framework-tables{margin-top:28px;gap:28px}
+.framework-note h3{margin-top:0;font-size:16px;font-weight:600;letter-spacing:-.015em}
+.arms-table{margin-top:0}
+.framework-tables+.table-scroll{margin-top:28px}
+.inline-list{margin:0;padding-left:18px;font-size:12.5px;line-height:1.6;color:var(--soft)}
+ol.inline-list{list-style:decimal}
+ul.inline-list{list-style:disc}
+.inline-list li+li{margin-top:4px}
+.arms-table tbody th{white-space:nowrap}
+.prompts{margin-top:28px}
+
+/* 06 · Budgets */
+.budgets-grid{gap:28px}
+.budgets-table tbody th{white-space:nowrap}
+
+/* 07 · Evidence: the file list keeps mono keys but sans descriptions */
+.block-title{font-size:16px;font-weight:600;letter-spacing:-.015em;margin:0 0 12px}
+.evidence-grid{gap:28px}
+.evidence-list{grid-template-columns:minmax(150px,52%) minmax(0,1fr)}
+.evidence-list dt code{font-size:12px;overflow-wrap:anywhere}
+.kv.mono.evidence-list dd{font-family:var(--sans);font-size:13px}
+.profiles-table tbody th{white-space:nowrap}
+.profiles-table thead th{white-space:normal}
+
+/* 08 · Next protocol */
+.next-grid .card-footer span{font-size:12px}
+.next-grid .kv{margin-top:14px}
+
+/* 09 · Related research: the MetricsAI vector figure. The frame uses --paper so
+ * the SVG's own paper fallback matches it in both themes. */
+.related-figure{margin:0;border:1px solid var(--line);border-radius:var(--radius);background:var(--paper);padding:24px;min-width:0}
+.related-figure img{display:block;width:100%;height:auto;max-width:1100px;margin-inline:auto}
+.related-figure figcaption{margin-top:16px;font-size:12px;line-height:1.7;color:var(--muted)}
+.related-figure figcaption a{text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--strong-line)}
+.related-figure figcaption a:hover{text-decoration-color:var(--ink)}
+.related-links{display:flex;flex-wrap:wrap;gap:12px 32px;margin-top:22px}
+
+/* Responsive */
+@media(max-width:1100px){
+  .task-grid,.baseline-grid,.budgets-grid,.evidence-grid,.framework-tables{grid-template-columns:minmax(0,1fr)}
+  .lessons{--cols-cap:3}
+  .arch .arch-landscape{display:none}
+  .arch .arch-portrait{display:block}
+}
+@media(max-width:1000px){
+  .subnav ol{gap:0 16px}
+  .subnav a{font-size:12.5px}
+}
+@media(max-width:860px){
+  .task-callout{grid-template-columns:minmax(0,1fr);gap:8px}
+  .scoring-grid,.framework-tables,.budgets-grid,.evidence-grid{gap:20px}
+  .evidence-list{grid-template-columns:minmax(120px,52%) minmax(0,1fr)}
+  .lessons{--cols-cap:1}
+  .related-figure{padding:18px}
+  .baseline-grid{margin-top:26px}
+}
+@media(max-width:520px){
+  .evidence-list{grid-template-columns:minmax(0,1fr)}
+  .related-figure{padding:14px}
+  .arms-table tbody th,.budgets-table tbody th,.profiles-table tbody th{white-space:normal}
+  .budgets-table thead th,.budgets-table td.num{white-space:normal}
+  .page-meta a{display:inline-block;padding-block:7px}
+  .card-footer .text-link,.related-links .text-link{min-height:32px}
+}

@@ -17,10 +17,13 @@
     const buttons = Array.from(document.querySelectorAll("[data-theme-toggle]"));
     const syncButtons = () => buttons.forEach((button) => {
       const dark = theme === "dark";
-      const action = `Switch to ${dark ? "light" : "dark"} theme`;
+      // Toggle-button pattern: one constant accessible name plus aria-pressed
+      // for the state ("Dark theme, toggle button, pressed"). No title: it
+      // would only duplicate the name. The visible text still reads the
+      // current theme.
       button.setAttribute("aria-pressed", String(dark));
-      button.setAttribute("aria-label", action);
-      button.setAttribute("title", action);
+      button.setAttribute("aria-label", "Dark theme");
+      button.removeAttribute("title");
       const label = button.querySelector("[data-theme-label]");
       if (label) label.textContent = dark ? "Dark" : "Light";
       button.hidden = false;
