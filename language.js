@@ -6,7 +6,7 @@
   const normalize = value => value.replace(/\s+/g, ' ').trim();
   const common = {
     'Home': '首页', 'Data': '数据', 'Agent': '智能体', 'Leaderboard': '排行榜',
-    'Demo': '演示', 'Teams': '团队', 'Menu': '菜单', 'Light': '浅色', 'Dark': '深色',
+    'Demo': '演示', 'Teams': '团队', 'Contact': '联系', 'Menu': '菜单', 'Light': '浅色', 'Dark': '深色',
     'Dark theme': '深色主题', 'Switch to dark theme': '切换深色主题',
     'Skip to content': '跳转到正文', 'Main navigation': '主导航',
     'On this page': '本页导航', 'Legend': '图例', 'Rank': '排名',
@@ -118,7 +118,7 @@
   function loadDictionary() {
     if (!dictionaryPromise) {
       const filename = location.pathname.split('/').pop() || 'index.html';
-      const page = ['index.html', 'data.html', 'agent.html', 'leaderboard.html', 'demo.html'].includes(filename)
+      const page = ['index.html', 'data.html', 'agent.html', 'leaderboard.html', 'demo.html', 'teams.html'].includes(filename)
         ? filename.replace('.html', '') : 'index';
       const dictionaryURL = new URL(`assets/i18n/${page}.zh.json`, scriptURL);
       // Keep a page's release-tagged script and dictionary on the same version.

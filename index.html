@@ -17,10 +17,10 @@
   <link rel="stylesheet" href="site.css">
   <link rel="stylesheet" href="mountain.css">
   <link rel="stylesheet" href="index.css">
-  <script src="site.js" defer></script>
+  <script src="site.js?v=20260915-teams" defer></script>
   <script type="module" src="mountain.js"></script>
   <link rel="stylesheet" href="language.css">
-  <script src="language.js?v=20260915-homepages" defer></script>
+  <script src="language.js?v=20260915-teams" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -34,7 +34,7 @@
         <a href="agent.html">Agent</a>
         <a href="leaderboard.html">Leaderboard</a>
         <a href="demo.html">Demo</a>
-        <a href="index.html#team">Teams</a>
+        <a href="teams.html">Teams</a>
       </div>
       <div class="nav-controls">
         <button class="theme-toggle" data-theme-toggle aria-label="Switch to dark theme" aria-pressed="false" type="button" hidden>
@@ -52,9 +52,9 @@
       <p class="hero-subtitle">Can AI agents reproduce published econometric findings from the real research data?</p>
       <p class="hero-description">Each task hands an agent a paper's data, the estimation method and the statistic to reproduce. Its coefficient, standard error and p-value are then compared with the published values.</p>
       <div class="hero-affiliations" role="group" aria-label="Research institutions">
-        <a href="#team"><img src="assets/institutions/ntu-ccds-official.png" width="475" height="114" alt="NTU College of Computing and Data Science"></a>
-        <a href="#team"><img src="assets/institutions/ntu-nbs-official.jpg" width="386" height="103" alt="NTU Nanyang Business School"></a>
-        <a href="#team"><img src="assets/institutions/hku-business-horizontal.png" width="2500" height="625" alt="HKU Business School"></a>
+        <a href="teams.html#institutions"><img src="assets/institutions/ntu-ccds-official.png" width="475" height="114" alt="NTU College of Computing and Data Science"></a>
+        <a href="teams.html#institutions"><img src="assets/institutions/ntu-nbs-official.jpg" width="386" height="103" alt="NTU Nanyang Business School"></a>
+        <a href="teams.html#institutions"><img src="assets/institutions/hku-business-horizontal.png" width="2500" height="625" alt="HKU Business School"></a>
       </div>
       <div class="hero-actions">
         <a class="button primary" href="data.html">Explore the data <span aria-hidden="true">→</span></a>
@@ -83,7 +83,7 @@
             <li><span class="organiser-role">Project Leader</span><a href="https://easonai-5589.github.io/" target="_blank" rel="noopener">Yichen Guo <span aria-hidden="true">↗</span></a></li>
             <li><span class="organiser-role">Project Leader</span><a href="https://www.hkubs.hku.hk/people/tianyang-han/" target="_blank" rel="noopener">Tianyang Han <span aria-hidden="true">↗</span></a></li>
           </ul>
-          <p class="organisers-more"><a class="text-link" href="#team">Roles, labs and institutions in Teams <span aria-hidden="true">↓</span></a></p>
+          <p class="organisers-more"><a class="text-link" href="teams.html">Roles, labs and institutions in Teams <span aria-hidden="true">→</span></a></p>
         </div>
       </div>
       <div class="paper-links" role="group" aria-label="Benchmark resources">
@@ -104,8 +104,7 @@
         <li><a href="#participate"><span class="subnav-number">06</span>Take part</a></li>
         <li><a href="#timeline"><span class="subnav-number">07</span>Timeline</a></li>
         <li><a href="#resources"><span class="subnav-number">08</span>Resources</a></li>
-        <li><a href="#team"><span class="subnav-number">09</span>Teams</a></li>
-        <li><a href="#cite"><span class="subnav-number">10</span>Cite</a></li>
+        <li><a href="#cite"><span class="subnav-number">09</span>Cite</a></li>
       </ol>
     </nav>
 
@@ -349,50 +348,8 @@
       <p class="resource-extra"><a class="text-link" href="https://github.com/EasonAI-5589/inferencenet-challenge" target="_blank" rel="noopener">Public website repository <span aria-hidden="true">↗</span></a></p>
     </section>
 
-    <section class="section container ruled" id="team" aria-labelledby="team-title">
-      <div class="section-heading compact"><div><p class="kicker">09 / Teams</p><h2 id="team-title">Research teams</h2></div><p class="lead">NTU's College of Computing and Data Science and Nanyang Business School, together with HKU Business School.</p></div>
-      <div class="institution-grid">
-        <a href="https://www.ntu.edu.sg/computing" target="_blank" rel="noopener"><div class="institution-logo"><img src="assets/institutions/ntu-ccds-official.png" width="475" height="114" alt="NTU College of Computing and Data Science" loading="lazy"></div><div class="institution-copy"><span class="institution-abbreviation">NTU · CCDS <span aria-hidden="true">↗</span></span><h3>College of Computing and Data Science</h3><p>Nanyang Technological University, Singapore</p></div></a>
-        <a href="https://www.ntu.edu.sg/business" target="_blank" rel="noopener"><div class="institution-logo"><img src="assets/institutions/ntu-nbs-official.jpg" width="386" height="103" alt="NTU Nanyang Business School" loading="lazy"></div><div class="institution-copy"><span class="institution-abbreviation">NTU · NBS <span aria-hidden="true">↗</span></span><h3>Nanyang Business School</h3><p>Nanyang Technological University, Singapore</p></div></a>
-        <a href="https://www.hkubs.hku.hk/" target="_blank" rel="noopener"><div class="institution-logo"><img src="assets/institutions/hku-business-horizontal.png" width="2500" height="625" alt="HKU Business School" loading="lazy"></div><div class="institution-copy"><span class="institution-abbreviation">HKU <span aria-hidden="true">↗</span></span><h3>HKU Business School</h3><p>The University of Hong Kong</p></div></a>
-      </div>
-      <div class="leadership-heading"><h3 id="leadership-title">Challenge team</h3><p>Faculty Leads: Ye Luo and Lin William Cong. Project Leaders: Yichen Guo and Tianyang Han.</p></div>
-      <div class="team-grid" role="group" aria-labelledby="leadership-title">
-        <article class="team-member"><span class="pill">Faculty Lead</span><h4><a href="https://www.hkubs.hku.hk/people/ye-luo/" target="_blank" rel="noopener">Ye Luo <span aria-hidden="true">↗</span></a></h4><p>HKU Business School</p><span class="faculty-detail">Associate Professor<br>The University of Hong Kong</span><a class="faculty-group-link" href="#hku-ai-agents-lab">AI-Agents Lab · Lab Director <span aria-hidden="true">↓</span></a><p><a class="text-link" href="https://www.hkubs.hku.hk/people/ye-luo/" target="_blank" rel="noopener">Homepage <span aria-hidden="true">↗</span></a></p></article>
-        <article class="team-member"><span class="pill">Faculty Lead</span><h4><a href="https://www.linwilliamcong.com/" target="_blank" rel="noopener">Lin William Cong <span aria-hidden="true">↗</span></a></h4><p>Nanyang Business School &amp; CCDS, NTU</p><span class="faculty-detail">President's Chair Professor of Finance, Computing and Data Science</span><a class="faculty-group-link" href="#ntu-gifts">GIFTS · Founding Director <span aria-hidden="true">↓</span></a><p><a class="text-link" href="https://www.linwilliamcong.com/" target="_blank" rel="noopener">Homepage <span aria-hidden="true">↗</span></a></p></article>
-        <article class="team-member"><span class="pill">Project Leader</span><h4><a href="https://easonai-5589.github.io/" target="_blank" rel="noopener">Yichen Guo <span aria-hidden="true">↗</span></a></h4><p>InferenceNet Challenge</p><p><a class="text-link" href="https://easonai-5589.github.io/" target="_blank" rel="noopener">Homepage <span aria-hidden="true">↗</span></a></p></article>
-        <article class="team-member"><span class="pill">Project Leader</span><h4><a href="https://www.hkubs.hku.hk/people/tianyang-han/" target="_blank" rel="noopener">Tianyang Han <span aria-hidden="true">↗</span></a></h4><p>InferenceNet Challenge</p><p><a class="text-link" href="https://www.hkubs.hku.hk/people/tianyang-han/" target="_blank" rel="noopener">Homepage <span aria-hidden="true">↗</span></a></p></article>
-      </div>
-      <section class="research-groups" id="labs" aria-labelledby="labs-title">
-        <div class="leadership-heading"><h3 id="labs-title">Research institutes &amp; labs</h3><p>Explore the research programs of NTU GIFTS and HKU's AI-Agents Lab.</p></div>
-        <div class="research-group-grid">
-          <article class="research-group" id="ntu-gifts" aria-labelledby="gifts-title">
-            <p class="group-affiliation">Nanyang Technological University, Singapore</p>
-            <h4 id="gifts-title">NTU GIFTS</h4>
-            <p class="group-name">Global Institute of Finance, Technology, and Society</p>
-            <p class="group-lead">Founding Director · <a href="https://www.ntu.edu.sg/gifts/about" target="_blank" rel="noopener">Lin William Cong <span aria-hidden="true">↗</span></a></p>
-            <p class="group-description">A university-wide institute jointly anchored by Nanyang Business School and CCDS. GIFTS brings together research in AI, finance and the digital economy, connecting academic work with industry collaboration and policy.</p>
-            <ul class="group-topics" aria-label="GIFTS research areas"><li>AI &amp; the digital economy</li><li>Financial technology</li><li>Economic simulation</li></ul>
-            <div class="group-project"><h5>Related initiatives</h5><p><strong>Global InferenceNet</strong> develops benchmarks and training infrastructure for research agents. The <strong>Economic World Models Initiative</strong> studies simulated economies, markets and interactions between human and AI agents.</p></div>
-            <div class="group-links"><a class="text-link" href="https://www.ntu.edu.sg/gifts" target="_blank" rel="noopener">Visit GIFTS <span aria-hidden="true">↗</span></a><a class="text-link" href="https://www.ntu.edu.sg/gifts/research-and-innovation" target="_blank" rel="noopener">Research initiatives <span aria-hidden="true">↗</span></a></div>
-          </article>
-          <article class="research-group" id="hku-ai-agents-lab" aria-labelledby="hku-lab-title">
-            <p class="group-affiliation">The University of Hong Kong · CAMO</p>
-            <h4 id="hku-lab-title">HKU AI-Agents Lab</h4>
-            <p class="group-name">Lab for AI-Agents in Business and Economics</p>
-            <p class="group-lead">Lab Directors · Ye Luo &amp; Xin Tong</p>
-            <p class="group-description">Part of HKU's Centre for AI, Management and Organization (CAMO), the lab develops AI agents for business and economics. Its research spans multi-agent systems, specialist agents with domain expertise, and the effects of AI on people, firms and organizations.</p>
-            <ul class="group-topics" aria-label="HKU AI-Agents Lab research areas"><li>Multi-agent systems</li><li>Domain-specific agents</li><li>AI &amp; organizations</li></ul>
-            <div class="group-project"><h5>Related project</h5><p><strong>Econometric AI</strong> develops agents for econometric research and education, including analysis planning, code generation and execution. The lab's project page links to the public <strong>Econometrics-Agent</strong> code and <strong>InferenceNet</strong> dataset.</p></div>
-            <div class="group-links"><a class="text-link" href="https://camo.hku.hk/research-labs/research-labs-lab-for-ai-agents-in-business-and-economics/" target="_blank" rel="noopener">Visit the lab <span aria-hidden="true">↗</span></a><a class="text-link" href="https://camo.hku.hk/" target="_blank" rel="noopener">Explore HKU CAMO <span aria-hidden="true">↗</span></a></div>
-          </article>
-        </div>
-      </section>
-      <p class="initiative-link"><a href="https://www.ntu.edu.sg/gifts/research-and-innovation" target="_blank" rel="noopener">Explore the initiative at NTU GIFTS <span aria-hidden="true">↗</span></a><a href="assets/institutions/ATTRIBUTION.txt">Logo sources</a></p>
-    </section>
-
     <section class="section container ruled" id="cite" aria-labelledby="cite-title">
-      <div class="section-heading compact"><div><p class="kicker">10 / Cite</p><h2 id="cite-title">How to cite</h2></div><p class="lead">The benchmark is published on Hugging Face by CamoAiLab; the related MetricsAI paper describes the HKU econometrics agent shown here for context. Links only; use the citation format each source provides.</p></div>
+      <div class="section-heading compact"><div><p class="kicker">09 / Cite</p><h2 id="cite-title">How to cite</h2></div><p class="lead">The benchmark is published on Hugging Face by CamoAiLab; the related MetricsAI paper describes the HKU econometrics agent shown here for context. Links only; use the citation format each source provides.</p></div>
       <ul class="card-grid cite-grid">
         <li class="card">
           <p class="card-label">Dataset</p>
@@ -411,11 +368,11 @@
 
     <div class="container">
       <nav class="page-footer-nav" aria-label="Page sequence">
-        <a href="demo.html"><small>Previous</small><span><span aria-hidden="true">←</span> Demo</span></a>
+        <a href="teams.html"><small>Previous</small><span><span aria-hidden="true">←</span> Teams</span></a>
         <a href="data.html"><small>Next</small><span>Data <span aria-hidden="true">→</span></span></a>
       </nav>
     </div>
   </main>
-  <footer class="site-footer container"><a class="wordmark" href="index.html">Inference<span>Net</span></a><p>AI for econometric research.</p><a href="https://github.com/YTZSR/chatpilot_evaluator/tree/dev-gyc-eval" target="_blank" rel="noopener">Research workspace <small>(collaborator access)</small> <span aria-hidden="true">↗</span></a></footer>
+  <footer class="site-footer container"><a class="wordmark" href="index.html">Inference<span>Net</span></a><p>AI for econometric research.</p><a href="teams.html#contact">Contact <span aria-hidden="true">→</span></a></footer>
 </body>
 </html>

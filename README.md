@@ -3,7 +3,7 @@
 [Live website](https://easonai-5589.github.io/inferencenet-challenge/)
 
 Public presentation site for InferenceNet: AI for econometric research. The
-2026-09-15 update brings together Home, Data, Agent, Leaderboard and Demo, with
+2026-09-15 update brings together Home, Data, Agent, Leaderboard, Demo and Teams, with
 Chinese / English and light / dark controls on every page.
 
 ## Edit the website
@@ -23,15 +23,20 @@ screenshot for visual changes.
 
 | Page or layer | Files |
 |---|---|
-| Home, resources and teams | `index.html`, `index.css` |
+| Home, resources and team summary | `index.html`, `index.css` |
 | Dataset distributions and examples | `data.html`, `data.css` |
 | Agent case and evaluation harness | `agent.html`, `agent.css` |
 | Public leaderboard and historical internal studies | `leaderboard.html`, `leaderboard.css` |
 | Guided presentation | `demo.html`, `demo.css`, `demo.js` |
+| Team, institutions and Yichen Guo contact | `teams.html`, `teams.css` |
 | Shared layout, navigation and theme | `styles.css`, `site.css`, `site.js`, `theme.js` |
 | Chinese translations and language control | `assets/i18n/*.zh.json`, `language.js`, `language.css` |
 | Charts and mountain leaderboard | `charts.js`, `mountain.js`, `mountain.css` |
 | Public leaderboard synchronization | `leaderboard.js`, `leaderboard-data.js`, `assets/data/` |
+
+When updating translations or shared scripts, refresh the `?v=` release tag
+in the HTML. `language.js` forwards its release tag to the page dictionary URL;
+Teams uses `assets/i18n/teams.zh.json`. Current tag: `20260915-teams`.
 
 English is authored in the HTML. When changing English text, update the matching
 normalized English key and Chinese value in that page's dictionary. Preserve
@@ -48,6 +53,10 @@ submitting; verify navigation, images, chart fallbacks and demo controls.
 The current Challenge team has two Faculty Leads, Ye Luo and Lin William Cong,
 and two Project Leaders, Yichen Guo and Tianyang Han. Keep the homepage summary,
 Teams cards and Chinese dictionary synchronized when updating this roster.
+Detailed profiles live only on `teams.html`; Home retains the compact roster.
+Every footer links to `teams.html#contact`, with only Yichen Guo’s email, WeChat
+ID and homepage. The personal WeChat QR image will be added when supplied.
+Previously shared Home team anchors redirect to the corresponding Teams section.
 
 Challenge dates, rules, registration, prizes and competition results remain
 "To be announced" until confirmed. The public Hugging Face leaderboard is the

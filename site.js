@@ -8,6 +8,24 @@
  * leaves the menu, progress bar and .sample-tabs to it. */
 (() => {
   const scriptUrl = document.currentScript && document.currentScript.src ? document.currentScript.src : null;
+  // Keep previously shared Home team links working after the page split.
+  const homeFile = window.location.pathname.split('/').pop();
+  const teamAnchors = new Map([
+    ['#team', '#team'], ['#team-title', '#team'], ['#leadership-title', '#team'],
+    ['#labs', '#labs'], ['#labs-title', '#labs'], ['#ntu-gifts', '#ntu-gifts'],
+    ['#gifts-title', '#ntu-gifts'], ['#hku-ai-agents-lab', '#hku-ai-agents-lab'],
+    ['#hku-lab-title', '#hku-ai-agents-lab'],
+  ]);
+  if (!homeFile || homeFile === 'index.html') {
+    const redirectTeamLink = () => {
+      const target = teamAnchors.get(window.location.hash);
+      if (!target) return false;
+      window.location.replace(new URL(`teams.html${target}`, window.location.href));
+      return true;
+    };
+    if (redirectTeamLink()) return;
+    window.addEventListener('hashchange', redirectTeamLink);
+  }
   document.documentElement.classList.add('js');
   const legacy = Boolean(document.querySelector('script[src="script.js"], script[src$="/script.js"]'));
 
