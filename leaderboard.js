@@ -1,7 +1,7 @@
-import { ARMS, VIEWS, METRICS, DEFAULT_METRIC, DEFAULT_VIEW, validateSnapshot, rankModels, tableRows, modelDisplayName } from './leaderboard-data.js?v=20260917-results';
+import { ARMS, VIEWS, METRICS, DEFAULT_METRIC, DEFAULT_VIEW, validateSnapshot, rankModels, tableRows, modelDisplayName } from './leaderboard-data.js?v=20260917-research';
 import { mountain } from './mountain.js';
 
-const source = new URL('./assets/data/paired-results.json?v=20260917-results', import.meta.url);
+const source = new URL('./assets/data/paired-results.json?v=20260917-research', import.meta.url);
 const snapshot = fetch(source).then(response => {
   if (!response.ok) throw new Error('Snapshot unavailable');
   return response.json();

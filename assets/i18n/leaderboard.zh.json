@@ -118,5 +118,20 @@
   "All · 12 entries · Partial replication": "全部 · 12 条记录 · 部分复现率",
   "All · 12 entries · Execution success": "全部 · 12 条记录 · 执行成功率",
   "All · 12 entries · Coefficient direction": "全部 · 12 条记录 · 系数方向正确率",
-  "All · 12 entries · Significance level": "全部 · 12 条记录 · 显著性水平正确率"
+  "All · 12 entries · Significance level": "全部 · 12 条记录 · 显著性水平正确率",
+  "Models and harnesses": "模型与 Harness",
+  "We study how models and harnesses work together to improve econometric replication on InferenceNet.": "我们研究模型与 Harness 如何协同，在 InferenceNet 上取得更好的计量经济学复现效果。",
+  "A harness organizes how a model uses tools, executes code and responds to feedback. The leaderboard provides a basis for studying these interactions, evolving harnesses and developing trajectories for model post-training.": "Harness 组织模型的工具调用、代码执行与反馈处理。排行榜为研究模型与 Harness 的耦合、推动 Harness 自进化，以及积累模型后训练所需的轨迹提供评测基础。",
+  "Explore the research directions": "探索研究方向",
+  "02 / Research": "02 / 研究",
+  "Research directions": "研究方向",
+  "Our goal is to understand how models and harnesses can improve econometric replication, and turn evaluation evidence into better systems and training signals.": "我们希望探索模型与 Harness 如何提升计量经济学复现能力，并将评测结果转化为系统改进的依据与模型训练信号。",
+  "Model–Harness Coupling": "模型与 Harness 的耦合",
+  "Study how model capabilities interact with harness design, and how planning, tool use and execution feedback affect replication performance.": "研究模型能力与 Harness 设计的适配关系，分析规划、工具调用和执行反馈如何影响复现表现。",
+  "Harness Self-Evolution": "Harness 自进化",
+  "Explore a feedback-driven cycle of automatic harness design, evaluation and refinement, using execution trajectories and replication outcomes to guide each update.": "探索由反馈驱动的 Harness 自动设计、评测与持续优化过程，以执行轨迹和复现结果指导每轮改进。",
+  "Trajectory-Based Post-Training": "轨迹驱动的模型后训练",
+  "Investigate how validated agent trajectories, tool feedback and replication outcomes can support model post-training, including trajectory distillation and reinforcement learning.": "研究如何将经过验证的智能体执行轨迹、工具反馈与复现结果用于模型后训练，包括轨迹蒸馏和强化学习。",
+  "Evaluation protocol and sources": "评测协议与数据来源",
+  "Published result archives:": "已发布结果归档："
 }

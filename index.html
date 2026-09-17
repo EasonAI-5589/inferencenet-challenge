@@ -16,12 +16,12 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="site.css?v=20260915-menu">
   <link rel="stylesheet" href="mountain.css">
-  <link rel="stylesheet" href="leaderboard.css?v=20260917-results">
-  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="leaderboard.css?v=20260917-research">
+  <link rel="stylesheet" href="index.css?v=20260917-research">
   <script src="site.js?v=20260915-menu" defer></script>
-  <script type="module" src="leaderboard.js?v=20260917-results"></script>
+  <script type="module" src="leaderboard.js?v=20260917-research"></script>
   <link rel="stylesheet" href="language.css">
-  <script src="language.js?v=20260917-results" defer></script>
+  <script src="language.js?v=20260917-research" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -204,23 +204,11 @@
 
     <section class="section container ruled" id="harness" aria-labelledby="harness-title">
       <div class="section-heading">
-        <div><p class="kicker">04 / Harness</p><h2 id="harness-title">Two ways to solve the same tasks</h2></div>
-        <p class="lead">Each of the six models is evaluated on the same 1,000 tasks in two settings. Both receive the task and data; reference answers remain hidden.</p>
+        <div><p class="kicker">04 / Harness</p><h2 id="harness-title">Models and harnesses</h2></div>
+        <p class="lead">We study how models and harnesses work together to improve econometric replication on InferenceNet.</p>
       </div>
-      <ul class="card-grid harness-arms">
-        <li class="card">
-          <p class="card-label">Model</p>
-          <h3>Generate once, execute once</h3>
-          <p>One model call produces one program, which is executed once to return the result.</p>
-        </li>
-        <li class="card">
-          <p class="card-label">Model + DeepAgents</p>
-          <h3>Inspect, execute, refine</h3>
-          <p>The model can inspect data and revise its program using execution feedback, with up to 6 model calls and 4 tool executions per task. The final program is replayed in a clean container.</p>
-        </li>
-      </ul>
-      <p class="note harness-note">The two settings use different inference budgets. All 1,000 planned tasks remain in each score's denominator.</p>
-      <p class="harness-links"><a class="text-link" href="leaderboard.html">Compare all configurations <span aria-hidden="true">→</span></a><a class="text-link" href="agent.html">Watch a recorded trajectory <span aria-hidden="true">→</span></a></p>
+      <p class="harness-purpose">A harness organizes how a model uses tools, executes code and responds to feedback. The leaderboard provides a basis for studying these interactions, evolving harnesses and developing trajectories for model post-training.</p>
+      <p class="harness-links"><a class="text-link" href="leaderboard.html#research">Explore the research directions <span aria-hidden="true">→</span></a><a class="text-link" href="agent.html">Watch a recorded trajectory <span aria-hidden="true">→</span></a></p>
     </section>
 
     <section class="section container ruled" id="results" aria-labelledby="results-title">
