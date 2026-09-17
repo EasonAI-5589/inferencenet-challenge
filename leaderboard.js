@@ -1,7 +1,7 @@
-import { ARMS, METRICS, DEFAULT_METRIC, DEFAULT_ARM, validateSnapshot, rankModels, tableRows } from './leaderboard-data.js?v=20260917-paired';
+import { ARMS, VIEWS, METRICS, DEFAULT_METRIC, DEFAULT_VIEW, validateSnapshot, rankModels, tableRows } from './leaderboard-data.js?v=20260917-combined';
 import { mountain } from './mountain.js';
 
-const source = new URL('./assets/data/paired-results.json?v=20260917-paired', import.meta.url);
+const source = new URL('./assets/data/paired-results.json?v=20260917-combined', import.meta.url);
 const snapshot = fetch(source).then(response => {
   if (!response.ok) throw new Error('Snapshot unavailable');
   return response.json();
@@ -11,47 +11,43 @@ for (const widget of document.querySelectorAll('[data-paired-leaderboard]')) {
   const controls = widget.querySelector('.paired-controls');
   const status = widget.querySelector('[data-ranking-status]');
   snapshot.then(data => {
-    let arm = DEFAULT_ARM;
+    let view = DEFAULT_VIEW;
     let metric = DEFAULT_METRIC;
     const select = widget.querySelector('[data-ranking-metric]');
+    const viewSelect = widget.querySelector('[data-ranking-view]');
+    const table = widget.querySelector('.paired-table');
     const figure = widget.querySelector('[data-ranking-mountain]');
     const viewFromURL = new URL(location.href).searchParams.get('view');
-    if (Object.hasOwn(ARMS, viewFromURL)) arm = viewFromURL;
+    if (Object.hasOwn(VIEWS, viewFromURL)) view = viewFromURL;
+    viewSelect.value = view;
 
     function render() {
-      for (const button of widget.querySelectorAll('[data-ranking-arm]')) {
-        button.setAttribute('aria-pressed', String(button.dataset.rankingArm === arm));
+      const rows = rankModels(data, view, metric);
+      table.querySelector('tbody').innerHTML = tableRows(data, view, metric);
+      table.querySelector('caption').textContent = `${VIEWS[view]} · scores over all 1,000 tasks (%)`;
+      for (const header of table.querySelectorAll('th[data-metric]')) {
+        header.setAttribute('aria-sort', header.dataset.metric === metric ? 'descending' : 'none');
       }
-      for (const panel of widget.querySelectorAll('[data-ranking-panel]')) {
-        const active = panel.dataset.rankingPanel === arm;
-        panel.hidden = !active;
-        if (!active) continue;
-        panel.querySelector('tbody').innerHTML = tableRows(data, arm, metric);
-        for (const header of panel.querySelectorAll('th[data-metric]')) {
-          header.setAttribute('aria-sort', header.dataset.metric === metric ? 'descending' : 'none');
-        }
-      }
-      widget.querySelector('[data-ranking-label]').textContent = ARMS[arm];
+      widget.querySelector('[data-ranking-label]').textContent = view === 'all' ? 'Combined leaderboard' : VIEWS[view];
       figure.hidden = false;
       mountain(figure, {
-        title: ARMS[arm], metric: METRICS[metric], unit: '%', max: 100,
+        title: VIEWS[view], metric: METRICS[metric], unit: '%', max: 100,
         peakLabel: '100% · every task replicated',
-        items: rankModels(data, arm, metric).map(({ rank, model, metrics }) => ({
-          rank, label: model.name, value: metrics[metric].score, kind: 'internal',
+        items: rows.map(({ rank, model, arm, metrics }) => ({
+          rank, label: view === 'all' ? `${model.name} · ${ARMS[arm]}` : model.name,
+          value: metrics[metric].score, kind: 'internal',
         })),
       }, { table: false, aspect: 0.48 });
-      widget.dataset.activeArm = arm;
+      widget.dataset.activeView = view;
       widget.dataset.activeMetric = metric;
-      status.textContent = `${ARMS[arm]} · ${data.models.length} models · ${METRICS[metric]}`;
+      status.textContent = `${VIEWS[view]} · ${rows.length} entries · ${METRICS[metric]}`;
     }
 
     select.addEventListener('change', () => { metric = select.value; render(); });
-    widget.querySelectorAll('[data-ranking-arm]').forEach(button => {
-      button.addEventListener('click', () => { arm = button.dataset.rankingArm; render(); });
-    });
+    viewSelect.addEventListener('change', () => { view = viewSelect.value; render(); });
     render();
     controls.hidden = false;
   }).catch(() => {
-    status.textContent = 'Showing saved results for both groups. Interactive ranking is unavailable.';
+    status.textContent = 'Showing saved results for all configurations. Interactive ranking is unavailable.';
   });
 }

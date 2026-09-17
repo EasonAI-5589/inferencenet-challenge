@@ -1,4 +1,5 @@
 export const ARMS = Object.freeze({ baseline: 'Single Agent', deepagents: 'Agent + DeepAgents' });
+export const VIEWS = Object.freeze({ all: 'All configurations', ...ARMS });
 export const METRICS = Object.freeze({
   perfect: 'Full replication (local)',
   partial_replication: 'Partial replication',
@@ -7,7 +8,7 @@ export const METRICS = Object.freeze({
   significance_level: 'Significance level',
 });
 export const DEFAULT_METRIC = 'perfect';
-export const DEFAULT_ARM = 'deepagents';
+export const DEFAULT_VIEW = 'all';
 
 export function validateSnapshot(data) {
   if (data?.schema_version !== 1 || data.kind !== 'research_leaderboard'
@@ -35,18 +36,21 @@ export function validateSnapshot(data) {
   return data;
 }
 
-export function rankModels(data, arm = DEFAULT_ARM, metric = DEFAULT_METRIC) {
-  if (!Object.hasOwn(ARMS, arm) || !Object.hasOwn(METRICS, metric)) throw new Error('Unknown ranking');
-  return data.models.map((model, index) => ({ model, index }))
-    .sort((a, b) => b.model.arms[arm].metrics[metric].score - a.model.arms[arm].metrics[metric].score || a.index - b.index)
-    .map(({ model }, index) => ({ rank: index + 1, model, metrics: model.arms[arm].metrics }));
+export function rankModels(data, view = DEFAULT_VIEW, metric = DEFAULT_METRIC) {
+  if (!Object.hasOwn(VIEWS, view) || !Object.hasOwn(METRICS, metric)) throw new Error('Unknown ranking');
+  return data.models.flatMap(model => Object.keys(ARMS)
+    .filter(arm => view === 'all' || arm === view)
+    .map(arm => ({ model, arm, metrics: model.arms[arm].metrics })))
+    .map((entry, index) => ({ ...entry, index }))
+    .sort((a, b) => b.metrics[metric].score - a.metrics[metric].score || a.index - b.index)
+    .map((entry, index) => ({ ...entry, rank: index + 1 }));
 }
 
 export const formatScore = score => `${score.toFixed(1)}%`;
 export const escapeHTML = text => String(text).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-export function tableRows(data, arm, metric = DEFAULT_METRIC) {
-  return rankModels(data, arm, metric).map(({ rank, model, metrics }) =>
-    `<tr data-model="${escapeHTML(model.id)}"><td>${rank}</td><th scope="row">${escapeHTML(model.name)}</th>${Object.keys(METRICS).map(key => `<td${key === metric ? ' class="is-sorted"' : ''}>${formatScore(metrics[key].score)}</td>`).join('')}</tr>`
+export function tableRows(data, view = DEFAULT_VIEW, metric = DEFAULT_METRIC) {
+  return rankModels(data, view, metric).map(({ rank, model, arm, metrics }) =>
+    `<tr data-model="${escapeHTML(model.id)}" data-arm="${arm}"><td>${rank}</td><th scope="row">${escapeHTML(model.name)}</th><td class="paired-approach"><span class="approach-tag ${arm}">${ARMS[arm]}</span></td>${Object.keys(METRICS).map(key => `<td${key === metric ? ' class="is-sorted"' : ''}>${formatScore(metrics[key].score)}</td>`).join('')}</tr>`
   ).join('\n');
 }

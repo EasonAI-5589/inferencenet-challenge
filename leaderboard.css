@@ -1,9 +1,6 @@
 /* Shared paired-results component, used by Home and Leaderboard. */
 [hidden]{display:none!important}
 .paired-controls{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:24px}
-.paired-switch{display:flex;gap:4px;padding:4px;border:1px solid var(--strong-line);border-radius:6px;background:var(--tint)}
-.paired-switch button{font:600 14px/1.4 var(--sans);padding:12px 20px;border:0;border-radius:3px;background:transparent;color:var(--soft);cursor:pointer;min-height:44px}
-.paired-switch button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
 .paired-controls label{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--soft)}
 .paired-controls select{font:14px var(--sans);min-height:44px;padding:8px 32px 8px 12px;border:1px solid var(--strong-line);border-radius:4px;background:var(--paper);color:var(--ink);max-width:100%}
 .paired-heading{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:10px;margin:0 0 16px}
@@ -13,17 +10,17 @@
 .paired-board .mountain-head{display:none}
 .paired-board .mountain-legend{display:none}
 .paired-board .mountain-note{font-size:12px}
-.paired-panel+.paired-panel{margin-top:32px}
-.paired-panel h4{font-size:15px;margin:0 0 12px}
-.paired-board[data-active-arm] .paired-panel h4{display:none}
-.paired-table{width:100%;min-width:800px;border-collapse:collapse;font-size:14px}
+.paired-table{width:100%;min-width:980px;border-collapse:collapse;font-size:14px}
 .paired-table caption{text-align:left;font-size:12px;color:var(--muted);padding:0 0 12px}
 .paired-table th,.paired-table td{padding:16px 14px;border-bottom:1px solid var(--line)}
 .paired-table thead th{font-size:12px;line-height:1.5;text-align:right;color:var(--soft);font-weight:500}
 .paired-table tr>*:nth-child(1){width:46px;text-align:center}
 .paired-table tr>*:nth-child(2){text-align:left;min-width:200px}
 .paired-table tbody th{font-weight:500;white-space:nowrap}
-.paired-table td:nth-child(n+3){text-align:right;font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums}
+.paired-table td:nth-child(n+4){text-align:right;font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums}
+.paired-table tr>*:nth-child(3){text-align:left;min-width:170px}
+.approach-tag{display:inline-block;white-space:nowrap;font-size:12px;line-height:1.5;padding:4px 7px;border-radius:3px;background:var(--tint);color:var(--soft)}
+.approach-tag.deepagents{background:var(--brand-tint);color:var(--brand)}
 .paired-table .is-sorted,.paired-table th[aria-sort="descending"]{background:var(--brand-tint);color:var(--ink);font-weight:600}
 .paired-table tbody tr:first-child>th{font-weight:700}
 .paired-foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;margin:18px 0 0;font-size:12px;color:var(--muted);line-height:1.7}
@@ -41,8 +38,6 @@
 .paired-scroll-note{font-size:12px;color:var(--muted);margin:10px 0;display:none}
 @media(max-width:680px){
  .paired-controls{align-items:stretch;gap:16px}
- .paired-switch{width:100%}
- .paired-switch button{flex:1;padding:10px 8px;font-size:13px}
  .paired-controls label{width:100%;justify-content:space-between}
  .paired-controls select{max-width:75%;min-width:0}
  .paired-methods{grid-template-columns:1fr;gap:12px}
