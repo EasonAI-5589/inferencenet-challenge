@@ -191,22 +191,7 @@ h1 em,h2 em,h3 em{font-style:normal;font-weight:inherit;color:inherit}
 .group-project strong{font-weight:600;color:var(--ink)}
 .group-links{display:flex;align-items:center;flex-wrap:wrap;gap:13px 24px;margin-top:auto;padding-top:25px}
 .group-links .text-link{font-size:12px}
-.demo-entry{display:grid;grid-template-columns:.9fr 1.1fr;gap:28px 64px;padding:42px;margin-top:42px;border:1px solid var(--line);border-radius:12px;background:var(--tint);scroll-margin-top:110px}
-.demo-entry-intro{align-self:center}
-.demo-entry h2{font-size:clamp(26px,2.8vw,35px);line-height:1.2;margin-top:12px}
-.demo-entry-intro>p:not(.kicker){font-size:14px;line-height:1.8;color:var(--soft);margin-top:19px;max-width:430px}
-.demo-entry-intro>.text-link{display:inline-flex;margin-top:22px;gap:15px;font-size:13px}
-.demo-route{list-style:none;padding:0;margin:0;display:grid;gap:8px}
-.demo-route a{display:flex;align-items:center;gap:18px;padding:17px 18px;background:var(--surface);border:1px solid var(--line);border-radius:7px;transition:border-color .15s,background .15s}
-.demo-route a:hover{border-color:var(--strong-line);background:var(--paper)}
-.route-number{font:12px var(--mono);color:var(--muted)}
-.demo-route h3{font-size:15px;line-height:1.4;font-weight:600}
-.demo-route p{font-size:11px;line-height:1.6;color:var(--muted);margin-top:3px}
-.route-arrow{margin-left:auto;color:var(--soft)}
-.demo-entry-note{grid-column:1/-1;font-size:11px;line-height:1.7;color:var(--muted);padding-top:20px;border-top:1px solid var(--line);margin:0}
-@media(max-width:1000px){.demo-entry{gap:28px 34px;padding:30px}.nav-links{gap:18px}}
-@media(max-width:860px){.demo-entry{grid-template-columns:1fr;padding:30px;margin-top:30px}.demo-entry-intro>p:not(.kicker){max-width:none}.demo-entry h2{font-size:29px}}
-@media(max-width:520px){.demo-entry{padding:23px 19px}.demo-entry h2{font-size:27px}.demo-route a{gap:12px;padding:15px 12px}.demo-route h3{font-size:14px}.demo-route p{font-size:10px}.demo-entry-note{font-size:10px}}
+@media(max-width:1000px){.nav-links{gap:18px}}
 @media(max-width:860px){.research-group-grid{grid-template-columns:1fr}.group-name{min-height:0}}
 @media(max-width:520px){.research-group{padding:22px}.research-group h4{font-size:20px}.group-topics{gap:6px}}
 .initiative-link{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--soft);margin-top:25px}

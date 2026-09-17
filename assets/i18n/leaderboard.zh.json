@@ -26,7 +26,6 @@
   "Accepted result archives ↗": "已接收的结果存档 ↗",
   "Page sequence": "页面顺序",
   "← Agent": "← 智能体",
-  "Demo →": "演示 →",
   "AI for econometric research.": "面向计量经济学研究的 AI。",
   "Model": "模型",
   "Two ways to solve": "两种解题方式",
@@ -137,5 +136,6 @@
   "Configuration": "配置",
   "Filter configuration": "筛选配置",
   "Harness": "Harness",
-  "No harness": "未使用 Harness"
+  "No harness": "未使用 Harness",
+  "Teams →": "团队 →"
 }
