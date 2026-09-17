@@ -7,11 +7,11 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 // The explicit public-file allowlist (plus the whole reviewed `assets/` tree).
 // Private test pages (`_*.html`), DESIGN.md, README.md and scripts/ are never listed.
-export const pages = ['index.html', 'data.html', 'agent.html', 'leaderboard.html', 'demo.html', 'teams.html'];
+export const pages = ['index.html', 'data.html', 'agent.html', 'leaderboard.html', 'teams.html'];
 export const publicFiles = [
   ...pages,
-  'styles.css', 'site.css', 'language.css', 'mountain.css', 'index.css', 'data.css', 'agent.css', 'leaderboard.css', 'demo.css', 'teams.css',
-  'theme.js', 'site.js', 'language.js', 'charts.js', 'mountain.js', 'leaderboard.js', 'leaderboard-data.js', 'demo.js',
+  'styles.css', 'site.css', 'language.css', 'mountain.css', 'index.css', 'data.css', 'agent.css', 'leaderboard.css', 'teams.css',
+  'theme.js', 'site.js', 'language.js', 'charts.js', 'mountain.js', 'leaderboard.js', 'leaderboard-data.js',
   '.nojekyll',
 ];
 for (const file of publicFiles) {
@@ -93,7 +93,7 @@ for (const file of scanned) {
   if (/\b(?:ghp_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]+|sk-[A-Za-z0-9]{20,}|hf_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16})\b/.test(source)) throw new Error(`Possible credential in ${file}`);
   if (/\/Users\/|127\.0\.0\.1|localhost|local\/runs|sources\.lock\.json/.test(source)) throw new Error(`Private workspace reference in ${file}`);
   if (/\bTODO\b|lorem ipsum/i.test(source)) throw new Error(`Placeholder text in ${file}`);
-  const translatedAsset = file === 'language.js' || /^assets\/i18n\/(index|data|agent|leaderboard|demo|teams)\.zh\.json$/.test(file);
+  const translatedAsset = file === 'language.js' || /^assets\/i18n\/(index|data|agent|leaderboard|teams)\.zh\.json$/.test(file);
   if (/[一-鿿]/.test(source) && !translatedAsset) throw new Error(`CJK text outside the reviewed translation layer in ${file}`);
   if (file.startsWith('assets/i18n/')) {
     const dictionary = JSON.parse(source);

@@ -1,8 +1,7 @@
 /* Shared design layer for the multi-page InferenceNet Challenge site.
- * Load after styles.css (or after demo.css on demo.html). Extends the existing
+ * Load after styles.css. Extends the existing
  * system: white paper, 1px --line rules, no shadows, Inter, one navy accent.
- * Sections: 1 tokens · 2 shared primitives (mirrors of styles.css so demo.html
- * can carry the shared header) · 3 header/nav · 4 page hero + subnav ·
+ * Sections: 1 tokens · 2 shared primitives · 3 header/nav · 4 page hero + subnav ·
  * 5 stats/cards/kv/tables · 6 charts · 7 steps/code/callouts ·
  * 8 badges/tabs/diagram/footer nav · 9 responsive · 10 print/forced colors. */
 
@@ -54,9 +53,7 @@ html[data-theme="dark"]{
   --chart-muted-ink:#eee;
 }
 
-/* 2 · Shared primitives (identical values to styles.css; present here so that
- * demo.html, which loads demo.css + site.css, renders the shared header and the
- * components below without styles.css). Keep in sync with styles.css. -------- */
+/* 2 · Shared primitives. Keep values in sync with styles.css. --------------- */
 [hidden]{display:none!important}
 .container{width:min(1180px,calc(100% - 96px));margin-inline:auto}
 .section{padding-block:68px}

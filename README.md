@@ -3,9 +3,9 @@
 [Live website](https://easonai-5589.github.io/inferencenet-challenge/)
 
 Public presentation site for InferenceNet: AI for econometric research. The
-2026-09-15 update brings together Home, Data, Agent, Leaderboard, Demo and Teams, with
+site brings together Home, Data, Agent, Leaderboard and Teams, with
 Chinese / English and light / dark controls on every page.
-The six page links are visible by default, including the three-column menu on
+The five page links are visible by default, including the three-column menu on
 narrow screens. Visitors can collapse it manually; each new page opens it again.
 
 ## Edit the website
@@ -29,7 +29,6 @@ screenshot for visual changes.
 | Dataset distributions and examples | `data.html`, `data.css` |
 | Agent case and evaluation harness | `agent.html`, `agent.css` |
 | Leaderboard and configuration filters | `leaderboard.html`, `leaderboard.css` |
-| Guided presentation | `demo.html`, `demo.css`, `demo.js` |
 | Team, institutions and Yichen Guo contact | `teams.html`, `teams.css` |
 | Shared layout, navigation and theme | `styles.css`, `site.css`, `site.js`, `theme.js` |
 | Chinese translations and language control | `assets/i18n/*.zh.json`, `language.js`, `language.css` |
@@ -38,15 +37,15 @@ screenshot for visual changes.
 
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL;
-Teams uses `assets/i18n/teams.zh.json`. Home and Leaderboard use language and
-ranking release tag `20260917-harness`; other language tags remain
-`20260915-teams`. Shared navigation CSS/JS and Demo JS use `20260915-menu`.
+All five pages use language release tag `20260917-no-demo`. Home and
+Leaderboard retain ranking release tag `20260917-harness`. Shared navigation
+CSS/JS use `20260915-menu`.
 
 English is authored in the HTML. When changing English text, update the matching
 normalized English key and Chinese value in that page's dictionary. Preserve
 code, numerical results and source provenance unless a reviewed correction is
 available. Check both languages, both themes and a narrow viewport before
-submitting; verify navigation, images, chart fallbacks and demo controls.
+submitting; verify navigation, images, chart fallbacks and language controls.
 
 同事可以直接修改对应页面的 HTML / CSS，并同步更新 `assets/i18n/` 下的中文词典。
 建议每次改动单独开分支、提交 PR，说明页面和修改点；有布局调整时附一张截图。
@@ -70,7 +69,7 @@ or historical; they do not report live experiment status or official Challenge
 results. Statistical definitions are stated beside the internal results.
 
 The site describes the pinned Selected_1000 distribution, curated task examples,
-a recorded GPT-5.5 trajectory, the evaluation harness and a conceptual demo.
+a recorded GPT-5.5 trajectory and the evaluation harness.
 It does not execute models or analysis. Raw datasets, private run directories,
 credentials and research repository history are not part of this repository.
 
@@ -122,7 +121,8 @@ trace remain in a collapsed record. Both languages distinguish the full
 4,550-row, 38-column file, the 984-row time window and the 977 observations
 used for regression. The same-task link opens `data.html#case-0011`, whose
 case card repeats this data context. Interaction budgets remain explicit.
-Agent CSS and the Agent/Data dictionaries use release tag `20260917-case-data`.
+Agent CSS uses release tag `20260917-case-data`; all page dictionaries use
+`20260917-no-demo`.
 
 ## Attribution
 
