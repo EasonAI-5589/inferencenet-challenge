@@ -16,12 +16,12 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="site.css?v=20260915-menu">
   <link rel="stylesheet" href="mountain.css">
-  <link rel="stylesheet" href="leaderboard.css?v=20260917-metrics">
-  <link rel="stylesheet" href="index.css?v=20260917-metrics">
+  <link rel="stylesheet" href="leaderboard.css?v=20260917-harness">
+  <link rel="stylesheet" href="index.css?v=20260917-harness">
   <script src="site.js?v=20260915-menu" defer></script>
-  <script type="module" src="leaderboard.js?v=20260917-metrics"></script>
+  <script type="module" src="leaderboard.js?v=20260917-harness"></script>
   <link rel="stylesheet" href="language.css">
-  <script src="language.js?v=20260917-metrics" defer></script>
+  <script src="language.js?v=20260917-harness" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -142,7 +142,7 @@
         <p class="lead">What has been added to the Challenge site, most recent first.</p>
       </div>
       <ol class="news-list">
-        <li><time datetime="2026-09-17">17 Sep 2026</time><div><p>One combined leaderboard now ranks all 12 configurations: six models, each evaluated on its own and with DeepAgents on 1,000 tasks.</p><p class="news-links"><a class="text-link" href="leaderboard.html">Explore the leaderboard <span aria-hidden="true">→</span></a></p></div></li>
+        <li><time datetime="2026-09-17">17 Sep 2026</time><div><p>The leaderboard now compares Model and Model + Harness results, with DeepAgents used in the current harness evaluations.</p><p class="news-links"><a class="text-link" href="leaderboard.html">Explore the leaderboard <span aria-hidden="true">→</span></a></p></div></li>
         <li><time datetime="2026-09-15">15 Sep 2026</time><div><p>Data, Agent and Leaderboard pages added, with a mountain leaderboard and a recorded agent trajectory.</p><p class="news-links"><a class="text-link" href="data.html">Data <span aria-hidden="true">→</span></a><a class="text-link" href="agent.html">Agent <span aria-hidden="true">→</span></a><a class="text-link" href="leaderboard.html">Leaderboard <span aria-hidden="true">→</span></a></p></div></li>
         <li><time datetime="2026-09-14">14 Sep 2026</time><div><p>Guided demo published.</p><p class="news-links"><a class="text-link" href="demo.html">Guided demo <span aria-hidden="true">→</span></a></p></div></li>
         <li><time datetime="2026-09-11">11 Sep 2026</time><div><p>Challenge website launched with the synchronized public leaderboard and research teams.</p></div></li>
@@ -207,38 +207,38 @@
         <div><p class="kicker">04 / Harness</p><h2 id="harness-title">Models and harnesses</h2></div>
         <p class="lead">We study how models and harnesses work together to improve econometric replication on InferenceNet.</p>
       </div>
-      <p class="harness-purpose">A harness organizes how a model uses tools, executes code and responds to feedback. The leaderboard provides a basis for studying these interactions, evolving harnesses and developing trajectories for model post-training.</p>
+      <p class="harness-purpose">A harness organizes a model’s planning, tool use and execution feedback. DeepAgents is the harness used in the current results; other architectures are also candidates for evaluation and comparison on InferenceNet.</p>
       <p class="harness-links"><a class="text-link" href="leaderboard.html#research">Explore the research directions <span aria-hidden="true">→</span></a><a class="text-link" href="agent.html">Watch a recorded trajectory <span aria-hidden="true">→</span></a></p>
     </section>
 
     <section class="section container ruled" id="results" aria-labelledby="results-title">
       <div class="section-heading">
         <div><p class="kicker">05 / Results</p><h2 id="results-title">InferenceNet Challenge Leaderboard</h2></div>
-        <p class="lead">Performance on 1,000 econometric replication tasks.</p>
+        <p class="lead">Model and Model + Harness results on 1,000 econometric replication tasks.</p>
       </div>
       <!-- paired-ranking:start -->
 <div class="paired-board" data-paired-leaderboard>
   <div class="paired-controls" hidden>
-    <label><span>Approach</span><select data-ranking-view aria-label="Filter approach"><option value="all">All</option><option value="baseline">Model</option><option value="deepagents">Model + DeepAgents</option></select></label>
+    <label><span>Configuration</span><select data-ranking-view aria-label="Filter configuration"><option value="all">All</option><option value="baseline">Model</option><option value="harness">Model + Harness</option></select></label>
     <label><span>Rank by</span><select data-ranking-metric aria-label="Ranking metric"><option value="perfect">Full replication</option><option value="partial_replication">Partial replication</option><option value="compilation_success">Execution success</option><option value="coefficient_direction">Coefficient direction</option><option value="significance_level">Significance level</option></select></label>
   </div>
   <figure class="mountain" data-ranking-mountain hidden><div class="mountain-canvas"></div></figure>
   <p class="paired-scroll-note">Scroll the table to see all metrics →</p>
   <div class="table-scroll" tabindex="0" role="region" aria-label="Leaderboard results"><table class="paired-table">
     <caption>Scores (%)</caption>
-    <thead><tr><th scope="col">#</th><th scope="col">Model</th><th scope="col">Approach</th><th scope="col" data-metric="perfect" aria-sort="descending">Full replication</th><th scope="col" data-metric="partial_replication" aria-sort="none">Partial replication</th><th scope="col" data-metric="compilation_success" aria-sort="none">Execution success</th><th scope="col" data-metric="coefficient_direction" aria-sort="none">Coefficient direction</th><th scope="col" data-metric="significance_level" aria-sort="none">Significance level</th></tr></thead>
-    <tbody><tr data-model="gpt-5.6-sol" data-arm="deepagents"><td>1</td><th scope="row">GPT-5.6 Sol</th><td class="paired-approach"><span class="approach-tag deepagents">Model + DeepAgents</span></td><td class="is-sorted">51.8%</td><td>69.9%</td><td>91.0%</td><td>87.9%</td><td>78.7%</td></tr>
-<tr data-model="claude-opus-4-8" data-arm="deepagents"><td>2</td><th scope="row">Claude Opus 4.8</th><td class="paired-approach"><span class="approach-tag deepagents">Model + DeepAgents</span></td><td class="is-sorted">39.2%</td><td>62.1%</td><td>83.4%</td><td>79.3%</td><td>69.6%</td></tr>
-<tr data-model="gemini-3.1-pro-preview" data-arm="deepagents"><td>3</td><th scope="row">Gemini 3.1 Pro</th><td class="paired-approach"><span class="approach-tag deepagents">Model + DeepAgents</span></td><td class="is-sorted">39.1%</td><td>63.2%</td><td>85.0%</td><td>81.1%</td><td>71.8%</td></tr>
-<tr data-model="kimi-k3" data-arm="deepagents"><td>4</td><th scope="row">Kimi K3</th><td class="paired-approach"><span class="approach-tag deepagents">Model + DeepAgents</span></td><td class="is-sorted">39.0%</td><td>63.5%</td><td>86.7%</td><td>80.4%</td><td>70.9%</td></tr>
-<tr data-model="gpt-5.6-sol" data-arm="baseline"><td>5</td><th scope="row">GPT-5.6 Sol</th><td class="paired-approach"><span class="approach-tag baseline">Model</span></td><td class="is-sorted">33.8%</td><td>43.0%</td><td>55.7%</td><td>53.7%</td><td>48.5%</td></tr>
-<tr data-model="qwen3.7-max" data-arm="deepagents"><td>6</td><th scope="row">Qwen3.7-Max</th><td class="paired-approach"><span class="approach-tag deepagents">Model + DeepAgents</span></td><td class="is-sorted">24.8%</td><td>37.9%</td><td>52.3%</td><td>48.8%</td><td>43.3%</td></tr>
-<tr data-model="gemini-3.1-pro-preview" data-arm="baseline"><td>7</td><th scope="row">Gemini 3.1 Pro</th><td class="paired-approach"><span class="approach-tag baseline">Model</span></td><td class="is-sorted">24.6%</td><td>36.6%</td><td>54.3%</td><td>50.6%</td><td>43.7%</td></tr>
-<tr data-model="kimi-k3" data-arm="baseline"><td>8</td><th scope="row">Kimi K3</th><td class="paired-approach"><span class="approach-tag baseline">Model</span></td><td class="is-sorted">23.0%</td><td>36.6%</td><td>52.6%</td><td>49.4%</td><td>43.1%</td></tr>
-<tr data-model="qwen3.7-max" data-arm="baseline"><td>9</td><th scope="row">Qwen3.7-Max</th><td class="paired-approach"><span class="approach-tag baseline">Model</span></td><td class="is-sorted">19.8%</td><td>31.5%</td><td>48.6%</td><td>45.4%</td><td>39.6%</td></tr>
-<tr data-model="claude-opus-4-8" data-arm="baseline"><td>10</td><th scope="row">Claude Opus 4.8</th><td class="paired-approach"><span class="approach-tag baseline">Model</span></td><td class="is-sorted">18.4%</td><td>30.5%</td><td>46.7%</td><td>43.7%</td><td>37.0%</td></tr>
-<tr data-model="deepseek-v4-pro" data-arm="deepagents"><td>11</td><th scope="row">DeepSeek V4 Pro</th><td class="paired-approach"><span class="approach-tag deepagents">Model + DeepAgents</span></td><td class="is-sorted">18.3%</td><td>27.0%</td><td>35.2%</td><td>33.8%</td><td>30.8%</td></tr>
-<tr data-model="deepseek-v4-pro" data-arm="baseline"><td>12</td><th scope="row">DeepSeek V4 Pro</th><td class="paired-approach"><span class="approach-tag baseline">Model</span></td><td class="is-sorted">12.9%</td><td>19.5%</td><td>28.1%</td><td>26.0%</td><td>23.6%</td></tr></tbody>
+    <thead><tr><th scope="col">#</th><th scope="col">Model</th><th scope="col">Harness</th><th scope="col" data-metric="perfect" aria-sort="descending">Full replication</th><th scope="col" data-metric="partial_replication" aria-sort="none">Partial replication</th><th scope="col" data-metric="compilation_success" aria-sort="none">Execution success</th><th scope="col" data-metric="coefficient_direction" aria-sort="none">Coefficient direction</th><th scope="col" data-metric="significance_level" aria-sort="none">Significance level</th></tr></thead>
+    <tbody><tr data-model="gpt-5.6-sol" data-arm="deepagents" data-configuration="harness"><td>1</td><th scope="row">GPT-5.6 Sol</th><td class="paired-harness"><span class="harness-tag harness" data-no-translate title="DeepAgents">DeepAgents</span></td><td class="is-sorted">51.8%</td><td>69.9%</td><td>91.0%</td><td>87.9%</td><td>78.7%</td></tr>
+<tr data-model="claude-opus-4-8" data-arm="deepagents" data-configuration="harness"><td>2</td><th scope="row">Claude Opus 4.8</th><td class="paired-harness"><span class="harness-tag harness" data-no-translate title="DeepAgents">DeepAgents</span></td><td class="is-sorted">39.2%</td><td>62.1%</td><td>83.4%</td><td>79.3%</td><td>69.6%</td></tr>
+<tr data-model="gemini-3.1-pro-preview" data-arm="deepagents" data-configuration="harness"><td>3</td><th scope="row">Gemini 3.1 Pro</th><td class="paired-harness"><span class="harness-tag harness" data-no-translate title="DeepAgents 0.7.13">DeepAgents</span></td><td class="is-sorted">39.1%</td><td>63.2%</td><td>85.0%</td><td>81.1%</td><td>71.8%</td></tr>
+<tr data-model="kimi-k3" data-arm="deepagents" data-configuration="harness"><td>4</td><th scope="row">Kimi K3</th><td class="paired-harness"><span class="harness-tag harness" data-no-translate title="DeepAgents 0.7.13">DeepAgents</span></td><td class="is-sorted">39.0%</td><td>63.5%</td><td>86.7%</td><td>80.4%</td><td>70.9%</td></tr>
+<tr data-model="gpt-5.6-sol" data-arm="baseline" data-configuration="baseline"><td>5</td><th scope="row">GPT-5.6 Sol</th><td class="paired-harness"><span class="harness-tag baseline" aria-label="No harness">—</span></td><td class="is-sorted">33.8%</td><td>43.0%</td><td>55.7%</td><td>53.7%</td><td>48.5%</td></tr>
+<tr data-model="qwen3.7-max" data-arm="deepagents" data-configuration="harness"><td>6</td><th scope="row">Qwen3.7-Max</th><td class="paired-harness"><span class="harness-tag harness" data-no-translate title="DeepAgents 0.7.13">DeepAgents</span></td><td class="is-sorted">24.8%</td><td>37.9%</td><td>52.3%</td><td>48.8%</td><td>43.3%</td></tr>
+<tr data-model="gemini-3.1-pro-preview" data-arm="baseline" data-configuration="baseline"><td>7</td><th scope="row">Gemini 3.1 Pro</th><td class="paired-harness"><span class="harness-tag baseline" aria-label="No harness">—</span></td><td class="is-sorted">24.6%</td><td>36.6%</td><td>54.3%</td><td>50.6%</td><td>43.7%</td></tr>
+<tr data-model="kimi-k3" data-arm="baseline" data-configuration="baseline"><td>8</td><th scope="row">Kimi K3</th><td class="paired-harness"><span class="harness-tag baseline" aria-label="No harness">—</span></td><td class="is-sorted">23.0%</td><td>36.6%</td><td>52.6%</td><td>49.4%</td><td>43.1%</td></tr>
+<tr data-model="qwen3.7-max" data-arm="baseline" data-configuration="baseline"><td>9</td><th scope="row">Qwen3.7-Max</th><td class="paired-harness"><span class="harness-tag baseline" aria-label="No harness">—</span></td><td class="is-sorted">19.8%</td><td>31.5%</td><td>48.6%</td><td>45.4%</td><td>39.6%</td></tr>
+<tr data-model="claude-opus-4-8" data-arm="baseline" data-configuration="baseline"><td>10</td><th scope="row">Claude Opus 4.8</th><td class="paired-harness"><span class="harness-tag baseline" aria-label="No harness">—</span></td><td class="is-sorted">18.4%</td><td>30.5%</td><td>46.7%</td><td>43.7%</td><td>37.0%</td></tr>
+<tr data-model="deepseek-v4-pro" data-arm="deepagents" data-configuration="harness"><td>11</td><th scope="row">DeepSeek V4 Pro</th><td class="paired-harness"><span class="harness-tag harness" data-no-translate title="DeepAgents 0.7.13">DeepAgents</span></td><td class="is-sorted">18.3%</td><td>27.0%</td><td>35.2%</td><td>33.8%</td><td>30.8%</td></tr>
+<tr data-model="deepseek-v4-pro" data-arm="baseline" data-configuration="baseline"><td>12</td><th scope="row">DeepSeek V4 Pro</th><td class="paired-harness"><span class="harness-tag baseline" aria-label="No harness">—</span></td><td class="is-sorted">12.9%</td><td>19.5%</td><td>28.1%</td><td>26.0%</td><td>23.6%</td></tr></tbody>
   </table></div>
   <div class="paired-foot"><span>Every score uses all 1,000 tasks; failures and unknowns stay in the denominator.</span><a href="assets/data/paired-results.csv" download>Download results CSV ↓</a></div>
   <p class="paired-status visually-hidden" data-ranking-status role="status">Published results · 17 Sep 2026</p>
@@ -275,7 +275,7 @@
         <a class="resource" href="https://github.com/YTZSR/chatpilot_evaluator/tree/dev-gyc-eval" target="_blank" rel="noopener"><div><span class="resource-type">GITHUB / EVALUATION FRAMEWORK</span><span aria-hidden="true">↗</span></div><h3>InferenceNet evaluation framework</h3><p>Unified evaluation package, command-line entry points and documentation on dev-gyc-eval.</p><span class="resource-label">Private repository · collaborator access</span></a>
         <a class="resource" href="https://github.com/HKU-Business-AI-Center/Econometrics-Agent" target="_blank" rel="noopener"><div><span class="resource-type">GITHUB / RESEARCH AGENT</span><span aria-hidden="true">↗</span></div><h3>MetricsAI / Econometrics-Agent</h3><p>Public implementation associated with the MetricsAI paper.</p><span class="resource-label">Browse agent code</span></a>
         <a class="resource" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener"><div><span class="resource-type">HUGGING FACE / DATASET</span><span aria-hidden="true">↗</span></div><h3>InferenceNet dataset</h3><p>Research tasks, dataset documentation and access requirements.</p><span class="resource-label">Open benchmark data</span></a>
-        <a class="resource" href="leaderboard.html"><div><span class="resource-type">RESULTS / LEADERBOARD</span><span aria-hidden="true">→</span></div><h3>InferenceNet leaderboard</h3><p>Six models, 12 configurations and one combined leaderboard, with filters for Model and Model + DeepAgents.</p><span class="resource-label">Explore the leaderboard</span></a>
+        <a class="resource" href="leaderboard.html"><div><span class="resource-type">RESULTS / LEADERBOARD</span><span aria-hidden="true">→</span></div><h3>InferenceNet leaderboard</h3><p>Compare models and model–harness combinations on InferenceNet.</p><span class="resource-label">Explore the leaderboard</span></a>
       </div>
       <p class="resource-extra"><a class="text-link" href="https://github.com/EasonAI-5589/inferencenet-challenge" target="_blank" rel="noopener">Public website repository <span aria-hidden="true">↗</span></a></p>
     </section>

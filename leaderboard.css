@@ -16,8 +16,8 @@
 .paired-table tbody th{font-weight:500;white-space:nowrap}
 .paired-table td:nth-child(n+4){text-align:right;font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums}
 .paired-table tr>*:nth-child(3){text-align:left;min-width:170px}
-.approach-tag{display:inline-block;white-space:nowrap;font-size:12px;line-height:1.5;padding:4px 7px;border-radius:3px;background:var(--tint);color:var(--soft)}
-.approach-tag.deepagents{background:var(--brand-tint);color:var(--brand)}
+.harness-tag{display:inline-block;white-space:nowrap;font-size:12px;line-height:1.5;padding:4px 7px;border-radius:3px;background:var(--tint);color:var(--soft)}
+.harness-tag.harness{background:var(--brand-tint);color:var(--brand)}
 .paired-table .is-sorted,.paired-table th[aria-sort="descending"]{background:var(--brand-tint);color:var(--ink);font-weight:600}
 .paired-table tbody tr:first-child>th{font-weight:700}
 .paired-foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;margin:18px 0 0;font-size:12px;color:var(--muted);line-height:1.7}
