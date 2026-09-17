@@ -1,0 +1,10 @@
+{
+  "published_date": "2026-09-17",
+  "source_url": "https://huggingface.co/spaces/CamoAiLab/InferenceNet-Leaderboard/raw/0c49717658b3d414612b51944c5600811cfc5fb0/leaderboard-data.json",
+  "release_commit": "0c49717658b3d414612b51944c5600811cfc5fb0",
+  "pull_request": "https://huggingface.co/spaces/CamoAiLab/InferenceNet-Leaderboard/discussions/4",
+  "sha256": "5cdcef9622e521718549a5ca8000e40d59bb8f8115996c4364eea875f12bfd76",
+  "models": 6,
+  "groups": 12,
+  "records": 12000
+}

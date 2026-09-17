@@ -1,0 +1,785 @@
+{
+  "schema_version": 1,
+  "kind": "research_leaderboard",
+  "published_date": "2026-09-17",
+  "source_repository": "CamoAiLab/InferenceNet-Leaderboard",
+  "source_revision": "731111974cf4d1a3c7a4f848a899f0b0708dd12b",
+  "dataset_revision": "59f9512a38e594528807744214a60ee00367434e",
+  "task_list": "Selected_1000/1000_new.csv",
+  "tasks_per_group": 1000,
+  "groups": 12,
+  "records": 12000,
+  "official_parity_verified": false,
+  "models": [
+    {
+      "id": "gpt-5.6-sol",
+      "name": "GPT-5.6 Sol",
+      "arms": {
+        "baseline": {
+          "path": "results/gpt-5.6-sol/baseline",
+          "metrics": {
+            "perfect": {
+              "count": 338,
+              "denominator": 1000,
+              "unknown": 445,
+              "failure": 217,
+              "score": 33.8,
+              "profile": "local-paper-v1",
+              "verification": "accepted_summary"
+            },
+            "compilation_success": {
+              "count": 557,
+              "denominator": 1000,
+              "unknown": 3,
+              "failure": 440,
+              "score": 55.7,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "partial_replication": {
+              "count": 430,
+              "denominator": 1000,
+              "unknown": 444,
+              "failure": 126,
+              "score": 43.0,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "coefficient_direction": {
+              "count": 537,
+              "denominator": 1000,
+              "unknown": 444,
+              "failure": 19,
+              "score": 53.7,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "significance_level": {
+              "count": 485,
+              "denominator": 1000,
+              "unknown": 444,
+              "failure": 71,
+              "score": 48.5,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            }
+          },
+          "generated_at": "2026-09-13T17:49:16.537733+00:00",
+          "complete": true,
+          "harness": "none",
+          "model_call_cap": 1,
+          "task_unknown_count": null,
+          "invalid_evidence_count": 0,
+          "interruption_count": 3,
+          "evidence_class": "amended_comparison"
+        },
+        "deepagents": {
+          "path": "results/gpt-5.6-sol/deepagents",
+          "metrics": {
+            "perfect": {
+              "count": 518,
+              "denominator": 1000,
+              "unknown": 95,
+              "failure": 387,
+              "score": 51.8,
+              "profile": "local-paper-v1",
+              "verification": "accepted_summary"
+            },
+            "compilation_success": {
+              "count": 910,
+              "denominator": 1000,
+              "unknown": 10,
+              "failure": 80,
+              "score": 91.0,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "partial_replication": {
+              "count": 699,
+              "denominator": 1000,
+              "unknown": 92,
+              "failure": 209,
+              "score": 69.9,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "coefficient_direction": {
+              "count": 879,
+              "denominator": 1000,
+              "unknown": 92,
+              "failure": 29,
+              "score": 87.9,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "significance_level": {
+              "count": 787,
+              "denominator": 1000,
+              "unknown": 93,
+              "failure": 120,
+              "score": 78.7,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            }
+          },
+          "generated_at": "2026-09-13T17:49:16.537733+00:00",
+          "complete": true,
+          "harness": "DeepAgents",
+          "model_call_cap": 6,
+          "task_unknown_count": null,
+          "invalid_evidence_count": 0,
+          "interruption_count": 10,
+          "evidence_class": "amended_comparison"
+        }
+      }
+    },
+    {
+      "id": "claude-opus-4-8",
+      "name": "Claude Opus 4.8",
+      "arms": {
+        "baseline": {
+          "path": "results/claude-opus-4-8/baseline",
+          "metrics": {
+            "perfect": {
+              "count": 184,
+              "denominator": 1000,
+              "unknown": 538,
+              "failure": 278,
+              "score": 18.4,
+              "profile": "local-paper-v1",
+              "verification": "accepted_summary"
+            },
+            "compilation_success": {
+              "count": 467,
+              "denominator": 1000,
+              "unknown": 0,
+              "failure": 533,
+              "score": 46.7,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "partial_replication": {
+              "count": 305,
+              "denominator": 1000,
+              "unknown": 537,
+              "failure": 158,
+              "score": 30.5,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "coefficient_direction": {
+              "count": 437,
+              "denominator": 1000,
+              "unknown": 537,
+              "failure": 26,
+              "score": 43.7,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "significance_level": {
+              "count": 370,
+              "denominator": 1000,
+              "unknown": 537,
+              "failure": 93,
+              "score": 37.0,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            }
+          },
+          "generated_at": "2026-09-13T17:50:43.870921+00:00",
+          "complete": true,
+          "harness": "none",
+          "model_call_cap": 1,
+          "task_unknown_count": null,
+          "invalid_evidence_count": 0,
+          "interruption_count": 0,
+          "evidence_class": "amended_comparison"
+        },
+        "deepagents": {
+          "path": "results/claude-opus-4-8/deepagents",
+          "metrics": {
+            "perfect": {
+              "count": 392,
+              "denominator": 1000,
+              "unknown": 174,
+              "failure": 434,
+              "score": 39.2,
+              "profile": "local-paper-v1",
+              "verification": "accepted_summary"
+            },
+            "compilation_success": {
+              "count": 834,
+              "denominator": 1000,
+              "unknown": 4,
+              "failure": 162,
+              "score": 83.4,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "partial_replication": {
+              "count": 621,
+              "denominator": 1000,
+              "unknown": 170,
+              "failure": 209,
+              "score": 62.1,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "coefficient_direction": {
+              "count": 793,
+              "denominator": 1000,
+              "unknown": 170,
+              "failure": 37,
+              "score": 79.3,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "significance_level": {
+              "count": 696,
+              "denominator": 1000,
+              "unknown": 172,
+              "failure": 132,
+              "score": 69.6,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            }
+          },
+          "generated_at": "2026-09-13T17:50:43.870921+00:00",
+          "complete": true,
+          "harness": "DeepAgents",
+          "model_call_cap": 6,
+          "task_unknown_count": null,
+          "invalid_evidence_count": 0,
+          "interruption_count": 4,
+          "evidence_class": "amended_comparison"
+        }
+      }
+    },
+    {
+      "id": "kimi-k3",
+      "name": "Kimi K3",
+      "arms": {
+        "baseline": {
+          "path": "results/kimi-k3/baseline",
+          "metrics": {
+            "perfect": {
+              "count": 230,
+              "denominator": 1000,
+              "unknown": 481,
+              "failure": 289,
+              "score": 23.0,
+              "profile": "local-paper-v1",
+              "verification": "archived_task_flags"
+            },
+            "compilation_success": {
+              "count": 526,
+              "denominator": 1000,
+              "unknown": 5,
+              "failure": 469,
+              "score": 52.6,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "partial_replication": {
+              "count": 366,
+              "denominator": 1000,
+              "unknown": 481,
+              "failure": 153,
+              "score": 36.6,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "coefficient_direction": {
+              "count": 494,
+              "denominator": 1000,
+              "unknown": 481,
+              "failure": 25,
+              "score": 49.4,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "significance_level": {
+              "count": 431,
+              "denominator": 1000,
+              "unknown": 481,
+              "failure": 88,
+              "score": 43.1,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            }
+          },
+          "generated_at": "2026-09-16T15:28:00.953066+00:00",
+          "complete": false,
+          "harness": "none",
+          "model_call_cap": 1,
+          "task_unknown_count": 5,
+          "invalid_evidence_count": 0,
+          "interruption_count": null,
+          "evidence_class": "amended_comparison"
+        },
+        "deepagents": {
+          "path": "results/kimi-k3/deepagents",
+          "metrics": {
+            "perfect": {
+              "count": 390,
+              "denominator": 1000,
+              "unknown": 159,
+              "failure": 451,
+              "score": 39.0,
+              "profile": "local-paper-v1",
+              "verification": "archived_task_flags"
+            },
+            "compilation_success": {
+              "count": 867,
+              "denominator": 1000,
+              "unknown": 4,
+              "failure": 129,
+              "score": 86.7,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "partial_replication": {
+              "count": 635,
+              "denominator": 1000,
+              "unknown": 156,
+              "failure": 209,
+              "score": 63.5,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "coefficient_direction": {
+              "count": 804,
+              "denominator": 1000,
+              "unknown": 156,
+              "failure": 40,
+              "score": 80.4,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "significance_level": {
+              "count": 709,
+              "denominator": 1000,
+              "unknown": 157,
+              "failure": 134,
+              "score": 70.9,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            }
+          },
+          "generated_at": "2026-09-16T15:28:00.953066+00:00",
+          "complete": false,
+          "harness": "DeepAgents 0.7.13",
+          "model_call_cap": 6,
+          "task_unknown_count": 4,
+          "invalid_evidence_count": 0,
+          "interruption_count": null,
+          "evidence_class": "amended_comparison"
+        }
+      }
+    },
+    {
+      "id": "gemini-3.1-pro-preview",
+      "name": "Gemini 3.1 Pro Preview",
+      "arms": {
+        "baseline": {
+          "path": "results/gemini-3.1-pro-preview/baseline",
+          "metrics": {
+            "perfect": {
+              "count": 246,
+              "denominator": 1000,
+              "unknown": 462,
+              "failure": 292,
+              "score": 24.6,
+              "profile": "local-paper-v1",
+              "verification": "archived_task_flags"
+            },
+            "compilation_success": {
+              "count": 543,
+              "denominator": 1000,
+              "unknown": 0,
+              "failure": 457,
+              "score": 54.3,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "partial_replication": {
+              "count": 366,
+              "denominator": 1000,
+              "unknown": 460,
+              "failure": 174,
+              "score": 36.6,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "coefficient_direction": {
+              "count": 506,
+              "denominator": 1000,
+              "unknown": 460,
+              "failure": 34,
+              "score": 50.6,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "significance_level": {
+              "count": 437,
+              "denominator": 1000,
+              "unknown": 460,
+              "failure": 103,
+              "score": 43.7,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            }
+          },
+          "generated_at": "2026-09-16T15:28:00.953066+00:00",
+          "complete": true,
+          "harness": "none",
+          "model_call_cap": 1,
+          "task_unknown_count": 0,
+          "invalid_evidence_count": 0,
+          "interruption_count": null,
+          "evidence_class": "amended_comparison"
+        },
+        "deepagents": {
+          "path": "results/gemini-3.1-pro-preview/deepagents",
+          "metrics": {
+            "perfect": {
+              "count": 391,
+              "denominator": 1000,
+              "unknown": 155,
+              "failure": 454,
+              "score": 39.1,
+              "profile": "local-paper-v1",
+              "verification": "archived_task_flags"
+            },
+            "compilation_success": {
+              "count": 850,
+              "denominator": 1000,
+              "unknown": 0,
+              "failure": 150,
+              "score": 85.0,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "partial_replication": {
+              "count": 632,
+              "denominator": 1000,
+              "unknown": 153,
+              "failure": 215,
+              "score": 63.2,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "coefficient_direction": {
+              "count": 811,
+              "denominator": 1000,
+              "unknown": 153,
+              "failure": 36,
+              "score": 81.1,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "significance_level": {
+              "count": 718,
+              "denominator": 1000,
+              "unknown": 154,
+              "failure": 128,
+              "score": 71.8,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            }
+          },
+          "generated_at": "2026-09-16T15:28:00.953066+00:00",
+          "complete": true,
+          "harness": "DeepAgents 0.7.13",
+          "model_call_cap": 6,
+          "task_unknown_count": 0,
+          "invalid_evidence_count": 0,
+          "interruption_count": null,
+          "evidence_class": "amended_comparison"
+        }
+      }
+    },
+    {
+      "id": "qwen3.7-max",
+      "name": "Qwen3.7-Max",
+      "arms": {
+        "baseline": {
+          "path": "results/qwen3.7-max/baseline",
+          "metrics": {
+            "perfect": {
+              "count": 198,
+              "denominator": 1000,
+              "unknown": 519,
+              "failure": 283,
+              "score": 19.8,
+              "profile": "local-paper-v1",
+              "verification": "archived_task_flags"
+            },
+            "compilation_success": {
+              "count": 486,
+              "denominator": 1000,
+              "unknown": 0,
+              "failure": 514,
+              "score": 48.6,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "partial_replication": {
+              "count": 315,
+              "denominator": 1000,
+              "unknown": 518,
+              "failure": 167,
+              "score": 31.5,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "coefficient_direction": {
+              "count": 454,
+              "denominator": 1000,
+              "unknown": 518,
+              "failure": 28,
+              "score": 45.4,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "significance_level": {
+              "count": 396,
+              "denominator": 1000,
+              "unknown": 518,
+              "failure": 86,
+              "score": 39.6,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            }
+          },
+          "generated_at": "2026-09-16T17:18:47.373930+00:00",
+          "complete": true,
+          "harness": "none",
+          "model_call_cap": 1,
+          "task_unknown_count": 0,
+          "invalid_evidence_count": 0,
+          "interruption_count": null,
+          "evidence_class": "amended_comparison"
+        },
+        "deepagents": {
+          "path": "results/qwen3.7-max/deepagents",
+          "metrics": {
+            "perfect": {
+              "count": 248,
+              "denominator": 1000,
+              "unknown": 481,
+              "failure": 271,
+              "score": 24.8,
+              "profile": "local-paper-v1",
+              "verification": "archived_task_flags"
+            },
+            "compilation_success": {
+              "count": 523,
+              "denominator": 1000,
+              "unknown": 7,
+              "failure": 470,
+              "score": 52.3,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "partial_replication": {
+              "count": 379,
+              "denominator": 1000,
+              "unknown": 481,
+              "failure": 140,
+              "score": 37.9,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "coefficient_direction": {
+              "count": 488,
+              "denominator": 1000,
+              "unknown": 481,
+              "failure": 31,
+              "score": 48.8,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "significance_level": {
+              "count": 433,
+              "denominator": 1000,
+              "unknown": 481,
+              "failure": 86,
+              "score": 43.3,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            }
+          },
+          "generated_at": "2026-09-16T17:18:47.373930+00:00",
+          "complete": false,
+          "harness": "DeepAgents 0.7.13",
+          "model_call_cap": 6,
+          "task_unknown_count": 6,
+          "invalid_evidence_count": 1,
+          "interruption_count": null,
+          "evidence_class": "amended_comparison"
+        }
+      }
+    },
+    {
+      "id": "deepseek-v4-pro",
+      "name": "DeepSeek V4 Pro",
+      "arms": {
+        "baseline": {
+          "path": "results/deepseek-v4-pro/baseline",
+          "metrics": {
+            "perfect": {
+              "count": 129,
+              "denominator": 1000,
+              "unknown": 723,
+              "failure": 148,
+              "score": 12.9,
+              "profile": "local-paper-v1",
+              "verification": "archived_task_flags"
+            },
+            "compilation_success": {
+              "count": 281,
+              "denominator": 1000,
+              "unknown": 0,
+              "failure": 719,
+              "score": 28.1,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "partial_replication": {
+              "count": 195,
+              "denominator": 1000,
+              "unknown": 723,
+              "failure": 82,
+              "score": 19.5,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "coefficient_direction": {
+              "count": 260,
+              "denominator": 1000,
+              "unknown": 723,
+              "failure": 17,
+              "score": 26.0,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "significance_level": {
+              "count": 236,
+              "denominator": 1000,
+              "unknown": 723,
+              "failure": 41,
+              "score": 23.6,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            }
+          },
+          "generated_at": "2026-09-16T17:18:47.373930+00:00",
+          "complete": true,
+          "harness": "none",
+          "model_call_cap": 1,
+          "task_unknown_count": 0,
+          "invalid_evidence_count": 0,
+          "interruption_count": null,
+          "evidence_class": "amended_comparison"
+        },
+        "deepagents": {
+          "path": "results/deepseek-v4-pro/deepagents",
+          "metrics": {
+            "perfect": {
+              "count": 183,
+              "denominator": 1000,
+              "unknown": 648,
+              "failure": 169,
+              "score": 18.3,
+              "profile": "local-paper-v1",
+              "verification": "archived_task_flags"
+            },
+            "compilation_success": {
+              "count": 352,
+              "denominator": 1000,
+              "unknown": 0,
+              "failure": 648,
+              "score": 35.2,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "partial_replication": {
+              "count": 270,
+              "denominator": 1000,
+              "unknown": 648,
+              "failure": 82,
+              "score": 27.0,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "coefficient_direction": {
+              "count": 338,
+              "denominator": 1000,
+              "unknown": 648,
+              "failure": 14,
+              "score": 33.8,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            },
+            "significance_level": {
+              "count": 308,
+              "denominator": 1000,
+              "unknown": 648,
+              "failure": 44,
+              "score": 30.8,
+              "profile": "hf-leaderboard-v1",
+              "verification": "archived_task_flags"
+            }
+          },
+          "generated_at": "2026-09-16T17:18:47.373930+00:00",
+          "complete": true,
+          "harness": "DeepAgents 0.7.13",
+          "model_call_cap": 6,
+          "task_unknown_count": 0,
+          "invalid_evidence_count": 0,
+          "interruption_count": null,
+          "evidence_class": "amended_comparison"
+        }
+      }
+    }
+  ],
+  "source_sha256": {
+    "results/gpt-5.6-sol/baseline/summary.json": "6d6ab1aaffe754e08f9656dcb5f51fcd5c772e60660dc34d86cfc21f3c5c03d7",
+    "results/gpt-5.6-sol/baseline/results.jsonl": "3b12160382043e27531ff5cb3e23bccc9a8f7807e4121a82ffa13df28f65a859",
+    "results/gpt-5.6-sol/baseline/config.json": "90ec4e0781b57498fef52de31eacf5c8ec9424549643865a7140a1ccdb04c1d4",
+    "results/gpt-5.6-sol/deepagents/summary.json": "821ca6e55a66006c7fb958951a7859a9dccde29d87de8415d5c3f07f523563c5",
+    "results/gpt-5.6-sol/deepagents/results.jsonl": "378cdec8e7a880f091ba442649d1c034997acefdc623898b60a063baad29d7be",
+    "results/gpt-5.6-sol/deepagents/config.json": "a3e24175f2395cffbbcd6d9d3c89689bd3a3b22dd4ce61bb78d5da33c6b6cc1b",
+    "results/claude-opus-4-8/baseline/summary.json": "7b5b06bd9b3d7b47952b1dc424a01fcdf04ddccca0b3f64d04132358d6380cdc",
+    "results/claude-opus-4-8/baseline/results.jsonl": "b9d6bd51c9eb81a634e78e422c86da16f655d97da87d3f5afa4c9aa0f96809f4",
+    "results/claude-opus-4-8/baseline/config.json": "8058afcd14c34d666277c0f32ac5962398b10618df5b1aa0e13cd9862344dc56",
+    "results/claude-opus-4-8/deepagents/summary.json": "f86da9c76f8becb75b4970c486160013209a6aa4239923018b217e55f1b0a614",
+    "results/claude-opus-4-8/deepagents/results.jsonl": "3bef3b9850f24b9cb0b5806efd8425c4e4cc650735a6b28b45befdd55a6ec28a",
+    "results/claude-opus-4-8/deepagents/config.json": "12215dfcba5d2d692268a305364514a03ff7579094b2d4af12f493383b8e0f21",
+    "results/kimi-k3/baseline/summary.json": "2edd2e96f3b448ceceb6189edb7f23c737b245c00c9820728c69f5237feb34b7",
+    "results/kimi-k3/baseline/results.jsonl": "0502ae8892dd6c66ee92890a83c678527cff6c3396aa4c13faaadcf41e1857c1",
+    "results/kimi-k3/baseline/config.json": "7191c406e8695a5cb760ee8fa99c4fb0dd71bca59347acc4d6d33fe0630be081",
+    "results/kimi-k3/deepagents/summary.json": "81c8cabaa58acc65ef6afba792241b70951b666ab90c3f7c25194b61b0d9a228",
+    "results/kimi-k3/deepagents/results.jsonl": "bdab99f8f1d81885f74326cf9c8c8e57b9bb8a8d616bfbb1b5a2f6bf32b737ca",
+    "results/kimi-k3/deepagents/config.json": "312c9260c01d5988878e4f2b88da55a16362ee994e8217c63b15ba772da3857c",
+    "results/gemini-3.1-pro-preview/baseline/summary.json": "a8ba5100a28f1f0aeae6949eb3669c7717c844c4e2eee6fa42ded351aef6b5c7",
+    "results/gemini-3.1-pro-preview/baseline/results.jsonl": "2f1e2019157d105efee7ba311a49eba99abe4a7b84f0a4b4e0ac174e2d56cdba",
+    "results/gemini-3.1-pro-preview/baseline/config.json": "ff9884d2095695a1f40f5fc573982b9a49fd53d41dca2a6fc36d04dc81f10998",
+    "results/gemini-3.1-pro-preview/deepagents/summary.json": "bf9ce721c94103f91b0ca576f717f4f5dca7cc9965601658a65fc6d2a15b7045",
+    "results/gemini-3.1-pro-preview/deepagents/results.jsonl": "c2824f8277b283a6dd60118b6e6a0cb0419e4c8b9193de15a7bcf7aaaad24181",
+    "results/gemini-3.1-pro-preview/deepagents/config.json": "f09d9d99d26328ae2f54e9173b22f69d68f7d7bb50c3cc5e352c996b98dd57f9",
+    "results/qwen3.7-max/baseline/summary.json": "e506814d33789673fcd6b8e6869cdcbd52371cd3d0455ce53ae27e1098a52214",
+    "results/qwen3.7-max/baseline/results.jsonl": "4924e929d67956f9deb6c319605042d09f40b12f7bd2f18baa0464b8f7c9851a",
+    "results/qwen3.7-max/baseline/config.json": "9f553440e741863e82f32fec11470affe6f0dbffa03c668c647bd63d8f73227f",
+    "results/qwen3.7-max/deepagents/summary.json": "a5dcb2297ccc31a921e3f4eeb025ed81a764e16556a12068733cfe3bfe0bdbe3",
+    "results/qwen3.7-max/deepagents/results.jsonl": "e009f8c5c88b05896836330822afbda33af463c1f264f9adb9bbf5b094e61dfa",
+    "results/qwen3.7-max/deepagents/config.json": "3862d438d381ca3e57b1bf68921ef01a8c38727902152ada2c6e1fcf7b70cc77",
+    "results/deepseek-v4-pro/baseline/summary.json": "c51e4f1de78eba8f30e4a59276fb7821132cd103f0ae3f9d04c75c98344f2e34",
+    "results/deepseek-v4-pro/baseline/results.jsonl": "7827218f6f18f39988e8c439f0c93cab611c04d158d8704aa50c9274cd438837",
+    "results/deepseek-v4-pro/baseline/config.json": "4cef524f37a325029ea4ad325b163f72f9cf725f507f20cd76424d06e71e24ad",
+    "results/deepseek-v4-pro/deepagents/summary.json": "231e4264b0403e12788136d01af465f86fe9ba3c3ab992510925a7ef4c2a40e9",
+    "results/deepseek-v4-pro/deepagents/results.jsonl": "a006c8b0b80064295faeb3aa7395a2408f0208677853448816b361bf67e39bb6",
+    "results/deepseek-v4-pro/deepagents/config.json": "400c28e4008d5241bf50bc71c2674861846d6b6d2e7da21f2a7602a60ecc0ae9"
+  }
+}
