@@ -10,6 +10,8 @@ export const METRICS = Object.freeze({
 export const DEFAULT_METRIC = 'perfect';
 export const DEFAULT_VIEW = 'all';
 
+export const modelDisplayName = model => model.id === 'gemini-3.1-pro-preview' ? 'Gemini 3.1 Pro' : model.name;
+
 export function validateSnapshot(data) {
   if (data?.schema_version !== 1 || data.kind !== 'research_leaderboard'
       || data.tasks_per_group !== 1000 || !Array.isArray(data.models) || !data.models.length
@@ -51,6 +53,6 @@ export const escapeHTML = text => String(text).replace(/[&<>"']/g, c => ({ '&': 
 
 export function tableRows(data, view = DEFAULT_VIEW, metric = DEFAULT_METRIC) {
   return rankModels(data, view, metric).map(({ rank, model, arm, metrics }) =>
-    `<tr data-model="${escapeHTML(model.id)}" data-arm="${arm}"><td>${rank}</td><th scope="row">${escapeHTML(model.name)}</th><td class="paired-approach"><span class="approach-tag ${arm}">${ARMS[arm]}</span></td>${Object.keys(METRICS).map(key => `<td${key === metric ? ' class="is-sorted"' : ''}>${formatScore(metrics[key].score)}</td>`).join('')}</tr>`
+    `<tr data-model="${escapeHTML(model.id)}" data-arm="${arm}"><td>${rank}</td><th scope="row">${escapeHTML(modelDisplayName(model))}</th><td class="paired-approach"><span class="approach-tag ${arm}">${ARMS[arm]}</span></td>${Object.keys(METRICS).map(key => `<td${key === metric ? ' class="is-sorted"' : ''}>${formatScore(metrics[key].score)}</td>`).join('')}</tr>`
   ).join('\n');
 }

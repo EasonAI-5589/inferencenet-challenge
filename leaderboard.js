@@ -1,7 +1,7 @@
-import { ARMS, VIEWS, METRICS, DEFAULT_METRIC, DEFAULT_VIEW, validateSnapshot, rankModels, tableRows } from './leaderboard-data.js?v=20260917-model';
+import { ARMS, VIEWS, METRICS, DEFAULT_METRIC, DEFAULT_VIEW, validateSnapshot, rankModels, tableRows, modelDisplayName } from './leaderboard-data.js?v=20260917-gemini';
 import { mountain } from './mountain.js';
 
-const source = new URL('./assets/data/paired-results.json?v=20260917-model', import.meta.url);
+const source = new URL('./assets/data/paired-results.json?v=20260917-gemini', import.meta.url);
 const snapshot = fetch(source).then(response => {
   if (!response.ok) throw new Error('Snapshot unavailable');
   return response.json();
@@ -34,7 +34,7 @@ for (const widget of document.querySelectorAll('[data-paired-leaderboard]')) {
         title: VIEWS[view], metric: METRICS[metric], unit: '%', max: 100,
         peakLabel: '100% · every task replicated',
         items: rows.map(({ rank, model, arm, metrics }) => ({
-          rank, label: view === 'all' ? `${model.name} · ${ARMS[arm]}` : model.name,
+          rank, label: view === 'all' ? `${modelDisplayName(model)} · ${ARMS[arm]}` : modelDisplayName(model),
           value: metrics[metric].score, kind: 'internal',
         })),
       }, { table: false, aspect: 0.48 });
