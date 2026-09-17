@@ -16,11 +16,12 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="site.css?v=20260915-menu">
   <link rel="stylesheet" href="mountain.css">
+  <link rel="stylesheet" href="leaderboard.css?v=20260917-paired">
   <link rel="stylesheet" href="index.css">
   <script src="site.js?v=20260915-menu" defer></script>
-  <script type="module" src="mountain.js"></script>
+  <script type="module" src="leaderboard.js?v=20260917-paired"></script>
   <link rel="stylesheet" href="language.css">
-  <script src="language.js?v=20260915-teams" defer></script>
+  <script src="language.js?v=20260917-paired" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -88,7 +89,7 @@
       </div>
       <div class="paper-links" role="group" aria-label="Benchmark resources">
         <a class="button" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener">Dataset <span aria-hidden="true">↗</span></a>
-        <a class="button" href="https://huggingface.co/spaces/CamoAiLab/InferenceNet-Leaderboard" target="_blank" rel="noopener">Leaderboard <span aria-hidden="true">↗</span></a>
+        <a class="button" href="leaderboard.html">Leaderboard <span aria-hidden="true">→</span></a>
         <a class="button" href="https://arxiv.org/abs/2506.00856v3" target="_blank" rel="noopener">MetricsAI paper <span aria-hidden="true">↗</span></a>
         <a class="button" href="https://github.com/EasonAI-5589/inferencenet-challenge" target="_blank" rel="noopener">Website source <span aria-hidden="true">↗</span></a>
       </div>
@@ -141,10 +142,10 @@
         <p class="lead">What has been added to the Challenge site, most recent first.</p>
       </div>
       <ol class="news-list">
+        <li><time datetime="2026-09-17">17 Sep 2026</time><div><p>New results for six models, with separate rankings for single agents and DeepAgents on 1,000 tasks each.</p><p class="news-links"><a class="text-link" href="leaderboard.html">Explore the new rankings <span aria-hidden="true">→</span></a></p></div></li>
         <li><time datetime="2026-09-15">15 Sep 2026</time><div><p>Data, Agent and Leaderboard pages added, with a mountain leaderboard and a recorded agent trajectory.</p><p class="news-links"><a class="text-link" href="data.html">Data <span aria-hidden="true">→</span></a><a class="text-link" href="agent.html">Agent <span aria-hidden="true">→</span></a><a class="text-link" href="leaderboard.html">Leaderboard <span aria-hidden="true">→</span></a></p></div></li>
         <li><time datetime="2026-09-14">14 Sep 2026</time><div><p>Guided demo published.</p><p class="news-links"><a class="text-link" href="demo.html">Guided demo <span aria-hidden="true">→</span></a></p></div></li>
         <li><time datetime="2026-09-11">11 Sep 2026</time><div><p>Challenge website launched with the synchronized public leaderboard and research teams.</p></div></li>
-        <li><time datetime="2026-09-10">10 Sep 2026</time><div><p>Public leaderboard snapshot (14 entries) synchronized from Hugging Face.</p><p class="news-links"><a class="text-link" href="https://huggingface.co/spaces/CamoAiLab/InferenceNet-Leaderboard" target="_blank" rel="noopener">CamoAiLab / InferenceNet-Leaderboard <span aria-hidden="true">↗</span></a></p></div></li>
       </ol>
     </section>
 
@@ -203,118 +204,73 @@
 
     <section class="section container ruled" id="harness" aria-labelledby="harness-title">
       <div class="section-heading">
-        <div><p class="kicker">04 / Harness</p><h2 id="harness-title">Same model, far more findings reproduced</h2></div>
-        <p class="lead">In an internal paired study, GPT-5.6 Sol ran every Selected_1000 task twice: once as a single generated program, and once inside a fixed Deep Agents harness that may inspect the data and test programs before answering. Same instruction, same container, same scorer.</p>
+        <div><p class="kicker">04 / Harness</p><h2 id="harness-title">Two ways to solve the same tasks</h2></div>
+        <p class="lead">Each of the six models is evaluated on the same 1,000 tasks in two settings. Both receive the task and data; reference answers remain hidden.</p>
       </div>
-      <div class="harness-grid">
-        <figure class="chart" data-chart="pairedBars" id="chart-harness">
-          <figcaption class="chart-head">
-            <h3 class="chart-title">GPT-5.6 Sol: single generation vs Deep Agents</h3>
-            <span class="badge audited">Audited</span>
-            <p class="chart-subtitle">Rates over 1,000 paired tasks; internal local-paper-v1 diagnostic scoring. Delta in percentage points after the second bar.</p>
-          </figcaption>
-          <div class="chart-canvas"></div>
-          <script type="application/json">{
-            "seriesLabels": ["Single generation", "Deep Agents"], "unit": "%", "max": 100, "decimals": 1, "showDelta": true,
-            "ariaLabel": "GPT-5.6 Sol, single generation versus Deep Agents, four rates over 1,000 paired tasks",
-            "groups": [
-              {"label": "Valid", "a": 55.6, "b": 90.9},
-              {"label": "Coefficient only", "a": 42.9, "b": 69.7},
-              {"label": "Direction", "a": 53.6, "b": 87.6},
-              {"label": "Significance", "a": 47.3, "b": 77.5}
-            ]
-          }</script>
-          <details class="chart-table" open>
-            <summary>Data table</summary>
-            <div class="table-scroll" tabindex="0" role="region" aria-labelledby="chart-harness-caption">
-            <table>
-              <caption id="chart-harness-caption">GPT-5.6 Sol paired study, rates = count / 1,000.</caption>
-              <thead><tr><th scope="col">Metric</th><th scope="col" class="num">Single generation</th><th scope="col" class="num">Deep Agents</th><th scope="col" class="num">Δ pts</th></tr></thead>
-              <tbody>
-                <tr><th scope="row">Valid</th><td class="num">55.6% (556)</td><td class="num">90.9% (909)</td><td class="num">+35.3</td></tr>
-                <tr><th scope="row">Coefficient only</th><td class="num">42.9% (429)</td><td class="num">69.7% (697)</td><td class="num">+26.8</td></tr>
-                <tr><th scope="row">Direction</th><td class="num">53.6% (536)</td><td class="num">87.6% (876)</td><td class="num">+34.0</td></tr>
-                <tr><th scope="row">Significance</th><td class="num">47.3% (473)</td><td class="num">77.5% (775)</td><td class="num">+30.2</td></tr>
-              </tbody>
-            </table>
-            </div>
-          </details>
-          <p class="chart-source">Valid = program exited 0 with a well-formed prediction; Coefficient only = coefficient within 5% relative error of the reference; Direction = same sign as the reference; Significance = same p-value band and correct direction. Metric names follow the internal local-paper-v1 profile, as on the Leaderboard page.</p>
-        </figure>
-        <div class="stack">
-          <dl class="kv ruled-end">
-            <dt>Model</dt><dd>GPT-5.6 Sol, complete 1,000-task paired study</dd>
-            <dt>Tasks</dt><dd>Selected_1000 at Hugging Face revision <code>59f9512</code></dd>
-            <dt>Baseline arm</dt><dd>One model call → one program → executed once</dd>
-            <dt>Harness arm</dt><dd>Deep Agents 0.7.13 loop with <code>run_python</code>: at most 6 model calls and 4 executions; the final program is replayed in a clean container</dd>
-            <dt>Budgets</dt><dd>32,768 output tokens · 600 s per task · 6 GiB RAM · 2 CPU · no network</dd>
-            <dt>Never visible</dt><dd>Reference values, the reference program, any score</dd>
-          </dl>
-          <div class="callout info"><p class="callout-title">Internal study</p><p>Internal exploratory study, local diagnostic scoring, not official leaderboard results. Arms are not cost-matched: the harness may use up to 6 model calls and 4 tool executions per task. Every planned task stays in the denominator.</p></div>
-          <p class="harness-links"><a class="text-link" href="leaderboard.html#climb">See the climb on the leaderboard <span aria-hidden="true">→</span></a><a class="text-link" href="agent.html">Watch a recorded trajectory <span aria-hidden="true">→</span></a></p>
-        </div>
-      </div>
+      <ul class="card-grid harness-arms">
+        <li class="card">
+          <p class="card-label">Single agent</p>
+          <h3>Generate once, execute once</h3>
+          <p>One model call produces one program, which is executed once to return the result.</p>
+        </li>
+        <li class="card">
+          <p class="card-label">DeepAgents</p>
+          <h3>Inspect, execute, refine</h3>
+          <p>The model can inspect data and revise its program using execution feedback, with up to 6 model calls and 4 tool executions per task. The final program is replayed in a clean container.</p>
+        </li>
+      </ul>
+      <p class="note harness-note">The two settings use different inference budgets. All 1,000 planned tasks remain in each score's denominator.</p>
+      <p class="harness-links"><a class="text-link" href="leaderboard.html">Compare the two rankings <span aria-hidden="true">→</span></a><a class="text-link" href="agent.html">Watch a recorded trajectory <span aria-hidden="true">→</span></a></p>
     </section>
 
     <section class="section container ruled" id="results" aria-labelledby="results-title">
       <div class="section-heading">
-        <div><p class="kicker">05 / Results</p><h2 id="results-title">Fourteen climbers, one summit</h2></div>
-        <p class="lead">This page ranks the 14 model–approach pairs of the public Hugging Face leaderboard by Partial Replication: the target treatment coefficient reproduced within a 5% relative error. Published research results by CamoAiLab / HKU CAMO on a 0–100 scale; the summit is 100%; the current leader stands at 32.8%.</p>
+        <div><p class="kicker">05 / Results</p><h2 id="results-title">Six models, two rankings</h2></div>
+        <p class="lead">GPT-5.6 Sol, Claude Opus, Kimi, Gemini 3.1 Pro, Qwen 3.7 Max and DeepSeek. Switch between single-agent and DeepAgents results to compare models within each setting.</p>
       </div>
-      <figure class="mountain" data-mountain id="public-climb">
-        <script type="application/json">{
-          "title": "Public research leaderboard",
-          "subtitle": "14 model–approach pairs climbing on Partial Replication",
-          "metric": "Partial Replication",
-          "unit": "%",
-          "max": 100,
-          "date": "Snapshot 10 Sep 2026",
-          "peakLabel": "100% · every task replicated",
-          "caption": "Source: CamoAiLab / InferenceNet-Leaderboard results.csv",
-          "items": [
-            { "rank": 1, "label": "Deepseek v4 Pro - Codex", "value": 32.8, "group": "DeepSeek", "kind": "public" },
-            { "rank": 2, "label": "GPT 5.5 - Codex", "value": 26.4, "group": "OpenAI", "kind": "public" },
-            { "rank": 3, "label": "GPT 4o - MetricsAI", "value": 22.7, "group": "OpenAI", "kind": "public" },
-            { "rank": 4, "label": "GPT 4o - MetaGPT", "value": 22.0, "group": "OpenAI", "kind": "public" },
-            { "rank": 5, "label": "DeepSeek v4 Pro - MetaGPT", "value": 14.4, "group": "DeepSeek", "kind": "public" },
-            { "rank": 6, "label": "GPT 5.5 - MetricsAI", "value": 14.2, "group": "OpenAI", "kind": "public" },
-            { "rank": 7, "label": "GPT 5.5 - Python", "value": 12.1, "group": "OpenAI", "kind": "public" },
-            { "rank": 8, "label": "GPT 5.5 - MetaGPT", "value": 11.4, "group": "OpenAI", "kind": "public" },
-            { "rank": 9, "label": "Deepseek v4 Pro - Python", "value": 8.4, "group": "DeepSeek", "kind": "public" },
-            { "rank": 10, "label": "Deepseek v4 Pro - Stata", "value": 8.1, "group": "DeepSeek", "kind": "public" },
-            { "rank": 11, "label": "GPT 5.5 - Stata", "value": 6.5, "group": "OpenAI", "kind": "public" },
-            { "rank": 12, "label": "Deepseek v4 Pro - MetricsAI", "value": 5.7, "group": "DeepSeek", "kind": "public" },
-            { "rank": 13, "label": "GPT 4o - Python", "value": 3.4, "group": "OpenAI", "kind": "public" },
-            { "rank": 14, "label": "GPT 4o - Stata", "value": 0.2, "group": "OpenAI", "kind": "public" }
-          ]
-        }</script>
-        <div class="mountain-canvas"></div>
-        <div class="mountain-table-wrap" tabindex="0" role="region" aria-label="Ranked list, all four published metrics">
-        <table class="mountain-table">
-          <caption>Public research leaderboard, 14 entries, snapshot 10 Sep 2026.</caption>
-          <thead><tr><th scope="col">#</th><th scope="col">Model / approach</th><th scope="col" class="num">Compilation Success</th><th scope="col" class="num">Partial Replication</th><th scope="col" class="num">Correct Coefficient Direction</th><th scope="col" class="num">Significant Level Correctness</th></tr></thead>
-          <tbody>
-            <tr><td>1</td><th scope="row">Deepseek v4 Pro - Codex</th><td class="num">86.3%</td><td class="num">32.8%</td><td class="num">69.3%</td><td class="num">53.6%</td></tr>
-            <tr><td>2</td><th scope="row">GPT 5.5 - Codex</th><td class="num">99.5%</td><td class="num">26.4%</td><td class="num">86.5%</td><td class="num">62.0%</td></tr>
-            <tr><td>3</td><th scope="row">GPT 4o - MetricsAI</th><td class="num">84.5%</td><td class="num">22.7%</td><td class="num">61.0%</td><td class="num">40.5%</td></tr>
-            <tr><td>4</td><th scope="row">GPT 4o - MetaGPT</th><td class="num">67.4%</td><td class="num">22.0%</td><td class="num">57.8%</td><td class="num">36.8%</td></tr>
-            <tr><td>5</td><th scope="row">DeepSeek v4 Pro - MetaGPT</th><td class="num">67.4%</td><td class="num">14.4%</td><td class="num">57.8%</td><td class="num">38.2%</td></tr>
-            <tr><td>6</td><th scope="row">GPT 5.5 - MetricsAI</th><td class="num">52.1%</td><td class="num">14.2%</td><td class="num">46.5%</td><td class="num">33.6%</td></tr>
-            <tr><td>7</td><th scope="row">GPT 5.5 - Python</th><td class="num">36.7%</td><td class="num">12.1%</td><td class="num">30.7%</td><td class="num">22.2%</td></tr>
-            <tr><td>8</td><th scope="row">GPT 5.5 - MetaGPT</th><td class="num">55.0%</td><td class="num">11.4%</td><td class="num">48.5%</td><td class="num">32.5%</td></tr>
-            <tr><td>9</td><th scope="row">Deepseek v4 Pro - Python</th><td class="num">25.3%</td><td class="num">8.4%</td><td class="num">21.0%</td><td class="num">15.9%</td></tr>
-            <tr><td>10</td><th scope="row">Deepseek v4 Pro - Stata</th><td class="num">20.3%</td><td class="num">8.1%</td><td class="num">17.2%</td><td class="num">14.0%</td></tr>
-            <tr><td>11</td><th scope="row">GPT 5.5 - Stata</th><td class="num">35.9%</td><td class="num">6.5%</td><td class="num">21.0%</td><td class="num">11.0%</td></tr>
-            <tr><td>12</td><th scope="row">Deepseek v4 Pro - MetricsAI</th><td class="num">13.2%</td><td class="num">5.7%</td><td class="num">13.2%</td><td class="num">10.1%</td></tr>
-            <tr><td>13</td><th scope="row">GPT 4o - Python</th><td class="num">7.0%</td><td class="num">3.4%</td><td class="num">5.9%</td><td class="num">4.9%</td></tr>
-            <tr><td>14</td><th scope="row">GPT 4o - Stata</th><td class="num">1.1%</td><td class="num">0.2%</td><td class="num">1.0%</td><td class="num">0.6%</td></tr>
-          </tbody>
-        </table>
-        </div>
-      </figure>
+      <!-- paired-ranking:start -->
+<div class="paired-board" data-paired-leaderboard>
+  <div class="paired-controls" hidden>
+    <div class="paired-switch" role="group" aria-label="Leaderboard view">
+      <button type="button" data-ranking-arm="baseline" aria-pressed="false">Single Agent</button>
+      <button type="button" data-ranking-arm="deepagents" aria-pressed="true">Agent + DeepAgents</button>
+    </div>
+    <label><span>Rank by</span><select data-ranking-metric aria-label="Ranking metric"><option value="perfect">Full replication (local)</option><option value="partial_replication">Partial replication</option><option value="compilation_success">Execution success</option><option value="coefficient_direction">Coefficient direction</option><option value="significance_level">Significance level</option></select></label>
+  </div>
+  <div class="paired-heading"><h3 data-ranking-label>Two ways to solve</h3><p>6 models · 1,000 tasks per group · 17 Sep 2026</p></div>
+  <figure class="mountain" data-ranking-mountain hidden><div class="mountain-canvas"></div></figure>
+  <p class="paired-scroll-note">Scroll the table to see all metrics →</p>
+  <div class="paired-panel" data-ranking-panel="baseline">
+    <h4>Single Agent</h4><div class="table-scroll" tabindex="0" role="region" aria-label="Single Agent results"><table class="paired-table">
+      <caption>Single Agent · scores over all 1,000 tasks (%)</caption>
+      <thead><tr><th scope="col">#</th><th scope="col">Model</th><th scope="col" data-metric="perfect" aria-sort="descending">Full replication (local)</th><th scope="col" data-metric="partial_replication" aria-sort="none">Partial replication</th><th scope="col" data-metric="compilation_success" aria-sort="none">Execution success</th><th scope="col" data-metric="coefficient_direction" aria-sort="none">Coefficient direction</th><th scope="col" data-metric="significance_level" aria-sort="none">Significance level</th></tr></thead>
+      <tbody><tr data-model="gpt-5.6-sol"><td>1</td><th scope="row">GPT-5.6 Sol</th><td class="is-sorted">33.8%</td><td>43.0%</td><td>55.7%</td><td>53.7%</td><td>48.5%</td></tr>
+<tr data-model="gemini-3.1-pro-preview"><td>2</td><th scope="row">Gemini 3.1 Pro Preview</th><td class="is-sorted">24.6%</td><td>36.6%</td><td>54.3%</td><td>50.6%</td><td>43.7%</td></tr>
+<tr data-model="kimi-k3"><td>3</td><th scope="row">Kimi K3</th><td class="is-sorted">23.0%</td><td>36.6%</td><td>52.6%</td><td>49.4%</td><td>43.1%</td></tr>
+<tr data-model="qwen3.7-max"><td>4</td><th scope="row">Qwen3.7-Max</th><td class="is-sorted">19.8%</td><td>31.5%</td><td>48.6%</td><td>45.4%</td><td>39.6%</td></tr>
+<tr data-model="claude-opus-4-8"><td>5</td><th scope="row">Claude Opus 4.8</th><td class="is-sorted">18.4%</td><td>30.5%</td><td>46.7%</td><td>43.7%</td><td>37.0%</td></tr>
+<tr data-model="deepseek-v4-pro"><td>6</td><th scope="row">DeepSeek V4 Pro</th><td class="is-sorted">12.9%</td><td>19.5%</td><td>28.1%</td><td>26.0%</td><td>23.6%</td></tr></tbody>
+    </table></div>
+  </div>
+<div class="paired-panel" data-ranking-panel="deepagents">
+    <h4>Agent + DeepAgents</h4><div class="table-scroll" tabindex="0" role="region" aria-label="Agent + DeepAgents results"><table class="paired-table">
+      <caption>Agent + DeepAgents · scores over all 1,000 tasks (%)</caption>
+      <thead><tr><th scope="col">#</th><th scope="col">Model</th><th scope="col" data-metric="perfect" aria-sort="descending">Full replication (local)</th><th scope="col" data-metric="partial_replication" aria-sort="none">Partial replication</th><th scope="col" data-metric="compilation_success" aria-sort="none">Execution success</th><th scope="col" data-metric="coefficient_direction" aria-sort="none">Coefficient direction</th><th scope="col" data-metric="significance_level" aria-sort="none">Significance level</th></tr></thead>
+      <tbody><tr data-model="gpt-5.6-sol"><td>1</td><th scope="row">GPT-5.6 Sol</th><td class="is-sorted">51.8%</td><td>69.9%</td><td>91.0%</td><td>87.9%</td><td>78.7%</td></tr>
+<tr data-model="claude-opus-4-8"><td>2</td><th scope="row">Claude Opus 4.8</th><td class="is-sorted">39.2%</td><td>62.1%</td><td>83.4%</td><td>79.3%</td><td>69.6%</td></tr>
+<tr data-model="gemini-3.1-pro-preview"><td>3</td><th scope="row">Gemini 3.1 Pro Preview</th><td class="is-sorted">39.1%</td><td>63.2%</td><td>85.0%</td><td>81.1%</td><td>71.8%</td></tr>
+<tr data-model="kimi-k3"><td>4</td><th scope="row">Kimi K3</th><td class="is-sorted">39.0%</td><td>63.5%</td><td>86.7%</td><td>80.4%</td><td>70.9%</td></tr>
+<tr data-model="qwen3.7-max"><td>5</td><th scope="row">Qwen3.7-Max</th><td class="is-sorted">24.8%</td><td>37.9%</td><td>52.3%</td><td>48.8%</td><td>43.3%</td></tr>
+<tr data-model="deepseek-v4-pro"><td>6</td><th scope="row">DeepSeek V4 Pro</th><td class="is-sorted">18.3%</td><td>27.0%</td><td>35.2%</td><td>33.8%</td><td>30.8%</td></tr></tbody>
+    </table></div>
+  </div>
+  <div class="paired-foot"><span>Every score uses all 1,000 tasks; failures and unknowns stay in the denominator.</span><a href="assets/data/paired-results.csv" download>Download results CSV ↓</a></div>
+  <p class="paired-status" data-ranking-status role="status">Published results · 17 Sep 2026</p>
+</div>
+<!-- paired-ranking:end -->
       <div class="results-foot">
-        <p class="chart-source">Published research results by CamoAiLab / HKU CAMO on the 0–100 scale; not Challenge standings. Source: <a href="https://camoailab-inferencenet-leaderboard.static.hf.space/results.csv" target="_blank" rel="noopener">results.csv</a> · <a href="https://huggingface.co/spaces/CamoAiLab/InferenceNet-Leaderboard" target="_blank" rel="noopener">InferenceNet-Leaderboard Space</a> · <a href="assets/data/leaderboard-provenance.json">snapshot provenance</a>. Model names are printed as the source spells them. Sorted by Partial Replication; ties keep source order; all four published metrics share the 0–100 scale, and the source does not bind this table to a sample count or evaluation date.</p>
-        <a class="text-link" href="leaderboard.html#public">Open the full leaderboard <span aria-hidden="true">→</span></a>
+        <p class="chart-source">Published 17 Sep 2026 from the merged six-model evaluation update.</p>
+        <a class="text-link" href="leaderboard.html">Open the full leaderboard <span aria-hidden="true">→</span></a>
       </div>
     </section>
 
@@ -338,12 +294,12 @@
     </section>
 
     <section class="section container ruled" id="resources" aria-labelledby="resources-title">
-      <div class="section-heading compact"><div><p class="kicker">08 / Resources</p><h2 id="resources-title">Code and datasets</h2></div><p class="lead">Project code, the related research agent, benchmark data and the original leaderboard.</p></div>
+      <div class="section-heading compact"><div><p class="kicker">08 / Resources</p><h2 id="resources-title">Code and datasets</h2></div><p class="lead">Project code, the related research agent, benchmark data and the current rankings.</p></div>
       <div class="resource-grid">
         <a class="resource" href="https://github.com/YTZSR/chatpilot_evaluator/tree/dev-gyc-eval" target="_blank" rel="noopener"><div><span class="resource-type">GITHUB / EVALUATION FRAMEWORK</span><span aria-hidden="true">↗</span></div><h3>InferenceNet evaluation framework</h3><p>Unified evaluation package, command-line entry points and documentation on dev-gyc-eval.</p><span class="resource-label">Private repository · collaborator access</span></a>
         <a class="resource" href="https://github.com/HKU-Business-AI-Center/Econometrics-Agent" target="_blank" rel="noopener"><div><span class="resource-type">GITHUB / RESEARCH AGENT</span><span aria-hidden="true">↗</span></div><h3>MetricsAI / Econometrics-Agent</h3><p>Public implementation associated with the MetricsAI paper.</p><span class="resource-label">Browse agent code</span></a>
         <a class="resource" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener"><div><span class="resource-type">HUGGING FACE / DATASET</span><span aria-hidden="true">↗</span></div><h3>InferenceNet dataset</h3><p>Research tasks, dataset documentation and access requirements.</p><span class="resource-label">Open benchmark data</span></a>
-        <a class="resource" href="https://huggingface.co/spaces/CamoAiLab/InferenceNet-Leaderboard" target="_blank" rel="noopener"><div><span class="resource-type">HUGGING FACE / LEADERBOARD</span><span aria-hidden="true">↗</span></div><h3>InferenceNet leaderboard</h3><p>Published benchmark results and the data synchronized above.</p><span class="resource-label">Open the original leaderboard</span></a>
+        <a class="resource" href="leaderboard.html"><div><span class="resource-type">RESULTS / LEADERBOARD</span><span aria-hidden="true">→</span></div><h3>InferenceNet leaderboard</h3><p>Six models evaluated as single agents and with DeepAgents, with separate rankings for each setting.</p><span class="resource-label">Explore the new rankings</span></a>
       </div>
       <p class="resource-extra"><a class="text-link" href="https://github.com/EasonAI-5589/inferencenet-challenge" target="_blank" rel="noopener">Public website repository <span aria-hidden="true">↗</span></a></p>
     </section>
@@ -354,7 +310,7 @@
         <li class="card">
           <p class="card-label">Dataset</p>
           <h3>InferenceNet on Hugging Face</h3>
-          <p>CamoAiLab/InferenceNet: data card, task packages and the Selected_1000 task list. Selected_1000 counts on this site are computed from the pinned revision <code>59f9512a38e594528807744214a60ee00367434e</code>; full-benchmark totals follow the data card and leaderboard figures follow the 10 Sep 2026 snapshot.</p>
+          <p>CamoAiLab/InferenceNet: data card, task packages and the Selected_1000 task list. Selected_1000 counts on this site are computed from the pinned revision <code>59f9512a38e594528807744214a60ee00367434e</code>; full-benchmark totals follow the data card. Current rankings use the six-model evaluation update published on 17 Sep 2026.</p>
           <div class="card-footer"><a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener">Data card <span aria-hidden="true">↗</span></a><a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet/tree/59f9512a38e594528807744214a60ee00367434e" target="_blank" rel="noopener">Pinned revision <span aria-hidden="true">↗</span></a></div>
         </li>
         <li class="card">

@@ -1,6 +1,6 @@
 /* index.css — home page only. Loaded after styles.css, site.css and mountain.css.
  * Adds the paper-style title block, the news list, the task-gallery summary tile,
- * the harness study grid and small home-specific spacing. No new tokens. */
+ * the paired evaluation summary and small home-specific spacing. No new tokens. */
 
 /* Hero ------------------------------------------------------------------------ */
 .hero{padding-bottom:40px}
@@ -58,15 +58,13 @@
 .gallery-summary .pill{background:var(--paper)}
 .gallery-link{flex:none;font-size:14px}
 
-/* Section 04: harness study grid ------------------------------------------------- */
-.harness-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:20px;align-items:start}
-.harness-grid .chart-head .badge{margin-left:auto}
+/* Section 04: paired evaluation settings ----------------------------------------- */
+.harness-arms{--cols:2}
+.harness-note{margin:16px 0 20px}
 .harness-links{display:flex;flex-wrap:wrap;gap:8px 24px;margin:0}
 .harness-links .text-link{font-size:13px;gap:10px}
 
-/* Section 05: public results ------------------------------------------------------ */
-.mountain-table .num{text-align:right;white-space:nowrap}
-.mountain-table th[scope="row"]{white-space:nowrap}
+/* Section 05: current results ----------------------------------------------------- */
 .results-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:10px 32px;margin-top:18px}
 .results-foot .chart-source{max-width:72ch;margin:0}
 .results-foot .text-link{flex:none}
@@ -94,7 +92,6 @@
   .stat-strip.stats-5 .stat:nth-child(n+4){grid-column:span 3}
   .stat-strip.stats-5 .stat:first-child,.stat-strip.stats-5 .stat:nth-child(4){padding-left:0}
   .stat-strip.stats-5 .stat:nth-child(3),.stat-strip.stats-5 .stat:nth-child(5){padding-right:0}
-  .harness-grid{grid-template-columns:1fr}
 }
 @media(max-width:860px){
   .paper-main{grid-template-columns:1fr}
@@ -117,6 +114,6 @@
   .stat-strip.stats-5 .stat:first-child,.stat-strip.stats-5 .stat:nth-child(4){padding-left:0}
   .stat-strip.stats-5 .stat:nth-child(3),.stat-strip.stats-5 .stat:nth-child(5){padding-right:0}
   .stat-strip.stats-5 .stat strong{font-size:28px}
-  .harness-grid .chart-head .badge{margin-left:0} /* under a two-line title, left-aligned */
+  .harness-arms{--cols:1}
   .participation-steps .badge{margin-top:0}
 }

@@ -1,101 +1,51 @@
-/* leaderboard.css — page layer for leaderboard.html. Loads after site.css and
- * mountain.css. Adds only what the shared system lacks: medal ranks and a
- * sorted-column emphasis on the live table, a figure meta row, and the delta /
- * grouped comparison tables. Medal colours mirror the mountain component's own
- * tokens (mountain.css) so the table and the drawing agree. */
-
-/* Live table: medals, monospace figures, sorted column ------------------------ */
-#leaderboard-table{--medal-gold:#e8b421;--medal-silver:#c9d0da;--medal-bronze:#c98a52;--medal-ink:#1a1a1a}
-html[data-theme="dark"] #leaderboard-table{--medal-gold:#f2c13d;--medal-silver:#aeb7c3;--medal-bronze:#cf925c}
-#leaderboard-table tbody td:nth-child(n+3){font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--soft)}
-#leaderboard-table tbody tr:nth-child(-n+3)>td:first-child{position:relative;isolation:isolate;font-weight:700;color:var(--medal-ink)}
-#leaderboard-table tbody tr:nth-child(-n+3)>td:first-child::before{content:"";position:absolute;z-index:-1;left:50%;top:50%;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;background:var(--medal)}
-#leaderboard-table tbody tr:nth-child(1)>td:first-child{--medal:var(--medal-gold)}
-#leaderboard-table tbody tr:nth-child(2)>td:first-child{--medal:var(--medal-silver)}
-#leaderboard-table tbody tr:nth-child(3)>td:first-child{--medal:var(--medal-bronze)}
-#leaderboard-table tbody tr:nth-child(1)>th{font-weight:600}
-/* The header carries aria-sort (set by leaderboard.js); the column below follows it. */
-#leaderboard-table thead th[aria-sort="descending"]{background:var(--brand-tint)}
-#leaderboard-table:has(thead th:nth-child(3)[aria-sort="descending"]) tbody td:nth-child(3),
-#leaderboard-table:has(thead th:nth-child(4)[aria-sort="descending"]) tbody td:nth-child(4),
-#leaderboard-table:has(thead th:nth-child(5)[aria-sort="descending"]) tbody td:nth-child(5),
-#leaderboard-table:has(thead th:nth-child(6)[aria-sort="descending"]) tbody td:nth-child(6){background:var(--brand-tint);color:var(--ink);font-weight:600}
-.leaderboard-shell{background:var(--surface)}
-.leaderboard-footer .text-link{font-size:13px}
-/* Controls: the sort select and the refresh button share one height, type size and
- * boundary. The boundary is the select's only affordance, so it gets a 3:1 line
- * (page-scoped, like the medal colours above); dark theme reuses --strong-line. */
-.leaderboard-shell{--control-line:#8c8c8c}
-html[data-theme="dark"] .leaderboard-shell{--control-line:var(--strong-line)}
-.leaderboard-controls select,#leaderboard-refresh{min-height:42px;font-size:14px;border-radius:var(--radius);border-color:var(--control-line)}
-#leaderboard-refresh{padding:8px 16px}
-/* Sighted cue that the live table scrolls sideways; shown only where it does (see the
- * table media queries below; leaderboard.js hides it again when everything fits). */
-.lb-scroll-hint{display:none;margin:0;padding:9px 28px;border-bottom:1px solid var(--line);font-size:12px;line-height:1.6;color:var(--muted)}
-.lb-scroll-hint[hidden]{display:none}
-
-/* Figure meta row (badge + provenance line above a figure) --------------------- */
-.lb-figure-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin:0 0 14px;font-size:12px;line-height:1.6;color:var(--muted)}
-.lb-figure-meta strong{font-weight:500;color:var(--soft)}
-.lb-after{margin-top:28px}
-.lb-after-tight{margin-top:18px}
-
-/* Delta and grouped comparison tables ------------------------------------------ */
-.compare-table .delta{font-weight:600;color:var(--ink)}
-.compare-table .count{display:block;font-family:var(--mono);font-size:10.5px;line-height:1.5;font-weight:400;color:var(--muted)}
-.compare-table thead th[colspan]{text-align:center;border-bottom-color:var(--strong-line)}
-.compare-table thead th[rowspan]{vertical-align:bottom}
-.compare-table thead tr+tr th{font-weight:500}
-.lb-groups tbody+tbody>tr:first-child>*{border-top:1px solid var(--strong-line)}
-.lb-groups tbody th[rowspan]{vertical-align:top}
-.lb-run-meta{display:block;font-family:var(--mono);font-size:10.5px;line-height:1.6;font-weight:400;color:var(--muted);margin-top:6px;white-space:nowrap}
-.lb-groups .badge{margin-left:6px}
-.lb-groups tbody th.arm{font-weight:400;color:var(--soft);white-space:nowrap}
-.lb-groups tbody tr:last-child th.arm{color:var(--ink);font-weight:500}
-.lb-definitions dt{white-space:nowrap}
-
-/* By-approach panels: three-up down to 861px (site.css would leave the third panel
- * orphaned on its own row between 861 and 1100px); cards are flex columns so the
- * "Data table" toggle sits on the card bottom even when a panel has fewer rows. */
-#by-approach .chart{display:flex;flex-direction:column}
-#by-approach .chart-canvas{flex:1 0 auto}
-@media(min-width:861px) and (max-width:1100px){#by-approach .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}}
-
-/* Live table widths. styles.css pins the table at 860px; below 1000px the six columns
- * fit the container once the model column is allowed to shrink, so no scrolling until
- * phones. On phones the rank and model cells stay put and the metrics scroll past a
- * visible cut edge. */
-@media(max-width:1100px){.lb-run-meta{white-space:normal}}
-@media(max-width:1000px){
-  #leaderboard-table{min-width:0}
-  #leaderboard-table tr>*:nth-child(2){min-width:180px}
-  #leaderboard-table th,#leaderboard-table td{padding:14px 12px}
+/* Shared paired-results component, used by Home and Leaderboard. */
+[hidden]{display:none!important}
+.paired-controls{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:24px}
+.paired-switch{display:flex;gap:4px;padding:4px;border:1px solid var(--strong-line);border-radius:6px;background:var(--tint)}
+.paired-switch button{font:600 14px/1.4 var(--sans);padding:12px 20px;border:0;border-radius:3px;background:transparent;color:var(--soft);cursor:pointer;min-height:44px}
+.paired-switch button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.paired-controls label{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--soft)}
+.paired-controls select{font:14px var(--sans);min-height:44px;padding:8px 32px 8px 12px;border:1px solid var(--strong-line);border-radius:4px;background:var(--paper);color:var(--ink);max-width:100%}
+.paired-heading{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:10px;margin:0 0 16px}
+.paired-heading h3{font-size:20px;margin:0}
+.paired-heading p{font-size:12px;color:var(--muted);margin:0}
+.paired-board .mountain{margin:0 0 24px}
+.paired-board .mountain-head{display:none}
+.paired-board .mountain-legend{display:none}
+.paired-board .mountain-note{font-size:12px}
+.paired-panel+.paired-panel{margin-top:32px}
+.paired-panel h4{font-size:15px;margin:0 0 12px}
+.paired-board[data-active-arm] .paired-panel h4{display:none}
+.paired-table{width:100%;min-width:800px;border-collapse:collapse;font-size:14px}
+.paired-table caption{text-align:left;font-size:12px;color:var(--muted);padding:0 0 12px}
+.paired-table th,.paired-table td{padding:16px 14px;border-bottom:1px solid var(--line)}
+.paired-table thead th{font-size:12px;line-height:1.5;text-align:right;color:var(--soft);font-weight:500}
+.paired-table tr>*:nth-child(1){width:46px;text-align:center}
+.paired-table tr>*:nth-child(2){text-align:left;min-width:200px}
+.paired-table tbody th{font-weight:500;white-space:nowrap}
+.paired-table td:nth-child(n+3){text-align:right;font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums}
+.paired-table .is-sorted,.paired-table th[aria-sort="descending"]{background:var(--brand-tint);color:var(--ink);font-weight:600}
+.paired-table tbody tr:first-child>th{font-weight:700}
+.paired-foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;margin:18px 0 0;font-size:12px;color:var(--muted);line-height:1.7}
+.paired-foot a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.paired-status{font-size:12px;color:var(--muted);min-height:1.6em;margin:12px 0 0}
+.paired-methods{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:32px}
+.paired-methods article{padding:22px;border:1px solid var(--line);border-radius:var(--radius)}
+.paired-methods h3{font-size:17px;margin-bottom:8px}
+.paired-methods p{font-size:14px;color:var(--soft);line-height:1.8}
+.paired-notes{border-top:1px solid var(--line);padding-top:22px;margin-top:28px}
+.paired-notes summary{cursor:pointer;font-size:14px;font-weight:600}
+.paired-notes p,.paired-notes li{font-size:14px;line-height:1.8;color:var(--soft)}
+.paired-notes p{margin-top:16px}
+.paired-notes ul{padding-left:20px;margin-top:12px}
+.paired-scroll-note{font-size:12px;color:var(--muted);margin:10px 0;display:none}
+@media(max-width:680px){
+ .paired-controls{align-items:stretch;gap:16px}
+ .paired-switch{width:100%}
+ .paired-switch button{flex:1;padding:10px 8px;font-size:13px}
+ .paired-controls label{width:100%;justify-content:space-between}
+ .paired-controls select{max-width:75%;min-width:0}
+ .paired-methods{grid-template-columns:1fr;gap:12px}
+ .paired-table th,.paired-table td{padding:14px 10px}
+ .paired-scroll-note{display:block}
 }
-@media(max-width:860px){
-  .lb-figure-meta{margin-bottom:12px}
-  .lb-after{margin-top:22px}
-}
-@media(max-width:600px){
-  .lb-scroll-hint:not([hidden]){display:block}
-  #leaderboard-table{min-width:640px}
-  #leaderboard-table tr>*:nth-child(2){min-width:140px;white-space:normal}
-  #leaderboard-table th,#leaderboard-table td{padding:12px 10px}
-  #leaderboard-table tr>*:first-child,#leaderboard-table tbody tr:nth-child(-n+3)>td:first-child{position:sticky;left:0;z-index:1}
-  #leaderboard-table tr>*:nth-child(2){position:sticky;left:45px;z-index:1;border-right:1px solid var(--line)}
-}
-@media(max-width:520px){
-  .lb-scroll-hint{padding-inline:18px}
-  .lb-definitions dt{white-space:normal}
-  #leaderboard-table tbody tr:nth-child(-n+3)>td:first-child::before{width:24px;height:24px;margin:-12px 0 0 -12px}
-}
-@media(forced-colors:active){
-  #leaderboard-table tbody tr:nth-child(-n+3)>td:first-child::before{border:1px solid CanvasText;background:Canvas}
-  #leaderboard-table tbody tr:nth-child(-n+3)>td:first-child{color:CanvasText}
-}
-
-/* Three-cell stat strip: three across on wide screens, one column on phones. -- */
-.lb-strip{--cols:3}
-@media(max-width:600px){.lb-strip{--cols:1}.lb-strip .stat{padding-inline:0}}
-/* Caveat list rendered as prose without a wrapper. */
-ul.lb-list{margin:0;padding-left:20px;font-size:15px;line-height:1.8;color:var(--soft);max-width:68ch}
-ul.lb-list li+li{margin-top:6px}

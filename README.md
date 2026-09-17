@@ -28,18 +28,19 @@ screenshot for visual changes.
 | Home, resources and team summary | `index.html`, `index.css` |
 | Dataset distributions and examples | `data.html`, `data.css` |
 | Agent case and evaluation harness | `agent.html`, `agent.css` |
-| Public leaderboard and historical internal studies | `leaderboard.html`, `leaderboard.css` |
+| Single Agent and DeepAgents rankings | `leaderboard.html`, `leaderboard.css` |
 | Guided presentation | `demo.html`, `demo.css`, `demo.js` |
 | Team, institutions and Yichen Guo contact | `teams.html`, `teams.css` |
 | Shared layout, navigation and theme | `styles.css`, `site.css`, `site.js`, `theme.js` |
 | Chinese translations and language control | `assets/i18n/*.zh.json`, `language.js`, `language.css` |
 | Charts and mountain leaderboard | `charts.js`, `mountain.js`, `mountain.css` |
-| Public leaderboard synchronization | `leaderboard.js`, `leaderboard-data.js`, `assets/data/` |
+| Shared homepage and leaderboard results | `leaderboard.js`, `leaderboard-data.js`, `assets/data/paired-results.*` |
 
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL;
-Teams uses `assets/i18n/teams.zh.json`. The language tag remains `20260915-teams`; shared navigation CSS/JS and
-Demo JS use `20260915-menu`.
+Teams uses `assets/i18n/teams.zh.json`. Home and Leaderboard use language and
+ranking release tag `20260917-paired`; other language tags remain
+`20260915-teams`. Shared navigation CSS/JS and Demo JS use `20260915-menu`.
 
 English is authored in the HTML. When changing English text, update the matching
 normalized English key and Chinese value in that page's dictionary. Preserve
@@ -73,12 +74,24 @@ a recorded GPT-5.5 trajectory, the evaluation harness and a conceptual demo.
 It does not execute models or analysis. Raw datasets, private run directories,
 credentials and research repository history are not part of this repository.
 
-The Leaderboard page anonymously refreshes the public Space's `results.csv`.
-A reviewed 14-entry snapshot remains available if live fetching fails or
-JavaScript is disabled. Source values retain their 0–100 scale and provenance
-is recorded in `assets/data/leaderboard-provenance.json`. The source does not
-specify that table's sample count or evaluation date. Static charts use their
-explicitly dated saved snapshot.
+Home and Leaderboard share the six-model release merged in
+[HF PR #4](https://huggingface.co/spaces/CamoAiLab/InferenceNet-Leaderboard/discussions/4).
+The source JSON and CSV are preserved in `assets/data/paired-results.*`; the
+release commit and checksum are in `paired-results-provenance.json`. These are
+12 groups with 1,000 tasks each. Failed, unknown and invalid records remain in
+the denominator. Historical protocols differ across models, and official
+scorer parity remains unverified.
+
+Two buttons independently rank Single Agent and Agent + DeepAgents. The default
+is DeepAgents, ordered by full replication (`local-paper-v1`), with four
+`hf-leaderboard-v1` metrics also available. The mountain and table use the same
+selected group and metric. The old 14-entry source is no longer fetched.
+
+To update results, first verify a published JSON/CSV pair and its provenance,
+then run `node scripts/build-leaderboard.mjs` to regenerate both pages' saved
+tables. If JavaScript or data loading fails, both groups remain readable in
+these tables. Check changes with `node --test scripts/test-leaderboard.mjs`
+and `node scripts/check.mjs`, then verify both pages in the browser.
 
 ## Attribution
 
