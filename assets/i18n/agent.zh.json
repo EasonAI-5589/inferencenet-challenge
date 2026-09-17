@@ -529,5 +529,18 @@
   "Final execution compared with the reference · values rounded for display": "最终执行结果与参考值对照 · 数值按展示精度取舍",
   "GPT-5.5 + DeepAgents": "GPT-5.5 + DeepAgents",
   "Reference": "参考值",
-  "At full precision, the differences are floating-point rounding. All three statistics pass this run’s full-replication thresholds; exact values remain in the original record below.": "在完整精度下，差异处于浮点舍入范围，三个统计量均通过这次运行的完整复现判定。精确数值保留在下方原始记录中。"
+  "At full precision, the differences are floating-point rounding. All three statistics pass this run’s full-replication thresholds; exact values remain in the original record below.": "在完整精度下，差异处于浮点舍入范围，三个统计量均通过这次运行的完整复现判定。精确数值保留在下方原始记录中。",
+  "We use one actual InferenceNet run to examine the task, the data and where GPT-5.5’s first program went wrong. Then we follow the same model with DeepAgents to see how execution feedback helps it reproduce the result.": "我们用 InferenceNet 的一个真实运行案例，分析题目、输入数据，以及 GPT-5.5 原程序的问题，再沿着同一模型配合 DeepAgents 的执行过程，说明反馈如何帮助它完成复现。",
+  "What data does the model receive?": "模型拿到的数据是什么？",
+  "See this task on the Data page →": "在 Data 页查看同一道题 →",
+  "The input is data_np.dta, a Stata table with 4,550 observations and 38 columns, spanning 1821–2010. Each row is an observation. The regression variables listed below are only a few of its columns; the program can read the whole file.": "输入是 Stata 数据文件 data_np.dta，包含 4,550 条观测、38 个字段，年份范围为 1821—2010 年，每行是一条观测。下方列出的回归变量只是部分字段，程序可以读取完整文件。",
+  "From the full data file to the regression sample": "从完整数据文件到回归样本",
+  "Rows in the full file": "完整文件中的观测",
+  "Rows from 1905–1945": "1905—1945 年的观测",
+  "Rows used after excluding 7 with missing values": "剔除 7 条缺失记录后参与回归",
+  "Alongside the outcome and explanatory variables, year identifies the year and tid indexes the month. This page shows the relevant column structure; the analysis runs on the original observations in the file.": "除被解释变量和解释变量外，year 记录年份，tid 是月份编号。这里展示的是与本题相关的字段结构，实际分析使用文件中的原始观测。",
+  "Time variables": "时间字段",
+  "Why did the outcome change?": "为什么这次能够复现？",
+  "The single-generation program committed to assumed column names before the model had seen the file’s structure. With DeepAgents, tool outputs let GPT-5.5 inspect the real columns, connect tid to the monthly clustering requirement, and check the regression before submitting its final program.": "一次性生成的程序在模型尚未看到数据结构时，就使用了预设的列名。配合 DeepAgents 后，工具返回的信息让 GPT-5.5 能够查看真实字段，将 tid 对应到按月聚类的要求，并在提交最终程序前检查回归执行结果。",
+  "The harness makes this interaction possible by running tools and returning their output. The model interprets that feedback and writes the analysis; the final replay verifies the result.": "Harness 通过执行工具、返回输出，支持这一交互过程。模型负责理解反馈、编写分析程序，最终通过独立重跑验证结果。"
 }

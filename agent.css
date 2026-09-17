@@ -77,7 +77,22 @@
 .case-comparison{margin-top:26px}
 .case-comparison table{width:100%}
 .case-comparison td{white-space:nowrap;font-size:13px}
+.case-dataset{margin:28px 0;padding:26px;border:1px solid var(--line);background:var(--tint)}
+.case-dataset-heading{display:flex;justify-content:space-between;gap:20px;align-items:baseline;margin-bottom:14px}
+.case-dataset-heading h3{margin:0}
+.case-dataset-heading .text-link{font-size:12px;flex-shrink:0}
+.case-dataset>p,.case-improvement>p{font-size:14px;line-height:1.85;color:var(--soft);margin:0}
+.case-sample-flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin-block:24px}
+.case-sample-flow>div{display:grid;gap:8px;border-top:1px solid var(--line);padding-top:16px}
+.case-sample-flow strong{font-family:var(--mono);font-size:28px;font-weight:500;color:var(--brand)}
+.case-sample-flow span{font-size:12px;line-height:1.7;color:var(--soft)}
+.case-dataset>.case-caption{font-size:12px;color:var(--muted)}
+.case-improvement{border-left:2px solid var(--brand);padding:4px 0 4px 22px;margin-top:28px}
+.case-improvement>p+p{margin-top:12px}
 @media(max-width:760px){
+  .case-dataset{padding:20px}
+  .case-dataset-heading{flex-direction:column;gap:12px}
+  .case-sample-flow{grid-template-columns:minmax(0,1fr);gap:18px}
   .case-spec,.case-proof-grid{grid-template-columns:minmax(0,1fr);gap:20px}
   .case-spec{padding:20px}
   .case-variables{grid-template-columns:minmax(0,1fr);gap:4px}

@@ -112,6 +112,18 @@ each page. If JavaScript or data loading fails, one combined 12-row table remain
 readable on each page. Check changes with `node --test scripts/test-leaderboard.mjs`
 and `node scripts/check.mjs`, then verify both pages in the browser.
 
+## Agent case walkthrough
+
+The Agent page follows recorded GPT-5.5 task 0011: the input table, the
+single-generation program and its month-column error, the three DeepAgents
+tool executions, and the independently replayed result. Code excerpts and
+returned evidence sit beside each step; the original prompt, programs and
+trace remain in a collapsed record. Both languages distinguish the full
+4,550-row, 38-column file, the 984-row time window and the 977 observations
+used for regression. The same-task link opens `data.html#case-0011`, whose
+case card repeats this data context. Interaction budgets remain explicit.
+Agent CSS and the Agent/Data dictionaries use release tag `20260917-case-data`.
+
 ## Attribution
 
 The initial layout and manual theme followed the project owner's WorldEcho /
