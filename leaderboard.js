@@ -1,7 +1,7 @@
-import { ARMS, VIEWS, METRICS, DEFAULT_METRIC, DEFAULT_VIEW, validateSnapshot, rankModels, tableRows, modelDisplayName } from './leaderboard-data.js?v=20260917-research';
+import { VIEWS, METRICS, DEFAULT_METRIC, DEFAULT_VIEW, validateSnapshot, rankModels, tableRows, chartLabel } from './leaderboard-data.js?v=20260917-harness';
 import { mountain } from './mountain.js';
 
-const source = new URL('./assets/data/paired-results.json?v=20260917-research', import.meta.url);
+const source = new URL('./assets/data/paired-results.json?v=20260917-harness', import.meta.url);
 const snapshot = fetch(source).then(response => {
   if (!response.ok) throw new Error('Snapshot unavailable');
   return response.json();
@@ -17,7 +17,8 @@ for (const widget of document.querySelectorAll('[data-paired-leaderboard]')) {
     const viewSelect = widget.querySelector('[data-ranking-view]');
     const table = widget.querySelector('.paired-table');
     const figure = widget.querySelector('[data-ranking-mountain]');
-    const viewFromURL = new URL(location.href).searchParams.get('view');
+    const requestedView = new URL(location.href).searchParams.get('view');
+    const viewFromURL = requestedView === 'deepagents' ? 'harness' : requestedView;
     if (Object.hasOwn(VIEWS, viewFromURL)) view = viewFromURL;
     viewSelect.value = view;
 
@@ -32,9 +33,9 @@ for (const widget of document.querySelectorAll('[data-paired-leaderboard]')) {
       mountain(figure, {
         title: view === 'all' ? 'InferenceNet Challenge Leaderboard' : VIEWS[view], metric: METRICS[metric], unit: '%', max: 100,
         peakLabel: '100% · every task replicated',
-        items: rows.map(({ rank, model, arm, metrics }) => ({
-          rank, label: view === 'all' ? `${modelDisplayName(model)} · ${ARMS[arm]}` : modelDisplayName(model),
-          value: metrics[metric].score, kind: 'internal',
+        items: rows.map(row => ({
+          rank: row.rank, label: chartLabel(row, view),
+          value: row.metrics[metric].score, kind: 'internal',
         })),
       }, { table: false, aspect: 0.48 });
       widget.dataset.activeView = view;

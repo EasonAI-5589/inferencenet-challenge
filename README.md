@@ -28,7 +28,7 @@ screenshot for visual changes.
 | Home, resources and team summary | `index.html`, `index.css` |
 | Dataset distributions and examples | `data.html`, `data.css` |
 | Agent case and evaluation harness | `agent.html`, `agent.css` |
-| Combined leaderboard and approach filters | `leaderboard.html`, `leaderboard.css` |
+| Leaderboard and configuration filters | `leaderboard.html`, `leaderboard.css` |
 | Guided presentation | `demo.html`, `demo.css`, `demo.js` |
 | Team, institutions and Yichen Guo contact | `teams.html`, `teams.css` |
 | Shared layout, navigation and theme | `styles.css`, `site.css`, `site.js`, `theme.js` |
@@ -39,7 +39,7 @@ screenshot for visual changes.
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL;
 Teams uses `assets/i18n/teams.zh.json`. Home and Leaderboard use language and
-ranking release tag `20260917-research`; other language tags remain
+ranking release tag `20260917-harness`; other language tags remain
 `20260915-teams`. Shared navigation CSS/JS and Demo JS use `20260915-menu`.
 
 English is authored in the HTML. When changing English text, update the matching
@@ -87,11 +87,24 @@ scorer parity remains unverified.
 The Results section uses the title InferenceNet Challenge Leaderboard, without
 duplicate count or combined-ranking headings. One table ranks all 12 model
 configurations together by default, ordered by
-full replication (`local-paper-v1`), with four `hf-leaderboard-v1` metrics also
-available. The approach dropdown filters All, Model or
-Model + DeepAgents. The two filtered views each contain six entries. The
-mountain and table share the selected filter, metric and global ranking within
-that selection. The old 14-entry source is no longer fetched.
+Full replication, with Partial replication and three additional metrics also
+available. Public metric labels omit scoring profile names; protocol notes retain
+`local-paper-v1` for full replication and `hf-leaderboard-v1` for the other four
+metrics. Renaming labels does not rescore or modify the published snapshot.
+The configuration dropdown filters All, Model or Model + Harness. The Harness
+column names the actual architecture; a dash denotes the Model configuration.
+Current harness results use DeepAgents; archived version details remain in the
+cell title and source data. The two filtered views currently contain six entries
+each. The mountain and table share the selected filter, metric and global ranking
+within that selection. The old 14-entry source is no longer fetched.
+
+Configuration categories are derived from each run’s `harness` metadata, not its
+archive arm ID. Rendering and validation enumerate the recorded arms, so further
+harness architectures can join the same table and Model + Harness filter without
+redefining the categories. Published snapshots still require reviewed provenance
+and compatible scoring profiles. Tests use synthetic records to exercise this
+path; no additional harness results are claimed or published. Legacy
+`?view=deepagents` links open the Model + Harness view.
 
 To update results, first verify a published JSON/CSV pair and its provenance,
 then run `node scripts/build-leaderboard.mjs` to regenerate the saved table on

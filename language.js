@@ -37,6 +37,8 @@
     let m;
     if ((m = value.match(/^Step (\d+) of (\d+)$/))) return `第 ${m[1]} / ${m[2]} 步`;
     if ((m = value.match(/^(\d+) entries$/))) return `${m[1]} 条记录`;
+    if ((m = value.match(/^(.+) · (\d+) entries · (.+)$/))) return `${translate(m[1])} · ${m[2]} 条记录 · ${translate(m[3])}`;
+    if ((m = value.match(/^(.+) · Model$/))) return `${m[1]} · 模型`;
     if ((m = value.match(/^Sorted by (.+) · (\d+) entries$/))) return `按${translate(m[1])}排序 · ${m[2]} 条记录`;
     if ((m = value.match(/^Synced from Hugging Face · Fetched (.+)$/))) return `已从 Hugging Face 同步 · 获取时间 ${m[1]}`;
     if ((m = value.match(/^Checking Hugging Face · Showing data fetched (.+)$/))) return `正在检查 Hugging Face · 当前数据获取于 ${m[1]}`;

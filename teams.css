@@ -8,6 +8,8 @@
 .faculty-detail{font-size:13px}
 .faculty-group-link{font-size:12px}
 .team-member .text-link{margin-top:9px}
+.student-leadership{margin-top:40px}
+.student-leadership>h2{font-size:24px;margin-bottom:20px}
 .contact-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:stretch}
 .contact-card,.contact-qr{min-width:0;padding:28px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
 .contact-card:only-child{grid-column:1/-1}

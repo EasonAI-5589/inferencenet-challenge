@@ -16,11 +16,11 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="site.css?v=20260915-menu">
   <link rel="stylesheet" href="mountain.css">
-  <link rel="stylesheet" href="leaderboard.css?v=20260917-research">
+  <link rel="stylesheet" href="leaderboard.css?v=20260917-harness">
   <script src="site.js?v=20260915-menu" defer></script>
-  <script type="module" src="leaderboard.js?v=20260917-research"></script>
+  <script type="module" src="leaderboard.js?v=20260917-harness"></script>
   <link rel="stylesheet" href="language.css">
-  <script src="language.js?v=20260917-research" defer></script>
+  <script src="language.js?v=20260917-harness" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -49,7 +49,7 @@
     <section class="page-hero container" aria-labelledby="page-title">
       <p class="kicker">Leaderboard · September 2026</p>
       <h1 id="page-title">InferenceNet Challenge Leaderboard</h1>
-      <p class="lead">Performance on 1,000 econometric replication tasks.</p>
+      <p class="lead">Model and Model + Harness results on 1,000 econometric replication tasks.</p>
       <ul class="page-meta"><li>1,000 tasks per group</li><li>Published 17 Sep 2026</li></ul>
     </section>
     <section class="section container ruled" id="rankings" aria-labelledby="rankings-title">
@@ -58,26 +58,26 @@
       <!-- paired-ranking:start -->
 <div class="paired-board" data-paired-leaderboard>
   <div class="paired-controls" hidden>
-    <label><span>Approach</span><select data-ranking-view aria-label="Filter approach"><option value="all">All</option><option value="baseline">Model</option><option value="deepagents">Model + DeepAgents</option></select></label>
-    <label><span>Rank by</span><select data-ranking-metric aria-label="Ranking metric"><option value="perfect">Full replication (local)</option><option value="partial_replication">Partial replication</option><option value="compilation_success">Execution success</option><option value="coefficient_direction">Coefficient direction</option><option value="significance_level">Significance level</option></select></label>
+    <label><span>Configuration</span><select data-ranking-view aria-label="Filter configuration"><option value="all">All</option><option value="baseline">Model</option><option value="harness">Model + Harness</option></select></label>
+    <label><span>Rank by</span><select data-ranking-metric aria-label="Ranking metric"><option value="perfect">Full replication</option><option value="partial_replication">Partial replication</option><option value="compilation_success">Execution success</option><option value="coefficient_direction">Coefficient direction</option><option value="significance_level">Significance level</option></select></label>
   </div>
   <figure class="mountain" data-ranking-mountain hidden><div class="mountain-canvas"></div></figure>
   <p class="paired-scroll-note">Scroll the table to see all metrics →</p>
   <div class="table-scroll" tabindex="0" role="region" aria-label="Leaderboard results"><table class="paired-table">
     <caption>Scores (%)</caption>
-    <thead><tr><th scope="col">#</th><th scope="col">Model</th><th scope="col">Approach</th><th scope="col" data-metric="perfect" aria-sort="descending">Full replication (local)</th><th scope="col" data-metric="partial_replication" aria-sort="none">Partial replication</th><th scope="col" data-metric="compilation_success" aria-sort="none">Execution success</th><th scope="col" data-metric="coefficient_direction" aria-sort="none">Coefficient direction</th><th scope="col" data-metric="significance_level" aria-sort="none">Significance level</th></tr></thead>
-    <tbody><tr data-model="gpt-5.6-sol" data-arm="deepagents"><td>1</td><th scope="row">GPT-5.6 Sol</th><td class="paired-approach"><span class="approach-tag deepagents">Model + DeepAgents</span></td><td class="is-sorted">51.8%</td><td>69.9%</td><td>91.0%</td><td>87.9%</td><td>78.7%</td></tr>
-<tr data-model="claude-opus-4-8" data-arm="deepagents"><td>2</td><th scope="row">Claude Opus 4.8</th><td class="paired-approach"><span class="approach-tag deepagents">Model + DeepAgents</span></td><td class="is-sorted">39.2%</td><td>62.1%</td><td>83.4%</td><td>79.3%</td><td>69.6%</td></tr>
-<tr data-model="gemini-3.1-pro-preview" data-arm="deepagents"><td>3</td><th scope="row">Gemini 3.1 Pro</th><td class="paired-approach"><span class="approach-tag deepagents">Model + DeepAgents</span></td><td class="is-sorted">39.1%</td><td>63.2%</td><td>85.0%</td><td>81.1%</td><td>71.8%</td></tr>
-<tr data-model="kimi-k3" data-arm="deepagents"><td>4</td><th scope="row">Kimi K3</th><td class="paired-approach"><span class="approach-tag deepagents">Model + DeepAgents</span></td><td class="is-sorted">39.0%</td><td>63.5%</td><td>86.7%</td><td>80.4%</td><td>70.9%</td></tr>
-<tr data-model="gpt-5.6-sol" data-arm="baseline"><td>5</td><th scope="row">GPT-5.6 Sol</th><td class="paired-approach"><span class="approach-tag baseline">Model</span></td><td class="is-sorted">33.8%</td><td>43.0%</td><td>55.7%</td><td>53.7%</td><td>48.5%</td></tr>
-<tr data-model="qwen3.7-max" data-arm="deepagents"><td>6</td><th scope="row">Qwen3.7-Max</th><td class="paired-approach"><span class="approach-tag deepagents">Model + DeepAgents</span></td><td class="is-sorted">24.8%</td><td>37.9%</td><td>52.3%</td><td>48.8%</td><td>43.3%</td></tr>
-<tr data-model="gemini-3.1-pro-preview" data-arm="baseline"><td>7</td><th scope="row">Gemini 3.1 Pro</th><td class="paired-approach"><span class="approach-tag baseline">Model</span></td><td class="is-sorted">24.6%</td><td>36.6%</td><td>54.3%</td><td>50.6%</td><td>43.7%</td></tr>
-<tr data-model="kimi-k3" data-arm="baseline"><td>8</td><th scope="row">Kimi K3</th><td class="paired-approach"><span class="approach-tag baseline">Model</span></td><td class="is-sorted">23.0%</td><td>36.6%</td><td>52.6%</td><td>49.4%</td><td>43.1%</td></tr>
-<tr data-model="qwen3.7-max" data-arm="baseline"><td>9</td><th scope="row">Qwen3.7-Max</th><td class="paired-approach"><span class="approach-tag baseline">Model</span></td><td class="is-sorted">19.8%</td><td>31.5%</td><td>48.6%</td><td>45.4%</td><td>39.6%</td></tr>
-<tr data-model="claude-opus-4-8" data-arm="baseline"><td>10</td><th scope="row">Claude Opus 4.8</th><td class="paired-approach"><span class="approach-tag baseline">Model</span></td><td class="is-sorted">18.4%</td><td>30.5%</td><td>46.7%</td><td>43.7%</td><td>37.0%</td></tr>
-<tr data-model="deepseek-v4-pro" data-arm="deepagents"><td>11</td><th scope="row">DeepSeek V4 Pro</th><td class="paired-approach"><span class="approach-tag deepagents">Model + DeepAgents</span></td><td class="is-sorted">18.3%</td><td>27.0%</td><td>35.2%</td><td>33.8%</td><td>30.8%</td></tr>
-<tr data-model="deepseek-v4-pro" data-arm="baseline"><td>12</td><th scope="row">DeepSeek V4 Pro</th><td class="paired-approach"><span class="approach-tag baseline">Model</span></td><td class="is-sorted">12.9%</td><td>19.5%</td><td>28.1%</td><td>26.0%</td><td>23.6%</td></tr></tbody>
+    <thead><tr><th scope="col">#</th><th scope="col">Model</th><th scope="col">Harness</th><th scope="col" data-metric="perfect" aria-sort="descending">Full replication</th><th scope="col" data-metric="partial_replication" aria-sort="none">Partial replication</th><th scope="col" data-metric="compilation_success" aria-sort="none">Execution success</th><th scope="col" data-metric="coefficient_direction" aria-sort="none">Coefficient direction</th><th scope="col" data-metric="significance_level" aria-sort="none">Significance level</th></tr></thead>
+    <tbody><tr data-model="gpt-5.6-sol" data-arm="deepagents" data-configuration="harness"><td>1</td><th scope="row">GPT-5.6 Sol</th><td class="paired-harness"><span class="harness-tag harness" data-no-translate title="DeepAgents">DeepAgents</span></td><td class="is-sorted">51.8%</td><td>69.9%</td><td>91.0%</td><td>87.9%</td><td>78.7%</td></tr>
+<tr data-model="claude-opus-4-8" data-arm="deepagents" data-configuration="harness"><td>2</td><th scope="row">Claude Opus 4.8</th><td class="paired-harness"><span class="harness-tag harness" data-no-translate title="DeepAgents">DeepAgents</span></td><td class="is-sorted">39.2%</td><td>62.1%</td><td>83.4%</td><td>79.3%</td><td>69.6%</td></tr>
+<tr data-model="gemini-3.1-pro-preview" data-arm="deepagents" data-configuration="harness"><td>3</td><th scope="row">Gemini 3.1 Pro</th><td class="paired-harness"><span class="harness-tag harness" data-no-translate title="DeepAgents 0.7.13">DeepAgents</span></td><td class="is-sorted">39.1%</td><td>63.2%</td><td>85.0%</td><td>81.1%</td><td>71.8%</td></tr>
+<tr data-model="kimi-k3" data-arm="deepagents" data-configuration="harness"><td>4</td><th scope="row">Kimi K3</th><td class="paired-harness"><span class="harness-tag harness" data-no-translate title="DeepAgents 0.7.13">DeepAgents</span></td><td class="is-sorted">39.0%</td><td>63.5%</td><td>86.7%</td><td>80.4%</td><td>70.9%</td></tr>
+<tr data-model="gpt-5.6-sol" data-arm="baseline" data-configuration="baseline"><td>5</td><th scope="row">GPT-5.6 Sol</th><td class="paired-harness"><span class="harness-tag baseline" aria-label="No harness">—</span></td><td class="is-sorted">33.8%</td><td>43.0%</td><td>55.7%</td><td>53.7%</td><td>48.5%</td></tr>
+<tr data-model="qwen3.7-max" data-arm="deepagents" data-configuration="harness"><td>6</td><th scope="row">Qwen3.7-Max</th><td class="paired-harness"><span class="harness-tag harness" data-no-translate title="DeepAgents 0.7.13">DeepAgents</span></td><td class="is-sorted">24.8%</td><td>37.9%</td><td>52.3%</td><td>48.8%</td><td>43.3%</td></tr>
+<tr data-model="gemini-3.1-pro-preview" data-arm="baseline" data-configuration="baseline"><td>7</td><th scope="row">Gemini 3.1 Pro</th><td class="paired-harness"><span class="harness-tag baseline" aria-label="No harness">—</span></td><td class="is-sorted">24.6%</td><td>36.6%</td><td>54.3%</td><td>50.6%</td><td>43.7%</td></tr>
+<tr data-model="kimi-k3" data-arm="baseline" data-configuration="baseline"><td>8</td><th scope="row">Kimi K3</th><td class="paired-harness"><span class="harness-tag baseline" aria-label="No harness">—</span></td><td class="is-sorted">23.0%</td><td>36.6%</td><td>52.6%</td><td>49.4%</td><td>43.1%</td></tr>
+<tr data-model="qwen3.7-max" data-arm="baseline" data-configuration="baseline"><td>9</td><th scope="row">Qwen3.7-Max</th><td class="paired-harness"><span class="harness-tag baseline" aria-label="No harness">—</span></td><td class="is-sorted">19.8%</td><td>31.5%</td><td>48.6%</td><td>45.4%</td><td>39.6%</td></tr>
+<tr data-model="claude-opus-4-8" data-arm="baseline" data-configuration="baseline"><td>10</td><th scope="row">Claude Opus 4.8</th><td class="paired-harness"><span class="harness-tag baseline" aria-label="No harness">—</span></td><td class="is-sorted">18.4%</td><td>30.5%</td><td>46.7%</td><td>43.7%</td><td>37.0%</td></tr>
+<tr data-model="deepseek-v4-pro" data-arm="deepagents" data-configuration="harness"><td>11</td><th scope="row">DeepSeek V4 Pro</th><td class="paired-harness"><span class="harness-tag harness" data-no-translate title="DeepAgents 0.7.13">DeepAgents</span></td><td class="is-sorted">18.3%</td><td>27.0%</td><td>35.2%</td><td>33.8%</td><td>30.8%</td></tr>
+<tr data-model="deepseek-v4-pro" data-arm="baseline" data-configuration="baseline"><td>12</td><th scope="row">DeepSeek V4 Pro</th><td class="paired-harness"><span class="harness-tag baseline" aria-label="No harness">—</span></td><td class="is-sorted">12.9%</td><td>19.5%</td><td>28.1%</td><td>26.0%</td><td>23.6%</td></tr></tbody>
   </table></div>
   <div class="paired-foot"><span>Every score uses all 1,000 tasks; failures and unknowns stay in the denominator.</span><a href="assets/data/paired-results.csv" download>Download results CSV ↓</a></div>
   <p class="paired-status visually-hidden" data-ranking-status role="status">Published results · 17 Sep 2026</p>
@@ -95,7 +95,7 @@
         <li class="card" id="model-harness-coupling">
           <p class="card-label">01</p>
           <h3>Model–Harness Coupling</h3>
-          <p>Study how model capabilities interact with harness design, and how planning, tool use and execution feedback affect replication performance.</p>
+          <p>Study how different models and harness architectures work together, and which combinations improve replication performance.</p>
         </li>
         <li class="card" id="harness-self-evolution">
           <p class="card-label">02</p>
@@ -112,17 +112,17 @@
         <summary>Evaluation protocol and sources</summary>
         <div class="paired-methods">
           <article><h3>Model</h3><p>One code-generation call, followed by execution. No iterative tool or feedback loop.</p></article>
-          <article><h3>Model + DeepAgents</h3><p>Up to six model calls and four trial tool executions. The final program is replayed and scored.</p></article>
+          <article><h3>Model + Harness</h3><p>The current results use DeepAgents, with up to six model calls and four trial tool executions. The final program is replayed and scored.</p></article>
         </div>
         <p>Published result archives: <a href="https://huggingface.co/spaces/CamoAiLab/InferenceNet-Leaderboard/discussions/4" target="_blank" rel="noopener">Hugging Face PR #4</a>.</p>
         <ul>
-          <li><strong>Full replication (local)</strong>: coefficient and standard error within 1% relative error; p-value within 0.01 absolute error.</li>
+          <li><strong>Full replication</strong>: coefficient and standard error within 1% relative error; p-value within 0.01 absolute error.</li>
           <li><strong>Partial replication</strong>: target coefficient within 5% relative error.</li>
           <li><strong>Execution success</strong>: code executes successfully under the archived scoring profile.</li>
           <li><strong>Coefficient direction</strong>: estimated and reference coefficients have the same sign.</li>
           <li><strong>Significance level</strong>: estimated and reference p-values fall in the same significance band.</li>
         </ul>
-        <p>Full replication uses local-paper-v1. The other four metrics use hf-leaderboard-v1; parity with the official scorer has not been verified. Unknown and invalid outcomes remain in the 1,000-task denominator without earning successes.</p>
+        <p>Full replication comes from the published evaluation summaries (local-paper-v1). The other four metrics come from archived per-task scores (hf-leaderboard-v1). These scoring profiles have not been verified against the official scorer. Unknown and invalid outcomes remain in the 1,000-task denominator without earning successes.</p>
         <p>The six models share Selected_1000 at dataset revision <code>59f9512</code>. Execution environments, time limits and recovery protocols differ across historical batches. See the accepted archives for per-run settings and evidence status.</p>
         <p><a href="assets/data/paired-results.json">Data JSON</a> · <a href="assets/data/paired-results-provenance.json">Release provenance</a> · <a href="https://huggingface.co/spaces/CamoAiLab/InferenceNet-Leaderboard/tree/731111974cf4d1a3c7a4f848a899f0b0708dd12b/results" target="_blank" rel="noopener">Accepted result archives ↗</a></p>
       </details>
