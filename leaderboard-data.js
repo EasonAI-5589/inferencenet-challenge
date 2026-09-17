@@ -1,7 +1,7 @@
 export const ARMS = Object.freeze({ baseline: 'Model', deepagents: 'Model + DeepAgents' });
 export const VIEWS = Object.freeze({ all: 'All', ...ARMS });
 export const METRICS = Object.freeze({
-  perfect: 'Full replication (local)',
+  perfect: 'Full replication',
   partial_replication: 'Partial replication',
   compilation_success: 'Execution success',
   coefficient_direction: 'Coefficient direction',

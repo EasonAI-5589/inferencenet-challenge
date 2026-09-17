@@ -39,7 +39,7 @@ screenshot for visual changes.
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL;
 Teams uses `assets/i18n/teams.zh.json`. Home and Leaderboard use language and
-ranking release tag `20260917-research`; other language tags remain
+ranking release tag `20260917-metrics`; other language tags remain
 `20260915-teams`. Shared navigation CSS/JS and Demo JS use `20260915-menu`.
 
 English is authored in the HTML. When changing English text, update the matching
@@ -87,9 +87,11 @@ scorer parity remains unverified.
 The Results section uses the title InferenceNet Challenge Leaderboard, without
 duplicate count or combined-ranking headings. One table ranks all 12 model
 configurations together by default, ordered by
-full replication (`local-paper-v1`), with four `hf-leaderboard-v1` metrics also
-available. The approach dropdown filters All, Model or
-Model + DeepAgents. The two filtered views each contain six entries. The
+Full replication, with Partial replication and three additional metrics also
+available. Public metric labels omit scoring profile names; protocol notes retain
+`local-paper-v1` for full replication and `hf-leaderboard-v1` for the other four
+metrics. Renaming labels does not rescore or modify the published snapshot.
+The approach dropdown filters All, Model or Model + DeepAgents. The two filtered views each contain six entries. The
 mountain and table share the selected filter, metric and global ranking within
 that selection. The old 14-entry source is no longer fetched.
 
