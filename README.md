@@ -84,8 +84,8 @@ scorer parity remains unverified.
 
 One table ranks all 12 model configurations together by default, ordered by
 full replication (`local-paper-v1`), with four `hf-leaderboard-v1` metrics also
-available. The approach dropdown filters All configurations, Single Agent or
-Agent + DeepAgents. The two filtered views each contain six entries. The
+available. The approach dropdown filters All configurations, Model only or
+Model + DeepAgents. The two filtered views each contain six entries. The
 mountain and table share the selected filter, metric and global ranking within
 that selection. The old 14-entry source is no longer fetched.
 

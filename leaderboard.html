@@ -6,9 +6,9 @@
   <meta name="color-scheme" content="light">
   <meta name="referrer" content="no-referrer">
   <title>Leaderboard — InferenceNet Challenge</title>
-  <meta name="description" content="Six models, one leaderboard: single agents and agents with DeepAgents on 1,000 econometric replication tasks.">
+  <meta name="description" content="Six models, one leaderboard: models alone and models with DeepAgents on 1,000 econometric replication tasks.">
   <meta property="og:title" content="InferenceNet Challenge — Leaderboard">
-  <meta property="og:description" content="Six models, one leaderboard: single agents and agents with DeepAgents on 1,000 econometric replication tasks.">
+  <meta property="og:description" content="Six models, one leaderboard: models alone and models with DeepAgents on 1,000 econometric replication tasks.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -16,11 +16,11 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="site.css?v=20260915-menu">
   <link rel="stylesheet" href="mountain.css">
-  <link rel="stylesheet" href="leaderboard.css?v=20260917-combined">
+  <link rel="stylesheet" href="leaderboard.css?v=20260917-model">
   <script src="site.js?v=20260915-menu" defer></script>
-  <script type="module" src="leaderboard.js?v=20260917-combined"></script>
+  <script type="module" src="leaderboard.js?v=20260917-model"></script>
   <link rel="stylesheet" href="language.css">
-  <script src="language.js?v=20260917-combined" defer></script>
+  <script src="language.js?v=20260917-model" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -54,11 +54,11 @@
     </section>
     <section class="section container ruled" id="rankings" aria-labelledby="rankings-title">
       <span id="public"></span><span id="climb"></span><span id="table"></span>
-      <div class="section-heading"><div><p class="kicker">01 / Results</p><h2 id="rankings-title">All configurations, ranked together</h2></div><p class="lead">The default view ranks all 12 configurations together. Filter by approach to see only single agents or agents with DeepAgents; the mountain and table follow the same selection.</p></div>
+      <div class="section-heading"><div><p class="kicker">01 / Results</p><h2 id="rankings-title">All configurations, ranked together</h2></div><p class="lead">The default view ranks all 12 configurations together. Filter by approach to see only models alone or models with DeepAgents; the mountain and table follow the same selection.</p></div>
       <!-- paired-ranking:start -->
 <div class="paired-board" data-paired-leaderboard>
   <div class="paired-controls" hidden>
-    <label><span>Approach</span><select data-ranking-view aria-label="Filter approach"><option value="all">All configurations</option><option value="baseline">Single Agent</option><option value="deepagents">Agent + DeepAgents</option></select></label>
+    <label><span>Approach</span><select data-ranking-view aria-label="Filter approach"><option value="all">All configurations</option><option value="baseline">Model only</option><option value="deepagents">Model + DeepAgents</option></select></label>
     <label><span>Rank by</span><select data-ranking-metric aria-label="Ranking metric"><option value="perfect">Full replication (local)</option><option value="partial_replication">Partial replication</option><option value="compilation_success">Execution success</option><option value="coefficient_direction">Coefficient direction</option><option value="significance_level">Significance level</option></select></label>
   </div>
   <div class="paired-heading"><h3 data-ranking-label>Combined leaderboard</h3><p>6 models · 12 configurations · 1,000 tasks each</p></div>
@@ -67,18 +67,18 @@
   <div class="table-scroll" tabindex="0" role="region" aria-label="Leaderboard results"><table class="paired-table">
     <caption>All configurations · scores over all 1,000 tasks (%)</caption>
     <thead><tr><th scope="col">#</th><th scope="col">Model</th><th scope="col">Approach</th><th scope="col" data-metric="perfect" aria-sort="descending">Full replication (local)</th><th scope="col" data-metric="partial_replication" aria-sort="none">Partial replication</th><th scope="col" data-metric="compilation_success" aria-sort="none">Execution success</th><th scope="col" data-metric="coefficient_direction" aria-sort="none">Coefficient direction</th><th scope="col" data-metric="significance_level" aria-sort="none">Significance level</th></tr></thead>
-    <tbody><tr data-model="gpt-5.6-sol" data-arm="deepagents"><td>1</td><th scope="row">GPT-5.6 Sol</th><td class="paired-approach"><span class="approach-tag deepagents">Agent + DeepAgents</span></td><td class="is-sorted">51.8%</td><td>69.9%</td><td>91.0%</td><td>87.9%</td><td>78.7%</td></tr>
-<tr data-model="claude-opus-4-8" data-arm="deepagents"><td>2</td><th scope="row">Claude Opus 4.8</th><td class="paired-approach"><span class="approach-tag deepagents">Agent + DeepAgents</span></td><td class="is-sorted">39.2%</td><td>62.1%</td><td>83.4%</td><td>79.3%</td><td>69.6%</td></tr>
-<tr data-model="gemini-3.1-pro-preview" data-arm="deepagents"><td>3</td><th scope="row">Gemini 3.1 Pro Preview</th><td class="paired-approach"><span class="approach-tag deepagents">Agent + DeepAgents</span></td><td class="is-sorted">39.1%</td><td>63.2%</td><td>85.0%</td><td>81.1%</td><td>71.8%</td></tr>
-<tr data-model="kimi-k3" data-arm="deepagents"><td>4</td><th scope="row">Kimi K3</th><td class="paired-approach"><span class="approach-tag deepagents">Agent + DeepAgents</span></td><td class="is-sorted">39.0%</td><td>63.5%</td><td>86.7%</td><td>80.4%</td><td>70.9%</td></tr>
-<tr data-model="gpt-5.6-sol" data-arm="baseline"><td>5</td><th scope="row">GPT-5.6 Sol</th><td class="paired-approach"><span class="approach-tag baseline">Single Agent</span></td><td class="is-sorted">33.8%</td><td>43.0%</td><td>55.7%</td><td>53.7%</td><td>48.5%</td></tr>
-<tr data-model="qwen3.7-max" data-arm="deepagents"><td>6</td><th scope="row">Qwen3.7-Max</th><td class="paired-approach"><span class="approach-tag deepagents">Agent + DeepAgents</span></td><td class="is-sorted">24.8%</td><td>37.9%</td><td>52.3%</td><td>48.8%</td><td>43.3%</td></tr>
-<tr data-model="gemini-3.1-pro-preview" data-arm="baseline"><td>7</td><th scope="row">Gemini 3.1 Pro Preview</th><td class="paired-approach"><span class="approach-tag baseline">Single Agent</span></td><td class="is-sorted">24.6%</td><td>36.6%</td><td>54.3%</td><td>50.6%</td><td>43.7%</td></tr>
-<tr data-model="kimi-k3" data-arm="baseline"><td>8</td><th scope="row">Kimi K3</th><td class="paired-approach"><span class="approach-tag baseline">Single Agent</span></td><td class="is-sorted">23.0%</td><td>36.6%</td><td>52.6%</td><td>49.4%</td><td>43.1%</td></tr>
-<tr data-model="qwen3.7-max" data-arm="baseline"><td>9</td><th scope="row">Qwen3.7-Max</th><td class="paired-approach"><span class="approach-tag baseline">Single Agent</span></td><td class="is-sorted">19.8%</td><td>31.5%</td><td>48.6%</td><td>45.4%</td><td>39.6%</td></tr>
-<tr data-model="claude-opus-4-8" data-arm="baseline"><td>10</td><th scope="row">Claude Opus 4.8</th><td class="paired-approach"><span class="approach-tag baseline">Single Agent</span></td><td class="is-sorted">18.4%</td><td>30.5%</td><td>46.7%</td><td>43.7%</td><td>37.0%</td></tr>
-<tr data-model="deepseek-v4-pro" data-arm="deepagents"><td>11</td><th scope="row">DeepSeek V4 Pro</th><td class="paired-approach"><span class="approach-tag deepagents">Agent + DeepAgents</span></td><td class="is-sorted">18.3%</td><td>27.0%</td><td>35.2%</td><td>33.8%</td><td>30.8%</td></tr>
-<tr data-model="deepseek-v4-pro" data-arm="baseline"><td>12</td><th scope="row">DeepSeek V4 Pro</th><td class="paired-approach"><span class="approach-tag baseline">Single Agent</span></td><td class="is-sorted">12.9%</td><td>19.5%</td><td>28.1%</td><td>26.0%</td><td>23.6%</td></tr></tbody>
+    <tbody><tr data-model="gpt-5.6-sol" data-arm="deepagents"><td>1</td><th scope="row">GPT-5.6 Sol</th><td class="paired-approach"><span class="approach-tag deepagents">Model + DeepAgents</span></td><td class="is-sorted">51.8%</td><td>69.9%</td><td>91.0%</td><td>87.9%</td><td>78.7%</td></tr>
+<tr data-model="claude-opus-4-8" data-arm="deepagents"><td>2</td><th scope="row">Claude Opus 4.8</th><td class="paired-approach"><span class="approach-tag deepagents">Model + DeepAgents</span></td><td class="is-sorted">39.2%</td><td>62.1%</td><td>83.4%</td><td>79.3%</td><td>69.6%</td></tr>
+<tr data-model="gemini-3.1-pro-preview" data-arm="deepagents"><td>3</td><th scope="row">Gemini 3.1 Pro Preview</th><td class="paired-approach"><span class="approach-tag deepagents">Model + DeepAgents</span></td><td class="is-sorted">39.1%</td><td>63.2%</td><td>85.0%</td><td>81.1%</td><td>71.8%</td></tr>
+<tr data-model="kimi-k3" data-arm="deepagents"><td>4</td><th scope="row">Kimi K3</th><td class="paired-approach"><span class="approach-tag deepagents">Model + DeepAgents</span></td><td class="is-sorted">39.0%</td><td>63.5%</td><td>86.7%</td><td>80.4%</td><td>70.9%</td></tr>
+<tr data-model="gpt-5.6-sol" data-arm="baseline"><td>5</td><th scope="row">GPT-5.6 Sol</th><td class="paired-approach"><span class="approach-tag baseline">Model only</span></td><td class="is-sorted">33.8%</td><td>43.0%</td><td>55.7%</td><td>53.7%</td><td>48.5%</td></tr>
+<tr data-model="qwen3.7-max" data-arm="deepagents"><td>6</td><th scope="row">Qwen3.7-Max</th><td class="paired-approach"><span class="approach-tag deepagents">Model + DeepAgents</span></td><td class="is-sorted">24.8%</td><td>37.9%</td><td>52.3%</td><td>48.8%</td><td>43.3%</td></tr>
+<tr data-model="gemini-3.1-pro-preview" data-arm="baseline"><td>7</td><th scope="row">Gemini 3.1 Pro Preview</th><td class="paired-approach"><span class="approach-tag baseline">Model only</span></td><td class="is-sorted">24.6%</td><td>36.6%</td><td>54.3%</td><td>50.6%</td><td>43.7%</td></tr>
+<tr data-model="kimi-k3" data-arm="baseline"><td>8</td><th scope="row">Kimi K3</th><td class="paired-approach"><span class="approach-tag baseline">Model only</span></td><td class="is-sorted">23.0%</td><td>36.6%</td><td>52.6%</td><td>49.4%</td><td>43.1%</td></tr>
+<tr data-model="qwen3.7-max" data-arm="baseline"><td>9</td><th scope="row">Qwen3.7-Max</th><td class="paired-approach"><span class="approach-tag baseline">Model only</span></td><td class="is-sorted">19.8%</td><td>31.5%</td><td>48.6%</td><td>45.4%</td><td>39.6%</td></tr>
+<tr data-model="claude-opus-4-8" data-arm="baseline"><td>10</td><th scope="row">Claude Opus 4.8</th><td class="paired-approach"><span class="approach-tag baseline">Model only</span></td><td class="is-sorted">18.4%</td><td>30.5%</td><td>46.7%</td><td>43.7%</td><td>37.0%</td></tr>
+<tr data-model="deepseek-v4-pro" data-arm="deepagents"><td>11</td><th scope="row">DeepSeek V4 Pro</th><td class="paired-approach"><span class="approach-tag deepagents">Model + DeepAgents</span></td><td class="is-sorted">18.3%</td><td>27.0%</td><td>35.2%</td><td>33.8%</td><td>30.8%</td></tr>
+<tr data-model="deepseek-v4-pro" data-arm="baseline"><td>12</td><th scope="row">DeepSeek V4 Pro</th><td class="paired-approach"><span class="approach-tag baseline">Model only</span></td><td class="is-sorted">12.9%</td><td>19.5%</td><td>28.1%</td><td>26.0%</td><td>23.6%</td></tr></tbody>
   </table></div>
   <div class="paired-foot"><span>Every score uses all 1,000 tasks; failures and unknowns stay in the denominator.</span><a href="assets/data/paired-results.csv" download>Download results CSV ↓</a></div>
   <p class="paired-status" data-ranking-status role="status">Published results · 17 Sep 2026</p>
@@ -89,8 +89,8 @@
     <section class="section container ruled" id="protocol" aria-labelledby="protocol-title">
       <div class="section-heading"><div><p class="kicker">02 / About the results</p><h2 id="protocol-title">One benchmark, two approaches</h2></div></div>
       <div class="paired-methods">
-        <article><h3>Single Agent</h3><p>One code-generation call, followed by execution. No iterative tool or feedback loop.</p></article>
-        <article><h3>Agent + DeepAgents</h3><p>Up to six model calls and four trial tool executions. The final program is replayed and scored.</p></article>
+        <article><h3>Model only</h3><p>One code-generation call, followed by execution. No iterative tool or feedback loop.</p></article>
+        <article><h3>Model + DeepAgents</h3><p>Up to six model calls and four trial tool executions. The final program is replayed and scored.</p></article>
       </div>
       <p class="note">Results from the published six-model release, merged in <a href="https://huggingface.co/spaces/CamoAiLab/InferenceNet-Leaderboard/discussions/4" target="_blank" rel="noopener">Hugging Face PR #4</a>. Both pages use the same saved release.</p>
       <details class="paired-notes">
