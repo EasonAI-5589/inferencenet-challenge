@@ -46,8 +46,8 @@
     if ((m = value.match(/^Ranked entries by (.+)$/))) return `按${translate(m[1])}排列的记录`;
     if ((m = value.match(/^(.+) \(internal study\)$/))) return `${m[1]}（内部实验）`;
     if ((m = value.match(/^(.+) — ranked by (.+?)( \(.+\))?\.$/))) return `${translate(m[1])} — 按${translate(m[2])}排序${m[3] || ''}。`;
-    if ((m = value.match(/^(.+): (\d+) entries climbing by (.+?)(; leader (.+) at (.+))?\.$/))) return `${translate(m[1])}：${m[2]} 条记录，按${translate(m[3])}排列${m[4] ? `；领先模型 ${m[5]}，得分 ${m[6]}` : ''}。`;
-    if ((m = value.match(/^Altitude is (.+); the summit flag marks (.+)\. Leader: (.+) at (.+)\. Full ranking in the table below\.$/))) return `高度表示${translate(m[1])}；顶峰标记为 ${m[2]}。领先模型：${m[3]}，得分 ${m[4]}。完整排名见下表。`;
+    if ((m = value.match(/^(.+): (\d+) entries climbing by (.+?)(; leader (.+) at (.+))?\.$/))) return `${translate(m[1])}：${m[2]} 条记录，按${translate(m[3])}排列${m[4] ? `；领先模型 ${translate(m[5])}，得分 ${m[6]}` : ''}。`;
+    if ((m = value.match(/^Altitude is (.+); the summit flag marks (.+)\. Leader: (.+) at (.+)\. Full ranking in the table below\.$/))) return `高度表示${translate(m[1])}；顶峰标记为 ${m[2]}。领先模型：${translate(m[3])}，得分 ${m[4]}。完整排名见下表。`;
     return value;
   }
 

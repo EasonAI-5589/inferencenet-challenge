@@ -3,9 +3,6 @@
 .paired-controls{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:24px}
 .paired-controls label{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--soft)}
 .paired-controls select{font:14px var(--sans);min-height:44px;padding:8px 32px 8px 12px;border:1px solid var(--strong-line);border-radius:4px;background:var(--paper);color:var(--ink);max-width:100%}
-.paired-heading{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:10px;margin:0 0 16px}
-.paired-heading h3{font-size:20px;margin:0}
-.paired-heading p{font-size:12px;color:var(--muted);margin:0}
 .paired-board .mountain{margin:0 0 24px}
 .paired-board .mountain-head{display:none}
 .paired-board .mountain-legend{display:none}
@@ -26,6 +23,9 @@
 .paired-foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;margin:18px 0 0;font-size:12px;color:var(--muted);line-height:1.7}
 .paired-foot a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
 .paired-status{font-size:12px;color:var(--muted);min-height:1.6em;margin:12px 0 0}
+.research-directions{--cols:3}
+.research-directions h3{font-size:21px;line-height:1.35}
+.paired-notes .paired-methods{margin-top:24px}
 .paired-methods{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:32px}
 .paired-methods article{padding:22px;border:1px solid var(--line);border-radius:var(--radius)}
 .paired-methods h3{font-size:17px;margin-bottom:8px}

@@ -58,9 +58,8 @@
 .gallery-summary .pill{background:var(--paper)}
 .gallery-link{flex:none;font-size:14px}
 
-/* Section 04: paired evaluation settings ----------------------------------------- */
-.harness-arms{--cols:2}
-.harness-note{margin:16px 0 20px}
+/* Section 04: model and harness research ---------------------------------------- */
+.harness-purpose{max-width:80ch;font-size:16px;line-height:1.8;color:var(--soft);margin:0 0 24px}
 .harness-links{display:flex;flex-wrap:wrap;gap:8px 24px;margin:0}
 .harness-links .text-link{font-size:13px;gap:10px}
 

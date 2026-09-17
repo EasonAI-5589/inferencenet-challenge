@@ -39,7 +39,7 @@ screenshot for visual changes.
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL;
 Teams uses `assets/i18n/teams.zh.json`. Home and Leaderboard use language and
-ranking release tag `20260917-gemini`; other language tags remain
+ranking release tag `20260917-research`; other language tags remain
 `20260915-teams`. Shared navigation CSS/JS and Demo JS use `20260915-menu`.
 
 English is authored in the HTML. When changing English text, update the matching
@@ -84,9 +84,11 @@ unchanged for traceability. These are
 the denominator. Historical protocols differ across models, and official
 scorer parity remains unverified.
 
-One table ranks all 12 model configurations together by default, ordered by
+The Results section uses the title InferenceNet Challenge Leaderboard, without
+duplicate count or combined-ranking headings. One table ranks all 12 model
+configurations together by default, ordered by
 full replication (`local-paper-v1`), with four `hf-leaderboard-v1` metrics also
-available. The approach dropdown filters All configurations, Model only or
+available. The approach dropdown filters All, Model or
 Model + DeepAgents. The two filtered views each contain six entries. The
 mountain and table share the selected filter, metric and global ranking within
 that selection. The old 14-entry source is no longer fetched.
@@ -121,3 +123,17 @@ public website build and this collaboration guide. Future synchronization from
 the research workspace must first incorporate changes merged here so colleagues'
 edits are preserved. Never copy private research history or runtime evidence
 into this public repository.
+
+## Research framing
+
+The homepage introduces model–harness interaction. Research directions below the
+leaderboard cover model–harness coupling, harness self-evolution through automated
+design and evaluation, and trajectory-based model post-training (including
+distillation and reinforcement learning). These are research aims, not claims
+that an automatic optimization system or training dataset is already available.
+Current evaluation settings and source records remain in expandable protocol
+notes. An agent denotes the model operating within a harness.
+
+Terminology references: [agent evaluation](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents),
+[automatic harness optimization](https://arxiv.org/abs/2608.23041),
+and [trajectory-based reinforcement learning](https://arxiv.org/abs/2508.03680).
