@@ -25,7 +25,7 @@ screenshot for visual changes.
 
 | Page or layer | Files |
 |---|---|
-| Home, resources and team summary | `index.html`, `index.css` |
+| Home, research overview and resources | `index.html`, `index.css` |
 | Dataset distributions and examples | `data.html`, `data.css` |
 | Agent case and evaluation harness | `agent.html`, `agent.css` |
 | Leaderboard and configuration filters | `leaderboard.html`, `leaderboard.css` |
@@ -37,8 +37,9 @@ screenshot for visual changes.
 
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL;
-All five pages use language release tag `20260917-no-demo`. Home and
-Leaderboard retain ranking release tag `20260917-harness`. Shared navigation
+Home uses CSS and language release tag `20260917-home`; the other four pages
+use language release tag `20260917-no-demo`. Home and Leaderboard retain ranking
+release tag `20260917-harness`. Shared navigation
 CSS/JS use `20260915-menu`.
 
 English is authored in the HTML. When changing English text, update the matching
@@ -53,10 +54,8 @@ submitting; verify navigation, images, chart fallbacks and language controls.
 
 ## Research content
 
-The current Challenge team has two Faculty Leads, Ye Luo and Lin William Cong,
-and two Project Leaders, Yichen Guo and Tianyang Han. Keep the homepage summary,
-Teams cards and Chinese dictionary synchronized when updating this roster.
-Detailed profiles live only on `teams.html`; Home retains the compact roster.
+Faculty roles, student leaders and institutional profiles live on `teams.html`.
+Home links to that page instead of duplicating the roster.
 Every footer links to `teams.html#contact`, with only Yichen Guo’s email, WeChat
 ID and homepage. The personal WeChat QR image will be added when supplied.
 Previously shared Home team anchors redirect to the corresponding Teams section.
@@ -121,7 +120,7 @@ trace remain in a collapsed record. Both languages distinguish the full
 4,550-row, 38-column file, the 984-row time window and the 977 observations
 used for regression. The same-task link opens `data.html#case-0011`, whose
 case card repeats this data context. Interaction budgets remain explicit.
-Agent CSS uses release tag `20260917-case-data`; all page dictionaries use
+Agent CSS uses release tag `20260917-case-data`; its dictionary uses
 `20260917-no-demo`.
 
 ## Attribution
@@ -162,3 +161,12 @@ notes. An agent denotes the model operating within a harness.
 Terminology references: [agent evaluation](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents),
 [automatic harness optimization](https://arxiv.org/abs/2608.23041),
 and [trajectory-based reinforcement learning](https://arxiv.org/abs/2508.03680).
+
+## Homepage presentation
+
+Home follows five sections: the benchmark workflow, recorded GPT-5.5 task 0011,
+the shared leaderboard, three research directions and participation. Full task
+coverage and provenance remain on Data; the detailed execution trace remains
+on Agent. The homepage keeps one current update and one announcement about
+future challenge rules, dates and submissions. Resources and citations remain
+available below the contact entry point.
