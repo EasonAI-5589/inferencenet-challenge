@@ -15,7 +15,6 @@
   "Teams · InferenceNet Challenge": "团队 · InferenceNet 挑战赛",
   "The people behind": "携手建设",
   "InferenceNet.": "InferenceNet 的团队。",
-  "Meet the Challenge team and explore the institutions and labs behind the research.": "了解挑战赛团队，以及参与研究的机构与实验室。",
   "On this page": "本页目录",
   "Team": "团队成员",
   "Institutions & labs": "机构与实验室",
@@ -31,7 +30,6 @@
   "Nanyang Business School & CCDS, NTU": "南洋理工大学南洋商学院与计算与数据科学学院",
   "President's Chair Professor of Finance, Computing and Data Science": "金融、计算与数据科学校长讲席教授",
   "GIFTS · Founding Director": "GIFTS · 创始主任",
-  "Project Leader": "项目负责人",
   "InferenceNet Challenge": "InferenceNet 挑战赛",
   "02 / Institutions & labs": "02 / 机构与实验室",
   "Research institutions": "研究机构",
@@ -84,5 +82,12 @@
   "Switch to light theme": "切换为浅色主题",
   "Dark theme": "深色主题",
   "Light theme": "浅色主题",
-  "WeChat": "微信"
+  "WeChat": "微信",
+  "Faculty Co-Lead": "学术共同负责人",
+  "Student Leader": "学生负责人",
+  "Global InferenceNet Initiative": "全球 InferenceNet 计划",
+  "College of Computing and Data Science, NTU": "南洋理工大学计算与数据科学学院",
+  "Meet the initiative faculty leadership and the student leaders of the InferenceNet Challenge.": "了解研究计划的学术负责人，以及 InferenceNet 挑战赛的学生负责人。",
+  "Official initiative at NTU GIFTS": "NTU GIFTS 官方计划介绍",
+  "Challenge student leaders": "挑战赛学生负责人"
 }
