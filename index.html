@@ -16,12 +16,12 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="site.css?v=20260915-menu">
   <link rel="stylesheet" href="mountain.css">
-  <link rel="stylesheet" href="leaderboard.css?v=20260917-research">
-  <link rel="stylesheet" href="index.css?v=20260917-research">
+  <link rel="stylesheet" href="leaderboard.css?v=20260917-metrics">
+  <link rel="stylesheet" href="index.css?v=20260917-metrics">
   <script src="site.js?v=20260915-menu" defer></script>
-  <script type="module" src="leaderboard.js?v=20260917-research"></script>
+  <script type="module" src="leaderboard.js?v=20260917-metrics"></script>
   <link rel="stylesheet" href="language.css">
-  <script src="language.js?v=20260917-research" defer></script>
+  <script src="language.js?v=20260917-metrics" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -220,13 +220,13 @@
 <div class="paired-board" data-paired-leaderboard>
   <div class="paired-controls" hidden>
     <label><span>Approach</span><select data-ranking-view aria-label="Filter approach"><option value="all">All</option><option value="baseline">Model</option><option value="deepagents">Model + DeepAgents</option></select></label>
-    <label><span>Rank by</span><select data-ranking-metric aria-label="Ranking metric"><option value="perfect">Full replication (local)</option><option value="partial_replication">Partial replication</option><option value="compilation_success">Execution success</option><option value="coefficient_direction">Coefficient direction</option><option value="significance_level">Significance level</option></select></label>
+    <label><span>Rank by</span><select data-ranking-metric aria-label="Ranking metric"><option value="perfect">Full replication</option><option value="partial_replication">Partial replication</option><option value="compilation_success">Execution success</option><option value="coefficient_direction">Coefficient direction</option><option value="significance_level">Significance level</option></select></label>
   </div>
   <figure class="mountain" data-ranking-mountain hidden><div class="mountain-canvas"></div></figure>
   <p class="paired-scroll-note">Scroll the table to see all metrics →</p>
   <div class="table-scroll" tabindex="0" role="region" aria-label="Leaderboard results"><table class="paired-table">
     <caption>Scores (%)</caption>
-    <thead><tr><th scope="col">#</th><th scope="col">Model</th><th scope="col">Approach</th><th scope="col" data-metric="perfect" aria-sort="descending">Full replication (local)</th><th scope="col" data-metric="partial_replication" aria-sort="none">Partial replication</th><th scope="col" data-metric="compilation_success" aria-sort="none">Execution success</th><th scope="col" data-metric="coefficient_direction" aria-sort="none">Coefficient direction</th><th scope="col" data-metric="significance_level" aria-sort="none">Significance level</th></tr></thead>
+    <thead><tr><th scope="col">#</th><th scope="col">Model</th><th scope="col">Approach</th><th scope="col" data-metric="perfect" aria-sort="descending">Full replication</th><th scope="col" data-metric="partial_replication" aria-sort="none">Partial replication</th><th scope="col" data-metric="compilation_success" aria-sort="none">Execution success</th><th scope="col" data-metric="coefficient_direction" aria-sort="none">Coefficient direction</th><th scope="col" data-metric="significance_level" aria-sort="none">Significance level</th></tr></thead>
     <tbody><tr data-model="gpt-5.6-sol" data-arm="deepagents"><td>1</td><th scope="row">GPT-5.6 Sol</th><td class="paired-approach"><span class="approach-tag deepagents">Model + DeepAgents</span></td><td class="is-sorted">51.8%</td><td>69.9%</td><td>91.0%</td><td>87.9%</td><td>78.7%</td></tr>
 <tr data-model="claude-opus-4-8" data-arm="deepagents"><td>2</td><th scope="row">Claude Opus 4.8</th><td class="paired-approach"><span class="approach-tag deepagents">Model + DeepAgents</span></td><td class="is-sorted">39.2%</td><td>62.1%</td><td>83.4%</td><td>79.3%</td><td>69.6%</td></tr>
 <tr data-model="gemini-3.1-pro-preview" data-arm="deepagents"><td>3</td><th scope="row">Gemini 3.1 Pro</th><td class="paired-approach"><span class="approach-tag deepagents">Model + DeepAgents</span></td><td class="is-sorted">39.1%</td><td>63.2%</td><td>85.0%</td><td>81.1%</td><td>71.8%</td></tr>
