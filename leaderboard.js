@@ -1,7 +1,7 @@
-import { ARMS, VIEWS, METRICS, DEFAULT_METRIC, DEFAULT_VIEW, validateSnapshot, rankModels, tableRows, modelDisplayName } from './leaderboard-data.js?v=20260917-gemini';
+import { ARMS, VIEWS, METRICS, DEFAULT_METRIC, DEFAULT_VIEW, validateSnapshot, rankModels, tableRows, modelDisplayName } from './leaderboard-data.js?v=20260917-results';
 import { mountain } from './mountain.js';
 
-const source = new URL('./assets/data/paired-results.json?v=20260917-gemini', import.meta.url);
+const source = new URL('./assets/data/paired-results.json?v=20260917-results', import.meta.url);
 const snapshot = fetch(source).then(response => {
   if (!response.ok) throw new Error('Snapshot unavailable');
   return response.json();
@@ -24,14 +24,13 @@ for (const widget of document.querySelectorAll('[data-paired-leaderboard]')) {
     function render() {
       const rows = rankModels(data, view, metric);
       table.querySelector('tbody').innerHTML = tableRows(data, view, metric);
-      table.querySelector('caption').textContent = `${VIEWS[view]} · scores over all 1,000 tasks (%)`;
+      table.querySelector('caption').textContent = 'Scores (%)';
       for (const header of table.querySelectorAll('th[data-metric]')) {
         header.setAttribute('aria-sort', header.dataset.metric === metric ? 'descending' : 'none');
       }
-      widget.querySelector('[data-ranking-label]').textContent = view === 'all' ? 'Combined leaderboard' : VIEWS[view];
       figure.hidden = false;
       mountain(figure, {
-        title: VIEWS[view], metric: METRICS[metric], unit: '%', max: 100,
+        title: view === 'all' ? 'InferenceNet Challenge Leaderboard' : VIEWS[view], metric: METRICS[metric], unit: '%', max: 100,
         peakLabel: '100% · every task replicated',
         items: rows.map(({ rank, model, arm, metrics }) => ({
           rank, label: view === 'all' ? `${modelDisplayName(model)} · ${ARMS[arm]}` : modelDisplayName(model),
@@ -48,6 +47,7 @@ for (const widget of document.querySelectorAll('[data-paired-leaderboard]')) {
     render();
     controls.hidden = false;
   }).catch(() => {
+    status.classList.remove('visually-hidden');
     status.textContent = 'Showing saved results for all configurations. Interactive ranking is unavailable.';
   });
 }

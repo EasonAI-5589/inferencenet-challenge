@@ -7,16 +7,15 @@ const widget = `<div class="paired-board" data-paired-leaderboard>
     <label><span>Approach</span><select data-ranking-view aria-label="Filter approach">${Object.entries(VIEWS).map(([key, label]) => `<option value="${key}">${escapeHTML(label)}</option>`).join('')}</select></label>
     <label><span>Rank by</span><select data-ranking-metric aria-label="Ranking metric">${Object.entries(METRICS).map(([key, label]) => `<option value="${key}">${escapeHTML(label)}</option>`).join('')}</select></label>
   </div>
-  <div class="paired-heading"><h3 data-ranking-label>Combined leaderboard</h3><p>6 models · 12 configurations · 1,000 tasks each</p></div>
   <figure class="mountain" data-ranking-mountain hidden><div class="mountain-canvas"></div></figure>
   <p class="paired-scroll-note">Scroll the table to see all metrics →</p>
   <div class="table-scroll" tabindex="0" role="region" aria-label="Leaderboard results"><table class="paired-table">
-    <caption>All configurations · scores over all 1,000 tasks (%)</caption>
+    <caption>Scores (%)</caption>
     <thead><tr><th scope="col">#</th><th scope="col">Model</th><th scope="col">Approach</th>${Object.entries(METRICS).map(([key, label]) => `<th scope="col" data-metric="${key}" aria-sort="${key === DEFAULT_METRIC ? 'descending' : 'none'}">${label}</th>`).join('')}</tr></thead>
     <tbody>${tableRows(data)}</tbody>
   </table></div>
   <div class="paired-foot"><span>Every score uses all 1,000 tasks; failures and unknowns stay in the denominator.</span><a href="assets/data/paired-results.csv" download>Download results CSV ↓</a></div>
-  <p class="paired-status" data-ranking-status role="status">Published results · 17 Sep 2026</p>
+  <p class="paired-status visually-hidden" data-ranking-status role="status">Published results · 17 Sep 2026</p>
 </div>`;
 for (const file of ['index.html', 'leaderboard.html']) {
   const url = new URL(file, root);

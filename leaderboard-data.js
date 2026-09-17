@@ -1,5 +1,5 @@
-export const ARMS = Object.freeze({ baseline: 'Model only', deepagents: 'Model + DeepAgents' });
-export const VIEWS = Object.freeze({ all: 'All configurations', ...ARMS });
+export const ARMS = Object.freeze({ baseline: 'Model', deepagents: 'Model + DeepAgents' });
+export const VIEWS = Object.freeze({ all: 'All', ...ARMS });
 export const METRICS = Object.freeze({
   perfect: 'Full replication (local)',
   partial_replication: 'Partial replication',
