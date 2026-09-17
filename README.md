@@ -39,7 +39,7 @@ screenshot for visual changes.
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL;
 Teams uses `assets/i18n/teams.zh.json`. Home and Leaderboard use language and
-ranking release tag `20260917-paired`; other language tags remain
+ranking release tag `20260917-gemini`; other language tags remain
 `20260915-teams`. Shared navigation CSS/JS and Demo JS use `20260915-menu`.
 
 English is authored in the HTML. When changing English text, update the matching
@@ -77,7 +77,9 @@ credentials and research repository history are not part of this repository.
 Home and Leaderboard share the six-model release merged in
 [HF PR #4](https://huggingface.co/spaces/CamoAiLab/InferenceNet-Leaderboard/discussions/4).
 The source JSON and CSV are preserved in `assets/data/paired-results.*`; the
-release commit and checksum are in `paired-results-provenance.json`. These are
+release commit and checksum are in `paired-results-provenance.json`. Gemini is
+displayed as **Gemini 3.1 Pro**; its archived model ID and source name remain
+unchanged for traceability. These are
 12 groups with 1,000 tasks each. Failed, unknown and invalid records remain in
 the denominator. Historical protocols differ across models, and official
 scorer parity remains unverified.
