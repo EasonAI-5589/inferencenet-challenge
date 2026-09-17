@@ -1,6 +1,117 @@
 /* agent.html — page-specific layout on top of site.css. No new tokens; only
  * composition of the shared components (steps, code panels, tables, diagram). */
 
+/* The case narrative stays brief; the original evidence is optional. */
+.case-heading{margin-bottom:20px}
+.case-heading h2{font-size:clamp(25px,3vw,34px);line-height:1.25;letter-spacing:-.025em;margin:0}
+.case-intro{max-width:780px;font-size:16px;line-height:1.8;color:var(--soft);margin:0 0 28px}
+.case-label{font-size:11px!important;line-height:1.5!important;letter-spacing:.055em;text-transform:uppercase;font-weight:600;color:var(--muted)!important;margin:0 0 10px!important}
+.case-task-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;border-block:1px solid var(--line);padding-block:26px}
+.agent-case h3{font-size:19px;line-height:1.4;letter-spacing:-.015em;margin:0 0 10px}
+.case-task-grid p,.case-flow p,.case-observation p,.case-step-roles p,.case-outcomes p,.case-next p,.case-archive-intro p{font-size:14px;line-height:1.8;color:var(--soft);margin:0}
+.case-caption{font-size:12px;line-height:1.8;color:var(--muted);margin:18px 0 0;max-width:900px}
+.case-flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));list-style:none;padding:0;margin:0;gap:28px}
+.case-flow li{display:flex;gap:14px;align-items:flex-start}
+.case-number{flex:none;display:grid;place-items:center;width:30px;height:30px;border:1px solid var(--line);font-family:var(--mono);font-size:12px;border-radius:50%}
+.case-flow h3{font-size:16px;margin-bottom:5px}
+.case-observation{margin-top:30px;border-left:3px solid var(--caution);padding:22px 26px;background:var(--tint)}
+.case-observation .case-caption{font-size:12px;margin-top:12px}
+.case-loop{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:20px;align-items:center;padding:24px 28px;background:var(--brand-tint);border:1px solid var(--line);margin-bottom:32px}
+.case-loop>div{display:grid;gap:6px}
+.case-loop strong{font-size:15px;color:var(--brand)}
+.case-loop span{font-size:13px;line-height:1.6;color:var(--soft)}
+.case-loop .case-arrow{font-size:23px;color:var(--brand)}
+.case-timeline{list-style:none;margin:0;padding:0}
+.case-timeline>li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:20px;padding:26px 0;border-bottom:1px solid var(--line)}
+.case-timeline>li:first-child{padding-top:0}
+.case-step-number{font-family:var(--mono);font-size:13px;color:var(--brand);padding-top:4px}
+.case-step-roles{display:grid;grid-template-columns:1fr 1fr;gap:36px;margin-top:16px}
+.case-step-roles>div+div{border-left:1px solid var(--line);padding-left:28px}
+.case-step-roles .case-label{margin-bottom:6px!important}
+.case-outcomes{display:grid;grid-template-columns:1fr 1.35fr;gap:20px}
+.case-outcomes>article{border:1px solid var(--line);padding:26px;display:flex;flex-direction:column;min-width:0}
+.case-outcomes>article.case-success{border-color:var(--brand);background:var(--brand-tint)}
+.case-success h3{color:var(--brand)}
+.case-outcome-note{font-size:12px;color:var(--muted);margin-top:auto;padding-top:24px}
+.case-statistics{display:flex;flex-wrap:wrap;gap:18px 24px;margin:8px 0 0}
+.case-statistics dt{font-size:12px;color:var(--soft);margin-bottom:7px}
+.case-statistics dd{font-family:var(--mono);font-size:16px;margin:0;color:var(--ink)}
+.case-next{display:grid;grid-template-columns:1.5fr 1fr;gap:40px;align-items:center;margin-top:38px;padding-top:30px;border-top:1px solid var(--line)}
+.case-links{display:flex;flex-direction:column;align-items:flex-start;gap:18px}
+.case-archive{margin-top:34px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.case-archive>summary{padding:20px 4px;cursor:pointer;font-size:14px;font-weight:500}
+.case-archive-intro{padding:10px 0 24px;display:grid;gap:10px}
+.case-archive .container{width:100%}
+.case-archive .section{padding-block:32px}
+.case-archive h2{font-size:24px}
+.case-archive .section-heading{gap:32px}
+.case-paper{border-left:3px solid var(--brand);padding:6px 0 6px 20px;margin:0 0 28px}
+.case-paper p{font-size:16px;line-height:1.6;margin:8px 0 0}
+.case-spec{display:grid;grid-template-columns:1.25fr 1fr;gap:44px;padding:26px;border:1px solid var(--line)}
+.case-spec p,.case-failure-story>p,.case-return>p,.case-step-story{font-size:14px;line-height:1.85;color:var(--soft);margin:0}
+.case-spec>*,.case-proof-grid>*,.case-step-content{min-width:0}
+.case-variables{margin:0;display:grid;grid-template-columns:130px minmax(0,1fr);gap:12px 16px;align-content:start;font-size:13px;line-height:1.7}
+.case-variables dt{color:var(--muted)}
+.case-variables dd{margin:0;overflow-wrap:anywhere}
+.case-variables code{font-size:12px}
+.case-proof-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start;margin-top:22px}
+.case-excerpt .code-panel-head{font-family:var(--sans)}
+.case-excerpt pre{font-size:12px;line-height:1.8;max-height:none}
+.case-excerpt code{word-break:normal}
+.case-failure-story>.code-panel{border-left:3px solid var(--caution);margin-bottom:20px}
+.case-decision{padding:14px 18px;margin:20px 0 0!important;background:var(--brand-tint);border-left:2px solid var(--brand);font-size:14px!important;line-height:1.8!important;color:var(--ink)!important}
+.case-return{border:1px solid var(--line);padding:22px}
+.case-return>p+p{margin-top:14px}
+.case-data-shape{display:flex;align-items:baseline;gap:9px;margin:16px 0 20px}
+.case-data-shape strong{font-family:var(--mono);font-size:25px;font-weight:500}
+.case-data-shape span{color:var(--muted);font-size:12px;margin-right:12px}
+.case-field-tags{display:flex;gap:10px;margin-top:16px}
+.case-field-tags code{padding:3px 10px;background:var(--brand-tint);font-size:13px;color:var(--brand)}
+.case-observed-facts{margin:14px 0 20px}
+.case-observed-facts>div{display:flex;justify-content:space-between;gap:20px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px;line-height:1.6}
+.case-observed-facts dt{color:var(--soft)}
+.case-observed-facts dd{font-family:var(--mono);margin:0;text-align:right}
+.case-story-timeline>li{padding-block:36px}
+.case-story-timeline .case-step-number{padding-top:30px}
+.case-story-timeline .case-step-content>h3{font-size:22px}
+.case-comparison{margin-top:26px}
+.case-comparison table{width:100%}
+.case-comparison td{white-space:nowrap;font-size:13px}
+.case-dataset{margin:28px 0;padding:26px;border:1px solid var(--line);background:var(--tint)}
+.case-dataset-heading{display:flex;justify-content:space-between;gap:20px;align-items:baseline;margin-bottom:14px}
+.case-dataset-heading h3{margin:0}
+.case-dataset-heading .text-link{font-size:12px;flex-shrink:0}
+.case-dataset>p,.case-improvement>p{font-size:14px;line-height:1.85;color:var(--soft);margin:0}
+.case-sample-flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin-block:24px}
+.case-sample-flow>div{display:grid;gap:8px;border-top:1px solid var(--line);padding-top:16px}
+.case-sample-flow strong{font-family:var(--mono);font-size:28px;font-weight:500;color:var(--brand)}
+.case-sample-flow span{font-size:12px;line-height:1.7;color:var(--soft)}
+.case-dataset>.case-caption{font-size:12px;color:var(--muted)}
+.case-improvement{border-left:2px solid var(--brand);padding:4px 0 4px 22px;margin-top:28px}
+.case-improvement>p+p{margin-top:12px}
+@media(max-width:760px){
+  .case-dataset{padding:20px}
+  .case-dataset-heading{flex-direction:column;gap:12px}
+  .case-sample-flow{grid-template-columns:minmax(0,1fr);gap:18px}
+  .case-spec,.case-proof-grid{grid-template-columns:minmax(0,1fr);gap:20px}
+  .case-spec{padding:20px}
+  .case-variables{grid-template-columns:minmax(0,1fr);gap:4px}
+  .case-variables dd{margin-bottom:10px}
+  .case-return{padding:18px}
+  .case-story-timeline .case-step-content>h3{font-size:19px}
+  .case-task-grid,.case-flow,.case-outcomes,.case-next{grid-template-columns:minmax(0,1fr)}
+  .case-task-grid{gap:22px}
+  .case-task-grid>article+article{border-top:1px solid var(--line);padding-top:20px}
+  .case-loop{grid-template-columns:minmax(0,1fr);gap:12px;padding:22px}
+  .case-loop .case-arrow{transform:rotate(90deg);justify-self:start;margin-left:4px}
+  .case-timeline>li{grid-template-columns:28px minmax(0,1fr);gap:12px}
+  .case-step-roles{grid-template-columns:minmax(0,1fr);gap:16px}
+  .case-step-roles>div+div{border-left:0;padding-left:0}
+  .case-next{gap:22px}
+  .case-outcomes>article{padding:22px}
+  .case-archive .section-heading{grid-template-columns:minmax(0,1fr);gap:18px}
+}
+
 /* 01 · Task: card beside the instruction panel; the "what the model does not
  * see" callout runs under both as one three-column strip */
 .task-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:24px}
