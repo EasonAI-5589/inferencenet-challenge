@@ -8,9 +8,10 @@
 .faculty-detail{font-size:13px}
 .faculty-group-link{font-size:12px}
 .team-member .text-link{margin-top:9px}
-.student-leadership,.core-contributors{margin-top:40px}
-.student-leadership>h2,.core-contributors>h2{font-size:24px;margin-bottom:20px}
-.core-contributors{scroll-margin-top:calc(var(--header-h) + 58px)}
+.student-leadership{margin-top:40px}
+.student-leadership>h2{font-size:24px;margin-bottom:20px}
+.student-leadership,#yujie-cai{scroll-margin-top:calc(var(--header-h) + 58px)}
+#yujie-cai{grid-column:2}
 .contact-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:stretch}
 .contact-card,.contact-qr{min-width:0;padding:28px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
 .contact-card:only-child{grid-column:1/-1}
@@ -25,9 +26,10 @@
 .contact-qr img{display:block;width:min(100%,220px);height:auto;background:#fff;border-radius:var(--radius)}
 .contact-qr figcaption{font-size:13px;line-height:1.7;color:var(--soft);text-align:center}
 @media(max-width:860px){
-  .core-contributors{scroll-margin-top:calc(var(--header-h) + 16px)}
+  .student-leadership,#yujie-cai{scroll-margin-top:calc(var(--header-h) + 16px)}
 }
 @media(max-width:680px){
+  #yujie-cai{grid-column:auto}
   .team-grid,.contact-grid{grid-template-columns:1fr}
   .team-member,.contact-card,.contact-qr{padding:24px}
   .team-member h3,.contact-card h3{font-size:22px}

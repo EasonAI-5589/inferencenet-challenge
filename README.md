@@ -38,7 +38,7 @@ screenshot for visual changes.
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL;
 Home uses CSS and language release tag `20260917-home`; Teams uses CSS and
-language release tag `20260921-yujie`; the other three pages use language release
+language release tag `20260921-yujie-leader`; the other three pages use language release
 tag `20260917-no-demo`. Home and Leaderboard retain ranking
 release tag `20260917-harness`. Shared navigation
 CSS/JS use `20260915-menu`.
@@ -55,7 +55,7 @@ submitting; verify navigation, images, chart fallbacks and language controls.
 
 ## Research content
 
-Faculty roles, student leaders, core contributors and institutional profiles live on `teams.html`.
+Faculty roles, student leaders and institutional profiles live on `teams.html`.
 Home links to that page instead of duplicating the roster.
 Every footer links to `teams.html#contact`, with only Yichen Guo’s email, WeChat
 ID and homepage. The personal WeChat QR image will be added when supplied.
@@ -124,9 +124,11 @@ case card repeats this data context. Interaction budgets remain explicit.
 Agent CSS uses release tag `20260917-case-data`; its dictionary uses
 `20260917-no-demo`.
 
-## Core contributors
+## Challenge student leaders
 
-- [Yujie Cai (@caiyujie)](https://github.com/caiyujie) — Core Contributor.
+- [Yichen Guo](https://easonai-5589.github.io/) — Student Leader.
+- [Tianyang Han](https://www.hkubs.hku.hk/people/tianyang-han/) — Student Leader.
+- [Yujie Cai (@caiyujie)](https://github.com/caiyujie) — Student Leader.
 
 See the [team page](https://easonai-5589.github.io/inferencenet-challenge/teams.html)
 for the full project roster.
