@@ -423,7 +423,7 @@
      "parent": 1,
      "problem": "Budget exhausted before the final run",
      "fix": "phase budget; run the final program once",
-     "signal": "unevaluated_or_partial_final_submission",
+     "signal": "exhausted_call_budget",
      "values": {
       "perfect": 91,
       "partial": 119,

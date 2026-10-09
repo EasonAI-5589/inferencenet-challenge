@@ -50,7 +50,7 @@
     const points = panel.points;
     const slots = Math.max(...points.map(point => point.x)) + 1;
     const notes = points.filter(point => point.kind !== 'initial');
-    const narrow = width < 520;
+    const narrow = width < 540;
     const rows = narrow ? notes.length : Math.min(2, notes.length);
     const laneTop = 4;
     const top = laneTop + rows * ROW_H + 24;
@@ -86,7 +86,7 @@
     for (let slot = 0; slot < slots; slot++) {
       svg.append(el('text', { x: x(slot), y: axisY + 11, 'text-anchor': 'middle', class: 'rsi-tick' }, String(slot)));
     }
-    svg.append(el('text', { x: (left + right) / 2, y: height - 6, 'text-anchor': 'middle', class: 'rsi-axis-title' }, 'Candidate evaluations'));
+    svg.append(el('text', { x: (left + right) / 2, y: height - 6, 'text-anchor': 'middle', class: 'rsi-axis-title' }, 'Candidate (0 = initial)'));
     svg.append(el('text', {
       x: 0, y: 0, transform: `translate(12 ${(top + bottom) / 2}) rotate(-90)`,
       'text-anchor': 'middle', class: 'rsi-axis-title',
@@ -116,7 +116,10 @@
         'data-cx': px, 'data-px': px, 'data-py': py, 'data-top': laneTop + row * ROW_H, 'data-row': row,
       });
       group.append(el('rect', { x: px - 80, y: laneTop + row * ROW_H, width: 160, height: BOX_H, rx: 3 }));
-      group.append(el('text', { x: px - 72, y: laneTop + row * ROW_H + 14, class: 'rsi-problem' }, point.problem));
+      // The candidate number matches the x-axis tick; the problem keeps its own text node for translation.
+      const problem = el('text', { x: px - 72, y: laneTop + row * ROW_H + 14, class: 'rsi-problem' });
+      problem.append(el('tspan', {}, `${point.x} · `), el('tspan', {}, point.problem));
+      group.append(problem);
       const fix = el('text', { x: px - 72, y: laneTop + row * ROW_H + 28, class: 'rsi-fix' });
       if (point.kind === 'rejected') fix.append(el('tspan', {}, `Rejected · ${point.reason}`));
       else { fix.append(el('tspan', { class: 'rsi-chevron' }, '> ')); fix.append(el('tspan', {}, point.fix)); }
@@ -138,10 +141,8 @@
       } else {
         svg.append(el('circle', { cx: px, cy: py, r: 5.5, class: 'rsi-point' }));
       }
-      const last = point.x === slots - 1;
-      svg.append(el('text', {
-        x: last ? px - 10 : px + 10, y: py - 9, 'text-anchor': last ? 'end' : 'start', class: 'rsi-value',
-      }, valueOf(point).toFixed(1)));
+      // Labels always sit right of their marker so the last two never meet on narrow panels.
+      svg.append(el('text', { x: px + 10, y: py - 9, class: 'rsi-value' }, valueOf(point).toFixed(1)));
       if (point.kind === 'initial') {
         const tagY = py + 34 <= rejectY - 8 ? py + 12 : py - 40;
         const tag = el('g', { class: 'rsi-tag', 'data-x': px - 12, 'data-y': tagY });
@@ -176,12 +177,11 @@
         item.left = Math.max(cursor, Math.min(item.cx - item.w / 2, width - 4 - item.w));
         cursor = item.left + item.w + 8;
       }
-      const overflow = items[items.length - 1].left + items[items.length - 1].w - (width - 4);
-      if (overflow > 0) {
-        for (let index = items.length - 1; index >= 0; index--) {
-          const limit = index === 0 ? 4 : items[index - 1].left + items[index - 1].w + 8;
-          items[index].left = Math.max(limit, items[index].left - overflow);
-        }
+      // Then pack from the right edge so the last callout can move left as well.
+      let edge = width - 4;
+      for (let index = items.length - 1; index >= 0; index--) {
+        items[index].left = Math.max(4, Math.min(items[index].left, edge - items[index].w));
+        edge = items[index].left - 8;
       }
       for (const item of items) {
         const { group, left, w } = item;

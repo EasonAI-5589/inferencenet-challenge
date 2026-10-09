@@ -141,7 +141,8 @@ scored with local-paper-v1. The page states that promotion did not use these
 scores, that the gain comes mainly from more scored final results, and that
 the 900 held-out tasks have not been run. Task IDs, trajectories, generated
 programs and references are not published. These results are not part of the
-leaderboard. The values table on the page remains readable without JavaScript.
+leaderboard and use twice its per-task budget (12 model calls and 8 run_python
+calls instead of 6 and 4). The values table on the page remains readable without JavaScript.
 
 ## Challenge student leaders
 

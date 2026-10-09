@@ -105,14 +105,20 @@
 .rsi-code-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;align-items:start}
 .rsi-code-grid .code-panel{--code-max:540px}
 .rsi-code-wide{grid-column:1/-1}
+.evolution-page .case-archive-intro{grid-template-columns:minmax(0,1fr)}
 
 @media(max-width:1100px){
   .rsi-split{grid-template-columns:minmax(0,1fr);gap:34px}
+  .rsi-figure.diagram{padding:12px}
 }
 @media(max-width:860px){
   .rsi-panels,.rsi-code-grid{grid-template-columns:minmax(0,1fr)}
 }
 @media(max-width:520px){
   .rsi-toolbar{align-items:flex-start;flex-direction:column}
+  .rsi-control{max-width:100%}
   .rsi-control select{max-width:78%}
+}
+@media(max-width:400px){
+  .rsi-stats strong{font-size:22px}
 }
