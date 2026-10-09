@@ -66,7 +66,7 @@
       <p class="case-intro">Deep Agents is not a new runtime. create_deep_agent() assembles a default set of middleware, backends, subagents and profiles, then hands them to LangChain’s create_agent(); LangGraph drives the loop. Most harness behavior comes from middleware, which edits the prompt, adds or removes tools and compresses history before every model call.</p>
       <figure class="diagram wide rsi-figure" style="--diagram-min:900px">
         <div class="diagram-scroll" tabindex="0">
-          <svg viewBox="0 0 1000 760" role="img" aria-label="Deep Agents in three layers: the application calls create_deep_agent, which assembles the middleware stack, tools, subagents, backends and profiles, then passes them to the LangChain create_agent loop of model and tool nodes, running on the LangGraph runtime. The slot between core and tail middleware is where ModularRSI attaches.">
+          <svg viewBox="0 0 1000 1252" role="img" aria-label="Deep Agents in three layers: the application calls create_deep_agent, which assembles the middleware stack, tools, subagents, backends and profiles. LangChain create_agent compiles them into a graph of hook nodes, a model node and a tools node, routed by the last AIMessage. LangGraph executes that graph in supersteps of plan, execute, update and checkpoint over typed state channels. The slot between core and tail middleware is where ModularRSI attaches.">
             <defs><marker id="da-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="f-ah"/></marker></defs>
             <rect x="250" y="10" width="500" height="50" rx="4" class="f-box"/>
             <text x="500" y="30" text-anchor="middle" class="f-tt">Your application</text>
@@ -141,25 +141,116 @@
             <line x1="500" y1="564" x2="500" y2="596" class="f-ln" marker-end="url(#da-arrow)"/>
             <text x="510" y="585" class="f-m f-s f-mu">create_agent(model, tools, middleware, system_prompt)</text>
 
-            <rect x="10" y="598" width="980" height="70" rx="6" class="f-band"/>
-            <text x="26" y="626" class="f-big">LangChain</text>
-            <text x="26" y="648" class="f-s f-mu">create_agent: the agent loop</text>
-            <rect x="400" y="612" width="130" height="42" rx="4" class="f-box"/><text x="465" y="637" text-anchor="middle">model node</text>
-            <rect x="640" y="612" width="130" height="42" rx="4" class="f-box"/><text x="705" y="637" text-anchor="middle">tools node</text>
-            <line x1="530" y1="624" x2="638" y2="624" class="f-ln" marker-end="url(#da-arrow)"/>
-            <text x="585" y="619" text-anchor="middle" class="f-m f-s f-mu">tool_calls</text>
-            <line x1="640" y1="644" x2="532" y2="644" class="f-ln" marker-end="url(#da-arrow)"/>
-            <text x="585" y="661" text-anchor="middle" class="f-m f-s f-mu">ToolMessage</text>
-            <text x="796" y="630" class="f-s f-mu">last AI message without</text>
-            <text x="796" y="648" class="f-s f-mu">tool_calls → the run ends</text>
+            <rect x="10" y="598" width="980" height="362" rx="6" class="f-band"/>
+            <text x="26" y="624" class="f-big">LangChain</text>
+            <text x="118" y="624" class="f-s f-mu">create_agent · langchain 1.4.0 compiles this StateGraph</text>
+            <text x="26" y="652" class="f-tt">The agent loop</text>
+            <rect x="26" y="678" width="58" height="32" rx="16" class="f-box"/>
+            <text x="55" y="698" text-anchor="middle" class="f-m f-s">START</text>
+            <line x1="84" y1="694" x2="102" y2="694" class="f-ln" marker-end="url(#da-arrow)"/>
+            <rect x="104" y="672" width="140" height="44" rx="4" class="f-box"/>
+            <text x="174" y="690" text-anchor="middle" class="f-m f-s">before_agent</text>
+            <text x="174" y="706" text-anchor="middle" class="f-s f-mu">hooks · once per run</text>
+            <line x1="244" y1="694" x2="260" y2="694" class="f-ln" marker-end="url(#da-arrow)"/>
+            <rect x="262" y="672" width="140" height="44" rx="4" class="f-box"/>
+            <text x="332" y="690" text-anchor="middle" class="f-m f-s">before_model</text>
+            <text x="332" y="706" text-anchor="middle" class="f-s f-mu">hooks · every turn</text>
+            <line x1="402" y1="694" x2="418" y2="694" class="f-ln" marker-end="url(#da-arrow)"/>
+            <rect x="420" y="672" width="120" height="44" rx="4" class="f-strong"/>
+            <text x="480" y="690" text-anchor="middle" class="f-tt">model node</text>
+            <text x="480" y="706" text-anchor="middle" class="f-s f-mu">one LLM call</text>
+            <line x1="540" y1="694" x2="556" y2="694" class="f-ln" marker-end="url(#da-arrow)"/>
+            <rect x="558" y="672" width="140" height="44" rx="4" class="f-box"/>
+            <text x="628" y="690" text-anchor="middle" class="f-m f-s">after_model</text>
+            <text x="628" y="706" text-anchor="middle" class="f-s f-mu">hooks · reverse order</text>
+            <line x1="698" y1="694" x2="714" y2="694" class="f-ln" marker-end="url(#da-arrow)"/>
+            <rect x="716" y="672" width="120" height="44" rx="22" class="f-box"/>
+            <text x="776" y="690" text-anchor="middle">route</text>
+            <text x="776" y="706" text-anchor="middle" class="f-s f-mu">last AIMessage</text>
+            <line x1="836" y1="694" x2="852" y2="694" class="f-ln" marker-end="url(#da-arrow)"/>
+            <text x="845" y="664" text-anchor="middle" class="f-s f-mu">no calls</text>
+            <rect x="854" y="672" width="120" height="44" rx="4" class="f-box"/>
+            <text x="914" y="690" text-anchor="middle" class="f-m f-s">after_agent</text>
+            <text x="914" y="706" text-anchor="middle" class="f-s f-mu">hooks → END</text>
+            <line x1="776" y1="716" x2="776" y2="744" class="f-ln" marker-end="url(#da-arrow)"/>
+            <text x="784" y="734" class="f-s f-mu">pending tool calls</text>
+            <rect x="716" y="746" width="120" height="44" rx="4" class="f-strong"/>
+            <text x="776" y="764" text-anchor="middle" class="f-tt">tools node</text>
+            <text x="776" y="780" text-anchor="middle" class="f-s f-mu">one Send per call</text>
+            <path d="M716 768 H332 V718" class="f-ln" marker-end="url(#da-arrow)"/>
+            <text x="524" y="762" text-anchor="middle" class="f-s f-mu">ToolMessages · next turn</text>
+            <text x="854" y="764" class="f-s f-mu">jump_to from a hook</text>
+            <text x="854" y="780" class="f-s f-mu">can override routing</text>
 
-            <rect x="10" y="676" width="980" height="74" rx="6" class="f-band"/>
-            <text x="26" y="706" class="f-big">LangGraph</text>
-            <text x="26" y="728" class="f-s f-mu">runtime</text>
-            <text x="200" y="711" class="f-s">DeepAgentState (messages via DeltaChannel) · checkpointer · store · streaming · interrupts</text>
+            <rect x="26" y="806" width="300" height="140" rx="4" class="f-box"/>
+            <text x="38" y="828" class="f-tt">Inside the model node</text>
+            <text x="38" y="850" class="f-s">ModelRequest: model, tools, system_message,</text>
+            <text x="38" y="868" class="f-s">messages, tool_choice, response_format</text>
+            <text x="38" y="886" class="f-s">wrap_model_call chain, first one outermost</text>
+            <text x="38" y="904" class="f-s">bind_tools, then invoke([system, *messages])</text>
+            <text x="38" y="922" class="f-s">→ AIMessage, plus any structured output</text>
+            <rect x="342" y="806" width="300" height="140" rx="4" class="f-box"/>
+            <text x="354" y="828" class="f-tt">Inside the tools node</text>
+            <text x="354" y="850" class="f-s">each pending call runs as its own task</text>
+            <text x="354" y="868" class="f-s">wrap_tool_call chain around every call</text>
+            <text x="354" y="886" class="f-s">returns a ToolMessage, or a Command</text>
+            <text x="354" y="904" class="f-s">back to the model, or END after return_direct</text>
+            <text x="354" y="922" class="f-s">or a structured-output tool</text>
+            <rect x="658" y="806" width="316" height="140" rx="4" class="f-box"/>
+            <text x="670" y="828" class="f-tt">This agent, as compiled</text>
+            <text x="670" y="850" class="f-m f-s">FilesystemMiddleware</text><text x="962" y="850" text-anchor="end" class="f-s f-mu">model + tool wrap</text>
+            <text x="670" y="868" class="f-m f-s">SummarizationMiddleware</text><text x="962" y="868" text-anchor="end" class="f-s f-mu">model wrap</text>
+            <text x="670" y="886" class="f-m f-s">PatchToolCallsMiddleware</text><text x="962" y="886" text-anchor="end" class="f-s f-mu">before_agent node</text>
+            <text x="670" y="904" class="f-m f-s f-b">BoundedFunctionMiddleware</text><text x="962" y="904" text-anchor="end" class="f-s f-mu">model wrap</text>
+            <text x="670" y="922" class="f-m f-s">AnthropicPromptCachingMiddleware</text><text x="962" y="922" text-anchor="end" class="f-s f-mu">model wrap</text>
+            <text x="670" y="940" class="f-s f-mu">graph: START → before_agent → model ⇄ tools</text>
+
+            <rect x="10" y="972" width="980" height="270" rx="6" class="f-band"/>
+            <text x="26" y="998" class="f-big">LangGraph</text>
+            <text x="120" y="998" class="f-s f-mu">runtime · langgraph 1.2.11 runs the compiled graph in Pregel supersteps</text>
+            <text x="26" y="1024" class="f-tt">One superstep</text>
+            <rect x="26" y="1036" width="126" height="76" rx="4" class="f-box"/>
+            <text x="36" y="1056" class="f-tt">Plan</text>
+            <text x="36" y="1074" class="f-s">nodes triggered by</text>
+            <text x="36" y="1090" class="f-s">writes or Send</text>
+            <line x1="152" y1="1074" x2="162" y2="1074" class="f-ln" marker-end="url(#da-arrow)"/>
+            <rect x="164" y="1036" width="126" height="76" rx="4" class="f-box"/>
+            <text x="174" y="1056" class="f-tt">Execute</text>
+            <text x="174" y="1074" class="f-s">tasks run in</text>
+            <text x="174" y="1090" class="f-s">parallel; writes</text>
+            <text x="174" y="1106" class="f-s">are buffered</text>
+            <line x1="290" y1="1074" x2="300" y2="1074" class="f-ln" marker-end="url(#da-arrow)"/>
+            <rect x="302" y="1036" width="126" height="76" rx="4" class="f-box"/>
+            <text x="312" y="1056" class="f-tt">Update</text>
+            <text x="312" y="1074" class="f-s">reducers merge the</text>
+            <text x="312" y="1090" class="f-s">writes into state</text>
+            <line x1="428" y1="1074" x2="438" y2="1074" class="f-ln" marker-end="url(#da-arrow)"/>
+            <rect x="440" y="1036" width="126" height="76" rx="4" class="f-box"/>
+            <text x="450" y="1056" class="f-tt">Checkpoint</text>
+            <text x="450" y="1074" class="f-s">saved per step when</text>
+            <text x="450" y="1090" class="f-s">a saver is attached</text>
+            <path d="M503 1112 V1128 H89 V1114" class="f-ln" marker-end="url(#da-arrow)"/>
+            <text x="296" y="1144" text-anchor="middle" class="f-s f-mu">next superstep, until no node is triggered</text>
+            <text x="26" y="1170" class="f-s">recursion_limit caps supersteps: 9,999 by default in Deep Agents;</text>
+            <text x="26" y="1188" class="f-s">InferenceNet invokes with 64. A model turn plus its tools takes two steps.</text>
+            <text x="26" y="1212" class="f-s f-mu">DeltaChannel (beta) keeps a marker in each checkpoint and replays writes,</text>
+            <text x="26" y="1228" class="f-s f-mu">so stored state grows linearly over a long thread.</text>
+
+            <text x="600" y="1024" class="f-tt">State channels of this agent</text>
+            <rect x="600" y="1032" width="374" height="122" rx="4" class="f-box"/>
+            <text x="612" y="1052" class="f-m f-s">messages</text><text x="962" y="1052" text-anchor="end" class="f-s f-mu">DeltaChannel</text>
+            <text x="612" y="1070" class="f-m f-s">files</text><text x="962" y="1070" text-anchor="end" class="f-s f-mu">DeltaChannel</text>
+            <text x="612" y="1088" class="f-m f-s">jump_to</text><text x="962" y="1088" text-anchor="end" class="f-s f-mu">EphemeralValue · cleared each step</text>
+            <text x="612" y="1106" class="f-m f-s">structured_response</text><text x="962" y="1106" text-anchor="end" class="f-s f-mu">LastValue</text>
+            <text x="612" y="1124" class="f-m f-s">_summarization_event</text><text x="962" y="1124" text-anchor="end" class="f-s f-mu">LastValue</text>
+            <text x="612" y="1142" class="f-m f-s">_summarization_session_id</text><text x="962" y="1142" text-anchor="end" class="f-s f-mu">LastValue</text>
+            <text x="600" y="1178" class="f-tt">Persistence and control in InferenceNet</text>
+            <text x="612" y="1198" class="f-s">checkpointer: none · each task is one fresh run</text>
+            <text x="612" y="1214" class="f-s">store: none · interrupts: unused</text>
+            <text x="612" y="1230" class="f-s">stream mode: updates (the default)</text>
           </svg>
         </div>
-        <figcaption>The three layers assembled by create_deep_agent(). The left column is the wrap_model_call nesting order: earlier entries wrap later ones. New middleware from the caller lands between core and tail; middleware with an existing name replaces that core entry in place. Skills, SubAgent, AsyncSubAgent, Memory and HumanInTheLoop appear only when configured.</figcaption>
+        <figcaption>The three layers assembled by create_deep_agent(). The left column is the wrap_model_call nesting order: earlier entries wrap later ones. New middleware from the caller lands between core and tail; middleware with an existing name replaces that core entry in place. Skills, SubAgent, AsyncSubAgent, Memory and HumanInTheLoop appear only when configured. The LangChain and LangGraph layers describe langchain 1.4.0 and langgraph 1.2.11; the compiled node list, hooks and channels come from building the InferenceNet agent offline with those versions.</figcaption>
       </figure>
       <ul class="rsi-notes">
         <li>In 0.7.13 the core stack has no write_todos tool; planning comes from harness profiles, such as the Codex profile with TodoListMiddleware.</li>
