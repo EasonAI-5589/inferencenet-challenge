@@ -1,24 +1,42 @@
 /* Evolution page (phase 2). Loads after site.css and agent.css and reuses their
  * tokens, case headings, timeline, tables and code panels. Sections:
- * 1 architecture diagram · 2 trajectory charts · 3 improvement summary · 4 code. */
+ * 1 architecture figures · 2 trajectory charts · 3 improvement summary · 4 code. */
 
-/* 1 · Architecture diagram ------------------------------------------------------ */
+/* 1 · Architecture figures (Deep Agents stack, hook wiring, evolution loop) ---- */
 .evolution-page .page-hero h1{max-width:900px}
-.rsi-architecture{margin:4px 0 34px}
-.rsi-architecture figcaption{font-size:12px;line-height:1.8;color:var(--muted);margin-top:14px;max-width:900px}
-.rsi-architecture svg{display:block;width:100%;height:auto}
-.rsi-architecture svg text{font-family:var(--sans);fill:var(--ink);font-size:12px}
-.rsi-architecture .arch-box{fill:var(--paper);stroke:var(--strong-line);stroke-width:1}
-.rsi-architecture .arch-strong{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}
-.rsi-architecture .arch-rsi{fill:var(--brand-tint);stroke:var(--brand);stroke-width:1.5}
-.rsi-architecture .arch-line{stroke:var(--muted);stroke-width:1.3;fill:none}
-.rsi-architecture .arch-head{fill:var(--muted)}
-.rsi-architecture .arch-title{font-weight:600;font-size:13px}
-.rsi-architecture .arch-mono{font-family:var(--mono);font-size:12px}
-.rsi-architecture .arch-small{font-size:11px;fill:var(--soft)}
-.rsi-architecture .arch-note{font-size:12px;fill:var(--soft)}
-.rsi-architecture .arch-brand{fill:var(--brand)}
-.rsi-module-table td code{white-space:normal}
+.rsi-figure{margin:4px 0 0}
+.rsi-figure+.rsi-figure,.rsi-figure+.table-scroll{margin-top:30px}
+.rsi-figure figcaption{font-size:12px;line-height:1.8;color:var(--muted);margin-top:14px;max-width:920px}
+.rsi-figure svg{display:block;width:100%;height:auto}
+.rsi-figure svg text{font-family:var(--sans);fill:var(--ink);font-size:12px}
+.rsi-figure .f-m{font-family:var(--mono)}
+.rsi-figure .f-s{font-size:11px}
+.rsi-figure .f-mu{fill:var(--muted)}
+.rsi-figure .f-tt{font-weight:600;font-size:13px}
+.rsi-figure .f-big{font-weight:600;font-size:15px}
+.rsi-figure .f-b{fill:var(--brand)}
+.rsi-figure .f-bold{font-weight:600}
+.rsi-figure .f-box{fill:var(--paper);stroke:var(--strong-line);stroke-width:1}
+.rsi-figure .f-quiet{fill:var(--paper);stroke:var(--strong-line);stroke-width:1;stroke-dasharray:4 3}
+.rsi-figure .f-strong{fill:var(--paper);stroke:var(--ink);stroke-width:1.4}
+.rsi-figure .f-band{fill:var(--tint);stroke:var(--line);stroke-width:1}
+.rsi-figure .f-rsi{fill:var(--brand-tint);stroke:var(--brand);stroke-width:1.5}
+.rsi-figure .f-rsi-line{fill:var(--paper);stroke:var(--brand);stroke-width:1.5}
+.rsi-figure .f-rsi-dash{fill:var(--brand-tint);stroke:var(--brand);stroke-width:1.2;stroke-dasharray:5 4}
+.rsi-figure .f-pill{fill:var(--brand-tint);stroke:var(--brand);stroke-width:1}
+.rsi-figure .f-pt{font-family:var(--mono);font-size:10.5px;fill:var(--brand);text-anchor:middle}
+.rsi-figure .f-ln{stroke:var(--muted);stroke-width:1.3;fill:none}
+.rsi-figure .f-lr{stroke:var(--brand);stroke-width:1.4;fill:none}
+.rsi-figure .f-ah{fill:var(--muted)}
+.rsi-figure .f-ahr{fill:var(--brand)}
+.rsi-loop-figure{margin-bottom:38px}
+.rsi-notes{margin:22px 0 0;padding-left:18px;display:grid;gap:8px;max-width:860px;font-size:14px;line-height:1.75;color:var(--soft)}
+.rsi-module-table{margin-top:30px}
+.rsi-module-table th code{display:block;font-size:12.5px}
+.rsi-role{display:block;font-size:12px;font-weight:400;color:var(--muted);margin-top:4px}
+.rsi-hook-note{display:block;color:var(--soft);margin-top:4px}
+.rsi-code-link{text-decoration:underline;text-decoration-color:var(--muted);text-underline-offset:3px}
+.rsi-sig{display:block;margin-top:6px;font-size:11.5px;color:var(--muted);white-space:normal}
 .rsi-steps .case-observed-facts{max-width:560px;margin-bottom:0}
 .rsi-steps .case-decision{max-width:760px}
 
