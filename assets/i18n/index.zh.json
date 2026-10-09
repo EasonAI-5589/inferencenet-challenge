@@ -324,5 +324,7 @@
   "Evaluation framework": "评测框架",
   "Sources and citation": "来源与引用",
   "The benchmark is published by CamoAiLab on Hugging Face. The related MetricsAI paper describes the Econometrics-Agent research system. Use the citation provided by each source.": "该基准由 CamoAiLab 在 Hugging Face 发布。相关 MetricsAI 论文介绍了 Econometrics-Agent 研究系统。引用时请使用各来源提供的格式。",
-  "Dataset versions and provenance": "数据版本与来源"
+  "Dataset versions and provenance": "数据版本与来源",
+  "See the first evolution run →": "查看第一次完整进化 →",
+  "Evolution": "自进化"
 }

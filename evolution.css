@@ -1,0 +1,100 @@
+/* Evolution page (phase 2). Loads after site.css and agent.css and reuses their
+ * tokens, case headings, timeline, tables and code panels. Sections:
+ * 1 architecture diagram · 2 trajectory charts · 3 improvement summary · 4 code. */
+
+/* 1 · Architecture diagram ------------------------------------------------------ */
+.evolution-page .page-hero h1{max-width:900px}
+.rsi-architecture{margin:4px 0 34px}
+.rsi-architecture figcaption{font-size:12px;line-height:1.8;color:var(--muted);margin-top:14px;max-width:900px}
+.rsi-architecture svg{display:block;width:100%;height:auto}
+.rsi-architecture svg text{font-family:var(--sans);fill:var(--ink);font-size:12px}
+.rsi-architecture .arch-box{fill:var(--paper);stroke:var(--strong-line);stroke-width:1}
+.rsi-architecture .arch-strong{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}
+.rsi-architecture .arch-rsi{fill:var(--brand-tint);stroke:var(--brand);stroke-width:1.5}
+.rsi-architecture .arch-line{stroke:var(--muted);stroke-width:1.3;fill:none}
+.rsi-architecture .arch-head{fill:var(--muted)}
+.rsi-architecture .arch-title{font-weight:600;font-size:13px}
+.rsi-architecture .arch-mono{font-family:var(--mono);font-size:12px}
+.rsi-architecture .arch-small{font-size:11px;fill:var(--soft)}
+.rsi-architecture .arch-note{font-size:12px;fill:var(--soft)}
+.rsi-architecture .arch-brand{fill:var(--brand)}
+.rsi-module-table td code{white-space:normal}
+.rsi-steps .case-observed-facts{max-width:560px;margin-bottom:0}
+.rsi-steps .case-decision{max-width:760px}
+
+/* 2 · Trajectory charts ------------------------------------------------------- */
+.rsi-toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px 28px;margin:0 0 24px}
+.rsi-control{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--soft)}
+.rsi-control select{font:14px var(--sans);min-height:44px;padding:8px 32px 8px 12px;border:1px solid var(--strong-line);border-radius:4px;background:var(--paper);color:var(--ink);max-width:100%}
+.rsi-legend{display:flex;flex-wrap:wrap;gap:8px 22px;list-style:none;margin:0;padding:0;font-size:12px;color:var(--soft)}
+.rsi-legend li{display:inline-flex;align-items:center;gap:9px}
+.rsi-key{display:inline-block;width:12px;height:12px;flex:none;position:relative}
+.rsi-key-accepted{border:2px solid var(--brand);border-radius:50%;background:var(--paper)}
+.rsi-key-filled{background:var(--brand);border-radius:50%}
+.rsi-key-frozen{width:10px;height:10px;margin-inline:1px;border:2px solid var(--brand);background:var(--brand-tint);transform:rotate(45deg)}
+.rsi-key-rejected::before,.rsi-key-rejected::after{content:"";position:absolute;left:5px;top:-1px;width:2px;height:14px;background:var(--chart-muted)}
+.rsi-key-rejected::before{transform:rotate(45deg)}
+.rsi-key-rejected::after{transform:rotate(-45deg)}
+.rsi-nojs{font-size:13px;color:var(--muted);margin:0 0 16px}
+.rsi-panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:34px 34px}
+.rsi-panel{margin:0;min-width:0;border-top:1px solid var(--line);padding-top:16px}
+.rsi-panel figcaption{font-size:13px;line-height:1.6;color:var(--soft);text-align:center;margin-top:4px}
+.rsi-panel figcaption strong{font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--ink)}
+.rsi-canvas svg{display:block;width:100%;height:auto;overflow:visible}
+.rsi-chart text{font-family:var(--sans);font-size:11px;fill:var(--soft)}
+.rsi-chart .rsi-grid{stroke:var(--chart-grid);stroke-width:1}
+.rsi-chart .rsi-axis{stroke:var(--strong-line);stroke-width:1}
+.rsi-chart .rsi-tick{font-family:var(--mono);font-size:10.5px;fill:var(--muted)}
+.rsi-chart .rsi-axis-title{font-size:11.5px;fill:var(--soft)}
+.rsi-chart .rsi-step{stroke:var(--brand);stroke-width:2;fill:none}
+.rsi-chart .rsi-point{fill:var(--paper);stroke:var(--brand);stroke-width:2}
+.rsi-chart .rsi-frozen{fill:var(--brand-tint);stroke:var(--brand);stroke-width:2}
+.rsi-chart .rsi-reject{stroke:var(--chart-muted);stroke-width:2;fill:none}
+.rsi-chart .rsi-value{font-family:var(--mono);font-size:11.5px;font-weight:600;fill:var(--ink)}
+.rsi-chart .rsi-leader{stroke:var(--strong-line);stroke-width:1}
+.rsi-chart .rsi-callout rect{fill:var(--paper);stroke:var(--line);stroke-width:1}
+.rsi-chart .rsi-problem{font-size:10.5px;fill:var(--caution)}
+.rsi-chart .rsi-fix{font-family:var(--mono);font-size:11px;font-weight:600;fill:var(--brand)}
+.rsi-chart .rsi-callout.is-rejected .rsi-fix{font-family:var(--sans);font-weight:400;fill:var(--muted)}
+.rsi-chart .rsi-tag rect{fill:var(--paper);stroke:var(--line);stroke-width:1}
+.rsi-chart .rsi-tag text{font-size:10.5px;fill:var(--soft)}
+.rsi-values td:nth-child(3){min-width:220px}
+
+/* 3 · Improvement summary ------------------------------------------------------ */
+.rsi-stats{margin:6px 0 42px}
+.rsi-stats strong{font-size:clamp(28px,3.3vw,40px);white-space:nowrap}
+.rsi-split{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:46px;align-items:start}
+.rsi-signal-block{min-width:0}
+.rsi-signal-block h3{font-size:19px;margin:0 0 6px}
+.rsi-block-note{font-size:13px;line-height:1.7;color:var(--soft);margin:0 0 14px}
+.rsi-signals{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.rsi-signals li{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"label values" "track track";gap:8px 16px;padding:14px 0;border-bottom:1px solid var(--line)}
+.rsi-signal-label{grid-area:label;display:flex;flex-direction:column;gap:2px;min-width:0}
+.rsi-signal-label strong{font-size:14px;font-weight:500;line-height:1.5}
+.rsi-signal-label span{font-size:12px;color:var(--muted)}
+.rsi-signal-values{grid-area:values;display:flex;align-items:baseline;justify-content:flex-end;gap:7px;font-family:var(--mono);font-size:13px;color:var(--soft);white-space:nowrap}
+.rsi-signal-values strong{color:var(--ink);font-size:15px}
+.rsi-signal-track{grid-area:track;position:relative;height:16px;background:linear-gradient(var(--line),var(--line)) center/100% 1px no-repeat}
+.rsi-signal-span{position:absolute;top:50%;left:var(--from);width:calc(var(--to) - var(--from));height:4px;background:var(--brand);opacity:.3;transform:translateY(-50%)}
+.rsi-dot{position:absolute;top:50%;left:var(--at);width:12px;height:12px;border-radius:50%;transform:translate(-50%,-50%)}
+.rsi-dot-initial{border:2px solid var(--brand);background:var(--paper)}
+.rsi-dot-frozen{background:var(--brand)}
+.rsi-signal-legend{margin-top:14px}
+.rsi-split .table-scroll{min-width:0}
+.evolution-page .case-improvement h3{font-size:17px;margin-bottom:10px}
+
+/* 4 · Code ------------------------------------------------------------------------ */
+.rsi-code-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;align-items:start}
+.rsi-code-grid .code-panel{--code-max:540px}
+.rsi-code-wide{grid-column:1/-1}
+
+@media(max-width:1100px){
+  .rsi-split{grid-template-columns:minmax(0,1fr);gap:34px}
+}
+@media(max-width:860px){
+  .rsi-panels,.rsi-code-grid{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:520px){
+  .rsi-toolbar{align-items:flex-start;flex-direction:column}
+  .rsi-control select{max-width:78%}
+}

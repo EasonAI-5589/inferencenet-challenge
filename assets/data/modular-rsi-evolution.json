@@ -1,0 +1,520 @@
+{
+ "kind": "inferencenet-modular-rsi-evolution-snapshot",
+ "schema_version": 1,
+ "run": {
+  "id": "modrsi-real100-20261009-08",
+  "frozen_at": "2026-10-09T21:32:00+08:00",
+  "branch": "dev-modular-rsi",
+  "source_commit": "06f2890616ef93a9bd634a08b65b4e4df45c822e",
+  "initial_source_sha256": "db9eb0205c5dd20ef26cdb3c4d8d057aee5935d0d41af14fa85c613b856bb09a",
+  "composed_source_sha256": "6450c0a0c37fd6eb8d67bc1c6882aa5b75f5cd3cac89a806171835acdc5ab1f1",
+  "frozen_source_sha256": "17f138b9890d200ffa5b2d6a48e9e918dea32c0c1634852750f91c9e1b3308fb",
+  "model": "deepseek-v4-pro-0813",
+  "provider_profile": "dashscope-nonthinking-v1",
+  "harness": "DeepAgents 0.7.13",
+  "dataset": "CamoAiLab/InferenceNet",
+  "dataset_revision": "59f9512a38e594528807744214a60ee00367434e",
+  "development_tasks": 100,
+  "rollouts_per_task": 3,
+  "denominator": 300,
+  "heldout_tasks": 900,
+  "heldout_dispatched": false,
+  "epochs": 3,
+  "lineages": 5,
+  "scoring_profile": "local-paper-v1",
+  "selection": "static checks, diff review and a two-task execution probe; development scores recorded but not used for promotion",
+  "limits": {
+   "model_calls": 12,
+   "tool_calls": 8,
+   "output_tokens": 32768,
+   "wall_seconds": 1800,
+   "tool_seconds": 90,
+   "sandbox": "baidu-bwrap-v1, 6 GB, 2 CPUs"
+  }
+ },
+ "metrics": {
+  "perfect": "Full replication",
+  "partial": "Coefficient and SE within 5%",
+  "direction": "Correct sign",
+  "significance": "Correct significance",
+  "scored": "Scored final result"
+ },
+ "panels": [
+  {
+   "id": "tool_use",
+   "module": "tool_use",
+   "accepted": 3,
+   "candidates": 3,
+   "points": [
+    {
+     "x": 0,
+     "kind": "initial",
+     "values": {
+      "perfect": 81,
+      "partial": 104,
+      "direction": 166,
+      "significance": 132,
+      "scored": 171
+     },
+     "parent": null
+    },
+    {
+     "x": 1,
+     "signal": "tool_call_budget_exhausted_during_verification",
+     "problem": "Budget runs out during verification",
+     "votes": 4,
+     "kind": "accepted",
+     "parent": 0,
+     "fix": "batch calls, reserve calls to verify",
+     "values": {
+      "perfect": 91,
+      "partial": 120,
+      "direction": 183,
+      "significance": 147,
+      "scored": 190
+     },
+     "cost": {
+      "model_calls": 2575,
+      "tool_calls": 1921,
+      "input_tokens": 16593669,
+      "output_tokens": 1414129
+     }
+    },
+    {
+     "x": 2,
+     "signal": "budget_exhaustion_during_valid_programming",
+     "problem": "Budget runs out mid-programming",
+     "votes": 5,
+     "kind": "accepted",
+     "parent": 1,
+     "fix": "stop retrying empty outputs",
+     "values": {
+      "perfect": 91,
+      "partial": 121,
+      "direction": 196,
+      "significance": 157,
+      "scored": 204
+     },
+     "cost": {
+      "model_calls": 2567,
+      "tool_calls": 1900,
+      "input_tokens": 16210353,
+      "output_tokens": 1203228
+     }
+    },
+    {
+     "x": 3,
+     "signal": "filesystem_inspection_tool_unavailable",
+     "problem": "File inspection tool unavailable",
+     "votes": 3,
+     "kind": "accepted",
+     "parent": 2,
+     "fix": "do not retry; use known context",
+     "values": {
+      "perfect": 87,
+      "partial": 114,
+      "direction": 212,
+      "significance": 154,
+      "scored": 225
+     },
+     "cost": {
+      "model_calls": 2407,
+      "tool_calls": 1830,
+      "input_tokens": 15273213,
+      "output_tokens": 1172740
+     }
+    }
+   ]
+  },
+  {
+   "id": "completion",
+   "module": "completion",
+   "accepted": 3,
+   "candidates": 3,
+   "points": [
+    {
+     "x": 0,
+     "kind": "initial",
+     "values": {
+      "perfect": 81,
+      "partial": 104,
+      "direction": 166,
+      "significance": 132,
+      "scored": 171
+     },
+     "parent": null
+    },
+    {
+     "x": 1,
+     "signal": "no_final_after_tools",
+     "problem": "No final program after tool calls",
+     "votes": 2,
+     "kind": "accepted",
+     "parent": 0,
+     "fix": "stronger final-submission reminder",
+     "values": {
+      "perfect": 95,
+      "partial": 124,
+      "direction": 190,
+      "significance": 154,
+      "scored": 198
+     },
+     "cost": {
+      "model_calls": 2674,
+      "tool_calls": 1945,
+      "input_tokens": 16976350,
+      "output_tokens": 1286431
+     }
+    },
+    {
+     "x": 2,
+     "signal": "completion_forces_submission_after_error",
+     "problem": "Forced to submit right after an error",
+     "votes": 2,
+     "kind": "accepted",
+     "parent": 1,
+     "fix": "debug, verify, then submit",
+     "values": {
+      "perfect": 84,
+      "partial": 106,
+      "direction": 185,
+      "significance": 145,
+      "scored": 191
+     },
+     "cost": {
+      "model_calls": 2698,
+      "tool_calls": 1968,
+      "input_tokens": 16880506,
+      "output_tokens": 1374438
+     }
+    },
+    {
+     "x": 3,
+     "signal": "no_final_after_tools",
+     "problem": "No final program after tool calls",
+     "votes": 2,
+     "kind": "accepted",
+     "parent": 2,
+     "fix": "end every turn with a final message",
+     "values": {
+      "perfect": 85,
+      "partial": 110,
+      "direction": 172,
+      "significance": 142,
+      "scored": 181
+     },
+     "cost": {
+      "model_calls": 2701,
+      "tool_calls": 1974,
+      "input_tokens": 17503331,
+      "output_tokens": 1357000
+     }
+    }
+   ]
+  },
+  {
+   "id": "agent_loop",
+   "module": "agent_loop",
+   "accepted": 2,
+   "candidates": 3,
+   "points": [
+    {
+     "x": 0,
+     "kind": "initial",
+     "values": {
+      "perfect": 81,
+      "partial": 104,
+      "direction": 166,
+      "significance": 132,
+      "scored": 171
+     },
+     "parent": null
+    },
+    {
+     "x": 1,
+     "signal": "unproductive_reimplementation_loop",
+     "problem": "Re-implementing the same code",
+     "votes": 4,
+     "kind": "rejected",
+     "parent": 0,
+     "reason": "diff review"
+    },
+    {
+     "x": 2,
+     "signal": "redundant_recomputation_after_result",
+     "problem": "Recomputing after a result exists",
+     "votes": 3,
+     "kind": "accepted",
+     "parent": 0,
+     "fix": "finalize when one call is left",
+     "values": {
+      "perfect": 84,
+      "partial": 112,
+      "direction": 170,
+      "significance": 132,
+      "scored": 181
+     },
+     "cost": {
+      "model_calls": 2703,
+      "tool_calls": 1922,
+      "input_tokens": 15745549,
+      "output_tokens": 1093278
+     }
+    },
+    {
+     "x": 3,
+     "signal": "unproductive_tool_loop",
+     "problem": "Tool loop without progress",
+     "votes": 3,
+     "kind": "accepted",
+     "parent": 2,
+     "fix": "finalize after a failure at two calls left",
+     "values": {
+      "perfect": 84,
+      "partial": 113,
+      "direction": 179,
+      "significance": 148,
+      "scored": 187
+     },
+     "cost": {
+      "model_calls": 2731,
+      "tool_calls": 1934,
+      "input_tokens": 15740998,
+      "output_tokens": 1120174
+     }
+    }
+   ]
+  },
+  {
+   "id": "observation",
+   "module": "observation",
+   "accepted": 0,
+   "candidates": 3,
+   "points": [
+    {
+     "x": 0,
+     "kind": "initial",
+     "values": {
+      "perfect": 81,
+      "partial": 104,
+      "direction": 166,
+      "significance": 132,
+      "scored": 171
+     },
+     "parent": null
+    },
+    {
+     "x": 1,
+     "signal": "premature_estimator_fitting",
+     "problem": "Estimator fitted too early",
+     "votes": 6,
+     "kind": "rejected",
+     "parent": 0,
+     "reason": "diff review"
+    },
+    {
+     "x": 2,
+     "signal": "contradictory_filesystem_observations",
+     "problem": "Contradictory file listings",
+     "votes": 4,
+     "kind": "rejected",
+     "parent": 0,
+     "reason": "editor output invalid"
+    },
+    {
+     "x": 3,
+     "signal": "filesystem_listing_empty_for_present_data",
+     "problem": "Empty listing for present data",
+     "votes": 9,
+     "kind": "rejected",
+     "parent": 0,
+     "reason": "diff review"
+    }
+   ]
+  },
+  {
+   "id": "context",
+   "module": "context",
+   "accepted": 0,
+   "candidates": 3,
+   "points": [
+    {
+     "x": 0,
+     "kind": "initial",
+     "values": {
+      "perfect": 81,
+      "partial": 104,
+      "direction": 166,
+      "significance": 132,
+      "scored": 171
+     },
+     "parent": null
+    },
+    {
+     "x": 1,
+     "signal": "directory_listing_reports_missing_file",
+     "problem": "Listing reports a missing file",
+     "votes": 2,
+     "kind": "rejected",
+     "parent": 0,
+     "reason": "editor output invalid"
+    },
+    {
+     "x": 2,
+     "signal": "run_python_reads_data_but_ls_glob_report_empty",
+     "problem": "ls / glob empty while data is readable",
+     "votes": 4,
+     "kind": "rejected",
+     "parent": 0,
+     "reason": "edit failed checks"
+    },
+    {
+     "x": 3,
+     "signal": "missing_source_do_file_causes_specification_guesswork",
+     "problem": "Original do-file unavailable",
+     "votes": 5,
+     "kind": "rejected",
+     "parent": 0,
+     "reason": "editor output invalid"
+    }
+   ]
+  },
+  {
+   "id": "integration",
+   "module": "integration",
+   "accepted": 2,
+   "candidates": 2,
+   "points": [
+    {
+     "x": 0,
+     "kind": "initial",
+     "values": {
+      "perfect": 81,
+      "partial": 104,
+      "direction": 166,
+      "significance": 132,
+      "scored": 171
+     },
+     "parent": null
+    },
+    {
+     "x": 1,
+     "kind": "accepted",
+     "parent": 0,
+     "problem": "Combine accepted modules",
+     "fix": "agent_loop + completion + tool_use",
+     "values": {
+      "perfect": 92,
+      "partial": 121,
+      "direction": 203,
+      "significance": 170,
+      "scored": 214
+     },
+     "cost": {
+      "model_calls": 2411,
+      "tool_calls": 1849,
+      "input_tokens": 15485352,
+      "output_tokens": 1200902
+     }
+    },
+    {
+     "x": 2,
+     "kind": "frozen",
+     "parent": 1,
+     "problem": "Budget exhausted before the final run",
+     "fix": "phase budget; run the final program once",
+     "signal": "unevaluated_or_partial_final_submission",
+     "values": {
+      "perfect": 91,
+      "partial": 119,
+      "direction": 207,
+      "significance": 162,
+      "scored": 217
+     },
+     "cost": {
+      "model_calls": 2405,
+      "tool_calls": 1841,
+      "input_tokens": 15607170,
+      "output_tokens": 1120471
+     }
+    }
+   ]
+  }
+ ],
+ "signals": [
+  {
+   "signal": "unproductive_tool_loop",
+   "module": "agent_loop",
+   "initial": {
+    "tasks": 48,
+    "rollouts": 103
+   },
+   "frozen": {
+    "tasks": 15,
+    "rollouts": 25
+   }
+  },
+  {
+   "signal": "no_final_after_tools",
+   "module": "completion",
+   "initial": {
+    "tasks": 48,
+    "rollouts": 103
+   },
+   "frozen": {
+    "tasks": 15,
+    "rollouts": 25
+   }
+  },
+  {
+   "signal": "all_tool_runs_failed",
+   "module": "tool_use",
+   "initial": {
+    "tasks": 60,
+    "rollouts": 143
+   },
+   "frozen": {
+    "tasks": 41,
+    "rollouts": 95
+   }
+  },
+  {
+   "signal": "tool_timeout",
+   "module": "tool_use",
+   "initial": {
+    "tasks": 4,
+    "rollouts": 6
+   },
+   "frozen": {
+    "tasks": 5,
+    "rollouts": 7
+   }
+  },
+  {
+   "signal": "repeated_error_category",
+   "module": "observation",
+   "initial": {
+    "tasks": 75,
+    "rollouts": 193
+   },
+   "frozen": {
+    "tasks": 72,
+    "rollouts": 169
+   }
+  }
+ ],
+ "cost": {
+  "initial": {
+   "model_calls": 2792,
+   "tool_calls": 1977,
+   "input_tokens": 17205052,
+   "output_tokens": 1205609
+  },
+  "frozen": {
+   "model_calls": 2405,
+   "tool_calls": 1841,
+   "input_tokens": 15607170,
+   "output_tokens": 1120471
+  }
+ }
+}

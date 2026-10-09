@@ -541,5 +541,7 @@
   "Time variables": "时间字段",
   "Why did the outcome change?": "为什么这次能够复现？",
   "The single-generation program committed to assumed column names before the model had seen the file’s structure. With DeepAgents, tool outputs let GPT-5.5 inspect the real columns, connect tid to the monthly clustering requirement, and check the regression before submitting its final program.": "一次性生成的程序在模型尚未看到数据结构时，就使用了预设的列名。配合 DeepAgents 后，工具返回的信息让 GPT-5.5 能够查看真实字段，将 tid 对应到按月聚类的要求，并在提交最终程序前检查回归执行结果。",
-  "The harness makes this interaction possible by running tools and returning their output. The model interprets that feedback and writes the analysis; the final replay verifies the result.": "Harness 通过执行工具、返回输出，支持这一交互过程。模型负责理解反馈、编写分析程序，最终通过独立重跑验证结果。"
+  "The harness makes this interaction possible by running tools and returning their output. The model interprets that feedback and writes the analysis; the final replay verifies the result.": "Harness 通过执行工具、返回输出，支持这一交互过程。模型负责理解反馈、编写分析程序，最终通过独立重跑验证结果。",
+  "Phase 2: let the harness evolve →": "第二期：让 Harness 自进化 →",
+  "Evolution": "自进化"
 }

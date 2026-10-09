@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="no-referrer">
+  <title>Evolution — InferenceNet Challenge</title>
+  <meta name="description" content="Phase 2 of InferenceNet: a ModularRSI-style loop rewrites five harness functions around DeepAgents from InferenceNet trajectories. Follow the first complete evolution run.">
+  <meta property="og:title" content="InferenceNet Challenge — Evolution">
+  <meta property="og:description" content="Phase 2 of InferenceNet: a ModularRSI-style loop rewrites five harness functions around DeepAgents from InferenceNet trajectories. Follow the first complete evolution run.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="site.css?v=20260915-menu">
+  <link rel="stylesheet" href="agent.css?v=20260917-case-data">
+  <link rel="stylesheet" href="evolution.css?v=20261010-evolution">
+  <script src="site.js?v=20260915-menu" defer></script>
+  <script src="evolution.js?v=20261010-evolution" defer></script>
+  <link rel="stylesheet" href="language.css">
+  <script src="language.js?v=20261010-evolution" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress"></span></div>
+  <header class="site-header">
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="wordmark" href="index.html">Inference<span>Net</span><small>CHALLENGE</small></a>
+      <div class="nav-links open" id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="data.html">Data</a>
+        <a href="agent.html">Agent</a>
+        <a href="evolution.html" aria-current="page">Evolution</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="teams.html">Teams</a>
+      </div>
+      <div class="nav-controls">
+        <button class="theme-toggle" data-theme-toggle aria-label="Switch to dark theme" aria-pressed="false" type="button" hidden>
+          <span class="theme-icon" aria-hidden="true"></span><span data-theme-label>Light</span>
+        </button>
+        <button class="menu-toggle" type="button" aria-controls="nav-links" aria-expanded="true" hidden>Menu <span aria-hidden="true">−</span></button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" class="agent-case evolution-page">
+    <section class="page-hero container" aria-labelledby="page-title">
+      <p class="kicker">Phase 2 · Harness self-evolution</p>
+      <h1 id="page-title">The harness rewrites itself from its own trajectories.</h1>
+      <p class="lead">Phase 1 placed models inside DeepAgents and measured what the harness adds. Phase 2 keeps the model and DeepAgents fixed. Five small harness functions around them are rewritten by a ModularRSI-style evolution loop that reads InferenceNet trajectories. This page follows the first complete run.</p>
+      <ul class="page-meta"><li>Frozen · 9 Oct 2026</li><li>DeepSeek V4 Pro</li><li>DeepAgents 0.7.13</li><li>100 development tasks × 3 rollouts</li><li><a href="https://github.com/YTZSR/chatpilot_evaluator/tree/dev-modular-rsi">Code · dev-modular-rsi</a></li></ul>
+    </section>
+    <nav class="subnav" aria-label="On this page"><ol class="container">
+      <li><a href="#design"><span class="subnav-number">01</span>Design</a></li>
+      <li><a href="#loop"><span class="subnav-number">02</span>Evolution loop</a></li>
+      <li><a href="#trajectories"><span class="subnav-number">03</span>Trajectories</a></li>
+      <li><a href="#improvements"><span class="subnav-number">04</span>What improved</a></li>
+      <li><a href="#code"><span class="subnav-number">05</span>Evolved code</a></li>
+    </ol></nav>
+
+    <section class="section container ruled" id="design" aria-labelledby="design-title">
+      <div class="case-heading"><p class="kicker">01 / Design</p><h2 id="design-title">Five editable functions around a fixed core</h2></div>
+      <p class="case-intro">ModularRSI splits an agent harness into five modules and evolves each one separately. We apply the idea to DeepAgents without changing the SDK. Each module is one Python function that the harness calls at a fixed point in the loop. All five start as no-ops, so the initial harness behaves exactly like the phase 1 DeepAgents configuration.</p>
+      <figure class="diagram wide rsi-architecture" style="--diagram-min:820px">
+        <div class="diagram-scroll" tabindex="0">
+          <svg viewBox="0 0 1080 276" role="img" aria-label="Request path: message history passes through the DeepAgents middleware and the ModularRSI middleware, which holds agent_loop, context and completion, to the fixed model. A tool call goes to run_python, which holds tool_use and observation, and the tool result returns to the message history.">
+            <defs>
+              <marker id="rsi-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="arch-head"/></marker>
+            </defs>
+            <text x="400" y="26" class="arch-note">At build time, tool_use and completion guidance is also added to the system prompt.</text>
+            <rect x="10" y="93" width="132" height="64" rx="4" class="arch-box"/>
+            <text x="76" y="121" text-anchor="middle" class="arch-title">Message history</text>
+            <text x="76" y="141" text-anchor="middle" class="arch-mono">state.messages</text>
+            <line x1="142" y1="125" x2="168" y2="125" class="arch-line" marker-end="url(#rsi-arrow)"/>
+            <rect x="170" y="79" width="200" height="92" rx="4" class="arch-box"/>
+            <text x="184" y="103" class="arch-title">DeepAgents middleware</text>
+            <text x="184" y="125" class="arch-mono">Filesystem</text>
+            <text x="184" y="143" class="arch-mono">Summarization</text>
+            <text x="184" y="161" class="arch-mono">PatchToolCalls</text>
+            <line x1="370" y1="125" x2="398" y2="125" class="arch-line" marker-end="url(#rsi-arrow)"/>
+            <rect x="400" y="42" width="230" height="166" rx="4" class="arch-rsi"/>
+            <text x="414" y="66" class="arch-title arch-brand">ModularRSI middleware</text>
+            <text x="414" y="92" class="arch-mono arch-brand">agent_loop</text>
+            <text x="414" y="108" class="arch-small">finalize or ask for a repair</text>
+            <text x="414" y="134" class="arch-mono arch-brand">context</text>
+            <text x="414" y="150" class="arch-small">rewrite earlier tool results</text>
+            <text x="414" y="176" class="arch-mono arch-brand">completion</text>
+            <text x="414" y="192" class="arch-small">final reminder</text>
+            <line x1="630" y1="125" x2="658" y2="125" class="arch-line" marker-end="url(#rsi-arrow)"/>
+            <rect x="660" y="93" width="150" height="64" rx="4" class="arch-strong"/>
+            <text x="735" y="121" text-anchor="middle" class="arch-title">DeepSeek V4 Pro</text>
+            <text x="735" y="141" text-anchor="middle" class="arch-small">weights unchanged</text>
+            <line x1="810" y1="125" x2="838" y2="125" class="arch-line" marker-end="url(#rsi-arrow)"/>
+            <text x="824" y="115" text-anchor="middle" class="arch-small">call</text>
+            <rect x="840" y="42" width="230" height="166" rx="4" class="arch-rsi"/>
+            <text x="854" y="66" class="arch-title">run_python tool</text>
+            <text x="854" y="92" class="arch-mono arch-brand">tool_use</text>
+            <text x="854" y="108" class="arch-small">guidance in the tool description</text>
+            <text x="854" y="134" class="arch-mono arch-brand">observation</text>
+            <text x="854" y="150" class="arch-small">shape the execution feedback</text>
+            <text x="854" y="182" class="arch-small">runs each program in a fresh sandbox</text>
+            <path d="M955 208 V236 H76 V159" class="arch-line" marker-end="url(#rsi-arrow)"/>
+            <text x="515" y="258" text-anchor="middle" class="arch-small">Tool result returns to the message history · each call runs in a fresh sandbox</text>
+          </svg>
+        </div>
+        <figcaption>Blue boxes are the ModularRSI additions. The DeepAgents SDK, the model, the sandbox and the evaluator stay frozen. Edited functions run in an isolated worker without network access or credentials.</figcaption>
+      </figure>
+      <div class="table-scroll rsi-module-table" tabindex="0">
+        <table class="compare-table">
+          <caption>The five evolvable functions and where the harness calls them</caption>
+          <thead><tr><th scope="col">Module</th><th scope="col">What it controls</th><th scope="col">Where it runs</th><th scope="col">Interface</th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><code>agent_loop</code></th><td>When to stop exploring and ask for the final program, and when to ask for a repair</td><td>Before every model call</td><td><code>(remaining_model_calls, last_tool_failed) → {force_final, repair_nudge}</code></td></tr>
+            <tr><th scope="row"><code>tool_use</code></th><td>General guidance on how to use the Python tool</td><td>Tool description and system prompt</td><td><code>() → str</code></td></tr>
+            <tr><th scope="row"><code>observation</code></th><td>How execution output is shown back to the model</td><td>Inside run_python, before the result returns</td><td><code>(feedback, is_error) → str</code></td></tr>
+            <tr><th scope="row"><code>context</code></th><td>How earlier tool results are kept in the conversation</td><td>Before every model call</td><td><code>(tool_messages) → list[str]</code></td></tr>
+            <tr><th scope="row"><code>completion</code></th><td>Reminders about submitting one complete, verified program</td><td>System prompt and before every model call</td><td><code>(remaining_model_calls) → str</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section container ruled" id="loop" aria-labelledby="loop-title">
+      <div class="case-heading"><p class="kicker">02 / Evolution loop</p><h2 id="loop-title">How one evolution run works, step by step</h2></div>
+      <p class="case-intro">Five module lineages start from the same no-op source and the same initial trajectories. Each lineage may change only its own function. The loop below ran three epochs, then combined the accepted functions into one frozen harness.</p>
+      <ol class="case-timeline rsi-steps">
+        <li><span class="case-step-number">01</span><div class="case-step-content"><h3>Split the tasks before anything runs</h3><p class="case-step-story">From the 1,000 Selected_1000 tasks, 100 become the development set and 900 are held out. Tasks from the same paper or with identical input files stay on the same side. The evolution loop never dispatches the 900 held-out tasks.</p><dl class="case-observed-facts"><div><dt>Development tasks</dt><dd>100</dd></div><div><dt>Held-out tasks</dt><dd>900 · not run yet</dd></div></dl></div></li>
+        <li><span class="case-step-number">02</span><div class="case-step-content"><h3>Roll out every harness version</h3><p class="case-step-story">Each harness version solves every development task three times with DeepSeek V4 Pro inside DeepAgents. Every run_python call starts a fresh sandbox; nothing persists between calls.</p><dl class="case-observed-facts"><div><dt>Rollouts per evaluation</dt><dd>300</dd></div><div><dt>Budget per rollout</dt><dd>12 model calls · 8 tool calls</dd></div><div><dt>Output and time limit</dt><dd>32,768 tokens · 30 min</dd></div><div><dt>Sandbox per call</dt><dd>6 GB · 2 CPUs · 90 s</dd></div></dl></div></li>
+        <li><span class="case-step-number">03</span><div class="case-step-content"><h3>Score in private</h3><p class="case-step-story">The evaluator reruns each final program from scratch and compares its output with the hidden reference. The model, the analyst and the editor never see reference values or scorer internals.</p></div></li>
+        <li><span class="case-step-number">04</span><div class="case-step-content"><h3>Diagnose by contrast</h3><p class="case-step-story">Tasks are grouped by outcome across their three rollouts. An analyst model compares successful and failed rollouts of the same task, reads all 100 tasks in batches of up to ten, and names recurring problems. A problem is kept only when at least two different tasks support it.</p><p class="case-decision">Comparing the same task removes most task difficulty from the comparison, so the remaining difference points at the harness.</p></div></li>
+        <li><span class="case-step-number">05</span><div class="case-step-content"><h3>Edit one function</h3><p class="case-step-story">For each lineage, an editor model sees only its function, the history of accepted versions and the aggregated finding. It returns a new version of that function. Static checks verify syntax, imports, the interface and the editing scope.</p></div></li>
+        <li><span class="case-step-number">06</span><div class="case-step-content"><h3>Review the diff, then probe on real tasks</h3><p class="case-step-story">A reviewer model rejects changes that encode task-specific details. The candidate then runs two real development tasks. If the probe completes without protocol or runtime errors, the candidate is promoted.</p><p class="case-decision">Promotion does not look at development scores. The scores in section 03 are recorded for analysis only, so an accepted version can score lower than its parent.</p></div></li>
+        <li><span class="case-step-number">07</span><div class="case-step-content"><h3>Repeat for three epochs</h3><p class="case-step-story">Each module gets at most one edit per epoch. A promoted version becomes the parent for the next epoch, and every promoted version receives a full 300-rollout evaluation.</p><dl class="case-observed-facts"><div><dt>Candidate slots</dt><dd>15</dd></div><div><dt>Promoted</dt><dd>8</dd></div><div><dt>Rejected by diff review</dt><dd>3</dd></div><div><dt>Editor output or edit invalid</dt><dd>4</dd></div></dl></div></li>
+        <li><span class="case-step-number">08</span><div class="case-step-content"><h3>Integrate, refine once, freeze</h3><p class="case-step-story">The accepted versions of agent_loop, completion and tool_use are combined and probed together. One integration epoch reads the combined trajectories and makes a single checked refinement. The result is frozen by hash before any held-out evaluation.</p><dl class="case-observed-facts"><div><dt>Changed modules</dt><dd>3 of 5</dd></div><div><dt>Frozen source</dt><dd>17f138b9</dd></div></dl></div></li>
+      </ol>
+    </section>
+
+    <section class="section container ruled" id="trajectories" aria-labelledby="trajectories-title">
+      <div class="case-heading"><p class="kicker">03 / Trajectories</p><h2 id="trajectories-title">Evolution trajectories by module</h2></div>
+      <p class="case-intro">Each panel follows one lineage. A point is one full development evaluation of a harness version, measured over 300 rollouts. Every candidate is annotated with the problem the analyst found and the change the editor made.</p>
+      <div class="rsi-evolution" data-rsi-evolution>
+        <div class="rsi-toolbar">
+          <label class="rsi-control" hidden data-rsi-controls><span>Metric</span><select data-rsi-metric aria-label="Chart metric"><option value="perfect">Full replication</option><option value="partial">Coefficient and SE within 5%</option><option value="direction">Correct sign</option><option value="significance">Correct significance</option><option value="scored">Scored final result</option></select></label>
+          <ul class="rsi-legend" aria-label="Legend">
+            <li><span class="rsi-key rsi-key-accepted" aria-hidden="true"></span>Accepted</li>
+            <li><span class="rsi-key rsi-key-rejected" aria-hidden="true"></span>Rejected</li>
+            <li><span class="rsi-key rsi-key-frozen" aria-hidden="true"></span>Frozen harness</li>
+          </ul>
+        </div>
+        <p class="rsi-nojs" data-rsi-fallback>The trajectory charts need JavaScript. The same values are listed in the table below.</p>
+        <div class="rsi-panels">
+          <figure class="rsi-panel"><div class="rsi-canvas" data-rsi-panel="tool_use"></div><figcaption><strong>(a) tool_use</strong> · 3 of 3 candidates accepted</figcaption></figure>
+          <figure class="rsi-panel"><div class="rsi-canvas" data-rsi-panel="completion"></div><figcaption><strong>(b) completion</strong> · 3 of 3 candidates accepted</figcaption></figure>
+          <figure class="rsi-panel"><div class="rsi-canvas" data-rsi-panel="agent_loop"></div><figcaption><strong>(c) agent_loop</strong> · 2 of 3 candidates accepted</figcaption></figure>
+          <figure class="rsi-panel"><div class="rsi-canvas" data-rsi-panel="integration"></div><figcaption><strong>(d) Integration</strong> · combined, refined once and frozen</figcaption></figure>
+          <figure class="rsi-panel"><div class="rsi-canvas" data-rsi-panel="observation"></div><figcaption><strong>(e) observation</strong> · 0 of 3 candidates accepted</figcaption></figure>
+          <figure class="rsi-panel"><div class="rsi-canvas" data-rsi-panel="context"></div><figcaption><strong>(f) context</strong> · 0 of 3 candidates accepted</figcaption></figure>
+        </div>
+      </div>
+      <p class="case-caption">Development set, 100 tasks × 3 rollouts with DeepSeek V4 Pro, scored with local-paper-v1. Rollouts without a scored result count as not passed. Step lines connect each accepted version to its parent; the x-axis follows the order of candidate evaluations. Rejected candidates did not receive a full evaluation, so they sit below the axis range.</p>
+      <details class="case-archive" id="trajectory-values"><summary>Values behind the charts</summary>
+        <div class="table-scroll" tabindex="0">
+          <table class="compare-table rsi-values">
+            <caption>Passed rollouts out of 300 for each fully evaluated harness version</caption>
+            <thead><tr><th scope="col">Lineage</th><th scope="col">Version</th><th scope="col">Problem addressed</th><th scope="col" class="num">Full replication</th><th scope="col" class="num">Coef. and SE within 5%</th><th scope="col" class="num">Correct sign</th><th scope="col" class="num">Correct significance</th><th scope="col" class="num">Scored</th></tr></thead>
+            <tbody>
+              <tr><th scope="row"><code>tool_use</code></th><td>Initial</td><td>—</td><td class="num">81</td><td class="num">104</td><td class="num">166</td><td class="num">132</td><td class="num">171</td></tr>
+              <tr><th scope="row"><code>tool_use</code></th><td>Epoch 1</td><td>Budget runs out during verification</td><td class="num">91</td><td class="num">120</td><td class="num">183</td><td class="num">147</td><td class="num">190</td></tr>
+              <tr><th scope="row"><code>tool_use</code></th><td>Epoch 2</td><td>Budget runs out mid-programming</td><td class="num">91</td><td class="num">121</td><td class="num">196</td><td class="num">157</td><td class="num">204</td></tr>
+              <tr><th scope="row"><code>tool_use</code></th><td>Epoch 3</td><td>File inspection tool unavailable</td><td class="num">87</td><td class="num">114</td><td class="num">212</td><td class="num">154</td><td class="num">225</td></tr>
+              <tr><th scope="row"><code>completion</code></th><td>Initial</td><td>—</td><td class="num">81</td><td class="num">104</td><td class="num">166</td><td class="num">132</td><td class="num">171</td></tr>
+              <tr><th scope="row"><code>completion</code></th><td>Epoch 1</td><td>No final program after tool calls</td><td class="num">95</td><td class="num">124</td><td class="num">190</td><td class="num">154</td><td class="num">198</td></tr>
+              <tr><th scope="row"><code>completion</code></th><td>Epoch 2</td><td>Forced to submit right after an error</td><td class="num">84</td><td class="num">106</td><td class="num">185</td><td class="num">145</td><td class="num">191</td></tr>
+              <tr><th scope="row"><code>completion</code></th><td>Epoch 3</td><td>No final program after tool calls</td><td class="num">85</td><td class="num">110</td><td class="num">172</td><td class="num">142</td><td class="num">181</td></tr>
+              <tr><th scope="row"><code>agent_loop</code></th><td>Initial</td><td>—</td><td class="num">81</td><td class="num">104</td><td class="num">166</td><td class="num">132</td><td class="num">171</td></tr>
+              <tr><th scope="row"><code>agent_loop</code></th><td>Epoch 2</td><td>Recomputing after a result exists</td><td class="num">84</td><td class="num">112</td><td class="num">170</td><td class="num">132</td><td class="num">181</td></tr>
+              <tr><th scope="row"><code>agent_loop</code></th><td>Epoch 3</td><td>Tool loop without progress</td><td class="num">84</td><td class="num">113</td><td class="num">179</td><td class="num">148</td><td class="num">187</td></tr>
+              <tr><th scope="row">Integration</th><td>Initial</td><td>—</td><td class="num">81</td><td class="num">104</td><td class="num">166</td><td class="num">132</td><td class="num">171</td></tr>
+              <tr><th scope="row">Integration</th><td>Combined</td><td>Combine accepted modules</td><td class="num">92</td><td class="num">121</td><td class="num">203</td><td class="num">170</td><td class="num">214</td></tr>
+              <tr><th scope="row">Integration</th><td>Frozen</td><td>Budget exhausted before the final run</td><td class="num">91</td><td class="num">119</td><td class="num">207</td><td class="num">162</td><td class="num">217</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <section class="section container ruled" id="improvements" aria-labelledby="improvements-title">
+      <div class="case-heading"><p class="kicker">04 / What improved</p><h2 id="improvements-title">Fewer runs end without a final program</h2></div>
+      <p class="case-intro">Comparing the initial and frozen harness on the same 100 development tasks, with three rollouts each, the clearest change is in how runs end. Far fewer rollouts finish with tool calls and no final program, and more rollouts produce a result the evaluator can score.</p>
+      <div class="benchmark-stats rsi-stats">
+        <div><strong>27.0 → 30.3</strong><span>Full replication, % of 300 rollouts</span></div>
+        <div><strong>57.0 → 72.3</strong><span>Rollouts with a scored final result, %</span></div>
+        <div><strong>48 → 15</strong><span>Tasks whose failed rollouts mostly used tools but never submitted a program</span></div>
+        <div><strong>−13.9%</strong><span>Solver model calls for the same 300 rollouts</span></div>
+      </div>
+      <div class="rsi-split">
+        <div class="rsi-signal-block">
+          <h3>Failure signals before and after evolution</h3>
+          <p class="rsi-block-note">Development tasks, out of 100, where at least half of the failed rollouts show the signal. The signal detector is fixed; the analyst cannot change it.</p>
+          <ol class="rsi-signals">
+            <li><div class="rsi-signal-label"><strong>Used tools, never submitted a program</strong><span><code>agent_loop</code> · <code>completion</code></span></div><div class="rsi-signal-track" aria-hidden="true"><span class="rsi-signal-span" style="--from:15%;--to:48%"></span><span class="rsi-dot rsi-dot-initial" style="--at:48%"></span><span class="rsi-dot rsi-dot-frozen" style="--at:15%"></span></div><div class="rsi-signal-values"><span>48</span><span aria-hidden="true">→</span><strong>15</strong></div></li>
+            <li><div class="rsi-signal-label"><strong>Every tool execution failed</strong><span><code>tool_use</code></span></div><div class="rsi-signal-track" aria-hidden="true"><span class="rsi-signal-span" style="--from:41%;--to:60%"></span><span class="rsi-dot rsi-dot-initial" style="--at:60%"></span><span class="rsi-dot rsi-dot-frozen" style="--at:41%"></span></div><div class="rsi-signal-values"><span>60</span><span aria-hidden="true">→</span><strong>41</strong></div></li>
+            <li><div class="rsi-signal-label"><strong>The same error category repeated</strong><span><code>observation</code> · not changed</span></div><div class="rsi-signal-track" aria-hidden="true"><span class="rsi-signal-span" style="--from:72%;--to:75%"></span><span class="rsi-dot rsi-dot-initial" style="--at:75%"></span><span class="rsi-dot rsi-dot-frozen" style="--at:72%"></span></div><div class="rsi-signal-values"><span>75</span><span aria-hidden="true">→</span><strong>72</strong></div></li>
+            <li><div class="rsi-signal-label"><strong>A tool execution timed out</strong><span><code>tool_use</code></span></div><div class="rsi-signal-track" aria-hidden="true"><span class="rsi-signal-span" style="--from:4%;--to:5%"></span><span class="rsi-dot rsi-dot-initial" style="--at:4%"></span><span class="rsi-dot rsi-dot-frozen" style="--at:5%"></span></div><div class="rsi-signal-values"><span>4</span><span aria-hidden="true">→</span><strong>5</strong></div></li>
+          </ol>
+          <ul class="rsi-legend rsi-signal-legend"><li><span class="rsi-key rsi-key-accepted" aria-hidden="true"></span>Initial harness</li><li><span class="rsi-key rsi-key-filled" aria-hidden="true"></span>Frozen harness</li></ul>
+          <p class="case-caption">Failed rollouts with the signal in those tasks, out of 300: 103 → 25, 143 → 95, 193 → 169 and 6 → 7. The agent_loop signal (three or more model calls, all requesting tools) and the completion signal (no final answer) counted the same failed rollouts in this run.</p>
+        </div>
+        <div class="table-scroll" tabindex="0">
+          <table class="compare-table">
+            <caption>Initial and frozen harness on the same 100 development tasks × 3 rollouts</caption>
+            <thead><tr><th scope="col">Measure</th><th scope="col" class="num">Initial</th><th scope="col" class="num">Frozen</th><th scope="col" class="num">Change</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Full replication</th><td class="num">27.0%</td><td class="num">30.3%</td><td class="num">+3.3 pts</td></tr>
+              <tr><th scope="row">Coefficient and SE within 5%</th><td class="num">34.7%</td><td class="num">39.7%</td><td class="num">+5.0 pts</td></tr>
+              <tr><th scope="row">Correct sign</th><td class="num">55.3%</td><td class="num">69.0%</td><td class="num">+13.7 pts</td></tr>
+              <tr><th scope="row">Correct significance</th><td class="num">44.0%</td><td class="num">54.0%</td><td class="num">+10.0 pts</td></tr>
+              <tr><th scope="row">Scored final result</th><td class="num">57.0%</td><td class="num">72.3%</td><td class="num">+15.3 pts</td></tr>
+              <tr><th scope="row">Full replication among scored rollouts</th><td class="num">47.4%</td><td class="num">41.9%</td><td class="num">−5.4 pts</td></tr>
+              <tr><th scope="row">Solver model calls</th><td class="num">2,792</td><td class="num">2,405</td><td class="num">−13.9%</td></tr>
+              <tr><th scope="row">Tool calls</th><td class="num">1,977</td><td class="num">1,841</td><td class="num">−6.9%</td></tr>
+              <tr><th scope="row">Output tokens</th><td class="num">1,205,609</td><td class="num">1,120,471</td><td class="num">−7.1%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="case-improvement">
+        <h3>How to read these numbers</h3>
+        <p>Most of the gain comes from more rollouts finishing with a program the evaluator can score: 171 → 217 of 300. Among scored rollouts, the full-replication share fell from 47.4% to 41.9%. The evolved harness mainly fixed how runs end; it did not make the statistics more precise.</p>
+        <p>These are development-set results. The same 100 tasks were used to diagnose problems, each harness version was evaluated once with three rollouts per task, and no confidence intervals are reported. The frozen harness has not yet run on the 900 held-out tasks. These results are not part of the leaderboard.</p>
+      </div>
+    </section>
+
+    <section class="section container ruled" id="code" aria-labelledby="code-title">
+      <div class="case-heading"><p class="kicker">05 / Evolved code</p><h2 id="code-title">What the frozen functions say</h2></div>
+      <p class="case-intro">All five functions started as no-ops: tool_use and completion returned an empty string, agent_loop never intervened. Below are the three functions that changed, exactly as frozen. observation and context are unchanged.</p>
+      <div class="rsi-code-grid">
+        <div class="code-panel wrap case-excerpt"><div class="code-panel-head"><span class="code-panel-label">tool_use.py · 3 epochs + 1 refinement</span></div><pre tabindex="0"><code>"""Model-visible Python-tool guidance hook."""
+
+
+def tool_use() -&gt; str:
+    """Return additional general tool-use guidance, if any."""
+    return (
+        "Use tool calls efficiently. Prefer combined or batched operations, inspect data "
+        "shape and dtypes in few calls, and verify final programs with targeted unit tests "
+        "rather than repeated exploratory calls. Plan a multi-phase call budget before starting: "
+        "allocate a bounded number of calls for initial data inspection, one consolidated call "
+        "for exploratory diagnostics or transformations, and always reserve at least two calls "
+        "for executing and validating the final program. Never spend exploratory calls on "
+        "information you can derive from existing outputs or task context. If a call budget is "
+        "available, reserve enough calls for final verification. When a tool call returns only a "
+        "signature echo, runtime warning, empty result, or indicates an unavailable tool or file, "
+        "do not retry the same call or rely on it for critical specification details. Instead, "
+        "reason from information already present in existing outputs, task description, or any "
+        "attached artifacts, and proceed with the most direct, defensible next step. When "
+        "filesystem inspection is unavailable, prefer direct artifact-independent implementation "
+        "and inference from available context to avoid stalled exploration. Before making a final "
+        "submission, execute the full solution program at least once and verify it completes "
+        "without error, rather than submitting unexecuted code or prose."
+    )</code></pre></div>
+        <div class="code-panel wrap case-excerpt"><div class="code-panel-head"><span class="code-panel-label">completion.py · 3 epochs</span></div><pre tabindex="0"><code>"""Final-answer guidance hook."""
+
+
+def completion(remaining_model_calls: int) -&gt; str:
+    """Return a bounded reminder about complete program submission, if any."""
+    if remaining_model_calls &gt; 1:
+        return (
+            "If you have verified your complete program, submit it now. "
+            "If you have not yet verified it and still have tool or execution attempts available, "
+            "continue debugging instead of submitting an unverified program. "
+            "After any tool call or execution attempt, always finish your turn with an assistant "
+            "message summarizing the result before waiting for another step."
+        )
+    if remaining_model_calls == 1:
+        return (
+            "You have one model call remaining. Use it to submit your complete program only if it is "
+            "already verified. If it is not verified, you may still use remaining tool or execution "
+            "attempts to debug before your final submission. End every turn with a final assistant "
+            "completion after tool calls so your verified result is captured by the harness."
+        )
+    return (
+        "Submit your complete program now. End this turn with a final assistant completion so "
+        "the submitted program is recorded as your final answer."
+    )</code></pre></div>
+        <div class="code-panel wrap case-excerpt rsi-code-wide"><div class="code-panel-head"><span class="code-panel-label">agent_loop.py · 2 accepted epochs</span></div><pre tabindex="0"><code>"""Agent-loop decision hook; edited versions must retain this interface."""
+
+
+def agent_loop(remaining_model_calls: int, last_tool_failed: bool) -&gt; dict[str, bool]:
+    """Return final-only and repair decisions for the next model request.
+
+    Budget-conscious scheduling: when the model can no longer afford a
+    meaningful followup cycle, the loop stops issuing exploratory calls and
+    asks for a final result.  A recent tool failure only triggers a repair
+    nudge while there is enough budget remaining to act on it.
+
+    Repeated tool failures are treated as a stronger signal that the current
+    computation path is unproductive.  This prevents the loop from burning the
+    remaining budget on redundant retries; instead it forces finalization so
+    the model must consolidate whatever partial or negative result it has
+    accumulated before tool-call exhaustion.
+    """
+    can_afford_followup = remaining_model_calls &gt; 1
+
+    # With only one call left there is no room for a repair plus a final
+    # answer, so finalization is forced regardless of tool state.
+    if not can_afford_followup:
+        return {"force_final": True, "repair_nudge": False}
+
+    # With two calls remaining, a repair nudge is only useful if the model
+    # has not already consumed the budget on failed repair attempts.  In that
+    # case the loop should stop nudging and force a final consolidation.
+    if last_tool_failed and remaining_model_calls &lt;= 2:
+        return {"force_final": True, "repair_nudge": False}
+
+    # Otherwise the failure can still be repaired while preserving a final call.
+    force_final = False
+    repair_nudge = last_tool_failed and can_afford_followup
+
+    return {"force_final": force_final, "repair_nudge": repair_nudge}</code></pre></div>
+      </div>
+      <div class="case-next">
+        <div><h3>From phase 1 to phase 2</h3><p>Phase 1 showed how a harness turns execution feedback into replicated results. Phase 2 lets the harness learn from those trajectories. The next step is the held-out evaluation of the frozen harness against unchanged DeepAgents on the remaining 900 tasks.</p></div>
+        <div class="case-links">
+          <a class="text-link" href="https://github.com/YTZSR/chatpilot_evaluator/tree/dev-modular-rsi">Branch dev-modular-rsi →</a>
+          <a class="text-link" href="https://github.com/YTZSR/chatpilot_evaluator/blob/06f2890616ef93a9bd634a08b65b4e4df45c822e/inferencenet/modular_rsi/runtime_modules.py">Where the hooks attach →</a>
+          <a class="text-link" href="https://github.com/YTZSR/chatpilot_evaluator/blob/06f2890616ef93a9bd634a08b65b4e4df45c822e/docs/MODULAR_RSI_REAL100_PROTOCOL.md">Evolution protocol →</a>
+          <a class="text-link" href="agent.html">Phase 1: one task with DeepAgents →</a>
+        </div>
+      </div>
+      <details class="case-archive" id="run-record"><summary>Run record and sources</summary>
+        <div class="case-archive-intro">
+          <p>Run modrsi-real100-20261009-08, frozen on 9 Oct 2026 at 21:32 (UTC+8) from branch dev-modular-rsi at commit 06f2890. Frozen source hash 17f138b9890d200ffa5b2d6a48e9e918dea32c0c1634852750f91c9e1b3308fb.</p>
+          <p>Solver, analyst, editor and reviewer: deepseek-v4-pro-0813 through DashScope Chat Completions with thinking disabled. Harness: DeepAgents 0.7.13. Dataset: CamoAiLab/InferenceNet at revision 59f9512, Selected_1000.</p>
+          <p>Full replication requires the coefficient and standard error within 1% relative error and the p-value within 0.01 absolute error (local-paper-v1). The 5% measure requires both the coefficient and the standard error within 5%. This differs from the leaderboard’s partial replication, which checks the coefficient only.</p>
+          <p>Method: ModularRSI by Wu et al., 2026. This adaptation keeps the five-module split, contrastive trajectory diagnosis, scoped edits, diff review, execution probes and integration. It edits one entry function per module rather than a library of variants, and it does not implement task-aware function composition.</p>
+          <p>The aggregated values on this page are published in <a href="assets/data/modular-rsi-evolution.json">modular-rsi-evolution.json</a>. Task identifiers, trajectories, generated programs and reference values stay private.</p>
+          <p><a href="https://arxiv.org/abs/2609.14857">ModularRSI paper (arXiv 2609.14857)</a> · <a href="https://github.com/IQuestLab/ModularRSI">Reference implementation</a></p>
+        </div>
+      </details>
+    </section>
+  </main>
+  <footer class="site-footer container"><a class="wordmark" href="index.html">Inference<span>Net</span></a><p>AI for econometric research.</p><a href="teams.html#contact">Contact <span aria-hidden="true">→</span></a></footer>
+</body>
+</html>

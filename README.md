@@ -3,9 +3,9 @@
 [Live website](https://easonai-5589.github.io/inferencenet-challenge/)
 
 Public presentation site for InferenceNet: AI for econometric research. The
-site brings together Home, Data, Agent, Leaderboard and Teams, with
+site brings together Home, Data, Agent, Evolution, Leaderboard and Teams, with
 Chinese / English and light / dark controls on every page.
-The five page links are visible by default, including the three-column menu on
+The six page links are visible by default, including the three-column menu on
 narrow screens. Visitors can collapse it manually; each new page opens it again.
 
 ## Edit the website
@@ -28,6 +28,7 @@ screenshot for visual changes.
 | Home, research overview and resources | `index.html`, `index.css` |
 | Dataset distributions and examples | `data.html`, `data.css` |
 | Agent case and evaluation harness | `agent.html`, `agent.css` |
+| Phase 2 harness self-evolution | `evolution.html`, `evolution.css`, `evolution.js`, `assets/data/modular-rsi-evolution.json` |
 | Leaderboard and configuration filters | `leaderboard.html`, `leaderboard.css` |
 | Team, institutions and Yichen Guo contact | `teams.html`, `teams.css` |
 | Shared layout, navigation and theme | `styles.css`, `site.css`, `site.js`, `theme.js` |
@@ -37,9 +38,9 @@ screenshot for visual changes.
 
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL;
-Home uses CSS and language release tag `20260917-home`; Teams uses CSS and
-language release tag `20260921-yujie-leader`; the other three pages use language release
-tag `20260917-no-demo`. Home and Leaderboard retain ranking
+all six pages use language release tag `20261010-evolution`. Home CSS keeps
+`20260917-home` and Teams CSS keeps `20260921-yujie-leader`; Evolution CSS/JS
+use `20261010-evolution`. Home and Leaderboard retain ranking
 release tag `20260917-harness`. Shared navigation
 CSS/JS use `20260915-menu`.
 
@@ -124,6 +125,24 @@ case card repeats this data context. Interaction budgets remain explicit.
 Agent CSS uses release tag `20260917-case-data`; its dictionary uses
 `20260917-no-demo`.
 
+## Phase 2: harness self-evolution
+
+The Evolution page documents the first complete ModularRSI-style run on
+DeepAgents 0.7.13 (branch `dev-modular-rsi` of the private evaluator repository,
+commit `06f2890`; run `modrsi-real100-20261009-08`, frozen source `17f138b9`).
+It shows where the five evolvable functions attach, the evolution loop, one
+trajectory panel per module lineage (accepted versions, rejected candidates,
+problem › change annotations), failure signals before and after evolution, and
+the frozen code of the three changed functions.
+
+All numbers come from `assets/data/modular-rsi-evolution.json`: aggregated
+development-set counts over 100 tasks × 3 rollouts with DeepSeek V4 Pro,
+scored with local-paper-v1. The page states that promotion did not use these
+scores, that the gain comes mainly from more scored final results, and that
+the 900 held-out tasks have not been run. Task IDs, trajectories, generated
+programs and references are not published. These results are not part of the
+leaderboard. The values table on the page remains readable without JavaScript.
+
 ## Challenge student leaders
 
 - [Yichen Guo](https://easonai-5589.github.io/) — Student Leader.
@@ -163,8 +182,9 @@ into this public repository.
 The homepage introduces model–harness interaction. Research directions below the
 leaderboard cover model–harness coupling, harness self-evolution through automated
 design and evaluation, and trajectory-based model post-training (including
-distillation and reinforcement learning). These are research aims, not claims
-that an automatic optimization system or training dataset is already available.
+distillation and reinforcement learning). Harness self-evolution links to the
+Evolution page, which reports one development-set run; the other directions
+remain research aims, and no training dataset is claimed.
 Current evaluation settings and source records remain in expandable protocol
 notes. An agent denotes the model operating within a harness.
 
