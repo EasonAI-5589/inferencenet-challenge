@@ -92,7 +92,7 @@
   "03 / Arm B": "03 / B 组",
   "Deep Agents harness: look, probe, fit, answer": "Deep Agents harness：查看、探查、拟合、作答",
   "Same model, same instruction, plus one execution tool. Each": "相同模型、相同指令，额外提供一个执行工具。每次",
-  "call runs a complete program in a fresh container and returns only stdout, stderr and an exit code. The recorded run below is shown unedited except for redacted data rows and the marked elisions in the stdout excerpts.": "调用都会在全新容器中运行完整程序，只返回 stdout、stderr 和退出码。下方运行记录除删除原始数据行，以及在 stdout 节选中标明省略位置外，未作修改。",
+  "call runs a complete program in a fresh container and returns only execution feedback: stdout, stderr, the exit code, whether it timed out, whether it wrote a valid result file and how long it ran. The recorded run below is shown unedited except for redacted data rows and the marked elisions in the stdout excerpts.": "调用都会在全新容器中运行完整程序，只返回执行反馈：stdout、stderr、退出码、是否超时、是否写出有效的结果文件，以及运行时长。下方运行记录除删除原始数据行，以及在 stdout 节选中标明省略位置外，未作修改。",
   "Model calls used": "已用模型调用",
   "budget 6 per task": "每题预算 6 次",
   "Tool calls used": "已用工具调用",

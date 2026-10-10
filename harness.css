@@ -1,0 +1,31 @@
+/* harness.html — page-specific rules. Loads after data.css, agent.css and
+ * evolution.css and reuses their stat strips, field groups, case panels,
+ * tabs, figures, notes, tables and timelines; only the adjustments live here. */
+.harness-page .page-hero h1{max-width:900px}
+.harness-page .case-improvement h3{font-size:17px;margin-bottom:10px}
+
+/* Harness tabs: one tab per harness, full width on desktop. */
+.harness-tabs .tablist [role="tab"]{flex:1 1 calc((100% - 1px) / 2)}
+.harness-tabs .case-question{max-width:860px}
+.harness-figure-title{font-size:12px;font-weight:600;letter-spacing:.02em;line-height:1.5;margin:40px 0 12px;color:var(--ink)}
+.harness-tabs .rsi-figure{margin-top:0}
+.harness-tabs .rsi-module-table{margin-top:26px}
+.harness-tabs .case-archive{margin-top:30px}
+.harness-tabs .case-links{margin-top:30px}
+
+/* Comparison and profile tables. */
+.dsh-profile-table td:nth-child(2) code{white-space:nowrap}
+.dsh-compare th[scope="row"]{min-width:150px}
+.dsh-compare td{min-width:200px}
+.dsh-tag{display:inline-block;margin-right:6px;padding:1px 7px;border:1px solid var(--brand);border-radius:3px;background:var(--brand-tint);color:var(--brand);font-size:11px;font-weight:600;line-height:1.5}
+
+@media(max-width:520px){
+  .harness-tabs .tablist [role="tab"]{flex-basis:100%}
+  .harness-figure-title{margin-top:30px}
+}
+
+/* Heading levels follow the page outline; these keep the label look of the
+ * data.css / agent.css components they reuse. */
+.harness-page .field-groups h3{font-size:12px;font-weight:600;letter-spacing:.02em;line-height:1.5;margin:0 0 10px;color:var(--ink);display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.harness-page #provenance .case-grid h3{font-size:12px;font-weight:600;letter-spacing:.02em;line-height:1.5;margin:0 0 4px;color:var(--ink)}
+.harness-tabs .rsi-steps .case-step-content>h4{font-size:19px;font-weight:650;line-height:1.4;letter-spacing:-.015em;margin:0 0 10px;color:var(--ink)}

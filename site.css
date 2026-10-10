@@ -359,7 +359,7 @@ details.code-panel:not([open])>summary.code-panel-head{border-bottom:0}
   .nav{flex-wrap:wrap;gap:0;justify-content:space-between;padding-block:12px}
   .nav-controls{margin-left:auto}
   .js .menu-toggle{display:inline-flex}
-  .nav-links{order:3;width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 16px;margin:12px 0 0;padding:6px 0 4px;border-top:1px solid var(--line)} /* open menu: 3 × 2, no orphan */
+  .nav-links{order:3;width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 16px;margin:12px 0 0;padding:6px 0 4px;border-top:1px solid var(--line)} /* open menu: three columns; four from 352px (rule after this block) */
   .nav-links a{padding:9px 0;justify-self:start}
   .nav-links a[aria-current="location"]::after,.nav-links a[aria-current="page"]::after{bottom:3px}
   .js .nav-links{display:none}
@@ -394,6 +394,8 @@ details.code-panel:not([open])>summary.code-panel-head{border-bottom:0}
   .page-footer-nav a{padding:20px 0}
   .page-footer-nav span{font-size:16px}
 }
+/* Seven links: 4 + 3 instead of 3 + 3 + 1 wherever the English labels fit four columns. */
+@media(min-width:352px) and (max-width:860px){.nav-links{grid-template-columns:repeat(4,minmax(max-content,1fr))}}
 @media(max-width:520px){
   .container{width:calc(100% - 40px)}
   .wordmark{font-size:20px}

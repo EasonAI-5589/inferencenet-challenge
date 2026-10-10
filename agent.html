@@ -14,11 +14,11 @@
   <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <script src="theme.js"></script>
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="site.css?v=20260915-menu">
+  <link rel="stylesheet" href="site.css?v=20261010-menu">
   <link rel="stylesheet" href="agent.css?v=20260917-case-data">
   <script src="site.js?v=20260915-menu" defer></script>
   <link rel="stylesheet" href="language.css">
-  <script src="language.js?v=20261010-evolution" defer></script>
+  <script src="language.js?v=20261010-evolution-r2" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -30,6 +30,7 @@
         <a href="index.html">Home</a>
         <a href="data.html">Data</a>
         <a href="agent.html" aria-current="page">Agent</a>
+        <a href="harness.html">Harness</a>
         <a href="evolution.html">Evolution</a>
         <a href="leaderboard.html">Leaderboard</a>
         <a href="teams.html">Teams</a>
@@ -214,7 +215,7 @@ ValueError: Could not identify a month/date variable for clustering.</code></pre
           <p class="kicker">03 / Arm B</p>
           <h2 id="record-trajectory-title">Deep Agents harness: look, probe, fit, answer</h2>
         </div>
-        <p class="lead">Same model, same instruction, plus one execution tool. Each <code>run_python</code> call runs a complete program in a fresh container and returns only stdout, stderr and an exit code. The recorded run below is shown unedited except for redacted data rows and the marked elisions in the stdout excerpts.</p>
+        <p class="lead">Same model, same instruction, plus one execution tool. Each <code>run_python</code> call runs a complete program in a fresh container and returns only execution feedback: stdout, stderr, the exit code, whether it timed out, whether it wrote a valid result file and how long it ran. The recorded run below is shown unedited except for redacted data rows and the marked elisions in the stdout excerpts.</p>
       </div>
       <ul class="stat-strip">
         <li class="stat"><strong>4<sup>/ 6</sup></strong><span>Model calls used</span><small>budget 6 per task</small></li>

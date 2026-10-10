@@ -3,9 +3,9 @@
 [Live website](https://easonai-5589.github.io/inferencenet-challenge/)
 
 Public presentation site for InferenceNet: AI for econometric research. The
-site brings together Home, Data, Agent, Evolution, Leaderboard and Teams, with
+site brings together Home, Data, Agent, Harness, Evolution, Leaderboard and Teams, with
 Chinese / English and light / dark controls on every page.
-The six page links are visible by default, including the three-column menu on
+The seven page links are visible by default, including the four-column menu (three columns below 352 px) on
 narrow screens. Visitors can collapse it manually; each new page opens it again.
 
 ## Edit the website
@@ -28,6 +28,7 @@ screenshot for visual changes.
 | Home, research overview and resources | `index.html`, `index.css` |
 | Dataset distributions and examples | `data.html`, `data.css` |
 | Agent case and evaluation harness | `agent.html`, `agent.css` |
+| Harness architectures (DeepAgents, DeepSeek Harness) | `harness.html`, `harness.css`; reuses `data.css`, `agent.css`, `evolution.css` |
 | Phase 2 harness self-evolution | `evolution.html`, `evolution.css`, `evolution.js`, `assets/data/modular-rsi-evolution.json` |
 | Leaderboard and configuration filters | `leaderboard.html`, `leaderboard.css` |
 | Team, institutions and Yichen Guo contact | `teams.html`, `teams.css` |
@@ -38,11 +39,11 @@ screenshot for visual changes.
 
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL;
-all six pages use language release tag `20261010-evolution`. Home CSS keeps
+the Harness page uses language release tag `20261010-harness` and the other six pages `20261010-evolution-r2`. Home CSS keeps
 `20260917-home` and Teams CSS keeps `20260921-yujie-leader`; Evolution CSS/JS
-use `20261010-evolution`. Home and Leaderboard retain ranking
+use `20261010-evolution-r2`. Home and Leaderboard retain ranking
 release tag `20260917-harness`. Shared navigation
-CSS/JS use `20260915-menu`.
+CSS uses `20261010-menu` and JS `20260915-menu`.
 
 English is authored in the HTML. When changing English text, update the matching
 normalized English key and Chinese value in that page's dictionary. Preserve
@@ -201,3 +202,17 @@ coverage and provenance remain on Data; the detailed execution trace remains
 on Agent. The homepage keeps one current update and one announcement about
 future challenge rules, dates and submissions. Resources and citations remain
 available below the contact entry point.
+
+## Harness architectures
+
+The Harness page takes apart each harness InferenceNet evaluates, in the format
+of the Data page: a lineup with stat strips, the shared concerns, a
+concern-by-concern comparison table, one tab per harness and the provenance.
+Each harness tab has an assembly figure at the pinned version and a figure of
+how InferenceNet wires it: DeepAgents 0.7.13 as built by `dev-gyc-eval`
+(`92e56c8`), and DeepSeek Harness 0.1.5-rc.1 as run by `dev-deepseek-harness`
+(`f9ce7a8`). The DeepAgents middleware, tools, graph nodes and state channels
+come from building that agent offline with the pinned versions, without a model
+call; the DeepSeek Harness counts are read from its pinned bundle and profile files.
+The page reports no scores. A new harness is added as one more tab, one more
+column in the comparison and one more stat strip.

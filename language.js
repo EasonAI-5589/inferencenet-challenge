@@ -120,7 +120,7 @@
   function loadDictionary() {
     if (!dictionaryPromise) {
       const filename = location.pathname.split('/').pop() || 'index.html';
-      const page = ['index.html', 'data.html', 'agent.html', 'evolution.html', 'leaderboard.html', 'teams.html'].includes(filename)
+      const page = ['index.html', 'data.html', 'agent.html', 'harness.html', 'evolution.html', 'leaderboard.html', 'teams.html'].includes(filename)
         ? filename.replace('.html', '') : 'index';
       const dictionaryURL = new URL(`assets/i18n/${page}.zh.json`, scriptURL);
       // Keep a page's release-tagged script and dictionary on the same version.
