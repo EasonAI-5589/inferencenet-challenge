@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
   <meta name="referrer" content="no-referrer">
-  <title>Evolution — InferenceNet Challenge</title>
-  <meta name="description" content="Phase 2 of InferenceNet: a ModularRSI-style loop rewrites five harness functions around DeepAgents from InferenceNet trajectories. Follow the first complete evolution run.">
-  <meta property="og:title" content="InferenceNet Challenge — Evolution">
-  <meta property="og:description" content="Phase 2 of InferenceNet: a ModularRSI-style loop rewrites five harness functions around DeepAgents from InferenceNet trajectories. Follow the first complete evolution run.">
+  <title>Self-evolving — InferenceNet Challenge</title>
+  <meta name="description" content="Harness self-evolution: what an outer improvement loop changes and keeps fixed, how ModularRSI, Self-Harness and Meta-Harness differ, and InferenceNet’s ModularRSI-style development study on DeepAgents.">
+  <meta property="og:title" content="InferenceNet Challenge — Self-evolving">
+  <meta property="og:description" content="Harness self-evolution: what an outer improvement loop changes and keeps fixed, how ModularRSI, Self-Harness and Meta-Harness differ, and InferenceNet’s ModularRSI-style development study on DeepAgents.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -16,11 +16,11 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="site.css?v=20261010-menu">
   <link rel="stylesheet" href="agent.css?v=20260917-case-data">
-  <link rel="stylesheet" href="evolution.css?v=20261010-evolution-r2">
+  <link rel="stylesheet" href="evolution.css?v=20261010-evolution-r3">
   <script src="site.js?v=20260915-menu" defer></script>
   <script src="evolution.js?v=20261010-evolution-r2" defer></script>
   <link rel="stylesheet" href="language.css">
-  <script src="language.js?v=20261010-evolution-r2" defer></script>
+  <script src="language.js?v=20261010-integration" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -33,7 +33,7 @@
         <a href="data.html">Data</a>
         <a href="agent.html">Agent</a>
         <a href="harness.html">Harness</a>
-        <a href="evolution.html" aria-current="page">Evolution</a>
+        <a href="evolution.html" aria-current="page">Self-evolving</a>
         <a href="leaderboard.html">Leaderboard</a>
         <a href="teams.html">Teams</a>
       </div>
@@ -49,220 +49,203 @@
   <main id="main" class="agent-case evolution-page">
     <section class="page-hero container" aria-labelledby="page-title">
       <p class="kicker">Phase 2 · Harness self-evolution</p>
-      <h1 id="page-title">The harness rewrites itself from its own trajectories.</h1>
-      <p class="lead">Phase 1 placed models inside DeepAgents (LangChain’s Deep Agents harness) and measured what the harness adds. Phase 2 keeps the model and DeepAgents fixed. Five small harness functions around them are rewritten by a ModularRSI-style evolution loop that reads InferenceNet trajectories. This page follows the first complete run.</p>
-      <ul class="page-meta"><li>Frozen · 9 Oct 2026</li><li>DeepSeek V4 Pro</li><li>DeepAgents 0.7.13</li><li>100 development tasks × 3 rollouts</li><li><a href="https://github.com/YTZSR/chatpilot_evaluator/tree/dev-modular-rsi">Code · dev-modular-rsi</a></li></ul>
+      <h1 id="page-title">Self-evolving harnesses improve the code around a fixed model.</h1>
+      <p class="lead">A harness is the software that runs a model as an agent. Harness self-evolution improves it from feedback: run the harness, read its trajectories and scores, propose a change, test the candidate and keep the versions that pass. In the three methods compared here — ModularRSI, Self-Harness and Meta-Harness, all from recent papers — the model weights, the environment and the evaluator stay fixed while an outer loop edits the harness. The page ends with our ModularRSI-style development study on InferenceNet.</p>
+      <ul class="page-meta"><li>Three methods · checked against papers and code on 10 Oct 2026</li><li>InferenceNet study · development set only</li><li>Held-out tasks · not run as of the 9 Oct 2026 freeze</li><li><a href="harness.html#definition">What a harness is →</a></li></ul>
     </section>
     <nav class="subnav" aria-label="On this page"><ol class="container">
-      <li><a href="#deepagents"><span class="subnav-number">01</span>DeepAgents</a></li>
-      <li><a href="#hooks"><span class="subnav-number">02</span>Hook points</a></li>
-      <li><a href="#loop"><span class="subnav-number">03</span>Evolution loop</a></li>
-      <li><a href="#trajectories"><span class="subnav-number">04</span>Trajectories</a></li>
-      <li><a href="#improvements"><span class="subnav-number">05</span>What improved</a></li>
-      <li><a href="#code"><span class="subnav-number">06</span>Evolved code</a></li>
+      <li><a href="#concept"><span class="subnav-number">01</span>Concept</a></li>
+      <li><a href="#cycle"><span class="subnav-number">02</span>Improvement loop</a></li>
+      <li><a href="#methods"><span class="subnav-number">03</span>Methods</a></li>
+      <li><a href="#compare"><span class="subnav-number">04</span>Comparison</a></li>
+      <li><a href="#practice"><span class="subnav-number">05</span>InferenceNet study</a></li>
+      <li><a href="#sources"><span class="subnav-number">06</span>Sources</a></li>
     </ol></nav>
 
-    <section class="section container ruled" id="deepagents" aria-labelledby="deepagents-title">
-      <div class="case-heading"><p class="kicker">01 / DeepAgents</p><h2 id="deepagents-title">How DeepAgents is assembled</h2></div>
-      <p class="case-intro">DeepAgents is not a new runtime. create_deep_agent() assembles a default set of middleware, backends, subagents and profiles, then hands them to LangChain’s create_agent(); LangGraph drives the loop. Most harness behavior comes from middleware: it registers the built-in tools, and around each model call it can hide tools, add prompt sections and summarize history once it passes a token threshold.</p>
-      <figure class="diagram wide rsi-figure" style="--diagram-min:860px">
-        <div class="diagram-scroll" tabindex="0">
-          <svg viewBox="0 0 1000 1252" role="img" aria-label="DeepAgents in three layers: the application calls create_deep_agent, which assembles the middleware stack, tools, subagents, backends and profiles. LangChain create_agent compiles them into a graph of hook nodes, a model node and a tools node, routed by the last AIMessage. LangGraph executes that graph in supersteps of plan, execute, update and checkpoint over typed state channels. The slot between core and tail middleware is where ModularRSI attaches.">
-            <defs><marker id="da-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="f-ah"/></marker></defs>
-            <rect x="250" y="10" width="500" height="50" rx="4" class="f-box"/>
-            <text x="500" y="30" text-anchor="middle" class="f-tt">Your application</text>
-            <text x="500" y="49" text-anchor="middle" class="f-m f-s">create_deep_agent(model, tools, subagents, backend, middleware, …)</text>
-            <line x1="500" y1="60" x2="500" y2="88" class="f-ln" marker-end="url(#da-arrow)"/>
-            <text x="510" y="79" class="f-s f-mu">assembled once at build time</text>
+    <section class="section container ruled" id="concept" aria-labelledby="concept-title">
+      <div class="case-heading"><p class="kicker">01 / Concept</p><h2 id="concept-title">What self-evolution changes, and what it leaves alone</h2></div>
+      <p class="case-intro">Harness self-evolution, also called automatic harness optimization, means proposing, testing and keeping harness versions on the basis of feedback from the harness’s own runs. The three methods on this page do this in offline rounds: an outer loop edits the harness between evaluations, and the model’s weights do not change. That is how these methods work, not a limit of the idea; other systems may also adjust their configuration or update parts of themselves while they run, and this page does not cover them.</p>
+      <ul class="se-tiles" aria-label="Six terms and their role in self-evolution">
+        <li><span class="se-role">Fixed</span><h3>Model</h3><p>The language model and its weights. Every harness version runs with the same model; in some methods the same model also writes the edits.</p></li>
+        <li><span class="se-role is-edited">Edited</span><h3>Harness</h3><p>The software that runs the model as an agent: the loop, tool definitions, how observations are shown, how context is kept, prompts, memory and when to stop. This is what the loop changes, as a whole or in parts.</p></li>
+        <li><span class="se-role is-observed">Observed</span><h3>Agent</h3><p>The model running inside one harness version on one task. Its trajectories and outcomes are the evidence the loop learns from.</p></li>
+        <li><span class="se-role">Fixed</span><h3>SDK</h3><p>The programming interface a harness is built on or driven through, such as LangChain’s create_agent or a harness’s SDK. Self-evolution edits the harness, not these libraries. In the InferenceNet study the DeepAgents package itself is never modified; what changes are five hook functions that InferenceNet’s DeepAgents harness calls at fixed points.</p></li>
+        <li><span class="se-role">Fixed</span><h3>Environment</h3><p>What the tools act on: tasks, data, files, sandboxes. It is held constant so that a change in score can be traced to the harness.</p></li>
+        <li><span class="se-role">Fixed</span><h3>Evaluator</h3><p>The scorer that grades finished runs. It decides which version looks better, so it is never among the things edited; methods differ in how much of its output the proposer may see.</p></li>
+      </ul>
+      <p class="case-caption">The six terms follow the Harness page, which also explains how harnesses such as DeepAgents, Superpowers and DeepSeek Harness are built. This page is about improving a harness once it exists.</p>
+      <div class="se-links"><a class="text-link" href="harness.html#definition">Harness: six terms and their boundaries →</a><a class="text-link" href="harness.html#deepagents-architecture">Harness: how DeepAgents is built →</a></div>
+    </section>
 
-            <rect x="10" y="90" width="980" height="474" rx="6" class="f-band"/>
-            <text x="26" y="116" class="f-big">DeepAgents</text>
-            <text x="130" y="116" class="f-s f-mu">harness · deepagents 0.7.13, the version InferenceNet pins</text>
-
-            <text x="26" y="142" class="f-tt">Middleware stack (outer → inner)</text>
-            <text x="26" y="163" class="f-m f-s f-mu">core</text>
-            <rect x="26" y="170" width="320" height="24" rx="3" class="f-box"/><text x="36" y="186" class="f-m f-s">SkillsMiddleware</text><text x="336" y="186" text-anchor="end" class="f-s f-mu">skills on demand</text>
-            <rect x="26" y="200" width="320" height="24" rx="3" class="f-box"/><text x="36" y="216" class="f-m f-s">FilesystemMiddleware</text><text x="336" y="216" text-anchor="end" class="f-s f-mu">file tools · offload</text>
-            <rect x="26" y="230" width="320" height="24" rx="3" class="f-box"/><text x="36" y="246" class="f-m f-s">SubAgentMiddleware</text><text x="336" y="246" text-anchor="end" class="f-s f-mu">task tool</text>
-            <rect x="26" y="260" width="320" height="24" rx="3" class="f-box"/><text x="36" y="276" class="f-m f-s">SummarizationMiddleware</text><text x="336" y="276" text-anchor="end" class="f-s f-mu">compress history</text>
-            <rect x="26" y="290" width="320" height="24" rx="3" class="f-box"/><text x="36" y="306" class="f-m f-s">PatchToolCallsMiddleware</text><text x="336" y="306" text-anchor="end" class="f-s f-mu">fix dangling calls</text>
-            <rect x="26" y="320" width="320" height="24" rx="3" class="f-box"/><text x="36" y="336" class="f-m f-s">AsyncSubAgentMiddleware</text><text x="336" y="336" text-anchor="end" class="f-s f-mu">remote subagents</text>
-            <rect x="26" y="352" width="320" height="28" rx="3" class="f-rsi-dash"/>
-            <text x="36" y="371" class="f-s">your middleware=[…]</text>
-            <text x="336" y="371" text-anchor="end" class="f-s f-b f-bold">ModularRSI attaches here</text>
-            <text x="26" y="400" class="f-m f-s f-mu">tail</text>
-            <rect x="26" y="406" width="320" height="24" rx="3" class="f-box"/><text x="36" y="422" class="f-m f-s">profile extra_middleware</text><text x="336" y="422" text-anchor="end" class="f-s f-mu">per model</text>
-            <rect x="26" y="436" width="320" height="24" rx="3" class="f-box"/><text x="36" y="452" class="f-m f-s">prompt caching ×1–3</text><text x="336" y="452" text-anchor="end" class="f-s f-mu">provider caches</text>
-            <rect x="26" y="466" width="320" height="24" rx="3" class="f-box"/><text x="36" y="482" class="f-m f-s">MemoryMiddleware</text><text x="336" y="482" text-anchor="end" class="f-s f-mu">inject AGENTS.md</text>
-            <rect x="26" y="496" width="320" height="24" rx="3" class="f-box"/><text x="36" y="512" class="f-m f-s">HumanInTheLoopMiddleware</text><text x="336" y="512" text-anchor="end" class="f-s f-mu">tool approval</text>
-            <rect x="26" y="526" width="320" height="24" rx="3" class="f-box"/><text x="36" y="542" class="f-m f-s">_ToolExclusionMiddleware</text><text x="336" y="542" text-anchor="end" class="f-s f-mu">hide excluded tools</text>
-
-            <line x1="346" y1="210" x2="390" y2="210" class="f-ln" marker-end="url(#da-arrow)"/>
-            <text x="368" y="202" text-anchor="middle" class="f-s f-mu">adds</text>
-
-            <text x="392" y="142" class="f-tt">Tools the model sees</text>
-            <rect x="392" y="150" width="240" height="118" rx="4" class="f-box"/>
-            <text x="404" y="171" class="f-s f-mu">built in, from middleware</text>
-            <text x="404" y="193" class="f-m f-s">ls · read_file · write_file</text>
-            <text x="404" y="212" class="f-m f-s">edit_file · delete · glob · grep</text>
-            <text x="404" y="234" class="f-m f-s">execute</text><text x="466" y="234" class="f-s f-mu">shell backends only</text>
-            <text x="404" y="256" class="f-m f-s">task</text><text x="442" y="256" class="f-s f-mu">delegate to a subagent</text>
-            <rect x="392" y="278" width="240" height="54" rx="4" class="f-box"/>
-            <text x="404" y="299" class="f-s f-mu">passed by the caller</text>
-            <text x="404" y="320" class="f-m f-s">tools=[…] · MCP tools</text>
-
-            <text x="392" y="362" class="f-tt">Subagents (isolated context)</text>
-            <rect x="392" y="370" width="240" height="150" rx="4" class="f-box"/>
-            <text x="404" y="393" class="f-m f-s">general-purpose</text><text x="510" y="393" class="f-s f-mu">on by default</text>
-            <text x="404" y="415" class="f-m f-s">SubAgent</text><text x="466" y="415" class="f-s f-mu">declarative</text>
-            <text x="404" y="437" class="f-m f-s">CompiledSubAgent</text><text x="518" y="437" class="f-s f-mu">any graph</text>
-            <text x="404" y="459" class="f-m f-s">AsyncSubAgent</text><text x="498" y="459" class="f-s f-mu">remote deployment</text>
-            <text x="404" y="487" class="f-s f-mu">Each subagent has its own middleware</text>
-            <text x="404" y="505" class="f-s f-mu">stack; sync results return via task</text>
-
-            <line x1="632" y1="210" x2="676" y2="210" class="f-ln" marker-end="url(#da-arrow)"/>
-            <text x="654" y="202" text-anchor="middle" class="f-s f-mu">uses</text>
-
-            <text x="678" y="142" class="f-tt">Backends: files and execution</text>
-            <rect x="678" y="150" width="296" height="24" rx="3" class="f-box"/><text x="688" y="166" class="f-m f-s">StateBackend</text><text x="964" y="166" text-anchor="end" class="f-s f-mu">in-thread state (default)</text>
-            <rect x="678" y="180" width="296" height="24" rx="3" class="f-box"/><text x="688" y="196" class="f-m f-s">StoreBackend</text><text x="964" y="196" text-anchor="end" class="f-s f-mu">cross-thread store</text>
-            <rect x="678" y="210" width="296" height="24" rx="3" class="f-box"/><text x="688" y="226" class="f-m f-s">FilesystemBackend</text><text x="964" y="226" text-anchor="end" class="f-s f-mu">local disk</text>
-            <rect x="678" y="240" width="296" height="24" rx="3" class="f-box"/><text x="688" y="256" class="f-m f-s">LocalShellBackend · BaseSandbox</text><text x="964" y="256" text-anchor="end" class="f-s f-mu">+ execute</text>
-            <rect x="678" y="270" width="296" height="24" rx="3" class="f-box"/><text x="688" y="286" class="f-m f-s">CompositeBackend</text><text x="964" y="286" text-anchor="end" class="f-s f-mu">route by path prefix</text>
-
-            <text x="678" y="330" class="f-tt">Profiles: tuning per model</text>
-            <rect x="678" y="338" width="296" height="140" rx="4" class="f-box"/>
-            <text x="690" y="360" class="f-m f-s">provider profile</text><text x="806" y="360" class="f-s f-mu">model init settings</text>
-            <text x="690" y="384" class="f-m f-s">harness profile</text><text x="798" y="384" class="f-s f-mu">can change:</text>
-            <text x="702" y="405" class="f-s">· system prompt text</text>
-            <text x="702" y="424" class="f-s">· tool descriptions · excluded_tools</text>
-            <text x="702" y="443" class="f-s">· extra_middleware · excluded_middleware</text>
-            <text x="702" y="462" class="f-s">· the general-purpose subagent switch</text>
-
-            <line x1="500" y1="564" x2="500" y2="596" class="f-ln" marker-end="url(#da-arrow)"/>
-            <text x="510" y="585" class="f-m f-s f-mu">create_agent(model, tools, middleware, system_prompt, …)</text>
-
-            <rect x="10" y="598" width="980" height="362" rx="6" class="f-band"/>
-            <text x="26" y="624" class="f-big">LangChain</text>
-            <text x="118" y="624" class="f-s f-mu">create_agent · langchain 1.4.0 compiles this StateGraph</text>
-            <text x="26" y="652" class="f-tt">The agent loop</text>
-            <rect x="26" y="678" width="58" height="32" rx="16" class="f-box"/>
-            <text x="55" y="698" text-anchor="middle" class="f-m f-s">START</text>
-            <line x1="84" y1="694" x2="102" y2="694" class="f-ln" marker-end="url(#da-arrow)"/>
-            <rect x="104" y="672" width="140" height="44" rx="4" class="f-box"/>
-            <text x="174" y="690" text-anchor="middle" class="f-m f-s">before_agent</text>
-            <text x="174" y="706" text-anchor="middle" class="f-s f-mu">hooks · once per run</text>
-            <line x1="244" y1="694" x2="260" y2="694" class="f-ln" marker-end="url(#da-arrow)"/>
-            <rect x="262" y="672" width="140" height="44" rx="4" class="f-box"/>
-            <text x="332" y="690" text-anchor="middle" class="f-m f-s">before_model</text>
-            <text x="332" y="706" text-anchor="middle" class="f-s f-mu">hooks · every turn</text>
-            <line x1="402" y1="694" x2="418" y2="694" class="f-ln" marker-end="url(#da-arrow)"/>
-            <rect x="420" y="672" width="120" height="44" rx="4" class="f-strong"/>
-            <text x="480" y="690" text-anchor="middle" class="f-tt">model node</text>
-            <text x="480" y="706" text-anchor="middle" class="f-s f-mu">calls the LLM</text>
-            <line x1="540" y1="694" x2="556" y2="694" class="f-ln" marker-end="url(#da-arrow)"/>
-            <rect x="558" y="672" width="140" height="44" rx="4" class="f-box"/>
-            <text x="628" y="690" text-anchor="middle" class="f-m f-s">after_model</text>
-            <text x="628" y="706" text-anchor="middle" class="f-s f-mu">hooks · reverse order</text>
-            <line x1="698" y1="694" x2="714" y2="694" class="f-ln" marker-end="url(#da-arrow)"/>
-            <rect x="716" y="672" width="120" height="44" rx="22" class="f-box"/>
-            <text x="776" y="690" text-anchor="middle">route</text>
-            <text x="776" y="706" text-anchor="middle" class="f-s f-mu">last AIMessage</text>
-            <line x1="836" y1="694" x2="852" y2="694" class="f-ln" marker-end="url(#da-arrow)"/>
-            <text x="845" y="664" text-anchor="middle" class="f-s f-mu">no calls</text>
-            <rect x="854" y="672" width="120" height="44" rx="4" class="f-box"/>
-            <text x="914" y="690" text-anchor="middle" class="f-m f-s">after_agent</text>
-            <text x="914" y="706" text-anchor="middle" class="f-s f-mu">hooks → END</text>
-            <line x1="776" y1="716" x2="776" y2="744" class="f-ln" marker-end="url(#da-arrow)"/>
-            <text x="784" y="734" class="f-s f-mu">pending tool calls</text>
-            <rect x="716" y="746" width="120" height="44" rx="4" class="f-strong"/>
-            <text x="776" y="764" text-anchor="middle" class="f-tt">tools node</text>
-            <text x="776" y="780" text-anchor="middle" class="f-s f-mu">one Send per call</text>
-            <path d="M716 768 H332 V718" class="f-ln" marker-end="url(#da-arrow)"/>
-            <text x="524" y="762" text-anchor="middle" class="f-s f-mu">ToolMessages · next turn</text>
-            <text x="854" y="764" class="f-s f-mu">jump_to from a hook</text>
-            <text x="854" y="780" class="f-s f-mu">can override routing</text>
-
-            <rect x="26" y="806" width="300" height="146" rx="4" class="f-box"/>
-            <text x="38" y="828" class="f-tt">Inside the model node</text>
-            <text x="38" y="850" class="f-s">ModelRequest: model, tools, system_message,</text>
-            <text x="38" y="868" class="f-s">messages, tool_choice, response_format</text>
-            <text x="38" y="886" class="f-s">wrap_model_call chain, first one outermost</text>
-            <text x="38" y="904" class="f-s">bind_tools, then invoke([system, *messages])</text>
-            <text x="38" y="922" class="f-s">→ AIMessage, plus any structured output</text>
-            <rect x="342" y="806" width="300" height="146" rx="4" class="f-box"/>
-            <text x="354" y="828" class="f-tt">Inside the tools node</text>
-            <text x="354" y="850" class="f-s">each pending call runs as its own task</text>
-            <text x="354" y="868" class="f-s">wrap_tool_call chain around every call</text>
-            <text x="354" y="886" class="f-s">returns a ToolMessage, or a Command</text>
-            <text x="354" y="904" class="f-s">back to the model, or END after return_direct</text>
-            <text x="354" y="922" class="f-s">or a structured-output tool</text>
-            <rect x="658" y="806" width="316" height="146" rx="4" class="f-box"/>
-            <text x="670" y="828" class="f-tt">This agent, as compiled</text>
-            <text x="670" y="850" class="f-m f-s">FilesystemMiddleware</text><text x="962" y="850" text-anchor="end" class="f-s f-mu">model + tool wrap</text>
-            <text x="670" y="868" class="f-m f-s">SummarizationMiddleware</text><text x="962" y="868" text-anchor="end" class="f-s f-mu">model wrap</text>
-            <text x="670" y="886" class="f-m f-s">PatchToolCallsMiddleware</text><text x="962" y="886" text-anchor="end" class="f-s f-mu">before_agent node</text>
-            <text x="670" y="904" class="f-m f-s f-b">BoundedFunctionMiddleware</text><text x="962" y="904" text-anchor="end" class="f-s f-mu">model wrap</text>
-            <text x="670" y="922" class="f-m f-s">AnthropicPromptCachingMiddleware</text><text x="962" y="922" text-anchor="end" class="f-s f-mu">model wrap</text>
-            <text x="670" y="940" class="f-s f-mu">graph: START → before_agent → model ⇄ tools</text>
-
-            <rect x="10" y="972" width="980" height="270" rx="6" class="f-band"/>
-            <text x="26" y="998" class="f-big">LangGraph</text>
-            <text x="120" y="998" class="f-s f-mu">runtime · langgraph 1.2.11 runs the compiled graph in Pregel supersteps</text>
-            <text x="26" y="1024" class="f-tt">One superstep</text>
-            <rect x="26" y="1036" width="126" height="82" rx="4" class="f-box"/>
-            <text x="36" y="1056" class="f-tt">Plan</text>
-            <text x="36" y="1074" class="f-s">nodes triggered by</text>
-            <text x="36" y="1090" class="f-s">writes or Send</text>
-            <line x1="152" y1="1077" x2="162" y2="1077" class="f-ln" marker-end="url(#da-arrow)"/>
-            <rect x="164" y="1036" width="126" height="82" rx="4" class="f-box"/>
-            <text x="174" y="1056" class="f-tt">Execute</text>
-            <text x="174" y="1074" class="f-s">tasks run in</text>
-            <text x="174" y="1090" class="f-s">parallel; writes</text>
-            <text x="174" y="1106" class="f-s">are buffered</text>
-            <line x1="290" y1="1077" x2="300" y2="1077" class="f-ln" marker-end="url(#da-arrow)"/>
-            <rect x="302" y="1036" width="126" height="82" rx="4" class="f-box"/>
-            <text x="312" y="1056" class="f-tt">Update</text>
-            <text x="312" y="1074" class="f-s">reducers merge the</text>
-            <text x="312" y="1090" class="f-s">writes into state</text>
-            <line x1="428" y1="1077" x2="438" y2="1077" class="f-ln" marker-end="url(#da-arrow)"/>
-            <rect x="440" y="1036" width="126" height="82" rx="4" class="f-box"/>
-            <text x="450" y="1056" class="f-tt">Checkpoint</text>
-            <text x="450" y="1074" class="f-s">saved per step when</text>
-            <text x="450" y="1090" class="f-s">a saver is attached</text>
-            <path d="M503 1118 V1132 H89 V1120" class="f-ln" marker-end="url(#da-arrow)"/>
-            <text x="296" y="1148" text-anchor="middle" class="f-s f-mu">next superstep, until no node is triggered</text>
-            <text x="26" y="1170" class="f-s">recursion_limit caps supersteps: 9,999 by default in DeepAgents;</text>
-            <text x="26" y="1188" class="f-s">InferenceNet invokes with 64. A model turn plus its tools takes two steps.</text>
-            <text x="26" y="1212" class="f-s f-mu">DeltaChannel (beta) checkpoints store only new writes, with a full snapshot every</text>
-            <text x="26" y="1228" class="f-s f-mu">50 updates in DeepAgents; InferenceNet has no checkpointer, so no checkpoint is written.</text>
-
-            <text x="600" y="1024" class="f-tt">State channels of this agent</text>
-            <rect x="600" y="1032" width="374" height="122" rx="4" class="f-box"/>
-            <text x="612" y="1052" class="f-m f-s">messages</text><text x="962" y="1052" text-anchor="end" class="f-s f-mu">DeltaChannel</text>
-            <text x="612" y="1070" class="f-m f-s">files</text><text x="962" y="1070" text-anchor="end" class="f-s f-mu">DeltaChannel</text>
-            <text x="612" y="1088" class="f-m f-s">jump_to</text><text x="962" y="1088" text-anchor="end" class="f-s f-mu">EphemeralValue · cleared each step</text>
-            <text x="612" y="1106" class="f-m f-s">structured_response</text><text x="962" y="1106" text-anchor="end" class="f-s f-mu">LastValue</text>
-            <text x="612" y="1124" class="f-m f-s">_summarization_event</text><text x="962" y="1124" text-anchor="end" class="f-s f-mu">LastValue</text>
-            <text x="612" y="1142" class="f-m f-s">_summarization_session_id</text><text x="962" y="1142" text-anchor="end" class="f-s f-mu">LastValue</text>
-            <text x="600" y="1178" class="f-tt">Persistence and control in InferenceNet</text>
-            <text x="612" y="1198" class="f-s">checkpointer: none · each task is one fresh run</text>
-            <text x="612" y="1214" class="f-s">store: none · interrupts: unused</text>
-            <text x="612" y="1230" class="f-s">invoke(): returns only the final state</text>
-          </svg>
+    <section class="section container ruled" id="cycle" aria-labelledby="cycle-title">
+      <div class="case-heading"><p class="kicker">02 / Improvement loop</p><h2 id="cycle-title">One loop behind all three methods</h2></div>
+      <p class="case-intro">The methods differ in how much of the harness they open up, who writes a change and how a candidate is judged. Each iteration still has the same five steps, and the candidates evaluated so far, with their run evidence, inform the proposals of the next round.</p>
+      <figure class="se-cycle-figure">
+        <ol class="se-cycle">
+          <li><span class="se-cycle-step">1</span><h3>Run</h3><p>Run the current harness version on the search tasks with the fixed model.</p></li>
+          <li><span class="se-cycle-step">2</span><h3>Record</h3><p>Keep the trajectories, meaning messages, tool calls and outputs, together with the evaluator’s scores.</p></li>
+          <li class="is-edit"><span class="se-cycle-step">3</span><h3>Propose</h3><p>A proposer reads selected evidence and writes a changed harness: one module function, a constrained edit or a whole program.</p></li>
+          <li><span class="se-cycle-step">4</span><h3>Check</h3><p>Depending on the method: interface or execution checks, a review of the diff, or scores from the fixed evaluator. Section 04 lists each method’s gates.</p></li>
+          <li><span class="se-cycle-step">5</span><h3>Select</h3><p>Each method keeps candidates its own way: ModularRSI and Self-Harness carry accepted changes into the next version, while Meta-Harness keeps every evaluated candidate in a population with no fixed parent.</p></li>
+        </ol>
+        <div class="se-frame">
+          <div><p class="se-label">Changes between iterations</p><p>The harness version, and nothing else</p></div>
+          <div><p class="se-label">Held fixed</p><p>Model weights · environment · task split · evaluator · budgets</p></div>
+          <div><p class="se-label">After the search</p><p>The chosen harness is frozen, then evaluated or used unchanged</p></div>
         </div>
-        <figcaption>The three layers assembled by create_deep_agent(). The left column is the middleware order; for wrap_model_call, earlier entries wrap later ones. New middleware from the caller lands between core and tail; middleware whose name matches an existing entry, core or tail, replaces it in place. Filesystem, Summarization, PatchToolCalls and Anthropic prompt caching are always added, and SubAgent too while any synchronous subagent exists, which by default is the general-purpose one. Skills, AsyncSubAgent, Memory and HumanInTheLoop depend on their arguments; profile extra_middleware and _ToolExclusionMiddleware on the model’s harness profile; Bedrock and Fireworks caching on langchain-aws or langchain-fireworks being installed. The LangChain and LangGraph layers describe langchain 1.4.0 and langgraph 1.2.11; the compiled node list, hooks and channels come from building the InferenceNet agent offline with those versions.</figcaption>
+        <figcaption>A generic improvement loop distilled from the three papers in section 03. Each method fills the five steps in its own way; section 04 compares them.</figcaption>
       </figure>
-      <ul class="rsi-notes">
-        <li>In 0.7.13 the default stack has no write_todos tool. Among the built-in profiles only the Codex one adds it, through TodoListMiddleware; for any other model the caller has to add TodoListMiddleware.</li>
-        <li>Upstream main (0.7.23) moves SkillsMiddleware from the outermost core position to the tail, after profile middleware and before prompt caching, and adds UnsupportedContentMiddleware after HumanInTheLoop, just before _ToolExclusionMiddleware.</li>
-        <li>A missing tool points to middleware assembly, a profile’s excluded_tools, or, for execute and delete, a backend without that capability. A visible tool that fails points to permissions or the backend itself.</li>
+      <h3 class="se-subhead">In these three methods the search runs offline</h3>
+      <p class="se-body">In all three methods, versions are proposed and selected between evaluation rounds, and the result is frozen before it is evaluated or used. When an evaluation feeds tasks as a stream, as in Meta-Harness’s online text-classification setting, that describes how the application receives its inputs. It does not mean the harness edits itself while it runs.</p>
+      <h3 class="se-subhead">Six questions to ask of any method</h3>
+      <ol class="se-questions">
+        <li>Which part of the harness may change?</li>
+        <li>Who proposes the change?</li>
+        <li>Which trajectories and feedback does the proposer see?</li>
+        <li>How is a candidate accepted, merged or rejected?</li>
+        <li>When does the search run, and is the result frozen before use?</li>
+        <li>What stays fixed: model, environment, evaluator, tasks?</li>
+      </ol>
+    </section>
+
+    <section class="section container ruled" id="methods" aria-labelledby="methods-title">
+      <div class="case-heading"><p class="kicker">03 / Methods</p><h2 id="methods-title">Three representative methods</h2></div>
+      <p class="case-intro">ModularRSI, Self-Harness and Meta-Harness come from different groups and are separate methods. Each mechanism summary follows the paper’s description; the official repositories are listed separately in section 06, and their released code may differ from what the papers describe. The steps describe one iteration of the method’s loop. Reported results are the authors’ and have not been reproduced here. Notes headed “How to read it” are our interpretation, not the authors’ wording.</p>
+      <div class="se-methods">
+        <article class="se-method" id="method-modularrsi" aria-labelledby="method-modularrsi-title">
+          <div class="se-method-head">
+            <p class="kicker">Method 1</p>
+            <h3 id="method-modularrsi-title">ModularRSI</h3>
+            <p class="se-method-paper">ModularRSI: Modular and Generalizable Recursive Harness Self-Improvement</p>
+            <ul class="se-method-meta">
+              <li>Wu et al. · arXiv 2609.14857 v1 · 14 Sep 2026</li>
+              <li><a href="https://github.com/IQuestLab/ModularRSI/tree/b5c72c36b0d08ff93f00ee202a8fbdebe849dfb9">Code: IQuestLab/ModularRSI at b5c72c3</a></li>
+            </ul>
+            <p class="se-method-summary">Evolves a Terminus-2-based harness one module at a time. The agent’s own model contrasts passing and failing rollouts of the same task on evolution tasks curated apart from the evaluation benchmarks, then changes functions inside one of five modules: agent loop, tool use, observation management, context management and task completion detection. The evolved modules are integrated and frozen before any benchmark evaluation.</p>
+            <p class="se-note"><span class="se-label">How to read it</span>The execution check runs a candidate on two tasks sampled from the current batch to show that it runs without runtime or protocol errors. It is not a statistical test that performance did not drop.</p>
+            <p class="se-note"><span class="se-label">How to read it</span>A task-aware composer, which also runs during evolution, picks functions for each task. At evaluation time it chooses only among the frozen functions; the harness is not edited while it runs.</p>
+          </div>
+          <div>
+            <p class="se-label">One iteration</p>
+            <ol class="se-steps">
+              <li><div><h4>Roll out on evolution tasks</h4><p>Run the current harness K times on each task of a batch of evolution tasks. The paper curates 2,000 executable evolution tasks that do not overlap with the evaluation benchmarks and uses 240 of them in its main experiments. Each task’s own tests mark every rollout as passed or failed.</p><span class="se-loc">Paper §3.3, §5.3</span></div></li>
+              <li><div><h4>Sort tasks by outcome</h4><p>Tasks with mixed results pair a passing with a failing rollout. Tasks that always fail look up an earlier success in a trajectory memory, or are diagnosed on their own. Tasks that always pass are checked for wasted steps.</p><span class="se-loc">Paper §3.3, Eq. 1</span></div></li>
+              <li><div><h4>Diagnose against one module</h4><p>The Code-Modify Agent, run by the same model, reads the trajectories, finds where the passing and failing rollouts diverge and asks whether a change to the module under evolution would have changed the outcome.</p><span class="se-loc">Paper §3.3; App. B, C.1</span></div></li>
+              <li><div><h4>Rank candidate changes</h4><p>Findings that target the same function are merged into one candidate, whose vote count is the number of distinct tasks supporting it. An evolution history of earlier changes helps avoid repeated or contradictory edits.</p><span class="se-loc">Paper §3.4</span></div></li>
+              <li><div><h4>Write one scoped change</h4><p>The agent writes one change that has to hold for all supporting findings, by adding, modifying or replacing a function variant, and it may write only inside that module.</p><span class="se-loc">Paper §3.4; App. C.2</span></div></li>
+              <li><div><h4>Pass three gates or roll back</h4><p>A program check of syntax, imports and protocol; a diff review that does not see rewards and rejects task-specific code; an execution check on two tasks sampled from the current batch. A change that fails any gate is rolled back, and one that passes becomes the next generation.</p><span class="se-loc">Paper §3.5; App. C.3</span></div></li>
+              <li><div><h4>Integrate and freeze</h4><p>After three epochs per module, the five modules are combined and one integration epoch repairs cross-module conflicts; then the function library is frozen. Overlapping functions inside a module can be merged along the way.</p><span class="se-loc">Paper §3.6–3.7; App. C.4</span></div></li>
+            </ol>
+          </div>
+        </article>
+
+        <article class="se-method" id="method-self-harness" aria-labelledby="method-self-harness-title">
+          <div class="se-method-head">
+            <p class="kicker">Method 2</p>
+            <h3 id="method-self-harness-title">Self-Harness</h3>
+            <p class="se-method-paper">Self-Harness: Harnesses That Improve Themselves</p>
+            <ul class="se-method-meta">
+              <li>Zhang et al. · arXiv 2606.09498 v3 · 20 Aug 2026 (v1 8 Jun 2026)</li>
+              <li><a href="https://github.com/qzzqzzb/Self-Harness/tree/2720dbb3f52283684f4b85a1065d642df1779dd8">Code: qzzqzzb/Self-Harness at 2720dbb</a></li>
+            </ul>
+            <p class="se-method-summary">Lets the agent’s own model improve its harness, without human engineers or a stronger external agent. Each round mines failure patterns from the held-in traces, has the same model propose several small edits to declared parts of the harness, and keeps an edit only if it passes regression tests on a held-in and a held-out split. The search starts from a minimal benchmark-specific harness built on LangChain DeepAgents; each later round continues from the version accepted so far, while every task runs in a fresh environment.</p>
+            <p class="se-note"><span class="se-label">How to read it</span>The proposer never sees held-out traces, but held-out pass counts decide promotion in every round, and the final held-out pass rates in the paper come from the same split. In evaluation terms that split therefore works as validation, not as an untouched final test. This is our reading, not the authors’ name for the split.</p>
+            <p class="se-note"><span class="se-label">How to read it</span>Only the harness changes. The model’s weights are not trained.</p>
+          </div>
+          <div>
+            <p class="se-label">One round</p>
+            <ol class="se-steps">
+              <li><div><h4>Evaluate the current harness</h4><p>Run the fixed model inside the current harness on the held-in and held-out splits with the fixed evaluator, two attempts per task, and record each trace and its verifier outcome.</p><span class="se-loc">Paper v3 §3.1–3.2; Alg. 1</span></div></li>
+              <li><div><h4>Mine weaknesses</h4><p>Give each failed held-in run a failure signature: the verifier-level cause, whether the agent’s behavior caused it, and the mechanism involved. Failures with the same signature are grouped into evidence clusters.</p><span class="se-loc">Paper v3 §3.2</span></div></li>
+              <li><div><h4>Propose minimal edits</h4><p>The same model, now as proposer, sees the editable surfaces, the failure clusters, passing behavior to preserve and summaries of earlier attempts, but no raw logs and no held-out evidence. It returns several distinct, minimal edits.</p><span class="se-loc">Paper v3 §3.3</span></div></li>
+              <li><div><h4>Build the candidates</h4><p>Each edit is applied to the harness definition, such as its instructions, subagents, skills, middleware or runtime policy. An edit that changes nothing is invalid.</p><span class="se-loc">Paper v3 §3.3–3.4, §4.1</span></div></li>
+              <li><div><h4>Regression-test each candidate</h4><p>A candidate is accepted only if its pass count drops on neither split and rises on at least one. Trade-offs between the two splits, and candidates that fail to run, are rejected.</p><span class="se-loc">Paper v3 §3.4; Alg. 1</span></div></li>
+              <li><div><h4>Merge and continue</h4><p>Compatible accepted edits are merged into the next harness; if none is accepted, the harness stays as it was. Every decision is logged.</p><span class="se-loc">Paper v3 §3.4; Alg. 1</span></div></li>
+            </ol>
+          </div>
+        </article>
+
+        <article class="se-method" id="method-meta-harness" aria-labelledby="method-meta-harness-title">
+          <div class="se-method-head">
+            <p class="kicker">Method 3</p>
+            <h3 id="method-meta-harness-title">Meta-Harness</h3>
+            <p class="se-method-paper">Meta-Harness: End-to-End Optimization of Model Harnesses</p>
+            <ul class="se-method-meta">
+              <li>Lee et al. · arXiv 2603.28052 v1 · 30 Mar 2026</li>
+              <li><a href="https://github.com/stanford-iris-lab/meta-harness/tree/8123ccabe2b19fa1123090b2e5f1bacc20963ce8">Code: stanford-iris-lab/meta-harness at 8123cca</a></li>
+            </ul>
+            <p class="se-method-summary">Searches over whole harness programs with a separate coding agent. The proposer, Claude Code with Opus 4.6, can selectively inspect the code, scores and raw execution traces of earlier candidates in a filesystem, and writes new single-file harnesses, from small edits to full rewrites of prompting, retrieval, memory and orchestration. The base model stays frozen.</p>
+            <p class="se-note"><span class="se-label">How to read it</span>“Online” text classification is a task protocol: labeled examples arrive one at a time, and the harness found by the search updates its memory as it was written to. The search itself runs beforehand, and no harness code is edited during that stream.</p>
+            <p class="se-note"><span class="se-label">How to read it</span>For TerminalBench-2 the paper searches and evaluates on the same 89 tasks and calls it a discovery problem, so those results are not a held-out test.</p>
+          </div>
+          <div>
+            <p class="se-label">One iteration</p>
+            <ol class="se-steps">
+              <li><div><h4>Start the proposer</h4><p>A coding-agent session starts with a short human-written skill for the domain: where to write harnesses, how to inspect the history and which files are off limits.</p><span class="se-loc">Paper §3</span></div></li>
+              <li><div><h4>Read the history</h4><p>The proposer browses a filesystem with the source code, search-set scores and execution traces of all earlier candidates and decides what to read. In the TerminalBench-2 run it read a median of 82 files per iteration.</p><span class="se-loc">Paper §3; App. A.1</span></div></li>
+              <li><div><h4>Write new harnesses</h4><p>It diagnoses failure modes and writes k new single-file Python harnesses, either by editing an earlier one or by rewriting it.</p><span class="se-loc">Paper §3; Alg. 1</span></div></li>
+              <li><div><h4>Validate the interface</h4><p>Each candidate has to pass interface validation before it is evaluated.</p><span class="se-loc">Paper Alg. 1; App. D</span></div></li>
+              <li><div><h4>Score outside the proposer</h4><p>A fixed evaluator runs each valid harness with the frozen model on the search set. Its code, scores and traces are added to the filesystem; nothing is deleted.</p><span class="se-loc">Paper Alg. 1; App. D</span></div></li>
+              <li><div><h4>Keep a frontier, evaluate once</h4><p>All evaluated candidates stay in a population with a Pareto frontier, for example accuracy against context tokens, and there is no fixed rule for choosing a parent. After a fixed number of iterations comes one final evaluation: the frontier on held-out test sets for classification, a single harness chosen by search-set performance on held-out problems for math, and the same 89 search tasks for TerminalBench-2, which the paper treats as a discovery setting. The proposer never sees test-set results.</p><span class="se-loc">Paper §3; Alg. 1</span></div></li>
+            </ol>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section container ruled" id="compare" aria-labelledby="compare-title">
+      <div class="case-heading"><p class="kicker">04 / Comparison</p><h2 id="compare-title">The three methods side by side</h2></div>
+      <p class="case-intro">The rows answer the six questions from section 02, plus where selection data comes from and what the papers evaluated. The last column is our InferenceNet adaptation, not a method from the papers. Cells marked “our reading” are interpretations.</p>
+      <div class="table-scroll se-compare" tabindex="0">
+        <table class="compare-table">
+          <caption>ModularRSI, Self-Harness and Meta-Harness compared along the same dimensions, following the mechanisms described in each paper version listed in section 06; the official repositories are listed there separately, and their released code may differ</caption>
+          <thead><tr><th scope="col">Question</th><th scope="col">ModularRSI</th><th scope="col">Self-Harness</th><th scope="col">Meta-Harness</th><th scope="col" class="is-ours">InferenceNet study (our adaptation)</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Starting harness</th><td>Terminus-2 on Harbor, split into five behavioral modules</td><td>A minimal benchmark-specific harness on LangChain DeepAgents; later rounds build on the accepted version</td><td>Seed harnesses per domain, such as zero-shot, few-shot or Terminus-KIRA</td><td class="is-ours">DeepAgents 0.7.13 with InferenceNet’s run_python tool and five no-op hook functions</td></tr>
+            <tr><th scope="row">What is edited</th><td>Function variants inside one module at a time, integrated afterwards</td><td>Minimal edits to declared surfaces: instructions, subagents, skills, middleware, runtime policy</td><td>Whole single-file harness programs: prompting, retrieval, memory, orchestration; full rewrites allowed</td><td class="is-ours">One entry function per module; no library of variants</td></tr>
+            <tr><th scope="row">Who proposes</th><td>The evolving agent’s own model, as Code-Modify Agent</td><td>The same fixed model, in a proposer role</td><td>A separate coding agent: Claude Code with Opus 4.6</td><td class="is-ours">DeepSeek V4 Pro as analyst, editor and reviewer</td></tr>
+            <tr><th scope="row">Evidence the proposer sees</th><td>Pass or fail over K rollouts; same-task contrasts; votes across tasks</td><td>Clustered held-in failures, passing behavior to keep, earlier attempts; no held-out evidence</td><td>Code, search-set scores and raw traces of every earlier candidate; never test results</td><td class="is-ours">Contrasts across three rollouts of 100 development tasks; no reference values</td></tr>
+            <tr><th scope="row">How a version is kept</th><td>Program check, reward-blind diff review, small execution check; otherwise rolled back</td><td>No drop on held-in or held-out and a gain on at least one; compatible edits merged</td><td>Interface validation, then search-set scores; population with a Pareto frontier; no threshold</td><td class="is-ours">Static checks, diff review and a two-task probe; scores recorded but not used</td></tr>
+            <tr><th scope="row">When it runs</th><td>Offline on evolution tasks; frozen before evaluation; functions composed per task from the frozen library</td><td>Offline rounds on fixed splits; the harness changes only between rounds<span class="se-mark">our reading: the paper describes no adaptation during use</span></td><td>Offline loop of fixed length; the frontier gets one final evaluation<span class="se-mark">our reading: the paper does not use the word offline</span></td><td class="is-ours">Offline: three epochs and one integration epoch; frozen on 9 Oct 2026</td></tr>
+            <tr><th scope="row">Held fixed</th><td>Model weights, harness infrastructure and module interfaces, environments, evaluators</td><td>Model weights, decoding, budget, tools, environments, evaluator, task splits</td><td>Base model, evaluator, proposer, task splits, iteration budget</td><td class="is-ours">Model, DeepAgents, sandbox, budgets, scorer and the 100 / 900 split</td></tr>
+            <tr><th scope="row">Selection data and final test</th><td>Evolution tasks are kept apart from Terminal-Bench 2.0 and SWE-bench Verified</td><td>Held-out pass counts guide promotion, so that split acts as validation<span class="se-mark">our reading</span></td><td>Held-out test sets for classification and math; TerminalBench-2 reuses its 89 tasks as a discovery problem</td><td class="is-ours">Development set only; the 900 held-out tasks were not run as of the 9 Oct 2026 freeze</td></tr>
+            <tr><th scope="row">Evaluated in the paper</th><td>Terminal-Bench 2.0 and SWE-bench Verified, including transfer across base models</td><td>Terminal-Bench 2.0, SWE-bench Verified and AppWorld with MiniMax M2.5, Qwen3.5-35B-A3B and GLM-5</td><td>Online text classification, retrieval-augmented math and TerminalBench-2</td><td class="is-ours">InferenceNet development set; not a leaderboard result</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="se-tiles se-contrast" aria-label="The main difference of each method">
+        <li><span class="se-label">ModularRSI</span><p>Narrows every edit to one module and keeps evolution tasks apart from the benchmarks it reports on.</p></li>
+        <li><span class="se-label">Self-Harness</span><p>Lets the model edit its own harness in small steps and accepts only edits that do not regress on either split.</p></li>
+        <li><span class="se-label">Meta-Harness</span><p>Opens the whole harness program to a coding agent that can read all earlier code, scores and traces.</p></li>
       </ul>
     </section>
 
+    <section class="section container ruled" id="practice" aria-labelledby="practice-title">
+      <div class="case-heading"><p class="kicker">05 / InferenceNet study</p><h2 id="practice-title">Our ModularRSI-style development study</h2></div>
+      <p class="case-intro">We adapted the ModularRSI idea to the DeepAgents harness that InferenceNet already uses and ran one complete evolution on a development set. This is a historical development study, frozen on 9 Oct 2026 and kept here with its original numbers. It is not a reproduction of the paper and not a leaderboard result, and it makes no claim about unseen tasks.</p>
+      <ul class="se-tiles is-status" aria-label="What each part of this study is">
+        <li><p class="se-label">Paper</p><h3>ModularRSI</h3><p>The method and its reported results belong to the paper, which evolves five modules of the Terminus-2 harness (section 03).</p></li>
+        <li><p class="se-label">Our adaptation</p><h3>Five hook functions</h3><p>Added to InferenceNet’s harness on unchanged DeepAgents 0.7.13: one edit per module per epoch, one function per module, no function library and no merge.</p></li>
+        <li><p class="se-label">Development feedback</p><h3>100 tasks × 3 rollouts</h3><p>DeepSeek V4 Pro. The same tasks served for diagnosis and for the numbers below; promotion did not use the scores.</p></li>
+        <li><p class="se-label">Held-out</p><h3>900 tasks · not run at the freeze</h3><p>Set aside before the run. In the 9 Oct 2026 snapshot the frozen harness had not been evaluated on them, so this page reports no generalization result.</p></li>
+        <li><p class="se-label">Leaderboard</p><h3>A separate protocol</h3><p>All 1,000 tasks at half this study’s per-task budget. DeepSeek V4 Pro with DeepAgents scores 18.3% full replication there; the two numbers are not comparable.</p></li>
+      </ul>
+      <h3 class="se-subhead">Execution context</h3>
+      <p class="se-body">The study runs on DeepAgents 0.7.13, which assembles middleware, tools and backends and hands them to LangChain’s create_agent; LangGraph executes the loop. InferenceNet uses a lean configuration: no subagents, a StateBackend for notes and its own run_python tool, which starts a fresh sandbox for every call. DeepAgents itself is never edited. Three of the five evolvable functions run inside one middleware around each model call; tool_use adds guidance to the system prompt and the run_python description, and observation reshapes the feedback run_python returns, as section 05.1 shows.</p>
+      <div class="se-links"><a class="text-link" href="harness.html#deepagents-architecture">How DeepAgents is assembled →</a></div>
+      <nav class="se-study-nav" aria-label="Parts of the InferenceNet study"><ol>
+        <li><a href="#hooks">05.1 Hook points</a></li>
+        <li><a href="#loop">05.2 Evolution run</a></li>
+        <li><a href="#trajectories">05.3 Trajectories</a></li>
+        <li><a href="#improvements">05.4 What improved</a></li>
+        <li><a href="#code">05.5 Evolved code</a></li>
+        <li><a href="#run-record">Run record</a></li>
+      </ol></nav>
+    </section>
+
     <section class="section container ruled" id="hooks" aria-labelledby="hooks-title">
-      <div class="case-heading"><p class="kicker">02 / Hook points</p><h2 id="hooks-title">Where ModularRSI attaches</h2></div>
-      <p class="case-intro">ModularRSI splits an agent harness into five modules and evolves each one separately. We apply the idea to DeepAgents without changing the SDK. Each module is one Python function that the harness calls at a fixed point. All five start as no-ops, so the initial harness is unchanged DeepAgents. It runs with this study’s budget and sandbox, not phase 1’s: 12 model calls and 8 run_python calls per task instead of 6 and 4.</p>
+      <div class="case-heading"><p class="kicker">05.1 / Hook points</p><h2 id="hooks-title">Where the five hook functions attach</h2></div>
+      <p class="case-intro">ModularRSI splits an agent harness into five modules and evolves each one separately. Our adaptation applies the idea to DeepAgents without changing the library: each module is one Python function that InferenceNet’s harness calls at a fixed point. All five start as no-ops, so the initial harness is unchanged DeepAgents. It runs with this study’s budget and sandbox, not phase 1’s: 12 model calls and 8 run_python calls per task instead of 6 and 4.</p>
       <p class="case-intro">InferenceNet runs a lean DeepAgents: no subagents, and a StateBackend used only for notes. Code runs through its own run_python tool, which starts a fresh isolated container for every call. The five modules attach at the blue positions below.</p>
       <figure class="diagram wide rsi-figure" style="--diagram-min:860px">
         <div class="diagram-scroll" tabindex="0">
@@ -374,7 +357,7 @@
       </figure>
       <div class="table-scroll rsi-module-table" tabindex="0">
         <table class="compare-table">
-          <caption>The five evolvable functions: who owns the concern in stock DeepAgents, and where the branch hooks it</caption>
+          <caption>The five evolvable functions: who owns the concern in stock DeepAgents, and where the branch hooks it. Code links go to a private repository (collaborator access).</caption>
           <thead><tr><th scope="col">Module</th><th scope="col">In stock DeepAgents</th><th scope="col">Hook in dev-modular-rsi</th><th scope="col">Evolvable function</th></tr></thead>
           <tbody>
             <tr><th scope="row"><code>agent_loop</code><span class="rsi-role">When to finalize or ask for a repair</span></th><td>The LangChain create_agent loop and its recursion limit</td><td><a class="rsi-code-link" href="https://github.com/YTZSR/chatpilot_evaluator/blob/06f2890616ef93a9bd634a08b65b4e4df45c822e/inferencenet/modular_rsi/runtime_modules.py#L119"><code>BoundedFunctionMiddleware.wrap_model_call</code></a><span class="rsi-hook-note">When it forces the final answer, the request carries no tools and run_python refuses to execute.</span></td><td><span class="rsi-hook-note">Inputs: model calls left, and whether the last run_python run failed or saved no valid result</span><code class="rsi-sig">agent_loop(remaining_model_calls, last_tool_failed) → {force_final, repair_nudge}</code></td></tr>
@@ -389,11 +372,11 @@
     </section>
 
     <section class="section container ruled" id="loop" aria-labelledby="loop-title">
-      <div class="case-heading"><p class="kicker">03 / Evolution loop</p><h2 id="loop-title">How one evolution run works, step by step</h2></div>
+      <div class="case-heading"><p class="kicker">05.2 / Evolution run</p><h2 id="loop-title">How one evolution run works, step by step</h2></div>
       <p class="case-intro">Five module lineages start from the same no-op source and the same initial trajectories. Each lineage may change only its own function. The loop below ran three epochs, then combined the accepted functions into one frozen harness.</p>
       <figure class="diagram wide rsi-figure rsi-loop-figure" style="--diagram-min:860px">
         <div class="diagram-scroll" tabindex="0">
-          <svg viewBox="0 0 1000 330" role="img" aria-label="The outer evolution loop: 100 development tasks run three times each, an analyst diagnoses them in batches of ten, contrasting a task’s successes and failures where both exist, five module lineages each edit one source file, and a candidate passes static checks, diff review and a two-task probe before promotion, for three epochs. The promoted modules are then integrated and frozen; the comparison with unchanged DeepAgents on 900 held-out tasks comes next.">
+          <svg viewBox="0 0 1000 330" role="img" aria-label="The outer evolution loop: 100 development tasks run three times each, an analyst diagnoses them in batches of ten, contrasting a task’s successes and failures where both exist, five module lineages each edit one source file, and a candidate passes static checks, diff review and a two-task probe before promotion, for three epochs. The promoted modules are then integrated and frozen; the comparison with unchanged DeepAgents on 900 held-out tasks was the planned next step as of 9 Oct 2026.">
             <defs>
               <marker id="loop-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="f-ah"/></marker>
               <marker id="loop-arrow-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="f-ahr"/></marker>
@@ -445,19 +428,19 @@
         <figcaption>The evolution loop at a glance, following the protocol in docs/MODULAR_RSI_REAL100_PROTOCOL.md. Within an epoch only module source changes; DeepAgents and the held-out tasks are never touched. The steps below give the details of this run.</figcaption>
       </figure>
       <ol class="case-timeline rsi-steps">
-        <li><span class="case-step-number">01</span><div class="case-step-content"><h3>Split the tasks before anything runs</h3><p class="case-step-story">From the 1,000 Selected_1000 tasks, 100 become the development set and 900 are held out. Tasks from the same paper or with identical input files stay on the same side. The evolution loop never dispatches the 900 held-out tasks.</p><dl class="case-observed-facts"><div><dt>Development tasks</dt><dd>100</dd></div><div><dt>Held-out tasks</dt><dd>900 · not run yet</dd></div></dl></div></li>
+        <li><span class="case-step-number">01</span><div class="case-step-content"><h3>Split the tasks before anything runs</h3><p class="case-step-story">From the 1,000 Selected_1000 tasks, 100 become the development set and 900 are held out. Tasks from the same paper or with identical input files stay on the same side. The evolution loop never dispatches the 900 held-out tasks.</p><dl class="case-observed-facts"><div><dt>Development tasks</dt><dd>100</dd></div><div><dt>Held-out tasks</dt><dd>900 · not run as of 9 Oct 2026</dd></div></dl></div></li>
         <li><span class="case-step-number">02</span><div class="case-step-content"><h3>Roll out every harness version</h3><p class="case-step-story">Each harness version solves every development task three times with DeepSeek V4 Pro inside DeepAgents. Every run_python call starts a fresh sandbox; nothing persists between calls.</p><dl class="case-observed-facts"><div><dt>Rollouts per evaluation</dt><dd>300</dd></div><div><dt>Budget per rollout</dt><dd>12 model calls · 8 run_python calls</dd></div><div><dt>Output and time limit</dt><dd>32,768 tokens · 30 min</dd></div><div><dt>Sandbox per call</dt><dd>6 GB · 2 CPUs · 90 s</dd></div></dl></div></li>
         <li><span class="case-step-number">03</span><div class="case-step-content"><h3>Score in private</h3><p class="case-step-story">The evaluator reruns each final program from scratch and compares its output with the hidden reference. The model, the analyst and the editor never see reference values or scorer internals.</p></div></li>
         <li><span class="case-step-number">04</span><div class="case-step-content"><h3>Diagnose by contrast</h3><p class="case-step-story">Tasks are grouped by outcome across their three rollouts: all passed, mixed or all failed, where a pass means the coefficient and SE are within 5%. An analyst model reads all 100 tasks in ten batches of ten. In a mixed task it compares passing and failing rollouts; in an all-failed task it compares an earlier version’s passing rollout of that task when one exists, and otherwise reads the failures on their own; in an all-passed task it looks for wasted steps. A problem needs support from at least two different tasks in one batch, and the batch finding with the most supporting tasks drives the edit.</p><p class="case-decision">Same-task comparisons remove most task difficulty, but they need a passing rollout of the same task: only 21 of 100 tasks were mixed at the start. In this run, 17 of the 24 task votes behind the eight promoted edits came from tasks that failed all three rollouts and were diagnosed without a comparison.</p></div></li>
         <li><span class="case-step-number">05</span><div class="case-step-content"><h3>Edit one function</h3><p class="case-step-story">For each lineage, an editor model sees only its function, the history of accepted versions and the selected finding. It returns a new version of that function. Static checks verify syntax, imports, the interface and the editing scope.</p></div></li>
-        <li><span class="case-step-number">06</span><div class="case-step-content"><h3>Review the diff, then probe on real tasks</h3><p class="case-step-story">A reviewer model rejects changes that are not general across tasks, such as ones that encode task-specific details. The candidate then runs two real development tasks. If the probe completes without protocol or runtime errors, the candidate is promoted.</p><p class="case-decision">Promotion does not look at development scores. The scores in section 04 are recorded for analysis only, so an accepted version can score lower than its parent.</p></div></li>
+        <li><span class="case-step-number">06</span><div class="case-step-content"><h3>Review the diff, then probe on real tasks</h3><p class="case-step-story">A reviewer model rejects changes that are not general across tasks, such as ones that encode task-specific details. The candidate then runs two real development tasks. If the probe completes without protocol or runtime errors, the candidate is promoted.</p><p class="case-decision">Promotion does not look at development scores. The scores in section 05.3 are recorded for analysis only, so an accepted version can score lower than its parent. The two-task probe shows that a candidate runs end to end; it is not a statistical test that performance held.</p></div></li>
         <li><span class="case-step-number">07</span><div class="case-step-content"><h3>Repeat for three epochs</h3><p class="case-step-story">Each module gets at most one edit per epoch. A promoted version becomes the parent for the next epoch, and every promoted version receives a full 300-rollout evaluation.</p><dl class="case-observed-facts"><div><dt>Candidate slots</dt><dd>15</dd></div><div><dt>Promoted</dt><dd>8</dd></div><div><dt>Rejected by diff review</dt><dd>3</dd></div><div><dt>Editor output or edit invalid</dt><dd>4</dd></div></dl></div></li>
         <li><span class="case-step-number">08</span><div class="case-step-content"><h3>Integrate, refine once, freeze</h3><p class="case-step-story">The accepted versions of agent_loop, completion and tool_use are combined and probed together. One integration epoch reads the combined trajectories and makes a single checked refinement. The result is frozen by hash before any held-out evaluation.</p><dl class="case-observed-facts"><div><dt>Changed modules</dt><dd>3 of 5</dd></div><div><dt>Frozen source</dt><dd>17f138b9</dd></div></dl></div></li>
       </ol>
     </section>
 
     <section class="section container ruled" id="trajectories" aria-labelledby="trajectories-title">
-      <div class="case-heading"><p class="kicker">04 / Trajectories</p><h2 id="trajectories-title">Evolution trajectories by module</h2></div>
+      <div class="case-heading"><p class="kicker">05.3 / Trajectories</p><h2 id="trajectories-title">Evolution trajectories by module</h2></div>
       <p class="case-intro">Each panel follows one lineage. A point is one full development evaluation of a harness version, measured over 300 rollouts. Every candidate is annotated with the problem the analyst found and the change the editor made.</p>
       <div class="rsi-evolution" data-rsi-evolution>
         <div class="rsi-toolbar">
@@ -506,7 +489,7 @@
     </section>
 
     <section class="section container ruled" id="improvements" aria-labelledby="improvements-title">
-      <div class="case-heading"><p class="kicker">05 / What improved</p><h2 id="improvements-title">Fewer runs end without a final program</h2></div>
+      <div class="case-heading"><p class="kicker">05.4 / What improved</p><h2 id="improvements-title">Fewer runs end without a final program</h2></div>
       <p class="case-intro">Comparing the initial and frozen harness on the same 100 development tasks, with three rollouts each, the clearest change is in how runs end. Far fewer rollouts finish with tool calls and no final program, and more rollouts produce a result the evaluator can score.</p>
       <div class="benchmark-stats rsi-stats">
         <div><strong>27.0 → 30.3</strong><span>Full replication, % of 300 rollouts</span></div>
@@ -548,12 +531,12 @@
       <div class="case-improvement">
         <h3>How to read these numbers</h3>
         <p>Most of the gain comes from more rollouts finishing with a program the evaluator can score: 171 → 217 of 300. Among scored rollouts, the full-replication share fell from 47.4% to 41.9%. The evolved harness mainly fixed how runs end; it did not make the statistics more precise.</p>
-        <p>These are development-set results. The same 100 tasks were used to diagnose problems, each harness version was evaluated once with three rollouts per task, and no confidence intervals are reported. The frozen harness has not yet run on the 900 held-out tasks. These results are not part of the leaderboard and are not comparable with it: each rollout here may use 12 model calls and 8 run_python calls, twice the leaderboard’s 6 and 4, in a different sandbox and on a 100-task development subset. On the leaderboard, DeepSeek V4 Pro with DeepAgents scores 18.3% full replication on all 1,000 tasks.</p>
+        <p>These are development-set results. The same 100 tasks were used to diagnose problems, each harness version was evaluated once with three rollouts per task, and no confidence intervals are reported. As of the 9 Oct 2026 snapshot, the frozen harness had not run on the 900 held-out tasks. These results are not part of the leaderboard and are not comparable with it: each rollout here may use 12 model calls and 8 run_python calls, twice the leaderboard’s 6 and 4, in a different sandbox and on a 100-task development subset. On the leaderboard, DeepSeek V4 Pro with DeepAgents scores 18.3% full replication on all 1,000 tasks.</p>
       </div>
     </section>
 
     <section class="section container ruled" id="code" aria-labelledby="code-title">
-      <div class="case-heading"><p class="kicker">06 / Evolved code</p><h2 id="code-title">What the frozen functions say</h2></div>
+      <div class="case-heading"><p class="kicker">05.5 / Evolved code</p><h2 id="code-title">What the frozen functions say</h2></div>
       <p class="case-intro">All five functions started as no-ops: tool_use and completion returned an empty string, agent_loop never intervened. Below are the three functions that changed, exactly as frozen. observation and context are unchanged.</p>
       <div class="rsi-code-grid">
         <div class="code-panel wrap case-excerpt"><div class="code-panel-head"><span class="code-panel-label">tool_use.py · 3 epochs + 1 refinement</span></div><pre tabindex="0"><code>"""Model-visible Python-tool guidance hook."""
@@ -640,11 +623,11 @@ def agent_loop(remaining_model_calls: int, last_tool_failed: bool) -&gt; dict[st
     return {"force_final": force_final, "repair_nudge": repair_nudge}</code></pre></div>
       </div>
       <div class="case-next">
-        <div><h3>From phase 1 to phase 2</h3><p>Phase 1 showed how a harness turns execution feedback into replicated results. Phase 2 lets the harness learn from its own development trajectories. The next step is the held-out evaluation of the frozen harness against unchanged DeepAgents on the remaining 900 tasks.</p></div>
+        <div><h3>From phase 1 to phase 2</h3><p>Phase 1 showed how a harness turns execution feedback into replicated results. Phase 2 lets the harness learn from its own development trajectories. As of the 9 Oct 2026 snapshot, the planned next step was the held-out evaluation of the frozen harness against unchanged DeepAgents on the remaining 900 tasks.</p></div>
         <div class="case-links">
-          <a class="text-link" href="https://github.com/YTZSR/chatpilot_evaluator/tree/dev-modular-rsi">Branch dev-modular-rsi →</a>
-          <a class="text-link" href="https://github.com/YTZSR/chatpilot_evaluator/blob/06f2890616ef93a9bd634a08b65b4e4df45c822e/inferencenet/modular_rsi/runtime_modules.py">Where the hooks attach →</a>
-          <a class="text-link" href="https://github.com/YTZSR/chatpilot_evaluator/blob/06f2890616ef93a9bd634a08b65b4e4df45c822e/docs/MODULAR_RSI_REAL100_PROTOCOL.md">Evolution protocol →</a>
+          <a class="text-link" href="https://github.com/YTZSR/chatpilot_evaluator/tree/dev-modular-rsi">Branch dev-modular-rsi (private repository) →</a>
+          <a class="text-link" href="https://github.com/YTZSR/chatpilot_evaluator/blob/06f2890616ef93a9bd634a08b65b4e4df45c822e/inferencenet/modular_rsi/runtime_modules.py">Where the hooks attach (private repository) →</a>
+          <a class="text-link" href="https://github.com/YTZSR/chatpilot_evaluator/blob/06f2890616ef93a9bd634a08b65b4e4df45c822e/docs/MODULAR_RSI_REAL100_PROTOCOL.md">Evolution protocol (private repository) →</a>
           <a class="text-link" href="agent.html">Phase 1: one task with DeepAgents →</a>
         </div>
       </div>
@@ -653,11 +636,52 @@ def agent_loop(remaining_model_calls: int, last_tool_failed: bool) -&gt; dict[st
           <p>Run modrsi-real100-20261009-08, frozen on 9 Oct 2026 at 21:32 (UTC+8) from branch dev-modular-rsi at commit 06f2890. Frozen source hash 17f138b9890d200ffa5b2d6a48e9e918dea32c0c1634852750f91c9e1b3308fb.</p>
           <p>Solver, analyst, editor and reviewer: deepseek-v4-pro-0813 through DashScope Chat Completions with thinking disabled. Harness: DeepAgents 0.7.13. Dataset: CamoAiLab/InferenceNet at revision 59f9512, Selected_1000.</p>
           <p>Full replication requires the coefficient and standard error within 1% relative error and the p-value within 0.01 absolute error (local-paper-v1). The 5% measure requires both the coefficient and the standard error within 5%. This differs from the leaderboard’s partial replication, which checks the coefficient only. Correct significance requires the correct sign and the same p-value band (p &lt; 0.01, 0.01–0.05, 0.05–0.1 or ≥ 0.1); the leaderboard’s Significance level column does not require the sign.</p>
-          <p>Method: ModularRSI by Wu et al., 2026. This adaptation keeps the five-module split, contrastive trajectory diagnosis, scoped edits, diff review, execution probes and integration. Unlike the paper, it evolves on 100 InferenceNet development tasks rather than a separate evolution set, makes at most one edit per module per epoch rather than per batch, edits one entry function per module rather than a library of variants, and implements neither function merge nor task-aware function composition.</p>
+          <p>Method: ModularRSI by Wu et al. (arXiv 2609.14857 v1, 14 Sep 2026). This adaptation keeps the five-module split, contrastive trajectory diagnosis, scoped edits, diff review, execution probes and integration. Unlike the paper, it evolves on 100 InferenceNet development tasks rather than a separate evolution set, makes at most one edit per module per epoch rather than per batch, edits one entry function per module rather than a library of variants, and implements neither function merge nor task-aware function composition. The paper evolves a Terminus-2-based harness; this study evolves hook functions around unchanged DeepAgents 0.7.13.</p>
           <p>The aggregated values on this page are published in <a href="assets/data/modular-rsi-evolution.json">modular-rsi-evolution.json</a>. Task identifiers, trajectories, generated programs and reference values stay private.</p>
-          <p><a href="https://arxiv.org/abs/2609.14857">ModularRSI paper (arXiv 2609.14857)</a> · <a href="https://github.com/IQuestLab/ModularRSI">Reference implementation</a></p>
+          <p><a href="https://arxiv.org/abs/2609.14857v1">ModularRSI paper (arXiv 2609.14857 v1)</a> · <a href="https://github.com/IQuestLab/ModularRSI/tree/b5c72c36b0d08ff93f00ee202a8fbdebe849dfb9">Official code at b5c72c3</a> · <a href="#sources">All method sources</a></p>
         </div>
       </details>
+    </section>
+
+    <section class="section container ruled" id="sources" aria-labelledby="sources-title">
+      <div class="case-heading"><p class="kicker">06 / Sources</p><h2 id="sources-title">Primary sources and versions</h2></div>
+      <p class="case-intro">Method summaries were checked against each paper’s full text and its official repository on 10 Oct 2026. The wording on this page is ours; section numbers refer to the version read.</p>
+      <div class="se-sources">
+        <div class="se-source">
+          <h3>ModularRSI</h3>
+          <dl>
+            <dt>Paper</dt>
+            <dd><a href="https://arxiv.org/abs/2609.14857v1">ModularRSI: Modular and Generalizable Recursive Harness Self-Improvement</a>, Siwei Wu et al. arXiv 2609.14857, v1 of 14 Sep 2026, the only version. Read: v1 HTML.</dd>
+            <dt>Code</dt>
+            <dd><a href="https://github.com/IQuestLab/ModularRSI/tree/b5c72c36b0d08ff93f00ee202a8fbdebe849dfb9">IQuestLab/ModularRSI</a>, main at b5c72c3 of 24 Sep 2026, linked from the paper’s abstract. Licenses: Apache-2.0 for code derived from Harbor, CC BY-NC 4.0 for the ModularRSI contributions.</dd>
+            <dt>Used for</dt>
+            <dd>§3.3–3.7, §5.3 and appendices B–C: rollouts, contrastive diagnosis, scoped edits, the three gates, integration and composition.</dd>
+          </dl>
+        </div>
+        <div class="se-source">
+          <h3>Self-Harness</h3>
+          <dl>
+            <dt>Paper</dt>
+            <dd><a href="https://arxiv.org/abs/2606.09498v3">Self-Harness: Harnesses That Improve Themselves</a>, Hangfan Zhang et al. arXiv 2606.09498: v1 of 8 Jun 2026, v2 of 12 Aug 2026, v3 of 20 Aug 2026. Read: v3 HTML.</dd>
+            <dt>Code</dt>
+            <dd><a href="https://github.com/qzzqzzb/Self-Harness/tree/2720dbb3f52283684f4b85a1065d642df1779dd8">qzzqzzb/Self-Harness</a>, main at 2720dbb of 2 Jul 2026, linked from the arXiv v3 record. The repository declares no license.</dd>
+            <dt>Used for</dt>
+            <dd>§3.1–3.4, Algorithm 1 and §4.1: weakness mining, proposal, regression-tested acceptance and merging.</dd>
+          </dl>
+        </div>
+        <div class="se-source">
+          <h3>Meta-Harness</h3>
+          <dl>
+            <dt>Paper</dt>
+            <dd><a href="https://arxiv.org/abs/2603.28052v1">Meta-Harness: End-to-End Optimization of Model Harnesses</a>, Yoonho Lee et al. arXiv 2603.28052, v1 of 30 Mar 2026, the only version. Read: v1 HTML.</dd>
+            <dt>Code</dt>
+            <dd><a href="https://github.com/stanford-iris-lab/meta-harness/tree/8123ccabe2b19fa1123090b2e5f1bacc20963ce8">stanford-iris-lab/meta-harness</a>, main at 8123cca of 1 Oct 2026, linked from the paper’s project page; MIT license. The repository is a cleaned-up release and does not include the math experiment.</dd>
+            <dt>Used for</dt>
+            <dd>§3, Algorithm 1, §4.1–4.3 and appendices A and D: the proposer, its filesystem, validation, the Pareto frontier and the evaluation settings.</dd>
+          </dl>
+        </div>
+      </div>
+      <p class="case-caption">The InferenceNet study’s own sources, run identifiers and scoring definitions are in the run record at the end of section 05; its aggregated values are in <a href="assets/data/modular-rsi-evolution.json">modular-rsi-evolution.json</a>.</p>
     </section>
   </main>
   <footer class="site-footer container"><a class="wordmark" href="index.html">Inference<span>Net</span></a><p>AI for econometric research.</p><a href="teams.html#contact">Contact <span aria-hidden="true">→</span></a></footer>

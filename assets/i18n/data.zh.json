@@ -248,7 +248,7 @@
   "Counts computed": "统计日期",
   "15 Sep 2026, over all 1,000 rows of the pinned list": "2026 年 9 月 15 日，覆盖固定清单的全部 1,000 行",
   "Evaluator": "评测器",
-  "on GitHub — task loading, instruction rendering, execution and scoring": "位于 GitHub——负责任务加载、指令渲染、执行和评分",
+  "on GitHub (private repository, collaborator access) — task loading, instruction rendering, execution and scoring": "位于 GitHub（私有仓库，需协作者权限）——负责任务加载、指令渲染、执行和评分",
   "How the counts were computed": "计数的计算方式",
   "Journal, method, control, tag and file-format distributions are column counts over the 1,000 rows of the pinned task list; the five method classes fold the 14 raw labels as listed in section 03. Reference-value bands and signs are read from the": "期刊、方法、控制变量、标签和文件格式的分布均通过统计固定任务清单的 1,000 行对应列得到；五类方法按第 03 节所示归并 14 个原始标签。参考值区间与正负方向取自",
   "field where it is numeric. The field distribution in section 04 is the one exception: it is transcribed from the publisher's figure, not recomputed.": "字段中的数值。第 04 节的领域分布是唯一例外：它转录自发布方图表，并未重新计算。",

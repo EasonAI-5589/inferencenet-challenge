@@ -2,30 +2,83 @@
  * evolution.css and reuses their stat strips, field groups, case panels,
  * tabs, figures, notes, tables and timelines; only the adjustments live here. */
 .harness-page .page-hero h1{max-width:900px}
-.harness-page .case-improvement h3{font-size:17px;margin-bottom:10px}
+.harness-page .case-next h3{font-size:17px;margin-bottom:10px}
 
-/* Harness tabs: one tab per harness, full width on desktop. */
-.harness-tabs .tablist [role="tab"]{flex:1 1 calc((100% - 1px) / 2)}
-.harness-tabs .case-question{max-width:860px}
+/* 01 Definition: prose under the figure, eight slots, boundary and layers. */
+.harness-prose{max-width:860px;margin-top:30px}
+.harness-prose p{font-size:15px;line-height:1.8;color:var(--soft);margin:0}
+.harness-prose p+p{margin-top:14px}
+/* .agent-case h3 (agent.css) outranks single-class rules, so these are scoped to the page. */
+.harness-page .harness-subtitle{font-size:19px;font-weight:600;letter-spacing:-.015em;line-height:1.4;margin:48px 0 16px}
+.harness-page .field-groups.slots{grid-template-columns:repeat(4,minmax(0,1fr))}
+.terms-table{min-width:900px}
+.terms-table th[scope="row"]{white-space:nowrap}
+.terms-table td{min-width:200px}
+.layer-table{min-width:720px}
+.layer-table th[scope="row"]{white-space:nowrap}
+.layer-table td:last-child{min-width:220px}
+
+/* 02 Landscape: one strip, then one compact tab per group. */
+.landscape-strip{margin-bottom:22px}
+.landscape-types{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px 24px;margin:0 0 28px;font-size:12.5px;line-height:1.6}
+.landscape-types div{min-width:0;border-top:1px solid var(--line);padding-top:8px}
+.landscape-types dt{font-weight:600;color:var(--ink)}
+.landscape-types dd{margin:2px 0 0;color:var(--soft)}
+.landscape-table td.landscape-type{white-space:nowrap;color:var(--ink)}
+.landscape-tabs .tablist [role="tab"]{flex:1 1 calc((100% - 4px) / 5)}
+.harness-page .landscape-title{font-size:17px;font-weight:600;line-height:1.4;margin:0 0 6px}
+.landscape-intro{font-size:14px;line-height:1.75;color:var(--soft);margin:0 0 18px;max-width:860px}
+.landscape-table{min-width:1120px}
+.landscape-table th[scope="row"]{white-space:nowrap}
+.landscape-table th[scope="row"] a{text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--muted)}
+.landscape-table td:nth-of-type(6){min-width:250px}
+
+/* 03 Breakdowns: one tab per harness. */
+.harness-tabs .tablist [role="tab"]{flex:1 1 calc((100% - 2px) / 3)}
+.harness-tabs .case-head{max-width:860px}
+.harness-page .harness-tabs .case-head h3{font-size:24px;line-height:1.3;letter-spacing:-.02em;margin:0}
+.harness-id{margin-top:24px;max-width:860px}
 .harness-figure-title{font-size:12px;font-weight:600;letter-spacing:.02em;line-height:1.5;margin:40px 0 12px;color:var(--ink)}
 .harness-tabs .rsi-figure{margin-top:0}
-.harness-tabs .rsi-module-table{margin-top:26px}
 .harness-tabs .case-archive{margin-top:30px}
 .harness-tabs .case-links{margin-top:30px}
-
-/* Comparison and profile tables. */
-.dsh-profile-table td:nth-child(2) code{white-space:nowrap}
-.dsh-compare th[scope="row"]{min-width:150px}
-.dsh-compare td{min-width:200px}
-.dsh-tag{display:inline-block;margin-right:6px;padding:1px 7px;border:1px solid var(--brand);border-radius:3px;background:var(--brand-tint);color:var(--brand);font-size:11px;font-weight:600;line-height:1.5}
-
-@media(max-width:520px){
-  .harness-tabs .tablist [role="tab"]{flex-basis:100%}
-  .harness-figure-title{margin-top:30px}
-}
-
-/* Heading levels follow the page outline; these keep the label look of the
- * data.css / agent.css components they reuse. */
-.harness-page .field-groups h3{font-size:12px;font-weight:600;letter-spacing:.02em;line-height:1.5;margin:0 0 10px;color:var(--ink);display:flex;flex-wrap:wrap;align-items:center;gap:8px}
-.harness-page #provenance .case-grid h3{font-size:12px;font-weight:600;letter-spacing:.02em;line-height:1.5;margin:0 0 4px;color:var(--ink)}
 .harness-tabs .rsi-steps .case-step-content>h4{font-size:19px;font-weight:650;line-height:1.4;letter-spacing:-.015em;margin:0 0 10px;color:var(--ink)}
+.harness-detail-table{min-width:760px}
+.harness-detail-table td:last-child{min-width:300px}
+.harness-detail-table th[scope="row"]{min-width:150px}
+.harness-inet{margin-top:30px}
+/* DeepAgents: entry links to the restored full figures, which are deep-link targets. */
+.harness-jump{display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:18px}
+.harness-deep{scroll-margin-top:calc(var(--header-h) + 58px)}
+.harness-table-link{margin:16px 0 0}
+
+/* 04 to 06: wide comparison tables. */
+.harness-compare{min-width:900px}
+.harness-compare th[scope="row"]{min-width:140px}
+.harness-compare td{min-width:180px}
+.harness-evo-note{max-width:860px;margin:24px 0 0;font-size:15px;line-height:1.8;color:var(--soft)}
+.harness-evo-note a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--muted)}
+
+/* 07 Sources. */
+.harness-page #provenance .case-grid h3{font-size:12px;font-weight:600;letter-spacing:.02em;line-height:1.5;margin:0 0 4px;color:var(--ink)}
+.harness-source-list a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--muted)}
+
+@media(max-width:1100px){
+  .harness-page .field-groups.slots{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .landscape-types{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .landscape-tabs .tablist [role="tab"]{flex-basis:calc((100% - 2px) / 3)}
+}
+@media(max-width:860px){
+  .landscape-strip .stat:nth-child(odd){padding-left:0}
+  .landscape-strip .stat:nth-child(even){padding-right:0}
+  .landscape-strip .stat:last-child{grid-column:1/-1}
+  .harness-page .harness-tabs .case-head h3{font-size:21px}
+  .harness-deep{scroll-margin-top:calc(var(--header-h) + 16px)}
+}
+@media(max-width:520px){
+  .harness-page .field-groups.slots,.landscape-types{grid-template-columns:minmax(0,1fr)}
+  .harness-tabs .tablist [role="tab"],.landscape-tabs .tablist [role="tab"]{flex-basis:100%}
+  .harness-figure-title{margin-top:30px}
+  .harness-page .harness-subtitle{margin-top:36px}
+  .harness-page .harness-tabs .case-head h3{font-size:20px}
+}

@@ -235,7 +235,7 @@
   "Research directions": "研究方向",
   "Our goal is to understand how models and harnesses can improve econometric replication, and turn evaluation evidence into better systems and training signals.": "我们希望探索模型与 Harness 如何提升计量经济学复现能力，并将评测结果转化为系统改进的依据与模型训练信号。",
   "Model–Harness Coupling": "模型与 Harness 的耦合",
-  "Harness Self-Evolution": "Harness 自进化",
+  "Self-Evolving Harnesses": "自进化 Harness",
   "Explore a feedback-driven cycle of automatic harness design, evaluation and refinement, using execution trajectories and replication outcomes to guide each update.": "探索由反馈驱动的 Harness 自动设计、评测与持续优化过程，以执行轨迹和复现结果指导每轮改进。",
   "Trajectory-Based Post-Training": "轨迹驱动的模型后训练",
   "Investigate how validated agent trajectories, tool feedback and replication outcomes can support model post-training, including trajectory distillation and reinforcement learning.": "研究如何将经过验证的智能体执行轨迹、工具反馈与复现结果用于模型后训练，包括轨迹蒸馏和强化学习。",
@@ -312,7 +312,7 @@
   "What can we learn from these runs?": "这些执行结果能带来什么？",
   "We aim to use replication results and execution feedback to improve how models and harnesses work together.": "我们希望利用复现结果和执行反馈，改进模型与 Harness 的协同方式。",
   "Study which model and harness combinations work well, and how planning, tool use and feedback affect replication.": "研究哪些模型与 Harness 组合更有效，以及规划、工具调用和反馈如何影响复现表现。",
-  "Use evaluation feedback to guide automatic harness design, testing and continued improvement.": "利用评测反馈，指导 Harness 的自动设计、测试和持续优化。",
+  "An outer loop proposes, tests and keeps harness versions using feedback from the harness’s own runs. Compare three published methods, ModularRSI, Self-Harness and Meta-Harness, and see our first ModularRSI-style development study.": "外层循环依据 Harness 自身运行的反馈，提出、测试并保留 Harness 版本。比较三种已发表的方法 ModularRSI、Self-Harness 和 Meta-Harness，并查看我们第一次 ModularRSI 式的开发研究。",
   "Explore validated execution trajectories as training signals for models, including distillation and reinforcement learning.": "探索将经过验证的执行轨迹用于模型后训练，包括轨迹蒸馏和强化学习。",
   "These are research directions we hope to pursue with collaborators.": "这些是我们希望与合作者共同探索的研究方向。",
   "05 / Get involved": "05 / 参与合作",
@@ -325,6 +325,7 @@
   "Sources and citation": "来源与引用",
   "The benchmark is published by CamoAiLab on Hugging Face. The related MetricsAI paper describes the Econometrics-Agent research system. Use the citation provided by each source.": "该基准由 CamoAiLab 在 Hugging Face 发布。相关 MetricsAI 论文介绍了 Econometrics-Agent 研究系统。引用时请使用各来源提供的格式。",
   "Dataset versions and provenance": "数据版本与来源",
-  "See the first evolution run →": "查看第一次完整进化 →",
-  "Evolution": "自进化"
+  "Self-evolving: concept and methods →": "自进化：概念与方法 →",
+  "Evolution": "自进化",
+  "Our first ModularRSI-style study →": "我们第一次 ModularRSI 式研究 →"
 }

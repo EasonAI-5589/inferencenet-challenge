@@ -108,7 +108,7 @@
   "Research directions": "研究方向",
   "Our goal is to understand how models and harnesses can improve econometric replication, and turn evaluation evidence into better systems and training signals.": "我们希望探索模型与 Harness 如何提升计量经济学复现能力，并将评测结果转化为系统改进的依据与模型训练信号。",
   "Model–Harness Coupling": "模型与 Harness 的耦合",
-  "Harness Self-Evolution": "Harness 自进化",
+  "Self-Evolving Harnesses": "自进化 Harness",
   "Explore a feedback-driven cycle of automatic harness design, evaluation and refinement, using execution trajectories and replication outcomes to guide each update.": "探索由反馈驱动的 Harness 自动设计、评测与持续优化过程，以执行轨迹和复现结果指导每轮改进。",
   "Trajectory-Based Post-Training": "轨迹驱动的模型后训练",
   "Investigate how validated agent trajectories, tool feedback and replication outcomes can support model post-training, including trajectory distillation and reinforcement learning.": "研究如何将经过验证的智能体执行轨迹、工具反馈与复现结果用于模型后训练，包括轨迹蒸馏和强化学习。",
@@ -138,6 +138,6 @@
   "Harness": "Harness",
   "No harness": "未使用 Harness",
   "Teams →": "团队 →",
-  "See the first evolution run →": "查看第一次完整进化 →",
+  "See our ModularRSI-style development study →": "查看我们的 ModularRSI 式开发研究 →",
   "Evolution": "自进化"
 }

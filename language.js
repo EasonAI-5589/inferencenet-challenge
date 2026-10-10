@@ -5,7 +5,7 @@
   const storageKey = 'inferencenet-language';
   const normalize = value => value.replace(/\s+/g, ' ').trim();
   const common = {
-    'Home': '首页', 'Data': '数据', 'Agent': '智能体', 'Evolution': '自进化', 'Leaderboard': '排行榜',
+    'Home': '首页', 'Data': '数据', 'Agent': '智能体', 'Evolution': '自进化', 'Self-evolving': '自进化', 'Leaderboard': '排行榜',
     'Teams': '团队', 'Contact': '联系', 'Menu': '菜单', 'Light': '浅色', 'Dark': '深色',
     'Dark theme': '深色主题', 'Switch to dark theme': '切换深色主题',
     'Skip to content': '跳转到正文', 'Main navigation': '主导航',

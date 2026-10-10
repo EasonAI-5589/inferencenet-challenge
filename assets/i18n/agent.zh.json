@@ -154,7 +154,7 @@
   ". No text outside the fence.": "。代码块之外不包含文本。",
   "main.py · Arm B": "main.py · B 组",
   "final program · 42 lines · shown in full": "最终程序 · 42 行 · 完整展示",
-  "This file, and nothing from the three exploration calls, is what the harness replays and scores.": "Harness 重新执行并评分的只有这个文件，三次探索调用的程序均不参与最终评分。",
+  "This file, and nothing from the three exploration calls, is what the evaluator replays and scores.": "评测方重新执行并评分的只有这个文件，三次探索调用的程序均不参与最终评分。",
   "04 / Scoring": "04 / 评分",
   "Clean replay, then the comparison": "干净环境重跑，再进行比较",
   "The final program is run again from scratch in a new container. Only then does the scorer open the reference triplet it has held all along.": "最终程序在新容器中从头重跑。只有此后，评分器才读取一直保管的参考三元组。",

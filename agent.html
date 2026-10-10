@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="agent.css?v=20260917-case-data">
   <script src="site.js?v=20260915-menu" defer></script>
   <link rel="stylesheet" href="language.css">
-  <script src="language.js?v=20261010-evolution-r2" defer></script>
+  <script src="language.js?v=20261010-integration" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -31,7 +31,7 @@
         <a href="data.html">Data</a>
         <a href="agent.html" aria-current="page">Agent</a>
         <a href="harness.html">Harness</a>
-        <a href="evolution.html">Evolution</a>
+        <a href="evolution.html">Self-evolving</a>
         <a href="leaderboard.html">Leaderboard</a>
         <a href="teams.html">Teams</a>
       </div>
@@ -362,7 +362,7 @@ p {&#x27;const&#x27;: 0.9999999914846099, &#x27;Wscmonth_simsn_w&#x27;: 4.911379
             <div class="code-panel inverse">
               <div class="code-panel-head"><span class="code-panel-label">main.py · Arm B</span><span class="code-panel-meta">final program · 42 lines · shown in full</span></div>
               <pre tabindex="0" style="--code-max:none"><code><span class="code-line">import os</span><span class="code-line">import json</span><span class="code-line">import pandas as pd</span><span class="code-line">import statsmodels.api as sm</span><span class="code-line"></span><span class="code-line">data_path = &quot;/data/0011/data/data_np.dta&quot;</span><span class="code-line">output_path = &quot;/output/11_result.json&quot;</span><span class="code-line"></span><span class="code-line">target_y = &quot;EPU0month_simsn_w&quot;</span><span class="code-line">target_x = &quot;Wscmonth_simsn_w&quot;</span><span class="code-line">controls = [&quot;Wnamonth_simsn_w&quot;, &quot;Wmimonth_simsn_w&quot;, &quot;Wremonth_simsn_w&quot;]</span><span class="code-line">cluster_var = &quot;tid&quot;</span><span class="code-line"></span><span class="code-line">df = pd.read_stata(data_path, convert_categoricals=False)</span><span class="code-line"></span><span class="code-line">df[&quot;year&quot;] = pd.to_numeric(df[&quot;year&quot;], errors=&quot;coerce&quot;)</span><span class="code-line">vars_needed = [target_y, target_x] + controls + [cluster_var]</span><span class="code-line">for var in vars_needed:</span><span class="code-line">    df[var] = pd.to_numeric(df[var], errors=&quot;coerce&quot;)</span><span class="code-line"></span><span class="code-line">df_reg = df[(df[&quot;year&quot;] &gt;= 1905) &amp; (df[&quot;year&quot;] &lt;= 1945)][vars_needed].dropna().copy()</span><span class="code-line"></span><span class="code-line">X = sm.add_constant(df_reg[[target_x] + controls], has_constant=&quot;add&quot;)</span><span class="code-line">y = df_reg[target_y]</span><span class="code-line"></span><span class="code-line">model = sm.OLS(y, X).fit(</span><span class="code-line">    cov_type=&quot;cluster&quot;,</span><span class="code-line">    cov_kwds={&quot;groups&quot;: df_reg[cluster_var]},</span><span class="code-line">    use_t=True</span><span class="code-line">)</span><span class="code-line"></span><span class="code-line">result = {</span><span class="code-line">    &quot;coefficient&quot;: float(model.params[target_x]),</span><span class="code-line">    &quot;standard_error&quot;: float(model.bse[target_x]),</span><span class="code-line">    &quot;p_value&quot;: float(model.pvalues[target_x])</span><span class="code-line">}</span><span class="code-line"></span><span class="code-line">os.makedirs(os.path.dirname(output_path), exist_ok=True)</span><span class="code-line">with open(output_path, &quot;w&quot;) as f:</span><span class="code-line">    json.dump(result, f)</span><span class="code-line"></span><span class="code-line">print(json.dumps(result))</span></code></pre>
-              <p class="code-note">This file, and nothing from the three exploration calls, is what the harness replays and scores.</p>
+              <p class="code-note">This file, and nothing from the three exploration calls, is what the evaluator replays and scores.</p>
             </div>
           </div>
         </li>

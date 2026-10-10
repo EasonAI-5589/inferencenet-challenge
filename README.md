@@ -3,10 +3,11 @@
 [Live website](https://easonai-5589.github.io/inferencenet-challenge/)
 
 Public presentation site for InferenceNet: AI for econometric research. The
-site brings together Home, Data, Agent, Harness, Evolution, Leaderboard and Teams, with
+site brings together Home, Data, Agent, Harness, Self-evolving, Leaderboard and Teams, with
 Chinese / English and light / dark controls on every page.
 The seven page links are visible by default, including the four-column menu (three columns below 352 px) on
 narrow screens. Visitors can collapse it manually; each new page opens it again.
+The Self-evolving page keeps its original URL, `evolution.html`, and its anchors.
 
 ## Edit the website
 
@@ -27,9 +28,9 @@ screenshot for visual changes.
 |---|---|
 | Home, research overview and resources | `index.html`, `index.css` |
 | Dataset distributions and examples | `data.html`, `data.css` |
-| Agent case and evaluation harness | `agent.html`, `agent.css` |
-| Harness architectures (DeepAgents, DeepSeek Harness) | `harness.html`, `harness.css`; reuses `data.css`, `agent.css`, `evolution.css` |
-| Phase 2 harness self-evolution | `evolution.html`, `evolution.css`, `evolution.js`, `assets/data/modular-rsi-evolution.json` |
+| Agent case and evaluation | `agent.html`, `agent.css` |
+| Harness: definition, ecosystem (57 entries by type) and three breakdowns | `harness.html`, `harness.css`; reuses `data.css`, `agent.css`, `evolution.css` |
+| Self-evolving: concept, methods, comparison and InferenceNet’s development study | `evolution.html`, `evolution.css`, `evolution.js`, `assets/data/modular-rsi-evolution.json` |
 | Leaderboard and configuration filters | `leaderboard.html`, `leaderboard.css` |
 | Team, institutions and Yichen Guo contact | `teams.html`, `teams.css` |
 | Shared layout, navigation and theme | `styles.css`, `site.css`, `site.js`, `theme.js` |
@@ -39,10 +40,12 @@ screenshot for visual changes.
 
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL;
-the Harness page uses language release tag `20261010-harness` and the other six pages `20261010-evolution-r2`. Home CSS keeps
-`20260917-home` and Teams CSS keeps `20260921-yujie-leader`; Evolution CSS/JS
-use `20261010-evolution-r2`. Home and Leaderboard retain ranking
-release tag `20260917-harness`. Shared navigation
+Harness uses language release tag `20261010-deepagents-restore` and the other six
+pages `20261010-integration`. Home CSS keeps
+`20260917-home`, Agent CSS `20260917-case-data` and Teams CSS
+`20260921-yujie-leader`; Self-evolving CSS uses `20261010-evolution-r3` and its JS
+`20261010-evolution-r2`; Harness CSS uses `20261010-harness-r3`. Home and
+Leaderboard retain ranking release tag `20260917-harness`. Shared navigation
 CSS uses `20261010-menu` and JS `20260915-menu`.
 
 English is authored in the HTML. When changing English text, update the matching
@@ -71,7 +74,7 @@ or historical; they do not report live experiment status or official Challenge
 results. Statistical definitions are stated beside the internal results.
 
 The site describes the pinned Selected_1000 distribution, curated task examples,
-a recorded GPT-5.5 trajectory and the evaluation harness.
+a recorded GPT-5.5 trajectory and the evaluation.
 It does not execute models or analysis. Raw datasets, private run directories,
 credentials and research repository history are not part of this repository.
 
@@ -123,18 +126,32 @@ trace remain in a collapsed record. Both languages distinguish the full
 4,550-row, 38-column file, the 984-row time window and the 977 observations
 used for regression. The same-task link opens `data.html#case-0011`, whose
 case card repeats this data context. Interaction budgets remain explicit.
-Agent CSS uses release tag `20260917-case-data`; its dictionary uses
-`20260917-no-demo`.
+Agent CSS uses release tag `20260917-case-data`; its dictionary follows the
+language.js release tag.
 
-## Phase 2: harness self-evolution
+## Self-evolving: improving a harness
 
-The Evolution page documents the first complete ModularRSI-style run on
-DeepAgents 0.7.13 (branch `dev-modular-rsi` of the private evaluator repository,
-commit `06f2890`; run `modrsi-real100-20261009-08`, frozen source `17f138b9`).
-It shows where the five evolvable functions attach, the evolution loop, one
-trajectory panel per module lineage (accepted versions, rejected candidates,
-problem › change annotations), failure signals before and after evolution, and
-the frozen code of the three changed functions.
+The Self-evolving page (`evolution.html`) first explains harness self-evolution:
+proposing, testing and keeping harness versions on the basis of feedback from
+the harness’s own runs. The three methods covered here run this search in
+offline rounds; self-evolution more generally need not be offline. It shows
+which of the six terms (model, harness, agent, SDK, environment, evaluator) an
+outer loop edits and which it holds fixed, a shared five-step loop (run, record,
+propose, check, select) in which each method keeps candidates by its own rule,
+and three separate methods with a comparison table: ModularRSI (Wu et al.,
+arXiv 2609.14857), Self-Harness (Zhang et al., arXiv 2606.09498) and Meta-Harness
+(Lee et al., arXiv 2603.28052). Mechanism summaries follow each paper’s
+description; the official repositories are listed separately, and their released
+code may differ from the papers.
+
+It then documents InferenceNet’s own development study, kept apart from the
+papers: the first complete ModularRSI-style run on DeepAgents 0.7.13 (branch
+`dev-modular-rsi` of the private evaluator repository, commit `06f2890`; run
+`modrsi-real100-20261009-08`, frozen source `17f138b9`). It shows where the five
+hook functions attach, the evolution loop, one trajectory panel per module
+lineage (accepted versions, rejected candidates, problem › change annotations),
+failure signals before and after evolution, and the frozen code of the three
+changed functions.
 
 All numbers come from `assets/data/modular-rsi-evolution.json`: aggregated
 development-set counts over 100 tasks × 3 rollouts with DeepSeek V4 Pro,
@@ -184,9 +201,10 @@ into this public repository.
 The homepage introduces model–harness interaction. Research directions below the
 leaderboard cover model–harness coupling, harness self-evolution through automated
 design and evaluation, and trajectory-based model post-training (including
-distillation and reinforcement learning). Harness self-evolution links to the
-Evolution page, which reports one development-set run; the other directions
-remain research aims, and no training dataset is claimed.
+distillation and reinforcement learning). The self-evolving direction links to the Self-evolving page’s concept and methods
+(`evolution.html#concept`) and to InferenceNet’s development study
+(`evolution.html#practice`), which reports one development-set run; the other
+directions remain research aims, and no training dataset is claimed.
 Current evaluation settings and source records remain in expandable protocol
 notes. An agent denotes the model operating within a harness.
 
@@ -203,16 +221,27 @@ on Agent. The homepage keeps one current update and one announcement about
 future challenge rules, dates and submissions. Resources and citations remain
 available below the contact entry point.
 
-## Harness architectures
+## Harness: definition, ecosystem and breakdowns
 
-The Harness page takes apart each harness InferenceNet evaluates, in the format
-of the Data page: a lineup with stat strips, the shared concerns, a
-concern-by-concern comparison table, one tab per harness and the provenance.
-Each harness tab has an assembly figure at the pinned version and a figure of
-how InferenceNet wires it: DeepAgents 0.7.13 as built by `dev-gyc-eval`
-(`92e56c8`), and DeepSeek Harness 0.1.5-rc.1 as run by `dev-deepseek-harness`
-(`f9ce7a8`). The DeepAgents middleware, tools, graph nodes and state channels
-come from building that agent offline with the pinned versions, without a model
-call; the DeepSeek Harness counts are read from its pinned bundle and profile files.
-The page reports no scores. A new harness is added as one more tab, one more
-column in the comparison and one more stat strip.
+The Harness page defines a harness, the software that runs a model as an agent,
+and separates it from the model, agent, SDK, environment and evaluator; it lists
+the eight things every harness decides. Its ecosystem section has 57 entries as
+of 10 October 2026 in five groups, each with a type (product harness, library
+harness, harness SDK, hosted harness, adapter, research agent or extension):
+only some are complete harnesses, and extensions have no loop of their own.
+Three breakdowns share one template, each with an eight-slot figure, a
+module-by-module flow figure, a detail table, notes and a step timeline:
+DeepAgents 0.7.13 (a library harness, with its LangGraph and LangChain layers),
+Superpowers 7.0.0 (an extension inside a host harness) and DeepSeek Harness
+0.1.5-rc.1 (a product harness that runs as its own process, broken down as
+driven through its SDK). The DeepAgents tab also keeps its two full figures from
+the previous version: the three-layer assembly (DeepAgents, LangChain’s
+create_agent graph and LangGraph, down to InferenceNet’s compiled graph) at
+`harness.html#deepagents-architecture`, and InferenceNet’s wiring on branch
+dev-gyc-eval at 92e56c8 at `harness.html#deepagents-inferencenet`; that wiring’s
+budget is not the ModularRSI study’s. A comparison by slot follows, then a short section that
+separates running a harness from optimizing it and links to the Self-evolving
+page, how InferenceNet runs its DeepAgents and DeepSeek Harness arms, and the
+sources, including market changes checked on 10 October 2026. The page reports
+no scores. A new harness is added as one more breakdown tab, one more comparison
+column and, if new, one more ecosystem row.
