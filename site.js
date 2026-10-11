@@ -170,9 +170,9 @@
   /* Scroll containers: a tab stop only while they actually overflow ----------- */
   const scrollers = [...document.querySelectorAll('.table-scroll, .diagram-scroll, .mountain-table-wrap, .code-panel pre')];
   if (scrollers.length) {
-    // Wide figures and tables say so while they overflow sideways; the leaderboard keeps its own note.
+    // Wide figures and tables say so while they overflow sideways; both leaderboard boards keep their own note.
     const hintText = el => el.matches('.diagram-scroll') ? 'Scroll sideways to see the whole figure →'
-      : el.matches('.table-scroll') && !el.closest('[data-paired-leaderboard]') ? 'Scroll sideways to see every column →' : '';
+      : el.matches('.table-scroll') && !el.closest('[data-paired-leaderboard], [data-dev-leaderboard]') ? 'Scroll sideways to see every column →' : '';
     const syncHint = el => {
       const text = hintText(el);
       if (!text) return;

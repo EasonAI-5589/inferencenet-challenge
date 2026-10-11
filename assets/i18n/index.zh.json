@@ -378,5 +378,10 @@
   "These profiles have not been verified against the official scorer.": "这些评分配置尚未与官方评分器核对。",
   "This summary does not record time limits, API mode or sandbox; historical batches differ in these settings.": "这份汇总没有记录时限、API 模式或沙箱；各历史批次在这些设置上并不相同。",
   "Data JSON": "结果 JSON",
-  "Release provenance": "版本来源"
+  "Release provenance": "版本来源",
+  "11 Oct 2026": "2026 年 10 月 11 日",
+  "Dev100 / v10 harness study: 14 models × 4 harnesses": "Dev100 / v10 Harness 研究：14 个模型 × 4 种 Harness",
+  "Development harness study.": "开发阶段的 Harness 研究。",
+  "Separate development study, not leaderboard results.": "独立的开发研究，并非排行榜结果。",
+  "The v10 report on 14 models with four harnesses, over 100 development tasks, was generated on this date from several run batches. These are development diagnostics, not leaderboard results.": "关于 14 个模型搭配四种 Harness、覆盖 100 道开发题的 v10 报告于当日生成，数据来自多个运行批次。这些是开发诊断结果，并非排行榜结果。"
 }
