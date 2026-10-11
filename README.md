@@ -40,13 +40,14 @@ screenshot for visual changes.
 
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
-All seven pages load `site.css`, `site.js` and `language.js` with release tag
-`20261011-release`. Home and Leaderboard also load `leaderboard.css` and
+All seven pages load `site.css` and `site.js` with release tag
+`20261011-release`, and `language.js` with the same tag on every page except
+Harness, which uses `20261012-harness-update-r2` for its updated dictionary. Home and Leaderboard also load `leaderboard.css` and
 `leaderboard.js` with it (the script imports `leaderboard-data.js` with the same
 tag), and Home loads `index.css` with it. Self-evolving CSS uses
 `20261011-evolution`, which Harness loads as well, and Self-evolving JS keeps
 `20261010-evolution-r2`. Agent CSS keeps `20260917-case-data`, Teams CSS
-`20260921-yujie-leader` and Harness CSS `20261010-harness-r3`; the results JSON
+`20260921-yujie-leader` and Harness CSS `20261012-harness-r4`; the results JSON
 stays on `20260917-harness`. Strings shared by several pages, such as the
 reading-route labels and the scroll hints, live in the common dictionary in
 `language.js`.
@@ -54,8 +55,9 @@ reading-route labels and the scroll hints, live in the common dictionary in
 English is authored in the HTML. When changing English text, update the matching
 normalized English key and Chinese value in that page's dictionary. Preserve
 code, numerical results and source provenance unless a reviewed correction is
-available. Check both languages, both themes and a narrow viewport before
-submitting; verify navigation, images, chart fallbacks and language controls.
+available. Check both languages and both themes before submitting; verify
+navigation, images, chart fallbacks and language controls. Mobile layout tuning
+and verification is deferred for now unless the user requests it.
 
 同事可以直接修改对应页面的 HTML / CSS，并同步更新 `assets/i18n/` 下的中文词典。
 建议每次改动单独开分支、提交 PR，说明页面和修改点；有布局调整时附一张截图。
@@ -281,7 +283,19 @@ create_agent graph and LangGraph, down to InferenceNet’s compiled graph) at
 dev-gyc-eval at 92e56c8 at `harness.html#deepagents-inferencenet`; that wiring’s
 budget is not the ModularRSI study’s. A comparison by slot follows, then a short section that
 separates running a harness from optimizing it and links to the Self-evolving
-page, how InferenceNet runs its DeepAgents and DeepSeek Harness arms, and the
-sources, including market changes checked on 10 October 2026. The page reports
-no scores. A new harness is added as one more breakdown tab, one more comparison
+page, how InferenceNet runs its DeepAgents and DeepSeek Harness arms, a dated
+update and the sources, including market changes checked on 10 October 2026. The
+page reports no scores.
+
+Section 07, "Update · 12 Oct 2026" (`harness.html#update`), is a dated follow-up
+that leaves the 57-entry map and the pinned breakdowns unchanged. Three tabs read
+current maintainers' READMEs and named files: nine engineering projects placed by
+layer (execution harness, SDK and runtime, skills and method, orchestration and
+application), three tools that pair Codex with Claude Code (claudex-loop either
+way, codex-plugin-cc from Claude Code, cc-plugin-codex from Codex) and four more
+optimization methods (RRSI, RHO, Harness-R1 and WHALE, which also updates model
+weights; Meta-Harness and Self-Harness link to the Self-evolving page). Stars and
+forks are one snapshot from 12 Oct 2026, not measured performance; 23 search
+candidates are coverage, not new harnesses; nothing was installed, run or
+reproduced, and paper full texts were not read. Sources become section 08. A new harness is added as one more breakdown tab, one more comparison
 column and, if new, one more ecosystem row.

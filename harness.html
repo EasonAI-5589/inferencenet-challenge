@@ -18,10 +18,10 @@
   <link rel="stylesheet" href="data.css">
   <link rel="stylesheet" href="agent.css?v=20260917-case-data">
   <link rel="stylesheet" href="evolution.css?v=20261011-evolution">
-  <link rel="stylesheet" href="harness.css?v=20261010-harness-r3">
+  <link rel="stylesheet" href="harness.css?v=20261012-harness-r4">
   <script src="site.js?v=20261011-release" defer></script>
   <link rel="stylesheet" href="language.css">
-  <script src="language.js?v=20261011-release" defer></script>
+  <script src="language.js?v=20261012-harness-update-r2" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -56,6 +56,7 @@
         <li>Definition, landscape, three breakdowns, self-evolution</li>
         <li>Read from source · 10 Oct 2026</li>
         <li><a href="#compare">Jump to the comparison ↓</a></li>
+        <li><a href="#update">Update · 12 Oct 2026 ↓</a></li>
       </ul>
     </section>
 
@@ -67,7 +68,8 @@
         <li><a href="#compare"><span class="subnav-number">04</span>Compare</a></li>
         <li><a href="#self-evolution"><span class="subnav-number">05</span>Self-evolution</a></li>
         <li><a href="#inferencenet"><span class="subnav-number">06</span>In InferenceNet</a></li>
-        <li><a href="#provenance"><span class="subnav-number">07</span>Sources</a></li>
+        <li><a href="#update"><span class="subnav-number">07</span>Update</a></li>
+        <li><a href="#provenance"><span class="subnav-number">08</span>Sources</a></li>
       </ol>
     </nav>
     <nav class="reading-routes container" aria-label="How to read this page">
@@ -90,6 +92,7 @@
           <li><a href="#compare">Side by side</a></li>
           <li><a href="#self-evolution">Running a harness, and changing it</a></li>
           <li><a href="#inferencenet">How InferenceNet runs a harness</a></li>
+          <li><a href="#update">Update · 12 Oct 2026</a></li>
           <li><a href="#provenance">Versions and sources</a></li>
         </ol>
       </div>
@@ -413,6 +416,7 @@
           <p class="case-caption">Standards shared by most harnesses: AGENTS.md for project instructions, Agent Skills (SKILL.md) for packaged procedures and the Model Context Protocol (MCP) for tool and context servers. A growing number also support the Agent Client Protocol (ACP), for running an agent inside an editor or another harness. Methods that rewrite a harness, such as ModularRSI, Self-Harness and Meta-Harness, are not harnesses and are not listed; section 05 shows how they relate to one.</p>
         </div>
       </div>
+      <p class="update-pointer">A dated follow-up of 12 Oct 2026 reads nine projects from their current READMEs and adds Codex and Claude collaboration tools and four optimization methods, without changing this map. <a href="#update">Update · 12 Oct 2026 ↓</a></p>
     </section>
 
     <section class="section container ruled" id="breakdowns" aria-labelledby="breakdowns-title">
@@ -1467,13 +1471,102 @@
       </div>
     </section>
 
+    <section class="section container ruled" id="update" aria-labelledby="update-title">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">07 / Update · 12 Oct 2026</p>
+          <h2 id="update-title">A dated follow-up</h2>
+        </div>
+        <p class="lead">Checked on 12 October 2026. It reads the current README, and in places one named file, of nine engineering projects, three tools that pair Codex with Claude Code and four more optimization methods. Nothing was installed, run or benchmarked, and the 57-entry map and the pinned breakdowns above are unchanged.</p>
+      </div>
+      <ul class="rsi-notes update-scope">
+        <li>Stars and forks are one snapshot taken on 12 Oct 2026. They show attention and reuse, not task success, cost or maintainability.</li>
+        <li>The same search returned 23 candidate repositories. That is search coverage, not 23 new or complete harnesses: nine are described below and the other fourteen are listed by name only.</li>
+        <li>Descriptions follow each project’s main branch on 12 Oct. The breakdowns above read pinned releases (DeepAgents 0.7.13, Superpowers 7.0.0, DeepSeek Harness 0.1.5-rc.1), so a feature named here is not implied for those versions.</li>
+      </ul>
+      <div class="tabs compact update-tabs">
+        <div class="tablist" role="tablist" aria-label="Update topics" data-tabs-hash>
+          <button role="tab" id="tab-update-engineering" aria-controls="update-engineering" aria-selected="true" type="button"><span class="tab-number">A</span><span>Engineering<small>9 projects</small></span></button>
+          <button role="tab" id="tab-update-collaboration" aria-controls="update-collaboration" aria-selected="false" type="button"><span class="tab-number">B</span><span>Codex and Claude<small>3 tools</small></span></button>
+          <button role="tab" id="tab-update-optimization" aria-controls="update-optimization" aria-selected="false" type="button"><span class="tab-number">C</span><span>Optimization<small>4 methods</small></span></button>
+        </div>
+
+        <div class="tabpanel" id="update-engineering">
+          <h3 class="landscape-title">Engineering mechanisms, layer by layer</h3>
+          <p class="landscape-intro">Each project is placed in the layer it works at: an execution harness runs the loop; an SDK or runtime is the interface and state an agent is built on; a skills or method package changes what a host agent does; an orchestration layer manages sessions, workspaces and several agents.</p>
+          <div class="table-scroll" tabindex="0">
+            <table class="compare-table update-table">
+              <caption>Nine projects as their current READMEs describe them, 12 Oct 2026</caption>
+              <thead><tr><th scope="col">Project</th><th scope="col">Layer</th><th scope="col">Mechanism, as the maintainers describe it</th><th scope="col" class="num">Stars / forks</th><th scope="col">Limits of this reading</th></tr></thead>
+              <tbody>
+                <tr><th scope="row"><a href="https://github.com/langchain-ai/deepagents">Deep Agents</a></th><td>Execution harness</td><td>A harness on the LangGraph runtime with file backends, context compression, persistent memory, subagents, skills and integrations for MCP and other tools</td><td class="num">30,128 / 4,222</td><td>Main-branch README; the breakdown above reads the pinned 0.7.13</td></tr>
+                <tr><th scope="row"><a href="https://github.com/deepseek-ai/deepseek-harness">DeepSeek Harness</a></th><td>Execution harness</td><td>Model adapters, tools, the session log and the loop are all Cordis plugins; their registered effects are undone when a plugin unloads (<a href="https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/architecture.md">architecture notes</a>)</td><td class="num">247,437 / 29,736</td><td>Developer preview. Undoing a registration does not undo a write that has already left the process</td></tr>
+                <tr><th scope="row"><a href="https://github.com/earendil-works/pi">Pi</a></th><td>Execution harness</td><td>A minimal, extensible harness with extensions, skills, RPC, an SDK and a durable runtime</td><td class="num">114,291 / 14,550</td><td>No subagents or plan mode by default; both come from extensions. Permission limits depend on where it runs</td></tr>
+                <tr><th scope="row"><a href="https://github.com/pydantic/pydantic-ai">Pydantic AI Harness</a></th><td>Execution harness</td><td>A typed agent loop extended with capabilities: Coder, context, memory, planning, subagents and an Advisor</td><td class="num">20,550 / 2,902</td><td>Counts are for the whole pydantic-ai repository. An Advisor gives a second opinion, not an independent, complete review</td></tr>
+                <tr><th scope="row"><a href="https://github.com/bytedance/deer-flow">DeerFlow</a></th><td>Application on a harness</td><td>A research-and-build application with memory, a sandbox and skills, split into application and harness workspaces (<a href="https://github.com/bytedance/deer-flow/blob/main/backend/pyproject.toml">backend/pyproject.toml</a>)</td><td class="num">83,688 / 11,648</td><td>README read in part; many application and deployment dependencies. Not in the 57-entry map</td></tr>
+                <tr><th scope="row"><a href="https://github.com/OpenHands/software-agent-sdk">OpenHands Software Agent SDK</a></th><td>SDK and runtime</td><td>Agent, tool, conversation, workspace and event objects, with an agent server and a typed API</td><td class="num">1,237 / 640</td><td>The SDK to compare for embedding; the main repository’s counts do not describe it</td></tr>
+                <tr><th scope="row"><a href="https://github.com/OpenHands/OpenHands">OpenHands Agent Canvas</a></th><td>Orchestration and application</td><td>The main repository now presents Agent Canvas, which manages ACP agents such as OpenHands, Claude Code, Codex and Pi on local, remote or cloud backends; automation lives in a separate repository</td><td class="num">90,596 / 11,998</td><td>README read in part. The 10 Oct map lists this repository as the OpenHands product harness; Agent Canvas sits at the control layer</td></tr>
+                <tr><th scope="row"><a href="https://github.com/obra/superpowers">Superpowers</a></th><td>Skills and method</td><td>Composable skills for planning, test-driven development, debugging and review, with install entry points for many hosts</td><td class="num">297,537 / 26,577</td><td>README read in part. No loop of its own; it runs inside a host harness. The breakdown above reads v7.0.0</td></tr>
+                <tr><th scope="row"><a href="https://github.com/affaan-m/ECC">ECC</a></th><td>Skills and method</td><td>Skills, memory, security and workflows packaged for several harnesses</td><td class="num">277,025 / 41,321</td><td>Only search metadata and the start of the README were read; nothing is ranked by effect</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="case-caption">Read from each repository on 12 Oct 2026; stars and forks were recorded at the same time, early on 12 Oct (UTC+8). The table follows the layers, not a ranking.</p>
+          <p class="update-others">The other fourteen candidates were found in the same search and are not compared here (most were only search-summary discoveries; <a href="https://github.com/huggingface/smolagents">smolagents</a> also had its README inspected): <a href="https://github.com/infiniflow/ragflow">RAGFlow</a>, <a href="https://github.com/agentscope-ai/QwenPaw">QwenPaw</a>, <a href="https://github.com/HKUDS/DeepCode">DeepCode</a>, <a href="https://github.com/shareAI-lab/learn-claude-code">learn-claude-code</a>, <a href="https://github.com/walkinglabs/learn-harness-engineering">learn-harness-engineering</a>, <a href="https://github.com/ruvnet/ruflo">Ruflo</a>, <a href="https://github.com/aden-hive/hive">Hive</a>, <a href="https://github.com/tinyhumansai/openhuman">OpenHuman</a>, <a href="https://github.com/zhayujie/CowAgent">CowAgent</a>, <a href="https://github.com/nexu-io/open-design">Open Design</a>, <a href="https://github.com/alibaba/open-code-review">Open Code Review</a>, <a href="https://github.com/wshobson/agents">wshobson/agents</a> and <a href="https://github.com/revfactory/harness">revfactory/harness</a>.</p>
+        </div>
+
+        <div class="tabpanel" id="update-collaboration">
+          <h3 class="landscape-title">Codex and Claude Code, one building and one inspecting</h3>
+          <p class="landscape-intro">Three public tools pair the two coding agents. They differ in which agent hosts the session and which one is called in. These are workflow patterns, not the setups InferenceNet evaluates; this reading does not establish a measured quality gain.</p>
+          <div class="table-scroll" tabindex="0">
+            <table class="compare-table update-table update-collab-table">
+              <caption>Three tools as their READMEs describe them, 12 Oct 2026</caption>
+              <thead><tr><th scope="col">Tool</th><th scope="col">Direction</th><th scope="col">Roles</th><th scope="col">Built-in checks</th><th scope="col" class="num">Stars / forks</th></tr></thead>
+              <tbody>
+                <tr><th scope="row"><a href="https://github.com/chaseai-yt/claudex-loop">claudex-loop</a></th><td>Either way: the session you start in, Claude Code or Codex, is the host</td><td>The host writes requirements and a plan; the other provider reviews the plan. Either agent can build (builder=claude or builder=codex), and the inspector is always the other provider, in a fresh session</td><td>A round budget with APPROVED, REVISE or BLOCKED verdicts; fixes the host takes over get another inspection; a plan and a review log record who wrote and who reviewed each part</td><td class="num">2,916 / 315</td></tr>
+                <tr><th scope="row"><a href="https://github.com/openai/codex-plugin-cc">codex-plugin-cc</a></th><td>Claude Code hosts and calls Codex</td><td>Codex gives a read-only review, an adversarial review that challenges the design, or takes over a task (rescue) to investigate or fix</td><td>Reviews are read-only; background jobs have status, result and cancel commands</td><td class="num">34,084 / 2,391</td></tr>
+                <tr><th scope="row"><a href="https://github.com/sendbird/cc-plugin-codex">cc-plugin-codex</a></th><td>Codex hosts and calls Claude Code</td><td>The same shape in the opposite direction: Claude Code reviews, challenges or takes over a task while Codex keeps the thread</td><td>Tracked background jobs with status, result and cancel; an optional review gate at the end of a turn</td><td class="num">223 / 45</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="case-caption">Read from each official README on 12 Oct 2026; the claudex-loop and cc-plugin-codex READMEs were read in part. None of the tools was installed or run.</p>
+          <p class="case-caption"><strong>A pattern to adapt:</strong> these are workflow recommendations synthesized from the tools and the current Codex–Claude discussion, not guarantees built into every plugin.</p>
+          <ul class="rsi-notes">
+            <li>Plan before code: use one plan with acceptance checks, have the reviewer return findings with evidence, and set a round budget to keep the exchange bounded.</li>
+            <li>Builder and inspector: either agent can build while the other inspects. Agreement between two models is not proof of correctness; task-specific checks and independent evidence are still required.</li>
+            <li>Three layers stay apart: a coordinator or workspace layer for sessions, task messages and worktrees; the execution harness each agent runs in; and the search interface the agents use to read sources.</li>
+          </ul>
+          <p class="update-others">Earlier write-ups of similar setups: <a href="https://github.com/formiat/multi-agent-orchestration">formiat/multi-agent-orchestration</a>, with Codex coordinating and Claude executing, and <a href="https://github.com/p3nchan/cc-orchestrator">cc-orchestrator</a>, with Claude coordinating and Codex executing.</p>
+        </div>
+
+        <div class="tabpanel" id="update-optimization">
+          <h3 class="landscape-title">Four more ways to change a harness from feedback</h3>
+          <p class="landscape-intro">Meta-Harness and Self-Harness are explained on the <a href="evolution.html#methods">Self-evolving page</a>. The four methods below were read from their authors’ repositories: the README and one named implementation file each. Their papers were not read in full and nothing was reproduced.</p>
+          <div class="table-scroll" tabindex="0">
+            <table class="compare-table update-table">
+              <caption>Four methods as their authors’ repositories describe them, 12 Oct 2026</caption>
+              <thead><tr><th scope="col">Method</th><th scope="col">What it changes</th><th scope="col">Mechanism, as the authors’ repository describes it</th><th scope="col" class="num">Repository stars / forks</th><th scope="col">Limits</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">RRSI · <a href="https://arxiv.org/abs/2609.24972">arXiv 2609.24972</a></th><td>The harness</td><td>Recursive harness edits held in check by edit budgets, the full edit history, leakage screening, a noise-adjusted promotion floor, token-cost gates and pruning (<a href="https://github.com/google-research/rrsi/blob/main/rrsi/selection.py">rrsi/selection.py</a>)</td><td class="num"><a href="https://github.com/google-research/rrsi">google-research/rrsi</a> · 1,447 / 141</td><td>Transfer results are the authors’ and were not rerun</td></tr>
+                <tr><th scope="row">RHO · <a href="https://arxiv.org/abs/2606.05922">arXiv 2606.05922</a></th><td>The harness, including instructions and skills</td><td>Works back from unlabeled trajectories: picks a representative set, reruns it, diagnoses failures, writes candidates and chooses by pairwise self-preference; ships adapters for Codex and Claude Code (<a href="https://github.com/wbopan/retro-harness/blob/main/codex/retrospection.py">codex/retrospection.py</a>)</td><td class="num"><a href="https://github.com/wbopan/retro-harness">wbopan/retro-harness</a> · 60 / 8</td><td>Self-preference is a proxy, not independent correctness; edits to AGENTS.md or skills still need review</td></tr>
+                <tr><th scope="row">Harness-R1 · <a href="https://arxiv.org/abs/2608.02276">arXiv 2608.02276</a></th><td>Lifecycle hooks of the harness, written by a separately trained model</td><td>Trains a 9B harness-engineer model to write typed Python patches for four lifecycle hooks, rewarded by how a frozen target model’s reruns change (<a href="https://github.com/DeepExperience/Harness-R1/blob/main/code/life-harness/AgentBench/src/server/harness/code_runner.py">code_runner.py</a>)</td><td class="num"><a href="https://github.com/DeepExperience/Harness-R1">DeepExperience/Harness-R1</a> · 110 / 21</td><td>Target models and environments are not bundled; a trained engineer is specific to its target</td></tr>
+                <tr><th scope="row">WHALE · <a href="https://arxiv.org/abs/2609.00196">arXiv 2609.00196</a></th><td>The model’s weights and the harness, in turn</td><td>Alternates updates to the model weights (RSFT) with Meta-Harness search, and compares weight-only, harness-only and alternating runs (<a href="https://github.com/krafton-ai/WHALE/blob/main/run/lib/alternate.sh">run/lib/alternate.sh</a>)</td><td class="num"><a href="https://github.com/krafton-ai/WHALE">krafton-ai/WHALE</a> · 59 / 4</td><td>Not a fixed-weight method: it needs trainable weights and training infrastructure</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="case-caption">Paper links go to arXiv; mechanisms follow the authors’ repositories on 12 Oct 2026, and their released code may differ from the papers. Stars and forks are a same-day snapshot; a low count says nothing about a method’s value.</p>
+          <p class="update-others">Also in view: <a href="https://github.com/china-qijizhifeng/agentic-harness-engineering">Agentic Harness Engineering</a> (<a href="https://arxiv.org/abs/2604.25850">arXiv 2604.25850</a>), whose authors say its Agent Debugger is only partly open source.</p>
+        </div>
+      </div>
+    </section>
+
     <section class="section container ruled" id="provenance" aria-labelledby="provenance-title">
       <div class="section-heading">
         <div>
-          <p class="kicker">07 / Sources</p>
+          <p class="kicker">08 / Sources</p>
           <h2 id="provenance-title">Versions and sources</h2>
         </div>
-        <p class="lead">The breakdowns are read from each project’s source at a pinned tag, and the landscape from makers’ repositories and documentation, all on 10 October 2026.</p>
+        <p class="lead">The breakdowns are read from each project’s source at a pinned tag, and the landscape from makers’ repositories and documentation, all on 10 October 2026. The update in section 07 links its own sources, read on 12 October 2026.</p>
       </div>
       <div class="grid-3 case-grid">
         <div>

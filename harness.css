@@ -52,6 +52,20 @@
 .harness-deep{scroll-margin-top:calc(var(--header-h) + 58px)}
 .harness-table-link{margin:16px 0 0}
 
+/* 07 Update: a dated follow-up in three compact tabs; the 57-entry map above stays as it is. */
+.update-pointer,.update-others{max-width:860px;margin:22px 0 0;font-size:14px;line-height:1.75;color:var(--soft)}
+.update-pointer a,.update-others a,.update-table td a,.update-tabs .landscape-intro a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--muted)}
+.update-scope{max-width:900px;margin:0 0 30px}
+.update-tabs .tablist [role="tab"]{flex:1 1 calc((100% - 2px) / 3)}
+.update-table{min-width:1040px}
+.update-table th[scope="row"]{min-width:150px}
+.update-table th[scope="row"] a{text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--muted)}
+.update-table td:nth-of-type(1){min-width:130px}
+.update-table td:nth-of-type(2){min-width:300px}
+.update-table td:last-child:not(.num){min-width:210px}
+.update-table .num{white-space:nowrap}
+.update-collab-table td:nth-of-type(3){min-width:240px}
+
 /* 04 to 06: wide comparison tables. */
 .harness-compare{min-width:900px}
 .harness-compare th[scope="row"]{min-width:140px}
@@ -77,7 +91,7 @@
 }
 @media(max-width:520px){
   .harness-page .field-groups.slots,.landscape-types{grid-template-columns:minmax(0,1fr)}
-  .harness-tabs .tablist [role="tab"],.landscape-tabs .tablist [role="tab"]{flex-basis:100%}
+  .harness-tabs .tablist [role="tab"],.landscape-tabs .tablist [role="tab"],.update-tabs .tablist [role="tab"]{flex-basis:100%}
   .harness-figure-title{margin-top:30px}
   .harness-page .harness-subtitle{margin-top:36px}
   .harness-page .harness-tabs .case-head h3{font-size:20px}
