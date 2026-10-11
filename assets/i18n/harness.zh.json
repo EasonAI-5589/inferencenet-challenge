@@ -1048,7 +1048,6 @@
   "Held fixed:": "固定不变：",
   "the evaluator’s tasks, budget and scoring, and usually the model. Who proposes the edit and which test decides differ by method.": "评测方的题目、预算和评分，通常还有模型。由谁提出修改、由哪种测试决定取舍，因方法而异。",
   "Two layers. The execution loop runs a harness configuration, which some harnesses can adjust while they run; the optimization loop proposes, tests and keeps harness versions using feedback. The three methods below run the optimization loop mostly offline. The parts they edit are the ones section 03 calls the loop, tools, context and extension points, or the harness code itself.": "两个层次。执行循环运行一份 Harness 配置，有些 Harness 能在运行中调整这份配置；优化循环依据反馈提出、测试并保留 Harness 版本。下面三种方法主要以离线方式运行优化循环。它们修改的部分就是第 03 节所说的循环、工具、上下文和扩展点，或者 Harness 的代码本身。",
-  "Three published methods run such an optimization loop:": "三种已发表的方法运行这样的优化循环：",
   "(Wu et al., 2026),": "（Wu 等，2026）、",
   "(Zhang et al., 2026) and": "（Zhang 等，2026）和",
   "(Lee et al., 2026). What each one edits, who proposes the edits and how candidates are tested and kept are compared on the Self-evolving page, together with InferenceNet’s own development study.": "（Lee 等，2026）。每种方法修改什么、由谁提出修改、候选如何测试和保留，在自进化页逐项比较，同时介绍 InferenceNet 自己的开发研究。",
@@ -1132,5 +1131,8 @@
   "repositories: official maintenance or service has ended; the public code remains available.": "的仓库：官方维护或服务已经结束，公开代码仍可获取。",
   "Landscape rows link to each maker’s repository or documentation as read on 10 Oct 2026. Versions, model lists and owners change often.": "版图中的各行链接到对应开发方的仓库或文档，以 2026 年 10 月 10 日读取时为准。版本、模型列表和归属方经常变化。",
   "AI for econometric research.": "面向计量经济学研究的 AI。",
-  "Contact": "联系"
+  "Contact": "联系",
+  "DeepAgents: full three-layer structure": "DeepAgents：完整三层结构",
+  "DeepAgents: InferenceNet wiring": "DeepAgents：InferenceNet 接线",
+  "Three methods from recent papers run such an optimization loop:": "近期论文中的三种方法运行这样的优化循环："
 }

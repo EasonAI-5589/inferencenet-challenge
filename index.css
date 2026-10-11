@@ -4,9 +4,16 @@
 .hero-description{max-width:780px}
 .hero-purpose{max-width:760px;margin:12px auto 0;font-size:16px;color:var(--soft)}
 .hero-actions{max-width:900px;margin-inline:auto}
-.latest-update{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 14px;margin:26px auto 0;font-size:12px;color:var(--muted)}
-.latest-update time{font-family:var(--mono)}
-.latest-update a{text-decoration:underline;text-underline-offset:4px}
+/* Dated status: published results, the historical study and what is still to come stay apart. */
+.home-status{max-width:900px;margin:30px auto 0;padding:18px 22px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);text-align:left}
+.home-status-title{margin:0 0 10px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.home-status-list{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.home-status-list li{display:grid;grid-template-columns:96px minmax(0,1fr);gap:2px 16px;font-size:13.5px;line-height:1.65;color:var(--soft)}
+.home-status-list time{padding-top:2px;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.home-status-list p{margin:0}
+.home-status-list strong{font-weight:600;color:var(--ink)}
+.home-status-list a{margin-left:4px;color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--muted)}
+.home-status-next{margin:12px 0 0;padding-top:10px;border-top:1px solid var(--line);font-size:12.5px;line-height:1.6;color:var(--muted)}
 .home-source{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;margin-top:20px;font-size:13px;line-height:1.7;color:var(--soft)}
 .home-source .text-link{font-size:13px}
 #overview .research-flow{margin-top:28px}
@@ -37,6 +44,13 @@
 .participate-panel{display:flex;justify-content:space-between;align-items:center;gap:24px 40px;padding:26px 30px;border:1px solid var(--strong-line);border-radius:var(--radius);background:var(--tint)}
 .participate-panel>p{max-width:64ch;color:var(--soft);font-size:15px}
 .participate-actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px 24px;flex-shrink:0}
+.participate-now{margin-top:30px}
+.participate-now h3{font-size:16px}
+.participate-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 28px;margin:14px 0 0;padding:0;list-style:none}
+.participate-steps li{display:flex;flex-direction:column;gap:8px;min-width:0;padding-top:14px;border-top:1px solid var(--line)}
+.participate-steps h4{margin:0;font-size:15px;font-weight:600;line-height:1.4;color:var(--ink)}
+.participate-steps p{margin:0;font-size:14px;line-height:1.75;color:var(--soft)}
+.participate-steps .text-link{margin-top:auto;padding-top:4px;font-size:13px}
 .home-resources{margin-top:30px}
 .home-resources h3{font-size:16px}
 .home-resources ul{display:flex;flex-wrap:wrap;gap:18px 32px;list-style:none;padding:0;margin:14px 0 0}
@@ -49,5 +63,6 @@
 .home-citations ul{list-style:none;display:grid;gap:10px;padding:0;margin:16px 0 0}
 .home-citations .text-link{font-size:13px}
 @media(max-width:1000px){.case-footer,.participate-panel{align-items:flex-start;flex-direction:column}.participate-actions{flex-shrink:1}}
+@media(max-width:860px){.participate-steps{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:700px){.case-comparison{grid-template-columns:1fr}.case-arm+.case-arm{border-left:0;border-top:1px solid var(--line)}.case-question,.case-arm{padding:24px}.case-footer,.participate-panel{padding:22px 24px}.research-directions{--cols:1}.hero-purpose{font-size:15px}.case-question h3{font-size:21px}}
-@media(max-width:520px){.hero-actions .button{width:100%}.latest-update{font-size:11px}.latest-update time{width:100%}.home-resources ul{flex-direction:column}.case-question,.case-arm,.case-footer,.participate-panel{padding:20px}}
+@media(max-width:520px){.hero-actions .button{width:100%}.home-status{padding:16px}.home-status-list li{grid-template-columns:minmax(0,1fr)}.home-resources ul{flex-direction:column}.case-question,.case-arm,.case-footer,.participate-panel{padding:20px}}

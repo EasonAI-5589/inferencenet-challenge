@@ -1,7 +1,8 @@
 /* Evolution page (phase 2). Loads after site.css and agent.css and reuses their
  * tokens, case headings, timeline, tables and code panels. Sections:
  * 0 direction overview (concepts, loop, methods, comparison, study status, sources) ·
- * 1 architecture figures · 2 trajectory charts · 3 improvement summary · 4 code. */
+ * 1 architecture figures · 2 trajectory charts and the completion lineage case ·
+ * 3 improvement summary · 4 code. */
 
 /* 0 · Direction overview ------------------------------------------------------- */
 .se-tiles{list-style:none;margin:6px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
@@ -150,6 +151,18 @@
 .rsi-chart .rsi-tag rect{fill:var(--paper);stroke:var(--line);stroke-width:1}
 .rsi-chart .rsi-tag text{font-size:10.5px;fill:var(--soft)}
 .rsi-values td:nth-child(3){min-width:220px}
+.se-case{display:grid;gap:22px;margin-top:34px}
+.se-case,.se-case-card{scroll-margin-top:calc(var(--header-h) + 58px)}
+.se-case-card{min-width:0;border:1px solid var(--line);border-radius:var(--radius);background:var(--paper);padding:22px 24px 24px}
+.se-case-card.is-negative{border-left:3px solid var(--caution);background:var(--tint)}
+.se-case-card h3{font-size:19px;line-height:1.4;margin:0 0 8px}
+.se-case-intro{max-width:880px;font-size:14px;line-height:1.75;color:var(--soft);margin:0 0 18px}
+.se-case-table td:nth-child(2),.se-case-table td:nth-child(3){min-width:200px}
+.se-case-notes{margin:18px 0 0;padding-left:18px;display:grid;gap:8px;max-width:900px;font-size:13.5px;line-height:1.75;color:var(--soft)}
+.se-case-card.is-negative .se-case-notes{margin-top:12px}
+.se-case-notes strong{font-weight:600;color:var(--ink)}
+.se-case-source{max-width:900px;font-size:12px;line-height:1.8;color:var(--muted);margin:16px 0 0}
+.se-case-source a{text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--muted)}
 
 /* 3 · Improvement summary ------------------------------------------------------ */
 .rsi-stats{margin:6px 0 42px}
@@ -195,6 +208,7 @@
   .se-cycle::after{display:none}
   .se-frame,.se-sources{grid-template-columns:minmax(0,1fr)}
   .se-cycle-figure{padding:18px 16px 16px}
+  .se-case,.se-case-card{scroll-margin-top:calc(var(--header-h) + 16px)}
 }
 @media(max-width:640px){
   .se-questions{grid-template-columns:minmax(0,1fr)}
@@ -206,6 +220,7 @@
   .se-tiles,.se-tiles.is-status{grid-template-columns:minmax(0,1fr)}
   .se-tiles>li{padding:16px 16px 18px}
   .se-method-head h3{font-size:21px}
+  .se-case-card{padding:16px 16px 18px}
 }
 @media(max-width:400px){
   .rsi-stats strong{font-size:22px}

@@ -14,13 +14,13 @@
   <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <script src="theme.js"></script>
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="site.css?v=20261010-menu">
+  <link rel="stylesheet" href="site.css?v=20261011-release">
   <link rel="stylesheet" href="agent.css?v=20260917-case-data">
-  <link rel="stylesheet" href="evolution.css?v=20261010-evolution-r3">
-  <script src="site.js?v=20260915-menu" defer></script>
+  <link rel="stylesheet" href="evolution.css?v=20261011-evolution">
+  <script src="site.js?v=20261011-release" defer></script>
   <script src="evolution.js?v=20261010-evolution-r2" defer></script>
   <link rel="stylesheet" href="language.css">
-  <script src="language.js?v=20261010-integration" defer></script>
+  <script src="language.js?v=20261011-release" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -61,6 +61,34 @@
       <li><a href="#practice"><span class="subnav-number">05</span>InferenceNet study</a></li>
       <li><a href="#sources"><span class="subnav-number">06</span>Sources</a></li>
     </ol></nav>
+    <nav class="reading-routes container" aria-label="How to read this page">
+      <div class="reading-route">
+        <p class="reading-route-title">Quick read</p>
+        <ol>
+          <li><a href="#concept">What self-evolution changes, and what it leaves alone</a></li>
+          <li><a href="#compare">The three methods side by side</a></li>
+          <li><a href="#practice">Our ModularRSI-style development study</a></li>
+          <li><a href="#case-completion">Follow one lineage: completion</a></li>
+          <li><a href="#case-negative">What did not work</a></li>
+        </ol>
+      </div>
+      <div class="reading-route">
+        <p class="reading-route-title">Full route</p>
+        <ol>
+          <li><a href="#concept">Concept</a></li>
+          <li><a href="#cycle">Improvement loop</a></li>
+          <li><a href="#methods">Methods</a></li>
+          <li><a href="#compare">Comparison</a></li>
+          <li><a href="#practice">InferenceNet study</a></li>
+          <li><a href="#hooks">Hook points</a></li>
+          <li><a href="#loop">Evolution run</a></li>
+          <li><a href="#trajectories">Trajectories</a></li>
+          <li><a href="#improvements">What improved</a></li>
+          <li><a href="#code">Evolved code</a></li>
+          <li><a href="#sources">Sources</a></li>
+        </ol>
+      </div>
+    </nav>
 
     <section class="section container ruled" id="concept" aria-labelledby="concept-title">
       <div class="case-heading"><p class="kicker">01 / Concept</p><h2 id="concept-title">What self-evolution changes, and what it leaves alone</h2></div>
@@ -419,18 +447,18 @@
             <text x="358" y="270" class="f-s f-mu">no function merge or task-aware mix</text>
             <line x1="654" y1="247" x2="676" y2="247" class="f-ln" marker-end="url(#loop-arrow)"/>
             <rect x="678" y="204" width="308" height="86" rx="4" class="f-strong"/>
-            <text x="690" y="228" class="f-tt">7  Held-out evaluation · next</text>
+            <text x="690" y="228" class="f-tt">7  Held-out evaluation · planned</text>
             <text x="690" y="250" class="f-s">900 tasks: DeepAgents vs frozen</text>
             <text x="690" y="270" class="f-s">same model, sandbox, budget, scorer</text>
             <text x="14" y="318" class="f-s f-mu">Diagnosis (one call per batch), editing and review are one-shot, tool-free model calls, accounted apart from the per-task budget. The split groups tasks by paper and input files.</text>
           </svg>
         </div>
-        <figcaption>The evolution loop at a glance, following the protocol in docs/MODULAR_RSI_REAL100_PROTOCOL.md. Within an epoch only module source changes; DeepAgents and the held-out tasks are never touched. The steps below give the details of this run.</figcaption>
+        <figcaption>The evolution loop at a glance, following the protocol in docs/MODULAR_RSI_REAL100_PROTOCOL.md. Within an epoch only module source changes; DeepAgents and the held-out tasks are never touched. The steps below give the details of this run. Step 7 had not been run when the harness was frozen on 9 Oct 2026.</figcaption>
       </figure>
       <ol class="case-timeline rsi-steps">
         <li><span class="case-step-number">01</span><div class="case-step-content"><h3>Split the tasks before anything runs</h3><p class="case-step-story">From the 1,000 Selected_1000 tasks, 100 become the development set and 900 are held out. Tasks from the same paper or with identical input files stay on the same side. The evolution loop never dispatches the 900 held-out tasks.</p><dl class="case-observed-facts"><div><dt>Development tasks</dt><dd>100</dd></div><div><dt>Held-out tasks</dt><dd>900 · not run as of 9 Oct 2026</dd></div></dl></div></li>
         <li><span class="case-step-number">02</span><div class="case-step-content"><h3>Roll out every harness version</h3><p class="case-step-story">Each harness version solves every development task three times with DeepSeek V4 Pro inside DeepAgents. Every run_python call starts a fresh sandbox; nothing persists between calls.</p><dl class="case-observed-facts"><div><dt>Rollouts per evaluation</dt><dd>300</dd></div><div><dt>Budget per rollout</dt><dd>12 model calls · 8 run_python calls</dd></div><div><dt>Output and time limit</dt><dd>32,768 tokens · 30 min</dd></div><div><dt>Sandbox per call</dt><dd>6 GB · 2 CPUs · 90 s</dd></div></dl></div></li>
-        <li><span class="case-step-number">03</span><div class="case-step-content"><h3>Score in private</h3><p class="case-step-story">The evaluator reruns each final program from scratch and compares its output with the hidden reference. The model, the analyst and the editor never see reference values or scorer internals.</p></div></li>
+        <li><span class="case-step-number">03</span><div class="case-step-content"><h3>Score in private</h3><p class="case-step-story">The evaluator reruns each final program from scratch and compares its output with the reference values. The model, the analyst and the editor never see those values or the scorer internals. The scorer is independent of the agent, but it scores the same development tasks that the analyst diagnoses, so these scores are not an independent validation.</p></div></li>
         <li><span class="case-step-number">04</span><div class="case-step-content"><h3>Diagnose by contrast</h3><p class="case-step-story">Tasks are grouped by outcome across their three rollouts: all passed, mixed or all failed, where a pass means the coefficient and SE are within 5%. An analyst model reads all 100 tasks in ten batches of ten. In a mixed task it compares passing and failing rollouts; in an all-failed task it compares an earlier version’s passing rollout of that task when one exists, and otherwise reads the failures on their own; in an all-passed task it looks for wasted steps. A problem needs support from at least two different tasks in one batch, and the batch finding with the most supporting tasks drives the edit.</p><p class="case-decision">Same-task comparisons remove most task difficulty, but they need a passing rollout of the same task: only 21 of 100 tasks were mixed at the start. In this run, 17 of the 24 task votes behind the eight promoted edits came from tasks that failed all three rollouts and were diagnosed without a comparison.</p></div></li>
         <li><span class="case-step-number">05</span><div class="case-step-content"><h3>Edit one function</h3><p class="case-step-story">For each lineage, an editor model sees only its function, the history of accepted versions and the selected finding. It returns a new version of that function. Static checks verify syntax, imports, the interface and the editing scope.</p></div></li>
         <li><span class="case-step-number">06</span><div class="case-step-content"><h3>Review the diff, then probe on real tasks</h3><p class="case-step-story">A reviewer model rejects changes that are not general across tasks, such as ones that encode task-specific details. The candidate then runs two real development tasks. If the probe completes without protocol or runtime errors, the candidate is promoted.</p><p class="case-decision">Promotion does not look at development scores. The scores in section 05.3 are recorded for analysis only, so an accepted version can score lower than its parent. The two-task probe shows that a candidate runs end to end; it is not a statistical test that performance held.</p></div></li>
@@ -486,6 +514,43 @@
           </table>
         </div>
       </details>
+      <div class="se-case" id="case-completion">
+        <article class="se-case-card" aria-labelledby="case-completion-title">
+          <p class="se-label">Module record · development run frozen on 9 Oct 2026</p>
+          <h3 id="case-completion-title">Follow one lineage: completion</h3>
+          <p class="se-case-intro">One module lineage read end to end: what the analyst reported, what the editor changed and how each kept version scored on the development set. Panel (b) above plots the same versions. It is a record at the module and metric level, not a causal account of any single task.</p>
+          <div class="table-scroll" tabindex="0">
+            <table class="compare-table wide se-case-table">
+              <caption>completion lineage: findings, changes and development scores, out of 300 rollouts per version</caption>
+              <thead><tr><th scope="col">Version</th><th scope="col">Analyst finding</th><th scope="col">Editor change</th><th scope="col" class="num">Supporting tasks</th><th scope="col" class="num">Full replication</th><th scope="col" class="num">Scored final result</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Initial</th><td>—</td><td>No-op starting function</td><td class="num">—</td><td class="num">81</td><td class="num">171</td></tr>
+                <tr><th scope="row">Epoch 1</th><td>No final program after tool calls</td><td>stronger final-submission reminder</td><td class="num">2</td><td class="num">95</td><td class="num">198</td></tr>
+                <tr><th scope="row">Epoch 2</th><td>Forced to submit right after an error</td><td>debug, verify, then submit</td><td class="num">2</td><td class="num">84</td><td class="num">191</td></tr>
+                <tr><th scope="row">Epoch 3</th><td>No final program after tool calls</td><td>end every turn with a final message</td><td class="num">2</td><td class="num">85</td><td class="num">181</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <ul class="se-case-notes">
+            <li>Each of the three edits passed static checks, diff review and a two-task probe. Promotion never looked at these scores, so epochs 2 and 3 were kept even though both scored below epoch 1. Acceptance does not guarantee a gain.</li>
+            <li>The frozen completion function in section 05.5 is the result of all three epochs. The code of the intermediate versions is not published.</li>
+            <li>Between the initial and the frozen harness, the signal “Used tools, never submitted a program” fell from 48 to 15 tasks, and the failed rollouts with the signal in those tasks from 103 to 25 (definitions in section 05.4). The frozen harness also contains the accepted agent_loop and tool_use changes and the integration refinement, and this signal counts the same rollouts as the agent_loop signal, so the drop is not an effect of this module alone.</li>
+            <li>The scorer reruns each final program independently of the agent, but the same 100 development tasks were used to find these problems and to score the fixes. This is not an independent validation, and no confidence intervals are reported.</li>
+          </ul>
+        </article>
+        <article class="se-case-card is-negative" id="case-negative" aria-labelledby="case-negative-title">
+          <p class="se-label">Negative results · same run</p>
+          <h3 id="case-negative-title">What did not work</h3>
+          <ul class="se-case-notes">
+            <li><strong>Accepted is not the same as better.</strong> In completion, epochs 2 and 3 reached 84 and 85 full replications, below epoch 1’s 95; in tool_use, epoch 3 reached 87, below epoch 2’s 91.</li>
+            <li><strong>Two modules never changed.</strong> All three observation candidates and all three context candidates were rejected: two by diff review, three for invalid editor output and one for failed checks. The best-supported finding of the run, “Empty listing for present data” with 9 supporting tasks, was rejected by diff review.</li>
+            <li><strong>More scored results, not more precise ones.</strong> Among rollouts with a scored final result, the share with full replication fell from 47.4% to 41.9% between the initial and the frozen harness.</li>
+            <li><strong>Some signals barely moved or got worse.</strong> “A tool execution timed out” went from 4 to 5 tasks, and “Same failure type repeated, mostly no result file” from 75 to 72 tasks (section 05.4).</li>
+            <li><strong>Thin evidence per edit.</strong> Each promoted edit rested on 2 to 5 supporting tasks, and 17 of the 24 task votes behind the eight promoted edits came from tasks that failed all three rollouts and were diagnosed without a comparison (step 04).</li>
+          </ul>
+          <p class="se-case-source">All counts come from <a href="assets/data/modular-rsi-evolution.json">modular-rsi-evolution.json</a> and the step descriptions above; the 900 held-out tasks had not been run when the harness was frozen on 9 Oct 2026.</p>
+        </article>
+      </div>
     </section>
 
     <section class="section container ruled" id="improvements" aria-labelledby="improvements-title">
@@ -637,7 +702,7 @@ def agent_loop(remaining_model_calls: int, last_tool_failed: bool) -&gt; dict[st
           <p>Solver, analyst, editor and reviewer: deepseek-v4-pro-0813 through DashScope Chat Completions with thinking disabled. Harness: DeepAgents 0.7.13. Dataset: CamoAiLab/InferenceNet at revision 59f9512, Selected_1000.</p>
           <p>Full replication requires the coefficient and standard error within 1% relative error and the p-value within 0.01 absolute error (local-paper-v1). The 5% measure requires both the coefficient and the standard error within 5%. This differs from the leaderboard’s partial replication, which checks the coefficient only. Correct significance requires the correct sign and the same p-value band (p &lt; 0.01, 0.01–0.05, 0.05–0.1 or ≥ 0.1); the leaderboard’s Significance level column does not require the sign.</p>
           <p>Method: ModularRSI by Wu et al. (arXiv 2609.14857 v1, 14 Sep 2026). This adaptation keeps the five-module split, contrastive trajectory diagnosis, scoped edits, diff review, execution probes and integration. Unlike the paper, it evolves on 100 InferenceNet development tasks rather than a separate evolution set, makes at most one edit per module per epoch rather than per batch, edits one entry function per module rather than a library of variants, and implements neither function merge nor task-aware function composition. The paper evolves a Terminus-2-based harness; this study evolves hook functions around unchanged DeepAgents 0.7.13.</p>
-          <p>The aggregated values on this page are published in <a href="assets/data/modular-rsi-evolution.json">modular-rsi-evolution.json</a>. Task identifiers, trajectories, generated programs and reference values stay private.</p>
+          <p>The aggregated values on this page are published in <a href="assets/data/modular-rsi-evolution.json">modular-rsi-evolution.json</a>. Task identifiers, trajectories and generated programs from this run are not published here; reference values are never shown to the model, the analyst or the editor during a run.</p>
           <p><a href="https://arxiv.org/abs/2609.14857v1">ModularRSI paper (arXiv 2609.14857 v1)</a> · <a href="https://github.com/IQuestLab/ModularRSI/tree/b5c72c36b0d08ff93f00ee202a8fbdebe849dfb9">Official code at b5c72c3</a> · <a href="#sources">All method sources</a></p>
         </div>
       </details>

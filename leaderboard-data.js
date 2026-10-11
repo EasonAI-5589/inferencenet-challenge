@@ -64,8 +64,122 @@ export function rankModels(data, view = DEFAULT_VIEW, metric = DEFAULT_METRIC) {
 export const formatScore = score => `${score.toFixed(1)}%`;
 export const escapeHTML = text => String(text).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-export function tableRows(data, view = DEFAULT_VIEW, metric = DEFAULT_METRIC) {
-  return rankModels(data, view, metric).map(({ rank, model, arm, category, harness, metrics }) =>
-    `<tr data-model="${escapeHTML(model.id)}" data-arm="${escapeHTML(arm)}" data-configuration="${category}"><td>${rank}</td><th scope="row">${escapeHTML(modelDisplayName(model))}</th><td class="paired-harness"><span class="harness-tag ${category}" ${category === 'baseline' ? 'aria-label="No harness"' : `data-no-translate title="${escapeHTML(harness)}"`}>${category === 'baseline' ? '—' : escapeHTML(harnessDisplayName({ harness }))}</span></td>${Object.keys(METRICS).map(key => `<td${key === metric ? ' class="is-sorted"' : ''}>${formatScore(metrics[key].score)}</td>`).join('')}</tr>`
-  ).join('\n');
+// Real buttons appear only when the script enhances the table; the generated
+// fallback in index.html and leaderboard.html stays a plain table.
+export function tableRows(data, view = DEFAULT_VIEW, metric = DEFAULT_METRIC, { controls, selected } = {}) {
+  return rankModels(data, view, metric).map(row => {
+    const { rank, model, arm, category, harness, metrics } = row;
+    const key = runKey(row);
+    const name = escapeHTML(modelDisplayName(model));
+    const head = controls
+      ? `<button type="button" class="run-toggle" data-run="${escapeHTML(key)}" aria-expanded="${key === selected}" aria-controls="${escapeHTML(controls)}" aria-describedby="${escapeHTML(controls)}-hint">${name}</button>`
+      : name;
+    return `<tr${controls && key === selected ? ' class="is-selected"' : ''} data-model="${escapeHTML(model.id)}" data-arm="${escapeHTML(arm)}" data-configuration="${category}"><td>${rank}</td><th scope="row">${head}</th><td class="paired-harness"><span class="harness-tag ${category}" ${category === 'baseline' ? 'aria-label="No harness"' : `data-no-translate title="${escapeHTML(harness)}"`}>${category === 'baseline' ? '—' : escapeHTML(harnessDisplayName({ harness }))}</span></td>${Object.keys(METRICS).map(key => `<td${key === metric ? ' class="is-sorted"' : ''}>${formatScore(metrics[key].score)}</td>`).join('')}</tr>`;
+  }).join('\n');
+}
+
+/* Run evidence card ----------------------------------------------------------
+ * Built only from fields already in the archive summary. A missing or null
+ * field reads "Not recorded"; counts are never filled in and versions are
+ * never inferred from model names. */
+export const NOT_RECORDED = 'Not recorded';
+export const RUN_CARD_HINT = 'Select a model name to show its run evidence below the table.';
+// Same text as the hint site.js adds to wide tables; its translation lives in the language.js common dictionary.
+export const CARD_SCROLL_HINT = 'Scroll sideways to see every column →';
+const VERIFICATION = Object.freeze({
+  accepted_summary: 'Published evaluation summary',
+  archived_task_flags: 'Archived per-task scores',
+});
+const NOTES = Object.freeze({
+  unknown: 'Unknown outcomes are counted in the 1,000-task denominator without earning a success.',
+  profiles: 'Each metric lists the scoring profile it was computed with.',
+  parity: 'These profiles have not been verified against the official scorer.',
+  settings: 'This summary does not record time limits, API mode or sandbox; historical batches differ in these settings.',
+});
+const FACTS = ['Configuration', 'Harness as recorded', 'Harness version', 'Model call cap', 'Summary generated',
+  'Interruptions', 'Task-level unknowns', 'Invalid evidence', 'Evidence class', 'Archive path', 'Source revision'];
+const COLUMNS = ['Metric', 'Passed', 'Failed', 'Unknown', 'Score', 'Scoring profile', 'Source'];
+const LINKS = Object.freeze([
+  ['assets/data/paired-results.json', 'Data JSON'],
+  ['assets/data/paired-results-provenance.json', 'Release provenance'],
+  ['leaderboard.html#protocol', 'Evaluation protocol and sources'],
+]);
+// Fixed strings the card renders as text of their own; both page dictionaries must translate them.
+export const RUN_CARD_TEXT = Object.freeze([
+  'Run evidence', 'Close', 'Rank', NOT_RECORDED, 'No harness', RUN_CARD_HINT, 'Run outcomes', 'Outcomes on the 1,000 tasks',
+  ...FACTS, ...COLUMNS, ...Object.values(VERIFICATION), ...Object.values(NOTES), ...LINKS.map(([, label]) => label),
+]);
+
+export const runKey = row => `${row.model.id}/${row.arm}`;
+const recorded = value => value === null || value === undefined || value === '' ? NOT_RECORDED : value;
+
+export function selectedRun(data, view, metric, key) {
+  if (!key) return null;
+  return rankModels(data, view, metric).find(row => runKey(row) === key) || null;
+}
+
+export function runEvidence(data, row) {
+  const run = row.model.arms[row.arm];
+  const baseline = row.category === 'baseline';
+  const date = typeof run.generated_at === 'string' && run.generated_at.match(/^\d{4}-\d{2}-\d{2}/);
+  return {
+    key: runKey(row),
+    model: modelDisplayName(row.model),
+    configuration: VIEWS[row.category],
+    rank: row.rank,
+    harnessLabel: baseline ? null : run.harness,
+    harnessVersion: baseline ? null : run.harness.match(/\s(v?\d[\w.+-]*)$/)?.[1] ?? NOT_RECORDED,
+    modelCallCap: recorded(run.model_call_cap),
+    summaryGenerated: date ? date[0] : NOT_RECORDED,
+    interruptions: recorded(run.interruption_count),
+    taskUnknowns: recorded(run.task_unknown_count),
+    invalidEvidence: recorded(run.invalid_evidence_count),
+    evidenceClass: recorded(run.evidence_class),
+    archivePath: recorded(run.path),
+    sourceRevision: recorded(data.source_revision),
+    metrics: Object.entries(METRICS).map(([key, label]) => {
+      const metric = run.metrics[key];
+      return { key, label, count: metric.count, failure: metric.failure, unknown: metric.unknown, score: metric.score,
+        profile: recorded(metric.profile), verification: recorded(metric.verification) };
+    }),
+  };
+}
+
+const shown = (value, code = false) => value === NOT_RECORDED
+  ? `<span class="run-missing">${NOT_RECORDED}</span>`
+  : code ? `<code>${escapeHTML(value)}</code>` : escapeHTML(value);
+
+export function runCardHTML(data, view, metric, key, { id }) {
+  const row = selectedRun(data, view, metric, key);
+  if (!row) return '';
+  const e = runEvidence(data, row);
+  const total = rankModels(data, view, metric).length;
+  const fact = (label, value) => `<div><dt>${label}</dt><dd>${value}</dd></div>`;
+  const facts = [
+    fact('Configuration', e.configuration),
+    fact('Harness as recorded', e.harnessLabel === null ? 'No harness' : shown(e.harnessLabel, true)),
+    e.harnessLabel === null ? '' : fact('Harness version', shown(e.harnessVersion)),
+    fact('Model call cap', shown(e.modelCallCap)),
+    fact('Summary generated', e.summaryGenerated === NOT_RECORDED ? shown(e.summaryGenerated)
+      : `<time datetime="${e.summaryGenerated}">${e.summaryGenerated}</time>`),
+    fact('Interruptions', shown(e.interruptions)),
+    fact('Task-level unknowns', shown(e.taskUnknowns)),
+    fact('Invalid evidence', shown(e.invalidEvidence)),
+    fact('Evidence class', shown(e.evidenceClass, true)),
+    fact('Archive path', shown(e.archivePath, true)),
+    fact('Source revision', shown(e.sourceRevision, true)),
+  ].join('');
+  const outcomes = e.metrics.map(m => `<tr${m.key === metric ? ' class="is-sorted"' : ''} data-metric="${m.key}"><th scope="row">${m.label}</th><td>${m.count}</td><td>${m.failure}</td><td>${m.unknown}</td><td>${formatScore(m.score)}</td><td>${shown(m.profile, true)}</td><td>${Object.hasOwn(VERIFICATION, m.verification) ? VERIFICATION[m.verification] : shown(m.verification, true)}</td></tr>`).join('');
+  const notes = [NOTES.unknown, NOTES.profiles, data.official_parity_verified === true ? '' : NOTES.parity, NOTES.settings]
+    .filter(Boolean).map(note => `<li>${note}</li>`).join('');
+  return `<div class="run-card-head"><div><p class="run-card-kicker">Run evidence</p>`
+    + `<h3 class="run-card-title" id="${escapeHTML(id)}-title" tabindex="-1"><span>${escapeHTML(e.model)}</span> <span class="run-card-config">${e.configuration}</span></h3>`
+    + `<p class="run-card-meta"><span>Rank</span> <span class="run-card-rank">${e.rank} / ${total}</span> · <span>${METRICS[metric]}</span> · <span>${VIEWS[view]}</span></p></div>`
+    + `<button type="button" class="run-card-close" data-run-close>Close</button></div>`
+    + `<div class="run-card-body"><dl class="run-card-facts">${facts}</dl>`
+    + `<div class="table-scroll" tabindex="0" role="region" aria-label="Run outcomes"><table class="run-card-metrics"><caption>Outcomes on the 1,000 tasks</caption>`
+    + `<thead><tr>${COLUMNS.map(label => `<th scope="col">${label}</th>`).join('')}</tr></thead><tbody>${outcomes}</tbody></table></div>`
+    + `<p class="scroll-hint" aria-hidden="true" hidden>${CARD_SCROLL_HINT}</p></div>`
+    + `<ul class="run-card-notes">${notes}</ul>`
+    + `<p class="run-card-links">${LINKS.map(([href, label]) => `<a class="text-link" href="${href}">${label}</a>`).join('')}</p>`;
 }

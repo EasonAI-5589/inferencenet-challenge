@@ -14,14 +14,14 @@
   <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <script src="theme.js"></script>
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="site.css?v=20261010-menu">
+  <link rel="stylesheet" href="site.css?v=20261011-release">
   <link rel="stylesheet" href="mountain.css">
-  <link rel="stylesheet" href="leaderboard.css?v=20260917-harness">
-  <link rel="stylesheet" href="index.css?v=20260917-home">
-  <script src="site.js?v=20260915-menu" defer></script>
-  <script type="module" src="leaderboard.js?v=20260917-harness"></script>
+  <link rel="stylesheet" href="leaderboard.css?v=20261011-release">
+  <link rel="stylesheet" href="index.css?v=20261011-release">
+  <script src="site.js?v=20261011-release" defer></script>
+  <script type="module" src="leaderboard.js?v=20261011-release"></script>
   <link rel="stylesheet" href="language.css">
-  <script src="language.js?v=20261010-integration" defer></script>
+  <script src="language.js?v=20261011-release" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -52,7 +52,7 @@
       <p class="eyebrow"><span></span> GLOBAL INFERENCENET INITIATIVE · NTU GIFTS <span></span></p>
       <h1 id="hero-title">InferenceNet Challenge</h1>
       <p class="hero-subtitle">Can AI reproduce econometric findings from real research data?</p>
-      <p class="hero-description">Given data and analysis instructions, a model writes and runs code to recover a coefficient, its standard error and its p-value. An independent evaluator compares the output with hidden reference results.</p>
+      <p class="hero-description">Given data and analysis instructions, a model writes and runs code to recover a coefficient, its standard error and its p-value. An independent evaluator compares the output with reference results that the model does not see during the run.</p>
       <p class="hero-purpose">We study how models and harnesses work together to make this process more reliable.</p>
       <div class="hero-affiliations" role="group" aria-label="Research institutions">
         <a href="teams.html#institutions"><img src="assets/institutions/ntu-ccds-official.png" width="475" height="114" alt="NTU College of Computing and Data Science"></a>
@@ -64,7 +64,15 @@
         <a class="button" href="#results">View the leaderboard <span aria-hidden="true">→</span></a>
         <a class="button" href="data.html">Explore the data <span aria-hidden="true">→</span></a>
       </div>
-      <p class="latest-update" id="news"><time datetime="2026-09-17">17 Sep 2026</time><span>Model and Model + Harness results are now available.</span><a href="#results">View results <span aria-hidden="true">→</span></a></p>
+      <div class="home-status" id="news">
+        <p class="home-status-title">Status and updates</p>
+        <ol class="home-status-list">
+          <li><time datetime="2026-10-10">10 Oct 2026</time><p><strong>Explainers.</strong> The Harness and Self-evolving pages explain what a harness is, take three harnesses apart and describe how harnesses are improved from feedback. <a href="harness.html">Harness →</a> <a href="evolution.html#concept">Self-evolving →</a></p></li>
+          <li><time datetime="2026-10-09">9 Oct 2026</time><p><strong>Historical development study.</strong> Our first ModularRSI-style study, on 100 development tasks, was frozen on this date. As of that snapshot the held-out tasks had not been run, and its numbers are not leaderboard results. <a href="evolution.html#practice">Read the study →</a></p></li>
+          <li><time datetime="2026-09-17">17 Sep 2026</time><p><strong>Published leaderboard.</strong> Model and Model + Harness results on 1,000 tasks; run settings differ across historical batches. <a href="#results">View results →</a></p></li>
+        </ol>
+        <p class="home-status-next">Not announced yet: Challenge rules, dates and the submission channel. Trajectory-based post-training is a research goal.</p>
+      </div>
     </section>
 
     <nav class="subnav" aria-label="On this page">
@@ -176,8 +184,8 @@
         <p class="lead">We aim to use replication results and execution feedback to improve how models and harnesses work together.</p>
       </div>
       <ul class="card-grid research-directions">
-        <li class="card"><p class="card-label">01</p><h3>Model–Harness Coupling</h3><p>Study which model and harness combinations work well, and how planning, tool use and feedback affect replication.</p></li>
-        <li class="card"><p class="card-label">02</p><h3>Self-Evolving Harnesses</h3><p>An outer loop proposes, tests and keeps harness versions using feedback from the harness’s own runs. Compare three published methods, ModularRSI, Self-Harness and Meta-Harness, and see our first ModularRSI-style development study.</p><a class="text-link" href="evolution.html#concept">Self-evolving: concept and methods →</a><br><a class="text-link" href="evolution.html#practice">Our first ModularRSI-style study →</a></li>
+        <li class="card"><p class="card-label">01</p><h3>Model–Harness Coupling</h3><p>Study which model and harness combinations work well, and how planning, tool use and feedback affect replication.</p><a class="text-link" href="harness.html">Harness: what it is, three taken apart →</a></li>
+        <li class="card"><p class="card-label">02</p><h3>Self-Evolving Harnesses</h3><p>An outer loop proposes, tests and keeps harness versions using feedback from the harness’s own runs. Compare three methods from recent papers, ModularRSI, Self-Harness and Meta-Harness, and see our first ModularRSI-style development study.</p><a class="text-link" href="evolution.html#concept">Self-evolving: concept and methods →</a><br><a class="text-link" href="evolution.html#practice">Our first ModularRSI-style study →</a></li>
         <li class="card"><p class="card-label">03</p><h3>Trajectory-Based Post-Training</h3><p>Explore validated execution trajectories as training signals for models, including distillation and reinforcement learning.</p></li>
       </ul>
       <p class="home-source"><span>These are research directions we hope to pursue with collaborators.</span> <a class="text-link" href="leaderboard.html#research">Explore the research directions <span aria-hidden="true">→</span></a></p>
@@ -189,8 +197,16 @@
         <p class="lead">We welcome feedback and collaboration on models, harnesses, evaluation and trajectory-based training.</p>
       </div>
       <div class="participate-panel">
-        <p id="timeline">Challenge rules, dates and submission instructions will be announced here. In the meantime, explore the benchmark or get in touch.</p>
+        <p id="timeline">Challenge rules, dates and the submission channel have not been announced yet; they will be posted here. In the meantime, the three steps below are open to everyone.</p>
         <div class="participate-actions"><a class="button primary" href="teams.html#contact">Contact us <span aria-hidden="true">→</span></a><a class="text-link" href="teams.html">Meet the team <span aria-hidden="true">→</span></a></div>
+      </div>
+      <div class="participate-now" id="get-started">
+        <h3>What you can do now</h3>
+        <ol class="participate-steps">
+          <li><h4>Read a task the way a model does</h4><p>The Data page opens one task package: its files, the exact instruction the model receives and the three-number result file the evaluator reads.</p><a class="text-link" href="data.html#anatomy">Inside a task package →</a></li>
+          <li><h4>Explore the public data</h4><p>The benchmark is published by CamoAiLab on Hugging Face. The related MetricsAI paper describes the Econometrics-Agent research system.</p><a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener">InferenceNet dataset <span aria-hidden="true">↗</span></a></li>
+          <li><h4>Ask for evaluation access</h4><p>The evaluation framework is in a private repository. To request collaborator access, write to us with your name and affiliation, your GitHub account and what you would like to evaluate.</p><a class="text-link" href="teams.html#contact">Contact details →</a></li>
+        </ol>
       </div>
       <div class="home-resources" id="resources">
         <h3>Resources</h3>
@@ -202,7 +218,7 @@
       </div>
       <details class="home-citations" id="cite">
         <summary>Sources and citation</summary>
-        <p>The benchmark is published by CamoAiLab on Hugging Face. The related MetricsAI paper describes the Econometrics-Agent research system. Use the citation provided by each source.</p>
+        <p>Use the citation provided by each source.</p>
         <ul>
           <li><a class="text-link" href="data.html#provenance">Dataset versions and provenance <span aria-hidden="true">→</span></a></li>
           <li><a class="text-link" href="https://arxiv.org/abs/2506.00856v3" target="_blank" rel="noopener">Can AI Master Econometrics? Evidence from Econometrics AI Agent on Expert-Level Tasks <span aria-hidden="true">↗</span></a></li>

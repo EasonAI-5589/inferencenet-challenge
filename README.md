@@ -39,14 +39,17 @@ screenshot for visual changes.
 | Shared homepage and leaderboard results | `leaderboard.js`, `leaderboard-data.js`, `assets/data/paired-results.*` |
 
 When updating translations or shared scripts, refresh the `?v=` release tag
-in the HTML. `language.js` forwards its release tag to the page dictionary URL;
-Harness uses language release tag `20261010-deepagents-restore` and the other six
-pages `20261010-integration`. Home CSS keeps
-`20260917-home`, Agent CSS `20260917-case-data` and Teams CSS
-`20260921-yujie-leader`; Self-evolving CSS uses `20261010-evolution-r3` and its JS
-`20261010-evolution-r2`; Harness CSS uses `20261010-harness-r3`. Home and
-Leaderboard retain ranking release tag `20260917-harness`. Shared navigation
-CSS uses `20261010-menu` and JS `20260915-menu`.
+in the HTML. `language.js` forwards its release tag to the page dictionary URL.
+All seven pages load `site.css`, `site.js` and `language.js` with release tag
+`20261011-release`. Home and Leaderboard also load `leaderboard.css` and
+`leaderboard.js` with it (the script imports `leaderboard-data.js` with the same
+tag), and Home loads `index.css` with it. Self-evolving CSS uses
+`20261011-evolution`, which Harness loads as well, and Self-evolving JS keeps
+`20261010-evolution-r2`. Agent CSS keeps `20260917-case-data`, Teams CSS
+`20260921-yujie-leader` and Harness CSS `20261010-harness-r3`; the results JSON
+stays on `20260917-harness`. Strings shared by several pages, such as the
+reading-route labels and the scroll hints, live in the common dictionary in
+`language.js`.
 
 English is authored in the HTML. When changing English text, update the matching
 normalized English key and Chinese value in that page's dictionary. Preserve
@@ -102,6 +105,20 @@ cell title and source data. The two filtered views currently contain six entries
 each. The mountain and table share the selected filter, metric and global ranking
 within that selection. The old 14-entry source is no longer fetched.
 
+Each model name in the table is a button that opens one run evidence card below
+the table (Escape or Close returns to the row). The card uses only fields already
+in `paired-results.json`: the configuration, the harness label as recorded (a
+version is shown only when the label contains one), the model call cap, the date
+the summary was generated, the interruption, task-level unknown and
+invalid-evidence counts, the evidence class, archive path and source revision,
+and for each metric the passed, failed and unknown counts with the scoring
+profile and source recorded for it. A missing or null field reads "Not recorded"
+and is never shown as 0. Unknown outcomes are described only as counted in the
+1,000-task denominator without earning a success. Time limits, API mode and
+sandbox are not in this summary and are not shown. The card follows the selected
+filter and metric; a run removed by the filter closes its card. The saved
+fallback table stays plain, so pages without JavaScript are unchanged.
+
 Configuration categories are derived from each run’s `harness` metadata, not its
 archive arm ID. Rendering and validation enumerate the recorded arms, so further
 harness architectures can join the same table and Model + Harness filter without
@@ -113,8 +130,9 @@ path; no additional harness results are claimed or published. Legacy
 To update results, first verify a published JSON/CSV pair and its provenance,
 then run `node scripts/build-leaderboard.mjs` to regenerate the saved table on
 each page. If JavaScript or data loading fails, one combined 12-row table remains
-readable on each page. Check changes with `node --test scripts/test-leaderboard.mjs`
-and `node scripts/check.mjs`, then verify both pages in the browser.
+readable on each page. Check changes with
+`node --test scripts/test-leaderboard.mjs scripts/test-run-card.mjs` and
+`node scripts/check.mjs`, then verify both pages in the browser.
 
 ## Agent case walkthrough
 
@@ -151,14 +169,21 @@ papers: the first complete ModularRSI-style run on DeepAgents 0.7.13 (branch
 hook functions attach, the evolution loop, one trajectory panel per module
 lineage (accepted versions, rejected candidates, problem › change annotations),
 failure signals before and after evolution, and the frozen code of the three
-changed functions.
+changed functions. A completion lineage case reads one module's three accepted
+epochs (finding, change, supporting tasks, full-replication and scored counts)
+as a module-level record, not a causal account of any task, and a negative-results
+card lists accepted versions that scored lower, the observation and context
+modules that never changed, the fall of full replication among scored rollouts
+from 47.4% to 41.9% and the thin evidence behind each edit. A reading box after
+the subnav offers a Quick read and a Full route.
 
 All numbers come from `assets/data/modular-rsi-evolution.json`: aggregated
 development-set counts over 100 tasks × 3 rollouts with DeepSeek V4 Pro,
 scored with local-paper-v1. The page states that promotion did not use these
 scores, that the gain comes mainly from more scored final results, and that
-the 900 held-out tasks have not been run. Task IDs, trajectories, generated
-programs and references are not published. These results are not part of the
+the 900 held-out tasks had not been run as of the 9 Oct 2026 freeze. Task IDs,
+trajectories and generated programs from the run are not published; reference
+values are never shown to the model, analyst or editor during a run. These results are not part of the
 leaderboard and use twice its per-task budget (12 model calls and 8 run_python
 calls instead of 6 and 4). The values table on the page remains readable without JavaScript.
 
@@ -217,11 +242,26 @@ and [trajectory-based reinforcement learning](https://arxiv.org/abs/2508.03680).
 Home follows five sections: the benchmark workflow, recorded GPT-5.5 task 0011,
 the shared leaderboard, three research directions and participation. Full task
 coverage and provenance remain on Data; the detailed execution trace remains
-on Agent. The homepage keeps one current update and one announcement about
-future challenge rules, dates and submissions. Resources and citations remain
-available below the contact entry point.
+on Agent. Below the hero, a dated status list keeps the published leaderboard
+(17 Sep 2026), the historical development study frozen on 9 Oct 2026 (held-out
+tasks not run as of that snapshot) and the 10 Oct 2026 Harness and Self-evolving
+explainers apart, and notes that Challenge rules, dates and the submission channel
+have not been announced; trajectory-based post-training is stated as a research
+goal. The model–harness research card links to the Harness page. Get involved
+lists what is open now: a task package as the model sees it, the public data
+(with the verified CamoAiLab and MetricsAI sentences) and how to ask for access to
+the private evaluation framework. No Quickstart or submission path is implied.
+Resources and citations remain available below. "Hidden" reference results mean
+results the model does not see during a run.
 
 ## Harness: definition, ecosystem and breakdowns
+
+A reading box right after the subnav offers a Quick read (definition, comparison,
+InferenceNet) and a Full route (every section in order, including the full
+DeepAgents three-layer structure and InferenceNet wiring); nothing is folded.
+`site.js` adds a short "Scroll sideways…" hint under any wide figure or table while
+it overflows on a narrow screen, and removes it when the content fits; the
+leaderboard keeps its own note.
 
 The Harness page defines a harness, the software that runs a model as an agent,
 and separates it from the model, agent, SDK, environment and evaluator; it lists

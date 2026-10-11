@@ -452,7 +452,6 @@
   "This run used four model calls and three tool executions. Each tool output becomes context for the next model call.": "这次运行共使用四次模型调用、三次工具执行。每次工具返回的信息都会成为模型下一次调用的上下文。",
   "04 / Result": "04 / 结果",
   "From failed execution to successful replication": "从执行失败到成功复现",
-  "The evaluator reruns the final program from scratch, then compares its output with the hidden reference values. In this case, all three statistics closely match.": "评测系统从头重新执行最终程序，再将输出与隐藏的参考值比较。在这个案例中，三个统计量均与参考值高度一致。",
   "Execution failed": "执行失败",
   "The month variable was not identified. No statistical result was returned.": "未能识别月份变量，没有输出统计结果。",
   "1 model call": "1 次模型调用",
@@ -519,7 +518,6 @@
   "Final program · regression excerpt": "最终程序 · 回归部分节选",
   "Harness → evaluator": "Harness → 评测系统",
   "The tool loop ends. The final program reads the original file again, uses tid for monthly clustering, and writes only the target coefficient, standard error and p-value.": "工具交互结束。最终程序会重新读取原始文件，以 tid 为月份聚类变量，只输出目标系数、标准误和 p 值。",
-  "The evaluator runs this program in a fresh environment, then compares its output with the hidden reference.": "评测系统在新的环境里独立执行这份程序，之后才与隐藏的参考值进行比较。",
   "Model call 4": "第 4 次模型调用",
   "Submit the complete program for a fresh run": "提交完整程序，重新执行验收",
   "The fourth model call returns the final Python program. It uses tid for clustering and use_t=True for the final p-value calculation.": "第四次模型调用返回最终 Python 程序，使用 tid 聚类，并采用 use_t=True 计算最终 p 值。",
@@ -543,5 +541,7 @@
   "The single-generation program committed to assumed column names before the model had seen the file’s structure. With DeepAgents, tool outputs let GPT-5.5 inspect the real columns, connect tid to the monthly clustering requirement, and check the regression before submitting its final program.": "一次性生成的程序在模型尚未看到数据结构时，就使用了预设的列名。配合 DeepAgents 后，工具返回的信息让 GPT-5.5 能够查看真实字段，将 tid 对应到按月聚类的要求，并在提交最终程序前检查回归执行结果。",
   "The harness makes this interaction possible by running tools and returning their output. The model interprets that feedback and writes the analysis; the final replay verifies the result.": "Harness 通过执行工具、返回输出，支持这一交互过程。模型负责理解反馈、编写分析程序，最终通过独立重跑验证结果。",
   "Phase 2: let the harness evolve →": "第二期：让 Harness 自进化 →",
-  "Evolution": "自进化"
+  "Evolution": "自进化",
+  "The evaluator runs this program in a fresh environment, then compares its output with the reference, which the model never sees.": "评测系统在新的环境里独立执行这份程序，之后才与参考值进行比较；模型始终看不到参考值。",
+  "The evaluator reruns the final program from scratch, then compares its output with the reference values, which the model never sees. In this case, all three statistics closely match.": "评测系统从头重新执行最终程序，再将输出与参考值比较；模型始终看不到参考值。在这个案例中，三个统计量均与参考值高度一致。"
 }

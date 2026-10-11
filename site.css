@@ -118,6 +118,17 @@ html{scroll-padding-top:max(0px,calc(var(--header-offset,var(--header-h)) - var(
 .subnav a:hover,.subnav a[aria-current="location"]{color:var(--ink);border-bottom-color:var(--ink)}
 .subnav-number{font-family:var(--mono);font-size:11px;color:var(--muted);margin-right:8px}
 .subnav ~ .section,.subnav ~ * .section{scroll-margin-top:calc(var(--header-h) + 58px)}
+/* Reading routes: a quick route and the full route through a long page, right after its subnav. */
+.reading-routes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 40px;padding-top:28px}
+.reading-route{min-width:0;padding-top:12px;border-top:1px solid var(--line)}
+.reading-route-title{margin:0 0 8px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.reading-route ol{display:flex;flex-wrap:wrap;gap:6px 18px;margin:0;padding:0;list-style:none;counter-reset:route}
+.reading-route li{counter-increment:route;font-size:13.5px;line-height:1.6}
+.reading-route li::before{content:counter(route);margin-right:6px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.reading-route a{text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--muted)}
+.reading-route a:hover{text-decoration-color:var(--ink)}
+/* Shown by site.js only while a wide figure or table overflows sideways. */
+.scroll-hint{margin:8px 0 0;font-size:12px;line-height:1.5;color:var(--muted);text-align:right}
 .prose{max-width:68ch}
 .prose p{font-size:15px;line-height:1.8;color:var(--soft)}
 .prose .kicker{font-size:11px;line-height:1.5;color:var(--muted)}
@@ -373,6 +384,7 @@ details.code-panel:not([open])>summary.code-panel-head{border-bottom:0}
   .subnav ol,.subnav ul{flex-wrap:wrap;overflow:visible;gap:0 20px;padding-bottom:0} /* static below 860px: wrapping is fine again */
   .subnav a{padding:11px 0 9px;font-size:12.5px}
   .subnav ~ .section,.subnav ~ * .section{scroll-margin-top:calc(var(--header-h) + 16px)}
+  .reading-routes{grid-template-columns:minmax(0,1fr);padding-top:20px}
   .grid-2,.grid-3{grid-template-columns:minmax(0,1fr)}
   .stat-strip{--cols-cap:2}
   .stat{padding:20px 18px}

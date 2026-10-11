@@ -36,6 +36,45 @@
 .paired-notes p{margin-top:16px}
 .paired-notes ul{padding-left:20px;margin-top:12px}
 .paired-scroll-note{font-size:12px;color:var(--muted);margin:10px 0;display:none}
+/* Run evidence: the model name opens one card below the table; it holds only archived fields. */
+.paired-table .run-toggle{display:inline-flex;align-items:center;gap:8px;margin:0;padding:2px 0;border:0;background:none;color:inherit;font:inherit;font-weight:inherit;text-align:left;cursor:pointer;text-decoration:underline;text-decoration-color:var(--strong-line);text-underline-offset:4px}
+.paired-table .run-toggle::after{content:"+";min-width:18px;padding:1px 0;border:1px solid var(--strong-line);border-radius:3px;font-family:var(--mono);font-size:11px;line-height:1.4;text-align:center;color:var(--muted)}
+.paired-table .run-toggle[aria-expanded="true"]::after{content:"−";border-color:var(--brand);color:var(--brand)}
+.paired-table .run-toggle:hover{text-decoration-color:var(--ink)}
+.paired-table .run-toggle:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.paired-table tbody tr.is-selected>th{box-shadow:inset 3px 0 0 var(--brand)}
+.paired-table tbody tr.is-selected>*:not(.is-sorted){background:var(--tint)}
+.run-card,.paired-table .run-toggle{scroll-margin-top:calc(var(--header-offset,var(--header-h)) + 58px);scroll-margin-bottom:16px}
+.run-card{margin:18px 0 0;padding:22px 24px;border:1px solid var(--strong-line);border-top:3px solid var(--brand);border-radius:var(--radius);background:var(--surface)}
+.run-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.run-card-kicker{margin:0 0 6px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.run-card-title{margin:0;font-size:20px;line-height:1.35}
+.run-card-title:focus{outline:none}
+.run-card-title:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+.run-card-config{font-weight:400;color:var(--soft)}
+.run-card-meta{margin:6px 0 0;font-size:12px;color:var(--muted)}
+.run-card-rank{font-family:var(--mono)}
+.run-card-close{flex-shrink:0;min-height:36px;padding:6px 12px;border:1px solid var(--strong-line);border-radius:4px;background:var(--paper);color:var(--ink);font:13px var(--sans);cursor:pointer}
+.run-card-close:hover{border-color:var(--ink)}
+.run-card-body{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.45fr);gap:24px 32px;margin-top:18px;align-items:start}
+.run-card-facts{margin:0;font-size:13px;line-height:1.55}
+.run-card-facts div{display:grid;grid-template-columns:minmax(118px,.85fr) minmax(0,1.15fr);gap:12px;padding:7px 0;border-bottom:1px solid var(--line)}
+.run-card-facts dt{color:var(--soft)}
+.run-card-facts dd{margin:0;color:var(--ink);overflow-wrap:anywhere}
+.run-card-facts code,.run-card-metrics code{font-size:12px}
+.run-missing{color:var(--muted);font-style:italic}
+.run-card-metrics{width:100%;min-width:600px;border-collapse:collapse;font-size:13px}
+.run-card-metrics caption{padding:0 0 8px;text-align:left;font-size:12px;color:var(--muted)}
+.run-card-metrics th,.run-card-metrics td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:right}
+.run-card-metrics thead th{font-size:12px;font-weight:500;color:var(--soft)}
+.run-card-metrics tr>:first-child{text-align:left}
+.run-card-metrics tbody th{font-weight:500}
+.run-card-metrics td{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.run-card-metrics tr>:nth-last-child(-n+2){text-align:left;font-family:var(--sans)}
+.run-card-metrics tr.is-sorted>*{background:var(--brand-tint)}
+.run-card-notes{margin:16px 0 0;padding-left:18px;font-size:13px;line-height:1.7;color:var(--soft)}
+.run-card-links{display:flex;flex-wrap:wrap;gap:8px 24px;margin:14px 0 0}
+.run-card-links .text-link{font-size:13px}
 @media(max-width:680px){
  .paired-controls{align-items:stretch;gap:16px}
  .paired-controls label{width:100%;justify-content:space-between}
@@ -43,4 +82,10 @@
  .paired-methods{grid-template-columns:1fr;gap:12px}
  .paired-table th,.paired-table td{padding:14px 10px}
  .paired-scroll-note{display:block}
+ .run-card{padding:18px 16px}
+ .run-card-head{flex-direction:column}
+}
+@media(max-width:860px){
+ .run-card-body{grid-template-columns:minmax(0,1fr)}
+ .run-card,.paired-table .run-toggle{scroll-margin-top:calc(var(--header-offset,var(--header-h)) + 16px)}
 }

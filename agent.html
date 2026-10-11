@@ -14,11 +14,11 @@
   <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <script src="theme.js"></script>
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="site.css?v=20261010-menu">
+  <link rel="stylesheet" href="site.css?v=20261011-release">
   <link rel="stylesheet" href="agent.css?v=20260917-case-data">
-  <script src="site.js?v=20260915-menu" defer></script>
+  <script src="site.js?v=20261011-release" defer></script>
   <link rel="stylesheet" href="language.css">
-  <script src="language.js?v=20261010-integration" defer></script>
+  <script src="language.js?v=20261011-release" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -93,11 +93,11 @@ print(model.summary())</code></pre></div><div class="case-return"><p class="case
     cov_type=&quot;cluster&quot;,
     cov_kwds={&quot;groups&quot;: df_reg[cluster_var]},
     use_t=True
-)</code></pre></div><div class="case-return"><p class="case-label">Harness → evaluator</p><p>The tool loop ends. The final program reads the original file again, uses tid for monthly clustering, and writes only the target coefficient, standard error and p-value.</p><p>The evaluator runs this program in a fresh environment, then compares its output with the hidden reference.</p></div></div><p class="case-decision">The harness connects code execution and feedback across calls. The model still makes the analysis decisions; the evaluator checks the final result independently.</p></div></li></ol><p class="case-caption">Four model calls, three exploratory tool executions, then one independent final execution. Reference values are never returned during the tool loop.</p>
+)</code></pre></div><div class="case-return"><p class="case-label">Harness → evaluator</p><p>The tool loop ends. The final program reads the original file again, uses tid for monthly clustering, and writes only the target coefficient, standard error and p-value.</p><p>The evaluator runs this program in a fresh environment, then compares its output with the reference, which the model never sees.</p></div></div><p class="case-decision">The harness connects code execution and feedback across calls. The model still makes the analysis decisions; the evaluator checks the final result independently.</p></div></li></ol><p class="case-caption">Four model calls, three exploratory tool executions, then one independent final execution. Reference values are never returned during the tool loop.</p>
 </section>
     <section class="section container ruled" id="scoring" aria-labelledby="result-title">
       <div class="case-heading"><p class="kicker">04 / Result</p><h2 id="result-title">From failed execution to successful replication</h2></div>
-      <p class="case-intro">The evaluator reruns the final program from scratch, then compares its output with the hidden reference values. In this case, all three statistics closely match.</p>
+      <p class="case-intro">The evaluator reruns the final program from scratch, then compares its output with the reference values, which the model never sees. In this case, all three statistics closely match.</p>
       <div class="case-outcomes">
         <article><p class="case-label">GPT-5.5 · Model</p><h3>Execution failed</h3><p>The month variable was not identified. No statistical result was returned.</p><span class="case-outcome-note">1 model call</span></article>
         <article class="case-success"><p class="case-label">GPT-5.5 + DeepAgents</p><h3>Result reproduced</h3><dl class="case-statistics"><div><dt>Coefficient</dt><dd>0.272736</dd></div><div><dt>Standard error</dt><dd>0.054225</dd></div><div><dt>p-value</dt><dd>6.899 × 10⁻⁷</dd></div></dl><span class="case-outcome-note">4 model calls · 3 tool executions</span></article>

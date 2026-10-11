@@ -17,6 +17,8 @@
     'Public leaderboard': '公开排行榜', 'Internal study': '内部实验',
     'Previous': '上一步', 'Next': '下一步', 'Refresh': '刷新',
     'No entries.': '暂无记录。', '0% · base camp': '0% · 起点',
+    'How to read this page': '本页阅读路线', 'Quick read': '快速理解', 'Full route': '完整阅读',
+    'Scroll sideways to see the whole figure →': '左右滑动查看完整图示 →', 'Scroll sideways to see every column →': '左右滑动查看全部列 →',
   };
   const skipped = 'script,style,pre,code,textarea,[data-no-translate],.wordmark,[data-language-control]';
   const attributes = ['aria-label', 'title', 'alt', 'placeholder'];
