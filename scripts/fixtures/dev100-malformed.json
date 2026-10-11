@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "kind": "inferencenet_dev_board",
+  "board_id": "dev100-v10",
+  "official_leaderboard_result": false,
+  "comparable_with": [],
+  "denominator_per_group": 100,
+  "groups": 56,
+  "records": 5600,
+  "harnesses": [],
+  "models": [],
+  "runs": []
+}

@@ -1,0 +1,275 @@
+{
+  "schema_version": 1,
+  "kind": "inferencenet_dev_board_provenance",
+  "board_id": "dev100-v10",
+  "sha256": "148f67bfba9f64a552328acf3b68be9bef2b337e705ba63c5419457687dd13ea",
+  "csv_sha256": "d2238a582249b696baa86a99c5deb1e189d62435821c70b3d7a05419cfe24918",
+  "generated_at": "2026-10-11T18:49:48+00:00",
+  "source": {
+    "report_label": "four-harness-dev100-20261011-v10-recovered01",
+    "report_schema_version": 9,
+    "report_generated_at": "2026-10-11T16:35:49.651444+00:00",
+    "report_sha256": {
+      "json": "8b110f06092aadfac5f73ffaa3f4a0ff729014a9958d8663ac6f198162096fd7",
+      "csv": "65504f9d982d974b3c4180ebbd7aac600d0b7932b6ea67347317afc657ef3b7a",
+      "md": "fc7b93121476529e9f5b207a8c60a2d9603ed0f373cbeb6a3c02475ac3e8cbfc"
+    },
+    "plan_sha256": "3d7b01c16918bf75688f4e4603517ff9d12c9f6f1a71e64ba768fb020980ae3d",
+    "visualization_data_sha256": "9beb65b51c463f1d815743a759cc4d5d0e80dcaba97b884850212ccfa037b1da",
+    "visualization_sources_sha256": "282cf9b453baac79320aee848c42a2260b76ec9b6abd1523e4af0192caf0becb",
+    "final_data_comparison": {
+      "sha256": "950726988a7c8cf7afd7db27396a292c6aff1054e15e4b99236020d03fd06b35",
+      "compared_groups": 56,
+      "fields_per_group": 7,
+      "differences": 0
+    },
+    "scorer_sha256": "52d46989ab6dc8b4726edfc281a0e27c9f57dce3a958b7de73143aec47d81a61",
+    "selection_sha256": "6586abbcbb3380d03ecf271c1cf5b91d63c1234eb2f2bbb720f82c4a2ccee154",
+    "dataset_revision": "59f9512a38e594528807744214a60ee00367434e"
+  },
+  "derivation": [
+    "Counts and metric flags were recomputed from the report's 5,600 embedded slot records and equal the report's groups, totals, CSV and Markdown; no number was changed.",
+    "Removed: task IDs, per-slot records, usage tokens, seconds, server paths, run directories, hostnames, provider credentials and raw conversations.",
+    "Renamed: groups -> runs; arm -> harness; display -> recorded_name; report lifecycle keys -> outcome keys (infrastructure_failed -> failed_infrastructure, provider_billing_failed -> failed_billing, model_failure -> failed_model, unclassified_failed -> failed_unattributed, *_unknown -> unknown_*).",
+    "Added: unknown_unattributed = unknown minus attributed unknown, equal to the report's unclassified_unknown count in every run.",
+    "Collapsed: the eight new_native_messages_* stage provenance labels into new_native.",
+    "Label convention: model label Gemini 3.1 Pro for the recorded name Gemini 3.1 Pro Preview; recorded_name keeps the report display name verbatim.",
+    "Metric score = 100 x true / 100; unknown_or_pending is metric-specific and never derived from scored.",
+    "failure_reasons groups the 16 exact slot reason strings over failed slots into 9 buckets (mapping in the lane A evidence report); unknown_reasons copies the report's unknown attribution counts.",
+    "Settings distributions count slots per recorded value; slots without a recorded value are not_recorded_slots (null in JSON, empty in CSV), never 0.",
+    "CSV: one row per run; an empty cell means not recorded; a setting with several recorded values lists them joined by ';' in the same order as its slot counts."
+  ],
+  "audit": [
+    {
+      "check": "task_ids: 100 entries, 100 unique, all positive ints",
+      "result": "pass"
+    },
+    {
+      "check": "task_ids equal plan.task_ids (same order)",
+      "result": "pass"
+    },
+    {
+      "check": "arms = deepagents, deepseek, claude, openai_agents",
+      "result": "pass"
+    },
+    {
+      "check": "14 models x 4 arms = 56 groups, unique",
+      "result": "pass"
+    },
+    {
+      "check": "5600 slots; each (task, model, arm) exactly once; equals 100x14x4 cross product",
+      "result": "pass"
+    },
+    {
+      "check": "slot states only scored/failed/unknown/pending",
+      "result": "pass"
+    },
+    {
+      "check": "ledger: 3982 logical new = slots with new_native_messages provenance = dispatched slots",
+      "result": "pass"
+    },
+    {
+      "check": "ledger: physical 4138 = 3982 + 156 superseded; 156 listed = 28+28+36+64",
+      "result": "pass"
+    },
+    {
+      "check": "every superseded attempt has selected_for_metrics=false",
+      "result": "pass"
+    },
+    {
+      "check": "no superseded attempt's result file is a selected slot source (absent from slots)",
+      "result": "pass"
+    },
+    {
+      "check": "stage planned_slots sum = 3982 and stage provenance counts equal slot provenance counts",
+      "result": "pass"
+    },
+    {
+      "check": "group lifecycle fields + provenance_counts recomputed from slots equal groups[] (56 groups)",
+      "result": "pass"
+    },
+    {
+      "check": "group unknown_attribution_counts recomputed from slots equal groups[]",
+      "result": "pass"
+    },
+    {
+      "check": "group local_metrics (5 metrics x true/false/unknown_or_pending/denominator) recomputed from slot flags equal groups[]",
+      "result": "pass"
+    },
+    {
+      "check": "no scored slot has perfect=null (perfect is a subset of scored)",
+      "result": "pass"
+    },
+    {
+      "check": "no failed/unknown/pending slot carries any non-null metric flag (failed -> unknown_or_pending, never false)",
+      "result": "pass"
+    },
+    {
+      "check": "billing subset of infrastructure; failed = infrastructure + model + unattributed (every group)",
+      "result": "pass"
+    },
+    {
+      "check": "unknown = attributed categories + unknown_unattributed (every group)",
+      "result": "pass"
+    },
+    {
+      "check": "scored + failed + unknown + pending = 100 and perfect + scored_not_perfect = scored (every group)",
+      "result": "pass"
+    },
+    {
+      "check": "report complete=true for all 56 groups",
+      "result": "pass"
+    },
+    {
+      "check": "confirmed_perfect_percent = perfect (denominator 100) for all groups",
+      "result": "pass"
+    },
+    {
+      "check": "totals lifecycle fields = sum over recomputed groups",
+      "result": "pass"
+    },
+    {
+      "check": "totals.unknown_attribution_counts = sum over groups",
+      "result": "pass"
+    },
+    {
+      "check": "totals.local_metrics = sum over groups",
+      "result": "pass"
+    },
+    {
+      "check": "totals equal brief expectations (3786/2204/1502/312/0; 128 infra; 105 billing; 1374 unattributed; 163 infra-unknown ...)",
+      "result": "pass"
+    },
+    {
+      "check": "metric totals equal Codex independent check",
+      "result": "pass"
+    },
+    {
+      "check": "provenance class totals 236 historical / 182 offline / 1200 inherited / 3982 new",
+      "result": "pass"
+    },
+    {
+      "check": "CSV: 56 rows, every numeric column equals slot recount (UTF-8 BOM header noted)",
+      "result": "pass"
+    },
+    {
+      "check": "MD table: 56 rows; scored/perfect/failed/infrastructure/unknown/pending/rate equal slot recount",
+      "result": "pass"
+    },
+    {
+      "check": "MD prose totals: 5600 / 3786 / 2204 / 1502 (128 / 0 / 1374) / 312 / 0; ledger 3982 logical, 4138 physical",
+      "result": "pass"
+    },
+    {
+      "check": "visualization data.json: 56 groups x 7 fields equal the report (392 comparisons, 0 differences)",
+      "result": "pass"
+    },
+    {
+      "check": "visualization sources.json records the data.json sha256 and the report and plan sha256",
+      "result": "pass"
+    },
+    {
+      "check": "visualization final-data-comparison.json: 56 groups compared, differences empty",
+      "result": "pass"
+    },
+    {
+      "check": "pinned scorer eval/evaluation/metrics.py sha256 equals scorer_sha256 of all 10 stages",
+      "result": "pass"
+    },
+    {
+      "check": "harness version constants and SELECTION_SHA identical in all 7 stage source trees",
+      "result": "pass"
+    },
+    {
+      "check": "all 100 task IDs present in the fixed Selected_1000 task list at dataset revision 59f9512 (using the evaluator's task ID rule)",
+      "result": "pass"
+    },
+    {
+      "check": "recorded caps (6 model calls, 4 tool calls, 32768 output tokens, 1800 s, 90 s tool timeout) equal the LIMITS constant in all 7 stage sources",
+      "result": "pass"
+    },
+    {
+      "check": "public JSON and CSV contain no task IDs, paths, IPs, hostnames, operator names or credential-like strings",
+      "result": "pass"
+    },
+    {
+      "check": "receipt audit: 5,182 of 5,182 recorded receipts exist and match the recorded sha256 (3,982 new native, 1,200 inherited SDK)",
+      "result": "pass"
+    },
+    {
+      "check": "receipt identity (task, model, harness) equals the report slot for 5,182 of 5,182",
+      "result": "pass"
+    },
+    {
+      "check": "receipt lifecycle (status, scoring status, prediction presence) consistent with the report state for 5,182 of 5,182",
+      "result": "pass"
+    },
+    {
+      "check": "receipt reason equals the report slot reason for 5,182 of 5,182",
+      "result": "pass"
+    },
+    {
+      "check": "receipt budget limits equal the report slot caps for 5,182 of 5,182",
+      "result": "pass"
+    },
+    {
+      "check": "418 historical and offline-derived slots record no receipt; their metrics rest on the report's imported archive or offline-derived records",
+      "result": "not_applicable"
+    },
+    {
+      "check": "receipts carry no metric flags; flags were not re-scored (report-embedded flags used)",
+      "result": "not_applicable"
+    },
+    {
+      "check": "run dates: UTC date of receipt started_at for 5,182 slots (2026-10-10: 1492, 2026-10-11: 3690); 0 cross midnight before finishing; 418 not recorded",
+      "result": "pass"
+    }
+  ],
+  "evidence_status": {
+    "outcomes": {
+      "level": "a+b",
+      "basis": "recomputed from report-embedded slots; receipt checks on 5,182 of 5,182 recorded receipts (3,982 new native, 1,200 inherited SDK): file present, sha256 matched, identity, lifecycle state, reason and caps agree; 418 historical and offline-derived slots record no receipt",
+      "statement": "Recomputed from the report's 5,600 embedded slot records; the counts equal the report's group table, CSV and Markdown summary. Receipt check performed: all 5,182 slots that record a receipt (3,982 new native, 1,200 inherited SDK) have the file present with a matching sha256, and its task, harness, lifecycle state, reason and caps agree with the report; the 418 historical and offline-derived slots record no receipt."
+    },
+    "metrics": {
+      "level": "a",
+      "basis": "recomputed from report-embedded slots",
+      "statement": "Recomputed from the per-slot metric flags embedded in the report, not re-scored; flags exist only for scored runs, a missing flag stays unknown, and 236 historical scored runs record only full replication."
+    },
+    "provenance": {
+      "level": "a",
+      "basis": "recomputed from report-embedded slots",
+      "statement": "Recomputed from each slot's recorded provenance class in the report."
+    },
+    "budget": {
+      "level": "a+b",
+      "basis": "recomputed from report-embedded slots; caps equal the receipt budget limits for 5,182 of 5,182 recorded receipts and the LIMITS constant in 7 of 7 stage sources; 418 historical and offline-derived slots not recorded",
+      "statement": "Recorded logical caps copied from report slots for new and inherited SDK runs; they equal the caps in all 5,182 receipts and the harness source configuration; not independent execution measurements; none recorded for historical or offline-derived runs."
+    },
+    "thinking": {
+      "level": "b+c",
+      "basis": "no-override checked in the frozen plan (14 of 14 routes) and harness code (7 of 7 stage sources); Claude CLI behaviour is a handoff and daily-report statement only",
+      "statement": "New runs set no thinking override in the frozen plan or harness code. The study's run notes report that the bundled Claude CLI adds adaptive thinking at high effort on the Claude Agent SDK arm; request records were not independently checked. Other runs: not recorded."
+    },
+    "harness_version": {
+      "level": "b",
+      "basis": "hashed SDK identity record per slot: 3,982 of 3,982 new native and 1,199 of 1,200 inherited SDK slots match the pinned version constants read in 7 of 7 stage sources; 1 inherited slot without identity and 418 historical and offline-derived slots not recorded",
+      "statement": "New native runs: the pinned version constants in the seven stage sources, confirmed by each receipt's hashed SDK identity record (3,982 of 3,982). Inherited SDK runs: identity records match the same versions for 1,199 of 1,200 (one failed before an identity was written). Historical and offline-derived runs: not recorded."
+    },
+    "route": {
+      "level": "b+a",
+      "basis": "hashed SDK identity requested model for 3,781 slots (3,182 new native, 599 inherited Claude Agent SDK), equal to the report current_route_model; report-recorded current_route_model (equal to the frozen plan route) for 800 new DeepSeek Harness slots; 1,019 slots not recorded",
+      "statement": "Receipt-verified: hashed SDK identity records give the requested route, equal to the report's current route model, for 3,182 new native runs and 599 inherited Claude Agent SDK runs. Report-recorded: the 800 new DeepSeek Harness runs use the report's current route model because their identity records no model. Inherited DeepSeek Harness, historical and offline-derived runs: not recorded."
+    },
+    "run_date": {
+      "level": "b",
+      "basis": "UTC date of the receipt started_at timestamp for 5,182 of 5,600 slots (receipt sha256 matched; no slot finished on a later UTC date than it started); 418 slots without a receipt are not recorded",
+      "statement": "UTC date of each receipt's recorded start time, for the 5,182 runs with a receipt (none finished on a later UTC date); historical and offline-derived runs: not recorded."
+    },
+    "acceptance": {
+      "level": "c",
+      "basis": "visualization README and data.json, daily report and handoff statements; receipts not accessible",
+      "statement": "Stated in the server visualization README and data.json and in the study's daily report and handoff; the underlying receipts were not accessible to this audit."
+    }
+  }
+}

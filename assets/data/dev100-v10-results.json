@@ -1,0 +1,6963 @@
+{
+  "schema_version": 1,
+  "kind": "inferencenet_dev_board",
+  "board_id": "dev100-v10",
+  "official_leaderboard_result": false,
+  "comparable_with": [],
+  "evidence_status": "accepted-final-report",
+  "report": {
+    "label": "four-harness-dev100-20261011-v10-recovered01",
+    "generated_at": "2026-10-11T16:35:49.651444+00:00",
+    "report_schema_version": 9,
+    "sha256": {
+      "json": "8b110f06092aadfac5f73ffaa3f4a0ff729014a9958d8663ac6f198162096fd7",
+      "csv": "65504f9d982d974b3c4180ebbd7aac600d0b7932b6ea67347317afc657ef3b7a",
+      "md": "fc7b93121476529e9f5b207a8c60a2d9603ed0f373cbeb6a3c02475ac3e8cbfc"
+    },
+    "plan_sha256": "3d7b01c16918bf75688f4e4603517ff9d12c9f6f1a71e64ba768fb020980ae3d",
+    "accepted_at": null
+  },
+  "dataset": {
+    "id": "dev100",
+    "label": "InferenceNet development set (100 tasks)",
+    "tasks": 100,
+    "split": "development",
+    "task_ids_published": false,
+    "relation": "The development split of a pinned 100-task selection drawn from Selected_1000 (dataset revision 59f9512); tasks are not published."
+  },
+  "denominator_per_group": 100,
+  "groups": 56,
+  "records": 5600,
+  "metrics": [
+    {
+      "key": "perfect",
+      "label": "Full replication",
+      "definition": "Coefficient and standard error within 1% relative error, and p-value within 0.01 absolute error.",
+      "profile": "local-paper-v1"
+    },
+    {
+      "key": "partial",
+      "label": "Coefficient and SE within 5%",
+      "definition": "Coefficient and standard error both below 5% relative error; the p-value is not checked; includes full replication.",
+      "profile": "local-paper-v1"
+    },
+    {
+      "key": "coefficient_only",
+      "label": "Coefficient within 5%",
+      "definition": "Coefficient within 5% relative error; standard error and p-value are not checked.",
+      "profile": "local-paper-v1"
+    },
+    {
+      "key": "direction",
+      "label": "Correct sign",
+      "definition": "Estimated and reference coefficients are both strictly positive or both strictly negative.",
+      "profile": "local-paper-v1"
+    },
+    {
+      "key": "significance",
+      "label": "Correct significance",
+      "definition": "Correct sign and the same p-value band: p < 0.01, 0.01 <= p < 0.05, 0.05 <= p < 0.1, or p >= 0.1.",
+      "profile": "local-paper-v1"
+    }
+  ],
+  "harnesses": [
+    {
+      "id": "deepagents",
+      "label": "DeepAgents",
+      "version": "0.7.13",
+      "version_scope": "new native slots",
+      "description": "LangChain deepagents 0.7.13, with langchain 1.4.0 and langgraph 1.2.11."
+    },
+    {
+      "id": "deepseek",
+      "label": "DeepSeek Harness",
+      "version": "0.1.5rc1",
+      "version_scope": "new native and inherited SDK slots",
+      "description": "Official deepseek-harness-sdk 0.1.5rc1 in a restricted InferenceNet composition with run_python as the only tool."
+    },
+    {
+      "id": "claude",
+      "label": "Claude Agent SDK",
+      "version": "0.2.165",
+      "version_scope": "new native and inherited SDK slots",
+      "description": "Official claude-agent-sdk 0.2.165 with its bundled Claude CLI 2.1.294."
+    },
+    {
+      "id": "openai_agents",
+      "label": "OpenAI Agents SDK",
+      "version": "0.23.1",
+      "version_scope": "new native slots",
+      "description": "Official openai-agents 0.23.1."
+    }
+  ],
+  "models": [
+    {
+      "id": "gpt56-sol",
+      "label": "GPT-5.6 Sol",
+      "recorded_name": "GPT-5.6 Sol"
+    },
+    {
+      "id": "gemini31-pro",
+      "label": "Gemini 3.1 Pro",
+      "recorded_name": "Gemini 3.1 Pro Preview"
+    },
+    {
+      "id": "qwen37-max",
+      "label": "Qwen3.7-Max",
+      "recorded_name": "Qwen3.7-Max"
+    },
+    {
+      "id": "kimi-k3",
+      "label": "Kimi K3",
+      "recorded_name": "Kimi K3"
+    },
+    {
+      "id": "claude-opus48",
+      "label": "Claude Opus 4.8",
+      "recorded_name": "Claude Opus 4.8"
+    },
+    {
+      "id": "deepseek-v4-pro",
+      "label": "DeepSeek V4 Pro",
+      "recorded_name": "DeepSeek V4 Pro"
+    },
+    {
+      "id": "claude-opus55",
+      "label": "Claude Opus 5.5",
+      "recorded_name": "Claude Opus 5.5"
+    },
+    {
+      "id": "claude-fable51",
+      "label": "Claude Fable 5.1",
+      "recorded_name": "Claude Fable 5.1"
+    },
+    {
+      "id": "gpt61-sol",
+      "label": "GPT-6.1 Sol",
+      "recorded_name": "GPT-6.1 Sol"
+    },
+    {
+      "id": "gpt6-astra",
+      "label": "GPT-6 Astra",
+      "recorded_name": "GPT-6 Astra"
+    },
+    {
+      "id": "gemini38-flash",
+      "label": "Gemini 3.8 Flash",
+      "recorded_name": "Gemini 3.8 Flash"
+    },
+    {
+      "id": "deepseek-v41-flash",
+      "label": "DeepSeek V4.1 Flash",
+      "recorded_name": "DeepSeek V4.1 Flash"
+    },
+    {
+      "id": "glm53",
+      "label": "GLM 5.3",
+      "recorded_name": "GLM 5.3"
+    },
+    {
+      "id": "qwen38-max",
+      "label": "Qwen3.8-Max",
+      "recorded_name": "Qwen3.8-Max"
+    }
+  ],
+  "runs": [
+    {
+      "model": "gpt56-sol",
+      "harness": "deepagents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 98,
+        "perfect": 65,
+        "scored_not_perfect": 33,
+        "failed": 2,
+        "unknown": 0,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 2,
+        "unknown_infrastructure": 0,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 65,
+          "false": 33,
+          "unknown_or_pending": 2,
+          "denominator": 100,
+          "score": 65.0
+        },
+        "partial": {
+          "true": 68,
+          "false": 30,
+          "unknown_or_pending": 2,
+          "denominator": 100,
+          "score": 68.0
+        },
+        "coefficient_only": {
+          "true": 76,
+          "false": 22,
+          "unknown_or_pending": 2,
+          "denominator": 100,
+          "score": 76.0
+        },
+        "direction": {
+          "true": 96,
+          "false": 2,
+          "unknown_or_pending": 2,
+          "denominator": 100,
+          "score": 96.0
+        },
+        "significance": {
+          "true": 83,
+          "false": 15,
+          "unknown_or_pending": 2,
+          "denominator": 100,
+          "score": 83.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 4
+            }
+          ],
+          "not_recorded_slots": 96
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 4
+            }
+          ],
+          "not_recorded_slots": 96
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.7.13",
+              "slots": 4
+            }
+          ],
+          "not_recorded_slots": 96
+        },
+        "route": {
+          "values": [
+            {
+              "value": "openai/gpt-5.6-sol",
+              "slots": 4
+            }
+          ],
+          "not_recorded_slots": 96
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 2
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 2
+            }
+          ],
+          "not_recorded_slots": 96
+        }
+      },
+      "provenance": {
+        "new_native": 4,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 96
+      }
+    },
+    {
+      "model": "gpt56-sol",
+      "harness": "deepseek",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 96,
+        "perfect": 60,
+        "scored_not_perfect": 36,
+        "failed": 2,
+        "unknown": 2,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 2,
+        "unknown_infrastructure": 0,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 2
+      },
+      "metrics": {
+        "perfect": {
+          "true": 60,
+          "false": 36,
+          "unknown_or_pending": 4,
+          "denominator": 100,
+          "score": 60.0
+        },
+        "partial": {
+          "true": 66,
+          "false": 30,
+          "unknown_or_pending": 4,
+          "denominator": 100,
+          "score": 66.0
+        },
+        "coefficient_only": {
+          "true": 73,
+          "false": 23,
+          "unknown_or_pending": 4,
+          "denominator": 100,
+          "score": 73.0
+        },
+        "direction": {
+          "true": 93,
+          "false": 3,
+          "unknown_or_pending": 4,
+          "denominator": 100,
+          "score": 93.0
+        },
+        "significance": {
+          "true": 78,
+          "false": 18,
+          "unknown_or_pending": 4,
+          "denominator": 100,
+          "score": 78.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [],
+          "not_recorded_slots": 100
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.1.5rc1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [],
+          "not_recorded_slots": 100
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 0,
+        "inherited_native_sdk": 100,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "gpt56-sol",
+      "harness": "claude",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 96,
+        "perfect": 67,
+        "scored_not_perfect": 29,
+        "failed": 2,
+        "unknown": 2,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 2,
+        "unknown_infrastructure": 0,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 2
+      },
+      "metrics": {
+        "perfect": {
+          "true": 67,
+          "false": 29,
+          "unknown_or_pending": 4,
+          "denominator": 100,
+          "score": 67.0
+        },
+        "partial": {
+          "true": 70,
+          "false": 26,
+          "unknown_or_pending": 4,
+          "denominator": 100,
+          "score": 70.0
+        },
+        "coefficient_only": {
+          "true": 75,
+          "false": 21,
+          "unknown_or_pending": 4,
+          "denominator": 100,
+          "score": 75.0
+        },
+        "direction": {
+          "true": 94,
+          "false": 2,
+          "unknown_or_pending": 4,
+          "denominator": 100,
+          "score": 94.0
+        },
+        "significance": {
+          "true": 82,
+          "false": 14,
+          "unknown_or_pending": 4,
+          "denominator": 100,
+          "score": 82.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [],
+          "not_recorded_slots": 100
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.2.165",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "openai/gpt-5.6-sol",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 0,
+        "inherited_native_sdk": 100,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "gpt56-sol",
+      "harness": "openai_agents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 95,
+        "perfect": 60,
+        "scored_not_perfect": 35,
+        "failed": 5,
+        "unknown": 0,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 5,
+        "unknown_infrastructure": 0,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 60,
+          "false": 35,
+          "unknown_or_pending": 5,
+          "denominator": 100,
+          "score": 60.0
+        },
+        "partial": {
+          "true": 65,
+          "false": 30,
+          "unknown_or_pending": 5,
+          "denominator": 100,
+          "score": 65.0
+        },
+        "coefficient_only": {
+          "true": 73,
+          "false": 22,
+          "unknown_or_pending": 5,
+          "denominator": 100,
+          "score": 73.0
+        },
+        "direction": {
+          "true": 93,
+          "false": 2,
+          "unknown_or_pending": 5,
+          "denominator": 100,
+          "score": 93.0
+        },
+        "significance": {
+          "true": 79,
+          "false": 16,
+          "unknown_or_pending": 5,
+          "denominator": 100,
+          "score": 79.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.23.1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "openai/gpt-5.6-sol",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 8
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 92
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "gemini31-pro",
+      "harness": "deepagents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 95,
+        "perfect": 42,
+        "scored_not_perfect": 53,
+        "failed": 5,
+        "unknown": 0,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 5,
+        "unknown_infrastructure": 0,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 42,
+          "false": 53,
+          "unknown_or_pending": 5,
+          "denominator": 100,
+          "score": 42.0
+        },
+        "partial": {
+          "true": 4,
+          "false": 6,
+          "unknown_or_pending": 90,
+          "denominator": 100,
+          "score": 4.0
+        },
+        "coefficient_only": {
+          "true": 7,
+          "false": 3,
+          "unknown_or_pending": 90,
+          "denominator": 100,
+          "score": 7.0
+        },
+        "direction": {
+          "true": 10,
+          "false": 0,
+          "unknown_or_pending": 90,
+          "denominator": 100,
+          "score": 10.0
+        },
+        "significance": {
+          "true": 7,
+          "false": 3,
+          "unknown_or_pending": 90,
+          "denominator": 100,
+          "score": 7.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 15
+            }
+          ],
+          "not_recorded_slots": 85
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 15
+            }
+          ],
+          "not_recorded_slots": 85
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.7.13",
+              "slots": 15
+            }
+          ],
+          "not_recorded_slots": 85
+        },
+        "route": {
+          "values": [
+            {
+              "value": "google/gemini-3.1-pro-preview",
+              "slots": 15
+            }
+          ],
+          "not_recorded_slots": 85
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 3
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 12
+            }
+          ],
+          "not_recorded_slots": 85
+        }
+      },
+      "provenance": {
+        "new_native": 15,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 85,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "gemini31-pro",
+      "harness": "deepseek",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 31,
+        "perfect": 18,
+        "scored_not_perfect": 13,
+        "failed": 67,
+        "unknown": 2,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 67,
+        "unknown_infrastructure": 0,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 2
+      },
+      "metrics": {
+        "perfect": {
+          "true": 18,
+          "false": 13,
+          "unknown_or_pending": 69,
+          "denominator": 100,
+          "score": 18.0
+        },
+        "partial": {
+          "true": 23,
+          "false": 8,
+          "unknown_or_pending": 69,
+          "denominator": 100,
+          "score": 23.0
+        },
+        "coefficient_only": {
+          "true": 24,
+          "false": 7,
+          "unknown_or_pending": 69,
+          "denominator": 100,
+          "score": 24.0
+        },
+        "direction": {
+          "true": 30,
+          "false": 1,
+          "unknown_or_pending": 69,
+          "denominator": 100,
+          "score": 30.0
+        },
+        "significance": {
+          "true": 26,
+          "false": 5,
+          "unknown_or_pending": 69,
+          "denominator": 100,
+          "score": 26.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [],
+          "not_recorded_slots": 100
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.1.5rc1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [],
+          "not_recorded_slots": 100
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 0,
+        "inherited_native_sdk": 100,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "gemini31-pro",
+      "harness": "claude",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 74,
+        "perfect": 39,
+        "scored_not_perfect": 35,
+        "failed": 20,
+        "unknown": 6,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 20,
+        "unknown_infrastructure": 0,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 6
+      },
+      "metrics": {
+        "perfect": {
+          "true": 39,
+          "false": 35,
+          "unknown_or_pending": 26,
+          "denominator": 100,
+          "score": 39.0
+        },
+        "partial": {
+          "true": 47,
+          "false": 27,
+          "unknown_or_pending": 26,
+          "denominator": 100,
+          "score": 47.0
+        },
+        "coefficient_only": {
+          "true": 56,
+          "false": 18,
+          "unknown_or_pending": 26,
+          "denominator": 100,
+          "score": 56.0
+        },
+        "direction": {
+          "true": 72,
+          "false": 2,
+          "unknown_or_pending": 26,
+          "denominator": 100,
+          "score": 72.0
+        },
+        "significance": {
+          "true": 59,
+          "false": 15,
+          "unknown_or_pending": 26,
+          "denominator": 100,
+          "score": 59.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [],
+          "not_recorded_slots": 100
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.2.165",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "google/gemini-3.1-pro-preview",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 0,
+        "inherited_native_sdk": 100,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "gemini31-pro",
+      "harness": "openai_agents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 79,
+        "perfect": 41,
+        "scored_not_perfect": 38,
+        "failed": 21,
+        "unknown": 0,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 21,
+        "unknown_infrastructure": 0,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 41,
+          "false": 38,
+          "unknown_or_pending": 21,
+          "denominator": 100,
+          "score": 41.0
+        },
+        "partial": {
+          "true": 55,
+          "false": 24,
+          "unknown_or_pending": 21,
+          "denominator": 100,
+          "score": 55.0
+        },
+        "coefficient_only": {
+          "true": 66,
+          "false": 13,
+          "unknown_or_pending": 21,
+          "denominator": 100,
+          "score": 66.0
+        },
+        "direction": {
+          "true": 78,
+          "false": 1,
+          "unknown_or_pending": 21,
+          "denominator": 100,
+          "score": 78.0
+        },
+        "significance": {
+          "true": 63,
+          "false": 16,
+          "unknown_or_pending": 21,
+          "denominator": 100,
+          "score": 63.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.23.1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "google/gemini-3.1-pro-preview",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 7
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 93
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "qwen37-max",
+      "harness": "deepagents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 69,
+        "perfect": 30,
+        "scored_not_perfect": 39,
+        "failed": 31,
+        "unknown": 0,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 31,
+        "unknown_infrastructure": 0,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 30,
+          "false": 39,
+          "unknown_or_pending": 31,
+          "denominator": 100,
+          "score": 30.0
+        },
+        "partial": {
+          "true": 10,
+          "false": 13,
+          "unknown_or_pending": 77,
+          "denominator": 100,
+          "score": 10.0
+        },
+        "coefficient_only": {
+          "true": 14,
+          "false": 9,
+          "unknown_or_pending": 77,
+          "denominator": 100,
+          "score": 14.0
+        },
+        "direction": {
+          "true": 22,
+          "false": 1,
+          "unknown_or_pending": 77,
+          "denominator": 100,
+          "score": 22.0
+        },
+        "significance": {
+          "true": 15,
+          "false": 8,
+          "unknown_or_pending": 77,
+          "denominator": 100,
+          "score": 15.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 54
+            }
+          ],
+          "not_recorded_slots": 46
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 54
+            }
+          ],
+          "not_recorded_slots": 46
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.7.13",
+              "slots": 54
+            }
+          ],
+          "not_recorded_slots": 46
+        },
+        "route": {
+          "values": [
+            {
+              "value": "qwen3.7-max",
+              "slots": 54
+            }
+          ],
+          "not_recorded_slots": 46
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 6
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 48
+            }
+          ],
+          "not_recorded_slots": 46
+        }
+      },
+      "provenance": {
+        "new_native": 54,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 46,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "qwen37-max",
+      "harness": "deepseek",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 62,
+        "perfect": 35,
+        "scored_not_perfect": 27,
+        "failed": 35,
+        "unknown": 3,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 35,
+        "unknown_infrastructure": 0,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 3
+      },
+      "metrics": {
+        "perfect": {
+          "true": 35,
+          "false": 27,
+          "unknown_or_pending": 38,
+          "denominator": 100,
+          "score": 35.0
+        },
+        "partial": {
+          "true": 41,
+          "false": 21,
+          "unknown_or_pending": 38,
+          "denominator": 100,
+          "score": 41.0
+        },
+        "coefficient_only": {
+          "true": 46,
+          "false": 16,
+          "unknown_or_pending": 38,
+          "denominator": 100,
+          "score": 46.0
+        },
+        "direction": {
+          "true": 60,
+          "false": 2,
+          "unknown_or_pending": 38,
+          "denominator": 100,
+          "score": 60.0
+        },
+        "significance": {
+          "true": 51,
+          "false": 11,
+          "unknown_or_pending": 38,
+          "denominator": 100,
+          "score": 51.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [],
+          "not_recorded_slots": 100
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.1.5rc1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [],
+          "not_recorded_slots": 100
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 0,
+        "inherited_native_sdk": 100,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "qwen37-max",
+      "harness": "claude",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 13,
+        "perfect": 5,
+        "scored_not_perfect": 8,
+        "failed": 82,
+        "unknown": 5,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 82,
+        "unknown_infrastructure": 0,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 5
+      },
+      "metrics": {
+        "perfect": {
+          "true": 5,
+          "false": 8,
+          "unknown_or_pending": 87,
+          "denominator": 100,
+          "score": 5.0
+        },
+        "partial": {
+          "true": 7,
+          "false": 6,
+          "unknown_or_pending": 87,
+          "denominator": 100,
+          "score": 7.0
+        },
+        "coefficient_only": {
+          "true": 8,
+          "false": 5,
+          "unknown_or_pending": 87,
+          "denominator": 100,
+          "score": 8.0
+        },
+        "direction": {
+          "true": 11,
+          "false": 2,
+          "unknown_or_pending": 87,
+          "denominator": 100,
+          "score": 11.0
+        },
+        "significance": {
+          "true": 7,
+          "false": 6,
+          "unknown_or_pending": 87,
+          "denominator": 100,
+          "score": 7.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [],
+          "not_recorded_slots": 100
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.2.165",
+              "slots": 99
+            }
+          ],
+          "not_recorded_slots": 1
+        },
+        "route": {
+          "values": [
+            {
+              "value": "qwen3.7-max",
+              "slots": 99
+            }
+          ],
+          "not_recorded_slots": 1
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 0,
+        "inherited_native_sdk": 100,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "qwen37-max",
+      "harness": "openai_agents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 54,
+        "perfect": 32,
+        "scored_not_perfect": 22,
+        "failed": 33,
+        "unknown": 13,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 33,
+        "unknown_infrastructure": 11,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 2,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 32,
+          "false": 22,
+          "unknown_or_pending": 46,
+          "denominator": 100,
+          "score": 32.0
+        },
+        "partial": {
+          "true": 36,
+          "false": 18,
+          "unknown_or_pending": 46,
+          "denominator": 100,
+          "score": 36.0
+        },
+        "coefficient_only": {
+          "true": 40,
+          "false": 14,
+          "unknown_or_pending": 46,
+          "denominator": 100,
+          "score": 40.0
+        },
+        "direction": {
+          "true": 52,
+          "false": 2,
+          "unknown_or_pending": 46,
+          "denominator": 100,
+          "score": 52.0
+        },
+        "significance": {
+          "true": 41,
+          "false": 13,
+          "unknown_or_pending": 46,
+          "denominator": 100,
+          "score": 41.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.23.1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "qwen3.7-max",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 5
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 95
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "kimi-k3",
+      "harness": "deepagents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 94,
+        "perfect": 42,
+        "scored_not_perfect": 52,
+        "failed": 4,
+        "unknown": 2,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 4,
+        "unknown_infrastructure": 2,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 42,
+          "false": 52,
+          "unknown_or_pending": 6,
+          "denominator": 100,
+          "score": 42.0
+        },
+        "partial": {
+          "true": 10,
+          "false": 6,
+          "unknown_or_pending": 84,
+          "denominator": 100,
+          "score": 10.0
+        },
+        "coefficient_only": {
+          "true": 14,
+          "false": 2,
+          "unknown_or_pending": 84,
+          "denominator": 100,
+          "score": 14.0
+        },
+        "direction": {
+          "true": 16,
+          "false": 0,
+          "unknown_or_pending": 84,
+          "denominator": 100,
+          "score": 16.0
+        },
+        "significance": {
+          "true": 13,
+          "false": 3,
+          "unknown_or_pending": 84,
+          "denominator": 100,
+          "score": 13.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 22
+            }
+          ],
+          "not_recorded_slots": 78
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 22
+            }
+          ],
+          "not_recorded_slots": 78
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.7.13",
+              "slots": 22
+            }
+          ],
+          "not_recorded_slots": 78
+        },
+        "route": {
+          "values": [
+            {
+              "value": "kimi-k3",
+              "slots": 22
+            }
+          ],
+          "not_recorded_slots": 78
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 2
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 20
+            }
+          ],
+          "not_recorded_slots": 78
+        }
+      },
+      "provenance": {
+        "new_native": 22,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 78,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "kimi-k3",
+      "harness": "deepseek",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 80,
+        "perfect": 48,
+        "scored_not_perfect": 32,
+        "failed": 14,
+        "unknown": 6,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 14,
+        "unknown_infrastructure": 0,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 6
+      },
+      "metrics": {
+        "perfect": {
+          "true": 48,
+          "false": 32,
+          "unknown_or_pending": 20,
+          "denominator": 100,
+          "score": 48.0
+        },
+        "partial": {
+          "true": 54,
+          "false": 26,
+          "unknown_or_pending": 20,
+          "denominator": 100,
+          "score": 54.0
+        },
+        "coefficient_only": {
+          "true": 62,
+          "false": 18,
+          "unknown_or_pending": 20,
+          "denominator": 100,
+          "score": 62.0
+        },
+        "direction": {
+          "true": 77,
+          "false": 3,
+          "unknown_or_pending": 20,
+          "denominator": 100,
+          "score": 77.0
+        },
+        "significance": {
+          "true": 67,
+          "false": 13,
+          "unknown_or_pending": 20,
+          "denominator": 100,
+          "score": 67.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [],
+          "not_recorded_slots": 100
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.1.5rc1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [],
+          "not_recorded_slots": 100
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 0,
+        "inherited_native_sdk": 100,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "kimi-k3",
+      "harness": "claude",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 82,
+        "perfect": 51,
+        "scored_not_perfect": 31,
+        "failed": 13,
+        "unknown": 5,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 13,
+        "unknown_infrastructure": 0,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 5
+      },
+      "metrics": {
+        "perfect": {
+          "true": 51,
+          "false": 31,
+          "unknown_or_pending": 18,
+          "denominator": 100,
+          "score": 51.0
+        },
+        "partial": {
+          "true": 57,
+          "false": 25,
+          "unknown_or_pending": 18,
+          "denominator": 100,
+          "score": 57.0
+        },
+        "coefficient_only": {
+          "true": 66,
+          "false": 16,
+          "unknown_or_pending": 18,
+          "denominator": 100,
+          "score": 66.0
+        },
+        "direction": {
+          "true": 78,
+          "false": 4,
+          "unknown_or_pending": 18,
+          "denominator": 100,
+          "score": 78.0
+        },
+        "significance": {
+          "true": 65,
+          "false": 17,
+          "unknown_or_pending": 18,
+          "denominator": 100,
+          "score": 65.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [],
+          "not_recorded_slots": 100
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.2.165",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "kimi-k3",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 0,
+        "inherited_native_sdk": 100,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "kimi-k3",
+      "harness": "openai_agents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 68,
+        "perfect": 40,
+        "scored_not_perfect": 28,
+        "failed": 19,
+        "unknown": 13,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 19,
+        "unknown_infrastructure": 8,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 1,
+        "unknown_unattributed": 4
+      },
+      "metrics": {
+        "perfect": {
+          "true": 40,
+          "false": 28,
+          "unknown_or_pending": 32,
+          "denominator": 100,
+          "score": 40.0
+        },
+        "partial": {
+          "true": 46,
+          "false": 22,
+          "unknown_or_pending": 32,
+          "denominator": 100,
+          "score": 46.0
+        },
+        "coefficient_only": {
+          "true": 53,
+          "false": 15,
+          "unknown_or_pending": 32,
+          "denominator": 100,
+          "score": 53.0
+        },
+        "direction": {
+          "true": 64,
+          "false": 4,
+          "unknown_or_pending": 32,
+          "denominator": 100,
+          "score": 64.0
+        },
+        "significance": {
+          "true": 51,
+          "false": 17,
+          "unknown_or_pending": 32,
+          "denominator": 100,
+          "score": 51.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.23.1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "kimi-k3",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 9
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 91
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "claude-opus48",
+      "harness": "deepagents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 94,
+        "perfect": 45,
+        "scored_not_perfect": 49,
+        "failed": 6,
+        "unknown": 0,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 6,
+        "unknown_infrastructure": 0,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 45,
+          "false": 49,
+          "unknown_or_pending": 6,
+          "denominator": 100,
+          "score": 45.0
+        },
+        "partial": {
+          "true": 59,
+          "false": 35,
+          "unknown_or_pending": 6,
+          "denominator": 100,
+          "score": 59.0
+        },
+        "coefficient_only": {
+          "true": 71,
+          "false": 23,
+          "unknown_or_pending": 6,
+          "denominator": 100,
+          "score": 71.0
+        },
+        "direction": {
+          "true": 92,
+          "false": 2,
+          "unknown_or_pending": 6,
+          "denominator": 100,
+          "score": 92.0
+        },
+        "significance": {
+          "true": 71,
+          "false": 23,
+          "unknown_or_pending": 6,
+          "denominator": 100,
+          "score": 71.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 14
+            }
+          ],
+          "not_recorded_slots": 86
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 14
+            }
+          ],
+          "not_recorded_slots": 86
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.7.13",
+              "slots": 14
+            }
+          ],
+          "not_recorded_slots": 86
+        },
+        "route": {
+          "values": [
+            {
+              "value": "anthropic/claude-opus-4.8",
+              "slots": 14
+            }
+          ],
+          "not_recorded_slots": 86
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 2
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 12
+            }
+          ],
+          "not_recorded_slots": 86
+        }
+      },
+      "provenance": {
+        "new_native": 14,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 86
+      }
+    },
+    {
+      "model": "claude-opus48",
+      "harness": "deepseek",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 90,
+        "perfect": 41,
+        "scored_not_perfect": 49,
+        "failed": 9,
+        "unknown": 1,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 9,
+        "unknown_infrastructure": 0,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 1
+      },
+      "metrics": {
+        "perfect": {
+          "true": 41,
+          "false": 49,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 41.0
+        },
+        "partial": {
+          "true": 55,
+          "false": 35,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 55.0
+        },
+        "coefficient_only": {
+          "true": 67,
+          "false": 23,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 67.0
+        },
+        "direction": {
+          "true": 87,
+          "false": 3,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 87.0
+        },
+        "significance": {
+          "true": 66,
+          "false": 24,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 66.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [],
+          "not_recorded_slots": 100
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.1.5rc1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [],
+          "not_recorded_slots": 100
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 0,
+        "inherited_native_sdk": 100,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "claude-opus48",
+      "harness": "claude",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 93,
+        "perfect": 51,
+        "scored_not_perfect": 42,
+        "failed": 5,
+        "unknown": 2,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 5,
+        "unknown_infrastructure": 0,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 2
+      },
+      "metrics": {
+        "perfect": {
+          "true": 51,
+          "false": 42,
+          "unknown_or_pending": 7,
+          "denominator": 100,
+          "score": 51.0
+        },
+        "partial": {
+          "true": 61,
+          "false": 32,
+          "unknown_or_pending": 7,
+          "denominator": 100,
+          "score": 61.0
+        },
+        "coefficient_only": {
+          "true": 72,
+          "false": 21,
+          "unknown_or_pending": 7,
+          "denominator": 100,
+          "score": 72.0
+        },
+        "direction": {
+          "true": 89,
+          "false": 4,
+          "unknown_or_pending": 7,
+          "denominator": 100,
+          "score": 89.0
+        },
+        "significance": {
+          "true": 72,
+          "false": 21,
+          "unknown_or_pending": 7,
+          "denominator": 100,
+          "score": 72.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [],
+          "not_recorded_slots": 100
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.2.165",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "anthropic/claude-opus-4.8",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 0,
+        "inherited_native_sdk": 100,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "claude-opus48",
+      "harness": "openai_agents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 90,
+        "perfect": 40,
+        "scored_not_perfect": 50,
+        "failed": 9,
+        "unknown": 1,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 9,
+        "unknown_infrastructure": 0,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 1
+      },
+      "metrics": {
+        "perfect": {
+          "true": 40,
+          "false": 50,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 40.0
+        },
+        "partial": {
+          "true": 51,
+          "false": 39,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 51.0
+        },
+        "coefficient_only": {
+          "true": 67,
+          "false": 23,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 67.0
+        },
+        "direction": {
+          "true": 87,
+          "false": 3,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 87.0
+        },
+        "significance": {
+          "true": 67,
+          "false": 23,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 67.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.23.1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "anthropic/claude-opus-4.8",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 10
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 90
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "deepseek-v4-pro",
+      "harness": "deepagents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 33,
+        "perfect": 17,
+        "scored_not_perfect": 16,
+        "failed": 59,
+        "unknown": 8,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 59,
+        "unknown_infrastructure": 7,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 1,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 17,
+          "false": 16,
+          "unknown_or_pending": 67,
+          "denominator": 100,
+          "score": 17.0
+        },
+        "partial": {
+          "true": 4,
+          "false": 2,
+          "unknown_or_pending": 94,
+          "denominator": 100,
+          "score": 4.0
+        },
+        "coefficient_only": {
+          "true": 4,
+          "false": 2,
+          "unknown_or_pending": 94,
+          "denominator": 100,
+          "score": 4.0
+        },
+        "direction": {
+          "true": 5,
+          "false": 1,
+          "unknown_or_pending": 94,
+          "denominator": 100,
+          "score": 5.0
+        },
+        "significance": {
+          "true": 5,
+          "false": 1,
+          "unknown_or_pending": 94,
+          "denominator": 100,
+          "score": 5.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 73
+            }
+          ],
+          "not_recorded_slots": 27
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 73
+            }
+          ],
+          "not_recorded_slots": 27
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.7.13",
+              "slots": 73
+            }
+          ],
+          "not_recorded_slots": 27
+        },
+        "route": {
+          "values": [
+            {
+              "value": "deepseek-v4-pro",
+              "slots": 73
+            }
+          ],
+          "not_recorded_slots": 27
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 4
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 69
+            }
+          ],
+          "not_recorded_slots": 27
+        }
+      },
+      "provenance": {
+        "new_native": 73,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 27,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "deepseek-v4-pro",
+      "harness": "deepseek",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 38,
+        "perfect": 18,
+        "scored_not_perfect": 20,
+        "failed": 56,
+        "unknown": 6,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 56,
+        "unknown_infrastructure": 0,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 6
+      },
+      "metrics": {
+        "perfect": {
+          "true": 18,
+          "false": 20,
+          "unknown_or_pending": 62,
+          "denominator": 100,
+          "score": 18.0
+        },
+        "partial": {
+          "true": 24,
+          "false": 14,
+          "unknown_or_pending": 62,
+          "denominator": 100,
+          "score": 24.0
+        },
+        "coefficient_only": {
+          "true": 29,
+          "false": 9,
+          "unknown_or_pending": 62,
+          "denominator": 100,
+          "score": 29.0
+        },
+        "direction": {
+          "true": 36,
+          "false": 2,
+          "unknown_or_pending": 62,
+          "denominator": 100,
+          "score": 36.0
+        },
+        "significance": {
+          "true": 31,
+          "false": 7,
+          "unknown_or_pending": 62,
+          "denominator": 100,
+          "score": 31.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [],
+          "not_recorded_slots": 100
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.1.5rc1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [],
+          "not_recorded_slots": 100
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 0,
+        "inherited_native_sdk": 100,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "deepseek-v4-pro",
+      "harness": "claude",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 51,
+        "perfect": 24,
+        "scored_not_perfect": 27,
+        "failed": 44,
+        "unknown": 5,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 44,
+        "unknown_infrastructure": 0,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 5
+      },
+      "metrics": {
+        "perfect": {
+          "true": 24,
+          "false": 27,
+          "unknown_or_pending": 49,
+          "denominator": 100,
+          "score": 24.0
+        },
+        "partial": {
+          "true": 29,
+          "false": 22,
+          "unknown_or_pending": 49,
+          "denominator": 100,
+          "score": 29.0
+        },
+        "coefficient_only": {
+          "true": 31,
+          "false": 20,
+          "unknown_or_pending": 49,
+          "denominator": 100,
+          "score": 31.0
+        },
+        "direction": {
+          "true": 49,
+          "false": 2,
+          "unknown_or_pending": 49,
+          "denominator": 100,
+          "score": 49.0
+        },
+        "significance": {
+          "true": 36,
+          "false": 15,
+          "unknown_or_pending": 49,
+          "denominator": 100,
+          "score": 36.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [],
+          "not_recorded_slots": 100
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.2.165",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "deepseek-v4-pro",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 0,
+        "inherited_native_sdk": 100,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "deepseek-v4-pro",
+      "harness": "openai_agents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 22,
+        "perfect": 8,
+        "scored_not_perfect": 14,
+        "failed": 66,
+        "unknown": 12,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 66,
+        "unknown_infrastructure": 11,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 1
+      },
+      "metrics": {
+        "perfect": {
+          "true": 8,
+          "false": 14,
+          "unknown_or_pending": 78,
+          "denominator": 100,
+          "score": 8.0
+        },
+        "partial": {
+          "true": 10,
+          "false": 12,
+          "unknown_or_pending": 78,
+          "denominator": 100,
+          "score": 10.0
+        },
+        "coefficient_only": {
+          "true": 13,
+          "false": 9,
+          "unknown_or_pending": 78,
+          "denominator": 100,
+          "score": 13.0
+        },
+        "direction": {
+          "true": 22,
+          "false": 0,
+          "unknown_or_pending": 78,
+          "denominator": 100,
+          "score": 22.0
+        },
+        "significance": {
+          "true": 17,
+          "false": 5,
+          "unknown_or_pending": 78,
+          "denominator": 100,
+          "score": 17.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.23.1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "deepseek-v4-pro",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 5
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 95
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "claude-opus55",
+      "harness": "deepagents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 84,
+        "perfect": 50,
+        "scored_not_perfect": 34,
+        "failed": 10,
+        "unknown": 6,
+        "pending": 0,
+        "failed_infrastructure": 7,
+        "failed_billing": 7,
+        "failed_model": 0,
+        "failed_unattributed": 3,
+        "unknown_infrastructure": 4,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 2,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 50,
+          "false": 34,
+          "unknown_or_pending": 16,
+          "denominator": 100,
+          "score": 50.0
+        },
+        "partial": {
+          "true": 58,
+          "false": 26,
+          "unknown_or_pending": 16,
+          "denominator": 100,
+          "score": 58.0
+        },
+        "coefficient_only": {
+          "true": 66,
+          "false": 18,
+          "unknown_or_pending": 16,
+          "denominator": 100,
+          "score": 66.0
+        },
+        "direction": {
+          "true": 81,
+          "false": 3,
+          "unknown_or_pending": 16,
+          "denominator": 100,
+          "score": 81.0
+        },
+        "significance": {
+          "true": 66,
+          "false": 18,
+          "unknown_or_pending": 16,
+          "denominator": 100,
+          "score": 66.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.7.13",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "anthropic/claude-opus-5.5",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 4
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 96
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "claude-opus55",
+      "harness": "deepseek",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 90,
+        "perfect": 55,
+        "scored_not_perfect": 35,
+        "failed": 10,
+        "unknown": 0,
+        "pending": 0,
+        "failed_infrastructure": 8,
+        "failed_billing": 8,
+        "failed_model": 0,
+        "failed_unattributed": 2,
+        "unknown_infrastructure": 0,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 55,
+          "false": 35,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 55.0
+        },
+        "partial": {
+          "true": 65,
+          "false": 25,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 65.0
+        },
+        "coefficient_only": {
+          "true": 72,
+          "false": 18,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 72.0
+        },
+        "direction": {
+          "true": 86,
+          "false": 4,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 86.0
+        },
+        "significance": {
+          "true": 73,
+          "false": 17,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 73.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.1.5rc1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "anthropic/claude-opus-5.5",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 6
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 94
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "claude-opus55",
+      "harness": "claude",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 90,
+        "perfect": 54,
+        "scored_not_perfect": 36,
+        "failed": 6,
+        "unknown": 4,
+        "pending": 0,
+        "failed_infrastructure": 4,
+        "failed_billing": 4,
+        "failed_model": 0,
+        "failed_unattributed": 2,
+        "unknown_infrastructure": 2,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 2,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 54,
+          "false": 36,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 54.0
+        },
+        "partial": {
+          "true": 62,
+          "false": 28,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 62.0
+        },
+        "coefficient_only": {
+          "true": 69,
+          "false": 21,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 69.0
+        },
+        "direction": {
+          "true": 87,
+          "false": 3,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 87.0
+        },
+        "significance": {
+          "true": 75,
+          "false": 15,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 75.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "No explicit override; Claude CLI default (reported as adaptive thinking, high effort)",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.2.165",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "anthropic/claude-opus-5.5",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 7
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 93
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "claude-opus55",
+      "harness": "openai_agents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 92,
+        "perfect": 57,
+        "scored_not_perfect": 35,
+        "failed": 5,
+        "unknown": 3,
+        "pending": 0,
+        "failed_infrastructure": 3,
+        "failed_billing": 3,
+        "failed_model": 0,
+        "failed_unattributed": 2,
+        "unknown_infrastructure": 2,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 1,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 57,
+          "false": 35,
+          "unknown_or_pending": 8,
+          "denominator": 100,
+          "score": 57.0
+        },
+        "partial": {
+          "true": 65,
+          "false": 27,
+          "unknown_or_pending": 8,
+          "denominator": 100,
+          "score": 65.0
+        },
+        "coefficient_only": {
+          "true": 74,
+          "false": 18,
+          "unknown_or_pending": 8,
+          "denominator": 100,
+          "score": 74.0
+        },
+        "direction": {
+          "true": 90,
+          "false": 2,
+          "unknown_or_pending": 8,
+          "denominator": 100,
+          "score": 90.0
+        },
+        "significance": {
+          "true": 78,
+          "false": 14,
+          "unknown_or_pending": 8,
+          "denominator": 100,
+          "score": 78.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.23.1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "anthropic/claude-opus-5.5",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 6
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 94
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "claude-fable51",
+      "harness": "deepagents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 92,
+        "perfect": 54,
+        "scored_not_perfect": 38,
+        "failed": 5,
+        "unknown": 3,
+        "pending": 0,
+        "failed_infrastructure": 3,
+        "failed_billing": 3,
+        "failed_model": 0,
+        "failed_unattributed": 2,
+        "unknown_infrastructure": 2,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 1,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 54,
+          "false": 38,
+          "unknown_or_pending": 8,
+          "denominator": 100,
+          "score": 54.0
+        },
+        "partial": {
+          "true": 65,
+          "false": 27,
+          "unknown_or_pending": 8,
+          "denominator": 100,
+          "score": 65.0
+        },
+        "coefficient_only": {
+          "true": 74,
+          "false": 18,
+          "unknown_or_pending": 8,
+          "denominator": 100,
+          "score": 74.0
+        },
+        "direction": {
+          "true": 90,
+          "false": 2,
+          "unknown_or_pending": 8,
+          "denominator": 100,
+          "score": 90.0
+        },
+        "significance": {
+          "true": 72,
+          "false": 20,
+          "unknown_or_pending": 8,
+          "denominator": 100,
+          "score": 72.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.7.13",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "anthropic/claude-fable-5.1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 9
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 91
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "claude-fable51",
+      "harness": "deepseek",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 86,
+        "perfect": 55,
+        "scored_not_perfect": 31,
+        "failed": 10,
+        "unknown": 4,
+        "pending": 0,
+        "failed_infrastructure": 8,
+        "failed_billing": 8,
+        "failed_model": 0,
+        "failed_unattributed": 2,
+        "unknown_infrastructure": 2,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 2,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 55,
+          "false": 31,
+          "unknown_or_pending": 14,
+          "denominator": 100,
+          "score": 55.0
+        },
+        "partial": {
+          "true": 62,
+          "false": 24,
+          "unknown_or_pending": 14,
+          "denominator": 100,
+          "score": 62.0
+        },
+        "coefficient_only": {
+          "true": 70,
+          "false": 16,
+          "unknown_or_pending": 14,
+          "denominator": 100,
+          "score": 70.0
+        },
+        "direction": {
+          "true": 83,
+          "false": 3,
+          "unknown_or_pending": 14,
+          "denominator": 100,
+          "score": 83.0
+        },
+        "significance": {
+          "true": 68,
+          "false": 18,
+          "unknown_or_pending": 14,
+          "denominator": 100,
+          "score": 68.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.1.5rc1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "anthropic/claude-fable-5.1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 5
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 95
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "claude-fable51",
+      "harness": "claude",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 91,
+        "perfect": 54,
+        "scored_not_perfect": 37,
+        "failed": 7,
+        "unknown": 2,
+        "pending": 0,
+        "failed_infrastructure": 6,
+        "failed_billing": 6,
+        "failed_model": 0,
+        "failed_unattributed": 1,
+        "unknown_infrastructure": 1,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 1,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 54,
+          "false": 37,
+          "unknown_or_pending": 9,
+          "denominator": 100,
+          "score": 54.0
+        },
+        "partial": {
+          "true": 63,
+          "false": 28,
+          "unknown_or_pending": 9,
+          "denominator": 100,
+          "score": 63.0
+        },
+        "coefficient_only": {
+          "true": 74,
+          "false": 17,
+          "unknown_or_pending": 9,
+          "denominator": 100,
+          "score": 74.0
+        },
+        "direction": {
+          "true": 89,
+          "false": 2,
+          "unknown_or_pending": 9,
+          "denominator": 100,
+          "score": 89.0
+        },
+        "significance": {
+          "true": 73,
+          "false": 18,
+          "unknown_or_pending": 9,
+          "denominator": 100,
+          "score": 73.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "No explicit override; Claude CLI default (reported as adaptive thinking, high effort)",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.2.165",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "anthropic/claude-fable-5.1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 4
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 96
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "claude-fable51",
+      "harness": "openai_agents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 86,
+        "perfect": 51,
+        "scored_not_perfect": 35,
+        "failed": 9,
+        "unknown": 5,
+        "pending": 0,
+        "failed_infrastructure": 8,
+        "failed_billing": 8,
+        "failed_model": 0,
+        "failed_unattributed": 1,
+        "unknown_infrastructure": 3,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 2,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 51,
+          "false": 35,
+          "unknown_or_pending": 14,
+          "denominator": 100,
+          "score": 51.0
+        },
+        "partial": {
+          "true": 60,
+          "false": 26,
+          "unknown_or_pending": 14,
+          "denominator": 100,
+          "score": 60.0
+        },
+        "coefficient_only": {
+          "true": 69,
+          "false": 17,
+          "unknown_or_pending": 14,
+          "denominator": 100,
+          "score": 69.0
+        },
+        "direction": {
+          "true": 83,
+          "false": 3,
+          "unknown_or_pending": 14,
+          "denominator": 100,
+          "score": 83.0
+        },
+        "significance": {
+          "true": 68,
+          "false": 18,
+          "unknown_or_pending": 14,
+          "denominator": 100,
+          "score": 68.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.23.1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "anthropic/claude-fable-5.1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 5
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 95
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "gpt61-sol",
+      "harness": "deepagents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 91,
+        "perfect": 55,
+        "scored_not_perfect": 36,
+        "failed": 7,
+        "unknown": 2,
+        "pending": 0,
+        "failed_infrastructure": 6,
+        "failed_billing": 6,
+        "failed_model": 0,
+        "failed_unattributed": 1,
+        "unknown_infrastructure": 0,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 2,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 55,
+          "false": 36,
+          "unknown_or_pending": 9,
+          "denominator": 100,
+          "score": 55.0
+        },
+        "partial": {
+          "true": 60,
+          "false": 31,
+          "unknown_or_pending": 9,
+          "denominator": 100,
+          "score": 60.0
+        },
+        "coefficient_only": {
+          "true": 72,
+          "false": 19,
+          "unknown_or_pending": 9,
+          "denominator": 100,
+          "score": 72.0
+        },
+        "direction": {
+          "true": 88,
+          "false": 3,
+          "unknown_or_pending": 9,
+          "denominator": 100,
+          "score": 88.0
+        },
+        "significance": {
+          "true": 74,
+          "false": 17,
+          "unknown_or_pending": 9,
+          "denominator": 100,
+          "score": 74.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.7.13",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "openai/gpt-6.1-sol",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 9
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 91
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "gpt61-sol",
+      "harness": "deepseek",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 89,
+        "perfect": 55,
+        "scored_not_perfect": 34,
+        "failed": 6,
+        "unknown": 5,
+        "pending": 0,
+        "failed_infrastructure": 5,
+        "failed_billing": 5,
+        "failed_model": 0,
+        "failed_unattributed": 1,
+        "unknown_infrastructure": 2,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 3,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 55,
+          "false": 34,
+          "unknown_or_pending": 11,
+          "denominator": 100,
+          "score": 55.0
+        },
+        "partial": {
+          "true": 59,
+          "false": 30,
+          "unknown_or_pending": 11,
+          "denominator": 100,
+          "score": 59.0
+        },
+        "coefficient_only": {
+          "true": 69,
+          "false": 20,
+          "unknown_or_pending": 11,
+          "denominator": 100,
+          "score": 69.0
+        },
+        "direction": {
+          "true": 86,
+          "false": 3,
+          "unknown_or_pending": 11,
+          "denominator": 100,
+          "score": 86.0
+        },
+        "significance": {
+          "true": 74,
+          "false": 15,
+          "unknown_or_pending": 11,
+          "denominator": 100,
+          "score": 74.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.1.5rc1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "openai/gpt-6.1-sol",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 8
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 92
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "gpt61-sol",
+      "harness": "claude",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 94,
+        "perfect": 60,
+        "scored_not_perfect": 34,
+        "failed": 4,
+        "unknown": 2,
+        "pending": 0,
+        "failed_infrastructure": 3,
+        "failed_billing": 3,
+        "failed_model": 0,
+        "failed_unattributed": 1,
+        "unknown_infrastructure": 1,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 1,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 60,
+          "false": 34,
+          "unknown_or_pending": 6,
+          "denominator": 100,
+          "score": 60.0
+        },
+        "partial": {
+          "true": 65,
+          "false": 29,
+          "unknown_or_pending": 6,
+          "denominator": 100,
+          "score": 65.0
+        },
+        "coefficient_only": {
+          "true": 72,
+          "false": 22,
+          "unknown_or_pending": 6,
+          "denominator": 100,
+          "score": 72.0
+        },
+        "direction": {
+          "true": 90,
+          "false": 4,
+          "unknown_or_pending": 6,
+          "denominator": 100,
+          "score": 90.0
+        },
+        "significance": {
+          "true": 78,
+          "false": 16,
+          "unknown_or_pending": 6,
+          "denominator": 100,
+          "score": 78.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "No explicit override; Claude CLI default (reported as adaptive thinking, high effort)",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.2.165",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "openai/gpt-6.1-sol",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 2
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 98
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "gpt61-sol",
+      "harness": "openai_agents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 90,
+        "perfect": 61,
+        "scored_not_perfect": 29,
+        "failed": 7,
+        "unknown": 3,
+        "pending": 0,
+        "failed_infrastructure": 5,
+        "failed_billing": 5,
+        "failed_model": 0,
+        "failed_unattributed": 2,
+        "unknown_infrastructure": 2,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 1,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 61,
+          "false": 29,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 61.0
+        },
+        "partial": {
+          "true": 67,
+          "false": 23,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 67.0
+        },
+        "coefficient_only": {
+          "true": 72,
+          "false": 18,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 72.0
+        },
+        "direction": {
+          "true": 88,
+          "false": 2,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 88.0
+        },
+        "significance": {
+          "true": 77,
+          "false": 13,
+          "unknown_or_pending": 10,
+          "denominator": 100,
+          "score": 77.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.23.1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "openai/gpt-6.1-sol",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 6
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 94
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "gpt6-astra",
+      "harness": "deepagents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 93,
+        "perfect": 58,
+        "scored_not_perfect": 35,
+        "failed": 3,
+        "unknown": 4,
+        "pending": 0,
+        "failed_infrastructure": 3,
+        "failed_billing": 3,
+        "failed_model": 0,
+        "failed_unattributed": 0,
+        "unknown_infrastructure": 1,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 1,
+        "unknown_provider": 2,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 58,
+          "false": 35,
+          "unknown_or_pending": 7,
+          "denominator": 100,
+          "score": 58.0
+        },
+        "partial": {
+          "true": 63,
+          "false": 30,
+          "unknown_or_pending": 7,
+          "denominator": 100,
+          "score": 63.0
+        },
+        "coefficient_only": {
+          "true": 71,
+          "false": 22,
+          "unknown_or_pending": 7,
+          "denominator": 100,
+          "score": 71.0
+        },
+        "direction": {
+          "true": 90,
+          "false": 3,
+          "unknown_or_pending": 7,
+          "denominator": 100,
+          "score": 90.0
+        },
+        "significance": {
+          "true": 76,
+          "false": 17,
+          "unknown_or_pending": 7,
+          "denominator": 100,
+          "score": 76.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.7.13",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "openai/gpt-6-astra",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 8
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 92
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "gpt6-astra",
+      "harness": "deepseek",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 89,
+        "perfect": 59,
+        "scored_not_perfect": 30,
+        "failed": 9,
+        "unknown": 2,
+        "pending": 0,
+        "failed_infrastructure": 8,
+        "failed_billing": 8,
+        "failed_model": 0,
+        "failed_unattributed": 1,
+        "unknown_infrastructure": 1,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 1,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 59,
+          "false": 30,
+          "unknown_or_pending": 11,
+          "denominator": 100,
+          "score": 59.0
+        },
+        "partial": {
+          "true": 60,
+          "false": 29,
+          "unknown_or_pending": 11,
+          "denominator": 100,
+          "score": 60.0
+        },
+        "coefficient_only": {
+          "true": 70,
+          "false": 19,
+          "unknown_or_pending": 11,
+          "denominator": 100,
+          "score": 70.0
+        },
+        "direction": {
+          "true": 85,
+          "false": 4,
+          "unknown_or_pending": 11,
+          "denominator": 100,
+          "score": 85.0
+        },
+        "significance": {
+          "true": 76,
+          "false": 13,
+          "unknown_or_pending": 11,
+          "denominator": 100,
+          "score": 76.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.1.5rc1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "openai/gpt-6-astra",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 11
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 89
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "gpt6-astra",
+      "harness": "claude",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 91,
+        "perfect": 59,
+        "scored_not_perfect": 32,
+        "failed": 5,
+        "unknown": 4,
+        "pending": 0,
+        "failed_infrastructure": 4,
+        "failed_billing": 4,
+        "failed_model": 0,
+        "failed_unattributed": 1,
+        "unknown_infrastructure": 4,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 59,
+          "false": 32,
+          "unknown_or_pending": 9,
+          "denominator": 100,
+          "score": 59.0
+        },
+        "partial": {
+          "true": 67,
+          "false": 24,
+          "unknown_or_pending": 9,
+          "denominator": 100,
+          "score": 67.0
+        },
+        "coefficient_only": {
+          "true": 74,
+          "false": 17,
+          "unknown_or_pending": 9,
+          "denominator": 100,
+          "score": 74.0
+        },
+        "direction": {
+          "true": 88,
+          "false": 3,
+          "unknown_or_pending": 9,
+          "denominator": 100,
+          "score": 88.0
+        },
+        "significance": {
+          "true": 79,
+          "false": 12,
+          "unknown_or_pending": 9,
+          "denominator": 100,
+          "score": 79.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "No explicit override; Claude CLI default (reported as adaptive thinking, high effort)",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.2.165",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "openai/gpt-6-astra",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 8
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 92
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "gpt6-astra",
+      "harness": "openai_agents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 86,
+        "perfect": 58,
+        "scored_not_perfect": 28,
+        "failed": 11,
+        "unknown": 3,
+        "pending": 0,
+        "failed_infrastructure": 10,
+        "failed_billing": 10,
+        "failed_model": 0,
+        "failed_unattributed": 1,
+        "unknown_infrastructure": 3,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 58,
+          "false": 28,
+          "unknown_or_pending": 14,
+          "denominator": 100,
+          "score": 58.0
+        },
+        "partial": {
+          "true": 62,
+          "false": 24,
+          "unknown_or_pending": 14,
+          "denominator": 100,
+          "score": 62.0
+        },
+        "coefficient_only": {
+          "true": 69,
+          "false": 17,
+          "unknown_or_pending": 14,
+          "denominator": 100,
+          "score": 69.0
+        },
+        "direction": {
+          "true": 83,
+          "false": 3,
+          "unknown_or_pending": 14,
+          "denominator": 100,
+          "score": 83.0
+        },
+        "significance": {
+          "true": 72,
+          "false": 14,
+          "unknown_or_pending": 14,
+          "denominator": 100,
+          "score": 72.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.23.1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "openai/gpt-6-astra",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 7
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 93
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "gemini38-flash",
+      "harness": "deepagents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 42,
+        "perfect": 29,
+        "scored_not_perfect": 13,
+        "failed": 56,
+        "unknown": 2,
+        "pending": 0,
+        "failed_infrastructure": 4,
+        "failed_billing": 4,
+        "failed_model": 0,
+        "failed_unattributed": 52,
+        "unknown_infrastructure": 1,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 1,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 29,
+          "false": 13,
+          "unknown_or_pending": 58,
+          "denominator": 100,
+          "score": 29.0
+        },
+        "partial": {
+          "true": 33,
+          "false": 9,
+          "unknown_or_pending": 58,
+          "denominator": 100,
+          "score": 33.0
+        },
+        "coefficient_only": {
+          "true": 36,
+          "false": 6,
+          "unknown_or_pending": 58,
+          "denominator": 100,
+          "score": 36.0
+        },
+        "direction": {
+          "true": 42,
+          "false": 0,
+          "unknown_or_pending": 58,
+          "denominator": 100,
+          "score": 42.0
+        },
+        "significance": {
+          "true": 35,
+          "false": 7,
+          "unknown_or_pending": 58,
+          "denominator": 100,
+          "score": 35.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.7.13",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "google/gemini-3.8-flash",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 8
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 92
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "gemini38-flash",
+      "harness": "deepseek",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 56,
+        "perfect": 39,
+        "scored_not_perfect": 17,
+        "failed": 33,
+        "unknown": 11,
+        "pending": 0,
+        "failed_infrastructure": 1,
+        "failed_billing": 1,
+        "failed_model": 0,
+        "failed_unattributed": 32,
+        "unknown_infrastructure": 3,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 7,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 1
+      },
+      "metrics": {
+        "perfect": {
+          "true": 39,
+          "false": 17,
+          "unknown_or_pending": 44,
+          "denominator": 100,
+          "score": 39.0
+        },
+        "partial": {
+          "true": 40,
+          "false": 16,
+          "unknown_or_pending": 44,
+          "denominator": 100,
+          "score": 40.0
+        },
+        "coefficient_only": {
+          "true": 43,
+          "false": 13,
+          "unknown_or_pending": 44,
+          "denominator": 100,
+          "score": 43.0
+        },
+        "direction": {
+          "true": 54,
+          "false": 2,
+          "unknown_or_pending": 44,
+          "denominator": 100,
+          "score": 54.0
+        },
+        "significance": {
+          "true": 47,
+          "false": 9,
+          "unknown_or_pending": 44,
+          "denominator": 100,
+          "score": 47.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.1.5rc1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "google/gemini-3.8-flash",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 9
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 91
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "gemini38-flash",
+      "harness": "claude",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 6,
+        "perfect": 5,
+        "scored_not_perfect": 1,
+        "failed": 90,
+        "unknown": 4,
+        "pending": 0,
+        "failed_infrastructure": 5,
+        "failed_billing": 5,
+        "failed_model": 0,
+        "failed_unattributed": 85,
+        "unknown_infrastructure": 0,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 1,
+        "unknown_provider": 3,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 5,
+          "false": 1,
+          "unknown_or_pending": 94,
+          "denominator": 100,
+          "score": 5.0
+        },
+        "partial": {
+          "true": 5,
+          "false": 1,
+          "unknown_or_pending": 94,
+          "denominator": 100,
+          "score": 5.0
+        },
+        "coefficient_only": {
+          "true": 6,
+          "false": 0,
+          "unknown_or_pending": 94,
+          "denominator": 100,
+          "score": 6.0
+        },
+        "direction": {
+          "true": 6,
+          "false": 0,
+          "unknown_or_pending": 94,
+          "denominator": 100,
+          "score": 6.0
+        },
+        "significance": {
+          "true": 6,
+          "false": 0,
+          "unknown_or_pending": 94,
+          "denominator": 100,
+          "score": 6.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "No explicit override; Claude CLI default (reported as adaptive thinking, high effort)",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.2.165",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "google/gemini-3.8-flash",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 8
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 92
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "gemini38-flash",
+      "harness": "openai_agents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 68,
+        "perfect": 49,
+        "scored_not_perfect": 19,
+        "failed": 28,
+        "unknown": 4,
+        "pending": 0,
+        "failed_infrastructure": 4,
+        "failed_billing": 4,
+        "failed_model": 0,
+        "failed_unattributed": 24,
+        "unknown_infrastructure": 3,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 1,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 49,
+          "false": 19,
+          "unknown_or_pending": 32,
+          "denominator": 100,
+          "score": 49.0
+        },
+        "partial": {
+          "true": 51,
+          "false": 17,
+          "unknown_or_pending": 32,
+          "denominator": 100,
+          "score": 51.0
+        },
+        "coefficient_only": {
+          "true": 55,
+          "false": 13,
+          "unknown_or_pending": 32,
+          "denominator": 100,
+          "score": 55.0
+        },
+        "direction": {
+          "true": 66,
+          "false": 2,
+          "unknown_or_pending": 32,
+          "denominator": 100,
+          "score": 66.0
+        },
+        "significance": {
+          "true": 60,
+          "false": 8,
+          "unknown_or_pending": 32,
+          "denominator": 100,
+          "score": 60.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.23.1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "google/gemini-3.8-flash",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 9
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 91
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "deepseek-v41-flash",
+      "harness": "deepagents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 51,
+        "perfect": 26,
+        "scored_not_perfect": 25,
+        "failed": 39,
+        "unknown": 10,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 39,
+        "unknown_infrastructure": 6,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 1,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 3
+      },
+      "metrics": {
+        "perfect": {
+          "true": 26,
+          "false": 25,
+          "unknown_or_pending": 49,
+          "denominator": 100,
+          "score": 26.0
+        },
+        "partial": {
+          "true": 31,
+          "false": 20,
+          "unknown_or_pending": 49,
+          "denominator": 100,
+          "score": 31.0
+        },
+        "coefficient_only": {
+          "true": 41,
+          "false": 10,
+          "unknown_or_pending": 49,
+          "denominator": 100,
+          "score": 41.0
+        },
+        "direction": {
+          "true": 49,
+          "false": 2,
+          "unknown_or_pending": 49,
+          "denominator": 100,
+          "score": 49.0
+        },
+        "significance": {
+          "true": 39,
+          "false": 12,
+          "unknown_or_pending": 49,
+          "denominator": 100,
+          "score": 39.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.7.13",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "deepseek-v4.1-flash",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 5
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 95
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "deepseek-v41-flash",
+      "harness": "deepseek",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 36,
+        "perfect": 26,
+        "scored_not_perfect": 10,
+        "failed": 48,
+        "unknown": 16,
+        "pending": 0,
+        "failed_infrastructure": 6,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 42,
+        "unknown_infrastructure": 9,
+        "unknown_provider_rejected": 1,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 6
+      },
+      "metrics": {
+        "perfect": {
+          "true": 26,
+          "false": 10,
+          "unknown_or_pending": 64,
+          "denominator": 100,
+          "score": 26.0
+        },
+        "partial": {
+          "true": 30,
+          "false": 6,
+          "unknown_or_pending": 64,
+          "denominator": 100,
+          "score": 30.0
+        },
+        "coefficient_only": {
+          "true": 31,
+          "false": 5,
+          "unknown_or_pending": 64,
+          "denominator": 100,
+          "score": 31.0
+        },
+        "direction": {
+          "true": 35,
+          "false": 1,
+          "unknown_or_pending": 64,
+          "denominator": 100,
+          "score": 35.0
+        },
+        "significance": {
+          "true": 32,
+          "false": 4,
+          "unknown_or_pending": 64,
+          "denominator": 100,
+          "score": 32.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.1.5rc1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "deepseek-v4.1-flash",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 10
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 90
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "deepseek-v41-flash",
+      "harness": "claude",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 65,
+        "perfect": 34,
+        "scored_not_perfect": 31,
+        "failed": 26,
+        "unknown": 9,
+        "pending": 0,
+        "failed_infrastructure": 6,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 20,
+        "unknown_infrastructure": 4,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 5
+      },
+      "metrics": {
+        "perfect": {
+          "true": 34,
+          "false": 31,
+          "unknown_or_pending": 35,
+          "denominator": 100,
+          "score": 34.0
+        },
+        "partial": {
+          "true": 39,
+          "false": 26,
+          "unknown_or_pending": 35,
+          "denominator": 100,
+          "score": 39.0
+        },
+        "coefficient_only": {
+          "true": 50,
+          "false": 15,
+          "unknown_or_pending": 35,
+          "denominator": 100,
+          "score": 50.0
+        },
+        "direction": {
+          "true": 61,
+          "false": 4,
+          "unknown_or_pending": 35,
+          "denominator": 100,
+          "score": 61.0
+        },
+        "significance": {
+          "true": 48,
+          "false": 17,
+          "unknown_or_pending": 35,
+          "denominator": 100,
+          "score": 48.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "No explicit override; Claude CLI default (reported as adaptive thinking, high effort)",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.2.165",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "deepseek-v4.1-flash",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 12
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 88
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "deepseek-v41-flash",
+      "harness": "openai_agents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 37,
+        "perfect": 22,
+        "scored_not_perfect": 15,
+        "failed": 51,
+        "unknown": 12,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 51,
+        "unknown_infrastructure": 5,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 1,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 6
+      },
+      "metrics": {
+        "perfect": {
+          "true": 22,
+          "false": 15,
+          "unknown_or_pending": 63,
+          "denominator": 100,
+          "score": 22.0
+        },
+        "partial": {
+          "true": 26,
+          "false": 11,
+          "unknown_or_pending": 63,
+          "denominator": 100,
+          "score": 26.0
+        },
+        "coefficient_only": {
+          "true": 30,
+          "false": 7,
+          "unknown_or_pending": 63,
+          "denominator": 100,
+          "score": 30.0
+        },
+        "direction": {
+          "true": 36,
+          "false": 1,
+          "unknown_or_pending": 63,
+          "denominator": 100,
+          "score": 36.0
+        },
+        "significance": {
+          "true": 30,
+          "false": 7,
+          "unknown_or_pending": 63,
+          "denominator": 100,
+          "score": 30.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.23.1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "deepseek-v4.1-flash",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 8
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 92
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "glm53",
+      "harness": "deepagents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 33,
+        "perfect": 19,
+        "scored_not_perfect": 14,
+        "failed": 56,
+        "unknown": 11,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 56,
+        "unknown_infrastructure": 7,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 1,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 3
+      },
+      "metrics": {
+        "perfect": {
+          "true": 19,
+          "false": 14,
+          "unknown_or_pending": 67,
+          "denominator": 100,
+          "score": 19.0
+        },
+        "partial": {
+          "true": 22,
+          "false": 11,
+          "unknown_or_pending": 67,
+          "denominator": 100,
+          "score": 22.0
+        },
+        "coefficient_only": {
+          "true": 24,
+          "false": 9,
+          "unknown_or_pending": 67,
+          "denominator": 100,
+          "score": 24.0
+        },
+        "direction": {
+          "true": 31,
+          "false": 2,
+          "unknown_or_pending": 67,
+          "denominator": 100,
+          "score": 31.0
+        },
+        "significance": {
+          "true": 26,
+          "false": 7,
+          "unknown_or_pending": 67,
+          "denominator": 100,
+          "score": 26.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.7.13",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "glm-5.3",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 6
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 94
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "glm53",
+      "harness": "deepseek",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 19,
+        "perfect": 13,
+        "scored_not_perfect": 6,
+        "failed": 75,
+        "unknown": 6,
+        "pending": 0,
+        "failed_infrastructure": 4,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 71,
+        "unknown_infrastructure": 3,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 3
+      },
+      "metrics": {
+        "perfect": {
+          "true": 13,
+          "false": 6,
+          "unknown_or_pending": 81,
+          "denominator": 100,
+          "score": 13.0
+        },
+        "partial": {
+          "true": 14,
+          "false": 5,
+          "unknown_or_pending": 81,
+          "denominator": 100,
+          "score": 14.0
+        },
+        "coefficient_only": {
+          "true": 15,
+          "false": 4,
+          "unknown_or_pending": 81,
+          "denominator": 100,
+          "score": 15.0
+        },
+        "direction": {
+          "true": 19,
+          "false": 0,
+          "unknown_or_pending": 81,
+          "denominator": 100,
+          "score": 19.0
+        },
+        "significance": {
+          "true": 18,
+          "false": 1,
+          "unknown_or_pending": 81,
+          "denominator": 100,
+          "score": 18.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.1.5rc1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "glm-5.3",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 6
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 94
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "glm53",
+      "harness": "claude",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 45,
+        "perfect": 26,
+        "scored_not_perfect": 19,
+        "failed": 45,
+        "unknown": 10,
+        "pending": 0,
+        "failed_infrastructure": 2,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 43,
+        "unknown_infrastructure": 5,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 5
+      },
+      "metrics": {
+        "perfect": {
+          "true": 26,
+          "false": 19,
+          "unknown_or_pending": 55,
+          "denominator": 100,
+          "score": 26.0
+        },
+        "partial": {
+          "true": 33,
+          "false": 12,
+          "unknown_or_pending": 55,
+          "denominator": 100,
+          "score": 33.0
+        },
+        "coefficient_only": {
+          "true": 37,
+          "false": 8,
+          "unknown_or_pending": 55,
+          "denominator": 100,
+          "score": 37.0
+        },
+        "direction": {
+          "true": 44,
+          "false": 1,
+          "unknown_or_pending": 55,
+          "denominator": 100,
+          "score": 44.0
+        },
+        "significance": {
+          "true": 37,
+          "false": 8,
+          "unknown_or_pending": 55,
+          "denominator": 100,
+          "score": 37.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "No explicit override; Claude CLI default (reported as adaptive thinking, high effort)",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.2.165",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "glm-5.3",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 7
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 93
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "glm53",
+      "harness": "openai_agents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 14,
+        "perfect": 9,
+        "scored_not_perfect": 5,
+        "failed": 77,
+        "unknown": 9,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 77,
+        "unknown_infrastructure": 6,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 3
+      },
+      "metrics": {
+        "perfect": {
+          "true": 9,
+          "false": 5,
+          "unknown_or_pending": 86,
+          "denominator": 100,
+          "score": 9.0
+        },
+        "partial": {
+          "true": 10,
+          "false": 4,
+          "unknown_or_pending": 86,
+          "denominator": 100,
+          "score": 10.0
+        },
+        "coefficient_only": {
+          "true": 11,
+          "false": 3,
+          "unknown_or_pending": 86,
+          "denominator": 100,
+          "score": 11.0
+        },
+        "direction": {
+          "true": 14,
+          "false": 0,
+          "unknown_or_pending": 86,
+          "denominator": 100,
+          "score": 14.0
+        },
+        "significance": {
+          "true": 12,
+          "false": 2,
+          "unknown_or_pending": 86,
+          "denominator": 100,
+          "score": 12.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.23.1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "glm-5.3",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 7
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 93
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "qwen38-max",
+      "harness": "deepagents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 54,
+        "perfect": 26,
+        "scored_not_perfect": 28,
+        "failed": 26,
+        "unknown": 20,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 26,
+        "unknown_infrastructure": 11,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 9
+      },
+      "metrics": {
+        "perfect": {
+          "true": 26,
+          "false": 28,
+          "unknown_or_pending": 46,
+          "denominator": 100,
+          "score": 26.0
+        },
+        "partial": {
+          "true": 36,
+          "false": 18,
+          "unknown_or_pending": 46,
+          "denominator": 100,
+          "score": 36.0
+        },
+        "coefficient_only": {
+          "true": 46,
+          "false": 8,
+          "unknown_or_pending": 46,
+          "denominator": 100,
+          "score": 46.0
+        },
+        "direction": {
+          "true": 54,
+          "false": 0,
+          "unknown_or_pending": 46,
+          "denominator": 100,
+          "score": 54.0
+        },
+        "significance": {
+          "true": 45,
+          "false": 9,
+          "unknown_or_pending": 46,
+          "denominator": 100,
+          "score": 45.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.7.13",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "qwen3.8-max-0902",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 11
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 89
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "qwen38-max",
+      "harness": "deepseek",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 51,
+        "perfect": 28,
+        "scored_not_perfect": 23,
+        "failed": 29,
+        "unknown": 20,
+        "pending": 0,
+        "failed_infrastructure": 2,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 27,
+        "unknown_infrastructure": 16,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 4
+      },
+      "metrics": {
+        "perfect": {
+          "true": 28,
+          "false": 23,
+          "unknown_or_pending": 49,
+          "denominator": 100,
+          "score": 28.0
+        },
+        "partial": {
+          "true": 30,
+          "false": 21,
+          "unknown_or_pending": 49,
+          "denominator": 100,
+          "score": 30.0
+        },
+        "coefficient_only": {
+          "true": 41,
+          "false": 10,
+          "unknown_or_pending": 49,
+          "denominator": 100,
+          "score": 41.0
+        },
+        "direction": {
+          "true": 47,
+          "false": 4,
+          "unknown_or_pending": 49,
+          "denominator": 100,
+          "score": 47.0
+        },
+        "significance": {
+          "true": 42,
+          "false": 9,
+          "unknown_or_pending": 49,
+          "denominator": 100,
+          "score": 42.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.1.5rc1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "qwen3.8-max-0902",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 7
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 93
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "qwen38-max",
+      "harness": "claude",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 25,
+        "perfect": 13,
+        "scored_not_perfect": 12,
+        "failed": 64,
+        "unknown": 11,
+        "pending": 0,
+        "failed_infrastructure": 3,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 61,
+        "unknown_infrastructure": 9,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 2
+      },
+      "metrics": {
+        "perfect": {
+          "true": 13,
+          "false": 12,
+          "unknown_or_pending": 75,
+          "denominator": 100,
+          "score": 13.0
+        },
+        "partial": {
+          "true": 15,
+          "false": 10,
+          "unknown_or_pending": 75,
+          "denominator": 100,
+          "score": 15.0
+        },
+        "coefficient_only": {
+          "true": 20,
+          "false": 5,
+          "unknown_or_pending": 75,
+          "denominator": 100,
+          "score": 20.0
+        },
+        "direction": {
+          "true": 23,
+          "false": 2,
+          "unknown_or_pending": 75,
+          "denominator": 100,
+          "score": 23.0
+        },
+        "significance": {
+          "true": 20,
+          "false": 5,
+          "unknown_or_pending": 75,
+          "denominator": 100,
+          "score": 20.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "No explicit override; Claude CLI default (reported as adaptive thinking, high effort)",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.2.165",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "qwen3.8-max-0902",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 6
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 94
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    },
+    {
+      "model": "qwen38-max",
+      "harness": "openai_agents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 53,
+        "perfect": 26,
+        "scored_not_perfect": 27,
+        "failed": 36,
+        "unknown": 11,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 36,
+        "unknown_infrastructure": 6,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 2,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 3
+      },
+      "metrics": {
+        "perfect": {
+          "true": 26,
+          "false": 27,
+          "unknown_or_pending": 47,
+          "denominator": 100,
+          "score": 26.0
+        },
+        "partial": {
+          "true": 31,
+          "false": 22,
+          "unknown_or_pending": 47,
+          "denominator": 100,
+          "score": 31.0
+        },
+        "coefficient_only": {
+          "true": 40,
+          "false": 13,
+          "unknown_or_pending": 47,
+          "denominator": 100,
+          "score": 40.0
+        },
+        "direction": {
+          "true": 48,
+          "false": 5,
+          "unknown_or_pending": 47,
+          "denominator": 100,
+          "score": 48.0
+        },
+        "significance": {
+          "true": 39,
+          "false": 14,
+          "unknown_or_pending": 47,
+          "denominator": 100,
+          "score": 39.0
+        }
+      },
+      "settings": {
+        "thinking": {
+          "values": [
+            {
+              "value": "Provider default, no explicit override",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "harness_version": {
+          "values": [
+            {
+              "value": "0.23.1",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "qwen3.8-max-0902",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-10",
+              "slots": 5
+            },
+            {
+              "value": "2026-10-11",
+              "slots": 95
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "inherited_native_sdk": 0,
+        "historical_deepagents_metric": 0,
+        "offline_derived_deepagents_metric": 0
+      }
+    }
+  ],
+  "totals": {
+    "scored": 3786,
+    "perfect": 2204,
+    "scored_not_perfect": 1582,
+    "failed": 1502,
+    "unknown": 312,
+    "pending": 0,
+    "failed_infrastructure": 128,
+    "failed_billing": 105,
+    "failed_model": 0,
+    "failed_unattributed": 1374,
+    "unknown_infrastructure": 163,
+    "unknown_provider_rejected": 1,
+    "unknown_provider_access": 3,
+    "unknown_provider": 38,
+    "unknown_deadline": 3,
+    "unknown_unattributed": 104
+  },
+  "report_summary": {
+    "generated_at": "2026-10-11T16:35:49.651444+00:00",
+    "totals": {
+      "scored": 3786,
+      "perfect": 2204,
+      "scored_not_perfect": 1582,
+      "failed": 1502,
+      "unknown": 312,
+      "pending": 0,
+      "failed_infrastructure": 128,
+      "failed_billing": 105,
+      "failed_model": 0,
+      "failed_unattributed": 1374,
+      "unknown_infrastructure": 163,
+      "unknown_provider_rejected": 1,
+      "unknown_provider_access": 3,
+      "unknown_provider": 38,
+      "unknown_deadline": 3,
+      "unknown_unattributed": 104
+    },
+    "provenance": {
+      "new_native": 3982,
+      "inherited_native_sdk": 1200,
+      "historical_deepagents_metric": 236,
+      "offline_derived_deepagents_metric": 182
+    },
+    "attempt_ledger": {
+      "logical_selected_new_slots": 3982,
+      "physical_scheduled_attempts": 4138,
+      "superseded_attempts": 156,
+      "superseded_zero_api": 28,
+      "superseded_infrastructure": 28,
+      "superseded_queue": 36,
+      "superseded_operator_interruption": 64
+    },
+    "stages": 10,
+    "failure_reasons": {
+      "harness_runtime_error": 381,
+      "model_call_limit_exhausted": 318,
+      "no_single_fenced_python_program": 246,
+      "final_execution_failed": 229,
+      "output_limit_exhausted": 150,
+      "provider_billing_http_402": 105,
+      "wall_time_exhausted": 32,
+      "cancelled_before_dispatch": 27,
+      "provider_request_error": 14
+    },
+    "unknown_reasons": {
+      "collateral_study_interruption": 158,
+      "unclassified_unknown": 104,
+      "upstream_transport": 37,
+      "upstream_rate_limit": 5,
+      "provider_access": 3,
+      "task_deadline_exhausted": 3,
+      "upstream_content_policy": 1,
+      "upstream_provider_error": 1
+    },
+    "acceptance": {
+      "controller_stage": "finished",
+      "controller_finished_at": "2026-10-11T16:35:50.157877+00:00",
+      "report_exit_code": 0,
+      "independent_delivery_audit_passed": true,
+      "evidence": "Stated in the server visualization README and data.json and in the study's daily report and handoff; the underlying receipts were not accessible to this audit."
+    }
+  },
+  "field_evidence": {
+    "outcomes": "Recomputed from the report's 5,600 embedded slot records; the counts equal the report's group table, CSV and Markdown summary. Receipt check performed: all 5,182 slots that record a receipt (3,982 new native, 1,200 inherited SDK) have the file present with a matching sha256, and its task, harness, lifecycle state, reason and caps agree with the report; the 418 historical and offline-derived slots record no receipt.",
+    "metrics": "Recomputed from the per-slot metric flags embedded in the report, not re-scored; flags exist only for scored runs, a missing flag stays unknown, and 236 historical scored runs record only full replication.",
+    "provenance": "Recomputed from each slot's recorded provenance class in the report.",
+    "budget": "Recorded logical caps copied from report slots for new and inherited SDK runs; they equal the caps in all 5,182 receipts and the harness source configuration; not independent execution measurements; none recorded for historical or offline-derived runs.",
+    "thinking": "New runs set no thinking override in the frozen plan or harness code. The study's run notes report that the bundled Claude CLI adds adaptive thinking at high effort on the Claude Agent SDK arm; request records were not independently checked. Other runs: not recorded.",
+    "harness_version": "New native runs: the pinned version constants in the seven stage sources, confirmed by each receipt's hashed SDK identity record (3,982 of 3,982). Inherited SDK runs: identity records match the same versions for 1,199 of 1,200 (one failed before an identity was written). Historical and offline-derived runs: not recorded.",
+    "route": "Receipt-verified: hashed SDK identity records give the requested route, equal to the report's current route model, for 3,182 new native runs and 599 inherited Claude Agent SDK runs. Report-recorded: the 800 new DeepSeek Harness runs use the report's current route model because their identity records no model. Inherited DeepSeek Harness, historical and offline-derived runs: not recorded.",
+    "run_date": "UTC date of each receipt's recorded start time, for the 5,182 runs with a receipt (none finished on a later UTC date); historical and offline-derived runs: not recorded."
+  },
+  "caveats": [
+    "This is a descriptive comparison on a fixed 100-task development set; it is not a Challenge leaderboard and is not directly comparable with the Selected_1000 board.",
+    "Cells mix four provenance classes: historical and offline-derived DeepAgents metrics, inherited SDK runs and new native runs.",
+    "New runs reach all 14 models through an Anthropic Messages-compatible gateway; historical and inherited runs used their own routes.",
+    "Equal recorded caps do not mean equal reasoning compute: the Claude Agent SDK arm's CLI is reported to add adaptive thinking, and historical routes, reasoning settings and wall-time budgets differ.",
+    "Failed and unknown runs stay in the fixed 100-task denominator and are never relabelled as false; metric flags exist only for scored runs and stay unknown when a reference is unsupported.",
+    "Billing and infrastructure failures are not model-capability failures.",
+    "Task IDs are not published."
+  ]
+}
