@@ -3,11 +3,13 @@
  * that call alone, so the Selected_1000 leaderboard and the Dev100 study never
  * share state on one page. A board descriptor supplies the data side:
  *   { id, source, validate, views, defaultView, metrics, defaultMetric,
- *     viewFromURL?, rank, rowsHTML, cardHTML, chart, overview?, status,
- *     caption, hint, failureStatus, chartNote?, cardId? }
+ *     viewFromURL?, rank, rowsHTML, cardHTML, chart, charts?, overview?, status,
+ *     caption, hint, failureStatus, chartNote?, chartsLabel?, cardId? }
  * views and metrics may be functions of the validated data. rank() returns
  * rows with a stable .key and .rank; chart() returns null when the view has
- * no mountain, and overview() returns '' when the view has no overview. */
+ * no mountain, and overview() returns '' when the view has no overview.
+ * charts() returns [] or one { key, series, title, legend, chart } per
+ * mountain card; only a board that defines it gets the card group. */
 import { mountain } from './mountain.js';
 import {
   VIEWS, METRICS, DEFAULT_METRIC, DEFAULT_VIEW, validateSnapshot, rankModels, tableRows, chartLabel,
@@ -15,6 +17,8 @@ import {
 } from './leaderboard-data.js?v=20261011-release';
 
 const CHART_OPTIONS = Object.freeze({ table: false, aspect: 0.48 });
+// Cards always use the compact layout, so cards of one width share one height and one 0-100% scale.
+const CARD_OPTIONS = Object.freeze({ ...CHART_OPTIONS, compactBreakpoint: Infinity });
 const loads = new WeakMap();
 const mounted = new Map();
 const choices = (value, data) => typeof value === 'function' ? value(data) : value;
@@ -74,6 +78,7 @@ export function createBoardState(descriptor, data, { cardId = `${descriptor.id}-
       rowsHTML: descriptor.rowsHTML(data, view, metric, controls),
       overview: descriptor.overview ? descriptor.overview(data, view, metric, controls) || '' : '',
       chart: descriptor.chart(data, view, metric, rows) || null,
+      charts: descriptor.charts ? descriptor.charts(data, view, metric) : [],
       caption: typeof descriptor.caption === 'function' ? descriptor.caption(data, view, metric) : descriptor.caption,
       status: descriptor.status(data, view, metric, rows),
       cardHTML: selected ? descriptor.cardHTML(data, view, metric, selected, { id: cardId }) : '',
@@ -132,6 +137,44 @@ function nextCardId(descriptor) {
   return descriptor.cardId ? descriptor.cardId(n) : n === 1 ? `${descriptor.id}-card` : `${descriptor.id}-card-${n}`;
 }
 
+// The labelled group of mountain cards sits right after the board's single mountain.
+function mountainCards(figure, label) {
+  const group = document.createElement('div');
+  group.className = 'mountain-cards';
+  group.setAttribute('role', 'group');
+  if (label) group.setAttribute('aria-label', label);
+  group.hidden = true;
+  figure.after(group);
+  return group;
+}
+
+function mountainCard(key) {
+  const card = document.createElement('figure');
+  card.className = 'mountain mountain-card';
+  card.dataset.chart = key;
+  card.innerHTML = '<figcaption class="mountain-card-caption"><h3 class="mountain-card-title" data-no-translate></h3>'
+    + '<p class="mountain-card-legend"><i class="mountain-card-key" aria-hidden="true"></i><span></span></p></figcaption>'
+    + '<div class="mountain-canvas"></div>';
+  return card;
+}
+
+// One card per chart, kept by key, so a metric change redraws each mountain in place.
+function drawCards(group, charts) {
+  group.hidden = !charts.length;
+  if (!charts.length) return;
+  const kept = new Map([...group.children].map(card => [card.dataset.chart, card]));
+  const cards = charts.map(({ key, series, title, legend }) => {
+    const card = kept.get(key) || mountainCard(key);
+    card.dataset.series = series;
+    card.setAttribute('aria-label', legend);
+    card.querySelector('.mountain-card-title').textContent = title;
+    card.querySelector('.mountain-card-legend span').textContent = legend;
+    return card;
+  });
+  group.replaceChildren(...cards);
+  charts.forEach(({ chart }, index) => mountain(cards[index], chart, CARD_OPTIONS));
+}
+
 // A data-derived option list replaces the saved options only when the two differ.
 function syncOptions(select, labels) {
   const keys = Object.keys(labels);
@@ -153,6 +196,7 @@ function bindBoard(widget, descriptor, data, url) {
   const cardId = nextCardId(descriptor);
   // The first model is built before the page changes, so bad data leaves the saved table untouched.
   const state = createBoardState(descriptor, data, { cardId, url });
+  const cards = descriptor.charts ? mountainCards(figure, descriptor.chartsLabel) : null;
   // One evidence region per board, keyed by run, never by row position.
   const hint = document.createElement('p');
   hint.className = 'visually-hidden';
@@ -198,7 +242,8 @@ function bindBoard(widget, descriptor, data, url) {
       }
       figure.hidden = !model.chart;
       if (model.chart) mountain(figure, model.chart, CHART_OPTIONS);
-      if (note) note.hidden = Boolean(model.chart);
+      if (cards) drawCards(cards, model.charts);
+      if (note) note.hidden = Boolean(model.chart || model.charts.length);
       if (overview) {
         overview.innerHTML = model.overview;
         overview.hidden = !model.overview;

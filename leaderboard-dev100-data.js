@@ -24,6 +24,7 @@ export const DEV_BOARD = Object.freeze({
   hint: 'Select a model or a grid cell to show its run evidence below the table.',
   failureStatus: 'Showing saved development results. Interactive ranking is unavailable.',
   chartNote: 'Choose one harness to draw its mountain. The grid and the table list all 56 combinations.',
+  chartsLabel: 'Mountains by harness',
 });
 
 /* Snapshot schema ------------------------------------------------------------ */
@@ -321,7 +322,7 @@ const WIDGET_TEXT = ['Rank by', 'Filter harness', 'Ranking metric', 'Development
 // Every fixed string the dev table, grid, card, controls and summary render; the leaderboard dictionary must translate them.
 export const DEV_CARD_TEXT = Object.freeze([...new Set([
   'Run evidence', 'Close', 'Rank', NOT_RECORDED, ALL_HARNESSES, ...Object.values(DEV_METRICS),
-  DEV_BOARD.caption, DEV_BOARD.hint, DEV_BOARD.failureStatus, DEV_BOARD.chartNote,
+  DEV_BOARD.caption, DEV_BOARD.hint, DEV_BOARD.failureStatus, DEV_BOARD.chartNote, DEV_BOARD.chartsLabel,
   'Harness', 'Scored', 'Failed', 'Unknown', 'Source mix', MATRIX_CAPTION, 'No run', 'Run outcomes', 'Development split', 'task', 'tasks', MISSING_FLAG,
   ...Object.keys(DEV_METRICS).map(peak),
   ...FACTS, ...COLUMNS, CARD_CAPTION, ...Object.values(FAILED), ...Object.values(UNKNOWN), ...Object.values(BUDGET),
@@ -435,6 +436,20 @@ export function devChart(data, view, metric, rows) {
   };
 }
 
+// The combined view draws one mountain card per harness: the same metric and 0-100% scale, each with its
+// own models ranked within that harness. A single-harness view keeps its one mountain from devChart.
+export function devCharts(data, view, metric) {
+  checkRanking(data, view, metric);
+  if (view !== DEFAULT_DEV_VIEW) return [];
+  return data.harnesses.map((harness, index) => {
+    const rows = rankDevRuns(data, harness.id, metric);
+    return {
+      key: harness.id, series: index % 4 + 1, title: harness.label,
+      legend: devStatus(data, harness.id, metric, rows), chart: devChart(data, harness.id, metric, rows),
+    };
+  });
+}
+
 // The saved status line, like "Published results · 17 Sep 2026" on the Selected_1000 board.
 export function devSavedStatus(data) {
   const [year, month, date] = reportDate(data).split('-');
@@ -520,10 +535,12 @@ export const devBoardDescriptor = source => Object.freeze({
   rowsHTML: devTableRows,
   cardHTML: devRunCardHTML,
   chart: devChart,
+  charts: devCharts,
   overview: devOverview,
   status: devStatus,
   caption: DEV_BOARD.caption,
   hint: DEV_BOARD.hint,
   failureStatus: DEV_BOARD.failureStatus,
   chartNote: DEV_BOARD.chartNote,
+  chartsLabel: DEV_BOARD.chartsLabel,
 });

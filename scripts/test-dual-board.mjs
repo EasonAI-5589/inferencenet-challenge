@@ -77,6 +77,8 @@ test('the Selected_1000 descriptor reproduces the original board exactly', () =>
     assert.equal(model.caption, 'Scores (%)');
     assert.equal(model.status, `${VIEWS[view]} · ${model.rows.length} entries · ${METRICS[metric]}`);
     assert.equal(model.overview, '');
+    // The Selected_1000 board defines no mountain cards, so it keeps its one mountain in every view.
+    assert.deepEqual(model.charts, []);
     assert.deepEqual(model.chart, {
       title: view === 'all' ? 'InferenceNet Challenge Leaderboard' : VIEWS[view], metric: METRICS[metric], unit: '%', max: 100,
       peakLabel: '100% · every task replicated',
@@ -286,6 +288,11 @@ test('board modules stay local and share one renderer instance', async () => {
   for (const source of [entry, dev]) assert.match(source, new RegExp(`from '\\./leaderboard-board\\.js\\?v=${TAG}'`));
   assert.match(board, /from '\.\/mountain\.js';/);
   assert.match(board, /from '\.\/leaderboard-data\.js\?v=20261011-release';/);
+  // Mountain cards exist only for a descriptor that draws them, as one labelled group of figures.
+  assert.match(board, /const cards = descriptor\.charts \? mountainCards\(figure, descriptor\.chartsLabel\) : null;/);
+  assert.match(board, /group\.setAttribute\('role', 'group'\);\n\s*if \(label\) group\.setAttribute\('aria-label', label\);/);
+  assert.match(board, /card\.setAttribute\('aria-label', legend\);/);
+  assert.match(board, /mountain\(cards\[index\], chart, CARD_OPTIONS\)/);
   assert.match(dev, /devBoardDescriptor\(new URL\('\.\/assets\/data\/dev100-v10-results\.json\?v=20261012-dual-board', import\.meta\.url\)\)/);
   assert.match(entry, /selectedBoardDescriptor\(new URL\('\.\/assets\/data\/paired-results\.json\?v=20260917-harness', import\.meta\.url\)\)/);
   // Escape and the close button reach the same controller on every board.
@@ -332,11 +339,26 @@ test('the real development descriptor drives the shared state', { skip: !devData
   assert.deepEqual([...cells].sort(), [...keys].sort());
   assert.equal(state.model.chart, null);
   assert.doesNotMatch(state.model.rowsHTML, /<tr data-model=/);
-  // One harness: its runs, a mountain with one climber each, and no overview.
+  // All: one mountain card per harness, each with that harness's models under the active metric.
+  for (const metric of Object.keys(dev.metrics)) {
+    const charts = state.setMetric(metric).charts;
+    assert.deepEqual(charts.map(card => card.key), data.harnesses.map(harness => harness.id), metric);
+    for (const card of charts) {
+      const runs = data.runs.filter(run => run.harness === card.key);
+      assert.equal(card.title, data.harnesses.find(harness => harness.id === card.key).label);
+      assert.equal(card.chart.metric, dev.metrics[metric]);
+      assert.equal(card.chart.items.length, runs.length);
+      assert.deepEqual(card.chart.items.map(item => item.value).sort((a, b) => a - b), runs.map(run => run.metrics[metric].score).sort((a, b) => a - b));
+      assert.equal(card.legend, `${card.title} · ${runs.length} entries · ${dev.metrics[metric]}`);
+    }
+  }
+  state.setMetric(dev.defaultMetric);
+  // One harness: its runs, a mountain with one climber each, no cards and no overview.
   for (const { id } of data.harnesses) {
     const model = state.setView(id);
     assert.ok(model.rows.length > 0 && model.rows.every(row => row.harness === id));
     assert.equal(model.chart.items.length, model.rows.length);
+    assert.deepEqual(model.charts, []);
     assert.equal(model.overview, '');
   }
   // One selection, marked in both regions, with one card.

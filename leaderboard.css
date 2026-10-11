@@ -99,6 +99,24 @@
 .board-section>span[id],#leaderboard-dev100-method,#leaderboard-dev100-report{scroll-margin-top:calc(var(--header-offset,var(--header-h)) + 16px)}
 .board-heading .page-meta{margin-top:14px}
 .dev-chart-note{margin:0 0 16px;font-size:13px;line-height:1.7;color:var(--soft)}
+/* All harnesses: one mountain card per harness, same metric and 0-100% scale; the name, not the colour, identifies it. */
+.mountain-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:0 0 28px}
+.paired-board .mountain-cards .mountain{margin:0}
+.mountain-card{--series:var(--brand);--mtn-route:var(--series);border-top:3px solid var(--series)}
+.mountain-card[data-series="1"]{--series:#7a6a8e}
+.mountain-card[data-series="2"]{--series:#4a7896}
+.mountain-card[data-series="3"]{--series:#5a7f64}
+.mountain-card[data-series="4"]{--series:#9a7038}
+html[data-theme="dark"] .mountain-card[data-series="1"]{--series:#b8a8cc}
+html[data-theme="dark"] .mountain-card[data-series="2"]{--series:#8db8d6}
+html[data-theme="dark"] .mountain-card[data-series="3"]{--series:#93c09f}
+html[data-theme="dark"] .mountain-card[data-series="4"]{--series:#d8ab6c}
+.mountain-card-caption{padding:14px 16px 10px;border-bottom:1px solid var(--line)}
+.mountain-card-title{margin:0;font-size:16px;font-weight:600;line-height:1.35}
+.mountain-card-legend{display:flex;align-items:center;gap:8px;margin:4px 0 0;font-size:12px;line-height:1.5;color:var(--soft)}
+.mountain-card-key{flex:none;width:10px;height:10px;border-radius:50%;background:var(--series)}
+@media(max-width:900px){.mountain-cards{grid-template-columns:minmax(0,1fr)}}
+@media(forced-colors:active){.mountain-card{border-top-color:CanvasText}.mountain-card-key{forced-color-adjust:none;background:CanvasText}}
 /* Dev table: same rhythm as .paired-table, plus outcome counts and the source mix, so it is wider and scrolls. */
 .dev-table{width:100%;min-width:1240px;border-collapse:collapse;font-size:14px}
 .dev-table caption{text-align:left;font-size:12px;color:var(--muted);padding:0 0 12px}

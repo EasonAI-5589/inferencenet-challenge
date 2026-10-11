@@ -8,7 +8,7 @@ import { NOT_RECORDED, CARD_SCROLL_HINT } from '../leaderboard-data.js';
 import {
   DEV_METRICS, DEFAULT_DEV_METRIC, DEFAULT_DEV_VIEW, DEV_BOARD, DEV_CARD_TEXT,
   validateDevBoard, devViews, rankDevRuns, devTableRows, devMatrixHTML, devOverview, selectedDevRun, devRunEvidence,
-  devRunCardHTML, devChart, devStatus, devSavedStatus, devReportHTML, devDataText, devBoardDescriptor,
+  devRunCardHTML, devChart, devCharts, devStatus, devSavedStatus, devReportHTML, devDataText, devBoardDescriptor,
 } from '../leaderboard-dev100-data.js';
 import { devWidget, devBlock, replaceDevBlock, buildDevBoard } from './build-dev100-board.mjs';
 
@@ -502,6 +502,28 @@ test('the mountain draws one harness at a time and names the ranked metric at th
   for (const metric of KEYS) assert.ok(DEV_CARD_TEXT.includes(devChart(data, 'h2', metric, rankDevRuns(data, 'h2', metric)).peakLabel), metric);
 });
 
+test('the combined view draws one mountain card per harness; a single harness keeps one mountain', () => {
+  const data = fixture();
+  for (const metric of KEYS) {
+    const charts = devCharts(data, 'all', metric);
+    assert.deepEqual(charts.map(card => [card.key, card.series, card.title]), [['h1', 1, 'Harness One'], ['h2', 2, 'Harness Two']], metric);
+    for (const card of charts) {
+      const rows = rankDevRuns(data, card.key, metric);
+      // The card's mountain is the single-harness mountain: same metric label, scale, ranks and recorded scores.
+      assert.deepEqual(card.chart, devChart(data, card.key, metric, rows));
+      assert.equal(card.chart.metric, DEV_METRICS[metric]);
+      assert.deepEqual(card.chart.items.map(item => item.value), rows.map(row => row.run.metrics[metric].score));
+      // The legend and the card's aria-label name the harness in the status shape language.js translates.
+      assert.equal(card.legend, `${card.title} · ${rows.length} entries · ${DEV_METRICS[metric]}`);
+      assert.equal(card.legend, devStatus(data, card.key, metric, rows));
+    }
+    for (const view of ['h1', 'h2']) assert.deepEqual(devCharts(data, view, metric), [], `${view} keeps its one mountain`);
+  }
+  assert.throws(() => devCharts(data, 'h9', 'perfect'), /Unknown ranking/);
+  assert.throws(() => devCharts(data, 'all', 'bogus'), /Unknown ranking/);
+  assert.ok(DEV_CARD_TEXT.includes(DEV_BOARD.chartsLabel));
+});
+
 test('status lines keep the shapes language.js and the page dictionary translate', async () => {
   const data = fixture();
   assert.equal(devStatus(data, 'all', 'perfect', rankDevRuns(data)), 'All harnesses · 4 entries · Full replication');
@@ -519,13 +541,13 @@ test('the descriptor exposes the board to the shared renderer without DOM access
   const descriptor = devBoardDescriptor('assets/data/dev100-v10-results.json');
   assert.ok(Object.isFrozen(descriptor));
   assert.deepEqual(Object.keys(descriptor), ['id', 'source', 'validate', 'views', 'defaultView', 'metrics', 'defaultMetric', 'viewFromURL',
-    'rank', 'rowsHTML', 'cardHTML', 'chart', 'overview', 'status', 'caption', 'hint', 'failureStatus', 'chartNote']);
+    'rank', 'rowsHTML', 'cardHTML', 'chart', 'charts', 'overview', 'status', 'caption', 'hint', 'failureStatus', 'chartNote', 'chartsLabel']);
   assert.equal(descriptor.id, 'dev100-v10');
   assert.equal(descriptor.source, 'assets/data/dev100-v10-results.json');
   for (const [key, value] of Object.entries({ validate: validateDevBoard, views: devViews, rank: rankDevRuns, rowsHTML: devTableRows,
-    cardHTML: devRunCardHTML, chart: devChart, overview: devOverview, status: devStatus, metrics: DEV_METRICS })) assert.equal(descriptor[key], value, key);
+    cardHTML: devRunCardHTML, chart: devChart, charts: devCharts, overview: devOverview, status: devStatus, metrics: DEV_METRICS })) assert.equal(descriptor[key], value, key);
   assert.deepEqual([descriptor.defaultView, descriptor.defaultMetric], ['all', 'perfect']);
-  for (const key of ['caption', 'hint', 'failureStatus', 'chartNote']) assert.equal(descriptor[key], DEV_BOARD[key], key);
+  for (const key of ['caption', 'hint', 'failureStatus', 'chartNote', 'chartsLabel']) assert.equal(descriptor[key], DEV_BOARD[key], key);
   assert.equal(descriptor.viewFromURL('https://example.org/leaderboard.html?view=harness&dev-harness=h2#leaderboard-dev100'), 'h2');
   assert.equal(descriptor.viewFromURL('https://example.org/leaderboard.html?view=h2'), null);
   assert.deepEqual(descriptor.views(data), devViews(data));
