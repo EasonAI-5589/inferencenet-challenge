@@ -208,6 +208,7 @@
   "Caveats": "注意事项",
   "Cells mix four provenance classes: historical and offline-derived DeepAgents metrics, inherited SDK runs and new native runs.": "各单元混合四类来源：历史及离线派生的 DeepAgents 指标、继承的 SDK 运行和新的原生运行。",
   "Choose one harness to draw its mountain. The grid and the table list all 56 combinations.": "选择一种 Harness 即可绘制其山峰图；网格和表格列出全部 56 个组合。",
+  "Mountains by harness": "按 Harness 分列的山峰图",
   "Coefficient and SE within 5%": "系数与标准误均在 5% 内",
   "Coefficient within 5%": "系数在 5% 内",
   "Correct sign": "系数方向正确",
