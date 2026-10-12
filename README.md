@@ -308,23 +308,24 @@ column and, if new, one more ecosystem row.
 | Agent case and evaluation | `agent.html`, `agent.css` |
 | Harness: definition, ecosystem (57 entries by type) and three breakdowns | `harness.html`, `harness.css`; reuses `data.css`, `agent.css`, `evolution.css` |
 | Self-evolving: concept, methods, comparison and InferenceNet’s development study | `evolution.html`, `evolution.css`, `evolution.js`, `assets/data/modular-rsi-evolution.json` |
-| Leaderboard: the Selected_1000 board and the Dev100 / v10 harness study | `leaderboard.html`, `leaderboard.css` |
+| Leaderboard: the Dev100 / v10 development release, then the Selected_1000 final target | `leaderboard.html`, `leaderboard.css` |
 | Team, institutions and Yichen Guo contact | `teams.html`, `teams.css` |
 | Shared layout, navigation and theme | `styles.css`, `site.css`, `site.js`, `theme.js` |
 | Chinese translations and language control | `assets/i18n/*.zh.json`, `language.js`, `language.css` |
 | Charts and mountain leaderboard | `charts.js`, `mountain.js`, `mountain.css` |
 | Shared homepage and leaderboard results | `leaderboard.js`, `leaderboard-data.js`, `assets/data/paired-results.*` |
 | Shared board renderer used by both boards | `leaderboard-board.js` |
-| Dev100 / v10 study data, validation and saved table | `leaderboard-dev100.js`, `leaderboard-dev100-data.js`, `assets/data/dev100-v10-results.*`, `scripts/build-dev100-board.mjs` |
+| Dev100 / v10 development release data, validation and saved table | `leaderboard-dev100.js`, `leaderboard-dev100-data.js`, `assets/data/dev100-v10-results.*`, `scripts/build-dev100-board.mjs` |
 
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
 All seven pages load `site.css` with release tag `20261011-release`. Data,
 Agent, Harness, Self-evolving and Teams also load `site.js` and `language.js`
 with it, and Home loads `site.js` and `index.css` with it. Leaderboard loads
-`site.js`, `language.js`, `leaderboard.css`, `leaderboard.js` and
-`leaderboard-dev100.js` with `20261012-dual-board`; Home loads
-`leaderboard.css`, `leaderboard.js` and `language.js` with it. Both board
+`site.js`, `leaderboard.css`, `leaderboard.js` and `leaderboard-dev100.js`
+with `20261012-dual-board`; Home loads `leaderboard.css` and `leaderboard.js`
+with it. Home and Leaderboard load `language.js` with `20261012-dev100-first`,
+the tag of their dictionaries since the Dev100-first reordering. Both board
 scripts import `leaderboard-board.js` (and the dev script imports
 `leaderboard-dev100-data.js`) with `20261012-dual-board`; the unchanged
 `leaderboard-data.js` is imported with `20261011-release`. Self-evolving CSS uses
@@ -336,18 +337,22 @@ stays on `20260917-harness`, and the Dev100 / v10 JSON uses
 reading-route labels and the scroll hints, live in the common dictionary in
 `language.js`.
 
-The Leaderboard page holds two separate boards. `#leaderboard-selected-1000`
-keeps the 1,000-task historical leaderboard described in this section, and the
-old anchors (`#rankings`, `#public`, `#climb`, `#table`, `#research`,
-`#protocol`) still resolve. `#leaderboard-dev100` holds the Dev100 / v10
-harness study described below. Home shows only the Selected_1000 board, plus a
-news item and one link to the study.
+The Leaderboard page holds two separate boards, in this order, and the hero
+navigation lists them in the same order. `#leaderboard-dev100` comes first, with
+the Dev100 / v10 development release described below. `#leaderboard-selected-1000`
+follows with the complete results on the 1,000-task final target described in
+this section; the old anchors (`#rankings`, `#public`, `#climb`, `#table`,
+`#research`, `#protocol`) still resolve. Home shows only the Selected_1000
+board, plus a news item and one link to the development release.
 
-The Dev100 / v10 harness study is a development diagnostic, not a Challenge
-leaderboard, and it is not directly comparable with the Selected_1000 board.
-It reads `assets/data/dev100-v10-results.json`, a sanitized derivation of the
-v10 four-harness report: 14 models × 4 harnesses, 100 development tasks per
-combination, 5,600 task results. The report checksums and the derivation are in
+Dev100 is the Challenge's public development benchmark: its 100 tasks are used
+first, for development. Developers can submit harnesses of their own design,
+and InferenceNet evaluates every submission under the same settings. The
+submission channel and dates have not been announced, so the page names no
+upload link, date or API. The v10 release is not directly comparable with the
+Selected_1000 final target. It reads `assets/data/dev100-v10-results.json`, a
+sanitized derivation of the v10 four-harness report: 14 models × 4 harnesses,
+100 development tasks per combination, 5,600 task results. The report checksums and the derivation are in
 `dev100-v10-results-provenance.json`. Task IDs, server paths and per-task
 records are not published. Every score divides by all 100 tasks; scored,
 failed, unknown and pending counts stay visible, and each metric reports its
@@ -363,7 +368,7 @@ notes. Metric values are not re-scored.
 To update results, first verify a published JSON/CSV pair and its provenance,
 then run `node scripts/build-leaderboard.mjs` to regenerate the saved table on
 each page. If JavaScript or data loading fails, one combined 12-row table remains
-readable on each page. For the study, verify a new sanitized JSON, CSV and
-provenance, then run `node scripts/build-dev100-board.mjs`. Check changes with
+readable on each page. For the development release, verify a new sanitized
+JSON, CSV and provenance, then run `node scripts/build-dev100-board.mjs`. Check changes with
 `node --test scripts/test-leaderboard.mjs scripts/test-run-card.mjs scripts/test-dev100.mjs scripts/test-dual-board.mjs`
 and `node scripts/check.mjs`, then verify both pages in the browser.
