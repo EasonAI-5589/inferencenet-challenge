@@ -20,6 +20,8 @@ const selected = selectedBoardDescriptor('assets/data/paired-results.json');
 const PAGE = 'https://example.org/leaderboard.html';
 const PAGES = ['index.html', 'data.html', 'agent.html', 'harness.html', 'evolution.html', 'leaderboard.html', 'teams.html'];
 const TAG = '20261012-dual-board';
+// The two dictionaries changed with the Dev100-first order, so language.js carries its own tag on both pages.
+const LANGUAGE_TAG = '20261012-dev100-first';
 const PAIRED_SHA256 = '8fac641c124d4ba956dd6dca6f8763a50d754bad0e5169552efafd139d49330b';
 const pairedBlock = html => html.match(/<!-- paired-ranking:start -->[\s\S]*?<!-- paired-ranking:end -->/g);
 const devBlock = html => html.slice(html.indexOf('<!-- dev100-ranking:start -->'), html.indexOf('<!-- dev100-ranking:end -->'));
@@ -224,7 +226,7 @@ test('a malformed development source fails only the development board', async ()
   assert.notEqual(dev.failureStatus, selected.failureStatus);
 });
 
-test('leaderboard.html holds both boards and keeps every old anchor', async () => {
+test('leaderboard.html shows Dev100 first, then the Selected_1000 final target, and keeps every old anchor', async () => {
   const html = await read('leaderboard.html');
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
   for (const id of ['leaderboard-selected-1000', 'leaderboard-dev100', 'leaderboard-dev100-method', 'rankings', 'public', 'climb', 'table', 'research', 'protocol']) {
@@ -232,11 +234,17 @@ test('leaderboard.html holds both boards and keeps every old anchor', async () =
   }
   assert.equal(new Set(ids).size, ids.length);
   assert.equal((html.match(/<h1\b/g) || []).length, 1);
-  assert.match(html, /<nav class="board-nav" aria-label="On this page"><a href="#leaderboard-selected-1000">Selected_1000 leaderboard<\/a><a href="#leaderboard-dev100">Dev100 \/ v10 harness study<\/a><\/nav>/);
+  // The on-page navigation lists the boards in section order: the development release, then the final target.
+  assert.match(html, /<nav class="board-nav" aria-label="On this page"><a href="#leaderboard-dev100">Dev100 \/ v10 development release<\/a><a href="#leaderboard-selected-1000">Selected_1000 final target<\/a><\/nav>/);
   const at = text => html.indexOf(text);
-  const order = ['id="leaderboard-selected-1000"', 'id="rankings"', '<!-- paired-ranking:end -->', 'id="leaderboard-dev100"',
-    '<!-- dev100-ranking:start -->', '<!-- dev100-ranking:end -->', 'id="leaderboard-dev100-method"', 'id="research"', 'id="protocol"'].map(at);
+  const order = ['class="board-nav"', 'id="leaderboard-dev100"', '<!-- dev100-ranking:start -->', '<!-- dev100-ranking:end -->', 'id="leaderboard-dev100-method"',
+    'id="leaderboard-selected-1000"', 'id="rankings"', '<!-- paired-ranking:start -->', '<!-- paired-ranking:end -->', 'id="research"', 'id="protocol"'].map(at);
   assert.ok(order.every((position, index) => position > (order[index - 1] ?? -1)), 'sections and markers in page order');
+  assert.match(html, /<p class="kicker">01 \/ Dev100 · v10<\/p><h2 id="dev100-title">Dev100 \/ v10 development release<\/h2>/);
+  assert.match(html, /<p class="kicker">02 \/ Selected_1000<\/p><h2 id="rankings-title">1,000-task final target<\/h2>/);
+  assert.match(html, /<p class="kicker">03 \/ Research<\/p>/);
+  // The final target is never called historical, and the development release is not framed as a diagnostic study.
+  assert.doesNotMatch(html, /historical leaderboard|harness study|diagnostic study/i);
   // The report entry and the files it names are public artifacts on this page, never server paths.
   for (const href of ['#leaderboard-dev100-report', 'assets/data/dev100-v10-results.json', 'assets/data/dev100-v10-results-provenance.json', 'assets/data/dev100-v10-results.csv']) {
     assert.ok(html.includes(`href="${href}"`), href);
@@ -269,16 +277,19 @@ test('the development module loads only on leaderboard.html, with the release ta
   }
   for (const page of ['index.html', 'leaderboard.html']) {
     const html = await read(page);
-    for (const asset of ['leaderboard.js', 'leaderboard.css', 'language.js']) assert.match(html, new RegExp(`"${pattern(asset)}\\?v=${TAG}"`), `${page}: ${asset}`);
+    for (const asset of ['leaderboard.js', 'leaderboard.css']) assert.match(html, new RegExp(`"${pattern(asset)}\\?v=${TAG}"`), `${page}: ${asset}`);
+    assert.match(html, new RegExp(`"language\\.js\\?v=${LANGUAGE_TAG}"`), `${page}: language.js`);
   }
   assert.match(await read('leaderboard.html'), new RegExp(`"site\\.js\\?v=${TAG}"`));
 });
 
-test('home keeps its single board and links the development study', async () => {
+test('home keeps its single board and links the development release', async () => {
   const html = await read('index.html');
   assert.equal((html.match(/data-paired-leaderboard/g) || []).length, 1);
   assert.ok(html.includes('href="leaderboard.html#leaderboard-dev100"'));
-  assert.match(html, /<time datetime="2026-10-11T16:35:49Z">11 Oct 2026<\/time><p><strong>Development harness study\.<\/strong> The v10 report [^<]*was generated on this date/);
+  assert.match(html, /<time datetime="2026-10-11T16:35:49Z">11 Oct 2026<\/time><p><strong>Dev100 development release\.<\/strong> The v10 report on Dev100, the public development benchmark [^<]*was generated on this date/);
+  assert.match(html, /<span>Public development benchmark, used first for development\.<\/span> <a class="text-link" href="leaderboard\.html#leaderboard-dev100">Dev100 \/ v10 development release: /);
+  assert.doesNotMatch(html, /harness study|development diagnostics|Separate development study/);
 });
 
 test('board modules stay local and share one renderer instance', async () => {
@@ -409,10 +420,11 @@ test('every page string added for the two boards has a Chinese translation', asy
       between(lb, '<section class="page-hero container" aria-labelledby="page-title">', '</section>'),
       between(lb, 'aria-labelledby="rankings-title">', '<!-- paired-ranking:start -->'),
       between(lb, 'aria-labelledby="dev100-title">', '<!-- dev100-ranking:start -->'),
-      between(lb, '<!-- dev100-ranking:end -->', '<section class="section container ruled" id="research"'),
+      between(lb, '<!-- dev100-ranking:end -->', '<section class="section container ruled board-section" id="leaderboard-selected-1000"'),
+      between(lb, '<!-- paired-ranking:end -->', '<section class="section container ruled" id="research"'),
       between(lb, '<span id="protocol"></span>', '</h2>'),
     ].flatMap(textNodes),
-    index: [enclosing(home, 'datetime="2026-10-11T16:35:49Z"', 'li'), enclosing(home, 'Separate development study', 'p')].flatMap(textNodes),
+    index: [enclosing(home, 'datetime="2026-10-11T16:35:49Z"', 'li'), enclosing(home, 'Public development benchmark, used first', 'p')].flatMap(textNodes),
   };
   const missing = {};
   for (const [page, strings] of Object.entries(added)) {

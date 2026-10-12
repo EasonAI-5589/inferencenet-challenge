@@ -21,7 +21,7 @@
   <script type="module" src="leaderboard.js?v=20261012-dual-board"></script>
   <script type="module" src="leaderboard-dev100.js?v=20261012-dual-board"></script>
   <link rel="stylesheet" href="language.css">
-  <script src="language.js?v=20261012-dual-board" defer></script>
+  <script src="language.js?v=20261012-dev100-first" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -51,49 +51,13 @@
     <section class="page-hero container" aria-labelledby="page-title">
       <p class="kicker">Leaderboard · October 2026</p>
       <h1 id="page-title">InferenceNet Challenge Leaderboard</h1>
-      <p class="lead">Model and Model + Harness results on 1,000 econometric replication tasks, followed by a separate development study of 14 models with four harnesses on 100 development tasks. The two boards are not directly comparable.</p>
-      <nav class="board-nav" aria-label="On this page"><a href="#leaderboard-selected-1000">Selected_1000 leaderboard</a><a href="#leaderboard-dev100">Dev100 / v10 harness study</a></nav>
-    </section>
-    <section class="section container ruled board-section" id="leaderboard-selected-1000" aria-labelledby="rankings-title">
-      <span id="rankings"></span><span id="public"></span><span id="climb"></span><span id="table"></span>
-      <div class="section-heading board-heading">
-        <div><p class="kicker">01 / Selected_1000</p><h2 id="rankings-title">1,000-task historical leaderboard</h2></div>
-        <div><p class="lead">Model and Model + Harness results on 1,000 econometric replication tasks.</p><ul class="page-meta"><li>1,000 tasks per group</li><li>Published 17 Sep 2026</li></ul></div>
-      </div>
-      <!-- paired-ranking:start -->
-<div class="paired-board" data-paired-leaderboard>
-  <div class="paired-controls" hidden>
-    <label><span>Configuration</span><select data-ranking-view aria-label="Filter configuration"><option value="all">All</option><option value="baseline">Model</option><option value="harness">Model + Harness</option></select></label>
-    <label><span>Rank by</span><select data-ranking-metric aria-label="Ranking metric"><option value="perfect">Full replication</option><option value="partial_replication">Partial replication</option><option value="compilation_success">Execution success</option><option value="coefficient_direction">Coefficient direction</option><option value="significance_level">Significance level</option></select></label>
-  </div>
-  <figure class="mountain" data-ranking-mountain hidden><div class="mountain-canvas"></div></figure>
-  <p class="paired-scroll-note">Scroll the table to see all metrics →</p>
-  <div class="table-scroll" tabindex="0" role="region" aria-label="Leaderboard results"><table class="paired-table">
-    <caption>Scores (%)</caption>
-    <thead><tr><th scope="col">#</th><th scope="col">Model</th><th scope="col">Harness</th><th scope="col" data-metric="perfect" aria-sort="descending">Full replication</th><th scope="col" data-metric="partial_replication" aria-sort="none">Partial replication</th><th scope="col" data-metric="compilation_success" aria-sort="none">Execution success</th><th scope="col" data-metric="coefficient_direction" aria-sort="none">Coefficient direction</th><th scope="col" data-metric="significance_level" aria-sort="none">Significance level</th></tr></thead>
-    <tbody><tr data-model="gpt-5.6-sol" data-arm="deepagents" data-configuration="harness"><td>1</td><th scope="row">GPT-5.6 Sol</th><td class="paired-harness"><span class="harness-tag harness" data-no-translate title="DeepAgents">DeepAgents</span></td><td class="is-sorted">51.8%</td><td>69.9%</td><td>91.0%</td><td>87.9%</td><td>78.7%</td></tr>
-<tr data-model="claude-opus-4-8" data-arm="deepagents" data-configuration="harness"><td>2</td><th scope="row">Claude Opus 4.8</th><td class="paired-harness"><span class="harness-tag harness" data-no-translate title="DeepAgents">DeepAgents</span></td><td class="is-sorted">39.2%</td><td>62.1%</td><td>83.4%</td><td>79.3%</td><td>69.6%</td></tr>
-<tr data-model="gemini-3.1-pro-preview" data-arm="deepagents" data-configuration="harness"><td>3</td><th scope="row">Gemini 3.1 Pro</th><td class="paired-harness"><span class="harness-tag harness" data-no-translate title="DeepAgents 0.7.13">DeepAgents</span></td><td class="is-sorted">39.1%</td><td>63.2%</td><td>85.0%</td><td>81.1%</td><td>71.8%</td></tr>
-<tr data-model="kimi-k3" data-arm="deepagents" data-configuration="harness"><td>4</td><th scope="row">Kimi K3</th><td class="paired-harness"><span class="harness-tag harness" data-no-translate title="DeepAgents 0.7.13">DeepAgents</span></td><td class="is-sorted">39.0%</td><td>63.5%</td><td>86.7%</td><td>80.4%</td><td>70.9%</td></tr>
-<tr data-model="gpt-5.6-sol" data-arm="baseline" data-configuration="baseline"><td>5</td><th scope="row">GPT-5.6 Sol</th><td class="paired-harness"><span class="harness-tag baseline" aria-label="No harness">—</span></td><td class="is-sorted">33.8%</td><td>43.0%</td><td>55.7%</td><td>53.7%</td><td>48.5%</td></tr>
-<tr data-model="qwen3.7-max" data-arm="deepagents" data-configuration="harness"><td>6</td><th scope="row">Qwen3.7-Max</th><td class="paired-harness"><span class="harness-tag harness" data-no-translate title="DeepAgents 0.7.13">DeepAgents</span></td><td class="is-sorted">24.8%</td><td>37.9%</td><td>52.3%</td><td>48.8%</td><td>43.3%</td></tr>
-<tr data-model="gemini-3.1-pro-preview" data-arm="baseline" data-configuration="baseline"><td>7</td><th scope="row">Gemini 3.1 Pro</th><td class="paired-harness"><span class="harness-tag baseline" aria-label="No harness">—</span></td><td class="is-sorted">24.6%</td><td>36.6%</td><td>54.3%</td><td>50.6%</td><td>43.7%</td></tr>
-<tr data-model="kimi-k3" data-arm="baseline" data-configuration="baseline"><td>8</td><th scope="row">Kimi K3</th><td class="paired-harness"><span class="harness-tag baseline" aria-label="No harness">—</span></td><td class="is-sorted">23.0%</td><td>36.6%</td><td>52.6%</td><td>49.4%</td><td>43.1%</td></tr>
-<tr data-model="qwen3.7-max" data-arm="baseline" data-configuration="baseline"><td>9</td><th scope="row">Qwen3.7-Max</th><td class="paired-harness"><span class="harness-tag baseline" aria-label="No harness">—</span></td><td class="is-sorted">19.8%</td><td>31.5%</td><td>48.6%</td><td>45.4%</td><td>39.6%</td></tr>
-<tr data-model="claude-opus-4-8" data-arm="baseline" data-configuration="baseline"><td>10</td><th scope="row">Claude Opus 4.8</th><td class="paired-harness"><span class="harness-tag baseline" aria-label="No harness">—</span></td><td class="is-sorted">18.4%</td><td>30.5%</td><td>46.7%</td><td>43.7%</td><td>37.0%</td></tr>
-<tr data-model="deepseek-v4-pro" data-arm="deepagents" data-configuration="harness"><td>11</td><th scope="row">DeepSeek V4 Pro</th><td class="paired-harness"><span class="harness-tag harness" data-no-translate title="DeepAgents 0.7.13">DeepAgents</span></td><td class="is-sorted">18.3%</td><td>27.0%</td><td>35.2%</td><td>33.8%</td><td>30.8%</td></tr>
-<tr data-model="deepseek-v4-pro" data-arm="baseline" data-configuration="baseline"><td>12</td><th scope="row">DeepSeek V4 Pro</th><td class="paired-harness"><span class="harness-tag baseline" aria-label="No harness">—</span></td><td class="is-sorted">12.9%</td><td>19.5%</td><td>28.1%</td><td>26.0%</td><td>23.6%</td></tr></tbody>
-  </table></div>
-  <div class="paired-foot"><span>Every score uses all 1,000 tasks; failures and unknowns stay in the denominator.</span><a href="assets/data/paired-results.csv" download>Download results CSV ↓</a></div>
-  <p class="paired-status visually-hidden" data-ranking-status role="status">Published results · 17 Sep 2026</p>
-</div>
-<!-- paired-ranking:end -->
-      <p class="note lb-after">Research comparison. Historical run settings differ; these scores are not an equal-cost comparison.</p>
+      <p class="lead">Dev100 / v10 comes first: the development release, a public development benchmark of 100 tasks, with results for 14 models and four harnesses. The complete Selected_1000 results on the 1,000-task final target follow. The two boards are not directly comparable.</p>
+      <nav class="board-nav" aria-label="On this page"><a href="#leaderboard-dev100">Dev100 / v10 development release</a><a href="#leaderboard-selected-1000">Selected_1000 final target</a></nav>
     </section>
     <section class="section container ruled board-section" id="leaderboard-dev100" aria-labelledby="dev100-title">
       <div class="section-heading board-heading">
-        <div><p class="kicker">02 / Dev100 · v10</p><h2 id="dev100-title">Dev100 / v10 harness study</h2></div>
-        <div><p class="lead">A development diagnostic study of 14 models × 4 harnesses on 100 development tasks. It is not a Challenge leaderboard, and its scores are not directly comparable with the 1,000-task leaderboard above.</p><ul class="page-meta"><li>100 tasks per combination</li><li>56 combinations</li><li><a href="#leaderboard-dev100-report">v10 final report</a></li><li>Report generated <time datetime="2026-10-11T16:35:49Z">11 Oct 2026</time></li></ul></div>
+        <div><p class="kicker">01 / Dev100 · v10</p><h2 id="dev100-title">Dev100 / v10 development release</h2></div>
+        <div><p class="lead">Dev100 is the Challenge’s public development benchmark: its 100 tasks are used first, for development. Developers can submit harnesses of their own design, and InferenceNet evaluates every submission under the same settings; the submission channel and dates have not been announced yet. The v10 release reports 14 models × 4 harnesses, and its scores are not directly comparable with the 1,000-task final target below.</p><ul class="page-meta"><li>100 tasks per combination</li><li>56 combinations</li><li><a href="#leaderboard-dev100-report">v10 final report</a></li><li>Report generated <time datetime="2026-10-11T16:35:49Z">11 Oct 2026</time></li></ul></div>
       </div>
       <!-- dev100-ranking:start -->
 <div class="paired-board dev-board" data-dev-leaderboard>
@@ -206,7 +170,7 @@
 </div>
 <!-- dev100-ranking:end -->
       <details class="paired-notes dev-method" id="leaderboard-dev100-method">
-        <summary>Study design and sources</summary>
+        <summary>Benchmark design and sources</summary>
         <div class="paired-methods">
           <article><h3>Tasks and harnesses</h3><p>The 100 development tasks are the development split of a pinned 100-task selection drawn from Selected_1000 (dataset revision 59f9512). Task IDs are not published. Each combination of a model and a harness has one recorded result for every task. New runs used DeepAgents 0.7.13, DeepSeek Harness (the official deepseek-harness-sdk 0.1.5rc1 in a restricted InferenceNet composition whose only tool is run_python), Claude Agent SDK 0.2.165 and OpenAI Agents SDK 0.23.1, and reached every model through an Anthropic Messages–compatible gateway.</p></article>
           <article><h3>Provenance, thinking and budgets</h3><p>Results come from new runs, inherited SDK runs, historical DeepAgents runs and offline-derived DeepAgents metrics, and all keep their recorded metrics; the report summary gives the count of each. Harness versions are verified for new runs and, through per-run identity records, for 1,199 of the 1,200 inherited SDK runs; historical and offline-derived runs record none. New Claude Agent SDK runs set no thinking override, but the study’s run notes report that the bundled Claude CLI adds adaptive thinking at high effort; request records were not independently checked. New runs on the other three harnesses use the provider default with no override. Thinking for historical, offline-derived and inherited runs is not recorded. Recorded budget caps (6 model calls, 4 tool calls, 32,768 output tokens, 1,800 s wall time, 90 s per tool call) are stored with every new and inherited SDK run; they are the configured limits, not independent measurements of execution. Historical and offline-derived DeepAgents slots record no caps.</p></article>
@@ -228,9 +192,45 @@
         </ul>
         <p>All four stay in each 100-task denominator; only successes add to a score. Only scored runs carry metric flags. A flag is also missing when the reference is unsupported, and 236 historical scored results recorded Full replication only, so each metric reports its own count of unknown or missing results.</p>
         <p><strong>How the numbers were checked.</strong> Counts and metric values are recomputed from the per-task records embedded in the v10 report. Result receipts were checked for 5,182 of the 5,600 task results (every new and inherited SDK run): each file is present with a matching hash, and its lifecycle state, reason and recorded caps agree with the report. The 418 historical and offline-derived results have no receipts. Receipts contain no metric flags, so metric values are taken from the report and were not re-scored. Some facts, such as the Claude CLI’s thinking behaviour, come only from the study’s run notes.</p>
-        <p>This is a descriptive development comparison. The two boards differ in task count, in the scoring profile of four metrics, and in provenance and settings, so they are not directly comparable. Within this study, cells mix new runs with older results recorded under other settings, so differences between cells are not equal-cost comparisons and do not establish causes. Equal recorded caps do not mean equal reasoning compute. Cost and running time are not reported.</p>
+        <p>This is a descriptive development comparison. The two boards differ in task count, in the scoring profile of four metrics, and in provenance and settings, so they are not directly comparable. Within this release, cells mix new runs with older results recorded under other settings, so differences between cells are not equal-cost comparisons and do not establish causes. Equal recorded caps do not mean equal reasoning compute. Cost and running time are not reported.</p>
         <p><a href="#leaderboard-dev100-report">Report summary</a> · <a href="assets/data/dev100-v10-results.json">Data JSON</a> · <a href="assets/data/dev100-v10-results-provenance.json">Release provenance</a> · <a href="assets/data/dev100-v10-results.csv" download>Download results CSV ↓</a></p>
       </details>
+    </section>
+    <section class="section container ruled board-section" id="leaderboard-selected-1000" aria-labelledby="rankings-title">
+      <span id="rankings"></span><span id="public"></span><span id="climb"></span><span id="table"></span>
+      <div class="section-heading board-heading">
+        <div><p class="kicker">02 / Selected_1000</p><h2 id="rankings-title">1,000-task final target</h2></div>
+        <div><p class="lead">Complete Model and Model + Harness results on all 1,000 econometric replication tasks.</p><ul class="page-meta"><li>1,000 tasks per group</li><li>Published 17 Sep 2026</li></ul></div>
+      </div>
+      <!-- paired-ranking:start -->
+<div class="paired-board" data-paired-leaderboard>
+  <div class="paired-controls" hidden>
+    <label><span>Configuration</span><select data-ranking-view aria-label="Filter configuration"><option value="all">All</option><option value="baseline">Model</option><option value="harness">Model + Harness</option></select></label>
+    <label><span>Rank by</span><select data-ranking-metric aria-label="Ranking metric"><option value="perfect">Full replication</option><option value="partial_replication">Partial replication</option><option value="compilation_success">Execution success</option><option value="coefficient_direction">Coefficient direction</option><option value="significance_level">Significance level</option></select></label>
+  </div>
+  <figure class="mountain" data-ranking-mountain hidden><div class="mountain-canvas"></div></figure>
+  <p class="paired-scroll-note">Scroll the table to see all metrics →</p>
+  <div class="table-scroll" tabindex="0" role="region" aria-label="Leaderboard results"><table class="paired-table">
+    <caption>Scores (%)</caption>
+    <thead><tr><th scope="col">#</th><th scope="col">Model</th><th scope="col">Harness</th><th scope="col" data-metric="perfect" aria-sort="descending">Full replication</th><th scope="col" data-metric="partial_replication" aria-sort="none">Partial replication</th><th scope="col" data-metric="compilation_success" aria-sort="none">Execution success</th><th scope="col" data-metric="coefficient_direction" aria-sort="none">Coefficient direction</th><th scope="col" data-metric="significance_level" aria-sort="none">Significance level</th></tr></thead>
+    <tbody><tr data-model="gpt-5.6-sol" data-arm="deepagents" data-configuration="harness"><td>1</td><th scope="row">GPT-5.6 Sol</th><td class="paired-harness"><span class="harness-tag harness" data-no-translate title="DeepAgents">DeepAgents</span></td><td class="is-sorted">51.8%</td><td>69.9%</td><td>91.0%</td><td>87.9%</td><td>78.7%</td></tr>
+<tr data-model="claude-opus-4-8" data-arm="deepagents" data-configuration="harness"><td>2</td><th scope="row">Claude Opus 4.8</th><td class="paired-harness"><span class="harness-tag harness" data-no-translate title="DeepAgents">DeepAgents</span></td><td class="is-sorted">39.2%</td><td>62.1%</td><td>83.4%</td><td>79.3%</td><td>69.6%</td></tr>
+<tr data-model="gemini-3.1-pro-preview" data-arm="deepagents" data-configuration="harness"><td>3</td><th scope="row">Gemini 3.1 Pro</th><td class="paired-harness"><span class="harness-tag harness" data-no-translate title="DeepAgents 0.7.13">DeepAgents</span></td><td class="is-sorted">39.1%</td><td>63.2%</td><td>85.0%</td><td>81.1%</td><td>71.8%</td></tr>
+<tr data-model="kimi-k3" data-arm="deepagents" data-configuration="harness"><td>4</td><th scope="row">Kimi K3</th><td class="paired-harness"><span class="harness-tag harness" data-no-translate title="DeepAgents 0.7.13">DeepAgents</span></td><td class="is-sorted">39.0%</td><td>63.5%</td><td>86.7%</td><td>80.4%</td><td>70.9%</td></tr>
+<tr data-model="gpt-5.6-sol" data-arm="baseline" data-configuration="baseline"><td>5</td><th scope="row">GPT-5.6 Sol</th><td class="paired-harness"><span class="harness-tag baseline" aria-label="No harness">—</span></td><td class="is-sorted">33.8%</td><td>43.0%</td><td>55.7%</td><td>53.7%</td><td>48.5%</td></tr>
+<tr data-model="qwen3.7-max" data-arm="deepagents" data-configuration="harness"><td>6</td><th scope="row">Qwen3.7-Max</th><td class="paired-harness"><span class="harness-tag harness" data-no-translate title="DeepAgents 0.7.13">DeepAgents</span></td><td class="is-sorted">24.8%</td><td>37.9%</td><td>52.3%</td><td>48.8%</td><td>43.3%</td></tr>
+<tr data-model="gemini-3.1-pro-preview" data-arm="baseline" data-configuration="baseline"><td>7</td><th scope="row">Gemini 3.1 Pro</th><td class="paired-harness"><span class="harness-tag baseline" aria-label="No harness">—</span></td><td class="is-sorted">24.6%</td><td>36.6%</td><td>54.3%</td><td>50.6%</td><td>43.7%</td></tr>
+<tr data-model="kimi-k3" data-arm="baseline" data-configuration="baseline"><td>8</td><th scope="row">Kimi K3</th><td class="paired-harness"><span class="harness-tag baseline" aria-label="No harness">—</span></td><td class="is-sorted">23.0%</td><td>36.6%</td><td>52.6%</td><td>49.4%</td><td>43.1%</td></tr>
+<tr data-model="qwen3.7-max" data-arm="baseline" data-configuration="baseline"><td>9</td><th scope="row">Qwen3.7-Max</th><td class="paired-harness"><span class="harness-tag baseline" aria-label="No harness">—</span></td><td class="is-sorted">19.8%</td><td>31.5%</td><td>48.6%</td><td>45.4%</td><td>39.6%</td></tr>
+<tr data-model="claude-opus-4-8" data-arm="baseline" data-configuration="baseline"><td>10</td><th scope="row">Claude Opus 4.8</th><td class="paired-harness"><span class="harness-tag baseline" aria-label="No harness">—</span></td><td class="is-sorted">18.4%</td><td>30.5%</td><td>46.7%</td><td>43.7%</td><td>37.0%</td></tr>
+<tr data-model="deepseek-v4-pro" data-arm="deepagents" data-configuration="harness"><td>11</td><th scope="row">DeepSeek V4 Pro</th><td class="paired-harness"><span class="harness-tag harness" data-no-translate title="DeepAgents 0.7.13">DeepAgents</span></td><td class="is-sorted">18.3%</td><td>27.0%</td><td>35.2%</td><td>33.8%</td><td>30.8%</td></tr>
+<tr data-model="deepseek-v4-pro" data-arm="baseline" data-configuration="baseline"><td>12</td><th scope="row">DeepSeek V4 Pro</th><td class="paired-harness"><span class="harness-tag baseline" aria-label="No harness">—</span></td><td class="is-sorted">12.9%</td><td>19.5%</td><td>28.1%</td><td>26.0%</td><td>23.6%</td></tr></tbody>
+  </table></div>
+  <div class="paired-foot"><span>Every score uses all 1,000 tasks; failures and unknowns stay in the denominator.</span><a href="assets/data/paired-results.csv" download>Download results CSV ↓</a></div>
+  <p class="paired-status visually-hidden" data-ranking-status role="status">Published results · 17 Sep 2026</p>
+</div>
+<!-- paired-ranking:end -->
+      <p class="note lb-after">Research comparison. Historical run settings differ; these scores are not an equal-cost comparison.</p>
     </section>
     <section class="section container ruled" id="research" aria-labelledby="research-title">
       <span id="protocol"></span>
