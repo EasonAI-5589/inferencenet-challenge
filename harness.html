@@ -6,9 +6,9 @@
   <meta name="color-scheme" content="light">
   <meta name="referrer" content="no-referrer">
   <title>Harness — InferenceNet Challenge</title>
-  <meta name="description" content="Harness defined, the industry’s 2025–2026 timeline and system architectures, representative breakdowns, and applications in InferenceNet.">
+  <meta name="description" content="Agent Harness definitions, runnable systems in 2025–2026, ecosystem boundaries, and applications in InferenceNet.">
   <meta property="og:title" content="InferenceNet Challenge — Harness">
-  <meta property="og:description" content="Harness defined, the industry’s 2025–2026 timeline and system architectures, representative breakdowns, and applications in InferenceNet.">
+  <meta property="og:description" content="Agent Harness definitions, runnable systems in 2025–2026, ecosystem boundaries, and applications in InferenceNet.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -17,11 +17,11 @@
   <link rel="stylesheet" href="site.css?v=20261011-release">
   <link rel="stylesheet" href="data.css">
   <link rel="stylesheet" href="agent.css?v=20260917-case-data">
-  <link rel="stylesheet" href="evolution.css?v=20261013-industry-map">
-  <link rel="stylesheet" href="harness.css?v=20261013-industry-map">
+  <link rel="stylesheet" href="evolution.css?v=20261013-harness-focus">
+  <link rel="stylesheet" href="harness.css?v=20261013-harness-focus">
   <script src="site.js?v=20261011-release" defer></script>
   <link rel="stylesheet" href="language.css">
-  <script src="language.js?v=20261013-industry-map" defer></script>
+  <script src="language.js?v=20261013-harness-focus" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -51,11 +51,11 @@
     <section class="page-hero container" aria-labelledby="page-title">
       <p class="kicker">Harness</p>
       <h1 id="page-title">What turns a model <em>into an agent.</em></h1>
-      <p class="lead">Start with the definition of a harness, then follow the industry’s 2025–2026 development: single-agent loops, multi-agent orchestration and complete task-to-delivery pipelines. A timeline connects representative systems and the infrastructure around them. System breakdowns and InferenceNet’s own configurations follow.</p>
+      <p class="lead">Start with the definition, then compare runnable Agent Harness systems and their 2025–2026 development. Separate the harness from the frameworks, delivery workflows and evaluation around it before exploring system breakdowns and InferenceNet’s configurations.</p>
       <ul class="page-meta">
-        <li>Definition, industry map, system breakdowns, applications</li>
-        <li>Industry milestones checked · 13 Oct 2026</li>
-        <li><a href="#development">Explore the industry map ↓</a></li>
+        <li>Definition, harness systems, ecosystem boundaries, applications</li>
+        <li>Harness sources checked · 13 Oct 2026</li>
+        <li><a href="#development">Explore the harness systems map ↓</a></li>
         <li><a href="#update">Update · 12 Oct 2026 ↓</a></li>
         <li><a href="#configurations">Four configurations in InferenceNet ↓</a></li>
       </ul>
@@ -64,7 +64,7 @@
     <nav class="subnav" aria-label="On this page">
       <ol class="container">
         <li><a href="#definition"><span class="subnav-number">01</span>Definition</a></li>
-        <li><a href="#development"><span class="subnav-number">02</span>Industry systems</a></li>
+        <li><a href="#development"><span class="subnav-number">02</span>Harness systems</a></li>
         <li><a href="#breakdowns"><span class="subnav-number">03</span>Breakdowns</a></li>
         <li><a href="#compare"><span class="subnav-number">04</span>Compare</a></li>
         <li><a href="#self-evolution"><span class="subnav-number">05</span>Self-evolution</a></li>
@@ -78,7 +78,7 @@
         <p class="reading-route-title">Quick read</p>
         <ol>
           <li><a href="#definition">What a harness is</a></li>
-          <li><a href="#development">Industry systems, 2025–2026</a></li>
+          <li><a href="#development">Agent Harness systems, 2025–2026</a></li>
           <li><a href="#compare">Side by side</a></li>
           <li><a href="#inferencenet">How InferenceNet runs a harness</a></li>
         </ol>
@@ -87,7 +87,7 @@
         <p class="reading-route-title">Full route</p>
         <ol>
           <li><a href="#definition">What a harness is</a></li>
-          <li><a href="#development">Industry systems, 2025–2026</a></li>
+          <li><a href="#development">Agent Harness systems, 2025–2026</a></li>
           <li><a href="#breakdowns">Three breakdowns, one template</a></li>
           <li><a href="#deepagents-architecture">DeepAgents: full three-layer structure</a></li>
           <li><a href="#deepagents-inferencenet">DeepAgents: historical InferenceNet wiring</a></li>
@@ -176,7 +176,7 @@
           </div>
           <figcaption>What a harness covers. The model only maps one context to one reply; the harness does everything else that makes it an agent. The environment the tools act on and the evaluator that grades the answer are outside the agent, which is why a benchmark such as InferenceNet can swap either the model or the harness and score the pair.</figcaption>
         </figure>
-      <p class="hs-jump"><a href="#development">Next: the industry map →</a></p>
+      <p class="hs-jump"><a href="#development">Next: harness systems →</a></p>
       <details class="hs-details definition-details"><summary>Definition details: terms, responsibilities and boundaries</summary>
       <div class="harness-prose">
         <p>A model takes text in and returns text. Anthropic defines an agent harness as “the system that enables a model to act as an agent” and adds that evaluating an agent means “evaluating the harness and the model working together”. LangChain puts the relationship as “Agent = Model + Harness”. The same model can score differently in a different harness, so a result belongs to the pair. Evaluation papers often call the same layer a scaffold.</p>
@@ -262,334 +262,180 @@
     </section>
 
     <section class="section container ruled" id="development" aria-labelledby="development-title">
-      <div class="section-heading"><div><p class="kicker">02 / Industry systems</p><h2 id="development-title">Industry systems, 2025–2026</h2></div><p class="lead">From coding loops to coordinated agents and task-to-delivery pipelines. The map traces selected industry milestones; the architecture below explains how these systems fit together.</p></div>
-      <figure class="hs-timeline"><div class="diagram-scroll hs-timeline-scroll" tabindex="0" aria-label="Industry timeline; scroll sideways on a narrow screen">
-<svg viewBox="0 0 1130 598" role="img" aria-label="Harness systems in industry, January 2025 to October 2026: 18 selected milestones on one time axis, with 2026 shaded. Single-agent loops: Claude Code (Feb 2025), Codex CLI (Apr 2025), OpenCode (May 2025), Gemini CLI (Jun 2025). Multi-agent orchestration: DeepAgents (Jul 2025), LangGraph 1.0 (Oct 2025), DeerFlow 2.1 (Sep 2026). Full lifecycle pipelines: Vibe Kanban (Jun 2025), GitHub Agentic Workflows (Feb 2026), Symphony (Apr 2026). Shared infrastructure: A2A (Apr 2025), Claude Code sandboxing (Oct 2025), Terminal-Bench 2.0 (Jan 2026), AgentTrace (Feb 2026), Claude Managed Agents (Apr 2026), OpenAI Agents API (Sep 2026), DeepAgents Skills and OpenSandbox 1.1.1 (Oct 2026). Each milestone is tied to its month, not to another product. The table under the figure lists the same milestones with sources.">
-  <defs><marker id="hs-axis-head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="hs-axis-head"/></marker></defs>
-  <text x="0" y="16" class="hs-fig-title">Harness systems in industry: selected milestones, 2025–2026</text>
-  <text x="1130" y="16" text-anchor="end" class="hs-fig-note">Each line ties a milestone to its month, not to another product</text>
-  <rect x="678.2" y="33" width="439.8" height="527" class="hs-band"/>
-  <line x1="298.5" y1="55" x2="298.5" y2="556" class="hs-grid"/>
-  <line x1="425.1" y1="55" x2="425.1" y2="556" class="hs-grid"/>
-  <line x1="551.6" y1="55" x2="551.6" y2="556" class="hs-grid"/>
-  <line x1="804.7" y1="55" x2="804.7" y2="556" class="hs-grid"/>
-  <line x1="931.3" y1="55" x2="931.3" y2="556" class="hs-grid"/>
-  <line x1="1057.8" y1="55" x2="1057.8" y2="556" class="hs-grid"/>
-  <line x1="678.2" y1="59" x2="678.2" y2="560" class="hs-grid hs-grid-year"/>
-  <line x1="172" y1="48" x2="1110" y2="48" class="hs-axis" marker-end="url(#hs-axis-head)"/>
-  <line x1="214.2" y1="45" x2="214.2" y2="51" class="hs-tick"/>
-  <line x1="256.4" y1="45" x2="256.4" y2="51" class="hs-tick"/>
-  <line x1="298.5" y1="42" x2="298.5" y2="54" class="hs-tick"/>
-  <line x1="340.7" y1="45" x2="340.7" y2="51" class="hs-tick"/>
-  <line x1="382.9" y1="45" x2="382.9" y2="51" class="hs-tick"/>
-  <line x1="425.1" y1="42" x2="425.1" y2="54" class="hs-tick"/>
-  <line x1="467.3" y1="45" x2="467.3" y2="51" class="hs-tick"/>
-  <line x1="509.5" y1="45" x2="509.5" y2="51" class="hs-tick"/>
-  <line x1="551.6" y1="42" x2="551.6" y2="54" class="hs-tick"/>
-  <line x1="593.8" y1="45" x2="593.8" y2="51" class="hs-tick"/>
-  <line x1="636" y1="45" x2="636" y2="51" class="hs-tick"/>
-  <line x1="720.4" y1="45" x2="720.4" y2="51" class="hs-tick"/>
-  <line x1="762.5" y1="45" x2="762.5" y2="51" class="hs-tick"/>
-  <line x1="804.7" y1="42" x2="804.7" y2="54" class="hs-tick"/>
-  <line x1="846.9" y1="45" x2="846.9" y2="51" class="hs-tick"/>
-  <line x1="889.1" y1="45" x2="889.1" y2="51" class="hs-tick"/>
-  <line x1="931.3" y1="42" x2="931.3" y2="54" class="hs-tick"/>
-  <line x1="973.5" y1="45" x2="973.5" y2="51" class="hs-tick"/>
-  <line x1="1015.6" y1="45" x2="1015.6" y2="51" class="hs-tick"/>
-  <line x1="1057.8" y1="42" x2="1057.8" y2="54" class="hs-tick"/>
-  <text x="298.5" y="37" text-anchor="middle" class="hs-q">Apr</text>
-  <text x="425.1" y="37" text-anchor="middle" class="hs-q">Jul</text>
-  <text x="551.6" y="37" text-anchor="middle" class="hs-q">Oct</text>
-  <text x="804.7" y="37" text-anchor="middle" class="hs-q">Apr</text>
-  <text x="931.3" y="37" text-anchor="middle" class="hs-q">Jul</text>
-  <text x="1057.8" y="37" text-anchor="middle" class="hs-q">Oct</text>
-  <rect x="149" y="38" width="46" height="20" rx="10" class="hs-pill"/>
-  <text x="172" y="52.5" text-anchor="middle" class="hs-pill-t">2025</text>
-  <rect x="655.2" y="38" width="46" height="20" rx="10" class="hs-pill is-now"/>
-  <text x="678.2" y="52.5" text-anchor="middle" class="hs-pill-t is-now">2026</text>
-  <g class="hs-lane">
-    <line x1="164" y1="213" x2="1100" y2="213" class="hs-rail"/>
-    <text x="0" y="196" class="hs-lane-t">Single-agent loops</text>
-    <text x="0" y="209" class="hs-lane-s">one agent, one loop</text>
-    <g class="hs-node">
-      <line x1="240" y1="213" x2="240" y2="157" class="hs-stem"/>
-      <circle cx="240" cy="213" r="3.5" class="hs-dot"/>
-      <rect x="97" y="116" width="150" height="41" rx="3" class="hs-tag"/>
-      <rect x="103" y="120.5" width="13" height="13" rx="2" class="hs-badge hs-l"/>
-      <text x="109.5" y="130.5" text-anchor="middle" class="hs-badge-t">L</text>
-      <text x="121" y="131.5" class="hs-name">Claude Code</text>
-      <text x="103" y="143.5" class="hs-l2"><tspan class="hs-date">Feb 2025</tspan> · <tspan>research preview</tspan></text>
-      <text x="103" y="153.5" class="hs-l3">terminal edit, run and verify</text>
-    </g>
-    <g class="hs-node">
-      <line x1="318" y1="213" x2="318" y2="111" class="hs-stem"/>
-      <circle cx="318" cy="213" r="3.5" class="hs-dot"/>
-      <rect x="311" y="70" width="169" height="41" rx="3" class="hs-tag"/>
-      <rect x="317" y="74.5" width="13" height="13" rx="2" class="hs-badge hs-l"/>
-      <text x="323.5" y="84.5" text-anchor="middle" class="hs-badge-t">L</text>
-      <text x="335" y="85.5" class="hs-name">Codex CLI</text>
-      <text x="317" y="97.5" class="hs-l2"><tspan class="hs-date">Apr 2025</tspan> · <tspan>open-source launch</tspan></text>
-      <text x="317" y="107.5" class="hs-l3">coding loop on a local repository</text>
-    </g>
-    <g class="hs-node">
-      <line x1="360" y1="213" x2="360" y2="157" class="hs-stem"/>
-      <circle cx="360" cy="213" r="3.5" class="hs-dot"/>
-      <rect x="353" y="116" width="161" height="41" rx="3" class="hs-tag"/>
-      <rect x="359" y="120.5" width="13" height="13" rx="2" class="hs-badge hs-l"/>
-      <text x="365.5" y="130.5" text-anchor="middle" class="hs-badge-t">L</text>
-      <text x="377" y="131.5" class="hs-name">OpenCode</text>
-      <text x="359" y="143.5" class="hs-l2"><tspan class="hs-date">May 2025</tspan> · <tspan>early public project</tspan></text>
-      <text x="359" y="153.5" class="hs-l3">open, any model provider</text>
-    </g>
-    <g class="hs-node">
-      <line x1="410" y1="213" x2="410" y2="203" class="hs-stem"/>
-      <circle cx="410" cy="213" r="3.5" class="hs-dot"/>
-      <rect x="403" y="162" width="163" height="41" rx="3" class="hs-tag"/>
-      <rect x="409" y="166.5" width="13" height="13" rx="2" class="hs-badge hs-l"/>
-      <text x="415.5" y="176.5" text-anchor="middle" class="hs-badge-t">L</text>
-      <text x="427" y="177.5" class="hs-name">Gemini CLI</text>
-      <text x="409" y="189.5" class="hs-l2"><tspan class="hs-date">Jun 2025</tspan> · <tspan>open-source launch</tspan></text>
-      <text x="409" y="199.5" class="hs-l3">open terminal agent</text>
-    </g>
-  </g>
-  <g class="hs-lane">
-    <line x1="164" y1="280" x2="1100" y2="280" class="hs-rail"/>
-    <text x="0" y="263" class="hs-lane-t">Multi-agent orchestration</text>
-    <text x="0" y="276" class="hs-lane-s">several loops, coordinated</text>
-    <g class="hs-node">
-      <line x1="432" y1="280" x2="432" y2="270" class="hs-stem"/>
-      <circle cx="432" cy="280" r="3.5" class="hs-dot"/>
-      <rect x="425" y="229" width="135" height="41" rx="3" class="hs-tag"/>
-      <rect x="431" y="233.5" width="13" height="13" rx="2" class="hs-badge hs-l"/>
-      <text x="437.5" y="243.5" text-anchor="middle" class="hs-badge-t">L</text>
-      <text x="449" y="244.5" class="hs-name">DeepAgents</text>
-      <text x="431" y="256.5" class="hs-l2"><tspan class="hs-date">Jul 2025</tspan> · <tspan>introduction</tspan></text>
-      <text x="431" y="266.5" class="hs-l3">planning, subagents, files</text>
-    </g>
-    <g class="hs-node">
-      <line x1="584" y1="280" x2="584" y2="270" class="hs-stem"/>
-      <circle cx="584" cy="280" r="3.5" class="hs-dot"/>
-      <rect x="577" y="229" width="130" height="41" rx="3" class="hs-tag"/>
-      <rect x="583" y="233.5" width="13" height="13" rx="2" class="hs-badge hs-l"/>
-      <text x="589.5" y="243.5" text-anchor="middle" class="hs-badge-t">L</text>
-      <text x="601" y="244.5" class="hs-name">LangGraph 1.0</text>
-      <text x="583" y="256.5" class="hs-l2"><tspan class="hs-date">Oct 2025</tspan> · <tspan>release</tspan></text>
-      <text x="583" y="266.5" class="hs-l3">durable graph execution</text>
-    </g>
-    <g class="hs-node">
-      <line x1="1040" y1="280" x2="1040" y2="270" class="hs-stem"/>
-      <circle cx="1040" cy="280" r="3.5" class="hs-dot"/>
-      <rect x="893" y="229" width="154" height="41" rx="3" class="hs-tag"/>
-      <rect x="899" y="233.5" width="13" height="13" rx="2" class="hs-badge hs-l"/>
-      <text x="905.5" y="243.5" text-anchor="middle" class="hs-badge-t">L</text>
-      <text x="917" y="244.5" class="hs-name">DeerFlow 2.1</text>
-      <text x="899" y="256.5" class="hs-l2"><tspan class="hs-date">Sep 2026</tspan> · <tspan>release</tspan></text>
-      <text x="899" y="266.5" class="hs-l3">durable delegation, backends</text>
-    </g>
-  </g>
-  <g class="hs-lane">
-    <line x1="164" y1="347" x2="1100" y2="347" class="hs-rail"/>
-    <text x="0" y="330" class="hs-lane-t">Full lifecycle pipelines</text>
-    <text x="0" y="343" class="hs-lane-s">from task to delivered change</text>
-    <g class="hs-node">
-      <line x1="404" y1="347" x2="404" y2="337" class="hs-stem"/>
-      <circle cx="404" cy="347" r="3.5" class="hs-dot"/>
-      <rect x="397" y="296" width="156" height="41" rx="3" class="hs-tag"/>
-      <rect x="403" y="300.5" width="13" height="13" rx="2" class="hs-badge hs-l"/>
-      <text x="409.5" y="310.5" text-anchor="middle" class="hs-badge-t">L</text>
-      <text x="421" y="311.5" class="hs-name">Vibe Kanban</text>
-      <text x="403" y="323.5" class="hs-l2"><tspan class="hs-date">Jun 2025</tspan> · <tspan>v0.0.24 preview</tspan></text>
-      <text x="403" y="333.5" class="hs-l3">tickets to reviewable changes</text>
-    </g>
-    <g class="hs-node">
-      <line x1="754" y1="347" x2="754" y2="337" class="hs-stem"/>
-      <circle cx="754" cy="347" r="3.5" class="hs-dot"/>
-      <rect x="570" y="296" width="191" height="41" rx="3" class="hs-tag"/>
-      <rect x="576" y="300.5" width="13" height="13" rx="2" class="hs-badge hs-l"/>
-      <text x="582.5" y="310.5" text-anchor="middle" class="hs-badge-t">L</text>
-      <text x="594" y="311.5" class="hs-name">GitHub Agentic Workflows</text>
-      <text x="576" y="323.5" class="hs-l2"><tspan class="hs-date">Feb 2026</tspan> · <tspan>technical preview</tspan></text>
-      <text x="576" y="333.5" class="hs-l3">agents inside GitHub Actions</text>
-    </g>
-    <g class="hs-node">
-      <line x1="812" y1="347" x2="812" y2="337" class="hs-stem"/>
-      <circle cx="812" cy="347" r="3.5" class="hs-dot"/>
-      <rect x="805" y="296" width="164" height="41" rx="3" class="hs-tag"/>
-      <rect x="811" y="300.5" width="13" height="13" rx="2" class="hs-badge hs-l"/>
-      <text x="817.5" y="310.5" text-anchor="middle" class="hs-badge-t">L</text>
-      <text x="829" y="311.5" class="hs-name">Symphony</text>
-      <text x="811" y="323.5" class="hs-l2"><tspan class="hs-date">Apr 2026</tspan> · <tspan>engineering account</tspan></text>
-      <text x="811" y="333.5" class="hs-l3">issues drive runs to review</text>
-    </g>
-  </g>
-  <g class="hs-lane">
-    <line x1="164" y1="552" x2="1100" y2="552" class="hs-rail"/>
-    <text x="0" y="535" class="hs-lane-t">Shared infrastructure</text>
-    <text x="0" y="548" class="hs-lane-s">supports all three</text>
-    <g class="hs-node">
-      <line x1="315" y1="552" x2="315" y2="542" class="hs-stem"/>
-      <circle cx="315" cy="552" r="3.5" class="hs-dot"/>
-      <rect x="308" y="501" width="194" height="41" rx="3" class="hs-tag"/>
-      <rect x="314" y="505.5" width="13" height="13" rx="2" class="hs-badge hs-t"/>
-      <text x="320.5" y="515.5" text-anchor="middle" class="hs-badge-t">T</text>
-      <text x="332" y="516.5" class="hs-name">A2A</text>
-      <text x="314" y="528.5" class="hs-l2"><tspan class="hs-date">Apr 2025</tspan> · <tspan>protocol launch</tspan></text>
-      <text x="314" y="538.5" class="hs-l3">agents coordinate across frameworks</text>
-    </g>
-    <g class="hs-node">
-      <line x1="560" y1="552" x2="560" y2="542" class="hs-stem"/>
-      <circle cx="560" cy="552" r="3.5" class="hs-dot"/>
-      <rect x="553" y="501" width="134" height="41" rx="3" class="hs-tag"/>
-      <rect x="559" y="505.5" width="13" height="13" rx="2" class="hs-badge hs-g"/>
-      <text x="565.5" y="515.5" text-anchor="middle" class="hs-badge-t">G</text>
-      <text x="577" y="516.5" class="hs-name">Claude Code</text>
-      <text x="559" y="528.5" class="hs-l2"><tspan class="hs-date">Oct 2025</tspan> · <tspan>sandboxing</tspan></text>
-      <text x="559" y="538.5" class="hs-l3">file and network bounds</text>
-    </g>
-    <g class="hs-node">
-      <line x1="700" y1="552" x2="700" y2="450" class="hs-stem"/>
-      <circle cx="700" cy="552" r="3.5" class="hs-dot"/>
-      <rect x="693" y="409" width="152" height="41" rx="3" class="hs-tag"/>
-      <rect x="699" y="413.5" width="13" height="13" rx="2" class="hs-badge hs-v"/>
-      <text x="705.5" y="423.5" text-anchor="middle" class="hs-badge-t">V</text>
-      <text x="717" y="424.5" class="hs-name">Terminal-Bench 2.0</text>
-      <text x="699" y="436.5" class="hs-l2"><tspan class="hs-date">Jan 2026</tspan> · <tspan>paper</tspan></text>
-      <text x="699" y="446.5" class="hs-l3">whole tasks in real terminals</text>
-    </g>
-    <g class="hs-node">
-      <line x1="740" y1="552" x2="740" y2="496" class="hs-stem"/>
-      <circle cx="740" cy="552" r="3.5" class="hs-dot"/>
-      <rect x="733" y="455" width="125" height="41" rx="3" class="hs-tag"/>
-      <rect x="739" y="459.5" width="13" height="13" rx="2" class="hs-badge hs-o"/>
-      <text x="745.5" y="469.5" text-anchor="middle" class="hs-badge-t">O</text>
-      <text x="757" y="470.5" class="hs-name">AgentTrace</text>
-      <text x="739" y="482.5" class="hs-l2"><tspan class="hs-date">Feb 2026</tspan> · <tspan>paper</tspan></text>
-      <text x="739" y="492.5" class="hs-l3">structured agent traces</text>
-    </g>
-    <g class="hs-node">
-      <line x1="820" y1="552" x2="820" y2="542" class="hs-stem"/>
-      <circle cx="820" cy="552" r="3.5" class="hs-dot"/>
-      <rect x="813" y="501" width="180" height="41" rx="3" class="hs-tag"/>
-      <rect x="819" y="505.5" width="13" height="13" rx="2" class="hs-badge hs-e"/>
-      <text x="825.5" y="515.5" text-anchor="middle" class="hs-badge-t">E</text>
-      <text x="837" y="516.5" class="hs-name">Claude Managed Agents</text>
-      <text x="819" y="528.5" class="hs-l2"><tspan class="hs-date">Apr 2026</tspan> · <tspan>architecture post</tspan></text>
-      <text x="819" y="538.5" class="hs-l3">session, harness, sandbox apart</text>
-    </g>
-    <g class="hs-node">
-      <line x1="1026" y1="552" x2="1026" y2="496" class="hs-stem"/>
-      <circle cx="1026" cy="552" r="3.5" class="hs-dot"/>
-      <rect x="886" y="455" width="147" height="41" rx="3" class="hs-tag"/>
-      <rect x="892" y="459.5" width="13" height="13" rx="2" class="hs-badge hs-l"/>
-      <text x="898.5" y="469.5" text-anchor="middle" class="hs-badge-t">L</text>
-      <text x="910" y="470.5" class="hs-name">OpenAI Agents API</text>
-      <text x="892" y="482.5" class="hs-l2"><tspan class="hs-date">Sep 2026</tspan> · <tspan>public beta</tspan></text>
-      <text x="892" y="492.5" class="hs-l3">hosted Codex harness</text>
-    </g>
-    <g class="hs-node">
-      <line x1="1066" y1="552" x2="1066" y2="450" class="hs-stem"/>
-      <circle cx="1066" cy="552" r="3.5" class="hs-dot"/>
-      <rect x="933" y="409" width="140" height="41" rx="3" class="hs-tag"/>
-      <rect x="939" y="413.5" width="13" height="13" rx="2" class="hs-badge hs-c"/>
-      <text x="945.5" y="423.5" text-anchor="middle" class="hs-badge-t">C</text>
-      <text x="957" y="424.5" class="hs-name">DeepAgents skills</text>
-      <text x="939" y="436.5" class="hs-l2"><tspan class="hs-date">Oct 2026</tspan> · <tspan>update</tspan></text>
-      <text x="939" y="446.5" class="hs-l3">skills and tools on demand</text>
-    </g>
-    <g class="hs-node">
-      <line x1="1094" y1="552" x2="1094" y2="404" class="hs-stem"/>
-      <circle cx="1094" cy="552" r="3.5" class="hs-dot"/>
-      <rect x="951" y="363" width="150" height="41" rx="3" class="hs-tag"/>
-      <rect x="957" y="367.5" width="13" height="13" rx="2" class="hs-badge hs-e"/>
-      <text x="963.5" y="377.5" text-anchor="middle" class="hs-badge-t">E</text>
-      <text x="975" y="378.5" class="hs-name">OpenSandbox 1.1.1</text>
-      <text x="957" y="390.5" class="hs-l2"><tspan class="hs-date">Oct 2026</tspan> · <tspan>release</tspan></text>
-      <text x="957" y="400.5" class="hs-l3">identity-bound sandbox files</text>
-    </g>
-  </g>
-  <rect x="0.5" y="564" width="1129" height="29" rx="6" class="hs-legend-box"/>
-  <text x="26" y="582" class="hs-legend-intro">Main layer</text>
-  <rect x="94.1" y="572" width="13" height="13" rx="2" class="hs-badge hs-e"/>
-  <text x="100.6" y="582" text-anchor="middle" class="hs-badge-t">E</text>
-  <text x="112.1" y="582" class="hs-legend-t">Execution and sandbox</text>
-  <rect x="245.9" y="572" width="13" height="13" rx="2" class="hs-badge hs-t"/>
-  <text x="252.4" y="582" text-anchor="middle" class="hs-badge-t">T</text>
-  <text x="263.9" y="582" class="hs-legend-t">Tools and protocols</text>
-  <rect x="380.6" y="572" width="13" height="13" rx="2" class="hs-badge hs-c"/>
-  <text x="387.1" y="582" text-anchor="middle" class="hs-badge-t">C</text>
-  <text x="398.6" y="582" class="hs-legend-t">Context and memory</text>
-  <rect x="520.6" y="572" width="13" height="13" rx="2" class="hs-badge hs-l"/>
-  <text x="527.1" y="582" text-anchor="middle" class="hs-badge-t">L</text>
-  <text x="538.6" y="582" class="hs-legend-t">Lifecycle and orchestration</text>
-  <rect x="691.9" y="572" width="13" height="13" rx="2" class="hs-badge hs-o"/>
-  <text x="698.4" y="582" text-anchor="middle" class="hs-badge-t">O</text>
-  <text x="709.9" y="582" class="hs-legend-t">Observability</text>
-  <rect x="793.2" y="572" width="13" height="13" rx="2" class="hs-badge hs-v"/>
-  <text x="799.7" y="582" text-anchor="middle" class="hs-badge-t">V</text>
-  <text x="811.2" y="582" class="hs-legend-t">Verification and evaluation</text>
-  <rect x="961.3" y="572" width="13" height="13" rx="2" class="hs-badge hs-g"/>
-  <text x="967.8" y="582" text-anchor="middle" class="hs-badge-t">G</text>
-  <text x="979.3" y="582" class="hs-legend-t">Governance and security</text>
-</svg>
-
-      </div><figcaption>Selected milestones, not a complete history. Dates refer to the named release, paper or announcement; connectors indicate time, not product ancestry. Sources and exact dates are listed below.</figcaption></figure>
-      <details class="hs-details"><summary>Milestone dates and primary sources</summary><div class="table-scroll" tabindex="0"><table class="compare-table hs-source-table"><caption>18 selected industry milestones, 2025–2026</caption><thead><tr><th scope="col">Date</th><th scope="col">System / component</th><th scope="col">Milestone</th><th scope="col">What changed</th></tr></thead><tbody><tr><td><time datetime="2025-02-24">2025-02-24</time></td><th scope="row"><a href="https://www.anthropic.com/news/claude-3-7-sonnet">Claude Code</a></th><td>research preview</td><td>Terminal-native edit, run and verify loop</td></tr><tr><td><time datetime="2025-04-09">2025-04-09</time></td><th scope="row"><a href="https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/">A2A</a></th><td>protocol launch</td><td>Agents discover and coordinate across frameworks</td></tr><tr><td><time datetime="2025-04-16">2025-04-16</time></td><th scope="row"><a href="https://openai.com/index/introducing-o3-and-o4-mini/">Codex CLI</a></th><td>open-source launch</td><td>Run the coding loop against a local repository</td></tr><tr><td><time datetime="2025-05">2025-05</time></td><th scope="row"><a href="https://github.com/anomalyco/opencode">OpenCode</a></th><td>early public project</td><td>Open-source coding agent with a choice of model providers</td></tr><tr><td><time datetime="2025-06-25">2025-06-25</time></td><th scope="row"><a href="https://blog.google/innovation-and-ai/technology/developers-tools/introducing-gemini-cli-open-source-ai-agent/">Gemini CLI</a></th><td>open-source launch</td><td>An open terminal agent for code and everyday tasks</td></tr><tr><td><time datetime="2025-06-27">2025-06-27</time></td><th scope="row"><a href="https://github.com/BloopAI/vibe-kanban/releases/tag/v0.0.24">Vibe Kanban</a></th><td>v0.0.24 preview</td><td>Organize agent work as tickets and reviewable changes</td></tr><tr><td><time datetime="2025-07-30">2025-07-30</time></td><th scope="row"><a href="https://www.langchain.com/blog/deep-agents">DeepAgents</a></th><td>introduction</td><td>Combine planning, subagents and a shared filesystem</td></tr><tr><td><time datetime="2025-10-20">2025-10-20</time></td><th scope="row"><a href="https://www.anthropic.com/engineering/claude-code-sandboxing">Claude Code sandboxing</a></th><td>engineering post</td><td>Bound filesystem and network access during execution</td></tr><tr><td><time datetime="2025-10-22">2025-10-22</time></td><th scope="row"><a href="https://www.langchain.com/blog/langchain-langgraph-1dot0">LangGraph 1.0</a></th><td>version milestone</td><td>Durable graph execution with state and human review</td></tr><tr><td><time datetime="2026-01-17">2026-01-17</time></td><th scope="row"><a href="https://arxiv.org/abs/2601.11868">Terminal-Bench 2.0</a></th><td>paper</td><td>Test agents on complete tasks in real terminal environments</td></tr><tr><td><time datetime="2026-02-07">2026-02-07</time></td><th scope="row"><a href="https://arxiv.org/abs/2602.10133">AgentTrace</a></th><td>paper</td><td>Connect operational, cognitive and contextual traces</td></tr><tr><td><time datetime="2026-02-13">2026-02-13</time></td><th scope="row"><a href="https://github.blog/changelog/2026-02-13-github-agentic-workflows-are-now-in-technical-preview/">GitHub Agentic Workflows</a></th><td>technical preview</td><td>Run repository maintenance agents inside GitHub Actions</td></tr><tr><td><time datetime="2026-04-08">2026-04-08</time></td><th scope="row"><a href="https://www.anthropic.com/engineering/managed-agents">Claude Managed Agents</a></th><td>architecture post</td><td>Separate session, harness and sandbox for recoverable work</td></tr><tr><td><time datetime="2026-04-27">2026-04-27</time></td><th scope="row"><a href="https://openai.com/index/open-source-codex-orchestration-symphony/">Symphony</a></th><td>engineering account</td><td>Issue tracker drives isolated runs through review and delivery</td></tr><tr><td><time datetime="2026-09-10">2026-09-10</time></td><th scope="row"><a href="https://openai.com/index/introducing-the-agents-api/">OpenAI Agents API</a></th><td>public beta</td><td>Host the Codex harness with compaction and subagents</td></tr><tr><td><time datetime="2026-09-24">2026-09-24</time></td><th scope="row"><a href="https://github.com/bytedance/deer-flow/discussions/5832">DeerFlow 2.1</a></th><td>release</td><td>Durable delegation, pluggable memory and sandbox backends</td></tr><tr><td><time datetime="2026-10-07">2026-10-07</time></td><th scope="row"><a href="https://www.langchain.com/blog/revamping-skills-in-deep-agents">DeepAgents skills</a></th><td>update</td><td>Load skill instructions and their tools only when needed</td></tr><tr><td><time datetime="2026-10-09">2026-10-09</time></td><th scope="row"><a href="https://github.com/opensandbox-group/OpenSandbox/releases/tag/release-1.1.1">OpenSandbox 1.1.1</a></th><td>release</td><td>Identity-bound file access and recoverable sandbox operations</td></tr></tbody></table></div></details>
-      <h3 class="harness-subtitle">Three ways to compose a system</h3>
-      <figure class="hs-composition"><div class="diagram-scroll" tabindex="0"><svg viewBox="0 0 1100 348" role="img" aria-labelledby="hc-title hc-desc">
-<title id="hc-title">Three ways to compose a harness system</title>
-<desc id="hc-desc">A single agent loops between model and tools. An orchestrator delegates to several agent loops and combines their results. A lifecycle pipeline carries a task through implementation, checks, review and delivery. Shared infrastructure supports all three.</desc>
+      <div class="section-heading"><div><p class="kicker">02 / Harness systems</p><h2 id="development-title">Agent Harness systems, 2025–2026</h2></div><p class="lead">Compare the executable systems around the model: how they run tools, manage context and state, delegate work, recover and stop. The main map follows harness implementations and their design changes.</p></div>
+      <p class="harness-prose">A benchmark supplies tasks and scores; a protocol connects tools; a framework supplies building blocks. They belong to the surrounding ecosystem, but are different comparison units from a configured, runnable harness.</p>
+      <figure class="hs-timeline"><div class="diagram-scroll hs-timeline-scroll" tabindex="0" role="region" aria-label="Harness timeline; scroll sideways on a narrow screen"><svg viewBox="0 0 1200 638" role="img" aria-labelledby="hs-focus-title hs-focus-desc">
+<title id="hs-focus-title">Agent Harness systems: selected developments, 2025–2026</title>
+<desc id="hs-focus-desc">Twelve milestones in runnable harnesses, grouped by interactive, programmable and managed delivery. Lines mark dates, not ancestry. Benchmarks and protocols are outside this comparison.</desc>
+<defs><marker id="hs-axis-head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="hs-axis-head"/></marker></defs>
+<text x="12" y="23" class="hf-title" text-anchor="start">Agent Harness systems, 2025–2026</text>
+<text x="12" y="45" class="hc-small" text-anchor="start">How the running system changed — selected releases and engineering accounts</text>
+<rect x="724" y="59" width="464" height="560" rx="5" class="hs-band"/>
+<line x1="220" y1="76" x2="1182" y2="76" class="hs-axis" marker-end="url(#hs-axis-head)"/>
+<rect x="194" y="64" width="58" height="24" rx="5" class="hs-pill"/>
+<text x="223" y="82" class="hs-pill-t" text-anchor="middle">2025</text>
+<rect x="698" y="64" width="58" height="24" rx="5" class="hs-pill"/>
+<text x="727" y="82" class="hs-pill-t" text-anchor="middle">2026</text>
+<line x1="346" y1="87" x2="346" y2="615" class="hs-grid"/>
+<text x="346" y="68" class="hs-q" text-anchor="middle">Apr</text>
+<line x1="472" y1="87" x2="472" y2="615" class="hs-grid"/>
+<text x="472" y="68" class="hs-q" text-anchor="middle">Jul</text>
+<line x1="598" y1="87" x2="598" y2="615" class="hs-grid"/>
+<text x="598" y="68" class="hs-q" text-anchor="middle">Oct</text>
+<line x1="850" y1="87" x2="850" y2="615" class="hs-grid"/>
+<text x="850" y="68" class="hs-q" text-anchor="middle">Apr</text>
+<line x1="976" y1="87" x2="976" y2="615" class="hs-grid"/>
+<text x="976" y="68" class="hs-q" text-anchor="middle">Jul</text>
+<line x1="1102" y1="87" x2="1102" y2="615" class="hs-grid"/>
+<text x="1102" y="68" class="hs-q" text-anchor="middle">Oct</text>
+<line x1="220" y1="264" x2="1180" y2="264" class="hs-rail"/>
+<text x="12" y="237" class="hf-lane" text-anchor="start">Interactive harnesses</text>
+<text x="12" y="257" class="hc-small" text-anchor="start">terminal / app surfaces</text>
+<line x1="220" y1="468" x2="1180" y2="468" class="hs-rail"/>
+<text x="12" y="441" class="hf-lane" text-anchor="start">Programmable harnesses</text>
+<text x="12" y="461" class="hc-small" text-anchor="start">assembled loops and delegation</text>
+<line x1="220" y1="607" x2="1180" y2="607" class="hs-rail"/>
+<text x="12" y="580" class="hf-lane" text-anchor="start">Managed harnesses</text>
+<text x="12" y="600" class="hc-small" text-anchor="start">hosted execution systems</text>
+<g class="hs-node"><path d="M283,264 V252 H283 V245" class="hs-stem"/>
+<circle cx="283" cy="264" r="3.5" class="hs-dot"/>
+<rect x="210" y="180" width="185" height="65" rx="5" class="hs-tag"/>
+<text x="220" y="201" class="hf-name" text-anchor="start">Claude Code</text>
+<text x="220" y="220" class="hf-meta" text-anchor="start">2025-02 · research preview</text>
+<text x="220" y="237" class="hf-meta" text-anchor="start">edit, execute, verify</text>
+</g>
+<g class="hs-node"><path d="M367,264 V252 H402 V165" class="hs-stem"/>
+<circle cx="367" cy="264" r="3.5" class="hs-dot"/>
+<rect x="300" y="100" width="185" height="65" rx="5" class="hs-tag"/>
+<text x="310" y="121" class="hf-name" text-anchor="start">Codex CLI</text>
+<text x="310" y="140" class="hf-meta" text-anchor="start">2025-04 · open-source</text>
+<text x="310" y="157" class="hf-meta" text-anchor="start">repository tool loop</text>
+</g>
+<g class="hs-node"><path d="M409,264 V252 H422 V245" class="hs-stem"/>
+<circle cx="409" cy="264" r="3.5" class="hs-dot"/>
+<rect x="410" y="180" width="190" height="65" rx="5" class="hs-tag"/>
+<text x="420" y="201" class="hf-name" text-anchor="start">OpenCode</text>
+<text x="420" y="220" class="hf-meta" text-anchor="start">2025-05 · early public project</text>
+<text x="420" y="237" class="hf-meta" text-anchor="start">choose the model provider</text>
+</g>
+<g class="hs-node"><path d="M451,264 V252 H610 V165" class="hs-stem"/>
+<circle cx="451" cy="264" r="3.5" class="hs-dot"/>
+<rect x="510" y="100" width="190" height="65" rx="5" class="hs-tag"/>
+<text x="520" y="121" class="hf-name" text-anchor="start">Gemini CLI</text>
+<text x="520" y="140" class="hf-meta" text-anchor="start">2025-06 · open-source</text>
+<text x="520" y="157" class="hf-meta" text-anchor="start">terminal tools in the loop</text>
+</g>
+<g class="hs-node"><path d="M745,264 V252 H745 V245" class="hs-stem"/>
+<circle cx="745" cy="264" r="3.5" class="hs-dot"/>
+<rect x="720" y="180" width="220" height="65" rx="5" class="hs-tag"/>
+<text x="730" y="201" class="hf-name" text-anchor="start">Codex harness</text>
+<text x="730" y="220" class="hf-meta" text-anchor="start">2026-01 · engineering account</text>
+<text x="730" y="237" class="hf-meta" text-anchor="start">prompt → model → tools → repeat</text>
+</g>
+<g class="hs-node"><path d="M493,468 V382 H493 V375" class="hs-stem"/>
+<circle cx="493" cy="468" r="3.5" class="hs-dot"/>
+<rect x="425" y="310" width="205" height="65" rx="5" class="hs-tag"/>
+<text x="435" y="331" class="hf-name" text-anchor="start">DeepAgents</text>
+<text x="435" y="350" class="hf-meta" text-anchor="start">2025-07 · introduction</text>
+<text x="435" y="367" class="hf-meta" text-anchor="start">planning, files, delegation</text>
+</g>
+<g class="hs-node"><path d="M661,468 V382 H661 V375" class="hs-stem"/>
+<circle cx="661" cy="468" r="3.5" class="hs-dot"/>
+<rect x="635" y="310" width="235" height="65" rx="5" class="hs-tag"/>
+<text x="645" y="331" class="hf-name" text-anchor="start">Claude Agent SDK</text>
+<text x="645" y="350" class="hf-meta" text-anchor="start">2025-11 · long-running harness design</text>
+<text x="645" y="367" class="hf-meta" text-anchor="start">progress artifacts across sessions</text>
+</g>
+<g class="hs-node"><path d="M787,468 V462 H787 V455" class="hs-stem"/>
+<circle cx="787" cy="468" r="3.5" class="hs-dot"/>
+<rect x="720" y="390" width="220" height="65" rx="5" class="hs-tag"/>
+<text x="730" y="411" class="hf-name" text-anchor="start">DeepAgents</text>
+<text x="730" y="430" class="hf-meta" text-anchor="start">2026-02 · harness engineering</text>
+<text x="730" y="447" class="hf-meta" text-anchor="start">verification + loop-detection hooks</text>
+</g>
+<g class="hs-node"><path d="M1081,468 V458 H947 V375" class="hs-stem"/>
+<circle cx="1081" cy="468" r="3.5" class="hs-dot"/>
+<rect x="935" y="310" width="245" height="65" rx="5" class="hs-tag"/>
+<text x="945" y="331" class="hf-name" text-anchor="start">DeerFlow 2.1</text>
+<text x="945" y="350" class="hf-meta" text-anchor="start">2026-09 · release</text>
+<text x="945" y="367" class="hf-meta" text-anchor="start">durable delegation and memory</text>
+</g>
+<g class="hs-node"><path d="M1123,468 V462 H1123 V455" class="hs-stem"/>
+<circle cx="1123" cy="468" r="3.5" class="hs-dot"/>
+<rect x="955" y="390" width="225" height="65" rx="5" class="hs-tag"/>
+<text x="965" y="411" class="hf-name" text-anchor="start">DeepAgents</text>
+<text x="965" y="430" class="hf-meta" text-anchor="start">2026-10 · skills update</text>
+<text x="965" y="447" class="hf-meta" text-anchor="start">load skills and tools on demand</text>
+</g>
+<g class="hs-node"><path d="M871,607 V597 H871 V590" class="hs-stem"/>
+<circle cx="871" cy="607" r="3.5" class="hs-dot"/>
+<rect x="715" y="525" width="245" height="65" rx="5" class="hs-tag"/>
+<text x="725" y="546" class="hf-name" text-anchor="start">Claude Managed Agents</text>
+<text x="725" y="565" class="hf-meta" text-anchor="start">2026-04 · architecture account</text>
+<text x="725" y="582" class="hf-meta" text-anchor="start">separate harness, session, sandbox</text>
+</g>
+<g class="hs-node"><path d="M1081,607 V597 H1081 V590" class="hs-stem"/>
+<circle cx="1081" cy="607" r="3.5" class="hs-dot"/>
+<rect x="975" y="525" width="205" height="65" rx="5" class="hs-tag"/>
+<text x="985" y="546" class="hf-name" text-anchor="start">OpenAI Agents API</text>
+<text x="985" y="565" class="hf-meta" text-anchor="start">2026-09 · public beta</text>
+<text x="985" y="582" class="hf-meta" text-anchor="start">managed Codex harness</text>
+</g>
+</svg></div><figcaption>Twelve selected harness milestones. Delivery forms overlap: a CLI can expose subagents, and an SDK can expose a complete harness. Dates mark the named release or engineering account, not necessarily the first launch; lines do not imply product ancestry.</figcaption></figure>
+      <details class="hs-details"><summary>Milestone dates and primary sources</summary><div class="table-scroll" tabindex="0"><table class="compare-table hs-source-table"><caption>12 developments in runnable harnesses</caption><thead><tr><th scope="col">Date</th><th scope="col">Harness</th><th scope="col">Milestone</th><th scope="col">Mechanism</th></tr></thead><tbody><tr><td><time datetime="2025-02-24">2025-02-24</time></td><th scope="row"><a href="https://www.anthropic.com/news/claude-3-7-sonnet">Claude Code</a></th><td>research preview</td><td>edit, execute, verify</td></tr><tr><td><time datetime="2025-04-16">2025-04-16</time></td><th scope="row"><a href="https://openai.com/index/introducing-o3-and-o4-mini/">Codex CLI</a></th><td>open-source launch</td><td>repository tool loop</td></tr><tr><td><time datetime="2025-05">2025-05</time></td><th scope="row"><a href="https://github.com/anomalyco/opencode">OpenCode</a></th><td>early public project</td><td>choose the model provider</td></tr><tr><td><time datetime="2025-06-25">2025-06-25</time></td><th scope="row"><a href="https://blog.google/innovation-and-ai/technology/developers-tools/introducing-gemini-cli-open-source-ai-agent/">Gemini CLI</a></th><td>open-source launch</td><td>terminal tools in the loop</td></tr><tr><td><time datetime="2025-07-30">2025-07-30</time></td><th scope="row"><a href="https://www.langchain.com/blog/deep-agents">DeepAgents</a></th><td>introduction</td><td>planning, files, delegation</td></tr><tr><td><time datetime="2025-11-26">2025-11-26</time></td><th scope="row"><a href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents">Claude Agent SDK</a></th><td>long-running harness design</td><td>progress artifacts across sessions</td></tr><tr><td><time datetime="2026-01-23">2026-01-23</time></td><th scope="row"><a href="https://openai.com/index/unrolling-the-codex-agent-loop/">Codex harness</a></th><td>engineering account</td><td>prompt → model → tools → repeat</td></tr><tr><td><time datetime="2026-02-17">2026-02-17</time></td><th scope="row"><a href="https://www.langchain.com/blog/improving-deep-agents-with-harness-engineering">DeepAgents</a></th><td>harness engineering</td><td>verification + loop-detection hooks</td></tr><tr><td><time datetime="2026-04-08">2026-04-08</time></td><th scope="row"><a href="https://www.anthropic.com/engineering/managed-agents">Claude Managed Agents</a></th><td>architecture account</td><td>separate harness, session, sandbox</td></tr><tr><td><time datetime="2026-09-10">2026-09-10</time></td><th scope="row"><a href="https://openai.com/index/introducing-the-agents-api/">OpenAI Agents API</a></th><td>public beta</td><td>managed Codex harness</td></tr><tr><td><time datetime="2026-09-24">2026-09-24</time></td><th scope="row"><a href="https://github.com/bytedance/deer-flow/discussions/5832">DeerFlow 2.1</a></th><td>release</td><td>durable delegation and memory</td></tr><tr><td><time datetime="2026-10-07">2026-10-07</time></td><th scope="row"><a href="https://www.langchain.com/blog/revamping-skills-in-deep-agents">DeepAgents</a></th><td>skills update</td><td>load skills and tools on demand</td></tr></tbody></table></div></details><h3 class="harness-subtitle">What belongs to the harness — and what surrounds it</h3>
+      <figure class="hs-composition"><div class="diagram-scroll" tabindex="0"><svg viewBox="0 0 1100 514" role="img" aria-labelledby="hc-title hc-desc">
+<title id="hc-title">Harness systems and their surrounding ecosystem</title>
+<desc id="hc-desc">Compare the executable harness at the center. Delivery workflows launch it; frameworks help construct it; tools and sandboxes support it; external evaluators judge its outputs. Internal verification remains part of the harness.</desc>
 <defs><marker id="hc-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="hc-ah"/></marker></defs>
-<text x="8" y="34" class="hc-label" text-anchor="start">Single-agent loop</text>
-<text x="8" y="55" class="hc-small" text-anchor="start">one agent’s execution</text>
-<rect x="250" y="18" width="150" height="32" rx="4" class="hc-box"/>
-<text x="325.0" y="39" class="hc-text" text-anchor="middle">Model</text>
-<rect x="480" y="18" width="150" height="32" rx="4" class="hc-box"/>
-<text x="555.0" y="39" class="hc-text" text-anchor="middle">Tools</text>
-<line x1="407" y1="34" x2="473" y2="34" class="hc-line" marker-end="url(#hc-arrow)" marker-start="url(#hc-arrow)"/>
-<text x="674" y="38" class="hc-small" text-anchor="start">Claude Code · OpenCode · Codex · Gemini CLI</text>
-<text x="8" y="126" class="hc-label" text-anchor="start">Multi-agent orchestration</text>
-<text x="8" y="147" class="hc-small" text-anchor="start">several coordinated loops</text>
-<rect x="250" y="110" width="150" height="32" rx="4" class="hc-box"/>
-<text x="325.0" y="131" class="hc-text" text-anchor="middle">Coordinator</text>
-<rect x="475" y="76" width="150" height="32" rx="4" class="hc-box"/>
-<text x="550.0" y="97" class="hc-text" text-anchor="middle">Agent loop A</text>
-<rect x="475" y="120" width="150" height="32" rx="4" class="hc-box"/>
-<text x="550.0" y="141" class="hc-text" text-anchor="middle">Agent loop B</text>
-<rect x="700" y="98" width="150" height="32" rx="4" class="hc-box"/>
-<text x="775.0" y="119" class="hc-text" text-anchor="middle">Combine results</text>
-<line x1="406" y1="122" x2="468" y2="92" class="hc-line" marker-end="url(#hc-arrow)"/>
-<line x1="406" y1="131" x2="468" y2="136" class="hc-line" marker-end="url(#hc-arrow)"/>
-<line x1="631" y1="92" x2="693" y2="109" class="hc-line" marker-end="url(#hc-arrow)"/>
-<line x1="631" y1="136" x2="693" y2="120" class="hc-line" marker-end="url(#hc-arrow)"/>
-<text x="882" y="113" class="hc-small" text-anchor="start">DeepAgents · DeerFlow</text>
-<text x="882" y="133" class="hc-small" text-anchor="start">LangGraph</text>
-<text x="8" y="218" class="hc-label" text-anchor="start">Full lifecycle pipeline</text>
-<text x="8" y="239" class="hc-small" text-anchor="start">task through delivery</text>
-<rect x="250" y="201" width="140" height="32" rx="4" class="hc-box"/>
-<text x="320.0" y="222" class="hc-text" text-anchor="middle">Task / issue</text>
-<rect x="420" y="201" width="140" height="32" rx="4" class="hc-box"/>
-<text x="490.0" y="222" class="hc-text" text-anchor="middle">Implement</text>
-<rect x="590" y="201" width="140" height="32" rx="4" class="hc-box"/>
-<text x="660.0" y="222" class="hc-text" text-anchor="middle">Check</text>
-<rect x="760" y="201" width="140" height="32" rx="4" class="hc-box"/>
-<text x="830.0" y="222" class="hc-text" text-anchor="middle">Review</text>
-<rect x="930" y="201" width="140" height="32" rx="4" class="hc-box"/>
-<text x="1000.0" y="222" class="hc-text" text-anchor="middle">Deliver</text>
-<line x1="395" y1="217" x2="415" y2="217" class="hc-line" marker-end="url(#hc-arrow)"/>
-<line x1="565" y1="217" x2="585" y2="217" class="hc-line" marker-end="url(#hc-arrow)"/>
-<line x1="735" y1="217" x2="755" y2="217" class="hc-line" marker-end="url(#hc-arrow)"/>
-<line x1="905" y1="217" x2="925" y2="217" class="hc-line" marker-end="url(#hc-arrow)"/>
-<text x="252" y="258" class="hc-small" text-anchor="start">Vibe Kanban · GitHub Agentic Workflows · Symphony</text>
-<text x="1070" y="258" class="hc-small" text-anchor="end">Checks and review can return work for revision</text>
-<rect x="8" y="280" width="1070" height="56" rx="5" class="hc-support"/>
-<text x="24" y="303" class="hc-label" text-anchor="start">Shared infrastructure</text>
-<text x="24" y="323" class="hc-small" text-anchor="start">Execution / sandbox · tools / protocols · context / memory · tracing · evaluation · governance</text>
-</svg></div><figcaption>These are three composition scales. Shared infrastructure supports each scale; a product can participate at more than one. Based on the survey’s system taxonomy (section 6, Figure 9 and Table 2). <a href="https://picrew.github.io/LLM-Harness/main.pdf">Read the survey (PDF)</a></figcaption></figure>
+<rect x="230" y="8" width="650" height="65" rx="5" class="hc-support"/>
+<text x="246" y="31" class="hc-label" text-anchor="start">Outer delivery workflow</text>
+<text x="246" y="53" class="hc-small" text-anchor="start">Issue → invoke harness → review → deliver</text>
+<text x="880" y="95" class="hc-small" text-anchor="end">e.g. Symphony · GitHub Agentic Workflows</text>
+<line x1="555" y1="75" x2="555" y2="112" class="hc-line" marker-end="url(#hc-arrow)"/>
+<rect x="230" y="120" width="650" height="220" rx="5" class="hc-box"/>
+<text x="246" y="145" class="hc-label" text-anchor="start">Runnable Agent Harness — the comparison unit</text>
+<text x="246" y="168" class="hc-small" text-anchor="start">Claude Code · Codex · OpenCode · Gemini CLI</text>
+<text x="246" y="188" class="hc-small" text-anchor="start">DeepAgents · Claude Agent SDK · DeerFlow · DeepSeek Harness</text>
+<text x="246" y="208" class="hc-small" text-anchor="start">Managed: Claude Managed Agents · OpenAI Agents API</text>
+<rect x="8" y="197" width="157" height="72" rx="5" class="hc-box"/>
+<text x="23" y="222" class="hc-label" text-anchor="start">Model</text>
+<text x="23" y="244" class="hc-small" text-anchor="start">reasoning / generation</text>
+<line x1="166" y1="230" x2="226" y2="230" class="hc-line" marker-end="url(#hc-arrow)"/>
+<rect x="925" y="164" width="167" height="113" rx="5" class="hc-support"/>
+<text x="940" y="188" class="hc-label" text-anchor="start">Execution support</text>
+<text x="940" y="211" class="hc-small" text-anchor="start">Tools · MCP / A2A</text>
+<text x="940" y="233" class="hc-small" text-anchor="start">Sandbox · services</text>
+<text x="940" y="255" class="hc-small" text-anchor="start">Traces / telemetry</text>
+<line x1="883" y1="221" x2="920" y2="221" class="hc-line" marker-end="url(#hc-arrow)"/>
+<rect x="247" y="225" width="190" height="36" rx="5" class="hc-support"/>
+<text x="342" y="248" class="hc-small" text-anchor="middle">Loop / stop</text>
+<rect x="452" y="225" width="190" height="36" rx="5" class="hc-support"/>
+<text x="547" y="248" class="hc-small" text-anchor="middle">Tools / actions</text>
+<rect x="657" y="225" width="190" height="36" rx="5" class="hc-support"/>
+<text x="752" y="248" class="hc-small" text-anchor="middle">Context / memory</text>
+<rect x="247" y="273" width="190" height="36" rx="5" class="hc-support"/>
+<text x="342" y="296" class="hc-small" text-anchor="middle">State / recovery</text>
+<rect x="452" y="273" width="190" height="36" rx="5" class="hc-support"/>
+<text x="547" y="296" class="hc-small" text-anchor="middle">Delegation</text>
+<rect x="657" y="273" width="190" height="36" rx="5" class="hc-support"/>
+<text x="752" y="296" class="hc-small" text-anchor="middle">Verify / permissions</text>
+<rect x="8" y="387" width="370" height="103" rx="5" class="hc-support"/>
+<text x="23" y="412" class="hc-label" text-anchor="start">Construction frameworks and runtimes</text>
+<text x="23" y="436" class="hc-small" text-anchor="start">LangGraph · agent construction frameworks</text>
+<text x="23" y="460" class="hc-small" text-anchor="start">Configure a concrete runnable harness</text>
+<line x1="370" y1="386" x2="435" y2="343" class="hc-line" marker-end="url(#hc-arrow)"/>
+<rect x="690" y="387" width="402" height="103" rx="5" class="hc-support"/>
+<text x="705" y="412" class="hc-label" text-anchor="start">External evaluation</text>
+<text x="705" y="436" class="hc-small" text-anchor="start">Terminal-Bench: tasks / tests</text>
+<text x="705" y="460" class="hc-small" text-anchor="start">Harbor: run agents and score their outputs</text>
+<line x1="770" y1="343" x2="875" y2="382" class="hc-line" marker-end="url(#hc-arrow)"/>
+<text x="555" y="329" class="hc-small" text-anchor="middle">Internal checks guide execution; external graders measure it.</text>
+</svg></div><figcaption>The center is the running system being compared, not a list of model capabilities. Delivery orchestration, construction frameworks and external evaluation have distinct roles. A system can integrate several roles; SDK versus CLI is not the boundary. <a href="https://picrew.github.io/LLM-Harness/main.pdf">Survey: taxonomy (§2.3) and systems (§6)</a> · <a href="https://code.claude.com/docs/en/how-claude-code-works">Claude Code architecture</a> · <a href="https://github.com/deepseek-ai/DeepSeek-Harness">DeepSeek Harness</a></figcaption></figure>
     <section class="hs-catalogue" id="landscape" aria-labelledby="landscape-title">
       <div class="section-heading">
         <div>
           <p class="kicker">02.3 / Ecosystem catalogue</p>
-          <h3 id="landscape-title">The harness ecosystem</h3>
+          <h3 id="landscape-title">Harness implementations and extensions</h3>
         </div>
         <p class="lead">57 entries in five groups, as of 10 October 2026: complete products, libraries and SDKs, hosted services and adapters, research agents and extensions. Only some are complete harnesses; an extension has no loop of its own and runs inside a host. The Type column says which is which. The list is not exhaustive and implies no ranking; each name links to the maker’s repository or documentation.</p>
       </div>

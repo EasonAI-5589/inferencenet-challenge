@@ -182,3 +182,11 @@ html[data-theme="dark"] .hs-timeline{--hs-e:#eba57f;--hs-c:#93d093;--hs-v:#d2a5e
   .hs-timeline .hs-badge-t,.hs-timeline .hs-pill-t.is-now{fill:Canvas}
   .hs-timeline .hs-band{display:none}
 }
+
+/* Runnable-harness comparison: separate implementation from supporting ecosystem. */
+.hf-title{font-size:18px;font-weight:650}
+.hf-lane{font-size:14px;font-weight:650}
+.hf-name{font-size:14px;font-weight:650}
+.hf-meta{font-size:12px;fill:var(--soft)}
+
+.hs-timeline .hs-stem{fill:none}
