@@ -1087,6 +1087,7 @@
   "One run, and how a harness is improved": "一次运行，以及如何改进 Harness",
   "The Agent page follows one recorded DeepAgents run, call by call. The Self-evolving page explains how a harness is improved from outside and documents InferenceNet’s own development study.": "智能体页逐次调用地跟踪一次真实记录的 DeepAgents 运行。自进化页说明如何从外部改进 Harness，并记录 InferenceNet 自己的开发研究。",
   "Agent: one recorded run →": "Agent：一次运行记录 →",
+  "Agent: failure case study →": "Agent：失败案例 →",
   "Self-evolving: InferenceNet’s development study →": "自进化：InferenceNet 的开发研究 →",
   "Leaderboard: Model and Model + Harness →": "排行榜：模型与模型 + Harness →",
   "07 / Update · 12 Oct 2026": "07 / 更新 · 2026 年 10 月 12 日",
