@@ -4,6 +4,18 @@
 .harness-page .page-hero h1{max-width:900px}
 .harness-page .case-next h3{font-size:17px;margin-bottom:10px}
 
+/* 00 Development map: two research lanes across years, then the same milestones as a linked table. */
+.dev-map .f-grid{fill:none;stroke:var(--line);stroke-width:1;stroke-dasharray:3 4}
+.dev-map+.table-scroll{margin-top:30px}
+.dev-map-table{min-width:1040px}
+.dev-map-table td:first-child{white-space:nowrap}
+.dev-map-table th[scope="row"]{min-width:190px}
+.dev-map-table th[scope="row"] a{text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--muted)}
+.dev-map-table th[scope="row"] small{display:block;font-weight:400;margin-top:2px}
+.dev-map-table td:nth-of-type(2){white-space:nowrap}
+.dev-map-table td:nth-of-type(3){min-width:200px}
+.dev-map-table td:last-child{min-width:340px}
+
 /* 01 Definition: prose under the figure, eight slots, boundary and layers. */
 .harness-prose{max-width:860px;margin-top:30px}
 .harness-prose p{font-size:15px;line-height:1.8;color:var(--soft);margin:0}
@@ -70,6 +82,21 @@
 .harness-compare{min-width:900px}
 .harness-compare th[scope="row"]{min-width:140px}
 .harness-compare td{min-width:180px}
+
+/* 06 In InferenceNet: four current configurations, their evidence scope, then the historical wiring. */
+.harness-page #configurations,.harness-page #historical-wiring{scroll-margin-top:calc(var(--header-h) + 58px)}
+.harness-page #configurations{margin-top:0}
+.config-intro{max-width:860px;margin:0 0 22px;font-size:15px;line-height:1.8;color:var(--soft)}
+.config-cards{margin-bottom:30px}
+.config-cards .card{padding:20px}
+.harness-page .config-cards .card h4{font-size:17px;line-height:1.35;letter-spacing:-.015em}
+.config-version{font-family:var(--mono);font-size:12px;font-weight:400;color:var(--muted);margin-left:6px;white-space:nowrap}
+.config-cards .card p{font-size:13.5px;line-height:1.7}
+.config-cards .card p strong{color:var(--ink);font-weight:600}
+.config-scope{min-width:880px}
+.config-scope td:last-child{min-width:280px}
+.config-notes{max-width:900px}
+.config-links{flex-direction:row;flex-wrap:wrap;gap:8px 28px;margin-top:20px}
 .harness-evo-note{max-width:860px;margin:24px 0 0;font-size:15px;line-height:1.8;color:var(--soft)}
 .harness-evo-note a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--muted)}
 
@@ -87,7 +114,7 @@
   .landscape-strip .stat:nth-child(even){padding-right:0}
   .landscape-strip .stat:last-child{grid-column:1/-1}
   .harness-page .harness-tabs .case-head h3{font-size:21px}
-  .harness-deep{scroll-margin-top:calc(var(--header-h) + 16px)}
+  .harness-deep,.harness-page #configurations,.harness-page #historical-wiring{scroll-margin-top:calc(var(--header-h) + 16px)}
 }
 @media(max-width:520px){
   .harness-page .field-groups.slots,.landscape-types{grid-template-columns:minmax(0,1fr)}
