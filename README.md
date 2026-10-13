@@ -42,13 +42,13 @@ When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
 All seven pages load `site.css` and `site.js` with release tag
 `20261011-release`, and `language.js` with the same tag on every page except
-Harness, which uses `20261013-harness-systems` for its updated dictionary. Home and Leaderboard also load `leaderboard.css` and
+Harness, which uses `20261013-industry-map` for its updated dictionary. Home and Leaderboard also load `leaderboard.css` and
 `leaderboard.js` with it (the script imports `leaderboard-data.js` with the same
 tag), and Home loads `index.css` with it. Self-evolving CSS uses
-`20261011-evolution`; Harness loads the same file with `20261013-harness-systems`,
+`20261011-evolution`; Harness loads the same file with `20261013-industry-map`,
 and Self-evolving JS keeps
 `20261010-evolution-r2`. Agent CSS keeps `20260917-case-data`, Teams CSS
-`20260921-yujie-leader` and Harness CSS `20261013-harness-systems`; the results JSON
+`20260921-yujie-leader` and Harness CSS `20261013-industry-map`; the results JSON
 stays on `20260917-harness`. Strings shared by several pages, such as the
 reading-route labels and the scroll hints, live in the common dictionary in
 `language.js`.
@@ -259,33 +259,20 @@ results the model does not see during a run.
 
 ## Harness: definition, ecosystem and breakdowns
 
-A reading box right after the subnav offers a Quick read (systems map,
-definition, comparison, InferenceNet) and a Full route (every section in order,
-including the full DeepAgents three-layer structure and its historical InferenceNet
-wiring); nothing is folded.
-`site.js` adds a short "Scroll sideways…" hint under any wide figure or table while
-it overflows on a narrow screen, and removes it when the content fits; the
-leaderboard keeps its own note.
+The reading order is Definition → Industry systems → Breakdowns → Compare →
+Self-evolution → InferenceNet → Update → Sources. The definition appears first,
+with a direct industry-map link and optional expanded terminology/boundaries.
 
-Section 00, "Harness systems, 2025–2026" (`harness.html#development`), comes
-first. An HTML/CSS pipeline shows a run: task and context, then the harness loop
-(model decides, tools execute, observations return), then result and
-verification. In-run checks may return feedback to the loop; final benchmark
-scoring stays outside it. It also shows two supporting
-layers (context, skills and memory; sandbox, tracing and permissions), with layer
-names after Li et al., "Agent Harness Engineering: A Survey" (linked). The
-pipeline is a conceptual map, not a claim about every Dev100 configuration.
-Below it, two connected panels, 2025 foundations and 2026 runtime developments,
-hold eight dated, linked systems. Each card has a pipeline role chip (loop runtime,
-loop framework, loop and context, hosted loop, context and tools, sessions and
-sandbox): Claude Code, OpenAI Agents SDK, DeepAgents and the Claude Agent SDK
-(2025); Claude Managed Agents, the OpenAI Agents API, DeepSeek Harness 0.1.5rc1
-(dated by its release tag) and the Deep Agents skills update (2026). Exactly four
-cards carry "Used in Dev100", and a four-item strip links them to
-`#configurations` with their roles and versions. Claude Code, Managed Agents,
-the Agents API and the skills update are context, not configurations. Each
-panel is a two-by-two card grid, and an arrow joins 2025 to 2026. At 1100px and
-below the panels stack, with one card per row at 520px.
+Section 02 (`harness.html#development`) contains an inline SVG industry timeline
+covering 18 selected milestones in 2025–2026, with 2026 emphasized. It separates
+single-agent loops, multi-agent orchestration, full lifecycle pipelines, and their
+shared infrastructure. Dates refer to specific releases, papers or announcements,
+not uniformly to project creation. A collapsible primary-source table records
+the milestone type and exact available date. A second diagram shows the three
+composition scales, including task → implementation → checks → review → delivery.
+The 57-entry ecosystem catalogue remains inside this industry section with all
+existing tab IDs and the `#landscape` link preserved. InferenceNet configurations
+stay in section 06. Small screens can scroll wide figures horizontally.
 
 The Harness page defines a harness, the software that runs a model as an agent,
 and separates it from the model, agent, SDK, environment and evaluator; it lists
@@ -346,7 +333,7 @@ When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
 All seven pages load `site.css` with release tag `20261011-release`. Data,
 Agent, Harness, Self-evolving and Teams also load `site.js` with it, and all but
-Harness load `language.js` with it (Harness uses `20261013-harness-systems`), and Home loads `site.js` and `index.css` with it. Leaderboard loads
+Harness load `language.js` with it (Harness uses `20261013-industry-map`), and Home loads `site.js` and `index.css` with it. Leaderboard loads
 `site.js`, `leaderboard.css`, `leaderboard.js` and `leaderboard-dev100.js`
 with `20261012-dual-board`; Home loads `leaderboard.css` and `leaderboard.js`
 with it. Home and Leaderboard load `language.js` with `20261012-dev100-first`,
@@ -354,10 +341,10 @@ the tag of their dictionaries since the Dev100-first reordering. Both board
 scripts import `leaderboard-board.js` (and the dev script imports
 `leaderboard-dev100-data.js`) with `20261012-dual-board`; the unchanged
 `leaderboard-data.js` is imported with `20261011-release`. Self-evolving CSS uses
-`20261011-evolution`; Harness loads the same file with `20261013-harness-systems`,
+`20261011-evolution`; Harness loads the same file with `20261013-industry-map`,
 and Self-evolving JS keeps
 `20261010-evolution-r2`. Agent CSS keeps `20260917-case-data`, Teams CSS
-`20260921-yujie-leader` and Harness CSS `20261013-harness-systems`; the results JSON
+`20260921-yujie-leader` and Harness CSS `20261013-industry-map`; the results JSON
 stays on `20260917-harness`, and the Dev100 / v10 JSON uses
 `20261012-dual-board`. Strings shared by several pages, such as the
 reading-route labels and the scroll hints, live in the common dictionary in
