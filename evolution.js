@@ -238,3 +238,25 @@
     })
     .catch(() => { if (panelsBox) panelsBox.hidden = true; });
 })();
+
+/* Research map: method names link to rows of the collapsed sources table.
+ * Browsers reveal a closed <details> for a fragment target; this opens it
+ * first where they do not, for clicks and for deep links. */
+(() => {
+  const sources = document.querySelector('.se-map-sources');
+  if (!sources) return;
+  const reveal = (id, scroll) => {
+    let target = null;
+    try { target = id && document.getElementById(decodeURIComponent(id)); } catch { return; }
+    if (!target || !sources.contains(target) || sources.open) return;
+    sources.open = true;
+    if (scroll) target.scrollIntoView();
+  };
+  document.addEventListener('click', event => {
+    const link = event.target instanceof Element && event.target.closest('a[href^="#"]');
+    if (link) reveal(link.hash.slice(1), false);
+  });
+  const fromHash = () => reveal(window.location.hash.slice(1), true);
+  window.addEventListener('hashchange', fromHash);
+  fromHash();
+})();

@@ -25,7 +25,7 @@
 .landscape-types dt{font-weight:600;color:var(--ink)}
 .landscape-types dd{margin:2px 0 0;color:var(--soft)}
 .landscape-table td.landscape-type{white-space:nowrap;color:var(--ink)}
-.landscape-tabs .tablist [role="tab"]{flex:1 1 calc((100% - 4px) / 5)}
+.landscape-tabs .tablist [role="tab"]{flex:1 1 calc((100% - 3px) / 4)}
 .harness-page .landscape-title{font-size:17px;font-weight:600;line-height:1.4;margin:0 0 6px}
 .landscape-intro{font-size:14px;line-height:1.75;color:var(--soft);margin:0 0 18px;max-width:860px}
 .landscape-table{min-width:1120px}
@@ -190,3 +190,25 @@ html[data-theme="dark"] .hs-timeline{--hs-e:#eba57f;--hs-c:#93d093;--hs-v:#d2a5e
 .hf-meta{font-size:12px;fill:var(--soft)}
 
 .hs-timeline .hs-stem{fill:none}
+
+/* 02 Coverage of 13 Oct 2026: structure first, then timeline, mechanisms and catalogue. */
+.harness-page #architecture,.harness-page #timeline,.harness-page #mechanisms{scroll-margin-top:calc(var(--header-h) + 58px)}
+.hs-counts{margin-top:14px}
+.hc-core{stroke:var(--brand);stroke-width:1.5}
+.hc-branch{fill:var(--ink);font-size:12.5px;font-weight:650}
+.hc-note{fill:var(--muted)}
+.mechanism-table{min-width:1180px}
+.mechanism-table th[scope="row"]{min-width:150px;vertical-align:top}
+.mechanism-table td{min-width:150px;font-size:13px;line-height:1.6;vertical-align:top}
+.mech-name{display:block;font-weight:600;color:var(--ink)}
+.mech-basis,.mech-sources{display:block;font-size:11.5px;font-weight:400;line-height:1.5;color:var(--muted);margin-top:3px}
+.mech-sources a,.mechanism-notes a,.harness-page .layer-table a,.harness-page #compare .lead a,.harness-page #self-evolution .lead a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--muted)}
+.mechanism-notes{max-width:900px;margin-top:18px}
+.landscape-table td a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--muted)}
+@media(min-width:861px) and (max-width:1100px){
+  .landscape-strip{--cols-cap:4}
+  .landscape-strip .stat:last-child{grid-column:span 2}
+}
+@media(max-width:860px){
+  .harness-page #architecture,.harness-page #timeline,.harness-page #mechanisms{scroll-margin-top:calc(var(--header-h) + 16px)}
+}

@@ -24,13 +24,17 @@ Open `http://127.0.0.1:4193/` to preview. Create a branch for your changes and
 submit a pull request against `main`; include the affected page links and a
 screenshot for visual changes.
 
+Development and acceptance target the desktop website. As requested on
+13 October 2026, mobile adaptation and mobile testing are outside the scope
+of future updates unless explicitly requested again.
+
 | Page or layer | Files |
 |---|---|
 | Home, research overview and resources | `index.html`, `index.css` |
 | Dataset distributions and examples | `data.html`, `data.css` |
 | Agent case and evaluation | `agent.html`, `agent.css` |
-| Harness: definition, runnable systems map 2025–2026, ecosystem boundaries (57 entries by type), three breakdowns and InferenceNet’s four configurations | `harness.html`, `harness.css`; reuses `data.css`, `agent.css`, `evolution.css` |
-| Self-evolving: concept, methods, comparison and InferenceNet’s development study | `evolution.html`, `evolution.css`, `evolution.js`, `assets/data/modular-rsi-evolution.json` |
+| Harness: definition, system structure, selected 2025–2026 milestones, common mechanism comparison, catalogue by role, three breakdowns and InferenceNet’s four configurations | `harness.html`, `harness.css`; reuses `data.css`, `agent.css`, `evolution.css` |
+| Self-evolving: concept, research map by adaptation regime, method comparison, three detailed offline cases and InferenceNet’s development study | `evolution.html`, `evolution.css`, `evolution.js`, `assets/data/modular-rsi-evolution.json` |
 | Leaderboard and configuration filters | `leaderboard.html`, `leaderboard.css` |
 | Team, institutions and Yichen Guo contact | `teams.html`, `teams.css` |
 | Shared layout, navigation and theme | `styles.css`, `site.css`, `site.js`, `theme.js` |
@@ -42,13 +46,13 @@ When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
 All seven pages load `site.css` and `site.js` with release tag
 `20261011-release`, and `language.js` with the same tag on every page except
-Harness, which uses `20261013-harness-focus` for its updated dictionary. Home and Leaderboard also load `leaderboard.css` and
+Harness and Self-evolving, which use `20261013-coverage` for their updated dictionaries. Home and Leaderboard also load `leaderboard.css` and
 `leaderboard.js` with it (the script imports `leaderboard-data.js` with the same
 tag), and Home loads `index.css` with it. Self-evolving CSS uses
-`20261011-evolution`; Harness loads the same file with `20261013-harness-focus`,
-and Self-evolving JS keeps
-`20261010-evolution-r2`. Agent CSS keeps `20260917-case-data`, Teams CSS
-`20260921-yujie-leader` and Harness CSS `20261013-harness-focus`; the results JSON
+`20261013-coverage`; Harness loads the same file with `20261013-coverage`,
+and Self-evolving JS uses
+`20261013-coverage`. Agent CSS keeps `20260917-case-data`, Teams CSS
+`20260921-yujie-leader` and Harness CSS `20261013-coverage`; the results JSON
 stays on `20260917-harness`. Strings shared by several pages, such as the
 reading-route labels and the scroll hints, live in the common dictionary in
 `language.js`.
@@ -263,23 +267,22 @@ The reading order is Definition → Industry systems → Breakdowns → Compare 
 Self-evolution → InferenceNet → Update → Sources. The definition appears first,
 with a direct industry-map link and optional expanded terminology/boundaries.
 
-Section 02 (`harness.html#development`) contains an inline SVG industry timeline
-covering 18 selected milestones in 2025–2026, with 2026 emphasized. It separates
-single-agent loops, multi-agent orchestration, full lifecycle pipelines, and their
-shared infrastructure. Dates refer to specific releases, papers or announcements,
-not uniformly to project creation. A collapsible primary-source table records
-the milestone type and exact available date. A second diagram shows the three
-composition scales, including task → implementation → checks → review → delivery.
-The 57-entry ecosystem catalogue remains inside this industry section with all
-existing tab IDs and the `#landscape` link preserved. InferenceNet configurations
+Section 02 (`harness.html#development`) starts with an architecture map of runnable
+harnesses, systems that host or delegate to them, extensions and surrounding
+infrastructure. A curated 2025–2026 timeline follows, with 2026 emphasized.
+Dates refer to specific releases, papers or announcements, not uniformly to
+project creation; a collapsible primary-source table records the event type.
+A comparison at `#mechanisms` describes seven representative systems using the
+same six mechanism dimensions. The expanded catalogue remains in this section,
+with existing tab IDs and `#landscape` preserved. InferenceNet configurations
 stay in section 06. Small screens can scroll wide figures horizontally.
 
 The Harness page defines a harness, the software that runs a model as an agent,
 and separates it from the model, agent, SDK, environment and evaluator; it lists
-the eight things every harness decides. Its ecosystem section has 57 entries as
-of 10 October 2026 in five groups, each with a type (product harness, library
-harness, harness SDK, hosted harness, adapter, research agent or extension):
-only some are complete harnesses, and extensions have no loop of their own.
+the eight things every harness decides. Its catalogue was extended on 13 October
+2026 with general-purpose systems, platforms, runtime libraries and extensions.
+Entries retain their role labels: platforms can host other harnesses, while
+extensions depend on a host loop. Primary sources accompany the new entries.
 Three breakdowns share one template, each with an eight-slot figure, a
 module-by-module flow figure, a detail table, notes and a step timeline:
 DeepAgents 0.7.13 (a library harness, with its LangGraph and LangChain layers),
@@ -299,8 +302,9 @@ historical wiring of the first DeepAgents and DeepSeek Harness arms, a dated
 update and the sources, including market changes checked on 10 October 2026. The
 page reports no scores; it links to the Leaderboard for Dev100 v10 results.
 
-Section 07, "Update · 12 Oct 2026" (`harness.html#update`), is a dated follow-up
-that leaves the 57-entry map and the pinned breakdowns unchanged. Three tabs read
+Section 07, "Update · 12 Oct 2026" (`harness.html#update`), retains the dated
+research snapshot; the catalogue now incorporates some of those candidates.
+The pinned breakdowns remain unchanged. Three tabs read
 current maintainers' READMEs and named files: nine engineering projects placed by
 layer (execution harness, SDK and runtime, skills and method, orchestration and
 application), three tools that pair Codex with Claude Code (claudex-loop either
@@ -309,8 +313,9 @@ optimization methods (RRSI, RHO, Harness-R1 and WHALE, which also updates model
 weights; Meta-Harness and Self-Harness link to the Self-evolving page). Stars and
 forks are one snapshot from 12 Oct 2026, not measured performance; 23 search
 candidates are coverage, not new harnesses; nothing was installed, run or
-reproduced, and paper full texts were not read. Sources become section 08. A new harness is added as one more breakdown tab, one more comparison
-column and, if new, one more ecosystem row.
+reproduced in that snapshot, and paper full texts were not read for it. Sources
+remain section 08. New catalogue entries need a role and a primary source;
+mechanism comparisons and deeper breakdowns are curated separately.
 
 
 | Page or layer | Files |
@@ -318,8 +323,8 @@ column and, if new, one more ecosystem row.
 | Home, research overview and resources | `index.html`, `index.css` |
 | Dataset distributions and examples | `data.html`, `data.css` |
 | Agent case and evaluation | `agent.html`, `agent.css` |
-| Harness: definition, runnable systems map 2025–2026, ecosystem boundaries (57 entries by type), three breakdowns and InferenceNet’s four configurations | `harness.html`, `harness.css`; reuses `data.css`, `agent.css`, `evolution.css` |
-| Self-evolving: concept, methods, comparison and InferenceNet’s development study | `evolution.html`, `evolution.css`, `evolution.js`, `assets/data/modular-rsi-evolution.json` |
+| Harness: definition, system structure, selected 2025–2026 milestones, common mechanism comparison, catalogue by role, three breakdowns and InferenceNet’s four configurations | `harness.html`, `harness.css`; reuses `data.css`, `agent.css`, `evolution.css` |
+| Self-evolving: concept, research map by adaptation regime, method comparison, three detailed offline cases and InferenceNet’s development study | `evolution.html`, `evolution.css`, `evolution.js`, `assets/data/modular-rsi-evolution.json` |
 | Leaderboard: the Dev100 / v10 development release, then the Selected_1000 final target | `leaderboard.html`, `leaderboard.css` |
 | Team, institutions and Yichen Guo contact | `teams.html`, `teams.css` |
 | Shared layout, navigation and theme | `styles.css`, `site.css`, `site.js`, `theme.js` |
@@ -333,7 +338,7 @@ When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
 All seven pages load `site.css` with release tag `20261011-release`. Data,
 Agent, Harness, Self-evolving and Teams also load `site.js` with it, and all but
-Harness load `language.js` with it (Harness uses `20261013-harness-focus`), and Home loads `site.js` and `index.css` with it. Leaderboard loads
+Harness and Self-evolving load `language.js` with it (those two use `20261013-coverage`), and Home loads `site.js` and `index.css` with it. Leaderboard loads
 `site.js`, `leaderboard.css`, `leaderboard.js` and `leaderboard-dev100.js`
 with `20261012-dual-board`; Home loads `leaderboard.css` and `leaderboard.js`
 with it. Home and Leaderboard load `language.js` with `20261012-dev100-first`,
@@ -341,10 +346,10 @@ the tag of their dictionaries since the Dev100-first reordering. Both board
 scripts import `leaderboard-board.js` (and the dev script imports
 `leaderboard-dev100-data.js`) with `20261012-dual-board`; the unchanged
 `leaderboard-data.js` is imported with `20261011-release`. Self-evolving CSS uses
-`20261011-evolution`; Harness loads the same file with `20261013-harness-focus`,
-and Self-evolving JS keeps
-`20261010-evolution-r2`. Agent CSS keeps `20260917-case-data`, Teams CSS
-`20260921-yujie-leader` and Harness CSS `20261013-harness-focus`; the results JSON
+`20261013-coverage`; Harness loads the same file with `20261013-coverage`,
+and Self-evolving JS uses
+`20261013-coverage`. Agent CSS keeps `20260917-case-data`, Teams CSS
+`20260921-yujie-leader` and Harness CSS `20261013-coverage`; the results JSON
 stays on `20260917-harness`, and the Dev100 / v10 JSON uses
 `20261012-dual-board`. Strings shared by several pages, such as the
 reading-route labels and the scroll hints, live in the common dictionary in
