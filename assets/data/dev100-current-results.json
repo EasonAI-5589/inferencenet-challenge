@@ -7027,24 +7027,24 @@
       ],
       "models": [
         {
-          "id": "gpt56-sol",
-          "label": "GPT-5.6 Sol",
+          "id": "gpt56-sol-rsi-v2",
+          "label": "GPT-5.6 Sol + RSI v2",
           "recorded_name": "openai/gpt-5.6-sol"
         }
       ],
       "harnesses": [
         {
-          "id": "modular_rsi_v2",
-          "label": "ModularRSI v2",
-          "version": "v2-observation",
-          "version_scope": "frozen SDK",
-          "description": "Frozen ModularRSI v2 SDK based on DeepAgents 0.7.13, LangChain 1.4.0 and LangGraph 1.2.11."
+          "id": "deepagents",
+          "label": "DeepAgents",
+          "version": "0.7.13",
+          "version_scope": "new native slots",
+          "description": "LangChain deepagents 0.7.13, with langchain 1.4.0 and langgraph 1.2.11."
         }
       ],
       "runs": [
         {
-          "model": "gpt56-sol",
-          "harness": "modular_rsi_v2",
+          "model": "gpt56-sol-rsi-v2",
+          "harness": "deepagents",
           "denominator": 100,
           "complete": true,
           "outcomes": {
