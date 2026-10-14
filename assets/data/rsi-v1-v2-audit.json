@@ -1,0 +1,183 @@
+{
+  "schema_version": 2,
+  "audited_date": "2026-10-14",
+  "scope": "Development-set implementation and ablation; not an official leaderboard release.",
+  "v1": {
+    "run_id": "modrsi-real100-20261009-08",
+    "frozen_date": "2026-10-09",
+    "source_sha256": "17f138b9890d200ffa5b2d6a48e9e918dea32c0c1634852750f91c9e1b3308fb",
+    "changed_modules": ["agent_loop", "tool_use", "completion"],
+    "unchanged_modules": ["context", "observation"],
+    "sdk_source_edited": false,
+    "scores_used_for_selection": false,
+    "evidence_record": "study/parallel.frozen.json"
+  },
+  "v2": {
+    "source_commit": "32623d31f04c729d9921df8733a02719b19c2f41",
+    "source_url": "https://github.com/YTZSR/chatpilot_evaluator/blob/32623d31f04c729d9921df8733a02719b19c2f41/inferencenet/modular_rsi/releases/v2-observation/README.md",
+    "sdk_sha256": "fb40747b3819b4dc2d3adad921a5f9372b28f9c1daaf0cf51a18d76e7af5ae7c",
+    "pristine_sdk_sha256": "2f0c80c4f33c1432ea4b37716cae24a23e8dbd1fe0234c51e059782f7890d28e",
+    "native_seed_sha256": "c04642b878a7e6a14a9beefa90b2d9b4e7de43f86bc91d05873071cecc824caf",
+    "native_seed_is_evolution_result": false,
+    "evolved_function": "langgraph/prebuilt/tool_node.py:ToolNode._normalize_tool_response",
+    "selection_kind": "user_selected_frozen_experimental_release",
+    "behavior": "Preserve genuine Python feedback and append sample-and-inference audit guidance; no automatic statistical diagnostic computation.",
+    "search": {
+      "solver_analyst_editor": "openai/gpt-5.6-sol",
+      "reviewer": "z-ai/glm-5.3-prime",
+      "proposal_task_count": 80,
+      "reused_validation_task_count": 20,
+      "rollouts_per_task": 3,
+      "denominator": 300,
+      "native_seed": {"strict": 183, "valid_submission": 291, "direction": 284},
+      "observation": {"strict": 191, "valid_submission": 289, "direction": 282},
+      "run_id": "native-rsi-sol-observation-dev100-20261013-recovery01",
+      "candidate_record": "epochs/001/observation/",
+      "interpretation": "Repeated development selection, not an independent held-out test. The selected observation candidate was frozen before the fresh paired evaluation."
+    }
+  },
+  "fresh_ablation": {
+    "run_id": "sol-clean-three-harness-dev100-20261013-01",
+    "summary_record": "comparison-summary-with-uncertainty.json",
+    "protocol_sha256": "7007f69cda4f575ee4ad413f28fd7404cbc7c408649241bed04ca167e8772d03",
+    "dataset_revision": "59f9512a38e594528807744214a60ee00367434e",
+    "split": "development",
+    "model": "openai/gpt-5.6-sol",
+    "route": "OpenRouter Chat Completions streaming",
+    "reasoning_effort": null,
+    "reasoning_interpretation": "Not explicitly specified, not evidence of disabled reasoning.",
+    "task_count": 100,
+    "attempts_per_task_per_arm": 1,
+    "historical_predictions_imported": false,
+    "limits": {"model_calls": 6, "tool_calls": 4, "output_tokens": 32768, "wall_seconds": 1800, "tool_timeout_seconds": 90},
+    "sandbox": "baidu-bwrap-v1",
+    "sdk_versions": {"deepagents": "0.7.13", "langchain": "1.4.0", "langchain-core": "1.6.2", "langgraph": "1.2.11", "langgraph-prebuilt": "1.1.0"},
+    "scoring_profile": "local-paper-v1",
+    "strict_definition": "Coefficient and standard-error relative errors <= 0.01 and p-value absolute error <= 0.01.",
+    "arms": {
+      "deepagents_pristine": {
+        "attempts_finished": 100, "scored_count": 95, "failed": 5, "uncertain": 0,
+        "strict": 59, "local_partial": 64, "direction": 92, "local_significance": 79,
+        "actual_usage": {"model_calls": 456, "tool_calls": 321, "input_tokens": 2274572, "output_tokens": 256754},
+        "final_report": "deepagents_pristine/single.final-report.json"
+      },
+      "observation_v2": {
+        "attempts_finished": 100, "scored_count": 99, "failed": 1, "uncertain": 0,
+        "strict": 65, "local_partial": 68, "direction": 96, "local_significance": 80,
+        "actual_usage": {"model_calls": 458, "tool_calls": 358, "input_tokens": 2460927, "output_tokens": 299889},
+        "final_report": "observation_v2/single.final-report.json"
+      }
+    },
+    "paired_strict": {"gains": 10, "losses": 4, "net_gain": 6, "gains_among_both_scored": 8, "gains_from_previously_unscored": 2},
+    "intermediate_seed_uncertain_task_count": 1,
+    "interpretation": "Whole frozen v2 versus pristine SDK, not observation-only causal attribution. Single-repeat development evidence, not a significance or generalization claim."
+  },
+  "latest_ablation": {
+    "run_id": "sol-responses-high-dev100-20261014-01",
+    "status": "completed",
+    "completed_utc": "2026-10-14T04:17:23.052148+00:00",
+    "source_commit": "078693165dbb234373674068990186d358e875cb",
+    "summary_record": "comparison-summary.json",
+    "paired_record": "paired-task-comparison.json",
+    "protocol_sha256": "9e99e919f77e3a3528400366008fd213ea14b7a907308740b8f9a6ae1977d7e3",
+    "artifact_sha256": {
+      "comparison-summary.json": "8161c65589d5ae99e0449f292e00f046eec2645917d6ed75c2d5f4d5aad4183e",
+      "paired-task-comparison.json": "b0b496de52c59b13c768c27aedb7675761a9d952aa6ec05505f44ed707a66cc1",
+      "deepagents_pristine/single.final-report.json": "2f31644e87600e90848baf2afd4d7c51bd6eea36d3af9a7f0b88c143880377ef",
+      "observation_v2/single.final-report.json": "a40bffb09ece32fc25d652c97e2fc243f94b1ee13942d8338fb3dc9dfd4ad789",
+      "protocol.json": "9e99e919f77e3a3528400366008fd213ea14b7a907308740b8f9a6ae1977d7e3",
+      "experiment-differences.json": "41165a07ac1f3fbbfc4e47df0811ef5cfc2f99d1c225e640f8c445c7a4d69edc"
+    },
+    "dataset_revision": "59f9512a38e594528807744214a60ee00367434e",
+    "split": "development",
+    "model": "openai/gpt-5.6-sol",
+    "route": "OpenRouter Responses, non-streaming",
+    "provider_profile": "openrouter-gpt56-sol-responses-high-v1",
+    "api": "Responses",
+    "stream": false,
+    "reasoning_effort": "high",
+    "store": false,
+    "use_previous_response_id": false,
+    "include": ["reasoning.encrypted_content"],
+    "provider_require_parameters": true,
+    "exact_upstream_provider": "unknown",
+    "task_count": 100,
+    "attempts_per_task_per_arm": 1,
+    "historical_predictions_imported": false,
+    "ordinary_failures_retried": false,
+    "transport_failures_retried": false,
+    "heldout_generalization_claimed": false,
+    "limits": {"model_calls": 6, "tool_calls": 4, "output_tokens": 32768, "wall_seconds": 1800, "tool_timeout_seconds": 90},
+    "execution": {"sandbox": "baidu-bwrap-v1", "task_workers": 6, "execution_workers": 1, "arms_run_sequentially": true, "cpus": 2, "memory": "6g", "tmpfs": "256m", "deployment_sha256": "08ff48cc025381e4a73ef6d1496e471da287cb7bcac1d51651c84025e68f2c69"},
+    "sdk_versions": {"deepagents": "0.7.13", "langchain": "1.4.0", "langchain-core": "1.6.2", "langgraph": "1.2.11", "langgraph-prebuilt": "1.1.0"},
+    "scoring_profile": "local-paper-v1",
+    "strict_definition": "Coefficient and standard-error relative errors <= 0.01 and p-value absolute error <= 0.01.",
+    "denominator_policy": "All 100 planned tasks remain in every denominator. Failed or unscored tasks contribute no metric successes; execution failures and unknown result metrics are recorded separately.",
+    "arms": {
+      "deepagents_pristine": {
+        "attempts_finished": 100, "scored_count": 96, "failed": 4, "uncertain": 0,
+        "failure_reasons": {"final_execution_failed": 4},
+        "strict": 64, "local_partial": 67, "direction": 94, "local_significance": 78,
+        "sdk_sha256": "2f0c80c4f33c1432ea4b37716cae24a23e8dbd1fe0234c51e059782f7890d28e",
+        "actual_usage": {"model_calls": 511, "tool_calls": 350, "input_tokens": 3067521, "output_tokens": 400462},
+        "final_report": "deepagents_pristine/single.final-report.json"
+      },
+      "observation_v2": {
+        "attempts_finished": 100, "scored_count": 98, "failed": 2, "uncertain": 0,
+        "failure_reasons": {"final_execution_failed": 2},
+        "strict": 67, "local_partial": 70, "direction": 95, "local_significance": 80,
+        "sdk_sha256": "fb40747b3819b4dc2d3adad921a5f9372b28f9c1daaf0cf51a18d76e7af5ae7c",
+        "actual_usage": {"model_calls": 467, "tool_calls": 367, "input_tokens": 2817503, "output_tokens": 413999},
+        "final_report": "observation_v2/single.final-report.json"
+      }
+    },
+    "hf_webpage_interpretation": {
+      "protocol": "hf-leaderboard-v1",
+      "official_parity_verified": false,
+      "definition_source": "https://huggingface.co/spaces/CamoAiLab/InferenceNet-Leaderboard/blob/bc367a8b8cabc9b06aac093406942b72cc5837a7/index.html#L616",
+      "denominator": 100,
+      "definitions": {
+        "compilation_success": "Trusted evidence of complete code execution; no prediction JSON gate.",
+        "partial_replication": "Coefficient relative error <= .05; no standard-error or p-value gate.",
+        "coefficient_direction": "Matching strictly positive or strictly negative coefficient signs.",
+        "significance_level": "Equal p-value category: p < .01, p < .05, p < .1, otherwise; no direction gate."
+      },
+      "arms": {
+        "deepagents_pristine": {"compilation_success": 96, "partial_replication": 75, "coefficient_direction": 94, "significance_level": 78, "unknown_counts": {"compilation_success": 0, "partial_replication": 4, "coefficient_direction": 4, "significance_level": 4}},
+        "observation_v2": {"compilation_success": 98, "partial_replication": 78, "coefficient_direction": 95, "significance_level": 81, "unknown_counts": {"compilation_success": 0, "partial_replication": 2, "coefficient_direction": 2, "significance_level": 2}}
+      },
+      "interpretation": "Local interpretation of the HF webpage definitions, not officially verified leaderboard scores. These four metrics are separate from local-paper-v1; in particular, partial replication and significance use different formulas."
+    },
+    "paired_strict": {
+      "gains": 4, "losses": 1, "net_gain": 3,
+      "gains_among_both_scored": 2, "gains_from_previously_unscored": 2,
+      "gain_task_ids": [137, 418, 894, 1011], "loss_task_ids": [157],
+      "both_scored_gain_task_ids": [894, 1011], "previously_unscored_gain_task_ids": [137, 418],
+      "known_metric_pairs": 95, "unknown_metric_pairs": 5,
+      "interpretation": "Aggregate strict-success changes include two recovered submissions. The raw paired metric report leaves five unscored pairs unknown and therefore reports only two known metric gains versus one loss."
+    },
+    "paired_submission": {"gains": 3, "losses": 1, "net_gain": 2},
+    "historical_alignment": {
+      "aligned": ["Responses API", "non-streaming", "explicit high reasoning", "6 model calls", "4 tool calls", "32768 output tokens"],
+      "remaining_differences": ["OpenRouter channel versus historical LiteLLM route; exact upstream parity is unknown", "bwrap versus historical Docker", "1800-second task limit versus historical 600 seconds", "historical SDK version parity is unverified", "fresh single attempts versus the historical recovered aggregate"]
+    },
+    "interpretation": "Within this completed paired study, both arms share the model, API, reasoning effort, dataset, budgets, common adapter and runtime; only the frozen SDK identity differs. The whole frozen v2 improves strict reproduction from 64 to 67, not an observation-only causal estimate. Changes from the previous 59-to-65 study combine API, explicit reasoning and adapter changes and cannot isolate a streaming or reasoning effect. Single-repeat Dev100 evidence does not establish significance or held-out generalization."
+  },
+  "historical_reference": {
+    "report_id": "four-harness-dev100-20261011-v10-recovered01",
+    "report_record": "campaign-report.json",
+    "completion_record": "deepagents-completion/completion-manifest.json",
+    "strict": 65,
+    "denominator": 100,
+    "archived_predictions_rescored": 96,
+    "archived_strict_successes": 63,
+    "explicit_recovery_attempts": 4,
+    "additional_strict_successes": 2,
+    "not_a_historical_first_attempt": true,
+    "source_run": "sol-deepagents-full1000-20260912-external-04",
+    "hf_config_url": "https://huggingface.co/spaces/CamoAiLab/InferenceNet-Leaderboard/blob/731111974cf4d1a3c7a4f848a899f0b0708dd12b/results/gpt-5.6-sol/deepagents/config.json",
+    "archived_configuration": {"model": "gpt-5.6-sol", "api": "Responses", "stream": false, "reasoning_effort": "high", "wall_seconds": 600, "model_calls": 6, "tool_calls": 4, "output_tokens": 32768, "sandbox": "Docker", "sdk_parity_verified": false},
+    "recovery_api": "Anthropic Messages",
+    "interpretation": "Historical recovered aggregate under different conditions; do not use it as the matched baseline for either the earlier fresh 59-to-65 comparison or the latest 64-to-67 Responses/high comparison. The latest run aligns API shape and explicit reasoning effort, while provider route, sandbox, time limit, historical SDK provenance and recovery policy still differ."
+  }
+}

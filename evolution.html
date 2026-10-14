@@ -16,11 +16,11 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="site.css?v=20261011-release">
   <link rel="stylesheet" href="agent.css?v=20260917-case-data">
-  <link rel="stylesheet" href="evolution.css?v=20261013-coverage">
+  <link rel="stylesheet" href="evolution.css?v=20261014-rsi-structure">
   <script src="site.js?v=20261011-release" defer></script>
-  <script src="evolution.js?v=20261013-coverage" defer></script>
+  <script src="evolution.js?v=20261014-rsi-structure" defer></script>
   <link rel="stylesheet" href="language.css">
-  <script src="language.js?v=20261013-coverage" defer></script>
+  <script src="language.js?v=20261014-rsi-structure" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -50,8 +50,8 @@
     <section class="page-hero container" aria-labelledby="page-title">
       <p class="kicker">Phase 2 · Harness self-evolution</p>
       <h1 id="page-title">Self-evolving harnesses improve from execution feedback.</h1>
-      <p class="lead">A harness is the software that runs a model as an agent. Harness self-evolution improves it from feedback: run the harness, read its trajectories and scores, change it and keep what works. Methods differ in when the harness changes — between evaluation rounds, across a stream of tasks, within one run or for each task instance — and in what decides which change stays; the research map sets them side by side. Three offline methods that keep the model fixed, ModularRSI, Self-Harness and Meta-Harness, are then compared in detail, and the page ends with our ModularRSI-style development study on InferenceNet.</p>
-      <ul class="page-meta"><li>Research map · selected work, checked on 13 Oct 2026</li><li>Three detailed methods · checked against papers and code on 10 Oct 2026</li><li>InferenceNet study · development set only</li><li>Held-out tasks · not run as of the 9 Oct 2026 freeze</li><li><a href="harness.html#definition">What a harness is →</a></li></ul>
+      <p class="lead">A harness is the software that runs a model as an agent. This page follows the path from research ideas to implementation and evidence: first map and compare harness self-evolution methods; then see how InferenceNet applies modular revision in v1 and v2, what changes in the code, and what the frozen-harness experiments show.</p>
+      <ul class="page-meta"><li>Research map · selected work, checked on 13 Oct 2026</li><li>Three detailed methods · checked against papers and code on 10 Oct 2026</li><li>InferenceNet study · development set only</li><li>Implementation update · v1 and v2, audited 14 Oct 2026</li><li><a href="harness.html#definition">What a harness is →</a></li></ul>
     </section>
     <nav class="subnav" aria-label="On this page"><ol class="container">
       <li><a href="#concept"><span class="subnav-number">01</span>Concept</a></li>
@@ -59,52 +59,43 @@
       <li><a href="#cycle"><span class="subnav-number">02</span>Improvement loop</a></li>
       <li><a href="#methods"><span class="subnav-number">03</span>Methods</a></li>
       <li><a href="#compare"><span class="subnav-number">04</span>Comparison</a></li>
-      <li><a href="#practice"><span class="subnav-number">05</span>InferenceNet study</a></li>
+      <li><a href="#rsi-versions"><span class="subnav-number">05</span>Implementation &amp; results</a></li>
       <li><a href="#sources"><span class="subnav-number">06</span>Sources</a></li>
     </ol></nav>
     <nav class="reading-routes container" aria-label="How to read this page">
-      <div class="reading-route">
-        <p class="reading-route-title">Quick read</p>
-        <ol>
-          <li><a href="#concept">What self-evolution changes, and what it leaves alone</a></li>
-          <li><a href="#research-map">When recent methods change a harness, and what decides</a></li>
-          <li><a href="#compare">The three methods side by side</a></li>
-          <li><a href="#practice">Our ModularRSI-style development study</a></li>
-          <li><a href="#case-completion">Follow one lineage: completion</a></li>
-          <li><a href="#case-negative">What did not work</a></li>
-        </ol>
-      </div>
-      <div class="reading-route">
-        <p class="reading-route-title">Full route</p>
-        <ol>
+      <div class="reading-route"><p class="reading-route-title">Quick read</p><ol>
+          <li><a href="#concept">Concepts and boundaries</a></li>
+          <li><a href="#method-modularrsi">The ModularRSI paper method</a></li>
+          <li><a href="#rsi-versions">InferenceNet: V1 / V2 implementations</a></li>
+          <li><a href="#rsi-v2-ablation">The fresh Dev100 comparison</a></li>
+          <li><a href="#rsi-v1-archive">Explore the v1 experiment archive</a></li>
+      </ol></div>
+      <div class="reading-route"><p class="reading-route-title">Full route</p><ol>
           <li><a href="#concept">Concept</a></li>
           <li><a href="#research-map">Research map</a></li>
           <li><a href="#cycle">Improvement loop</a></li>
           <li><a href="#methods">Methods</a></li>
           <li><a href="#compare">Comparison</a></li>
-          <li><a href="#practice">InferenceNet study</a></li>
-          <li><a href="#hooks">Hook points</a></li>
-          <li><a href="#loop">Evolution run</a></li>
-          <li><a href="#trajectories">Trajectories</a></li>
-          <li><a href="#improvements">What improved</a></li>
-          <li><a href="#code">Evolved code</a></li>
+          <li><a href="#rsi-versions">InferenceNet ModularRSI</a></li>
+          <li><a href="#rsi-code-boundary">Source changes</a></li>
+          <li><a href="#rsi-v2-ablation">Fresh ablation</a></li>
+          <li><a href="#rsi-v1-archive">V1 full archive</a></li>
           <li><a href="#sources">Sources</a></li>
-        </ol>
-      </div>
+      </ol></div>
     </nav>
 
     <section class="section container ruled" id="concept" aria-labelledby="concept-title">
       <div class="case-heading"><p class="kicker">01 / Concept</p><h2 id="concept-title">What self-evolution changes, and what it leaves alone</h2></div>
       <p class="case-intro">Harness self-evolution, also called automatic harness optimization, means proposing, testing and keeping harness versions on the basis of feedback from the harness’s own runs. The three methods detailed on this page do this in offline rounds: an outer loop edits the harness between evaluations, and the model’s weights do not change. That is how these three work, not a limit of the idea. Other methods change the harness across a stream of tasks, during a single run or for each task instance, and some also train the weights; the research map below places them.</p>
       <ul class="se-tiles" aria-label="Six terms and their role in self-evolution">
-        <li><span class="se-role">Fixed</span><h3>Model</h3><p>The language model and its weights. In the three detailed methods and our study, every harness version runs with the same model, and in some of them the same model also writes the edits. Methods that also train the weights are a separate branch on the research map.</p></li>
+        <li><span class="se-role">Fixed</span><h3>Model</h3><p>The language model and its weights. Within a controlled harness comparison, both versions use the same solving model. Separate searches may use different frozen solving or proposer models, and must be identified separately. Methods that train model weights are another branch on the research map.</p></li>
         <li><span class="se-role is-edited">Edited</span><h3>Harness</h3><p>The software that runs the model as an agent: the loop, tool definitions, how observations are shown, how context is kept, prompts, memory and when to stop. This is what the loop changes, as a whole or in parts.</p></li>
         <li><span class="se-role is-observed">Observed</span><h3>Agent</h3><p>The model running inside one harness version on one task. Its trajectories and outcomes are the evidence the loop learns from.</p></li>
-        <li><span class="se-role">Fixed</span><h3>SDK</h3><p>The programming interface a harness is built on or driven through, such as LangChain’s create_agent or a harness’s SDK. The three detailed methods edit the harness, not these libraries. In the InferenceNet study the DeepAgents package itself is never modified; what changes are five hook functions that InferenceNet’s DeepAgents harness calls at fixed points.</p></li>
+        <li><span class="se-role is-edited">Version-dependent</span><h3>SDK</h3><p>The libraries that implement the agent runtime. Our v1 keeps DeepAgents unchanged and edits added hooks. Our v2 uses a pinned copy of DeepAgents, LangChain and LangGraph with scoped source edits. Model weights and the evaluator remain fixed in both versions.</p></li>
         <li><span class="se-role">Fixed</span><h3>Environment</h3><p>What the tools act on: tasks, data, files, sandboxes. It is held constant so that a change in score can be traced to the harness.</p></li>
         <li><span class="se-role">Fixed</span><h3>Evaluator</h3><p>The scorer that grades finished runs. It decides which version looks better, so it is never among the things edited; methods differ in how much of its output the proposer may see.</p></li>
       </ul>
-      <p class="case-caption">The Fixed, Edited and Observed labels on these tiles describe the three detailed offline methods and the InferenceNet study. Methods on the research map that change the harness across tasks, during a run or per instance, or that also train the weights, may assign these roles differently.</p>
+      <p class="case-caption">The editable boundary must be recorded per method and release. In particular, the unchanged SDK in the historical v1 study is not a restriction on v2. All results below retain their original version, task split and selection policy.</p>
       <p class="case-caption">The six terms follow the Harness page, which also explains how harnesses such as DeepAgents and DeepSeek Harness, and extensions such as Superpowers, are built. This page is about improving a harness once it exists.</p>
       <div class="se-links"><a class="text-link" href="harness.html#definition">Harness: six terms and their boundaries →</a><a class="text-link" href="harness.html#deepagents-architecture">Harness: how DeepAgents is built →</a></div>
     </section>
@@ -147,6 +138,7 @@
                   <li><a href="#method-meta-harness">Meta-Harness</a><span>whole program</span></li>
                   <li><a href="#method-self-harness">Self-Harness</a><span>declared surfaces</span></li>
                   <li><a href="#method-modularrsi">ModularRSI</a><span>one module at a time</span></li>
+                  <li class="is-inferencenet"><a href="#rsi-versions">InferenceNet v1 / v2</a><span>our implementation</span></li>
                   <li><a href="#rm-ahe">AHE</a><span>component files</span></li>
                   <li><a href="#rm-autoharness">AutoHarness</a><span>synthesized code</span></li>
                   <li><a href="#rm-harbor">HARBOR</a><span>configuration flags</span></li>
@@ -276,6 +268,9 @@
       <div class="se-links"><a class="text-link" href="harness.html#update-optimization">Harness: RRSI, RHO, Harness-R1 and WHALE from their repositories →</a><a class="text-link" href="harness.html#development">Harness: runnable systems, 2025–2026 →</a></div>
     </section>
 
+
+
+
     <section class="section container ruled" id="cycle" aria-labelledby="cycle-title">
       <div class="case-heading"><p class="kicker">02 / Improvement loop</p><h2 id="cycle-title">One loop behind all three methods</h2></div>
       <p class="case-intro">The methods differ in how much of the harness they open up, who writes a change and how a candidate is judged. Each iteration still has the same five steps, and the candidates evaluated so far, with their run evidence, inform the proposals of the next round.</p>
@@ -395,11 +390,11 @@
 
     <section class="section container ruled" id="compare" aria-labelledby="compare-title">
       <div class="case-heading"><p class="kicker">04 / Comparison</p><h2 id="compare-title">The three methods side by side</h2></div>
-      <p class="case-intro">The rows answer the six questions from section 02, plus where selection data comes from and what the papers evaluated. The last column is our InferenceNet adaptation, not a method from the papers. Cells marked “our reading” are interpretations.</p>
+      <p class="case-intro">The rows answer the six questions from section 02, plus where selection data comes from and what the papers evaluated. The last column summarizes our historical v1 adaptation. The next section brings together the InferenceNet v1 and v2 implementations and their results. Cells marked “our reading” are interpretations.</p>
       <div class="table-scroll se-compare" tabindex="0">
         <table class="compare-table">
           <caption>ModularRSI, Self-Harness and Meta-Harness compared along the same dimensions, following the mechanisms described in each paper version listed in section 06; the official repositories are listed there separately, and their released code may differ</caption>
-          <thead><tr><th scope="col">Question</th><th scope="col">ModularRSI</th><th scope="col">Self-Harness</th><th scope="col">Meta-Harness</th><th scope="col" class="is-ours">InferenceNet study (our adaptation)</th></tr></thead>
+          <thead><tr><th scope="col">Question</th><th scope="col">ModularRSI</th><th scope="col">Self-Harness</th><th scope="col">Meta-Harness</th><th scope="col" class="is-ours">InferenceNet v1 (our adaptation)</th></tr></thead>
           <tbody>
             <tr><th scope="row">Starting harness</th><td>Terminus-2 on Harbor, split into five behavioral modules</td><td>A minimal benchmark-specific harness on LangChain DeepAgents; later rounds build on the accepted version</td><td>Seed harnesses per domain, such as zero-shot, few-shot or Terminus-KIRA</td><td class="is-ours">DeepAgents 0.7.13 with InferenceNet’s run_python tool and five no-op hook functions</td></tr>
             <tr><th scope="row">What is edited</th><td>Function variants inside one module at a time, integrated afterwards</td><td>Minimal edits to declared surfaces: instructions, subagents, skills, middleware, runtime policy</td><td>Whole single-file harness programs: prompting, retrieval, memory, orchestration; full rewrites allowed</td><td class="is-ours">One entry function per module; no library of variants</td></tr>
@@ -420,8 +415,134 @@
       </ul>
     </section>
 
-    <section class="section container ruled" id="practice" aria-labelledby="practice-title">
-      <div class="case-heading"><p class="kicker">05 / InferenceNet study</p><h2 id="practice-title">Our ModularRSI-style development study</h2></div>
+    <!-- rsi-versions:start -->
+    <section class="section container ruled rsi-release" id="rsi-versions" aria-labelledby="rsi-versions-title">
+      <div class="case-heading"><p class="kicker">05 / InferenceNet implementation · 14 Oct 2026</p><h2 id="rsi-versions-title">InferenceNet ModularRSI: implementation and results</h2></div>
+      <p class="case-intro">We apply the paper’s modular, between-rounds improvement idea to InferenceNet. V1 evolves added hooks for submission; v2 edits a native SDK function for modeling feedback. Below, follow the two implementations, their source changes and the frozen-harness comparison. The complete v1 experiment is retained in the expandable archive.</p>
+      <ul class="rsi-release-facts"><li>No weight training</li><li>Scorer stays outside the agent</li><li>Frozen during evaluation</li><li>Dev100 evidence</li></ul>
+
+
+      <nav class="rsi-study-nav" aria-label="InferenceNet implementation and results"><ol>
+        <li><a href="#rsi-implementation">V1 / V2 implementations</a></li>
+        <li><a href="#rsi-code-boundary">Source changes</a></li>
+        <li><a href="#rsi-v2-ablation">Fresh ablation</a></li>
+        <li><a href="#rsi-history-audit">Historical comparison</a></li>
+        <li><a href="#rsi-v1-archive">V1 full archive</a></li>
+        <li><a href="#rsi-release-evidence">Code and evidence</a></li>
+      </ol></nav>
+
+      <div id="rsi-implementation" class="rsi-implementation">
+      <h3 class="rsi-study-subtitle">V1 and V2: from submission to modeling feedback</h3>
+      <ol class="rsi-release-lineage" aria-label="Version lineage and authorship">
+        <li><span class="se-label">01 · Evolved hooks</span><h3>V1 · submit a complete program</h3><p>Three of five module functions changed: agent_loop, tool_use and completion. Observation and context stayed unchanged.</p><a href="#code">Read the frozen v1 functions →</a></li>
+        <li><span class="se-label">02 · Manual migration</span><h3>Native SDK seed</h3><p>The submission policy was ported into SDK execution points before the next search. This engineering step is not an automatically discovered improvement.</p><a href="https://github.com/YTZSR/chatpilot_evaluator/blob/32623d31f04c729d9921df8733a02719b19c2f41/inferencenet/modular_rsi/sdk_seed.py">Inspect the migration recipe →</a></li>
+        <li class="is-current"><span class="se-label">03 · Selected candidate</span><h3>V2 · observation feedback</h3><p>One evolved ToolNode function adds statistical-audit guidance to Python feedback. The SDK seed’s submission behavior is retained.</p><a href="https://github.com/YTZSR/chatpilot_evaluator/blob/32623d31f04c729d9921df8733a02719b19c2f41/inferencenet/modular_rsi/releases/v2-observation/observation.patch.json">Inspect the frozen observation edit →</a></li>
+      </ol>
+
+      <div class="se-map rsi-release-map">
+        <div class="se-map-core">
+          <div class="se-map-search">
+            <p class="se-map-zone"><strong>How our harness is revised</strong><span>Feedback → edit → selection, between evaluation rounds</span></p>
+            <ol class="se-map-lanes">
+              <li class="se-map-lane">
+                <div class="se-map-when"><h3>V1</h3><p>Hook-based search · frozen 9 Oct</p></div>
+                <div class="se-map-step is-feedback"><p class="se-map-label">Feedback</p><p>DeepSeek V4 Pro solves 100 development tasks three times per version. Compare same-task traces and group recurring failures, including exhausted budgets and missing final programs.</p></div>
+                <div class="se-map-step is-edit"><p class="se-map-label">Edit</p><p>Parallel module lineages revise one allowed hook function at a time. Accepted loop, tool-use and completion edits encourage efficient exploration, verification and final submission.</p></div>
+                <div class="se-map-step is-select"><p class="se-map-label">Selection</p><p>Static checks, diff review and a two-task execution probe. Scores are recorded but do not decide promotion. Three search epochs are followed by integration and freezing.</p></div>
+              </li>
+              <li class="se-map-lane">
+                <div class="se-map-when"><h3>V2</h3><p>Scoped SDK search · frozen 13 Oct</p></div>
+                <div class="se-map-step is-feedback"><p class="se-map-label">Feedback</p><p>Sol solves, analyzes and edits; GLM-5.3-prime reviews. Dev100 is split into 80 proposal and 20 repeatedly used validation tasks, with three rollouts each. Strict replication rises from 183/300 in the seed to 191/300 in the observation candidate.</p></div>
+                <div class="se-map-step is-edit"><p class="se-map-label">Edit</p><p>The retained edit changes ToolNode._normalize_tool_response in LangGraph. It preserves Python execution feedback and appends checks to consider for samples, specifications and inference.</p></div>
+                <div class="se-map-step is-select"><p class="se-map-label">Selection</p><p>After reviewing the development comparisons and execution traces, the team selected the observation candidate as experimental v2. Its source and configuration were frozen before the fresh paired evaluation.</p></div>
+              </li>
+            </ol>
+          </div>
+          <aside class="se-map-eval"><p class="se-map-zone"><strong>Fixed boundary</strong></p><p>The scorer, reference answers and evaluation budgets are not editable harness modules. Reference values are not given to the solving agent.</p><p>The 300-rollout search and the fresh 100-task comparison below are different experiments. Do not connect them as one learning curve.</p><p><a href="https://github.com/YTZSR/chatpilot_evaluator/blob/32623d31f04c729d9921df8733a02719b19c2f41/inferencenet/modular_rsi/releases/v2-observation/README.md">Frozen release and selection record</a></p></aside>
+        </div>
+      </div>
+
+      </div>
+
+      <details class="rsi-release-details" id="rsi-code-boundary">
+        <summary>What changed in code — and what it can actually do</summary>
+        <div class="rsi-release-detail-body">
+          <div class="table-scroll" tabindex="0" role="region" aria-label="Code ownership across releases"><table class="compare-table rsi-release-code-table">
+            <caption>Source locations; manual migration and evolved edits are recorded separately</caption>
+            <thead><tr><th scope="col">Stage</th><th scope="col">Editable code</th><th scope="col">Behavior</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">V1</th><td><code>agent_loop.py</code><br><code>tool_use.py</code><br><code>completion.py</code></td><td>Budget-aware finalization and repair nudges; more efficient tool use; explicit instructions to verify and submit a complete program. These are added hooks, not edits to the DeepAgents package.</td></tr>
+              <tr><th scope="row">SDK seed</th><td><code>deepagents/middleware/filesystem.py</code><br><code>FilesystemMiddleware._filter_unsupported_tools_and_apply_prompt</code><br><code>langchain/agents/factory.py</code><br><code>create_agent._get_bound_model</code></td><td>Manual migration of the v1 submission policy into the model-call and tool-binding path. No additional score gain is assigned to the migration itself.</td></tr>
+              <tr><th scope="row">V2</th><td><code>langgraph/prebuilt/tool_node.py</code><br><code>ToolNode._normalize_tool_response</code></td><td>One evolved function, invoked after tool execution, adds modeling-audit text while retaining the execution evidence. It does not itself calculate matrix rank, cluster counts or corrected estimates.</td></tr>
+            </tbody>
+          </table></div>
+          <ol class="rsi-release-mechanism"><li><strong>Execute</strong><span>run_python returns real output</span></li><li><strong>Enrich observation</strong><span>V2 appends statistical-audit guidance</span></li><li><strong>Reason and act</strong><span>The solving model decides what to check or repair</span></li></ol>
+          <p class="se-note">Editing a source function is real code modification; it does not by itself establish an algorithmic diagnostic mechanism. V2 mainly changes what the model reads. Automatically generated executable diagnostics and validated modeling repairs remain a next research step.</p>
+        </div>
+      </details>
+
+      <div class="rsi-release-results" id="rsi-v2-ablation">
+        <div class="case-heading"><p class="kicker">Latest comparison · 14 Oct 2026</p><h3>Responses + high: two frozen harnesses.</h3></div>
+        <p class="se-body">GPT-5.6 Sol via OpenRouter Responses · non-streaming · explicit high reasoning effort. Both arms finished the same 100 development tasks, with one fresh attempt per task. No historical predictions were imported and no failed attempts were retried.</p>
+        <ul class="rsi-release-facts"><li>6 model / 4 tool calls</li><li>32,768 output tokens</li><li>1,800 s per task</li><li>Same bwrap sandbox</li></ul>
+        <div class="rsi-release-scoreboard">
+          <div><p>Pristine DeepAgents</p><strong>64<span>%</span></strong><span>64 / 100 strict replications</span></div>
+          <div class="rsi-release-delta"><strong>+3</strong><span>percentage points</span><span>4 gains · 1 loss</span></div>
+          <div class="is-current"><p>Frozen observation v2</p><strong>67<span>%</span></strong><span>67 / 100 strict replications</span></div>
+        </div>
+        <div class="table-scroll" tabindex="0" role="region" aria-label="Fresh Dev100 comparison"><table class="compare-table rsi-release-result-table">
+          <caption>Every denominator is 100; failed tasks do not disappear</caption>
+          <thead><tr><th scope="col">Measure</th><th scope="col">Pristine DeepAgents</th><th scope="col">Frozen observation v2</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Strict replication</th><td>64%</td><td>67%</td></tr>
+            <tr><th scope="row">Compilation Success</th><td>96%</td><td>98%</td></tr>
+            <tr><th scope="row">Partial Replication</th><td>75%</td><td>78%</td></tr>
+            <tr><th scope="row">Correct Coefficient Direction</th><td>94%</td><td>95%</td></tr>
+            <tr><th scope="row">Significant Level Correctness</th><td>78%</td><td>81%</td></tr>
+          </tbody>
+        </table></div>
+        <p class="case-caption">Strict replication uses local-paper-v1: coefficient and standard-error relative errors ≤ 1%, and p-value absolute error ≤ 0.01. It is not the leaderboard’s coefficient-only partial-replication metric.</p>
+        <p class="case-caption">The four leaderboard-style measures are a local interpretation of the HF webpage definitions, not an official HF verification. Partial replication checks coefficient error ≤ 5%; significance compares p-value categories at 0.01, 0.05 and 0.1 without a direction condition. These are separate from local-paper-v1. Execution failures (4 versus 2) remain in the denominator and contribute no successes.</p>
+        <p class="se-note">Four tasks become strict successes and one regresses: two gains occur among tasks scored in both arms, and two recover previously unscored tasks. The net gain is three tasks. This supports a benefit beyond submission recovery, but does not identify the modeling mechanism responsible. This compares the whole frozen v2 with pristine DeepAgents, not the observation edit alone. Dev100 was used during development; one attempt per task does not establish statistical significance or held-out generalization.</p>
+        <p class="case-caption"><span>Completed 14 Oct 2026, 12:17 UTC+8.</span> <a href="assets/data/rsi-v1-v2-audit.json">Audited comparison data</a></p>
+      </div>
+
+      <details class="rsi-release-details" id="rsi-previous-ablation">
+        <summary>Previous paired run: Chat Completions, 59% → 65%</summary>
+        <div class="rsi-release-detail-body">
+          <p>The previous fresh Dev100 comparison used OpenRouter Chat Completions with streaming and no explicitly specified reasoning effort. Strict replication was 59/100 for pristine DeepAgents and 65/100 for frozen v2; executed-and-scored counts were 95 and 99. There were ten strict gains and four losses, including eight gains among tasks scored in both arms and two recovered submissions.</p>
+          <p>The latest run uses the same frozen SDK versions, task set and budget limits, with Responses, non-streaming and explicit high reasoning effort. Its matched comparison is 64% → 67%. The earlier 59% → 65% remains a separate experiment: changing multiple request settings and resampling cannot isolate the effect of streaming or reasoning effort.</p>
+          <p>The earlier study also included an intermediate native-seed arm with one unresolved technical attempt (task 450). That arm is not part of either pristine-versus-v2 comparison shown here.</p>
+        </div>
+      </details>
+
+      <details class="rsi-release-details" id="rsi-history-audit">
+        <summary>Historical DeepAgents 65%: what is now aligned?</summary>
+        <div class="rsi-release-detail-body">
+          <p>The historical 65/100 is a recovered aggregate: 96 archived predictions were rescored with the fixed local scorer, yielding 63 strict successes; four tasks without valid final predictions were explicitly rerun, adding two strict successes. The old attempts remain recorded. It is not a uniform 100-task first-attempt run.</p>
+          <div class="table-scroll" tabindex="0" role="region" aria-label="Historical and fresh protocol differences"><table class="compare-table">
+            <caption>Historical source configuration versus the latest Responses/high pair</caption>
+            <thead><tr><th scope="col">Setting</th><th scope="col">Historical prediction source</th><th scope="col">Both fresh arms</th></tr></thead>
+            <tbody><tr><th scope="row">API</th><td>Responses · non-streaming</td><td>Responses · non-streaming</td></tr>
+              <tr><th scope="row">Reasoning effort</th><td>high</td><td>high</td></tr>
+              <tr><th scope="row">Task wall time</th><td>600 s</td><td>1,800 s</td></tr>
+              <tr><th scope="row">Sandbox</th><td>Docker</td><td>bwrap</td></tr>
+              <tr><th scope="row">Model / tool calls</th><td>6 / 4</td><td>6 / 4</td></tr>
+              <tr><th scope="row">Output token budget</th><td>32,768</td><td>32,768</td></tr>
+            </tbody>
+          </table></div>
+          <p>The latest run aligns the Responses API form, non-streaming mode and explicit high reasoning effort with the archived configuration. It still uses OpenRouter and bwrap with a 1,800-second task limit; the historical SDK is not fully recorded and its four recovery attempts use another API route. This is partial protocol alignment, not a complete historical reproduction. Keep historical 65% as a separate reference and use the latest matched 64% → 67% to compare the harnesses.</p>
+          <a class="text-link" href="https://huggingface.co/spaces/CamoAiLab/InferenceNet-Leaderboard/blob/731111974cf4d1a3c7a4f848a899f0b0708dd12b/results/gpt-5.6-sol/deepagents/config.json">Historical HF configuration →</a>
+        </div>
+      </details>
+
+
+      <details class="rsi-release-details rsi-v1-archive" id="rsi-v1-archive">
+        <summary>V1 full experiment archive: architecture, trajectories and frozen code</summary>
+        <div class="rsi-v1-archive-body">
+          <p class="case-caption">Historical snapshot with its original experiment, budget and scores. It is part of the InferenceNet implementation record; its three-rollout results are separate from the fresh v2 comparison above.</p>
+<section class="section container ruled" id="practice" aria-labelledby="practice-title">
+      <div class="case-heading"><p class="kicker">V1 archive · frozen 9 Oct 2026</p><h3 id="practice-title">V1 archive · the first frozen study</h3></div>
       <p class="case-intro">We adapted the ModularRSI idea to the DeepAgents harness that InferenceNet already uses and ran one complete evolution on a development set. This is a historical development study, frozen on 9 Oct 2026 and kept here with its original numbers. It is not a reproduction of the paper and not a leaderboard result, and it makes no claim about unseen tasks.</p>
       <ul class="se-tiles is-status" aria-label="What each part of this study is">
         <li><p class="se-label">Paper</p><h3>ModularRSI</h3><p>The method and its reported results belong to the paper, which evolves five modules of the Terminus-2 harness (section 03).</p></li>
@@ -431,20 +552,20 @@
         <li><p class="se-label">Leaderboard</p><h3>A separate protocol</h3><p>All 1,000 tasks at half this study’s per-task budget. DeepSeek V4 Pro with DeepAgents scores 18.3% full replication there; the two numbers are not comparable.</p></li>
       </ul>
       <h3 class="se-subhead">Execution context</h3>
-      <p class="se-body">The study runs on DeepAgents 0.7.13, which assembles middleware, tools and backends and hands them to LangChain’s create_agent; LangGraph executes the loop. InferenceNet uses a lean configuration: no subagents, a StateBackend for notes and its own run_python tool, which starts a fresh sandbox for every call. DeepAgents itself is never edited. Three of the five evolvable functions run inside one middleware around each model call; tool_use adds guidance to the system prompt and the run_python description, and observation reshapes the feedback run_python returns, as section 05.1 shows.</p>
+      <p class="se-body">The study runs on DeepAgents 0.7.13, which assembles middleware, tools and backends and hands them to LangChain’s create_agent; LangGraph executes the loop. InferenceNet uses a lean configuration: no subagents, a StateBackend for notes and its own run_python tool, which starts a fresh sandbox for every call. DeepAgents itself is never edited. Three of the five evolvable functions run inside one middleware around each model call; tool_use adds guidance to the system prompt and the run_python description, and observation reshapes the feedback run_python returns, as section V1.1 shows.</p>
       <div class="se-links"><a class="text-link" href="harness.html#deepagents-architecture">How DeepAgents is assembled →</a></div>
       <nav class="se-study-nav" aria-label="Parts of the InferenceNet study"><ol>
-        <li><a href="#hooks">05.1 Hook points</a></li>
-        <li><a href="#loop">05.2 Evolution run</a></li>
-        <li><a href="#trajectories">05.3 Trajectories</a></li>
-        <li><a href="#improvements">05.4 What improved</a></li>
-        <li><a href="#code">05.5 Evolved code</a></li>
+        <li><a href="#hooks">V1.1 Hook points</a></li>
+        <li><a href="#loop">V1.2 Evolution run</a></li>
+        <li><a href="#trajectories">V1.3 Trajectories</a></li>
+        <li><a href="#improvements">V1.4 What improved</a></li>
+        <li><a href="#code">V1.5 Evolved code</a></li>
         <li><a href="#run-record">Run record</a></li>
       </ol></nav>
     </section>
 
     <section class="section container ruled" id="hooks" aria-labelledby="hooks-title">
-      <div class="case-heading"><p class="kicker">05.1 / Hook points</p><h2 id="hooks-title">Where the five hook functions attach</h2></div>
+      <div class="case-heading"><p class="kicker">V1.1 / Hook points</p><h3 id="hooks-title">Where the five hook functions attach</h3></div>
       <p class="case-intro">ModularRSI splits an agent harness into five modules and evolves each one separately. Our adaptation applies the idea to DeepAgents without changing the library: each module is one Python function that InferenceNet’s harness calls at a fixed point. All five start as no-ops, so the initial harness is unchanged DeepAgents. It runs with this study’s budget and sandbox, not phase 1’s: 12 model calls and 8 run_python calls per task instead of 6 and 4.</p>
       <p class="case-intro">InferenceNet runs a lean DeepAgents: no subagents, and a StateBackend used only for notes. Code runs through its own run_python tool, which starts a fresh isolated container for every call. The five modules attach at the blue positions below.</p>
       <figure class="diagram wide rsi-figure" style="--diagram-min:860px">
@@ -572,7 +693,7 @@
     </section>
 
     <section class="section container ruled" id="loop" aria-labelledby="loop-title">
-      <div class="case-heading"><p class="kicker">05.2 / Evolution run</p><h2 id="loop-title">How one evolution run works, step by step</h2></div>
+      <div class="case-heading"><p class="kicker">V1.2 / Evolution run</p><h3 id="loop-title">How one evolution run works, step by step</h3></div>
       <p class="case-intro">Five module lineages start from the same no-op source and the same initial trajectories. Each lineage may change only its own function. The loop below ran three epochs, then combined the accepted functions into one frozen harness.</p>
       <figure class="diagram wide rsi-figure rsi-loop-figure" style="--diagram-min:860px">
         <div class="diagram-scroll" tabindex="0">
@@ -633,14 +754,14 @@
         <li><span class="case-step-number">03</span><div class="case-step-content"><h3>Score in private</h3><p class="case-step-story">The evaluator reruns each final program from scratch and compares its output with the reference values. The model, the analyst and the editor never see those values or the scorer internals. The scorer is independent of the agent, but it scores the same development tasks that the analyst diagnoses, so these scores are not an independent validation.</p></div></li>
         <li><span class="case-step-number">04</span><div class="case-step-content"><h3>Diagnose by contrast</h3><p class="case-step-story">Tasks are grouped by outcome across their three rollouts: all passed, mixed or all failed, where a pass means the coefficient and SE are within 5%. An analyst model reads all 100 tasks in ten batches of ten. In a mixed task it compares passing and failing rollouts; in an all-failed task it compares an earlier version’s passing rollout of that task when one exists, and otherwise reads the failures on their own; in an all-passed task it looks for wasted steps. A problem needs support from at least two different tasks in one batch, and the batch finding with the most supporting tasks drives the edit.</p><p class="case-decision">Same-task comparisons remove most task difficulty, but they need a passing rollout of the same task: only 21 of 100 tasks were mixed at the start. In this run, 17 of the 24 task votes behind the eight promoted edits came from tasks that failed all three rollouts and were diagnosed without a comparison.</p></div></li>
         <li><span class="case-step-number">05</span><div class="case-step-content"><h3>Edit one function</h3><p class="case-step-story">For each lineage, an editor model sees only its function, the history of accepted versions and the selected finding. It returns a new version of that function. Static checks verify syntax, imports, the interface and the editing scope.</p></div></li>
-        <li><span class="case-step-number">06</span><div class="case-step-content"><h3>Review the diff, then probe on real tasks</h3><p class="case-step-story">A reviewer model rejects changes that are not general across tasks, such as ones that encode task-specific details. The candidate then runs two real development tasks. If the probe completes without protocol or runtime errors, the candidate is promoted.</p><p class="case-decision">Promotion does not look at development scores. The scores in section 05.3 are recorded for analysis only, so an accepted version can score lower than its parent. The two-task probe shows that a candidate runs end to end; it is not a statistical test that performance held.</p></div></li>
+        <li><span class="case-step-number">06</span><div class="case-step-content"><h3>Review the diff, then probe on real tasks</h3><p class="case-step-story">A reviewer model rejects changes that are not general across tasks, such as ones that encode task-specific details. The candidate then runs two real development tasks. If the probe completes without protocol or runtime errors, the candidate is promoted.</p><p class="case-decision">Promotion does not look at development scores. The scores in section V1.3 are recorded for analysis only, so an accepted version can score lower than its parent. The two-task probe shows that a candidate runs end to end; it is not a statistical test that performance held.</p></div></li>
         <li><span class="case-step-number">07</span><div class="case-step-content"><h3>Repeat for three epochs</h3><p class="case-step-story">Each module gets at most one edit per epoch. A promoted version becomes the parent for the next epoch, and every promoted version receives a full 300-rollout evaluation.</p><dl class="case-observed-facts"><div><dt>Candidate slots</dt><dd>15</dd></div><div><dt>Promoted</dt><dd>8</dd></div><div><dt>Rejected by diff review</dt><dd>3</dd></div><div><dt>Editor output or edit invalid</dt><dd>4</dd></div></dl></div></li>
         <li><span class="case-step-number">08</span><div class="case-step-content"><h3>Integrate, refine once, freeze</h3><p class="case-step-story">The accepted versions of agent_loop, completion and tool_use are combined and probed together. One integration epoch reads the combined trajectories and makes a single checked refinement. The result is frozen by hash before any held-out evaluation.</p><dl class="case-observed-facts"><div><dt>Changed modules</dt><dd>3 of 5</dd></div><div><dt>Frozen source</dt><dd>17f138b9</dd></div></dl></div></li>
       </ol>
     </section>
 
     <section class="section container ruled" id="trajectories" aria-labelledby="trajectories-title">
-      <div class="case-heading"><p class="kicker">05.3 / Trajectories</p><h2 id="trajectories-title">Evolution trajectories by module</h2></div>
+      <div class="case-heading"><p class="kicker">V1.3 / Trajectories</p><h3 id="trajectories-title">Evolution trajectories by module</h3></div>
       <p class="case-intro">Each panel follows one lineage. A point is one full development evaluation of a harness version, measured over 300 rollouts. Every candidate is annotated with the problem the analyst found and the change the editor made.</p>
       <div class="rsi-evolution" data-rsi-evolution>
         <div class="rsi-toolbar">
@@ -705,7 +826,7 @@
           </div>
           <ul class="se-case-notes">
             <li>Each of the three edits passed static checks, diff review and a two-task probe. Promotion never looked at these scores, so epochs 2 and 3 were kept even though both scored below epoch 1. Acceptance does not guarantee a gain.</li>
-            <li>The frozen completion function in section 05.5 is the result of all three epochs. The code of the intermediate versions is not published.</li>
+            <li>The frozen completion function in section V1.5 is the result of all three epochs. The code of the intermediate versions is not published.</li>
             <li>Between the initial and the frozen harness, the signal “Used tools, never submitted a program” fell from 48 to 15 tasks, and the failed rollouts with the signal in those tasks from 103 to 25 (definitions in section 05.4). The frozen harness also contains the accepted agent_loop and tool_use changes and the integration refinement, and this signal counts the same rollouts as the agent_loop signal, so the drop is not an effect of this module alone.</li>
             <li>The scorer reruns each final program independently of the agent, but the same 100 development tasks were used to find these problems and to score the fixes. This is not an independent validation, and no confidence intervals are reported.</li>
           </ul>
@@ -726,7 +847,7 @@
     </section>
 
     <section class="section container ruled" id="improvements" aria-labelledby="improvements-title">
-      <div class="case-heading"><p class="kicker">05.4 / What improved</p><h2 id="improvements-title">Fewer runs end without a final program</h2></div>
+      <div class="case-heading"><p class="kicker">V1.4 / What improved</p><h3 id="improvements-title">Fewer runs end without a final program</h3></div>
       <p class="case-intro">Comparing the initial and frozen harness on the same 100 development tasks, with three rollouts each, the clearest change is in how runs end. Far fewer rollouts finish with tool calls and no final program, and more rollouts produce a result the evaluator can score.</p>
       <div class="benchmark-stats rsi-stats">
         <div><strong>27.0 → 30.3</strong><span>Full replication, % of 300 rollouts</span></div>
@@ -773,7 +894,7 @@
     </section>
 
     <section class="section container ruled" id="code" aria-labelledby="code-title">
-      <div class="case-heading"><p class="kicker">05.5 / Evolved code</p><h2 id="code-title">What the frozen functions say</h2></div>
+      <div class="case-heading"><p class="kicker">V1.5 / Evolved code</p><h3 id="code-title">What the frozen functions say</h3></div>
       <p class="case-intro">All five functions started as no-ops: tool_use and completion returned an empty string, agent_loop never intervened. Below are the three functions that changed, exactly as frozen. observation and context are unchanged.</p>
       <div class="rsi-code-grid">
         <div class="code-panel wrap case-excerpt"><div class="code-panel-head"><span class="code-panel-label">tool_use.py · 3 epochs + 1 refinement</span></div><pre tabindex="0"><code>"""Model-visible Python-tool guidance hook."""
@@ -879,6 +1000,22 @@ def agent_loop(remaining_model_calls: int, last_tool_failed: bool) -&gt; dict[st
         </div>
       </details>
     </section>
+        </div>
+      </details>
+
+      <details class="rsi-release-details" id="rsi-release-evidence">
+        <summary>Run records, code and frozen identities</summary>
+        <div class="rsi-release-detail-body">
+          <p>Source links point to the collaborator repository. The public JSON contains aggregate counts and provenance only, with no task answers, credentials or raw trajectories.</p>
+          <div class="se-links"><a href="assets/data/rsi-v1-v2-audit.json">Audited comparison data</a><a href="https://github.com/YTZSR/chatpilot_evaluator/blob/32623d31f04c729d9921df8733a02719b19c2f41/inferencenet/modular_rsi/releases/v2-observation/README.md">V2 release record</a><a href="https://github.com/YTZSR/chatpilot_evaluator/blob/32623d31f04c729d9921df8733a02719b19c2f41/inferencenet/modular_rsi/releases/v2-observation/observation.patch.json">Observation patch</a><a href="https://github.com/YTZSR/chatpilot_evaluator/blob/32623d31f04c729d9921df8733a02719b19c2f41/inferencenet/modular_rsi/sdk_release.py">SDK release builder</a><a href="#run-record">V1 original record</a></div>
+          <dl class="rsi-release-provenance"><dt>Latest comparison run</dt><dd><code>sol-responses-high-dev100-20261014-01</code></dd><dt>Shared protocol SHA-256</dt><dd><code>9e99e919f77e3a3528400366008fd213ea14b7a907308740b8f9a6ae1977d7e3</code></dd><dt>Evaluation source commit</dt><dd><code>078693165dbb234373674068990186d358e875cb</code></dd><dt>V2 source commit</dt><dd><code>32623d31f04c729d9921df8733a02719b19c2f41</code></dd><dt>V2 SDK source SHA-256</dt><dd><code>fb40747b3819b4dc2d3adad921a5f9372b28f9c1daaf0cf51a18d76e7af5ae7c</code></dd><dt>Previous paired run</dt><dd><code>sol-clean-three-harness-dev100-20261013-01</code></dd></dl>
+          <p>The latest pair has 200 finished attempts, zero pending or uncertain tasks, and no transport-error retries. Both frozen SDK identities are unchanged from the previous paired run.</p>
+          <p>Shared caps: 6 model calls, 4 Python calls, 32,768 output tokens, 1,800 seconds per task and 90 seconds per tool run. Latest actual totals: pristine 511 model / 350 tool calls; v2 467 model / 367 tool calls. Equal caps do not mean identical realized cost.</p>
+        </div>
+      </details>
+      <p class="case-caption"><a href="#sources">Continue to the paper and repository sources →</a></p>
+    </section>
+    <!-- rsi-versions:end -->
 
     <section class="section container ruled" id="sources" aria-labelledby="sources-title">
       <div class="case-heading"><p class="kicker">06 / Sources</p><h2 id="sources-title">Primary sources and versions</h2></div>

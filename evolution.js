@@ -43,6 +43,7 @@
   }
 
   function draw(canvas) {
+    if (!canvas.clientWidth) return;
     const panel = data.panels.find(item => item.id === canvas.dataset.rsiPanel);
     if (!panel) return;
     const width = Math.max(320, Math.round(canvas.clientWidth || 560));
@@ -213,6 +214,7 @@
     if (!data) return;
     for (const canvas of canvases) {
       const width = Math.round(canvas.clientWidth || 0);
+      if (!width) continue;
       const svg = canvas.querySelector('svg');
       if (!svg || Math.abs(width - (drawnWidth.get(canvas) || 0)) > 24) draw(canvas);
       else fit(svg, drawnWidth.get(canvas));
@@ -223,6 +225,13 @@
   window.addEventListener('resize', () => {
     cancelAnimationFrame(resizeFrame);
     resizeFrame = requestAnimationFrame(refresh);
+  });
+  const archive = root.closest('details');
+  if (archive) archive.addEventListener('toggle', () => {
+    if (archive.open) {
+      cancelAnimationFrame(resizeFrame);
+      resizeFrame = requestAnimationFrame(refresh);
+    }
   });
   if (select) select.addEventListener('change', () => { metric = select.value; if (data) drawAll(); });
 
@@ -239,18 +248,24 @@
     .catch(() => { if (panelsBox) panelsBox.hidden = true; });
 })();
 
-/* Research map: method names link to rows of the collapsed sources table.
- * Browsers reveal a closed <details> for a fragment target; this opens it
- * first where they do not, for clicks and for deep links. */
+/* Reveal source tables, the v1 archive and nested records for fragment links.
+ * Keep all previously shared deep links usable after the study is regrouped. */
 (() => {
-  const sources = document.querySelector('.se-map-sources');
-  if (!sources) return;
   const reveal = (id, scroll) => {
     let target = null;
     try { target = id && document.getElementById(decodeURIComponent(id)); } catch { return; }
-    if (!target || !sources.contains(target) || sources.open) return;
-    sources.open = true;
-    if (scroll) target.scrollIntoView();
+    if (!target) return;
+    let opened = false;
+    for (let node = target; node; node = node.parentElement) {
+      if (node instanceof HTMLDetailsElement && !node.open) {
+        node.open = true;
+        opened = true;
+      }
+    }
+    if (opened) {
+      window.dispatchEvent(new Event('resize'));
+      if (scroll) requestAnimationFrame(() => target.scrollIntoView({block: 'start', behavior: 'instant'}));
+    }
   };
   document.addEventListener('click', event => {
     const link = event.target instanceof Element && event.target.closest('a[href^="#"]');
