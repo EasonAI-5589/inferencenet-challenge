@@ -23,7 +23,7 @@ export const DEV_BOARD = Object.freeze({
   caption: 'Scores (%) on 100 development tasks',
   hint: 'Select a model or a grid cell to show its run evidence below the table.',
   failureStatus: 'Showing saved development results. Interactive ranking is unavailable.',
-  chartNote: 'Choose one harness to draw its mountain. The grid and the table list all 56 combinations.',
+  chartNote: 'Choose one harness to draw its mountain. The grid and the table list all recorded combinations.',
   chartsLabel: 'Mountains by harness',
 });
 
@@ -158,6 +158,7 @@ function checkRun(run, n, models, harnesses) {
 }
 
 export function validateDevBoard(data) {
+  if (data?.schema_version === 2 && data.kind === 'inferencenet_dev_board_collection') return validateDevCollection(data);
   need(plain(data) && data.schema_version === 1 && data.kind === 'inferencenet_dev_board' && data.board_id === DEV_BOARD.id,
     'Invalid development snapshot');
   scan(data, 'data');
@@ -212,6 +213,90 @@ export function validateDevBoard(data) {
   need(exactly(data.field_evidence, Object.keys(FIELD_EVIDENCE)) && Object.values(data.field_evidence).every(text), 'Invalid field evidence');
   need(Array.isArray(data.caveats) && data.caveats.every(text), 'Invalid caveats');
   return data;
+}
+
+// A later run is appended to the display collection, never substituted into the
+// audited v10 snapshot. Each run keeps its own report identity and settings.
+function validateDevCollection(collection) {
+  need(collection.base?.schema_version === 1, 'Invalid development collection base');
+  const base = validateDevBoard(collection.base);
+  need(Array.isArray(collection.supplements) && collection.supplements.length > 0, 'Invalid development supplements');
+  const runs = [...base.runs], models = [...base.models], harnesses = [...base.harnesses];
+  const runReports = {};
+  const pairs = new Set(runs.map(run => `${run.model}/${run.harness}`));
+  for (const supplement of collection.supplements) {
+    scan(supplement, 'supplement');
+    need(plain(supplement) && supplement.schema_version === 1 && supplement.kind === 'inferencenet_dev_board_supplement'
+      && supplement.base_board_id === base.board_id && supplement.official_leaderboard_result === false,
+    'Invalid development supplement');
+    need(supplement.denominator_per_group === base.denominator_per_group
+      && ['id', 'tasks', 'split', 'task_ids_published'].every(key => supplement.dataset?.[key] === base.dataset[key])
+      && supplement.dataset.revision === '59f9512a38e594528807744214a60ee00367434e'
+      && supplement.dataset.selection_sha256 === '6586abbcbb3380d03ecf271c1cf5b91d63c1234eb2f2bbb720f82c4a2ccee154',
+    'Supplement dataset differs from the audited development selection');
+    need(JSON.stringify(supplement.metrics) === JSON.stringify(base.metrics), 'Supplement metric definitions differ');
+    need(text(supplement.evidence_status) && fields(supplement.report, {
+      label: text, generated_at: timestamp, sha256: hashes => fields(hashes, { json: sha256 }),
+      protocol_sha256: sha256, source_commit: value => typeof value === 'string' && /^[0-9a-f]{40}$/.test(value),
+    }), 'Invalid supplement report');
+    const modelIds = declared(supplement.models, 'model', ['recorded_name']);
+    const harnessIds = declared(supplement.harnesses, 'harness', ['version', 'version_scope', 'description']);
+    need(!harnessIds.has(DEFAULT_DEV_VIEW), 'The harness id "all" is reserved for the combined view');
+    need(Array.isArray(supplement.runs) && supplement.runs.length > 0 && supplement.groups === supplement.runs.length
+      && supplement.records === supplement.groups * base.denominator_per_group, 'Invalid supplement group counts');
+    for (const run of supplement.runs) {
+      const key = checkRun(run, base.denominator_per_group, modelIds, harnessIds);
+      need(!pairs.has(key), `Duplicate run ${key}`);
+      need(fields(run.source, {
+        report_label: value => value === supplement.report.label,
+        source_commit: value => value === supplement.report.source_commit,
+        protocol_sha256: value => value === supplement.report.protocol_sha256,
+        final_report_sha256: sha256, paired_report_sha256: sha256, sdk_sha256: sha256,
+        scoring_profile: value => value === 'local-paper-v1', sandbox: text,
+        attempts_per_task: value => Number.isInteger(value) && value > 0,
+        failure_reasons: value => tally(value) && total(Object.values(value)) === run.outcomes.failed,
+      }), 'Supplement run source differs from its report');
+      pairs.add(key);
+      runs.push(run);
+      runReports[key] = supplement;
+    }
+    need([...modelIds].every(id => supplement.runs.some(run => run.model === id))
+      && [...harnessIds].every(id => supplement.runs.some(run => run.harness === id)), 'A supplement model or harness has no run');
+    for (const model of supplement.models) {
+      const previous = models.find(item => item.id === model.id);
+      need(!previous || previous.label === model.label, 'Supplement model identity differs');
+      if (!previous) models.push(model);
+    }
+    for (const harness of supplement.harnesses) {
+      const previous = harnesses.find(item => item.id === harness.id);
+      need(!previous || JSON.stringify(previous) === JSON.stringify(harness), 'Supplement harness identity differs');
+      if (!previous) harnesses.push(harness);
+    }
+  }
+  return { ...base, models, harnesses, runs, groups: runs.length, records: runs.length * base.denominator_per_group,
+    totals: columns(runs.map(run => run.outcomes), OUTCOMES), base_snapshot: base,
+    supplements: collection.supplements, run_reports: runReports };
+}
+
+// The download follows the displayed rows, including sparse later additions.
+export function devCollectionCSV(data) {
+  const provenanceKeys = ['new_native', 'inherited_native_sdk', 'historical_deepagents_metric', 'offline_derived_deepagents_metric'];
+  const settings = ['thinking', 'harness_version', 'route', 'run_date'];
+  const header = ['model', 'model_label', 'recorded_name', 'harness', 'harness_label', 'denominator', 'complete', ...OUTCOMES,
+    ...Object.keys(DEV_METRICS).flatMap(key => ['true', 'false', 'unknown_or_pending', 'score'].map(field => `${key}_${field}`)),
+    ...provenanceKeys.map(key => `provenance_${key}`), ...settings.flatMap(key => [key, `${key}_slots`]),
+    ...Object.keys(BUDGET).map(key => `budget_${key}`), 'budget_slots'];
+  const quote = value => { const s = value == null ? '' : String(value); return /[",\r\n]/.test(s) ? `"${s.replaceAll('"', '""')}"` : s; };
+  const rows = data.runs.map(run => {
+    const source = data.run_reports?.[`${run.model}/${run.harness}`] || data;
+    const model = source.models.find(item => item.id === run.model);
+    return [run.model, model.label, model.recorded_name, run.harness, harnessOf(data, run.harness).label, run.denominator, run.complete,
+      ...OUTCOMES.map(key => run.outcomes[key]), ...Object.keys(DEV_METRICS).flatMap(key => ['true', 'false', 'unknown_or_pending', 'score'].map(field => run.metrics[key][field])),
+      ...provenanceKeys.map(key => run.provenance[key]), ...settings.flatMap(key => [run.settings[key].values.map(item => item.value).join(';'), run.settings[key].values.map(item => item.slots).join(';')]),
+      ...Object.keys(BUDGET).map(key => run.settings.budget.values.map(item => item[key] ?? '').join(';')),
+      run.settings.budget.values.map(item => item.slots).join(';')];
+  });
+  return [header, ...rows].map(row => row.map(quote).join(',')).join('\n') + '\n';
 }
 
 /* Ranking ------------------------------------------------------------------ */
@@ -360,7 +445,8 @@ export function selectedDevRun(data, view, metric, key) {
 
 export function devRunEvidence(data, row) {
   const { run } = row;
-  const model = modelOf(data, run.model);
+  const source = data.run_reports?.[row.key] || data;
+  const model = modelOf(source, run.model);
   return {
     key: row.key,
     rank: row.rank,
@@ -375,8 +461,8 @@ export function devRunEvidence(data, row) {
     tasks: data.dataset.tasks,
     outcomes: { ...run.outcomes },
     provenance: Object.entries(PROVENANCE).filter(([key]) => run.provenance[key]).map(([key, [, label]]) => ({ key, label, count: run.provenance[key] })),
-    evidenceStatus: data.evidence_status,
-    report: { label: data.report.label, sha256: data.report.sha256.json.slice(0, 12), generated: reportDate(data) },
+    evidenceStatus: source.evidence_status,
+    report: { label: source.report.label, sha256: source.report.sha256.json.slice(0, 12), generated: reportDate(source) },
     metrics: Object.entries(DEV_METRICS).map(([key, label]) => {
       const metric = run.metrics[key];
       return { key, label, true: metric.true, false: metric.false, unknownOrPending: metric.unknown_or_pending, score: metric.score,
@@ -389,6 +475,11 @@ export function devRunCardHTML(data, view, metric, key, { id }) {
   const row = selectedDevRun(data, view, metric, key);
   if (!row) return '';
   const e = devRunEvidence(data, row);
+  const links = data.run_reports?.[row.key] ? [
+    ['assets/data/dev100-sol-responses-high.json', 'Development data JSON'],
+    ['assets/data/dev100-current-results.csv', 'Development results CSV'],
+    ['leaderboard.html#leaderboard-dev100-method', 'Development method and sources'],
+  ] : DEV_LINKS;
   const o = e.outcomes;
   const total = rankDevRuns(data, view, metric).length;
   const code = value => `<code>${escapeHTML(value)}</code>`;
@@ -422,7 +513,7 @@ export function devRunCardHTML(data, view, metric, key, { id }) {
     + `<thead><tr>${COLUMNS.map(label => `<th scope="col">${label}</th>`).join('')}</tr></thead><tbody>${outcomes}</tbody></table></div>`
     + `<p class="scroll-hint" aria-hidden="true" hidden>${CARD_SCROLL_HINT}</p></div>`
     + `<ul class="run-card-notes">${DEV_NOTES.map(note => `<li>${note}</li>`).join('')}</ul>`
-    + `<p class="run-card-links">${DEV_LINKS.map(([href, label]) => `<a class="text-link" href="${href}">${label}</a>`).join('')}</p>`;
+    + `<p class="run-card-links">${links.map(([href, label]) => `<a class="text-link" href="${href}">${label}</a>`).join('')}</p>`;
 }
 
 /* Chart, status and the static report summary ------------------------------ */
@@ -452,6 +543,11 @@ export function devCharts(data, view, metric) {
 
 // The saved status line, like "Published results · 17 Sep 2026" on the Selected_1000 board.
 export function devSavedStatus(data) {
+  if (data.base_snapshot) {
+    const latest = data.supplements.reduce((a, b) => Date.parse(a.report.generated_at) > Date.parse(b.report.generated_at) ? a : b, data.base_snapshot);
+    const [year, month, date] = reportDate(latest).split('-');
+    return `Development results · ${Number(date)} ${MONTHS[month - 1]} ${year}`;
+  }
   const [year, month, date] = reportDate(data).split('-');
   return `v10 final report · ${Number(date)} ${MONTHS[month - 1]} ${year}`;
 }
@@ -469,6 +565,7 @@ export function devOverview(data, view, metric, options = {}) {
 
 // Readable without JavaScript; generated into leaderboard.html after the widget.
 export function devReportHTML(data) {
+  if (data.base_snapshot) return devReportHTML(data.base_snapshot);
   const summary = data.report_summary;
   const t = summary.totals;
   const fact = (label, value) => `<div><dt>${label}</dt><dd>${value}</dd></div>`;
@@ -515,6 +612,7 @@ export function devDataText(data) {
   return [...new Set([
     ...data.runs.flatMap(run => run.settings.thinking.values.map(item => item.value)),
     ...(Object.hasOwn(EVIDENCE, data.evidence_status) ? [] : [data.evidence_status]),
+    ...(data.supplements ?? []).filter(item => !Object.hasOwn(EVIDENCE, item.evidence_status)).map(item => item.evidence_status),
     data.dataset.label, data.dataset.relation ?? '', ...Object.values(data.field_evidence), ...data.caveats,
     ...Object.values(data.report_summary.acceptance ?? {}).filter(sentence), devSavedStatus(data),
   ].map(value => value.replace(/\s+/g, ' ').trim()).filter(Boolean))];

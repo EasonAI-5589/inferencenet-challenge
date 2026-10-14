@@ -773,7 +773,8 @@ test('leaderboard.html carries the saved development block generated from the sn
   const block = html.match(/<!-- dev100-ranking:start -->([\s\S]*?)<!-- dev100-ranking:end -->/);
   if (!block) return t.skip('leaderboard.html has no development markers yet');
   if (!block[1].trim()) return t.skip('the development block has not been generated yet: run node scripts/build-dev100-board.mjs');
-  assert.equal(block[1], `\n${devBlock(real)}\n`, 'stale development block: run node scripts/build-dev100-board.mjs');
+  const current = validateDevBoard(JSON.parse(await readFile(new URL('assets/data/dev100-current-results.json', root), 'utf8')));
+  assert.equal(block[1], `\n${devBlock(current)}\n`, 'stale development block: run node scripts/build-dev100-board.mjs');
 });
 
 test('every data string the board renders has a Chinese translation on the leaderboard page', { skip: absent || pending }, () => {

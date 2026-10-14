@@ -368,8 +368,10 @@ first, for development. Developers can submit harnesses of their own design,
 and InferenceNet evaluates every submission under the same settings. The
 submission channel and dates have not been announced, so the page names no
 upload link, date or API. The v10 release is not directly comparable with the
-Selected_1000 final target. It reads `assets/data/dev100-v10-results.json`, a
-sanitized derivation of the v10 four-harness report: 14 models × 4 harnesses,
+Selected_1000 final target. It reads `assets/data/dev100-current-results.json`,
+built from the unchanged `dev100-v10-results.json` and the single Sol + v2 run
+in `dev100-sol-responses-high.json`. The v10 snapshot is a sanitized derivation
+of the four-harness report: 14 models × 4 harnesses,
 100 development tasks per combination, 5,600 task results. The report checksums and the derivation are in
 `dev100-v10-results-provenance.json`. Task IDs, server paths and per-task
 records are not published. Every score divides by all 100 tasks; scored,
@@ -388,5 +390,5 @@ then run `node scripts/build-leaderboard.mjs` to regenerate the saved table on
 each page. If JavaScript or data loading fails, one combined 12-row table remains
 readable on each page. For the development release, verify a new sanitized
 JSON, CSV and provenance, then run `node scripts/build-dev100-board.mjs`. Check changes with
-`node --test scripts/test-leaderboard.mjs scripts/test-run-card.mjs scripts/test-dev100.mjs scripts/test-dual-board.mjs`
+`node --test scripts/test-leaderboard.mjs scripts/test-run-card.mjs scripts/test-dev100.mjs scripts/test-dual-board.mjs scripts/test-dev100-supplement.mjs`
 and `node scripts/check.mjs`, then verify both pages in the browser.

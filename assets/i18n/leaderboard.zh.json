@@ -317,5 +317,11 @@
   "v10 final report": "v10 最终报告",
   "v10 final report · 11 Oct 2026": "v10 最终报告 · 2026 年 10 月 11 日",
   "v10 report summary": "v10 报告摘要",
-  "† Includes scored tasks with no recorded value for this metric: historical DeepAgents results recorded Full replication only.": "† 包含该指标没有记录值的可评分题目：历史 DeepAgents 结果只记录了完整复现。"
+  "† Includes scored tasks with no recorded value for this metric: historical DeepAgents results recorded Full replication only.": "† 包含该指标没有记录值的可评分题目：历史 DeepAgents 结果只记录了完整复现。",
+  "57 combinations": "57 个组合",
+  "Dev100 / v10 comes first: the development release, a public development benchmark of 100 tasks, with results for 14 models and five harnesses. The complete Selected_1000 results on the 1,000-task final target follow. The two boards are not directly comparable.": "先看 Dev100 / v10 开发期公开集：这是由 100 道题组成的公开开发基准，包含 14 个模型与五种 Harness 的结果；随后是 Selected_1000 在 1,000 题最终目标上的完整结果。两个榜单不能直接比较。",
+  "Choose one harness to draw its mountain. The grid and the table list all recorded combinations.": "选择一种 Harness 即可绘制其山峰图；网格和表格列出全部已有结果的组合。",
+  "Development results · 14 Oct 2026": "开发集结果 · 2026 年 10 月 14 日",
+  "completed-paired-development-run": "已完成评测",
+  "Explicit high reasoning effort": "显式 high 推理强度"
 }

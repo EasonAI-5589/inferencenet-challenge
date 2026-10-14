@@ -20,6 +20,7 @@ const selected = selectedBoardDescriptor('assets/data/paired-results.json');
 const PAGE = 'https://example.org/leaderboard.html';
 const PAGES = ['index.html', 'data.html', 'agent.html', 'harness.html', 'evolution.html', 'leaderboard.html', 'teams.html'];
 const TAG = '20261012-dual-board';
+const DEV_TAG = '20261014-sol-v2';
 // The two dictionaries changed with the Dev100-first order, so language.js carries its own tag on both pages.
 const LANGUAGE_TAG = '20261012-dev100-first';
 const PAIRED_SHA256 = '8fac641c124d4ba956dd6dca6f8763a50d754bad0e5169552efafd139d49330b';
@@ -269,7 +270,7 @@ test('the Selected_1000 block is byte-identical on both pages', async () => {
 });
 
 test('the development module loads only on leaderboard.html, with the release tags', async () => {
-  const script = `<script type="module" src="leaderboard-dev100.js?v=${TAG}"></script>`;
+  const script = `<script type="module" src="leaderboard-dev100.js?v=${DEV_TAG}"></script>`;
   for (const page of PAGES) {
     const html = await read(page);
     if (page === 'leaderboard.html') assert.equal(html.split(script).length, 2);
@@ -278,7 +279,7 @@ test('the development module loads only on leaderboard.html, with the release ta
   for (const page of ['index.html', 'leaderboard.html']) {
     const html = await read(page);
     for (const asset of ['leaderboard.js', 'leaderboard.css']) assert.match(html, new RegExp(`"${pattern(asset)}\\?v=${TAG}"`), `${page}: ${asset}`);
-    assert.match(html, new RegExp(`"language\\.js\\?v=${LANGUAGE_TAG}"`), `${page}: language.js`);
+    assert.match(html, new RegExp(`"language\\.js\\?v=${page === 'leaderboard.html' ? DEV_TAG : LANGUAGE_TAG}"`), `${page}: language.js`);
   }
   assert.match(await read('leaderboard.html'), new RegExp(`"site\\.js\\?v=${TAG}"`));
 });
@@ -304,7 +305,7 @@ test('board modules stay local and share one renderer instance', async () => {
   assert.match(board, /group\.setAttribute\('role', 'group'\);\n\s*if \(label\) group\.setAttribute\('aria-label', label\);/);
   assert.match(board, /card\.setAttribute\('aria-label', legend\);/);
   assert.match(board, /mountain\(cards\[index\], chart, CARD_OPTIONS\)/);
-  assert.match(dev, /devBoardDescriptor\(new URL\('\.\/assets\/data\/dev100-v10-results\.json\?v=20261012-dual-board', import\.meta\.url\)\)/);
+  assert.match(dev, /devBoardDescriptor\(new URL\('\.\/assets\/data\/dev100-current-results\.json\?v=20261014-sol-v2', import\.meta\.url\)\)/);
   assert.match(entry, /selectedBoardDescriptor\(new URL\('\.\/assets\/data\/paired-results\.json\?v=20260917-harness', import\.meta\.url\)\)/);
   // Escape and the close button reach the same controller on every board.
   assert.match(board, /card\.addEventListener\('keydown', event => controller\.keydown\(event\)\)/);
