@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "kind": "inferencenet_dev_board_supplement",
+  "base_board_id": "dev100-v10",
+  "official_leaderboard_result": false,
+  "evidence_status": "completed-paired-development-run",
+  "report": {
+    "label": "sol-responses-high-dev100-20261014-01",
+    "generated_at": "2026-10-14T04:17:23.052148+00:00",
+    "sha256": {
+      "json": "8161c65589d5ae99e0449f292e00f046eec2645917d6ed75c2d5f4d5aad4183e"
+    },
+    "protocol_sha256": "9e99e919f77e3a3528400366008fd213ea14b7a907308740b8f9a6ae1977d7e3",
+    "source_commit": "078693165dbb234373674068990186d358e875cb"
+  },
+  "dataset": {
+    "id": "dev100",
+    "label": "InferenceNet development set (100 tasks)",
+    "tasks": 100,
+    "split": "development",
+    "task_ids_published": false,
+    "relation": "The development split of a pinned 100-task selection drawn from Selected_1000 (dataset revision 59f9512); tasks are not published.",
+    "revision": "59f9512a38e594528807744214a60ee00367434e",
+    "selection_sha256": "6586abbcbb3380d03ecf271c1cf5b91d63c1234eb2f2bbb720f82c4a2ccee154"
+  },
+  "denominator_per_group": 100,
+  "groups": 1,
+  "records": 100,
+  "metrics": [
+    {
+      "key": "perfect",
+      "label": "Full replication",
+      "definition": "Coefficient and standard error within 1% relative error, and p-value within 0.01 absolute error.",
+      "profile": "local-paper-v1"
+    },
+    {
+      "key": "partial",
+      "label": "Coefficient and SE within 5%",
+      "definition": "Coefficient and standard error both below 5% relative error; the p-value is not checked; includes full replication.",
+      "profile": "local-paper-v1"
+    },
+    {
+      "key": "coefficient_only",
+      "label": "Coefficient within 5%",
+      "definition": "Coefficient within 5% relative error; standard error and p-value are not checked.",
+      "profile": "local-paper-v1"
+    },
+    {
+      "key": "direction",
+      "label": "Correct sign",
+      "definition": "Estimated and reference coefficients are both strictly positive or both strictly negative.",
+      "profile": "local-paper-v1"
+    },
+    {
+      "key": "significance",
+      "label": "Correct significance",
+      "definition": "Correct sign and the same p-value band: p < 0.01, 0.01 <= p < 0.05, 0.05 <= p < 0.1, or p >= 0.1.",
+      "profile": "local-paper-v1"
+    }
+  ],
+  "models": [
+    {
+      "id": "gpt56-sol-rsi-v2",
+      "label": "GPT-5.6 Sol + RSI v2",
+      "recorded_name": "openai/gpt-5.6-sol"
+    }
+  ],
+  "harnesses": [
+    {
+      "id": "deepagents",
+      "label": "DeepAgents",
+      "version": "0.7.13",
+      "version_scope": "new native slots",
+      "description": "LangChain deepagents 0.7.13, with langchain 1.4.0 and langgraph 1.2.11."
+    }
+  ],
+  "runs": [
+    {
+      "model": "gpt56-sol-rsi-v2",
+      "harness": "deepagents",
+      "denominator": 100,
+      "complete": true,
+      "outcomes": {
+        "scored": 98,
+        "perfect": 67,
+        "scored_not_perfect": 31,
+        "failed": 2,
+        "unknown": 0,
+        "pending": 0,
+        "failed_infrastructure": 0,
+        "failed_billing": 0,
+        "failed_model": 0,
+        "failed_unattributed": 2,
+        "unknown_infrastructure": 0,
+        "unknown_provider_rejected": 0,
+        "unknown_provider_access": 0,
+        "unknown_provider": 0,
+        "unknown_deadline": 0,
+        "unknown_unattributed": 0
+      },
+      "metrics": {
+        "perfect": {
+          "true": 67,
+          "false": 31,
+          "unknown_or_pending": 2,
+          "denominator": 100,
+          "score": 67
+        },
+        "partial": {
+          "true": 70,
+          "false": 28,
+          "unknown_or_pending": 2,
+          "denominator": 100,
+          "score": 70
+        },
+        "coefficient_only": {
+          "true": 78,
+          "false": 20,
+          "unknown_or_pending": 2,
+          "denominator": 100,
+          "score": 78
+        },
+        "direction": {
+          "true": 95,
+          "false": 3,
+          "unknown_or_pending": 2,
+          "denominator": 100,
+          "score": 95
+        },
+        "significance": {
+          "true": 80,
+          "false": 18,
+          "unknown_or_pending": 2,
+          "denominator": 100,
+          "score": 80
+        }
+      },
+      "settings": {
+        "harness_version": {
+          "values": [
+            {
+              "value": "v2-observation; deepagents 0.7.13; langchain 1.4.0; langgraph 1.2.11",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "route": {
+          "values": [
+            {
+              "value": "OpenRouter Responses; openai/gpt-5.6-sol; stream=false",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "thinking": {
+          "values": [
+            {
+              "value": "Explicit high reasoning effort",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "run_date": {
+          "values": [
+            {
+              "value": "2026-10-14",
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        },
+        "budget": {
+          "values": [
+            {
+              "model_calls": 6,
+              "tool_calls": 4,
+              "output_tokens": 32768,
+              "wall_seconds": 1800,
+              "tool_timeout_seconds": 90,
+              "slots": 100
+            }
+          ],
+          "not_recorded_slots": 0
+        }
+      },
+      "provenance": {
+        "new_native": 100,
+        "offline_derived_deepagents_metric": 0,
+        "historical_deepagents_metric": 0,
+        "inherited_native_sdk": 0
+      },
+      "source": {
+        "report_label": "sol-responses-high-dev100-20261014-01",
+        "final_report_sha256": "a40bffb09ece32fc25d652c97e2fc243f94b1ee13942d8338fb3dc9dfd4ad789",
+        "paired_report_sha256": "b0b496de52c59b13c768c27aedb7675761a9d952aa6ec05505f44ed707a66cc1",
+        "source_commit": "078693165dbb234373674068990186d358e875cb",
+        "protocol_sha256": "9e99e919f77e3a3528400366008fd213ea14b7a907308740b8f9a6ae1977d7e3",
+        "sdk_sha256": "fb40747b3819b4dc2d3adad921a5f9372b28f9c1daaf0cf51a18d76e7af5ae7c",
+        "scoring_profile": "local-paper-v1",
+        "scorer_sha256": "52d46989ab6dc8b4726edfc281a0e27c9f57dce3a958b7de73143aec47d81a61",
+        "sandbox": "baidu-bwrap-v1",
+        "attempts_per_task": 1,
+        "failure_reasons": {
+          "final_execution_failed": 2
+        }
+      }
+    }
+  ],
+  "field_evidence": {
+    "outcomes": "Verified against the completed final report: 98 scored and two final execution failures; failure attribution is not inferred.",
+    "metrics": "Counted directly from the completed paired report flags using local-paper-v1, including coefficient-only correctness; failed tasks remain unknown for every metric.",
+    "provenance": "All 100 task attempts were generated in this new run; historical predictions were not imported.",
+    "budget": "All 100 task attempts share the frozen protocol caps: six model calls, four tool calls, 32768 output tokens, 1800 seconds and 90 seconds per tool execution.",
+    "thinking": "The frozen request profile explicitly sets reasoning effort to high.",
+    "harness_version": "The frozen SDK source hash identifies the v2-observation release and its pinned DeepAgents, LangChain and LangGraph versions.",
+    "route": "The frozen request profile uses OpenRouter Responses with openai/gpt-5.6-sol and non-streaming responses.",
+    "run_date": "The completed run and all selected task attempts are dated 2026-10-14 UTC."
+  },
+  "caveats": []
+}

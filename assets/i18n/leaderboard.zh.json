@@ -317,5 +317,10 @@
   "v10 final report": "v10 最终报告",
   "v10 final report · 11 Oct 2026": "v10 最终报告 · 2026 年 10 月 11 日",
   "v10 report summary": "v10 报告摘要",
-  "† Includes scored tasks with no recorded value for this metric: historical DeepAgents results recorded Full replication only.": "† 包含该指标没有记录值的可评分题目：历史 DeepAgents 结果只记录了完整复现。"
+  "† Includes scored tasks with no recorded value for this metric: historical DeepAgents results recorded Full replication only.": "† 包含该指标没有记录值的可评分题目：历史 DeepAgents 结果只记录了完整复现。",
+  "57 combinations": "57 个组合",
+  "Choose one harness to draw its mountain. The grid and the table list all recorded combinations.": "选择一种 Harness 即可绘制其山峰图；网格和表格列出全部已有结果的组合。",
+  "Development results · 14 Oct 2026": "开发集结果 · 2026 年 10 月 14 日",
+  "completed-paired-development-run": "已完成评测",
+  "Explicit high reasoning effort": "显式 high 推理强度"
 }

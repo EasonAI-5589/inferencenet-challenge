@@ -5,7 +5,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { escapeHTML } from '../leaderboard-data.js';
 import {
   DEV_BOARD, DEV_METRICS, DEFAULT_DEV_METRIC, DEFAULT_DEV_VIEW,
-  validateDevBoard, devViews, devTableRows, devReportHTML, devSavedStatus,
+  validateDevBoard, devViews, devTableRows, devReportHTML, devSavedStatus, devCollectionCSV,
 } from '../leaderboard-dev100-data.js';
 const root = new URL('../', import.meta.url);
 const START = '<!-- dev100-ranking:start -->';
@@ -26,7 +26,7 @@ export const devWidget = data => `<div class="paired-board dev-board" data-dev-l
     <thead><tr><th scope="col">#</th><th scope="col">Model</th><th scope="col">Harness</th>${Object.entries(DEV_METRICS).map(([key, label]) => `<th scope="col" data-metric="${key}" aria-sort="${key === DEFAULT_DEV_METRIC ? 'descending' : 'none'}">${label}</th>`).join('')}<th scope="col" class="dev-count">Unknown or missing (ranked metric)</th><th scope="col" class="dev-count">Scored</th><th scope="col" class="dev-count">Failed</th><th scope="col" class="dev-count">Unknown</th><th scope="col" class="dev-source">Source mix</th></tr></thead>
     <tbody>${devTableRows(data)}</tbody>
   </table></div>
-  <div class="paired-foot"><span>Every score uses all 100 tasks; failed and unknown runs stay in the denominator.</span><a href="assets/data/dev100-v10-results.csv" download>Download development results CSV ↓</a></div>
+  <div class="paired-foot"><span>Every score uses all 100 tasks; failed and unknown runs stay in the denominator.</span><a href="assets/data/${data.base_snapshot ? 'dev100-current-results' : 'dev100-v10-results'}.csv" download>Download development results CSV ↓</a></div>
   <p class="dev-missing-note">† Includes scored tasks with no recorded value for this metric: historical DeepAgents results recorded Full replication only.</p>
   <p class="paired-status visually-hidden" data-ranking-status role="status">${devSavedStatus(data)}</p>
 </div>`;
@@ -48,10 +48,20 @@ export function replaceDevBlock(html, block, file = 'leaderboard.html') {
 }
 
 export async function buildDevBoard({
-  source = new URL('assets/data/dev100-v10-results.json', root),
+  source,
   page = new URL('leaderboard.html', root),
 } = {}) {
-  const data = validateDevBoard(JSON.parse(await readFile(source, 'utf8')));
+  const snapshot = source ? JSON.parse(await readFile(source, 'utf8')) : {
+    schema_version: 2,
+    kind: 'inferencenet_dev_board_collection',
+    base: JSON.parse(await readFile(new URL('assets/data/dev100-v10-results.json', root), 'utf8')),
+    supplements: [JSON.parse(await readFile(new URL('assets/data/dev100-sol-responses-high.json', root), 'utf8'))],
+  };
+  const data = validateDevBoard(snapshot);
+  if (!source) {
+    await writeFile(new URL('assets/data/dev100-current-results.json', root), JSON.stringify(snapshot, null, 2) + '\n');
+    await writeFile(new URL('assets/data/dev100-current-results.csv', root), devCollectionCSV(data));
+  }
   await writeFile(page, replaceDevBlock(await readFile(page, 'utf8'), devBlock(data)));
   return data;
 }
