@@ -25,7 +25,7 @@
 .landscape-types dt{font-weight:600;color:var(--ink)}
 .landscape-types dd{margin:2px 0 0;color:var(--soft)}
 .landscape-table td.landscape-type{white-space:nowrap;color:var(--ink)}
-.landscape-tabs .tablist [role="tab"]{flex:1 1 calc((100% - 4px) / 5)}
+.landscape-tabs .tablist [role="tab"]{flex:1 1 calc((100% - 3px) / 4)}
 .harness-page .landscape-title{font-size:17px;font-weight:600;line-height:1.4;margin:0 0 6px}
 .landscape-intro{font-size:14px;line-height:1.75;color:var(--soft);margin:0 0 18px;max-width:860px}
 .landscape-table{min-width:1120px}
@@ -70,6 +70,21 @@
 .harness-compare{min-width:900px}
 .harness-compare th[scope="row"]{min-width:140px}
 .harness-compare td{min-width:180px}
+
+/* 06 In InferenceNet: four current configurations, their evidence scope, then the historical wiring. */
+.harness-page #configurations,.harness-page #historical-wiring{scroll-margin-top:calc(var(--header-h) + 58px)}
+.harness-page #configurations{margin-top:0}
+.config-intro{max-width:860px;margin:0 0 22px;font-size:15px;line-height:1.8;color:var(--soft)}
+.config-cards{margin-bottom:30px}
+.config-cards .card{padding:20px}
+.harness-page .config-cards .card h4{font-size:17px;line-height:1.35;letter-spacing:-.015em}
+.config-version{font-family:var(--mono);font-size:12px;font-weight:400;color:var(--muted);margin-left:6px;white-space:nowrap}
+.config-cards .card p{font-size:13.5px;line-height:1.7}
+.config-cards .card p strong{color:var(--ink);font-weight:600}
+.config-scope{min-width:880px}
+.config-scope td:last-child{min-width:280px}
+.config-notes{max-width:900px}
+.config-links{flex-direction:row;flex-wrap:wrap;gap:8px 28px;margin-top:20px}
 .harness-evo-note{max-width:860px;margin:24px 0 0;font-size:15px;line-height:1.8;color:var(--soft)}
 .harness-evo-note a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--muted)}
 
@@ -87,7 +102,7 @@
   .landscape-strip .stat:nth-child(even){padding-right:0}
   .landscape-strip .stat:last-child{grid-column:1/-1}
   .harness-page .harness-tabs .case-head h3{font-size:21px}
-  .harness-deep{scroll-margin-top:calc(var(--header-h) + 16px)}
+  .harness-deep,.harness-page #configurations,.harness-page #historical-wiring{scroll-margin-top:calc(var(--header-h) + 16px)}
 }
 @media(max-width:520px){
   .harness-page .field-groups.slots,.landscape-types{grid-template-columns:minmax(0,1fr)}
@@ -95,4 +110,105 @@
   .harness-figure-title{margin-top:30px}
   .harness-page .harness-subtitle{margin-top:36px}
   .harness-page .harness-tabs .case-head h3{font-size:20px}
+}
+@media(forced-colors:active){
+}
+
+/* Industry overview: a paper-style figure, then the three composition scales. */
+.hs-jump{margin:20px 0;font-size:15px;font-weight:600}
+.hs-jump a,.hs-details a,.hs-composition a{text-decoration:underline;text-underline-offset:3px}
+.hs-details{margin:24px 0;border-block:1px solid var(--line);padding:16px 0;color:var(--soft)}
+.hs-details summary{cursor:pointer;font-size:15px;font-weight:600;color:var(--ink)}
+.hs-details[open] summary{margin-bottom:22px}
+.definition-details .harness-prose{margin-top:0}
+.hs-timeline,.hs-composition{margin:0}
+.hs-timeline-scroll{overflow-x:auto;overscroll-behavior-inline:contain}
+.hs-timeline svg{display:block;width:100%;min-width:1100px;height:auto;font-family:var(--sans)}
+.hs-composition svg{display:block;width:100%;min-width:950px;height:auto;font-family:var(--sans)}
+.hs-timeline figcaption,.hs-composition figcaption{font-size:12px;line-height:1.8;color:var(--muted);margin-top:14px;max-width:1000px}
+.hs-catalogue{margin-top:48px;padding-top:32px;border-top:1px solid var(--line);scroll-margin-top:calc(var(--header-h) + 32px)}
+.harness-page #landscape-title{font-size:25px;margin:0 0 10px;letter-spacing:-.02em}
+.hs-catalogue .section-heading .lead{font-size:15px}
+.hs-catalogue .landscape-title{font-size:20px;margin:0 0 12px}
+.hs-source-table{min-width:840px}
+.hs-source-table td:first-child{white-space:nowrap}
+.hs-source-table a{font-weight:600}
+.hc-box{fill:var(--surface);stroke:var(--strong-line);stroke-width:1}
+.hc-support{fill:var(--tint);stroke:var(--strong-line);stroke-dasharray:5 4}
+.hc-label{fill:var(--ink);font-size:14px;font-weight:600}
+.hc-text{fill:var(--ink);font-size:14px}
+.hc-small{fill:var(--soft);font-size:12px}
+.hc-line{stroke:var(--brand);stroke-width:1.5;fill:none}
+.hc-ah{fill:var(--brand)}
+
+/* 02 Industry systems: the 2025–2026 timeline (inline SVG, viewBox 1130 wide; scrolls sideways
+ * below --diagram-min). Layer colors reuse site tokens; every badge also carries its letter. */
+.hs-timeline{--hs-e:#8a4322;--hs-t:var(--chart-3);--hs-c:#2f6f35;--hs-l:var(--brand);--hs-o:var(--chart-4);--hs-v:#6b3a80;--hs-g:var(--caution);--hs-on:#fff}
+html[data-theme="dark"] .hs-timeline{--hs-e:#eba57f;--hs-c:#93d093;--hs-v:#d2a5e5;--hs-on:#111}
+.hs-timeline svg text{font-family:var(--sans);fill:var(--ink)}
+.hs-timeline .hs-fig-title{font-size:13px;font-weight:600}
+.hs-timeline .hs-fig-note,.hs-timeline .hs-q,.hs-timeline .hs-lane-s,.hs-timeline .hs-l2{fill:var(--muted)}
+.hs-timeline .hs-fig-note{font-size:10.5px}
+.hs-timeline .hs-band{fill:var(--brand-tint);opacity:.6}
+.hs-timeline .hs-grid{stroke:var(--line);stroke-width:1;stroke-dasharray:2 4}
+.hs-timeline .hs-grid-year{stroke:var(--strong-line);stroke-dasharray:none}
+.hs-timeline .hs-axis{stroke:var(--brand);stroke-width:3;fill:none}
+.hs-timeline .hs-axis-head{fill:var(--brand)}
+.hs-timeline .hs-tick{stroke:var(--brand);stroke-width:1}
+.hs-timeline .hs-q,.hs-timeline .hs-lane-s,.hs-timeline .hs-l2,.hs-timeline .hs-l3{font-size:10px}
+.hs-timeline .hs-pill{fill:var(--surface);stroke:var(--brand);stroke-width:1.5}
+.hs-timeline .hs-pill.is-now{fill:var(--brand)}
+.hs-timeline .hs-pill-t{font-family:var(--mono);font-size:12px;font-weight:700;fill:var(--brand)}
+.hs-timeline .hs-pill-t.is-now{fill:var(--surface)}
+.hs-timeline .hs-rail,.hs-timeline .hs-stem{stroke:var(--strong-line);stroke-width:1}
+.hs-timeline .hs-lane-t{font-size:11px;font-weight:600}
+.hs-timeline .hs-dot{fill:var(--surface);stroke:var(--ink);stroke-width:1.5}
+.hs-timeline .hs-tag{fill:var(--surface);stroke:var(--line);stroke-width:1}
+.hs-timeline .hs-name{font-size:12px;font-weight:600}
+.hs-timeline .hs-date{font-weight:600;fill:var(--soft)}
+.hs-timeline .hs-l3{fill:var(--soft)}
+.hs-timeline .hs-badge-t{font-size:9.5px;font-weight:700;fill:var(--hs-on)}
+.hs-timeline .hs-e{fill:var(--hs-e)}.hs-timeline .hs-t{fill:var(--hs-t)}.hs-timeline .hs-c{fill:var(--hs-c)}.hs-timeline .hs-l{fill:var(--hs-l)}
+.hs-timeline .hs-o{fill:var(--hs-o)}.hs-timeline .hs-v{fill:var(--hs-v)}.hs-timeline .hs-g{fill:var(--hs-g)}
+.hs-timeline .hs-legend-box{fill:none;stroke:var(--strong-line);stroke-width:1;stroke-dasharray:4 3}
+.hs-timeline .hs-legend-intro{font-size:10.5px;font-weight:600}
+.hs-timeline .hs-legend-t{font-size:10.5px;fill:var(--soft)}
+.hs-timeline figcaption a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--muted)}
+.hs-timeline-table table{min-width:860px}
+.hs-timeline-table th[scope="row"] a{text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--muted)}
+.hs-timeline-table td:first-child{white-space:nowrap}
+@media(forced-colors:active){
+  .hs-timeline .hs-badge,.hs-timeline .hs-pill.is-now{fill:CanvasText}
+  .hs-timeline .hs-badge-t,.hs-timeline .hs-pill-t.is-now{fill:Canvas}
+  .hs-timeline .hs-band{display:none}
+}
+
+/* Runnable-harness comparison: separate implementation from supporting ecosystem. */
+.hf-title{font-size:18px;font-weight:650}
+.hf-lane{font-size:14px;font-weight:650}
+.hf-name{font-size:14px;font-weight:650}
+.hf-meta{font-size:12px;fill:var(--soft)}
+
+.hs-timeline .hs-stem{fill:none}
+
+/* 02 Coverage of 13 Oct 2026: structure first, then timeline, mechanisms and catalogue. */
+.harness-page #architecture,.harness-page #timeline,.harness-page #mechanisms{scroll-margin-top:calc(var(--header-h) + 58px)}
+.hs-counts{margin-top:14px}
+.hc-core{stroke:var(--brand);stroke-width:1.5}
+.hc-branch{fill:var(--ink);font-size:12.5px;font-weight:650}
+.hc-note{fill:var(--muted)}
+.mechanism-table{min-width:1180px}
+.mechanism-table th[scope="row"]{min-width:150px;vertical-align:top}
+.mechanism-table td{min-width:150px;font-size:13px;line-height:1.6;vertical-align:top}
+.mech-name{display:block;font-weight:600;color:var(--ink)}
+.mech-basis,.mech-sources{display:block;font-size:11.5px;font-weight:400;line-height:1.5;color:var(--muted);margin-top:3px}
+.mech-sources a,.mechanism-notes a,.harness-page .layer-table a,.harness-page #compare .lead a,.harness-page #self-evolution .lead a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--muted)}
+.mechanism-notes{max-width:900px;margin-top:18px}
+.landscape-table td a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--muted)}
+@media(min-width:861px) and (max-width:1100px){
+  .landscape-strip{--cols-cap:4}
+  .landscape-strip .stat:last-child{grid-column:span 2}
+}
+@media(max-width:860px){
+  .harness-page #architecture,.harness-page #timeline,.harness-page #mechanisms{scroll-margin-top:calc(var(--header-h) + 16px)}
 }
