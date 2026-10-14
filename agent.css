@@ -91,6 +91,8 @@
 .case-improvement>p+p{margin-top:12px}
 @media(max-width:760px){
   .case-dataset{padding:20px}
+  .fail-task>summary{padding:18px 44px 18px 20px}
+  .fail-task-body{padding:0 20px 20px}
   .case-dataset-heading{flex-direction:column;gap:12px}
   .case-sample-flow{grid-template-columns:minmax(0,1fr);gap:18px}
   .case-spec,.case-proof-grid{grid-template-columns:minmax(0,1fr);gap:20px}
@@ -210,7 +212,119 @@ ul.inline-list{list-style:disc}
   .related-figure{padding:18px}
   .baseline-grid{margin-top:26px}
 }
+/* 05 · Failure case: two-track timeline. The spine names each run's own call. */
+.fail-context{margin:-12px 0 8px;font-family:var(--mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.fail-spec{margin-bottom:22px}
+.fail-quote{margin:0 0 16px;padding:4px 0 4px 16px;border-left:2px solid var(--brand)}
+.fail-quote p{font-size:14px;line-height:1.7;color:var(--ink)}
+.fail-quote p.fail-quote-note{margin:0 0 8px;font-size:12px;line-height:1.5;color:var(--muted)}
+.case-dataset.fail-task{padding:0}
+.fail-task>summary{position:relative;display:grid;gap:6px;padding:22px 52px 22px 26px;cursor:pointer;list-style:none}
+.fail-task>summary::-webkit-details-marker{display:none}
+.fail-task>summary::marker{content:""}
+.fail-task>summary h3{margin:0;font-size:19px;line-height:1.4;letter-spacing:-.015em}
+.fail-task-brief{margin:0;font-size:13px;line-height:1.6;color:var(--soft)}
+.fail-task[open] .fail-task-brief{display:none}
+.fail-task>summary::after{content:"+";position:absolute;right:22px;top:22px;font-family:var(--mono);font-size:16px;line-height:1;color:var(--muted)}
+.fail-task[open]>summary::after{content:"\2013"}
+.fail-task>summary:focus-visible{outline:3px solid var(--ink);outline-offset:-3px}
+.fail-task-body{padding:0 26px 26px;display:grid;gap:16px}
+.fail-task-body>p{font-size:14px;line-height:1.85;color:var(--soft);margin:0}
+.fail-task-body .fail-quote{margin:0}
+.fail-outcomes{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:28px}
+.fail-outcomes>article{border:1px solid var(--line);padding:26px;min-width:0;display:flex;flex-direction:column}
+.fail-run-a{border-top:3px solid var(--caution)}
+.fail-run-b{border-top:3px solid var(--ink)}
+.fail-metrics,.fail-status{display:grid;gap:0;margin:8px 0 0}
+.fail-metrics{grid-template-columns:1fr 1fr;column-gap:36px}
+.fail-metrics>div,.fail-status>div{display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}
+.fail-metrics dt,.fail-status dt{color:var(--soft)}
+.fail-metrics dd,.fail-status dd{margin:0;font-family:var(--mono);text-align:right}
+.fail-metrics dt,.fail-metrics dd{white-space:nowrap}
+.fail-status{margin-top:8px}
+.fail-bottom{margin:18px 0 0;font-size:14px;line-height:1.7;color:var(--ink)}
+.fail-bridge{margin:22px 0 0;font-size:16px;line-height:1.7}
+.fail-role{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.fail-cause,.fail-boundary,.fail-block,.fail-part{margin-top:48px}
+.fail-part-title{display:flex;align-items:baseline;gap:14px;margin:0 0 14px;font-size:22px;line-height:1.35;letter-spacing:-.02em}
+.fail-part-no{font-family:var(--mono);font-size:13px;letter-spacing:.04em;color:var(--brand);flex:none}
+.fail-mech,.fail-lead,.fail-part-end{max-width:780px}
+.fail-mech{margin:18px 0 0;font-size:15px;line-height:1.75;color:var(--soft)}
+.fail-lead{margin:0 0 8px;font-size:16px;line-height:1.7}
+.fail-part-end{margin:8px 0 0;font-size:16px;line-height:1.7}
+.fail-timeline{list-style:none;margin:18px 0 0;padding:0;display:grid}
+li.fail-node{display:grid;grid-template-columns:minmax(0,1.15fr) 188px minmax(0,.85fr);column-gap:20px;align-items:stretch;min-width:0;margin:0;padding:0;background:none;border:0;font:inherit;line-height:inherit;text-align:left;color:inherit}
+li.fail-node>.fail-evidence{grid-column:1;grid-row:1}
+li.fail-node>.fail-axis{grid-column:2;grid-row:1}
+li.fail-node>.fail-explain{grid-column:3;grid-row:1}
+.fail-axis{position:relative;display:flex;justify-content:center;align-items:flex-start;min-width:0}
+.fail-axis::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--strong-line);transform:translateX(-50%)}
+.fail-node:first-child .fail-axis::before{top:16px}
+.fail-call{position:relative;z-index:1;width:100%;margin:16px 0;padding:10px 8px;border:1px solid var(--strong-line);border-top-width:3px;background:var(--paper);color:var(--ink);cursor:pointer;display:grid;gap:3px;justify-items:center;text-align:center;font:inherit}
+.fail-call:hover{background:var(--tint)}
+.fail-call:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.fail-node.is-ran .fail-call{border-top-color:var(--brand)}
+.fail-node.is-held .fail-call,.fail-node.is-stop .fail-call{border-top-color:var(--caution)}
+.fail-node.is-submit .fail-call{border-top-color:var(--ink)}
+.fail-node.is-eval .fail-call{border-top-color:var(--muted)}
+.fail-call-kicker{font-family:var(--mono);font-size:11px;line-height:1.35;letter-spacing:.03em;color:var(--brand)}
+.fail-call-tool{font-size:12px;line-height:1.35;color:var(--soft);word-break:keep-all}
+.fail-call-status{font-family:var(--mono);font-size:10px;line-height:1.4;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.fail-call-mark{font-family:var(--mono);font-size:14px;line-height:1;color:var(--muted)}
+.fail-side{min-width:0}
+.fail-brief{padding:16px 0 8px}
+.fail-brief-action{margin:0;font-size:15px;line-height:1.45;font-weight:600}
+.fail-brief-fact{margin:6px 0 0;font-family:var(--mono);font-size:12px;line-height:1.5;color:var(--soft)}
+.fail-brief-note{margin:0;padding:16px 0 8px;font-size:14px;line-height:1.65}
+.fail-detail{padding-bottom:18px}
+.fail-evidence .code-panel{--code-max:240px;margin:0 0 12px}
+.fail-evidence .code-panel:last-child{margin-bottom:0}
+.fail-omit{margin:-4px 0 12px;font-size:12px;line-height:1.6;color:var(--muted)}
+.fail-explain .fail-detail p{margin:0;font-size:15px;line-height:1.75;color:var(--ink)}
+.fail-explain .fail-detail p+p{margin-top:10px}
+.fail-detail>.fail-role{margin:0 0 8px}
+.fail-fold{border-top:1px solid var(--line)}
+.fail-fold+.fail-fold{border-top:0}
+.fail-fold:last-of-type{border-bottom:1px solid var(--line)}
+.fail-fold>summary{position:relative;padding:18px 36px 18px 0;cursor:pointer;font-size:16px;font-weight:500;list-style:none}
+.fail-fold>summary::-webkit-details-marker{display:none}
+.fail-fold>summary::marker{content:""}
+.fail-fold>summary::after{content:"+";position:absolute;right:0;top:16px;font-family:var(--mono);font-size:16px;color:var(--muted)}
+.fail-fold[open]>summary::after{content:"\2013"}
+.fail-fold>summary:focus-visible{outline:3px solid var(--ink);outline-offset:-3px}
+.fail-fold-body{padding:0 0 28px;display:grid;gap:14px}
+.fail-block .case-step-content>h3{font-size:20px;line-height:1.4;margin:0 0 8px}
+.fail-cause h3,.fail-boundary h3{margin-bottom:16px}
+.fail-points{margin:12px 0 0;padding-left:18px;color:var(--soft);font-size:14px;line-height:1.7}
+.fail-points li+li{margin-top:6px}
+.fail-right{margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+.fail-cause .table-scroll{margin-top:22px}
+.fail-cause .case-decision,.fail-boundary .case-decision{margin-top:18px}
+.fail-boundary{padding:26px;border:1px solid var(--line);background:var(--tint)}
+.fail-design{margin-top:56px}
+.fail-design>summary{padding-top:22px;padding-bottom:22px}
+.fail-design>summary::after{top:24px}
+.fail-design-title{margin:0;max-width:740px;font-size:22px;line-height:1.35;letter-spacing:-.02em}
+.fail-design-body{max-width:780px;display:grid;gap:16px}
+.fail-design-body p{margin:0;font-size:16px;line-height:1.75}
+.fail-capabilities{margin-top:32px}
+.fail-capabilities .card h3{min-height:2.7em}
+.fail-call{transition:background-color .15s ease}
+@media (prefers-reduced-motion: reduce){
+  .fail-call{transition:none}
+}
+@media(max-width:860px){
+  .fail-outcomes,.fail-spec{grid-template-columns:minmax(0,1fr)}
+  .fail-capabilities .card h3{min-height:0}
+  li.fail-node{display:block;margin-left:7px;padding:2px 0 8px 16px;border-left:1px solid var(--strong-line)}
+  .fail-axis{display:block}
+  .fail-axis::before{display:none}
+  .fail-call{max-width:320px}
+  .fail-boundary{padding:20px}
+}
+
 @media(max-width:520px){
+  .fail-metrics{grid-template-columns:minmax(0,1fr)}
   .evidence-list{grid-template-columns:minmax(0,1fr)}
   .related-figure{padding:14px}
   .arms-table tbody th,.budgets-table tbody th,.profiles-table tbody th{white-space:normal}

@@ -15,10 +15,10 @@
   <script src="theme.js"></script>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="site.css?v=20261011-release">
-  <link rel="stylesheet" href="agent.css?v=20260917-case-data">
+  <link rel="stylesheet" href="agent.css?v=20261013-close">
   <script src="site.js?v=20261011-release" defer></script>
   <link rel="stylesheet" href="language.css">
-  <script src="language.js?v=20261011-release" defer></script>
+  <script src="language.js?v=20261013-axis" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -56,6 +56,7 @@
       <li><a href="#baseline"><span class="subnav-number">02</span>Model</a></li>
       <li><a href="#trajectory"><span class="subnav-number">03</span>Model + Harness</a></li>
       <li><a href="#scoring"><span class="subnav-number">04</span>The result</a></li>
+      <li><a href="#failure-case-study"><span class="subnav-number">05</span>Failure case</a></li>
     </ol></nav>
     <div id="walkthrough">
 <section class="section container ruled" id="task" aria-labelledby="task-title">
@@ -413,6 +414,772 @@ p {&#x27;const&#x27;: 0.9999999914846099, &#x27;Wscmonth_simsn_w&#x27;: 4.911379
       </details>
     </section>
     </div>
+    <section class="section container ruled" id="failure-case-study" aria-labelledby="failure-title">
+      <div class="case-heading">
+        <p class="kicker">05 / Failure case study</p>
+        <h2 id="failure-title">Two runs, two failure modes</h2>
+      </div>
+      <p class="case-intro">This is task 213 from Dev_100. Both runs use DeepAgents 0.7.13 with GPT-5.5, under different budgets. Run A never submitted a program, so independent evaluation did not start. Run B submitted a program that executed, then failed replication. These are two observed development runs. Run B is not a continuation of Run A. The pair is not a controlled experiment, so it does not estimate the effect of a larger budget, and it does not show that a larger budget is useless.</p>
+      <p class="fail-context">Same task · Same model · Same harness · Different budgets</p>
+
+      <details class="case-dataset fail-task">
+        <summary>
+          <h3>Task 0213 — Reproducing an OLS regression</h3>
+          <p class="fail-task-brief">AER · Distinguishing Common Ratio Preferences from Common Ratio Effects Using Paired Valuation Tasks</p>
+        </summary>
+        <div class="fail-task-body">
+        <dl class="case-variables fail-spec">
+          <dt>Journal</dt><dd>American Economic Review</dd>
+          <dt>Article</dt><dd>Distinguishing Common Ratio Preferences from Common Ratio Effects Using Paired Valuation Tasks</dd>
+          <dt>Target</dt><dd>Table 6, Column 1</dd>
+          <dt>Method</dt><dd>OLS</dd>
+          <dt>Dataset</dt><dd>263 original observations, 16 columns</dd>
+          <dt>Estimation sample</dt><dd>120 observations after <code>prior_lit == 0</code></dd>
+          <dt>Outcome</dt><dd><code>CR_RCR</code></dd>
+          <dt>Main regressor</dt><dd>scaled <code>v_diff</code></dd>
+          <dt>Fixed effects</dt><dd><code>p</code>, <code>r</code>, task</dd>
+          <dt>Required results</dt><dd>coefficient, standard error, p-value</dd>
+        </dl>
+        <blockquote class="fail-quote">
+          <p class="fail-quote-note">Instruction excerpt</p>
+          <p data-no-translate>Keep only current-study experiments with prior_lit equal to 0, construct the scaled value-difference variable v_diff and CR_RCR in percentage points from PrA minus PrC, round p and r to percentage values, and include p, r, and task fixed effects.</p>
+        </blockquote>
+        <p>The task requests a scaled regressor but does not provide its exact construction formula.</p>
+        <p class="case-label">What the model could use</p>
+        <ul class="fail-points">
+          <li>The model receives the filtered instruction and the declared dataset.</li>
+          <li>The reference Stata program is not mounted, and reference numerical answers are not returned.</li>
+          <li>Registered tools are run_python plus virtual file notes. There is no paper-search tool.</li>
+          <li>Python runs in a container started with network disabled.</li>
+          <li>Article title and journal are not in the model-visible fields. Table 6 is mentioned because that phrase is inside the instruction text.</li>
+        </ul>
+        <p class="case-caption">Journal and article title are shown above for the reader. They are not model-visible fields. The table location is inside the instruction, so that phrase is model-visible.</p>
+        </div>
+      </details>
+
+      <div class="fail-outcomes">
+        <article class="fail-run-a">
+          <p class="case-label">Run A</p>
+          <h3>Submission failure</h3>
+          <dl class="fail-metrics">
+            <div><dt>Model calls</dt><dd>6 / 6</dd></div>
+            <div><dt>Python runs</dt><dd>4 / 4</dd></div>
+            <div><dt>Tokens</dt><dd>28,146</dd></div>
+            <div><dt>Runtime</dt><dd>30.9 seconds</dd></div>
+          </dl>
+          <dl class="fail-status">
+            <div><dt>Final program</dt><dd>Not submitted</dd></div>
+            <div><dt>Independent evaluation</dt><dd>Not reached</dd></div>
+            <div><dt>Output</dt><dd><code>model_calls_exhausted</code></dd></div>
+          </dl>
+          <p class="fail-bottom">GPT-5.5 used every model call on tool requests and did not submit a program.</p>
+        </article>
+        <article class="fail-run-b">
+          <p class="case-label">Run B</p>
+          <h3>Replication failure</h3>
+          <dl class="fail-metrics">
+            <div><dt>Model calls</dt><dd>10 / 10</dd></div>
+            <div><dt>Python runs</dt><dd>8 / 8</dd></div>
+            <div><dt>Tokens</dt><dd>133,717</dd></div>
+            <div><dt>Runtime</dt><dd>129.1 seconds</dd></div>
+          </dl>
+          <dl class="fail-status">
+            <div><dt>Final program</dt><dd>Submitted</dd></div>
+            <div><dt>Final execution</dt><dd>Succeeded</dd></div>
+            <div><dt>Replication</dt><dd>Coefficient direction only</dd></div>
+          </dl>
+          <p class="fail-bottom">GPT-5.5 submitted a program. Final execution succeeded, and replication matched only the coefficient direction.</p>
+        </article>
+      </div>
+      <p class="fail-bridge">Run A stopped before submission. Run B reached evaluation but failed replication.</p>
+
+      <p class="fail-mech">DeepAgents 0.7.13 sends the task, together with any feedback already collected, to GPT-5.5. Each send counts as one model call. The model may return a tool request that includes Python code, or it may submit a final program. When a tool request arrives, the harness runs that code, collects the output, and includes it in the next model call, so the model can read the result and decide what to do next.</p>
+      <p class="fail-mech">A model call is one response from GPT-5.5. A Python run is DeepAgents 0.7.13 executing code the model requested. Final execution is a separate run of the submitted program after the loop ends, and it is not counted among the Python runs used during exploration.</p>
+
+      <div class="fail-part">
+        <h3 class="fail-part-title"><span class="fail-part-no">01</span> Why did Run A fail to produce an output?</h3>
+        <p class="fail-lead">Run A spread its calls across successive inspections of the data. The regression had not started when the model-call allowance was used up, and no program was submitted.</p>
+        <ol class="fail-timeline">
+
+          <li class="fail-node is-ran">
+            <div class="fail-axis">
+              <button type="button" class="fail-call" id="fail-a-1-call" aria-expanded="false" aria-controls="fail-a-1-evidence fail-a-1-explain">
+                <span class="fail-call-kicker">Model call <span data-no-translate>1</span></span>
+                <span class="fail-call-tool">run_python · Python run 1</span>
+                <span class="fail-call-status">Executed</span>
+                <span class="fail-call-mark" aria-hidden="true">+</span>
+              </button>
+            </div>
+            <div class="fail-side fail-evidence">
+              <div class="fail-brief">
+                <p class="fail-brief-action">Read table6.dta</p>
+                <p class="fail-brief-fact">263 rows · 16 columns</p>
+              </div>
+              <div class="fail-detail" id="fail-a-1-evidence" role="region" aria-labelledby="fail-a-1-call" hidden>
+<div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Code excerpt</span></div><pre tabindex="0"><code>path='/data/0213/data/table6.dta'
+print(os.path.exists(path), os.path.getsize(path) if os.path.exists(path) else None)
+df=pd.read_stata(path)
+print(df.shape)
+print(df.columns.tolist())
+print(df.dtypes)
+print(df.head().to_string())
+print(df.describe(include='all').transpose().to_string(max_rows=200))</code></pre></div>
+                <div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Recorded output</span></div><pre tabindex="0"><code>True 46285
+(263, 16)
+['task', 'r', 'p', 'v_ab', 'v_cd', 'AC', 'AD', 'BC', 'BD', 'N', 'H', 'M', 'prior_lit', 'real', 'PrA', 'PrC']</code></pre></div>
+                <p class="fail-omit">Stdout lines 1–3 of Python run 1. Later lines print column types, the first rows, and a describe() table. Those rows are omitted.</p>
+              </div>
+            </div>
+            <div class="fail-side fail-explain">
+              <p class="fail-brief-note">The file can be read. This call prints the table and does not estimate a regression.</p>
+              <div class="fail-detail" id="fail-a-1-explain" role="region" aria-labelledby="fail-a-1-call" hidden>
+                <p class="fail-role">Explanation</p>
+<p>DeepAgents 0.7.13 sent the task. GPT-5.5 returned this run_python request, and the harness executed it. The file is present and reads as 263 rows and 16 columns. This run prints the table. It does not estimate a regression. The model reads this output on the next model call and then chooses the next step.</p>
+              </div>
+            </div>
+          </li>
+          <li class="fail-node is-ran">
+            <div class="fail-axis">
+              <button type="button" class="fail-call" id="fail-a-2-call" aria-expanded="false" aria-controls="fail-a-2-evidence fail-a-2-explain">
+                <span class="fail-call-kicker">Model call <span data-no-translate>2</span></span>
+                <span class="fail-call-tool">run_python · Python run 2</span>
+                <span class="fail-call-status">Executed</span>
+                <span class="fail-call-mark" aria-hidden="true">+</span>
+              </button>
+            </div>
+            <div class="fail-side fail-evidence">
+              <div class="fail-brief">
+                <p class="fail-brief-action">Try to read Stata metadata</p>
+                <p class="fail-brief-fact">pyreadstat is not installed</p>
+              </div>
+              <div class="fail-detail" id="fail-a-2-evidence" role="region" aria-labelledby="fail-a-2-call" hidden>
+<div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Code excerpt</span></div><pre tabindex="0"><code>try:
+ import pyreadstat
+ df, meta=pyreadstat.read_dta('/data/0213/data/table6.dta')
+ print('pyreadstat ok')
+ print(meta.column_names)
+ print(meta.column_labels)
+ print(meta.variable_value_labels)
+ print(meta.value_labels)
+ print(meta.file_label)
+except Exception as e:
+ print('err',repr(e))</code></pre></div>
+                <div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Recorded output</span></div><pre tabindex="0"><code>err ModuleNotFoundError("No module named 'pyreadstat'")</code></pre></div>
+              </div>
+            </div>
+            <div class="fail-side fail-explain">
+              <p class="fail-brief-note">The metadata read failed. The next call switches to pandas.</p>
+              <div class="fail-detail" id="fail-a-2-explain" role="region" aria-labelledby="fail-a-2-call" hidden>
+                <p class="fail-role">Explanation</p>
+<p>GPT-5.5 used the next call to look for variable-definition metadata. pyreadstat is not installed, so the run printed the import error and returned none of the requested labels. The code catches that exception. The execution receipt still has exit code 0, which records that the program finished, not that the metadata was read.</p>
+              </div>
+            </div>
+          </li>
+          <li class="fail-node is-ran">
+            <div class="fail-axis">
+              <button type="button" class="fail-call" id="fail-a-3-call" aria-expanded="false" aria-controls="fail-a-3-evidence fail-a-3-explain">
+                <span class="fail-call-kicker">Model call <span data-no-translate>3</span></span>
+                <span class="fail-call-tool">run_python · Python run 3</span>
+                <span class="fail-call-status">Executed</span>
+                <span class="fail-call-mark" aria-hidden="true">+</span>
+              </button>
+            </div>
+            <div class="fail-side fail-evidence">
+              <div class="fail-brief">
+                <p class="fail-brief-action">Read labels with pandas</p>
+                <p class="fail-brief-fact">v_ab and v_cd are labeled as means</p>
+              </div>
+              <div class="fail-detail" id="fail-a-3-evidence" role="region" aria-labelledby="fail-a-3-call" hidden>
+<div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Code excerpt</span></div><pre tabindex="0"><code>with pd.io.stata.StataReader('/data/0213/data/table6.dta') as rdr:
+ print(rdr.variable_labels())
+ print('data_label', rdr.data_label)
+ print('value labels', rdr.value_labels())</code></pre></div>
+                <div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Recorded output</span></div><pre tabindex="0"><code>{'task': '', 'r': '(mean) r', 'p': '(mean) p', 'v_ab': '(mean) v_ab', 'v_cd': '(mean) v_cd', 'AC': '(sum) AC', 'AD': '(sum) AD', 'BC': '(sum) BC', 'BD': '(sum) BD', 'N': '(sum) N', 'H': '', 'M': '', 'prior_lit': '', 'real': '', 'PrA': '', 'PrC': ''}
+data_label 
+value labels {}</code></pre></div>
+              </div>
+            </div>
+            <div class="fail-side fail-explain">
+              <p class="fail-brief-note">The labels are aggregation notes. They do not state a formula for v_diff.</p>
+              <div class="fail-detail" id="fail-a-3-explain" role="region" aria-labelledby="fail-a-3-call" hidden>
+                <p class="fail-role">Explanation</p>
+<p>After the missing-package error, GPT-5.5 switched to pandas and asked for Stata labels. DeepAgents 0.7.13 ran that request. v_ab and v_cd are labeled as means, and several other columns are labeled as sums. Value labels are empty. The labels do not state a formula for v_diff.</p>
+              </div>
+            </div>
+          </li>
+          <li class="fail-node is-ran">
+            <div class="fail-axis">
+              <button type="button" class="fail-call" id="fail-a-4-call" aria-expanded="false" aria-controls="fail-a-4-evidence fail-a-4-explain">
+                <span class="fail-call-kicker">Model call <span data-no-translate>4</span></span>
+                <span class="fail-call-tool">run_python · Python run 4</span>
+                <span class="fail-call-status">Executed</span>
+                <span class="fail-call-mark" aria-hidden="true">+</span>
+              </button>
+            </div>
+            <div class="fail-side fail-evidence">
+              <div class="fail-brief">
+                <p class="fail-brief-action">Count the current-study sample</p>
+                <p class="fail-brief-fact">120 rows · middle 60 / high 60</p>
+              </div>
+              <div class="fail-detail" id="fail-a-4-evidence" role="region" aria-labelledby="fail-a-4-call" hidden>
+<div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Code excerpt</span></div><pre tabindex="0"><code>print(df.groupby('prior_lit').size())
+print(df.groupby('prior_lit')[['v_ab','v_cd']].apply(lambda x: x.notna().sum()))
+print(df[df.prior_lit==0].shape)
+print(df[df.prior_lit==0].task.value_counts(dropna=False))</code></pre></div>
+                <div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Recorded output</span></div><pre tabindex="0"><code>prior_lit
+0.0    120
+1.0    143
+           v_ab  v_cd
+prior_lit            
+0.0         120   120
+1.0           0     0
+(120, 16)
+task
+middle    60
+high      60</code></pre></div>
+                <p class="fail-omit">Code excerpt and the sample counts from Python run 4. The program also prints distinct p and r values and 20 data rows. Those lines are omitted.</p>
+              </div>
+            </div>
+            <div class="fail-side fail-explain">
+              <p class="fail-brief-note">Four Python runs inspected the table. The regression has not started, and the Python allowance is used up.</p>
+              <div class="fail-detail" id="fail-a-4-explain" role="region" aria-labelledby="fail-a-4-call" hidden>
+                <p class="fail-role">Explanation</p>
+<p>GPT-5.5 next counted the current-study sample. After prior_lit equal to 0, 120 rows remain, split into middle 60 and high 60, and v_ab and v_cd are non-missing on those 120 rows only. This is Python run 4, so the Python allowance of 4 is now used up. All four executed programs inspect the table. None fits a regression. Each result comes back only on a later model call.</p>
+              </div>
+            </div>
+          </li>
+          <li class="fail-node is-ran">
+            <div class="fail-axis">
+              <button type="button" class="fail-call" id="fail-a-5-call" aria-expanded="false" aria-controls="fail-a-5-evidence fail-a-5-explain">
+                <span class="fail-call-kicker">Model call <span data-no-translate>5</span></span>
+                <span class="fail-call-tool">virtual ls · not a Python run</span>
+                <span class="fail-call-status">Executed</span>
+                <span class="fail-call-mark" aria-hidden="true">+</span>
+              </button>
+            </div>
+            <div class="fail-side fail-evidence">
+              <div class="fail-brief">
+                <p class="fail-brief-action">virtual ls of /data/0213/data</p>
+                <p class="fail-brief-fact">No files found</p>
+              </div>
+              <div class="fail-detail" id="fail-a-5-evidence" role="region" aria-labelledby="fail-a-5-call" hidden>
+<div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Recorded tool call</span></div><pre tabindex="0"><code>name: ls
+arguments: {"path":"/data/0213/data"}</code></pre></div>
+                <div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Recorded observation</span></div><pre tabindex="0"><code>No files found</code></pre></div>
+                <p class="fail-omit">The observation is stored in the request for model call 6.</p>
+              </div>
+            </div>
+            <div class="fail-side fail-explain">
+              <p class="fail-brief-note">This lists a virtual note directory, not the container. An empty result does not mean table6.dta is missing.</p>
+              <div class="fail-detail" id="fail-a-5-explain" role="region" aria-labelledby="fail-a-5-call" hidden>
+                <p class="fail-role">Explanation</p>
+<p>GPT-5.5 then asked to list /data/0213/data. This ls tool reads a virtual note filesystem. It is not a Python run, and it is not a listing of the container directory that holds table6.dta. An empty result does not mean the file is missing: Python run 1 already read it. The call uses one model call and does not use a Python run. The next model call is where the model receives “No files found”.</p>
+              </div>
+            </div>
+          </li>
+          <li class="fail-node is-held">
+            <div class="fail-axis">
+              <button type="button" class="fail-call" id="fail-a-6-call" aria-expanded="false" aria-controls="fail-a-6-evidence fail-a-6-explain">
+                <span class="fail-call-kicker">Model call <span data-no-translate>6</span></span>
+                <span class="fail-call-tool">run_python requested · not executed</span>
+                <span class="fail-call-status">Not executed</span>
+                <span class="fail-call-mark" aria-hidden="true">+</span>
+              </button>
+            </div>
+            <div class="fail-side fail-evidence">
+              <div class="fail-brief">
+                <p class="fail-brief-action">Request a Python walk of /data/0213</p>
+                <p class="fail-brief-fact">Not executed: Python allowance used up</p>
+              </div>
+              <div class="fail-detail" id="fail-a-6-evidence" role="region" aria-labelledby="fail-a-6-call" hidden>
+<div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Requested code</span></div><pre tabindex="0"><code>import os
+for root,dirs,files in os.walk('/data/0213'):
+ print(root, dirs, files[:10], len(files))</code></pre></div>
+                <p class="fail-omit">Response of model call 6. There is no tool_runs/0005, and this code has no stdout.</p>
+              </div>
+            </div>
+            <div class="fail-side fail-explain">
+              <p class="fail-brief-note">The last model call is still a tool request. No later call opens, so the refusal is not delivered.</p>
+              <div class="fail-detail" id="fail-a-6-explain" role="region" aria-labelledby="fail-a-6-call" hidden>
+                <p class="fail-role">Explanation</p>
+<p>GPT-5.5 read the empty virtual listing and asked for a Python walk of /data/0213, which would have listed the container directory. The Python allowance was already 4 of 4, so DeepAgents 0.7.13 did not start a container. The saved tool count stays at 4. This response also used model call 6, the last model call in the budget. Harness source would return a tool-budget error instead of stdout, but that string is not stored in a later request, because no model call 7 is opened. It is not a record the model received.</p>
+              </div>
+            </div>
+          </li>
+          <li class="fail-node is-stop">
+            <div class="fail-axis">
+              <button type="button" class="fail-call" id="fail-a-7-call" aria-expanded="false" aria-controls="fail-a-7-evidence fail-a-7-explain">
+                <span class="fail-call-kicker">Harness stop</span>
+                <span class="fail-call-tool">No model call 7</span>
+                <span class="fail-call-status">Stop</span>
+                <span class="fail-call-mark" aria-hidden="true">+</span>
+              </button>
+            </div>
+            <div class="fail-side fail-evidence">
+              <div class="fail-brief">
+                <p class="fail-brief-action">Harness refuses another model call</p>
+                <p class="fail-brief-fact">reason: model_calls_exhausted</p>
+              </div>
+              <div class="fail-detail" id="fail-a-7-evidence" role="region" aria-labelledby="fail-a-7-call" hidden>
+<div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Result fields</span></div><pre tabindex="0"><code>{
+  "status": "failed",
+  "generation_status": "failed",
+  "execution_status": "pending",
+  "scoring_status": "pending",
+  "prediction": null,
+  "reason": "model_calls_exhausted"
+}</code></pre></div>
+              </div>
+            </div>
+            <div class="fail-side fail-explain">
+              <p class="fail-brief-note">There is no model call 7, no final program, and no scoring. Run A stops before a regression.</p>
+              <div class="fail-detail" id="fail-a-7-explain" role="region" aria-labelledby="fail-a-7-call" hidden>
+                <p class="fail-role">Explanation</p>
+<p>After six model calls, DeepAgents 0.7.13 refuses another API request. The saved reason is model_calls_exhausted. The directory stops at model_calls/0006. There is no model_calls/0007, no final program, and no scoring file. This stop is the harness declining a seventh send. It is not an executed seventh model call, so the model never gets a later turn in which to read feedback and submit a program.</p>
+              </div>
+            </div>
+          </li>
+        
+        </ol>
+        <p class="fail-part-end">Run A stopped before a regression began. GPT-5.5’s last response was still a tool request, so no final program was formed, and independent execution and replication scoring did not start.</p>
+      </div>
+
+      <div class="fail-part">
+        <h3 class="fail-part-title"><span class="fail-part-no">02</span> Why did Run B fail to replicate?</h3>
+        <p class="fail-lead">Run B is a separate run, not a continuation of Run A. It reached regression search and used its last model call to submit a program. The submitted regressor remained an unscaled difference that does not follow the reference definition.</p>
+        <ol class="fail-timeline">
+
+          <li class="fail-node is-ran">
+            <div class="fail-axis">
+              <button type="button" class="fail-call" id="fail-b-1-call" aria-expanded="false" aria-controls="fail-b-1-evidence fail-b-1-explain">
+                <span class="fail-call-kicker">Model call <span data-no-translate>1</span></span>
+                <span class="fail-call-tool">run_python · Python run 1</span>
+                <span class="fail-call-status">Executed</span>
+                <span class="fail-call-mark" aria-hidden="true">+</span>
+              </button>
+            </div>
+            <div class="fail-side fail-evidence">
+              <div class="fail-brief">
+                <p class="fail-brief-action">Open table6.dta</p>
+                <p class="fail-brief-fact">263 rows · 16 columns</p>
+              </div>
+              <div class="fail-detail" id="fail-b-1-evidence" role="region" aria-labelledby="fail-b-1-call" hidden>
+<div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Code excerpt</span></div><pre tabindex="0"><code>path='/data/0213/data/table6.dta'
+print(os.path.exists(path))
+df=pd.read_stata(path)
+print(df.shape)
+print(df.columns.tolist())</code></pre></div>
+                <div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Recorded output</span></div><pre tabindex="0"><code>True
+(263, 16)
+['task', 'r', 'p', 'v_ab', 'v_cd', 'AC', 'AD', 'BC', 'BD', 'N', 'H', 'M', 'prior_lit', 'real', 'PrA', 'PrC']</code></pre></div>
+                <p class="fail-omit">Stdout lines 1–3. Column types, the first rows, and a describe() table follow and are omitted.</p>
+              </div>
+            </div>
+            <div class="fail-side fail-explain">
+              <p class="fail-brief-note">The table is confirmed. No regression is estimated yet.</p>
+              <div class="fail-detail" id="fail-b-1-explain" role="region" aria-labelledby="fail-b-1-call" hidden>
+                <p class="fail-role">Explanation</p>
+<p>DeepAgents 0.7.13 sent the task. GPT-5.5 asked to open table6.dta, and the harness ran that program. The file reads as 263 rows and 16 columns. This call confirms the table. It does not estimate a regression. The model sees the printout on the next model call.</p>
+              </div>
+            </div>
+          </li>
+          <li class="fail-node is-ran">
+            <div class="fail-axis">
+              <button type="button" class="fail-call" id="fail-b-2-call" aria-expanded="false" aria-controls="fail-b-2-evidence fail-b-2-explain">
+                <span class="fail-call-kicker">Model call <span data-no-translate>2</span></span>
+                <span class="fail-call-tool">run_python · Python run 2</span>
+                <span class="fail-call-status">Executed</span>
+                <span class="fail-call-mark" aria-hidden="true">+</span>
+              </button>
+            </div>
+            <div class="fail-side fail-evidence">
+              <div class="fail-brief">
+                <p class="fail-brief-action">Cross-tabulate prior_lit, real, and task</p>
+                <p class="fail-brief-fact">120 rows · middle 60 / high 60</p>
+              </div>
+              <div class="fail-detail" id="fail-b-2-evidence" role="region" aria-labelledby="fail-b-2-call" hidden>
+<div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Code excerpt</span></div><pre tabindex="0"><code>print(pd.crosstab(df['prior_lit'], df['real'], margins=True))
+print('task counts by prior:', pd.crosstab(df['prior_lit'], df['task']))
+print(df[df.prior_lit.eq(0)].shape, df[(df.prior_lit.eq(0)) &amp; (df.real.eq(1))].shape)</code></pre></div>
+                <div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Recorded output</span></div><pre tabindex="0"><code>real       0.0  1.0  All
+prior_lit
+0.0          0  120  120
+1.0         41  102  143
+All         41  222  263
+task       high  middle  n/a
+0.0          60      60    0
+1.0           0       0  143
+(120, 16) (120, 16)</code></pre></div>
+                <p class="fail-omit">Excerpt of the crosstab, task counts, and the two shapes. A grouped summary and printed data rows are omitted, and spacing in the log is tightened.</p>
+              </div>
+            </div>
+            <div class="fail-side fail-explain">
+              <p class="fail-brief-note">The current-study sample is identified. This run still has not fit a regression.</p>
+              <div class="fail-detail" id="fail-b-2-explain" role="region" aria-labelledby="fail-b-2-call" hidden>
+                <p class="fail-role">Explanation</p>
+<p>GPT-5.5 used the next call to check prior_lit, real, and task. The 120 rows with prior_lit equal to 0 all have real equal to 1, and they split into middle 60 and high 60. That is the current-study sample. The run still has not fit a regression.</p>
+              </div>
+            </div>
+          </li>
+          <li class="fail-node is-ran">
+            <div class="fail-axis">
+              <button type="button" class="fail-call" id="fail-b-3-call" aria-expanded="false" aria-controls="fail-b-3-evidence fail-b-3-explain">
+                <span class="fail-call-kicker">Model call <span data-no-translate>3</span></span>
+                <span class="fail-call-tool">run_python · Python run 3</span>
+                <span class="fail-call-status">Executed</span>
+                <span class="fail-call-mark" aria-hidden="true">+</span>
+              </button>
+            </div>
+            <div class="fail-side fail-evidence">
+              <div class="fail-brief">
+                <p class="fail-brief-action">Walk /data/0213 in the container</p>
+                <p class="fail-brief-fact">Only table6.dta</p>
+              </div>
+              <div class="fail-detail" id="fail-b-3-evidence" role="region" aria-labelledby="fail-b-3-call" hidden>
+<div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Code excerpt</span></div><pre tabindex="0"><code>import os
+for root, dirs, files in os.walk('/data/0213'):
+    level=root.replace('/data/0213','').count(os.sep)
+    if level&lt;3:
+        print(root, files[:10])</code></pre></div>
+                <div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Recorded output</span></div><pre tabindex="0"><code>/data/0213 []
+/data/0213/data ['table6.dta']</code></pre></div>
+                <p class="fail-omit">Complete stdout of Python run 3.</p>
+              </div>
+            </div>
+            <div class="fail-side fail-explain">
+              <p class="fail-brief-note">This Python run lists the container directory. Run A used virtual ls.</p>
+              <div class="fail-detail" id="fail-b-3-explain" role="region" aria-labelledby="fail-b-3-call" hidden>
+                <p class="fail-role">Explanation</p>
+<p>GPT-5.5 asked Python to walk /data/0213. DeepAgents 0.7.13 executed that walk inside the container, and the log shows only table6.dta. This is a Python run in the container. The listing in Run A used the virtual ls tool.</p>
+              </div>
+            </div>
+          </li>
+          <li class="fail-node is-ran">
+            <div class="fail-axis">
+              <button type="button" class="fail-call" id="fail-b-4-call" aria-expanded="false" aria-controls="fail-b-4-evidence fail-b-4-explain">
+                <span class="fail-call-kicker">Model call <span data-no-translate>4</span></span>
+                <span class="fail-call-tool">run_python · Python run 4</span>
+                <span class="fail-call-status">Executed</span>
+                <span class="fail-call-mark" aria-hidden="true">+</span>
+              </button>
+            </div>
+            <div class="fail-side fail-evidence">
+              <div class="fail-brief">
+                <p class="fail-brief-action">Print Stata label attributes</p>
+                <p class="fail-brief-fact">Methods not called · pyreadstat missing</p>
+              </div>
+              <div class="fail-detail" id="fail-b-4-evidence" role="region" aria-labelledby="fail-b-4-call" hidden>
+<div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Code excerpt</span></div><pre tabindex="0"><code>itr=pd.read_stata(path, iterator=True)
+print('var labels:', getattr(itr,'variable_labels',None))
+print('value labels:', getattr(itr,'value_labels',None))
+try:
+ import pyreadstat
+ df, meta = pyreadstat.read_dta(path)
+ print(meta.column_labels)
+ print(meta.file_label)
+except Exception as e: print('pyreadstat err',e)</code></pre></div>
+                <div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Recorded output</span></div><pre tabindex="0"><code>var labels: &lt;bound method StataReader.variable_labels ...&gt;
+value labels: &lt;bound method StataReader.value_labels ...&gt;
+pyreadstat err No module named 'pyreadstat'</code></pre></div>
+                <p class="fail-omit">Recorded output. The object address on the two bound-method lines is omitted, marked by the ellipsis.</p>
+              </div>
+            </div>
+            <div class="fail-side fail-explain">
+              <p class="fail-brief-note">The printout shows bound methods, not called methods. No formula for v_diff is returned.</p>
+              <div class="fail-detail" id="fail-b-4-explain" role="region" aria-labelledby="fail-b-4-call" hidden>
+                <p class="fail-role">Explanation</p>
+<p>GPT-5.5 tried to read metadata. The two label attributes were printed as bound methods, so the methods themselves were not called. pyreadstat is not installed. This run does not return a formula for v_diff.</p>
+              </div>
+            </div>
+          </li>
+          <li class="fail-node is-ran">
+            <div class="fail-axis">
+              <button type="button" class="fail-call" id="fail-b-5-call" aria-expanded="false" aria-controls="fail-b-5-evidence fail-b-5-explain">
+                <span class="fail-call-kicker">Model call <span data-no-translate>5</span></span>
+                <span class="fail-call-tool">run_python · Python run 5</span>
+                <span class="fail-call-status">Executed</span>
+                <span class="fail-call-mark" aria-hidden="true">+</span>
+              </button>
+            </div>
+            <div class="fail-side fail-evidence">
+              <div class="fail-brief">
+                <p class="fail-brief-action">Call the pandas label methods</p>
+                <p class="fail-brief-fact">Means and sums · empty value labels</p>
+              </div>
+              <div class="fail-detail" id="fail-b-5-evidence" role="region" aria-labelledby="fail-b-5-call" hidden>
+<div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Code excerpt</span></div><pre tabindex="0"><code>with pd.read_stata(path, iterator=True) as itr:
+    print('data_label', itr.data_label)
+    print('var labels', itr.variable_labels())
+    print('value labels', itr.value_labels())</code></pre></div>
+                <div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Recorded output</span></div><pre tabindex="0"><code>data_label 
+var labels {'task': '', 'r': '(mean) r', 'p': '(mean) p', 'v_ab': '(mean) v_ab', 'v_cd': '(mean) v_cd', 'AC': '(sum) AC', 'AD': '(sum) AD', 'BC': '(sum) BC', 'BD': '(sum) BD', 'N': '(sum) N', 'H': '', 'M': '', 'prior_lit': '', 'real': '', 'PrA': '', 'PrC': ''}
+value labels {}</code></pre></div>
+              </div>
+            </div>
+            <div class="fail-side fail-explain">
+              <p class="fail-brief-note">Five Python runs have inspected the data. None has estimated a regression.</p>
+              <div class="fail-detail" id="fail-b-5-explain" role="region" aria-labelledby="fail-b-5-call" hidden>
+                <p class="fail-role">Explanation</p>
+<p>On the next call GPT-5.5 invoked the pandas label methods. DeepAgents 0.7.13 returned the same kind of aggregation notes as in the other run: means and sums, and empty value labels. Five Python runs have now inspected the file, the sample, the container directory, or the labels. None has estimated a regression.</p>
+              </div>
+            </div>
+          </li>
+          <li class="fail-node is-ran">
+            <div class="fail-axis">
+              <button type="button" class="fail-call" id="fail-b-6-call" aria-expanded="false" aria-controls="fail-b-6-evidence fail-b-6-explain">
+                <span class="fail-call-kicker">Model call <span data-no-translate>6</span></span>
+                <span class="fail-call-tool">run_python · Python run 6</span>
+                <span class="fail-call-status">Executed</span>
+                <span class="fail-call-mark" aria-hidden="true">+</span>
+              </button>
+            </div>
+            <div class="fail-side fail-evidence">
+              <div class="fail-brief">
+                <p class="fail-brief-action">Fit seven named OLS formulas</p>
+                <p class="fail-brief-fact">Highest in-sample R²: unscaled 0.501…</p>
+              </div>
+              <div class="fail-detail" id="fail-b-6-evidence" role="region" aria-labelledby="fail-b-6-call" hidden>
+<div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Code excerpt</span></div><pre tabindex="0"><code>formulas={
+'unscaled':'v_ab-v_cd',
+'pct_H':'100*(v_ab-v_cd)/H',
+'frac_H':'(v_ab-v_cd)/H',
+'pct_range':'100*(v_ab-v_cd)/(H)', # low zero
+'pct_avg':'100*(v_ab-v_cd)/((v_ab+v_cd)/2)',
+'pct_vcd':'100*(v_ab-v_cd)/v_cd',
+'pct_M':'100*(v_ab-v_cd)/M',
+}
+for name, expr in formulas.items():
+    d=df.copy()
+    d['v_diff']=d.eval(expr)
+    m=smf.ols('CR_RCR ~ v_diff + C(p_pct) + C(r_pct) + C(task_id)', data=d).fit()
+    print(name, 'range', ..., 'coef,se,p', ..., 'n', m.nobs, 'r2', m.rsquared)</code></pre></div>
+                <p class="fail-omit">Excerpt from Python run 6. Setup that filters prior_lit and builds CR_RCR comes before the dictionary. The print call in the file lists the range and the coefficient, standard error, and p-value; those arguments are replaced here by ellipses.</p>
+                <div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Recorded output</span></div><pre tabindex="0"><code>unscaled r2 0.5013335627052982
+pct_H r2 0.4951010021765542
+frac_H r2 0.4951010021765544
+pct_range r2 0.4951010021765542
+pct_avg r2 0.48421373879349094
+pct_vcd r2 0.4842011124735931
+pct_M r2 0.48650064586937547</code></pre></div>
+                <p class="fail-omit">Excerpt of seven stdout lines. Each original line also prints the variable range and the coefficient, standard error, and p-value. Those fields are omitted, so this block is not a verbatim copy. Later lines print correlations and a describe() table and are omitted.</p>
+              </div>
+            </div>
+            <div class="fail-side fail-explain">
+              <p class="fail-brief-note">Every candidate starts from v_ab minus v_cd. None reverses the difference by task or adds the high-task factor.</p>
+              <div class="fail-detail" id="fail-b-6-explain" role="region" aria-labelledby="fail-b-6-call" hidden>
+                <p class="fail-role">Explanation</p>
+<p>GPT-5.5 put several candidate constructions in one program, and DeepAgents 0.7.13 executed that program once. One Python run can hold more than one analysis step: this run fits an OLS for every name in the dictionary. Seven names are printed, but pct_H and pct_range use the same expression, so they are not seven distinct constructions. Every expression starts from v_ab minus v_cd. None reverses that difference for one task, and none adds the extra parameter factor used on the high task.</p>
+                <p>Among the printed in-sample R² values, unscaled is the highest. A higher in-sample fit does not establish the definition the task requested. The saved model messages do not say that this R² is why the line was kept. The tool returned execution output. It did not return a reference answer or a replication score.</p>
+              </div>
+            </div>
+          </li>
+          <li class="fail-node is-ran">
+            <div class="fail-axis">
+              <button type="button" class="fail-call" id="fail-b-7-call" aria-expanded="false" aria-controls="fail-b-7-evidence fail-b-7-explain">
+                <span class="fail-call-kicker">Model call <span data-no-translate>7</span></span>
+                <span class="fail-call-tool">run_python · Python run 7</span>
+                <span class="fail-call-status">Executed</span>
+                <span class="fail-call-mark" aria-hidden="true">+</span>
+              </button>
+            </div>
+            <div class="fail-side fail-evidence">
+              <div class="fail-brief">
+                <p class="fail-brief-action">Print the filtered sample</p>
+                <p class="fail-brief-fact">First 80 of 120 rows</p>
+              </div>
+              <div class="fail-detail" id="fail-b-7-evidence" role="region" aria-labelledby="fail-b-7-call" hidden>
+<div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Code excerpt</span></div><pre tabindex="0"><code>d=df[df.prior_lit.eq(0)].copy()
+print(d.sort_values(['task','p','r','M','H']).head(80).to_string())
+print('duplicates by task,p,M,H:', d.groupby(['task','p','M','H']).agg(...).head(30).to_string())</code></pre></div>
+                <p class="fail-omit">Code excerpt from Python run 7. The groupby aggregation is shortened, marked by the ellipsis. The stdout prints the first 80 rows of the 120-row filtered sample, then a grouped summary. Those rows are omitted.</p>
+              </div>
+            </div>
+            <div class="fail-side fail-explain">
+              <p class="fail-brief-note">The run inspects rows. It does not build a regressor that differs for middle and high.</p>
+              <div class="fail-detail" id="fail-b-7-explain" role="region" aria-labelledby="fail-b-7-call" hidden>
+                <p class="fail-role">Explanation</p>
+<p>After the candidate fits came back, GPT-5.5 asked to inspect the filtered sample. DeepAgents 0.7.13 printed the first 80 rows of the 120 rows with prior_lit equal to 0, plus a groupby on task, p, M, and H. The run does not build a regressor that differs for middle and high.</p>
+              </div>
+            </div>
+          </li>
+          <li class="fail-node is-ran">
+            <div class="fail-axis">
+              <button type="button" class="fail-call" id="fail-b-8-call" aria-expanded="false" aria-controls="fail-b-8-evidence fail-b-8-explain">
+                <span class="fail-call-kicker">Model call <span data-no-translate>8</span></span>
+                <span class="fail-call-tool">run_python · Python run 8</span>
+                <span class="fail-call-status">Executed</span>
+                <span class="fail-call-mark" aria-hidden="true">+</span>
+              </button>
+            </div>
+            <div class="fail-side fail-evidence">
+              <div class="fail-brief">
+                <p class="fail-brief-action">Compare OLS with N-weighted WLS</p>
+                <p class="fail-brief-fact">Usual errors and HC0–HC3 · v_diff stays unscaled</p>
+              </div>
+              <div class="fail-detail" id="fail-b-8-evidence" role="region" aria-labelledby="fail-b-8-call" hidden>
+<div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Code excerpt</span></div><pre tabindex="0"><code>d['v_diff']=d.v_ab-d.v_cd
+for kind in ['ols','wls_N']:
+    if kind=='ols': m=smf.ols('CR_RCR ~ v_diff + C(p_pct)+C(r_pct)+C(task_id)',d).fit()
+    else: m=smf.wls('CR_RCR ~ v_diff + C(p_pct)+C(r_pct)+C(task_id)',d,weights=d.N).fit()
+    for cov in [None,'HC0','HC1','HC2','HC3']:
+        print(kind, cov or 'nonrob', ...)</code></pre></div>
+                <div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Recorded output</span></div><pre tabindex="0"><code>ols nonrob
+ols HC0
+ols HC1
+ols HC2
+ols HC3
+wls_N nonrob
+wls_N HC0
+wls_N HC1
+wls_N HC2
+wls_N HC3</code></pre></div>
+                <p class="fail-omit">The ten recorded lines begin with these labels. Each line then prints a coefficient, standard error, and p-value. Those numbers are omitted, so this block is not a verbatim copy. The print call in the source is also shortened.</p>
+              </div>
+            </div>
+            <div class="fail-side fail-explain">
+              <p class="fail-brief-note">The estimator and the covariance change. The value difference does not. The Python allowance of 8 is used up.</p>
+              <div class="fail-detail" id="fail-b-8-explain" role="region" aria-labelledby="fail-b-8-call" hidden>
+                <p class="fail-role">Explanation</p>
+<p>GPT-5.5 compared two estimators, OLS and N-weighted WLS, and within each compared the usual standard errors with HC0 through HC3. Changing the estimator is separate from changing the covariance estimate. Every version still sets v_diff to v_ab minus v_cd. This is Python run 8, and the Python allowance of 8 is now used up.</p>
+              </div>
+            </div>
+          </li>
+          <li class="fail-node is-held">
+            <div class="fail-axis">
+              <button type="button" class="fail-call" id="fail-b-9-call" aria-expanded="false" aria-controls="fail-b-9-evidence fail-b-9-explain">
+                <span class="fail-call-kicker">Model call <span data-no-translate>9</span></span>
+                <span class="fail-call-tool">run_python requested · not executed</span>
+                <span class="fail-call-status">Not executed</span>
+                <span class="fail-call-mark" aria-hidden="true">+</span>
+              </button>
+            </div>
+            <div class="fail-side fail-evidence">
+              <div class="fail-brief">
+                <p class="fail-brief-action">Request the unscaled OLS again</p>
+                <p class="fail-brief-fact">Not executed: tool_calls_exhausted</p>
+              </div>
+              <div class="fail-detail" id="fail-b-9-evidence" role="region" aria-labelledby="fail-b-9-call" hidden>
+<div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Requested code</span></div><pre tabindex="0"><code>df=df[df.prior_lit==0].copy()
+df['v_diff']=df['v_ab']-df['v_cd']
+df['CR_RCR']=(df['PrA']-df['PrC'])*100
+m=smf.ols('CR_RCR ~ v_diff + C(p) + C(r) + C(task_id)', data=df).fit()</code></pre></div>
+                <div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Recorded observation</span></div><pre tabindex="0"><code>{"error": "tool_calls_exhausted", "instruction": "Submit your final complete program now."}</code></pre></div>
+                <p class="fail-omit">The observation is stored in the request for model call 10. There is no tool_runs/0009.</p>
+              </div>
+            </div>
+            <div class="fail-side fail-explain">
+              <p class="fail-brief-note">There is no Python run 9. One model call remains, so the model can read the refusal and submit.</p>
+              <div class="fail-detail" id="fail-b-9-explain" role="region" aria-labelledby="fail-b-9-call" hidden>
+                <p class="fail-role">Explanation</p>
+<p>GPT-5.5 asked to fit the unscaled regression again. DeepAgents 0.7.13 did not execute it. Eight Python runs had already run, so run_python returned a tool-budget error instead of starting a container. There is no Python run 9. That error, including the instruction to submit, is placed in the request for model call 10. One model call is still inside the budget, so the model does receive this feedback.</p>
+              </div>
+            </div>
+          </li>
+          <li class="fail-node is-submit">
+            <div class="fail-axis">
+              <button type="button" class="fail-call" id="fail-b-10-call" aria-expanded="false" aria-controls="fail-b-10-evidence fail-b-10-explain">
+                <span class="fail-call-kicker">Model call <span data-no-translate>10</span></span>
+                <span class="fail-call-tool">Final submission · no tool request</span>
+                <span class="fail-call-status">Submission</span>
+                <span class="fail-call-mark" aria-hidden="true">+</span>
+              </button>
+            </div>
+            <div class="fail-side fail-evidence">
+              <div class="fail-brief">
+                <p class="fail-brief-action">Submit the fenced program</p>
+                <p class="fail-brief-fact">v_diff = v_ab − v_cd</p>
+              </div>
+              <div class="fail-detail" id="fail-b-10-evidence" role="region" aria-labelledby="fail-b-10-call" hidden>
+<div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Final submission</span></div><pre tabindex="0"><code>df["v_diff"] = df["v_ab"] - df["v_cd"]
+df["CR_RCR"] = 100 * (df["PrA"] - df["PrC"])
+df["p_pct"] = np.rint(df["p"] * 100).astype(int)
+df["r_pct"] = np.rint(df["r"] * 100).astype(int)
+model = smf.ols(
+    "CR_RCR ~ v_diff + C(p_pct) + C(r_pct) + C(task_id)",
+    data=reg_data
+).fit()
+result = {
+    "coefficient": float(model.params["v_diff"]),
+    "standard_error": float(model.bse["v_diff"]),
+    "p_value": float(model.pvalues["v_diff"])
+}</code></pre></div>
+                <p class="fail-omit">Excerpt of the submitted program. The response contains this program and an empty tool-call list. Writing the JSON file follows these lines.</p>
+              </div>
+            </div>
+            <div class="fail-side fail-explain">
+              <p class="fail-brief-note">Model call 10 submits and requests no tool. Submission is not a Python run.</p>
+              <div class="fail-detail" id="fail-b-10-explain" role="region" aria-labelledby="fail-b-10-call" hidden>
+                <p class="fail-role">Explanation</p>
+<p>Model call 10 is the last call inside the budget. GPT-5.5 returned a fenced program and did not request another tool. Submitting the program is not a Python run. Unlike Run A, a model call remained after the Python allowance was spent, so the model could read the rejection and submit.</p>
+              </div>
+            </div>
+          </li>
+          <li class="fail-node is-eval">
+            <div class="fail-axis">
+              <button type="button" class="fail-call" id="fail-b-11-call" aria-expanded="false" aria-controls="fail-b-11-evidence fail-b-11-explain">
+                <span class="fail-call-kicker">Final execution</span>
+                <span class="fail-call-tool">Evaluator replay · not a Python run</span>
+                <span class="fail-call-status">Evaluation</span>
+                <span class="fail-call-mark" aria-hidden="true">+</span>
+              </button>
+            </div>
+            <div class="fail-side fail-evidence">
+              <div class="fail-brief">
+                <p class="fail-brief-action">Evaluator replays the submission</p>
+                <p class="fail-brief-fact">exit 0 · direction only</p>
+              </div>
+              <div class="fail-detail" id="fail-b-11-evidence" role="region" aria-labelledby="fail-b-11-call" hidden>
+<div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Execution receipt</span></div><pre tabindex="0"><code>exit_code 0
+timed_out false
+valid_prediction true
+seconds 0.541</code></pre></div>
+                <div class="code-panel"><div class="code-panel-head"><span class="code-panel-label">Scoring record</span></div><pre tabindex="0"><code>{
+  "profile": "local-paper-v1",
+  "metrics": {
+    "perfect": false,
+    "partial": false,
+    "coefficient_only": false,
+    "direction": true,
+    "significance": false
+  },
+  "official_leaderboard_result": false
+}</code></pre></div>
+              </div>
+            </div>
+            <div class="fail-side fail-explain">
+              <p class="fail-brief-note">Execution succeeded. Replication matched the coefficient direction, not the reference construction.</p>
+              <div class="fail-detail" id="fail-b-11-explain" role="region" aria-labelledby="fail-b-11-call" hidden>
+                <p class="fail-role">Explanation</p>
+<p>The evaluator ran the submitted program in a fresh container. That replay is final execution. It is not one of the eight exploration Python runs, and the tool counter stayed at 8. The program ran and wrote a valid result JSON. On the local-paper-v1 profile, direction matched. Coefficient-only, partial, perfect, and significance did not. This profile is an internal diagnostic, not an official leaderboard result.</p>
+                <p>The reference definition changes with task. Middle and high use opposite directions of the difference between v_ab and v_cd. Scaling depends on experimental parameters, and the high task includes an extra parameter factor. The submitted program uses one unscaled difference, v_ab minus v_cd, on every row. It does keep the sample restriction, the CR_RCR construction, percentage rounding of p and r, the fixed effects, OLS, and a JSON file with the three required fields. The reference formula and the reference numbers stay with the scorer. This gap is not a missed constant or a change of units. A program using the reference construction was not rerun, so the gap is not presented as the only reason every failed score flag failed.</p>
+              </div>
+            </div>
+          </li>
+        
+        </ol>
+        <p class="fail-part-end">Run B finished exploration, submission, and independent execution. The search never introduced a task-specific definition, and the submitted program carried that same unscaled difference into the file the evaluator scored.</p>
+      </div>
+
+      <details class="fail-fold fail-design">
+        <summary>
+          <h3 class="fail-design-title">Why not provide the full research background and variable definitions?</h3>
+        </summary>
+        <div class="fail-design-body">
+          <p>Run B could already read the data, restrict the sample, run a regression, and submit a result. It did not construct the regressor used in the paper. The final program uses v_ab minus v_cd on every observation. It does not recover the direction of that difference for the middle task and the high task, or the scaling that differs between them. Independent execution succeeded. Replication still failed.</p>
+          <p>That raises a question. Why does the instruction not first explain that this OLS problem comes from a lottery experiment on choice and valuation, that middle and high name different valuation tasks, and that those settings affect how the variable is constructed? If that background would help identify the target variable, why not give it directly to the model?</p>
+          <p>The question is which research work InferenceNet leaves to the system under evaluation. The instruction states the research goal, the declared data, the requested estimation, and the output format. It does not unfold the original research background, the economic meaning of every variable, or the complete construction steps. The model and the harness are expected to carry those requirements through to an analysis plan: use existing econometric knowledge, interpret the variables and groups in the data, and turn that reading into executable variable construction and a model specification.</p>
+          <p>In this case, telling middle from high, and judging whether that distinction belongs in the regressor, is part of data interpretation and feature engineering. If the instruction gave the full construction for both tasks, the task provider would already have done that work, and the independent analysis the evaluation asks for would shrink.</p>
+          <p>The evaluation therefore expects the model to contribute knowledge and reasoning, and expects a harness to help the model use those abilities through general method guidance, tool use, evidence checks, and the arrangement of execution. A program that runs is not enough. The system also has to judge whether the variables and the statistical model in the code express the research request.</p>
+          <p>Leaving that interpretive work to the agent does not mean every unstated paper detail can be uniquely derived from the numeric data. A task should still keep enough description and data clues for a reasonable judgment. Where more than one reading is reasonable, the task wording and the scoring rule need review. Failure to recover one implicit definition is not, by itself, evidence that the model lacks research ability. Run B shows that this run did not recover the reference construction. It does not show that missing research background was the only cause, and it does not show that adding the background would have produced a success.</p>
+        </div>
+      </details>
+
+      <ul class="card-grid lessons fail-capabilities" style="--cols:3">
+        <li class="card"><p class="card-label">Econometric knowledge</p><h3>Carry the request into the right analysis</h3><p>A task names the method and the constraints. It does not teach the meaning or the implementation of each one. The model needs to understand the request. A harness needs to help the model check that the request was carried through, turning existing knowledge into the right sample handling, specification, and inference.</p></li>
+        <li class="card"><p class="card-label">Data interpretation</p><h3>Read the object of study from the data</h3><p>Reading the file and printing the column names is only the start. The agent also needs to see what each row represents, how variables are coded, which situation a group corresponds to, and what units and relationships the numbers have. Task-specific readings are not all written into the instruction beforehand, because understanding the data on hand is part of the evaluation.</p></li>
+        <li class="card"><p class="card-label">Feature engineering</p><h3>Turn meaning into a testable construction</h3><p>From the task meaning and the data evidence, the agent has to build the transformations, scalings, interactions, or group constructions the request needs, and check that they fit the research. A regression that runs, or a strong in-sample fit, does not show that the variable is defined correctly. The construction still needs a basis in meaning and in the data.</p></li>
+      </ul>
+    </section>
     <div class="container">
       <nav class="page-footer-nav" aria-label="Page sequence">
         <a href="data.html"><small>Previous</small><span><span aria-hidden="true">←</span> Data</span></a>
@@ -421,5 +1188,24 @@ p {&#x27;const&#x27;: 0.9999999914846099, &#x27;Wscmonth_simsn_w&#x27;: 4.911379
     </div>
   </main>
   <footer class="site-footer container"><a class="wordmark" href="index.html">Inference<span>Net</span></a><p>AI for econometric research.</p><a href="teams.html#contact">Contact <span aria-hidden="true">→</span></a></footer>
+
+  <script>
+    (() => {
+      document.querySelectorAll(".fail-call").forEach(button => {
+        button.addEventListener("click", () => {
+          const open = button.getAttribute("aria-expanded") !== "true";
+          button.setAttribute("aria-expanded", String(open));
+          const mark = button.querySelector(".fail-call-mark");
+          if (mark) mark.textContent = open ? "\u2013" : "+";
+          (button.getAttribute("aria-controls") || "").split(/\s+/).forEach(id => {
+            const panel = id && document.getElementById(id);
+            if (panel) panel.hidden = !open;
+          });
+          const node = button.closest(".fail-node");
+          if (node) node.classList.toggle("is-open", open);
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
