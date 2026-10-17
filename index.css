@@ -4,6 +4,13 @@
 .hero-description{max-width:780px}
 .hero-purpose{max-width:760px;margin:12px auto 0;font-size:16px;color:var(--soft)}
 .hero-actions{max-width:900px;margin-inline:auto}
+/* Historical single-task replay, played on request with native controls. */
+.home-replay{max-width:900px;margin:32px auto 0;text-align:left}
+.home-replay video{display:block;width:100%;height:auto;aspect-ratio:16/9;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
+.home-replay figcaption{margin-top:12px;font-size:13px;line-height:1.65;color:var(--soft)}
+.home-replay figcaption p{margin:0}
+.home-replay .home-replay-meta{margin-top:4px;color:var(--muted)}
+.home-replay .text-link{display:inline-block;margin-top:8px;font-size:13px}
 /* Dated status: published results, the historical study and what is still to come stay apart. */
 .home-status{max-width:900px;margin:30px auto 0;padding:18px 22px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);text-align:left}
 .home-status-title{margin:0 0 10px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}

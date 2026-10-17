@@ -384,5 +384,10 @@
   "Dev100 development release.": "Dev100 开发期公开集。",
   "Public development benchmark, used first for development.": "公开开发基准，先用于开发。",
   "The v10 report on Dev100, the public development benchmark of 100 tasks used first for development, covers 14 models with four harnesses and was generated on this date from several run batches. These development results are not directly comparable with the 1,000-task final target.": "关于 Dev100（由 100 道题组成、先用于开发的公开开发基准）的 v10 报告于当日生成，涵盖 14 个模型搭配四种 Harness，数据来自多个运行批次。这些开发阶段结果与 1,000 题最终目标不能直接比较。",
-  "View the Dev100 results →": "查看 Dev100 结果 →"
+  "View the Dev100 results →": "查看 Dev100 结果 →",
+  "Historical single-task replay: GPT-5.6 Sol with DeepAgents on task 0001": "历史单题回放：GPT-5.6 Sol 搭配 DeepAgents 执行任务 0001",
+  "Download the replay video (MP4)": "下载回放视频（MP4）",
+  "71 seconds · English · Silent · Timeline compressed": "71 秒 · 英文 · 无声 · 时间轴已压缩",
+  "Explore task 0001": "查看任务 0001",
+  "A historical single-task replay: GPT-5.6 Sol with DeepAgents on task 0001.": "历史单题回放：GPT-5.6 Sol 搭配 DeepAgents 执行任务 0001。"
 }
