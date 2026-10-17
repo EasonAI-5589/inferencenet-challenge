@@ -37,12 +37,12 @@ Original: https://www.ntu.edu.sg/ResourcePackages/NTU/assets/images/NTU_Logo.png
 SHA-256: 45535780334a04c2384d82468ab49c2c8f6d5a77f717246dc42f0c6ff6451503
 
 The University of Hong Kong
-File: hku-university-official.jpg (750 x 209)
+File: hku-university-crest.png (310 x 310)
 Retrieved: 2026-10-18
 Owner: The University of Hong Kong
 Source page: https://www.hku.hk/en/about-hku/university-identity/basic-specifications
-Original: https://www.hku.hk/content/dam/hkucms/about-hku/university-identity/basic-specifications/bs-update-202609/Standard_University_Logo_English@750.jpg
-SHA-256: 68757627a03a78c67ec24cc1fe7fd88b7b85bdf68ce8e3d1d42718c1da0dcc1c
+Original: https://www.hku.hk/etc.clientlibs/hkucms/clientlibs/clientlib-site/resources/icon-310x310.png
+SHA-256: f91c5a39fdeede2a4b681fe8516762e9789338fd612643db46cf3c0dfa4f422f
 
 Shanghai University of Finance and Economics
 File: sufe-university-official.png (404 x 395)
@@ -53,5 +53,10 @@ Original: https://www.sufe.edu.cn/_upload/article/images/9a/c4/09d319d24d67a361a
 SHA-256: fcea85a9d55fd19cb12f8158d8e254ab4237d74731824ea07b729cdc51637072
 
 The SUFE seal comes from the university charter and includes the university
-name in Chinese and English. The adjacent name on the homepage is an HTML
-caption; the original seal image is unchanged.
+name in Chinese and English within the seal itself. The HKU standalone crest
+is referenced by the official page as its square 310px icon.
+
+Homepage presentation: all three crests have a 72px display height. A CSS window
+shows the NTU shield from the original university logo without the adjacent
+wordmark. The source image bytes are unchanged; the window preserves the
+shield itself and its original proportions.

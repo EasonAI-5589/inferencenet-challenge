@@ -4,12 +4,13 @@
 .hero-description{max-width:780px}
 .hero-actions{max-width:900px;margin-inline:auto}
 .hero-description .hero-initiative-link{color:var(--ink);font-weight:700;text-decoration:underline;text-underline-offset:3px}
-/* Institute and university marks keep their official colors and proportions. */
-.hero-affiliations{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));max-width:900px}
-.hero-affiliations a{min-height:96px;padding:16px;gap:12px}
-.hero-affiliations img{width:100%;height:64px;object-fit:contain}
-.hero-affiliations .institution-seal{width:64px;flex:none}
-.hero-affiliations .institution-label{max-width:145px;font-size:13px;line-height:1.4;font-weight:500;text-align:left;color:#191919}
+/* The three university crests share one visible height without stretching. */
+.hero-affiliations{display:flex;justify-content:center;gap:28px;max-width:900px}
+.hero-affiliations a{width:104px;height:104px;min-height:0;padding:15px;flex:none}
+.hero-affiliations img{width:auto;height:72px;max-width:80px;object-fit:contain}
+/* Retain the original NTU asset, displaying its shield without the wordmark. */
+.hero-affiliations .ntu-crest{display:block;width:56px;height:72px;overflow:hidden;flex:none}
+.hero-affiliations .ntu-crest img{width:auto;height:72px;max-width:none}
 /* Historical single-task replay, played on request with native controls. */
 .home-replay{max-width:900px;margin:32px auto 0;text-align:left}
 .home-replay video{display:block;width:100%;height:auto;aspect-ratio:16/9;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
