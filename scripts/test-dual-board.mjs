@@ -21,7 +21,7 @@ const PAGE = 'https://example.org/leaderboard.html';
 const PAGES = ['index.html', 'data.html', 'agent.html', 'harness.html', 'evolution.html', 'leaderboard.html', 'teams.html'];
 const TAG = '20261018-dev100-challenge';
 // The Challenge series and sub-track scope share one language release tag.
-const LANGUAGE_TAG = '20261018-initiative-intro';
+const LANGUAGE_TAG = '20261018-university-marks';
 const PAIRED_SHA256 = '8fac641c124d4ba956dd6dca6f8763a50d754bad0e5169552efafd139d49330b';
 const pairedBlock = html => html.match(/<!-- paired-ranking:start -->[\s\S]*?<!-- paired-ranking:end -->/g);
 const devBlock = html => html.slice(html.indexOf('<!-- dev100-ranking:start -->'), html.indexOf('<!-- dev100-ranking:end -->'));

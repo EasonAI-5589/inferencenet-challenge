@@ -12,9 +12,6 @@
   "Menu": "菜单",
   "InferenceNet Challenge": "InferenceNet Challenge",
   "Research institutions": "研究机构",
-  "NTU College of Computing and Data Science": "南洋理工大学计算与数据科学学院",
-  "NTU Nanyang Business School": "南洋理工大学南洋商学院",
-  "HKU Business School": "香港大学商学院",
   "Explore the data": "探索数据",
   "The benchmark": "基准评测",
   "Research disciplines": "研究学科",
@@ -415,5 +412,6 @@
   "CamoAiLab hosts the source research dataset on Hugging Face. The related MetricsAI paper describes the Econometrics-Agent research system. The econometric replication sub-track will use the 100-task Dev100 set.": "研究数据源由 CamoAiLab 托管于 Hugging Face。相关 MetricsAI 论文介绍了 Econometrics-Agent 研究系统。计量经济学复现子赛道将采用 100 题的 Dev100。",
   "AI Agents for Business, Finance and Social Science.": "面向商业、金融与社会科学的 AI 智能体。",
   "Global InferenceNet Initiative": "Global InferenceNet Initiative",
-  "builds shared infrastructure for training, evaluating, and deploying AI agents in economics, finance, business, and the social sciences. InferenceNet Challenge is a series of open challenges for AI agents, with each challenge forming a sub-track with its own tasks and evaluation criteria.": "为经济、金融、商业和社会科学领域的 AI 智能体提供训练、评测与部署的共享基础设施。InferenceNet Challenge 是面向 AI 智能体的公开挑战系列，每项具体挑战构成一条子赛道，设有各自的任务与评测标准。"
+  "builds shared infrastructure for training, evaluating, and deploying AI agents in economics, finance, business, and the social sciences. InferenceNet Challenge is a series of open challenges for AI agents, with each challenge forming a sub-track with its own tasks and evaluation criteria.": "为经济、金融、商业和社会科学领域的 AI 智能体提供训练、评测与部署的共享基础设施。InferenceNet Challenge 是面向 AI 智能体的公开挑战系列，每项具体挑战构成一条子赛道，设有各自的任务与评测标准。",
+  "Shanghai University of Finance and Economics": "上海财经大学"
 }

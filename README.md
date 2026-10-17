@@ -44,7 +44,7 @@ of future updates unless explicitly requested again.
 
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
-Home, Data and Leaderboard load `language.js` with `20261018-initiative-intro`;
+Home, Data and Leaderboard load `language.js` with `20261018-university-marks`;
 Home uses the same tag for `index.css`. Home and Leaderboard retain
 `20261018-dev100-challenge` for `leaderboard.css` and `leaderboard.js`.
 Leaderboard also retains that tag for `site.js` and `leaderboard-dev100.js`,
@@ -170,7 +170,7 @@ autoplay. English and Chinese captions identify the historical single-task
 demonstration, its English-only silent video and compressed timeline, and link
 to `data.html#case-0001`. The existing task 0011 walkthrough remains separate.
 Homepage CSS and the Home, Data and Leaderboard translations use
-release tag `20261018-initiative-intro`.
+release tag `20261018-university-marks`.
 The animation source and export scripts stay in the research workspace.
 `scripts/check.mjs` accepts `.mp4` files under `assets/` for this video.
 
@@ -235,8 +235,11 @@ The MetricsAI workflow is attributed to Figure 1 of Chen et al.,
 image and the 2026-09-15 vector redraws retain their source and permission notes
 in `assets/figures/ATTRIBUTION.txt`. They illustrate related research.
 
-Official NTU CCDS, Nanyang Business School and HKU Business School marks retain
-their source and ownership notes in `assets/institutions/ATTRIBUTION.txt`.
+The homepage uses university-level marks for NTU Singapore, the University of
+Hong Kong and Shanghai University of Finance and Economics. Its GIFTS text link
+remains in the introduction. Teams retains the existing college and business-school
+marks. Original assets and ownership notes are recorded in
+`assets/institutions/ATTRIBUTION.txt`.
 Initiative faculty roles and institutional research profiles link their official
 sources. Institutional trademarks are not covered by code or font licenses.
 
@@ -370,7 +373,7 @@ mechanism comparisons and deeper breakdowns are curated separately.
 
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
-Home, Data and Leaderboard load `language.js` with `20261018-initiative-intro`;
+Home, Data and Leaderboard load `language.js` with `20261018-university-marks`;
 Home uses the same tag for `index.css`. Home and Leaderboard retain
 `20261018-dev100-challenge` for `leaderboard.css` and `leaderboard.js`.
 Leaderboard also retains that tag for `site.js` and `leaderboard-dev100.js`,
