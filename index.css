@@ -2,10 +2,8 @@
 .hero{padding-bottom:38px}
 .hero-subtitle{max-width:780px;margin-inline:auto}
 .hero-description{max-width:780px}
-.hero-purpose{max-width:760px;margin:12px auto 0;font-size:16px;color:var(--soft)}
 .hero-actions{max-width:900px;margin-inline:auto}
-.hero-mission-source{margin:10px auto 0;font-size:12px;color:var(--muted)}
-.hero-mission-source a{text-decoration:underline;text-underline-offset:3px}
+.hero-description .hero-initiative-link{color:var(--ink);font-weight:700;text-decoration:underline;text-underline-offset:3px}
 /* Historical single-task replay, played on request with native controls. */
 .home-replay{max-width:900px;margin:32px auto 0;text-align:left}
 .home-replay video{display:block;width:100%;height:auto;aspect-ratio:16/9;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}

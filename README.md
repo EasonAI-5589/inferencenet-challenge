@@ -44,7 +44,7 @@ of future updates unless explicitly requested again.
 
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
-Home, Data and Leaderboard load `language.js` with `20261018-challenge-series`;
+Home, Data and Leaderboard load `language.js` with `20261018-initiative-intro`;
 Home uses the same tag for `index.css`. Home and Leaderboard retain
 `20261018-dev100-challenge` for `leaderboard.css` and `leaderboard.js`.
 Leaderboard also retains that tag for `site.js` and `leaderboard-dev100.js`,
@@ -170,7 +170,7 @@ autoplay. English and Chinese captions identify the historical single-task
 demonstration, its English-only silent video and compressed timeline, and link
 to `data.html#case-0001`. The existing task 0011 walkthrough remains separate.
 Homepage CSS and the Home, Data and Leaderboard translations use
-release tag `20261018-challenge-series`.
+release tag `20261018-initiative-intro`.
 The animation source and export scripts stay in the research workspace.
 `scripts/check.mjs` accepts `.mp4` files under `assets/` for this video.
 
@@ -250,8 +250,11 @@ into this public repository.
 
 ## Research framing
 
-The site is titled InferenceNet Challenge. Inference Challenge is its public
-challenge series, with each specific challenge organized as a sub-track.
+InferenceNet Challenge is a public series of challenges for AI agents. The
+homepage introduces the Global InferenceNet Initiative through a bold inline
+link, then explains the Challenge series in the same paragraph. Its Inference
+Challenge section presents each specific challenge as a sub-track with its own
+tasks and evaluation criteria.
 Econometric replication is one sub-track. The Global InferenceNet Initiative
 mission follows the [official NTU GIFTS description](https://www.ntu.edu.sg/gifts/research-and-innovation),
 covering agent training, evaluation and deployment across economics, finance,
@@ -367,7 +370,7 @@ mechanism comparisons and deeper breakdowns are curated separately.
 
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
-Home, Data and Leaderboard load `language.js` with `20261018-challenge-series`;
+Home, Data and Leaderboard load `language.js` with `20261018-initiative-intro`;
 Home uses the same tag for `index.css`. Home and Leaderboard retain
 `20261018-dev100-challenge` for `leaderboard.css` and `leaderboard.js`.
 Leaderboard also retains that tag for `site.js` and `leaderboard-dev100.js`,
