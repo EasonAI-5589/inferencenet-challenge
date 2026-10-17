@@ -1,8 +1,8 @@
-# InferenceNet Challenge
+# InferenceNet Initiative
 
 [Live website](https://easonai-5589.github.io/inferencenet-challenge/)
 
-Public presentation site for InferenceNet: AI for econometric research. The
+Public presentation site for InferenceNet: AI for Business, Social Science and Research. The
 site brings together Home, Data, Agent, Harness, Self-evolving, Leaderboard and Teams, with
 Chinese / English and light / dark controls on every page.
 The seven page links are visible by default, including the four-column menu (three columns below 352 px) on
@@ -98,7 +98,7 @@ unchanged for traceability. These are
 the denominator. Historical protocols differ across models, and official
 scorer parity remains unverified.
 
-The Results section uses the title InferenceNet Challenge Leaderboard, without
+The Selected_1000 Results section and its chart use Historical research results, without
 duplicate count or combined-ranking headings. One table ranks all 12 model
 configurations together by default, ordered by
 Full replication, with Partial replication and three additional metrics also
@@ -171,7 +171,7 @@ the status updates, with a poster and native playback controls. It does not
 autoplay. English and Chinese captions identify the historical single-task
 demonstration, its English-only silent video and compressed timeline, and link
 to `data.html#case-0001`. The existing task 0011 walkthrough remains separate.
-Homepage CSS and translations use release tag `20261018-home-replay`.
+Homepage CSS and translations use release tag `20261018-dev100-challenge`.
 The animation source and export scripts stay in the research workspace.
 `scripts/check.mjs` accepts `.mp4` files under `assets/` for this video.
 
@@ -251,7 +251,8 @@ into this public repository.
 
 ## Research framing
 
-The homepage introduces model–harness interaction. Research directions below the
+The homepage introduces an initiative spanning economics, finance, business and
+the social sciences, starting with econometric replication. Research directions below the
 leaderboard cover model–harness coupling, harness self-evolution through automated
 design and evaluation, and trajectory-based model post-training (including
 distillation and reinforcement learning). The self-evolving direction links to the Self-evolving page’s concept and methods
@@ -267,8 +268,14 @@ and [trajectory-based reinforcement learning](https://arxiv.org/abs/2508.03680).
 
 ## Homepage presentation
 
-Home follows five sections: the benchmark workflow, recorded GPT-5.5 task 0011,
-the shared leaderboard, three research directions and participation. Full task
+Home follows five sections: benchmark directions and the econometric workflow,
+recorded GPT-5.5 task 0011, historical research results, three research directions
+and participation. The open-source Challenge will reuse the existing Dev100 set
+of 100 tasks. Finance/business and social-science/research cards invite benchmark
+contributions; they do not claim that additional benchmarks are available.
+The 2,644-task source corpus and historical Selected_1000 results are research
+context, not the Challenge release size. The task package, rules, dates and
+submission channel remain to be announced. Full task
 coverage and provenance remain on Data; the detailed execution trace remains
 on Agent. Below the hero, a dated status list keeps the published leaderboard
 (17 Sep 2026), the historical development study frozen on 9 Oct 2026 (held-out
@@ -346,7 +353,7 @@ mechanism comparisons and deeper breakdowns are curated separately.
 | Agent case and evaluation | `agent.html`, `agent.css` |
 | Harness: definition, system structure, selected 2025–2026 milestones, common mechanism comparison, catalogue by role, three breakdowns and InferenceNet’s four configurations | `harness.html`, `harness.css`; reuses `data.css`, `agent.css`, `evolution.css` |
 | Self-evolving: concept, research map by adaptation regime, method comparison, three detailed offline cases and InferenceNet’s development study | `evolution.html`, `evolution.css`, `evolution.js`, `assets/data/modular-rsi-evolution.json` |
-| Leaderboard: the Dev100 / v10 development release, then the Selected_1000 final target | `leaderboard.html`, `leaderboard.css` |
+| Leaderboard: the Dev100 / v10 development release, then the Selected_1000 historical research results | `leaderboard.html`, `leaderboard.css` |
 | Team, institutions and Yichen Guo contact | `teams.html`, `teams.css` |
 | Shared layout, navigation and theme | `styles.css`, `site.css`, `site.js`, `theme.js` |
 | Chinese translations and language control | `assets/i18n/*.zh.json`, `language.js`, `language.css` |
@@ -379,17 +386,16 @@ reading-route labels and the scroll hints, live in the common dictionary in
 The Leaderboard page holds two separate boards, in this order, and the hero
 navigation lists them in the same order. `#leaderboard-dev100` comes first, with
 the Dev100 / v10 development release described below. `#leaderboard-selected-1000`
-follows with the complete results on the 1,000-task final target described in
+follows with the complete results on the historical 1,000-task study described in
 this section; the old anchors (`#rankings`, `#public`, `#climb`, `#table`,
 `#research`, `#protocol`) still resolve. Home shows only the Selected_1000
 board, plus a news item and one link to the development release.
 
-Dev100 is the Challenge's public development benchmark: its 100 tasks are used
-first, for development. Developers can submit harnesses of their own design,
-and InferenceNet evaluates every submission under the same settings. The
-submission channel and dates have not been announced, so the page names no
-upload link, date or API. The v10 release is not directly comparable with the
-Selected_1000 final target. It reads `assets/data/dev100-v10-results.json`, a
+The open-source Challenge will use the existing Dev100 set of 100 tasks, as
+confirmed on 18 October 2026. The data package, official rules, submission
+channel and dates have not been published. The v10 table preserves historical
+development results, not official Challenge rankings. It is not directly
+comparable with the Selected_1000 historical research results. It reads `assets/data/dev100-v10-results.json`, a
 sanitized derivation of the v10 four-harness report: 14 models × 4 harnesses,
 100 development tasks per combination, 5,600 task results. The report checksums and the derivation are in
 `dev100-v10-results-provenance.json`. Task IDs, server paths and per-task
