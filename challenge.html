@@ -6,9 +6,9 @@
   <meta name="color-scheme" content="light">
   <meta name="referrer" content="no-referrer">
   <title>Challenge — InferenceNet</title>
-  <meta name="description" content="The InferenceNet Challenge is the first program of the Global InferenceNet Initiative: tracks, a planned timeline and awards for AI agents doing real professional work in business and the social sciences.">
+  <meta name="description" content="The InferenceNet Challenge is a series of open challenges from the Global InferenceNet Initiative: sub-tracks, a planned timeline and awards for AI agents doing real professional work in business, finance and the social sciences.">
   <meta property="og:title" content="InferenceNet — Challenge">
-  <meta property="og:description" content="The InferenceNet Challenge is the first program of the Global InferenceNet Initiative: tracks, a planned timeline and awards for AI agents doing real professional work in business and the social sciences.">
+  <meta property="og:description" content="The InferenceNet Challenge is a series of open challenges from the Global InferenceNet Initiative: sub-tracks, a planned timeline and awards for AI agents doing real professional work in business, finance and the social sciences.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -49,13 +49,13 @@
     <section class="page-hero container" aria-labelledby="page-title">
       <p class="kicker">Challenge · Global InferenceNet Initiative</p>
       <h1 id="page-title">The InferenceNet <em>Challenge.</em></h1>
-      <p class="lead">The first program of the Global InferenceNet Initiative: tracks that aim to test whether AI agents can do real professional work in business and the social sciences, checked by independent evaluators.</p>
+      <p class="lead">A series of open challenges from the Global InferenceNet Initiative for AI agents in business, finance and the social sciences. Each challenge forms a sub-track with its own tasks and evaluation criteria.</p>
     </section>
 
     <nav class="subnav" aria-label="On this page">
       <ol class="container">
         <li><a href="#initiative"><span class="subnav-number">01</span>Initiative</a></li>
-        <li><a href="#tracks"><span class="subnav-number">02</span>Tracks</a></li>
+        <li><a href="#tracks"><span class="subnav-number">02</span>Sub-tracks</a></li>
         <li><a href="#timeline"><span class="subnav-number">03</span>Timeline</a></li>
         <li><a href="#awards"><span class="subnav-number">04</span>Awards</a></li>
         <li><a href="#take-part"><span class="subnav-number">05</span>Take part</a></li>
@@ -63,46 +63,47 @@
     </nav>
 
     <section class="section container" id="initiative" aria-labelledby="initiative-title">
-      <div class="section-heading compact"><div><p class="kicker">01 / Initiative</p><h2 id="initiative-title">One initiative, many tracks</h2></div><p class="lead">The Global InferenceNet Initiative, hosted by NTU GIFTS, aims to build shared infrastructure for training, evaluating and applying AI agents in economics, finance, business and the social sciences. The Challenge is where it meets the community.</p></div>
+      <div class="section-heading compact"><div><p class="kicker">01 / Initiative</p><h2 id="initiative-title">One initiative, many sub-tracks</h2></div><p class="lead">The Global InferenceNet Initiative, hosted by NTU GIFTS, aims to build shared infrastructure for training, evaluating and applying AI agents in economics, finance, business and the social sciences. The Challenge is where it meets the community.</p></div>
       <ul class="card-grid initiative-pillars">
         <li class="card"><p class="card-label">Aim 1</p><h3>Tasks and databases</h3><p>To build large-scale collections of real research tasks, analyses, data-and-code workflows and research designs.</p></li>
         <li class="card"><p class="card-label">Aim 2</p><h3>Benchmarks and competitions</h3><p>To test independently whether AI agents can plan, carry out, interpret and audit professional-level analytical work.</p></li>
         <li class="card"><p class="card-label">Aim 3</p><h3>Training and applications</h3><p>To provide shared infrastructure for training and deploying agents, with educational resources and tools for analysts and consultants.</p></li>
       </ul>
-      <p class="open-call">We hope work from business and the social sciences around the world will join the Initiative. If your field has real professional tasks that can be checked, we would like to build a track with you.</p>
+      <p class="open-call">We hope work from business and the social sciences around the world will join the Initiative. If your field has real professional tasks that can be checked, we would like to build a sub-track with you.</p>
       <p class="open-call-link"><a class="text-link" href="teams.html#contact">Contact us <span aria-hidden="true">→</span></a></p>
     </section>
 
     <section class="section container ruled" id="tracks" aria-labelledby="tracks-title">
-      <div class="section-heading compact"><div><p class="kicker">02 / Tracks</p><h2 id="tracks-title">Two tracks so far</h2></div><p class="lead">Each track has its own tasks and independent evaluation. More tracks can join as partners bring new domains.</p></div>
+      <div class="section-heading compact"><div><p class="kicker">02 / Sub-tracks</p><h2 id="tracks-title">Two sub-tracks so far</h2></div><p class="lead">Each sub-track has its own tasks and evaluation criteria. More sub-tracks can join as partners bring new domains.</p></div>
 
-      <article class="track" id="track-1" aria-labelledby="track-1-title">
-        <div class="track-head"><span class="pill">Track 1</span><span class="status is-open">Open for exploration</span></div>
-        <h3 id="track-1-title">Econometric replication</h3>
-        <p class="track-summary">Given real research data and analysis instructions, an AI agent writes and runs code to recover a published coefficient, its standard error and its p-value.</p>
+      <article class="track" id="subtrack-econometric" aria-labelledby="subtrack-econometric-title">
+        <div class="track-head"><span class="pill">Sub-track 01</span><span class="status is-tbc">Release to be announced</span></div>
+        <h3 id="subtrack-econometric-title">Econometric replication</h3>
+        <p class="track-summary">Reproduce empirical findings from real research data. An AI agent writes and runs code to recover a published coefficient, its standard error and its p-value.</p>
         <dl class="track-facts">
-          <div><dt>Input</dt><dd>The data files and the exact instruction the model receives. Reference answers stay with the evaluator.</dd></div>
+          <div><dt>Tasks</dt><dd>The existing Dev100 set of 100 tasks, to be open-sourced. The task package and formal rules will be announced with the release.</dd></div>
+          <div><dt>Input</dt><dd>The research data and the exact instruction the model receives.</dd></div>
           <div><dt>Output</dt><dd>A result file with three numbers: the coefficient, the standard error and the p-value.</dd></div>
-          <div><dt>Evaluation</dt><dd>An independent evaluator compares the result with reference values that the model never sees.</dd></div>
-          <div><dt>Results</dt><dd>Reference results for models and harnesses, which are not Challenge standings, are on the Leaderboard page.</dd></div>
+          <div><dt>Evaluation</dt><dd>An independent evaluator checks the three numbers against reference results that the model never sees during the run.</dd></div>
+          <div><dt>Results</dt><dd>Historical Dev100 / v10 development results and earlier Selected_1000 research results are on the Leaderboards page. They are not official Challenge rankings.</dd></div>
           <div><dt>Submission</dt><dd>The submission channel and rules have not been announced yet.</dd></div>
         </dl>
         <div class="track-links">
           <a class="text-link" href="data.html">Explore the data <span aria-hidden="true">→</span></a>
           <a class="text-link" href="agent.html">Follow a recorded run <span aria-hidden="true">→</span></a>
-          <a class="text-link" href="leaderboard.html">View the leaderboard <span aria-hidden="true">→</span></a>
+          <a class="text-link" href="leaderboard.html#leaderboard-dev100">Explore Dev100 results <span aria-hidden="true">→</span></a>
         </div>
       </article>
 
-      <article class="track" id="track-2" aria-labelledby="track-2-title">
-        <div class="track-head"><span class="pill">Track 2</span><span class="status is-tbc">Details to be confirmed</span></div>
-        <h3 id="track-2-title">Business scenarios with SUFE</h3>
-        <p class="track-summary">Task scenarios from our collaborating team at Shanghai University of Finance and Economics (SUFE), led by Liwen Zhang. Two scenarios form the two sub-tracks.</p>
+      <article class="track" id="subtrack-professional" aria-labelledby="subtrack-professional-title">
+        <div class="track-head"><span class="pill">Sub-track 02</span><span class="status is-tbc">Release details to be announced</span></div>
+        <h3 id="subtrack-professional-title">Professional tasks</h3>
+        <p class="track-summary">Complex business scenarios contributed by Prof. Liwen Zhang’s team at Shanghai University of Finance and Economics. Agents work across multiple source documents to produce reports and spreadsheets, assessed against task-specific rubrics.</p>
         <ul class="subtracks">
-          <li class="subtrack"><span class="pill">Sub-track 2A</span><h4>AI task scenario</h4><p>The scenario description, data and evaluation method are to be confirmed with the SUFE team.</p></li>
-          <li class="subtrack"><span class="pill">Sub-track 2B</span><h4>HR task scenario</h4><p>The scenario description, data and evaluation method are to be confirmed with the SUFE team.</p></li>
+          <li class="subtrack"><span class="pill">Finance demo</span><h4>Month-end close review</h4><p>Prepare a July closing remediation plan and review workpapers.</p></li>
+          <li class="subtrack"><span class="pill">HR demo</span><h4>Training and procurement acceptance</h4><p>Assess cold-chain warehouse supervisor training and supplier deliverables in a fictional scenario.</p></li>
         </ul>
-        <p class="track-note">Inputs, outputs, evaluation and submission rules for Track 2 will be set out here once they are confirmed.</p>
+        <p class="track-note">The task package, inputs, outputs, evaluation and submission rules for this sub-track will be set out here once they are confirmed.</p>
         <div class="track-links">
           <a class="text-link" href="teams.html#partners">Meet the partner team <span aria-hidden="true">→</span></a>
         </div>
@@ -112,7 +113,7 @@
     <section class="section container ruled" id="timeline" aria-labelledby="timeline-title">
       <div class="section-heading compact"><div><p class="kicker">03 / Timeline</p><h2 id="timeline-title">From open exploration to awards</h2></div><p class="lead">The Challenge is planned to run in a fixed time window. The stages below are planned; no date has been set.</p></div>
       <ol class="timeline-list">
-        <li><span class="timeline-when">Now</span><div><h3>Open exploration</h3><p>Explore the public dataset, the task walkthroughs and the reference leaderboards.</p></div><span class="status is-open">Open now</span></li>
+        <li><span class="timeline-when">Now</span><div><h3>Open exploration</h3><p>Explore the research data source, the task walkthroughs and the historical leaderboards.</p></div><span class="status is-open">Open now</span></li>
         <li><span class="timeline-when">To be announced</span><div><h3>Registration and pilot</h3><p>Early teams try the evaluation workflow. Tell us if you are interested in the pilot.</p></div><span class="status is-tbc">To be confirmed</span></li>
         <li><span class="timeline-when">To be announced</span><div><h3>Challenge window</h3><p>Participants submit their solutions during a fixed, announced period.</p></div><span class="status is-tbc">To be confirmed</span></li>
         <li><span class="timeline-when">To be announced</span><div><h3>Independent evaluation</h3><p>Every submission is evaluated under the same settings.</p></div><span class="status is-tbc">To be confirmed</span></li>
@@ -134,8 +135,8 @@
       <div class="section-heading compact"><div><p class="kicker">05 / Take part</p><h2 id="take-part-title">What you can do now</h2></div><p class="lead">Registration and submission are not open yet. These steps are open to everyone.</p></div>
       <ol class="take-part">
         <li><h3>Read a task the way a model does</h3><p>The Data page opens one task package: its files, the exact instruction the model receives and the result file the evaluator reads.</p><a class="text-link" href="data.html#anatomy">Inside a task package <span aria-hidden="true">→</span></a></li>
-        <li><h3>Explore the public data</h3><p>The Track 1 benchmark is published on Hugging Face. A Hugging Face account is needed to download it.</p><a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener">InferenceNet dataset <span aria-hidden="true">↗</span></a></li>
-        <li><h3>Bring a domain or ask for access</h3><p>Propose a track, register your interest in the pilot or request access to the evaluation framework. Write to us with your name and affiliation, your GitHub account and what you would like to evaluate.</p><a class="text-link" href="teams.html#contact">Contact details <span aria-hidden="true">→</span></a></li>
+        <li><h3>Explore the research data source</h3><p>CamoAiLab hosts the source research dataset on Hugging Face; a Hugging Face account is needed to download it. The econometric replication sub-track will use the 100-task Dev100 set.</p><a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener">Research dataset source <span aria-hidden="true">↗</span></a></li>
+        <li><h3>Bring a domain or ask for access</h3><p>Propose a sub-track, register your interest in the pilot or request access to the evaluation framework. Write to us with your name and affiliation, your GitHub account and what you would like to evaluate.</p><a class="text-link" href="teams.html#contact">Contact details <span aria-hidden="true">→</span></a></li>
       </ol>
     </section>
 

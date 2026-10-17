@@ -6,9 +6,9 @@
   <meta name="color-scheme" content="light">
   <meta name="referrer" content="no-referrer">
   <title>InferenceNet — AI for Business, Social Science and Research</title>
-  <meta name="description" content="The Global InferenceNet Initiative aims to build shared infrastructure to train, evaluate and apply AI agents in business, economics, finance and the social sciences. Explore the Challenge tracks, the benchmark, a recorded case and the leaderboard.">
+  <meta name="description" content="The Global InferenceNet Initiative aims to build shared infrastructure for AI agents in business, economics, finance and the social sciences. The InferenceNet Challenge is a series of open challenges; each forms a sub-track with its own tasks and evaluation criteria.">
   <meta property="og:title" content="InferenceNet — AI for Business, Social Science and Research">
-  <meta property="og:description" content="The Global InferenceNet Initiative aims to build shared infrastructure to train, evaluate and apply AI agents in business, economics, finance and the social sciences. Explore the Challenge tracks, the benchmark, a recorded case and the leaderboard.">
+  <meta property="og:description" content="The Global InferenceNet Initiative aims to build shared infrastructure for AI agents in business, economics, finance and the social sciences. The InferenceNet Challenge is a series of open challenges; each forms a sub-track with its own tasks and evaluation criteria.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -16,12 +16,12 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="site.css?v=20261011-release">
   <link rel="stylesheet" href="mountain.css">
-  <link rel="stylesheet" href="leaderboard.css?v=20261012-dual-board">
-  <link rel="stylesheet" href="index.css?v=20261011-release">
+  <link rel="stylesheet" href="leaderboard.css?v=20261018-dev100-challenge">
+  <link rel="stylesheet" href="index.css?v=20261018-subtracks">
   <script src="site.js?v=20261011-release" defer></script>
-  <script type="module" src="leaderboard.js?v=20261012-dual-board"></script>
+  <script type="module" src="leaderboard.js?v=20261018-dev100-challenge"></script>
   <link rel="stylesheet" href="language.css">
-  <script src="language.js?v=20261012-dev100-first" defer></script>
+  <script src="language.js?v=20261018-subtracks" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -51,25 +51,36 @@
   <main id="main" tabindex="-1">
     <section class="hero container" aria-labelledby="hero-title">
       <p class="eyebrow"><span></span> GLOBAL INFERENCENET INITIATIVE · NTU GIFTS <span></span></p>
-      <h1 id="hero-title">InferenceNet</h1>
+      <h1 id="hero-title">InferenceNet Challenge</h1>
       <p class="hero-subtitle">AI for Business, Social Science and Research</p>
-      <p class="hero-description">A global initiative to build shared infrastructure for training, evaluating and applying AI agents on real professional work in business, economics, finance and the social sciences. We invite researchers, developers and organizations worldwide to bring their own domains into it.</p>
-      <p class="hero-purpose">The InferenceNet Challenge is its first program. Track 1 asks whether AI can reproduce econometric findings from real research data, and Track 2 will bring in business scenarios from our partner team at Shanghai University of Finance and Economics.</p>
+      <p class="hero-description"><a class="hero-initiative-link" href="https://www.ntu.edu.sg/gifts/research-and-innovation" target="_blank" rel="noopener"><strong>Global InferenceNet Initiative</strong></a> builds shared infrastructure for training, evaluating, and deploying AI agents in economics, finance, business, and the social sciences. InferenceNet Challenge is a series of open challenges for AI agents, with each challenge forming a sub-track with its own tasks and evaluation criteria.</p>
       <div class="hero-affiliations" role="group" aria-label="Research institutions">
-        <a href="teams.html#institutions"><img src="assets/institutions/ntu-ccds-official.png" width="475" height="114" alt="NTU College of Computing and Data Science"></a>
-        <a href="teams.html#institutions"><img src="assets/institutions/ntu-nbs-official.jpg" width="386" height="103" alt="NTU Nanyang Business School"></a>
-        <a href="teams.html#partners"><img src="assets/institutions/hku-business-horizontal.png" width="2500" height="625" alt="HKU Business School"></a>
+        <a href="https://www.ntu.edu.sg/" target="_blank" rel="noopener"><span class="ntu-crest"><img src="assets/institutions/ntu-university-official.png" width="3006" height="1079" alt="Nanyang Technological University, Singapore"></span></a>
+        <a href="https://www.hku.hk/" target="_blank" rel="noopener"><img src="assets/institutions/hku-university-crest.png" width="310" height="310" alt="The University of Hong Kong"></a>
+        <a href="https://www.sufe.edu.cn/" target="_blank" rel="noopener"><img src="assets/institutions/sufe-university-official.png" width="404" height="395" alt="Shanghai University of Finance and Economics"></a>
       </div>
       <div class="hero-actions">
-        <a class="button primary" href="challenge.html">Explore the Challenge <span aria-hidden="true">→</span></a>
+        <a class="button primary" href="#overview">Explore Inference Challenge <span aria-hidden="true">→</span></a>
+        <a class="button" href="leaderboard.html#leaderboard-dev100">View Dev100 results <span aria-hidden="true">→</span></a>
         <a class="button" href="#tasks">Explore a real case <span aria-hidden="true">→</span></a>
-        <a class="button" href="#results">View the leaderboard <span aria-hidden="true">→</span></a>
-        <a class="button" href="data.html">Explore the data <span aria-hidden="true">→</span></a>
       </div>
+      <figure class="home-replay" aria-labelledby="home-replay-caption">
+        <video width="1920" height="1080" controls playsinline preload="metadata" poster="assets/video/agent-replay-task0001-poster.jpg" aria-label="Historical single-task replay: GPT-5.6 Sol with DeepAgents on task 0001">
+          <source src="assets/video/agent-replay-task0001.mp4" type="video/mp4">
+          <a href="assets/video/agent-replay-task0001.mp4">Download the replay video (MP4)</a>
+        </video>
+        <figcaption id="home-replay-caption">
+          <p>A historical single-task replay: GPT-5.6 Sol with DeepAgents on task 0001.</p>
+          <p class="home-replay-meta">71 seconds · English · Silent · Timeline compressed</p>
+          <p class="home-replay-meta">Recorded research example. The econometric replication sub-track will use Dev100 (100 tasks).</p>
+          <a class="text-link" href="data.html#case-0001">Explore task 0001 <span aria-hidden="true">→</span></a>
+        </figcaption>
+      </figure>
       <div class="home-status" id="news">
         <p class="home-status-title">Status and updates</p>
         <ol class="home-status-list">
-          <li><time datetime="2026-10-11T16:35:49Z">11 Oct 2026</time><p><strong>Dev100 development release.</strong> The v10 report on Dev100, the public development benchmark of 100 tasks used first for development, covers 14 models with four harnesses and was generated on this date from several run batches. These development results are not directly comparable with the 1,000-task final target. <a href="leaderboard.html#leaderboard-dev100">View the Dev100 results →</a></p></li>
+          <li><time datetime="2026-10-18">18 Oct 2026</time><p><strong>Econometric replication sub-track.</strong> This sub-track will open-source the existing Dev100 set of 100 tasks. The task package and formal rules will be announced with the release.</p></li>
+          <li><time datetime="2026-10-11T16:35:49Z">11 Oct 2026</time><p><strong>Dev100 development release.</strong> The v10 report on Dev100, the 100-task development set, covers 14 models with four harnesses and was generated on this date from several run batches. These development results are not directly comparable with the historical 1,000-task research results. <a href="leaderboard.html#leaderboard-dev100">View the Dev100 results →</a></p></li>
           <li><time datetime="2026-10-10">10 Oct 2026</time><p><strong>Explainers.</strong> The Harness and Self-evolving pages explain what a harness is, take three harnesses apart and describe how harnesses are improved from feedback. <a href="harness.html">Harness →</a> <a href="evolution.html#concept">Self-evolving →</a></p></li>
           <li><time datetime="2026-10-09">9 Oct 2026</time><p><strong>Historical development study.</strong> Our first ModularRSI-style study, on 100 development tasks, was frozen on this date. As of that snapshot the held-out tasks had not been run, and its numbers are not leaderboard results. <a href="evolution.html#practice">Read the study →</a></p></li>
           <li><time datetime="2026-09-17">17 Sep 2026</time><p><strong>Published leaderboard.</strong> Model and Model + Harness results on 1,000 tasks; run settings differ across historical batches. <a href="#results">View results →</a></p></li>
@@ -80,39 +91,41 @@
 
     <nav class="subnav" aria-label="On this page">
       <ol class="container">
-        <li><a href="#initiative"><span class="subnav-number">01</span>The Initiative</a></li>
-        <li><a href="#overview"><span class="subnav-number">02</span>The benchmark</a></li>
-        <li><a href="#tasks"><span class="subnav-number">03</span>A real case</a></li>
-        <li><a href="#results"><span class="subnav-number">04</span>Leaderboard</a></li>
-        <li><a href="#harness"><span class="subnav-number">05</span>Research</a></li>
-        <li><a href="#participate"><span class="subnav-number">06</span>Get involved</a></li>
+        <li><a href="#overview"><span class="subnav-number">01</span>Inference Challenge</a></li>
+        <li><a href="#tasks"><span class="subnav-number">02</span>A real case</a></li>
+        <li><a href="#results"><span class="subnav-number">03</span>Leaderboard</a></li>
+        <li><a href="#harness"><span class="subnav-number">04</span>Research</a></li>
+        <li><a href="#participate"><span class="subnav-number">05</span>Get involved</a></li>
       </ol>
     </nav>
 
-    <section class="section container" id="initiative" aria-labelledby="initiative-title">
+    <section class="section container" id="overview" aria-labelledby="overview-title">
       <div class="section-heading">
-        <div><p class="kicker">01 / The Initiative</p><h2 id="initiative-title">One initiative for AI in business and the social sciences</h2></div>
-        <p class="lead">We hope work from business and the social sciences around the world will join the Initiative. Each field can bring real tasks and independent checks, and become a track of the Challenge.</p>
+        <div><p class="kicker">01 / Inference Challenge</p><h2 id="overview-title">Inference Challenge</h2></div>
+        <p class="lead">Two sub-tracks explore different kinds of agent work: reproducing research findings and completing professional tasks. Each has its own tasks and evaluation criteria.</p>
       </div>
-      <ul class="card-grid initiative-tracks">
-        <li class="card"><p class="card-label">Track 1 · Open for exploration</p><h3>Econometric replication</h3><p>Can AI reproduce econometric findings from real research data? Models write and run code, and an independent evaluator checks the result.</p><a class="text-link" href="challenge.html#track-1">About Track 1 →</a></li>
-        <li class="card"><p class="card-label">Track 2 · With SUFE</p><h3>Business scenarios</h3><p>Two task scenarios from our partner team at Shanghai University of Finance and Economics: an AI scenario and an HR scenario. Details are to be confirmed.</p><a class="text-link" href="challenge.html#track-2">About Track 2 →</a></li>
-        <li class="card"><p class="card-label">Your field</p><h3>Bring a domain</h3><p>Researchers and organizations are welcome to propose further tracks, contribute tasks and data, or join as partners.</p><a class="text-link" href="teams.html#contact">Contact us →</a></li>
+      <ul class="card-grid benchmark-directions">
+        <li class="card" id="subtrack-econometric">
+          <p class="card-label">Sub-track 01 · Dev100 · 100 tasks</p>
+          <h3>Econometric replication</h3>
+          <p>Reproduce empirical findings from real research data. This sub-track will open-source the existing 100-task Dev100 set; its task package and rules will be announced with the release.</p>
+          <p>Evaluation checks the reproduced statistics against reference results.</p>
+          <a class="text-link" href="leaderboard.html#leaderboard-dev100">Explore Dev100 results →</a>
+        </li>
+        <li class="card" id="subtrack-professional">
+          <p class="card-label">Sub-track 02 · Finance &amp; HR demos</p>
+          <h3>Professional tasks</h3>
+          <p>Complex business scenarios contributed by Prof. Liwen Zhang’s team at Shanghai University of Finance and Economics. Agents work across multiple source documents to produce reports and spreadsheets, assessed against task-specific rubrics.</p>
+          <ul class="subtrack-demos">
+            <li><strong>Finance · Month-end close review</strong><span>Prepare a July closing remediation plan and review workpapers.</span></li>
+            <li><strong>HR · Training and procurement acceptance</strong><span>Assess cold-chain warehouse supervisor training and supplier deliverables in a fictional scenario.</span></li>
+          </ul>
+          <p class="subtrack-status"><span class="badge tba">Release details to be announced</span></p>
+        </li>
       </ul>
-      <p class="home-source"><span>The timeline and awards are outlined on the Challenge page. Dates and amounts are still to be confirmed.</span> <a class="text-link" href="challenge.html#awards">Timeline and awards <span aria-hidden="true">→</span></a></p>
-    </section>
-
-    <section class="section container ruled" id="overview" aria-labelledby="overview-title">
-      <div class="section-heading">
-        <div><p class="kicker">02 / The benchmark</p><h2 id="overview-title">From research data to a verified result</h2></div>
-        <p class="lead">The benchmark tests whether models can turn a specified empirical method into an executable analysis and reproduce its statistical results.</p>
-      </div>
-      <ul class="stat-strip">
-        <li class="stat"><strong>2,644</strong><span>Research tasks</span><small>full benchmark</small></li>
-        <li class="stat"><strong>36</strong><span>Academic journals</span><small>full benchmark</small></li>
-        <li class="stat"><strong>6</strong><span>Research disciplines</span><small>full benchmark</small></li>
-        <li class="stat"><strong>1,000</strong><span>Tasks in the current evaluation</span><small>selected benchmark subset</small></li>
-      </ul>
+      <p class="home-source"><span>The planned timeline and awards are outlined on the Challenge page. Dates and amounts are still to be confirmed.</span> <a class="text-link" href="challenge.html">Sub-tracks, timeline and awards <span aria-hidden="true">→</span></a></p>
+      <p class="home-source">Research background: the econometric source corpus contains 2,644 tasks across 36 journals and six disciplines. Our historical Selected_1000 study evaluated 1,000 of those tasks.</p>
+      <h3 class="benchmark-workflow-title">Sub-track 01 · How econometric replication works</h3>
       <p class="home-source"><a class="text-link" href="data.html#scale">Explore the dataset and task coverage <span aria-hidden="true">→</span></a></p>
       <figure class="research-flow" aria-labelledby="flow-caption">
         <ol class="flow-stages">
@@ -127,7 +140,7 @@
 
     <section class="section container ruled" id="tasks" aria-labelledby="tasks-title">
       <div class="section-heading">
-        <div><p class="kicker">03 / A real case</p><h2 id="tasks-title">Finding the month variable</h2></div>
+        <div><p class="kicker">02 / A real case</p><h2 id="tasks-title">Finding the month variable</h2></div>
         <p class="lead">One recorded GPT-5.5 task shows how execution feedback changes the analysis. DeepAgents is the harness used in this example.</p>
       </div>
       <article class="featured-case" aria-labelledby="case-title">
@@ -158,8 +171,8 @@
 
     <section class="section container ruled" id="results" aria-labelledby="results-title">
       <div class="section-heading">
-        <div><p class="kicker">04 / Leaderboard</p><h2 id="results-title">InferenceNet Challenge Leaderboard</h2></div>
-        <p class="lead">Model and Model + Harness results on 1,000 econometric replication tasks.</p>
+        <div><p class="kicker">03 / Leaderboard</p><h2 id="results-title">Historical research results</h2></div>
+        <p class="lead">Historical Model and Model + Harness results on Selected_1000. These 1,000-task results provide research context for the econometric replication sub-track.</p>
       </div>
       <!-- paired-ranking:start -->
 <div class="paired-board" data-paired-leaderboard>
@@ -193,12 +206,12 @@
         <p class="chart-source">Updated 17 Sep 2026 · Research evaluation. Interaction budgets and historical settings differ across configurations.</p>
         <a class="text-link" href="leaderboard.html">Full leaderboard and evaluation details <span aria-hidden="true">→</span></a>
       </div>
-      <p class="home-source"><span>Public development benchmark, used first for development.</span> <a class="text-link" href="leaderboard.html#leaderboard-dev100">Dev100 / v10 development release: 14 models × 4 harnesses <span aria-hidden="true">→</span></a></p>
+      <p class="home-source"><span>The econometric replication sub-track will open-source the existing Dev100 set of 100 tasks.</span> <a class="text-link" href="leaderboard.html#leaderboard-dev100">Dev100 / v10 development release: 14 models × 4 harnesses <span aria-hidden="true">→</span></a></p>
     </section>
 
     <section class="section container ruled" id="harness" aria-labelledby="harness-title">
       <div class="section-heading">
-        <div><p class="kicker">05 / Research</p><h2 id="harness-title">What can we learn from these runs?</h2></div>
+        <div><p class="kicker">04 / Research</p><h2 id="harness-title">What can we learn from these runs?</h2></div>
         <p class="lead">We aim to use replication results and execution feedback to improve how models and harnesses work together.</p>
       </div>
       <ul class="card-grid research-directions">
@@ -211,25 +224,25 @@
 
     <section class="section container ruled" id="participate" aria-labelledby="participate-title">
       <div class="section-heading">
-        <div><p class="kicker">06 / Get involved</p><h2 id="participate-title">Build with us</h2></div>
-        <p class="lead">We welcome feedback and collaboration on models, harnesses, evaluation and trajectory-based training.</p>
+        <div><p class="kicker">05 / Get involved</p><h2 id="participate-title">Build with us</h2></div>
+        <p class="lead">We welcome benchmark tasks, domain partners and collaborators working on models, harnesses and evaluation.</p>
       </div>
       <div class="participate-panel">
-        <p id="timeline">Tracks, the planned timeline and awards are outlined on the Challenge page. Rules, dates and the submission channel have not been announced yet; they will be posted there. In the meantime, the three steps below are open to everyone.</p>
-        <div class="participate-actions"><a class="button primary" href="teams.html#contact">Contact us <span aria-hidden="true">→</span></a><a class="text-link" href="challenge.html">Tracks, timeline and awards <span aria-hidden="true">→</span></a><a class="text-link" href="teams.html">Meet the team <span aria-hidden="true">→</span></a></div>
+        <p id="timeline">Inference Challenge welcomes contributions to a series of sub-tracks. The econometric replication sub-track will open-source Dev100, the existing 100-task set. Task packages, rules, dates and submission channels will be announced here.</p>
+        <div class="participate-actions"><a class="button primary" href="teams.html#contact">Contact us <span aria-hidden="true">→</span></a><a class="text-link" href="challenge.html">Sub-tracks, timeline and awards <span aria-hidden="true">→</span></a><a class="text-link" href="teams.html">Meet the team <span aria-hidden="true">→</span></a></div>
       </div>
       <div class="participate-now" id="get-started">
         <h3>What you can do now</h3>
         <ol class="participate-steps">
           <li><h4>Read a task the way a model does</h4><p>The Data page opens one task package: its files, the exact instruction the model receives and the three-number result file the evaluator reads.</p><a class="text-link" href="data.html#anatomy">Inside a task package →</a></li>
-          <li><h4>Explore the public data</h4><p>The benchmark is published by CamoAiLab on Hugging Face. The related MetricsAI paper describes the Econometrics-Agent research system.</p><a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener">InferenceNet dataset <span aria-hidden="true">↗</span></a></li>
+          <li><h4>Explore the research data source</h4><p>CamoAiLab hosts the source research dataset on Hugging Face. The related MetricsAI paper describes the Econometrics-Agent research system. The econometric replication sub-track will use the 100-task Dev100 set.</p><a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener">Research dataset source <span aria-hidden="true">↗</span></a></li>
           <li><h4>Ask for evaluation access</h4><p>The evaluation framework is in a private repository. To request collaborator access, write to us with your name and affiliation, your GitHub account and what you would like to evaluate.</p><a class="text-link" href="teams.html#contact">Contact details →</a></li>
         </ol>
       </div>
       <div class="home-resources" id="resources">
         <h3>Resources</h3>
         <ul>
-          <li><a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener">InferenceNet dataset <span aria-hidden="true">↗</span></a></li>
+          <li><a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener">Research dataset source <span aria-hidden="true">↗</span></a></li>
           <li><a class="text-link" href="https://github.com/HKU-Business-AI-Center/Econometrics-Agent" target="_blank" rel="noopener">Econometrics-Agent code <span aria-hidden="true">↗</span></a></li>
           <li><a class="text-link" href="https://github.com/YTZSR/chatpilot_evaluator/tree/dev-gyc-eval" target="_blank" rel="noopener">Evaluation framework <span aria-hidden="true">↗</span></a><small>Private repository · collaborator access</small></li>
         </ul>

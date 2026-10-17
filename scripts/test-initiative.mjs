@@ -63,16 +63,22 @@ test('Teams: GIFTS is the research institution; HKU and SUFE are collaborating p
   assert.equal((partners.match(/<span class="pill">Collaborating partner<\/span>/g) || []).length, 2);
   assert.match(partners, /id="hku-ai-agents-lab"[\s\S]*Ye Luo/);
   assert.match(partners, /id="sufe-aiflm-lab"[\s\S]*Liwen Zhang/);
+  const sufe = partners.match(/<article class="research-group" id="sufe-aiflm-lab"[\s\S]*?<\/article>/)[0];
+  assert.match(sufe, /<h3 id="sufe-lab-title">Liwen Zhang’s team<\/h3>/);
+  assert.match(sufe, /Sub-track 02 · Professional tasks[\s\S]*finance demo and an HR demo/);
+  assert.match(sufe, /href="challenge\.html#subtrack-professional"/);
 });
 
-test('Challenge page: initiative, two tracks with two sub-tracks, timeline, two awards, take part', async () => {
+test('Challenge page: initiative, two sub-tracks, timeline, two awards, take part', async () => {
   const html = await read('challenge.html');
   const ids = ['initiative', 'tracks', 'timeline', 'awards', 'take-part'];
   const positions = ids.map(id => html.indexOf(`<section class="section container${id === 'initiative' ? '' : ' ruled'}" id="${id}"`));
   assert.ok(positions.every((position, index) => position > 0 && (index === 0 || position > positions[index - 1])), `sections ${positions}`);
-  assert.ok(html.includes('id="track-1"') && html.includes('id="track-2"'));
+  assert.ok(html.includes('id="subtrack-econometric"') && html.includes('id="subtrack-professional"'));
+  assert.equal((section(html, 'tracks').match(/<article class="track" /g) || []).length, 2);
   assert.equal((section(html, 'tracks').match(/<li class="subtrack">/g) || []).length, 2);
-  assert.match(section(html, 'tracks'), /AI task scenario[\s\S]*HR task scenario/);
+  assert.match(section(html, 'tracks'), /Sub-track 01[\s\S]*Econometric replication[\s\S]*Sub-track 02[\s\S]*Professional tasks/);
+  assert.match(section(html, 'tracks'), /Finance demo[\s\S]*Month-end close review[\s\S]*HR demo[\s\S]*Training and procurement acceptance/);
   const awards = section(html, 'awards');
   assert.equal((awards.match(/<article class="card award">/g) || []).length, 2);
   assert.match(awards, /Specialized dataset award[\s\S]*Leaderboard prize/);
@@ -90,7 +96,7 @@ test('Challenge page promises nothing that is not confirmed: no dates, no amount
   assert.doesNotMatch(body, /[$€£¥]|\b(?:USD|SGD|RMB|CNY|HKD)\b/, 'a prize amount');
   assert.match(body, /No amount, date or eligibility rule is final until it is announced here/);
   assert.match(body, /have not been set\. They will be posted here once they are confirmed/);
-  assert.match(body, /Track 2 will be set out here once they are confirmed/);
+  assert.match(body, /for this sub-track will be set out here once they are confirmed/);
 });
 
 test('wording stays within what is confirmed: exploration is open, registration is not, nothing is "delivered"', async () => {
@@ -100,10 +106,9 @@ test('wording stays within what is confirmed: exploration is open, registration 
     assert.doesNotMatch(html, /\b(?:has|have) delivered\b/, name);
     assert.doesNotMatch(html, /initiated at/, name);
   }
-  const track1 = challenge.match(/<article class="track" id="track-1"[\s\S]*?<\/article>/)[0];
-  assert.match(track1, /Open for exploration/);
-  assert.doesNotMatch(track1, /Open now/);
-  assert.match(home, /Track 1 · Open for exploration/);
+  const econometric = challenge.match(/<article class="track" id="subtrack-econometric"[\s\S]*?<\/article>/)[0];
+  assert.match(econometric, /Release to be announced/);
+  assert.doesNotMatch(econometric, /Open now|Open for exploration/);
   assert.match(challenge, /Registration and submission are not open yet/);
   assert.match(section(challenge, 'initiative'), /Aim 1[\s\S]*Aim 2[\s\S]*Aim 3/);
   assert.match(section(challenge, 'awards'), /planned as a prize/);
@@ -111,20 +116,42 @@ test('wording stays within what is confirmed: exploration is open, registration 
   assert.match(section(challenge, 'timeline'), /Tell us if you are interested in the pilot/);
 });
 
+test('Home, Challenge and Teams use the same sub-tracks and facts: Dev100 to be open-sourced, a Finance demo and an HR demo', async () => {
+  const [home, challenge, teams] = await Promise.all(['index', 'challenge', 'teams'].map(page => read(`${page}.html`)));
+  for (const [name, html] of [['index', home], ['challenge', challenge], ['teams', teams]]) {
+    assert.doesNotMatch(html, /\bTrack [12]\b|Sub-track 2[AB]|AI task scenario|HR task scenario/, `${name}: old track wording`);
+  }
+  assert.match(home, /Sub-track 01 · Dev100 · 100 tasks/);
+  assert.match(home, /Sub-track 02 · Finance &amp; HR demos/);
+  const econometric = challenge.match(/<article class="track" id="subtrack-econometric"[\s\S]*?<\/article>/)[0];
+  assert.match(econometric, /existing Dev100 set of 100 tasks, to be open-sourced/);
+  assert.match(econometric, /not official Challenge rankings/);
+  const professional = challenge.match(/<article class="track" id="subtrack-professional"[\s\S]*?<\/article>/)[0];
+  assert.match(professional, /Prof\. Liwen Zhang’s team at Shanghai University of Finance and Economics/);
+  assert.match(professional, /Release details to be announced/);
+  // The Hugging Face dataset is the research data source; the sub-track itself will use Dev100.
+  assert.doesNotMatch(challenge, /benchmark is published on Hugging Face|Explore the public data/);
+  assert.match(section(challenge, 'take-part'), /CamoAiLab hosts the source research dataset on Hugging Face/);
+  assert.match(section(challenge, 'take-part'), /Research dataset source/);
+  assert.match(section(challenge, 'take-part'), /sub-track will use the 100-task Dev100 set/);
+});
+
 test('the navigation with eight links stays on one row between 861 and 1180 px', async () => {
   assert.match(await read('language.css'), /\(min-width:861px\) and \(max-width:1180px\)\{[^@]*?\.nav-links a\{font-size:13px;white-space:nowrap\}/);
 });
 
-test('Home leads with the initiative and links to the Challenge; sections are numbered 01 to 06', async () => {
+test('Home keeps the PR #25 hero and sections, with the Initiative tagline and links to the Challenge page', async () => {
   const html = await read('index.html');
-  assert.match(html, /<h1 id="hero-title">InferenceNet<\/h1>\s*<p class="hero-subtitle">AI for Business, Social Science and Research<\/p>/);
-  assert.ok(html.includes('<a class="button primary" href="challenge.html">Explore the Challenge'));
+  assert.match(html, /<h1 id="hero-title">InferenceNet Challenge<\/h1>\s*<p class="hero-subtitle">AI for Business, Social Science and Research<\/p>/);
+  assert.match(html, /<meta name="description" content="The Global InferenceNet Initiative aims to build shared infrastructure/);
   const kickers = [...html.matchAll(/<p class="kicker">(\d\d) \/ ([^<]+)<\/p>/g)].map(match => match[1]);
-  assert.deepEqual(kickers, ['01', '02', '03', '04', '05', '06']);
+  assert.deepEqual(kickers, ['01', '02', '03', '04', '05']);
   const subnav = [...html.match(/<nav class="subnav"[\s\S]*?<\/nav>/)[0].matchAll(/<a href="#([^"]+)"><span class="subnav-number">(\d\d)<\/span>/g)];
-  assert.deepEqual(subnav.map(match => match[2]), ['01', '02', '03', '04', '05', '06']);
+  assert.deepEqual(subnav.map(match => match[2]), ['01', '02', '03', '04', '05']);
   for (const [, id] of subnav) assert.ok(html.includes(`id="${id}"`), `#${id}`);
-  assert.ok(html.includes('href="challenge.html#track-1"') && html.includes('href="challenge.html#track-2"'));
+  const link = '<a class="text-link" href="challenge.html">Sub-tracks, timeline and awards <span aria-hidden="true">→</span></a>';
+  assert.equal(html.split(link).length, 3, 'two links from Home to the Challenge page');
+  assert.ok(html.includes('<a href="challenge.html"><small>Next</small><span>Challenge <span aria-hidden="true">→</span></span></a>'));
 });
 
 // ---- Chinese coverage: the same rules as language.js ----

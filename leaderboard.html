@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer">
   <title>Leaderboard — InferenceNet</title>
   <meta name="description" content="Model and harness performance on InferenceNet, with research directions in harness self-evolution and trajectory-based model post-training.">
-  <meta property="og:title" content="InferenceNet — Leaderboard">
+  <meta property="og:title" content="InferenceNet — Leaderboards">
   <meta property="og:description" content="Model and harness performance on InferenceNet, with research directions in harness self-evolution and trajectory-based model post-training.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
@@ -16,12 +16,12 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="site.css?v=20261011-release">
   <link rel="stylesheet" href="mountain.css">
-  <link rel="stylesheet" href="leaderboard.css?v=20261012-dual-board">
-  <script src="site.js?v=20261012-dual-board" defer></script>
-  <script type="module" src="leaderboard.js?v=20261012-dual-board"></script>
-  <script type="module" src="leaderboard-dev100.js?v=20261012-dual-board"></script>
+  <link rel="stylesheet" href="leaderboard.css?v=20261018-dev100-challenge">
+  <script src="site.js?v=20261018-dev100-challenge" defer></script>
+  <script type="module" src="leaderboard.js?v=20261018-dev100-challenge"></script>
+  <script type="module" src="leaderboard-dev100.js?v=20261018-dev100-challenge"></script>
   <link rel="stylesheet" href="language.css">
-  <script src="language.js?v=20261012-dev100-first" defer></script>
+  <script src="language.js?v=20261018-subtracks" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -51,14 +51,14 @@
   <main id="main">
     <section class="page-hero container" aria-labelledby="page-title">
       <p class="kicker">Leaderboard · October 2026</p>
-      <h1 id="page-title">InferenceNet Challenge Leaderboard</h1>
-      <p class="lead">Dev100 / v10 comes first: the development release, a public development benchmark of 100 tasks, with results for 14 models and four harnesses. The complete Selected_1000 results on the 1,000-task final target follow. The two boards are not directly comparable.</p>
-      <nav class="board-nav" aria-label="On this page"><a href="#leaderboard-dev100">Dev100 / v10 development release</a><a href="#leaderboard-selected-1000">Selected_1000 final target</a></nav>
+      <h1 id="page-title">InferenceNet Leaderboards</h1>
+      <p class="lead">The econometric replication sub-track will open-source the existing Dev100 set of 100 tasks. This page presents historical Dev100 / v10 development results first, followed by published Selected_1000 research results on 1,000 tasks. The two boards are not directly comparable.</p>
+      <nav class="board-nav" aria-label="On this page"><a href="#leaderboard-dev100">Dev100 / v10 development release</a><a href="#leaderboard-selected-1000">Selected_1000 historical research results</a></nav>
     </section>
     <section class="section container ruled board-section" id="leaderboard-dev100" aria-labelledby="dev100-title">
       <div class="section-heading board-heading">
         <div><p class="kicker">01 / Dev100 · v10</p><h2 id="dev100-title">Dev100 / v10 development release</h2></div>
-        <div><p class="lead">Dev100 is the Challenge’s public development benchmark: its 100 tasks are used first, for development. Developers can submit harnesses of their own design, and InferenceNet evaluates every submission under the same settings; the submission channel and dates have not been announced yet. The v10 release reports 14 models × 4 harnesses, and its scores are not directly comparable with the 1,000-task final target below.</p><ul class="page-meta"><li>100 tasks per combination</li><li>56 combinations</li><li><a href="#leaderboard-dev100-report">v10 final report</a></li><li>Report generated <time datetime="2026-10-11T16:35:49Z">11 Oct 2026</time></li></ul></div>
+        <div><p class="lead">The econometric replication sub-track will open-source the existing Dev100 set of 100 tasks. The sub-track data package, official rules, submission channel and dates have not been published. The v10 table below preserves historical development results for 14 models × 4 harnesses; it is not an official Challenge ranking. Its scores are not directly comparable with the historical Selected_1000 research results below.</p><ul class="page-meta"><li>100 tasks per combination</li><li>56 combinations</li><li><a href="#leaderboard-dev100-report">v10 final report</a></li><li>Report generated <time datetime="2026-10-11T16:35:49Z">11 Oct 2026</time></li></ul></div>
       </div>
       <!-- dev100-ranking:start -->
 <div class="paired-board dev-board" data-dev-leaderboard>
@@ -200,8 +200,8 @@
     <section class="section container ruled board-section" id="leaderboard-selected-1000" aria-labelledby="rankings-title">
       <span id="rankings"></span><span id="public"></span><span id="climb"></span><span id="table"></span>
       <div class="section-heading board-heading">
-        <div><p class="kicker">02 / Selected_1000</p><h2 id="rankings-title">1,000-task final target</h2></div>
-        <div><p class="lead">Complete Model and Model + Harness results on all 1,000 econometric replication tasks.</p><ul class="page-meta"><li>1,000 tasks per group</li><li>Published 17 Sep 2026</li></ul></div>
+        <div><p class="kicker">02 / Selected_1000</p><h2 id="rankings-title">Historical research results · 1,000 tasks</h2></div>
+        <div><p class="lead">Published Model and Model + Harness research results on all 1,000 econometric replication tasks. These historical results are separate from the planned 100-task econometric replication sub-track.</p><ul class="page-meta"><li>1,000 tasks per group</li><li>Published 17 Sep 2026</li></ul></div>
       </div>
       <!-- paired-ranking:start -->
 <div class="paired-board" data-paired-leaderboard>

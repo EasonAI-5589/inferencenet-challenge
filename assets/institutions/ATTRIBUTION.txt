@@ -1,5 +1,6 @@
 Official institutional logos
-Retrieved 2026-09-11. Original files reproduced without modification.
+Original files reproduced without modification. Retrieval dates are noted below.
+The first three college/business-school marks were retrieved 2026-09-11.
 Institutional names, logos and trademarks belong to their respective owners.
 These assets are not covered by the website's code or font licenses.
 
@@ -24,5 +25,38 @@ Source page: https://www.hkubs.hku.hk/about-us/overview/visual-identity/
 Original: https://www.hkubs.hku.hk/wp-content/uploads/2025/05/HKUBS_Horizontal_Coloured_Shield_Blue_Text_Logo.png
 SHA-256: 35b327da36ede548a1f5dbd0e9984a02e70c72671d2c27ab27545db59c2089cd
 
-All three marks retain their original colors and aspect ratios. White plates
+All marks retain their original colors and aspect ratios. White plates
 preserve the original appearance in either site theme.
+
+Nanyang Technological University, Singapore
+File: ntu-university-official.png (3006 x 1079)
+Retrieved: 2026-10-18
+Owner: Nanyang Technological University, Singapore
+Source page: https://www.ntu.edu.sg/gifts
+Original: https://www.ntu.edu.sg/ResourcePackages/NTU/assets/images/NTU_Logo.png
+SHA-256: 45535780334a04c2384d82468ab49c2c8f6d5a77f717246dc42f0c6ff6451503
+
+The University of Hong Kong
+File: hku-university-crest.png (310 x 310)
+Retrieved: 2026-10-18
+Owner: The University of Hong Kong
+Source page: https://www.hku.hk/en/about-hku/university-identity/basic-specifications
+Original: https://www.hku.hk/etc.clientlibs/hkucms/clientlibs/clientlib-site/resources/icon-310x310.png
+SHA-256: f91c5a39fdeede2a4b681fe8516762e9789338fd612643db46cf3c0dfa4f422f
+
+Shanghai University of Finance and Economics
+File: sufe-university-official.png (404 x 395)
+Retrieved: 2026-10-18
+Owner: Shanghai University of Finance and Economics
+Source page: https://www.sufe.edu.cn/xxzc/list.htm
+Original: https://www.sufe.edu.cn/_upload/article/images/9a/c4/09d319d24d67a361a2498942aaa0/4aa69ad5-8be7-4931-8334-be3716d433ed_d.png
+SHA-256: fcea85a9d55fd19cb12f8158d8e254ab4237d74731824ea07b729cdc51637072
+
+The SUFE seal comes from the university charter and includes the university
+name in Chinese and English within the seal itself. The HKU standalone crest
+is referenced by the official page as its square 310px icon.
+
+Homepage presentation: all three crests have a 72px display height. A CSS window
+shows the NTU shield from the original university logo without the adjacent
+wordmark. The source image bytes are unchanged; the window preserves the
+shield itself and its original proportions.
