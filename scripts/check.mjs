@@ -19,7 +19,7 @@ for (const file of publicFiles) {
 }
 const publicSet = new Set(publicFiles);
 const textExtensions = new Set(['.html', '.css', '.js', '.json', '.csv', '.txt', '.svg']);
-const assetExtensions = new Set(['.svg', '.png', '.jpg', '.woff2', '.txt', '.csv', '.json']);
+const assetExtensions = new Set(['.svg', '.png', '.jpg', '.woff2', '.txt', '.csv', '.json', '.mp4']);
 
 async function listAssets(directory, out = []) {
   for (const item of await readdir(directory, { withFileTypes: true })) {

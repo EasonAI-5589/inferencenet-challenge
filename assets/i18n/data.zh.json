@@ -348,5 +348,7 @@
   "Except where another source is explicitly noted, counts on this page are computed directly from one pinned CSV in one pinned dataset revision. Anyone with the same revision can recompute the CSV-based counts; nothing here depends on a model run.": "除明确注明其他来源外，本页计数直接根据固定数据集版本中的同一份固定 CSV 计算。任何拥有同一版本的人都能重新计算基于 CSV 的计数；此处内容均不依赖模型运行。",
   "Data shape": "数据规模",
   "4,550 observations × 38 columns in the recorded run. Restricting to 1905–1945 gives 984 observations; excluding 7 with missing regression variables leaves 977.": "真实运行中读取到 4,550 条观测、38 个字段。筛选 1905—1945 年后有 984 条观测；去除 7 条回归变量有缺失的记录后，使用 977 条观测。",
-  "Evolution": "自进化"
+  "Evolution": "自进化",
+  "The econometric replication sub-track will open-source the existing Dev100 set of 100 tasks. The charts below describe the broader research corpus and the historical Selected_1000 study. The Dev100 task package will be announced with the sub-track release.": "计量经济学复现子赛道将开源现有 Dev100 的 100 道任务。下方图表描述的是更广的研究任务库与历史 Selected_1000 研究。Dev100 任务包将在子赛道发布时公布。",
+  "Explore Dev100 results →": "查看 Dev100 结果 →"
 }

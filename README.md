@@ -2,7 +2,7 @@
 
 [Live website](https://easonai-5589.github.io/inferencenet-challenge/)
 
-Public presentation site for InferenceNet: AI for econometric research. The
+Public presentation site for InferenceNet: AI for Business, Social Science and Research. The
 site brings together Home, Data, Agent, Harness, Self-evolving, Leaderboard and Teams, with
 Chinese / English and light / dark controls on every page.
 The seven page links are visible by default, including the four-column menu (three columns below 352 px) on
@@ -44,18 +44,16 @@ of future updates unless explicitly requested again.
 
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
-All seven pages load `site.css` and `site.js` with release tag
-`20261011-release`, and `language.js` with the same tag on every page except
-Harness and Self-evolving, which use `20261013-coverage` for their updated dictionaries. Home and Leaderboard also load `leaderboard.css` and
-`leaderboard.js` with it (the script imports `leaderboard-data.js` with the same
-tag), and Home loads `index.css` with it. Self-evolving CSS uses
-`20261013-coverage`; Harness loads the same file with `20261013-coverage`,
-and Self-evolving JS uses
-`20261013-coverage`. Agent CSS keeps `20260917-case-data`, Teams CSS
-`20260921-yujie-leader` and Harness CSS `20261013-coverage`; the results JSON
-stays on `20260917-harness`. Strings shared by several pages, such as the
-reading-route labels and the scroll hints, live in the common dictionary in
-`language.js`.
+Home, Data and Leaderboard load `language.js` with `20261018-subtracks`;
+Home uses `20261018-subtracks` for `index.css`. Home and Leaderboard retain
+`20261018-dev100-challenge` for `leaderboard.css` and `leaderboard.js`.
+Leaderboard also retains that tag for `site.js` and `leaderboard-dev100.js`,
+and both board entries retain it for the shared `leaderboard-board.js` import.
+Data imports keep their existing tags: `20261011-release` for `leaderboard-data.js`,
+`20261012-dual-board` for `leaderboard-dev100-data.js` and its JSON, and
+`20260917-harness` for the Selected_1000 results JSON. Other asset tags remain
+versioned independently in their page HTML. Strings shared by several pages,
+such as the reading-route labels and scroll hints, live in `language.js`.
 
 English is authored in the HTML. When changing English text, update the matching
 normalized English key and Chinese value in that page's dictionary. Preserve
@@ -98,7 +96,7 @@ unchanged for traceability. These are
 the denominator. Historical protocols differ across models, and official
 scorer parity remains unverified.
 
-The Results section uses the title InferenceNet Challenge Leaderboard, without
+The Selected_1000 Results section and its chart use Historical research results, without
 duplicate count or combined-ranking headings. One table ranks all 12 model
 configurations together by default, ordered by
 Full replication, with Partial replication and three additional metrics also
@@ -153,6 +151,28 @@ used for regression. The same-task link opens `data.html#case-0011`, whose
 case card repeats this data context. Interaction budgets remain explicit.
 Agent CSS uses release tag `20260917-case-data`; its dictionary follows the
 language.js release tag.
+
+## Homepage agent replay video
+
+`assets/video/agent-replay-task0001.mp4` is a silent 71-second replay
+(1920×1080, 30 fps, H.264) of recorded task 0001, GPT-5.6 Sol with DeepAgents.
+Five chapters follow the run: the task and its six sub-problems, four
+run_python calls, the harness refusing a fifth tool call and asking for the
+final program, the evaluator running that program and the scorer comparing it
+with the sealed reference, and the full-replication result. Code excerpts,
+outputs, token counts, timings, budgets and scores come from the run record;
+only the time axis is compressed, and the captions add no new numbers.
+`agent-replay-task0001-poster.jpg` is its poster frame.
+
+The video is embedded on the homepage below the hero action buttons and before
+the status updates, with a poster and native playback controls. It does not
+autoplay. English and Chinese captions identify the historical single-task
+demonstration, its English-only silent video and compressed timeline, and link
+to `data.html#case-0001`. The existing task 0011 walkthrough remains separate.
+Homepage CSS uses `20261018-subtracks`; the Home, Data and Leaderboard
+translations use `20261018-subtracks`.
+The animation source and export scripts stay in the research workspace.
+`scripts/check.mjs` accepts `.mp4` files under `assets/` for this video.
 
 ## Self-evolving: improving a harness
 
@@ -215,8 +235,13 @@ The MetricsAI workflow is attributed to Figure 1 of Chen et al.,
 image and the 2026-09-15 vector redraws retain their source and permission notes
 in `assets/figures/ATTRIBUTION.txt`. They illustrate related research.
 
-Official NTU CCDS, Nanyang Business School and HKU Business School marks retain
-their source and ownership notes in `assets/institutions/ATTRIBUTION.txt`.
+The homepage shows only the university crests for NTU Singapore, the University
+of Hong Kong and Shanghai University of Finance and Economics, all at 72px tall.
+HKU and SUFE use standalone crest assets; a CSS window shows the shield from
+the unchanged NTU university logo asset without its wordmark. Its GIFTS text link
+remains in the introduction. Teams retains the existing college and business-school
+marks. Original assets and ownership notes are recorded in
+`assets/institutions/ATTRIBUTION.txt`.
 Initiative faculty roles and institutional research profiles link their official
 sources. Institutional trademarks are not covered by code or font licenses.
 
@@ -230,8 +255,16 @@ into this public repository.
 
 ## Research framing
 
-The homepage introduces model–harness interaction. Research directions below the
-leaderboard cover model–harness coupling, harness self-evolution through automated
+InferenceNet Challenge is a public series of challenges for AI agents. The
+homepage introduces the Global InferenceNet Initiative through a bold inline
+link, then explains the Challenge series in the same paragraph. Its Inference
+Challenge section presents each specific challenge as a sub-track with its own
+tasks and evaluation criteria.
+Econometric replication is one sub-track. The Global InferenceNet Initiative
+mission follows the [official NTU GIFTS description](https://www.ntu.edu.sg/gifts/research-and-innovation),
+covering agent training, evaluation and deployment across economics, finance,
+business and the social sciences. Research directions below the leaderboard cover
+model–harness coupling, harness self-evolution through automated
 design and evaluation, and trajectory-based model post-training (including
 distillation and reinforcement learning). The self-evolving direction links to the Self-evolving page’s concept and methods
 (`evolution.html#concept`) and to InferenceNet’s development study
@@ -246,8 +279,21 @@ and [trajectory-based reinforcement learning](https://arxiv.org/abs/2508.03680).
 
 ## Homepage presentation
 
-Home follows five sections: the benchmark workflow, recorded GPT-5.5 task 0011,
-the shared leaderboard, three research directions and participation. Full task
+Home follows five sections: Challenge sub-tracks and the econometric workflow,
+recorded GPT-5.5 task 0011, historical research results, three research directions
+and participation. The econometric replication sub-track will open-source the existing Dev100 set of 100 tasks.
+Sub-track 01 is econometric replication. Sub-track 02 is professional tasks,
+with finance and HR demos contributed by Prof. Liwen Zhang’s team at Shanghai
+University of Finance and Economics. The finance demo concerns July month-end
+close remediation and review workpapers; the HR demo concerns cold-chain
+warehouse supervisor training and procurement acceptance, in a fictional
+scenario. Agents produce documents and spreadsheets checked against the task's
+rubric. These examples describe the supplied demos, not an open submission
+channel or finalized competition protocol. The workflow below is explicitly
+scoped to Sub-track 01.
+The 2,644-task source corpus and historical Selected_1000 results are research
+context, not the replication sub-track release size. The sub-track task package,
+rules, dates and submission channel remain to be announced. Full task
 coverage and provenance remain on Data; the detailed execution trace remains
 on Agent. Below the hero, a dated status list keeps the published leaderboard
 (17 Sep 2026), the historical development study frozen on 9 Oct 2026 (held-out
@@ -325,7 +371,7 @@ mechanism comparisons and deeper breakdowns are curated separately.
 | Agent case and evaluation | `agent.html`, `agent.css` |
 | Harness: definition, system structure, selected 2025–2026 milestones, common mechanism comparison, catalogue by role, three breakdowns and InferenceNet’s four configurations | `harness.html`, `harness.css`; reuses `data.css`, `agent.css`, `evolution.css` |
 | Self-evolving: concept, research map by adaptation regime, method comparison, three detailed offline cases and InferenceNet’s development study | `evolution.html`, `evolution.css`, `evolution.js`, `assets/data/modular-rsi-evolution.json` |
-| Leaderboard: the Dev100 / v10 development release, then the Selected_1000 final target | `leaderboard.html`, `leaderboard.css` |
+| Leaderboard: the Dev100 / v10 development release, then the Selected_1000 historical research results | `leaderboard.html`, `leaderboard.css` |
 | Team, institutions and Yichen Guo contact | `teams.html`, `teams.css` |
 | Shared layout, navigation and theme | `styles.css`, `site.css`, `site.js`, `theme.js` |
 | Chinese translations and language control | `assets/i18n/*.zh.json`, `language.js`, `language.css` |
@@ -336,39 +382,30 @@ mechanism comparisons and deeper breakdowns are curated separately.
 
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
-All seven pages load `site.css` with release tag `20261011-release`. Data,
-Agent, Harness, Self-evolving and Teams also load `site.js` with it, and all but
-Harness and Self-evolving load `language.js` with it (those two use `20261013-coverage`), and Home loads `site.js` and `index.css` with it. Leaderboard loads
-`site.js`, `leaderboard.css`, `leaderboard.js` and `leaderboard-dev100.js`
-with `20261012-dual-board`; Home loads `leaderboard.css` and `leaderboard.js`
-with it. Home and Leaderboard load `language.js` with `20261012-dev100-first`,
-the tag of their dictionaries since the Dev100-first reordering. Both board
-scripts import `leaderboard-board.js` (and the dev script imports
-`leaderboard-dev100-data.js`) with `20261012-dual-board`; the unchanged
-`leaderboard-data.js` is imported with `20261011-release`. Self-evolving CSS uses
-`20261013-coverage`; Harness loads the same file with `20261013-coverage`,
-and Self-evolving JS uses
-`20261013-coverage`. Agent CSS keeps `20260917-case-data`, Teams CSS
-`20260921-yujie-leader` and Harness CSS `20261013-coverage`; the results JSON
-stays on `20260917-harness`, and the Dev100 / v10 JSON uses
-`20261012-dual-board`. Strings shared by several pages, such as the
-reading-route labels and the scroll hints, live in the common dictionary in
-`language.js`.
+Home, Data and Leaderboard load `language.js` with `20261018-subtracks`;
+Home uses `20261018-subtracks` for `index.css`. Home and Leaderboard retain
+`20261018-dev100-challenge` for `leaderboard.css` and `leaderboard.js`.
+Leaderboard also retains that tag for `site.js` and `leaderboard-dev100.js`,
+and both board entries retain it for the shared `leaderboard-board.js` import.
+Data imports keep their existing tags: `20261011-release` for `leaderboard-data.js`,
+`20261012-dual-board` for `leaderboard-dev100-data.js` and its JSON, and
+`20260917-harness` for the Selected_1000 results JSON. Other asset tags remain
+versioned independently in their page HTML. Strings shared by several pages,
+such as the reading-route labels and scroll hints, live in `language.js`.
 
 The Leaderboard page holds two separate boards, in this order, and the hero
 navigation lists them in the same order. `#leaderboard-dev100` comes first, with
 the Dev100 / v10 development release described below. `#leaderboard-selected-1000`
-follows with the complete results on the 1,000-task final target described in
+follows with the complete results on the historical 1,000-task study described in
 this section; the old anchors (`#rankings`, `#public`, `#climb`, `#table`,
 `#research`, `#protocol`) still resolve. Home shows only the Selected_1000
 board, plus a news item and one link to the development release.
 
-Dev100 is the Challenge's public development benchmark: its 100 tasks are used
-first, for development. Developers can submit harnesses of their own design,
-and InferenceNet evaluates every submission under the same settings. The
-submission channel and dates have not been announced, so the page names no
-upload link, date or API. The v10 release is not directly comparable with the
-Selected_1000 final target. It reads `assets/data/dev100-v10-results.json`, a
+The econometric replication sub-track will open-source the existing Dev100 set of 100 tasks.
+This scope was confirmed on 18 October 2026. The sub-track data package, official
+rules, submission channel and dates have not been published. The v10 table preserves historical
+development results, not official Challenge rankings. It is not directly
+comparable with the Selected_1000 historical research results. It reads `assets/data/dev100-v10-results.json`, a
 sanitized derivation of the v10 four-harness report: 14 models × 4 harnesses,
 100 development tasks per combination, 5,600 task results. The report checksums and the derivation are in
 `dev100-v10-results-provenance.json`. Task IDs, server paths and per-task

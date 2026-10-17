@@ -38,7 +38,7 @@ export function selectedBoardDescriptor(source) {
     rowsHTML: tableRows,
     cardHTML: runCardHTML,
     chart: (data, view, metric, rows) => ({
-      title: view === 'all' ? 'InferenceNet Challenge Leaderboard' : VIEWS[view], metric: METRICS[metric], unit: '%', max: 100,
+      title: view === 'all' ? 'Historical research results' : VIEWS[view], metric: METRICS[metric], unit: '%', max: 100,
       peakLabel: '100% · every task replicated',
       items: rows.map(row => ({
         rank: row.rank, label: chartLabel(row, view),
