@@ -7,7 +7,7 @@
 html[lang="zh-CN"] .page-hero h1,html[lang="zh-CN"] h2,html[lang="zh-CN"] h3{letter-spacing:0;line-height:1.4}
 html[lang="zh-CN"] .lead,html[lang="zh-CN"] .prose{line-height:1.9}
 html[lang="zh-CN"] .kicker{letter-spacing:.03em}
-@media(min-width:861px) and (max-width:1120px){.nav{gap:14px}.nav-links{gap:14px}.nav-links a{font-size:13px}.nav .wordmark{font-size:20px}.nav .wordmark small{display:none}.nav-controls{gap:7px}}
+@media(min-width:861px) and (max-width:1180px){.nav{gap:14px}.nav-links{gap:14px}.nav-links a{font-size:13px;white-space:nowrap}.nav .wordmark{font-size:20px}.nav .wordmark small{display:none}.nav-controls{gap:7px}}
 @media(max-width:520px){.nav-controls{gap:6px}.language-switch button{min-width:28px;padding-inline:5px}.nav .wordmark{font-size:19px}}
 @media(max-width:380px){.nav-controls{gap:4px}.nav .wordmark{font-size:18px}.menu-toggle{font-size:0;min-width:40px;padding-inline:8px;gap:0}.menu-toggle span{font-size:18px}.theme-toggle{min-width:40px;padding-inline:8px}.language-switch button{min-width:26px;padding-inline:4px}}
 @media print{.language-switch{display:none}}

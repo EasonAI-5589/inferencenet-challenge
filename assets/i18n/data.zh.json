@@ -1,5 +1,5 @@
 {
-  "Data — InferenceNet Challenge": "数据 — InferenceNet Challenge",
+  "Data — InferenceNet": "数据 — InferenceNet",
   "Skip to content": "跳至正文",
   "CHALLENGE": "挑战赛",
   "Home": "首页",
@@ -269,7 +269,6 @@
   "Selected_1000 keeps the original task ids, which run from 0001 to 1125 with gaps. The snapshot behind these counts holds 5,207 files and 54.28 GB of data.": "Selected_1000 保留原始任务 ID，范围为 0001 至 1125，中间有缺号。这些计数所依据的快照包含 5,207 个文件和 54.28 GB 数据。",
   "Previous": "上一页",
   "Next": "下一页",
-  "AI for econometric research.": "面向计量经济学研究的 AI。",
   "Research workspace": "研究工作区",
   "(collaborator access)": "（需协作者权限）",
   "Main navigation": "主导航",

@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="no-referrer">
+  <title>Challenge — InferenceNet</title>
+  <meta name="description" content="The InferenceNet Challenge is the first program of the Global InferenceNet Initiative: tracks, a planned timeline and awards for AI agents doing real professional work in business and the social sciences.">
+  <meta property="og:title" content="InferenceNet — Challenge">
+  <meta property="og:description" content="The InferenceNet Challenge is the first program of the Global InferenceNet Initiative: tracks, a planned timeline and awards for AI agents doing real professional work in business and the social sciences.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="site.css?v=20261011-release">
+  <link rel="stylesheet" href="challenge.css?v=20261018-initiative">
+  <script src="site.js?v=20261011-release" defer></script>
+  <link rel="stylesheet" href="language.css">
+  <script src="language.js?v=20261018-initiative" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress"></span></div>
+  <header class="site-header">
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="wordmark" href="index.html">Inference<span>Net</span><small>INITIATIVE</small></a>
+      <div class="nav-links open" id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="challenge.html" aria-current="page">Challenge</a>
+        <a href="data.html">Data</a>
+        <a href="agent.html">Agent</a>
+        <a href="harness.html">Harness</a>
+        <a href="evolution.html">Self-evolving</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="teams.html">Teams</a>
+      </div>
+      <div class="nav-controls">
+        <button class="theme-toggle" data-theme-toggle aria-label="Switch to dark theme" aria-pressed="false" type="button" hidden>
+          <span class="theme-icon" aria-hidden="true"></span><span data-theme-label>Light</span>
+        </button>
+        <button class="menu-toggle" type="button" aria-controls="nav-links" aria-expanded="true" hidden>Menu <span aria-hidden="true">−</span></button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <section class="page-hero container" aria-labelledby="page-title">
+      <p class="kicker">Challenge · Global InferenceNet Initiative</p>
+      <h1 id="page-title">The InferenceNet <em>Challenge.</em></h1>
+      <p class="lead">The first program of the Global InferenceNet Initiative: tracks that aim to test whether AI agents can do real professional work in business and the social sciences, checked by independent evaluators.</p>
+    </section>
+
+    <nav class="subnav" aria-label="On this page">
+      <ol class="container">
+        <li><a href="#initiative"><span class="subnav-number">01</span>Initiative</a></li>
+        <li><a href="#tracks"><span class="subnav-number">02</span>Tracks</a></li>
+        <li><a href="#timeline"><span class="subnav-number">03</span>Timeline</a></li>
+        <li><a href="#awards"><span class="subnav-number">04</span>Awards</a></li>
+        <li><a href="#take-part"><span class="subnav-number">05</span>Take part</a></li>
+      </ol>
+    </nav>
+
+    <section class="section container" id="initiative" aria-labelledby="initiative-title">
+      <div class="section-heading compact"><div><p class="kicker">01 / Initiative</p><h2 id="initiative-title">One initiative, many tracks</h2></div><p class="lead">The Global InferenceNet Initiative, hosted by NTU GIFTS, aims to build shared infrastructure for training, evaluating and applying AI agents in economics, finance, business and the social sciences. The Challenge is where it meets the community.</p></div>
+      <ul class="card-grid initiative-pillars">
+        <li class="card"><p class="card-label">Aim 1</p><h3>Tasks and databases</h3><p>To build large-scale collections of real research tasks, analyses, data-and-code workflows and research designs.</p></li>
+        <li class="card"><p class="card-label">Aim 2</p><h3>Benchmarks and competitions</h3><p>To test independently whether AI agents can plan, carry out, interpret and audit professional-level analytical work.</p></li>
+        <li class="card"><p class="card-label">Aim 3</p><h3>Training and applications</h3><p>To provide shared infrastructure for training and deploying agents, with educational resources and tools for analysts and consultants.</p></li>
+      </ul>
+      <p class="open-call">We hope work from business and the social sciences around the world will join the Initiative. If your field has real professional tasks that can be checked, we would like to build a track with you.</p>
+      <p class="open-call-link"><a class="text-link" href="teams.html#contact">Contact us <span aria-hidden="true">→</span></a></p>
+    </section>
+
+    <section class="section container ruled" id="tracks" aria-labelledby="tracks-title">
+      <div class="section-heading compact"><div><p class="kicker">02 / Tracks</p><h2 id="tracks-title">Two tracks so far</h2></div><p class="lead">Each track has its own tasks and independent evaluation. More tracks can join as partners bring new domains.</p></div>
+
+      <article class="track" id="track-1" aria-labelledby="track-1-title">
+        <div class="track-head"><span class="pill">Track 1</span><span class="status is-open">Open for exploration</span></div>
+        <h3 id="track-1-title">Econometric replication</h3>
+        <p class="track-summary">Given real research data and analysis instructions, an AI agent writes and runs code to recover a published coefficient, its standard error and its p-value.</p>
+        <dl class="track-facts">
+          <div><dt>Input</dt><dd>The data files and the exact instruction the model receives. Reference answers stay with the evaluator.</dd></div>
+          <div><dt>Output</dt><dd>A result file with three numbers: the coefficient, the standard error and the p-value.</dd></div>
+          <div><dt>Evaluation</dt><dd>An independent evaluator compares the result with reference values that the model never sees.</dd></div>
+          <div><dt>Results</dt><dd>Reference results for models and harnesses, which are not Challenge standings, are on the Leaderboard page.</dd></div>
+          <div><dt>Submission</dt><dd>The submission channel and rules have not been announced yet.</dd></div>
+        </dl>
+        <div class="track-links">
+          <a class="text-link" href="data.html">Explore the data <span aria-hidden="true">→</span></a>
+          <a class="text-link" href="agent.html">Follow a recorded run <span aria-hidden="true">→</span></a>
+          <a class="text-link" href="leaderboard.html">View the leaderboard <span aria-hidden="true">→</span></a>
+        </div>
+      </article>
+
+      <article class="track" id="track-2" aria-labelledby="track-2-title">
+        <div class="track-head"><span class="pill">Track 2</span><span class="status is-tbc">Details to be confirmed</span></div>
+        <h3 id="track-2-title">Business scenarios with SUFE</h3>
+        <p class="track-summary">Task scenarios from our collaborating team at Shanghai University of Finance and Economics (SUFE), led by Liwen Zhang. Two scenarios form the two sub-tracks.</p>
+        <ul class="subtracks">
+          <li class="subtrack"><span class="pill">Sub-track 2A</span><h4>AI task scenario</h4><p>The scenario description, data and evaluation method are to be confirmed with the SUFE team.</p></li>
+          <li class="subtrack"><span class="pill">Sub-track 2B</span><h4>HR task scenario</h4><p>The scenario description, data and evaluation method are to be confirmed with the SUFE team.</p></li>
+        </ul>
+        <p class="track-note">Inputs, outputs, evaluation and submission rules for Track 2 will be set out here once they are confirmed.</p>
+        <div class="track-links">
+          <a class="text-link" href="teams.html#partners">Meet the partner team <span aria-hidden="true">→</span></a>
+        </div>
+      </article>
+    </section>
+
+    <section class="section container ruled" id="timeline" aria-labelledby="timeline-title">
+      <div class="section-heading compact"><div><p class="kicker">03 / Timeline</p><h2 id="timeline-title">From open exploration to awards</h2></div><p class="lead">The Challenge is planned to run in a fixed time window. The stages below are planned; no date has been set.</p></div>
+      <ol class="timeline-list">
+        <li><span class="timeline-when">Now</span><div><h3>Open exploration</h3><p>Explore the public dataset, the task walkthroughs and the reference leaderboards.</p></div><span class="status is-open">Open now</span></li>
+        <li><span class="timeline-when">To be announced</span><div><h3>Registration and pilot</h3><p>Early teams try the evaluation workflow. Tell us if you are interested in the pilot.</p></div><span class="status is-tbc">To be confirmed</span></li>
+        <li><span class="timeline-when">To be announced</span><div><h3>Challenge window</h3><p>Participants submit their solutions during a fixed, announced period.</p></div><span class="status is-tbc">To be confirmed</span></li>
+        <li><span class="timeline-when">To be announced</span><div><h3>Independent evaluation</h3><p>Every submission is evaluated under the same settings.</p></div><span class="status is-tbc">To be confirmed</span></li>
+        <li><span class="timeline-when">To be announced</span><div><h3>Results and awards</h3><p>Results are published and the awards are announced.</p></div><span class="status is-tbc">To be confirmed</span></li>
+      </ol>
+      <p class="timeline-note">The registration dates, submission deadline and result date have not been set. They will be posted here once they are confirmed.</p>
+    </section>
+
+    <section class="section container ruled" id="awards" aria-labelledby="awards-title">
+      <div class="section-heading compact"><div><p class="kicker">04 / Awards</p><h2 id="awards-title">Two kinds of award</h2></div><p class="lead">The Challenge plans one award in data and one in prize money. Amounts, eligibility and timing are still to be confirmed.</p></div>
+      <div class="card-grid award-grid">
+        <article class="card award"><p class="card-label">Award 1 <span class="status is-tbc">To be confirmed</span></p><h3>Specialized dataset award</h3><p>A private, domain-specialized dataset is planned as a prize.</p><p class="award-tbc">Which dataset, who qualifies and how it can be used will be confirmed with the partners that provide it.</p></article>
+        <article class="card award"><p class="card-label">Award 2 <span class="status is-tbc">To be confirmed</span></p><h3>Leaderboard prize</h3><p>The plan is for teams to submit an AI-agent tuning solution, for example a harness design, and win prize money by rising on the Challenge leaderboard.</p><p class="award-tbc">The leaderboard and scoring rule, the prize amounts, the number of prizes, eligibility and payout timing will be confirmed.</p></article>
+      </div>
+      <p class="timeline-note">Awards are planned. No amount, date or eligibility rule is final until it is announced here.</p>
+    </section>
+
+    <section class="section container ruled" id="take-part" aria-labelledby="take-part-title">
+      <div class="section-heading compact"><div><p class="kicker">05 / Take part</p><h2 id="take-part-title">What you can do now</h2></div><p class="lead">Registration and submission are not open yet. These steps are open to everyone.</p></div>
+      <ol class="take-part">
+        <li><h3>Read a task the way a model does</h3><p>The Data page opens one task package: its files, the exact instruction the model receives and the result file the evaluator reads.</p><a class="text-link" href="data.html#anatomy">Inside a task package <span aria-hidden="true">→</span></a></li>
+        <li><h3>Explore the public data</h3><p>The Track 1 benchmark is published on Hugging Face. A Hugging Face account is needed to download it.</p><a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener">InferenceNet dataset <span aria-hidden="true">↗</span></a></li>
+        <li><h3>Bring a domain or ask for access</h3><p>Propose a track, register your interest in the pilot or request access to the evaluation framework. Write to us with your name and affiliation, your GitHub account and what you would like to evaluate.</p><a class="text-link" href="teams.html#contact">Contact details <span aria-hidden="true">→</span></a></li>
+      </ol>
+    </section>
+
+    <div class="container">
+      <nav class="page-footer-nav" aria-label="Page sequence">
+        <a href="index.html"><small>Previous</small><span><span aria-hidden="true">←</span> Home</span></a>
+        <a href="data.html"><small>Next</small><span>Data <span aria-hidden="true">→</span></span></a>
+      </nav>
+    </div>
+  </main>
+  <footer class="site-footer container"><a class="wordmark" href="index.html">Inference<span>Net</span></a><p>AI for Business, Social Science and Research.</p><a href="teams.html#contact">Contact <span aria-hidden="true">→</span></a></footer>
+</body>
+</html>
