@@ -1,4 +1,4 @@
-# InferenceNet Initiative
+# InferenceNet Challenge
 
 [Live website](https://easonai-5589.github.io/inferencenet-challenge/)
 
@@ -44,18 +44,16 @@ of future updates unless explicitly requested again.
 
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
-All seven pages load `site.css` and `site.js` with release tag
-`20261011-release`, and `language.js` with the same tag on every page except
-Harness and Self-evolving, which use `20261013-coverage` for their updated dictionaries. Home and Leaderboard also load `leaderboard.css` and
-`leaderboard.js` with it (the script imports `leaderboard-data.js` with the same
-tag), and Home loads `index.css` with it. Self-evolving CSS uses
-`20261013-coverage`; Harness loads the same file with `20261013-coverage`,
-and Self-evolving JS uses
-`20261013-coverage`. Agent CSS keeps `20260917-case-data`, Teams CSS
-`20260921-yujie-leader` and Harness CSS `20261013-coverage`; the results JSON
-stays on `20260917-harness`. Strings shared by several pages, such as the
-reading-route labels and the scroll hints, live in the common dictionary in
-`language.js`.
+Home, Data and Leaderboard load `language.js` with `20261018-challenge-series`;
+Home uses the same tag for `index.css`. Home and Leaderboard retain
+`20261018-dev100-challenge` for `leaderboard.css` and `leaderboard.js`.
+Leaderboard also retains that tag for `site.js` and `leaderboard-dev100.js`,
+and both board entries retain it for the shared `leaderboard-board.js` import.
+Data imports keep their existing tags: `20261011-release` for `leaderboard-data.js`,
+`20261012-dual-board` for `leaderboard-dev100-data.js` and its JSON, and
+`20260917-harness` for the Selected_1000 results JSON. Other asset tags remain
+versioned independently in their page HTML. Strings shared by several pages,
+such as the reading-route labels and scroll hints, live in `language.js`.
 
 English is authored in the HTML. When changing English text, update the matching
 normalized English key and Chinese value in that page's dictionary. Preserve
@@ -171,7 +169,8 @@ the status updates, with a poster and native playback controls. It does not
 autoplay. English and Chinese captions identify the historical single-task
 demonstration, its English-only silent video and compressed timeline, and link
 to `data.html#case-0001`. The existing task 0011 walkthrough remains separate.
-Homepage CSS and translations use release tag `20261018-dev100-challenge`.
+Homepage CSS and the Home, Data and Leaderboard translations use
+release tag `20261018-challenge-series`.
 The animation source and export scripts stay in the research workspace.
 `scripts/check.mjs` accepts `.mp4` files under `assets/` for this video.
 
@@ -251,9 +250,13 @@ into this public repository.
 
 ## Research framing
 
-The homepage introduces an initiative spanning economics, finance, business and
-the social sciences, starting with econometric replication. Research directions below the
-leaderboard cover model–harness coupling, harness self-evolution through automated
+The site is titled InferenceNet Challenge. Inference Challenge is its public
+challenge series, with each specific challenge organized as a sub-track.
+Econometric replication is one sub-track. The Global InferenceNet Initiative
+mission follows the [official NTU GIFTS description](https://www.ntu.edu.sg/gifts/research-and-innovation),
+covering agent training, evaluation and deployment across economics, finance,
+business and the social sciences. Research directions below the leaderboard cover
+model–harness coupling, harness self-evolution through automated
 design and evaluation, and trajectory-based model post-training (including
 distillation and reinforcement learning). The self-evolving direction links to the Self-evolving page’s concept and methods
 (`evolution.html#concept`) and to InferenceNet’s development study
@@ -270,12 +273,12 @@ and [trajectory-based reinforcement learning](https://arxiv.org/abs/2508.03680).
 
 Home follows five sections: benchmark directions and the econometric workflow,
 recorded GPT-5.5 task 0011, historical research results, three research directions
-and participation. The open-source Challenge will reuse the existing Dev100 set
-of 100 tasks. Finance/business and social-science/research cards invite benchmark
-contributions; they do not claim that additional benchmarks are available.
+and participation. The econometric replication sub-track will open-source the existing Dev100 set of 100 tasks.
+Finance/business and social-science/research cards invite contributions to
+additional sub-tracks; they do not claim that those sub-tracks are available.
 The 2,644-task source corpus and historical Selected_1000 results are research
-context, not the Challenge release size. The task package, rules, dates and
-submission channel remain to be announced. Full task
+context, not the replication sub-track release size. The sub-track task package,
+rules, dates and submission channel remain to be announced. Full task
 coverage and provenance remain on Data; the detailed execution trace remains
 on Agent. Below the hero, a dated status list keeps the published leaderboard
 (17 Sep 2026), the historical development study frozen on 9 Oct 2026 (held-out
@@ -364,24 +367,16 @@ mechanism comparisons and deeper breakdowns are curated separately.
 
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
-All seven pages load `site.css` with release tag `20261011-release`. Data,
-Agent, Harness, Self-evolving and Teams also load `site.js` with it, and all but
-Harness and Self-evolving load `language.js` with it (those two use `20261013-coverage`), and Home loads `site.js` and `index.css` with it. Leaderboard loads
-`site.js`, `leaderboard.css`, `leaderboard.js` and `leaderboard-dev100.js`
-with `20261012-dual-board`; Home loads `leaderboard.css` and `leaderboard.js`
-with it. Home and Leaderboard load `language.js` with `20261012-dev100-first`,
-the tag of their dictionaries since the Dev100-first reordering. Both board
-scripts import `leaderboard-board.js` (and the dev script imports
-`leaderboard-dev100-data.js`) with `20261012-dual-board`; the unchanged
-`leaderboard-data.js` is imported with `20261011-release`. Self-evolving CSS uses
-`20261013-coverage`; Harness loads the same file with `20261013-coverage`,
-and Self-evolving JS uses
-`20261013-coverage`. Agent CSS keeps `20260917-case-data`, Teams CSS
-`20260921-yujie-leader` and Harness CSS `20261013-coverage`; the results JSON
-stays on `20260917-harness`, and the Dev100 / v10 JSON uses
-`20261012-dual-board`. Strings shared by several pages, such as the
-reading-route labels and the scroll hints, live in the common dictionary in
-`language.js`.
+Home, Data and Leaderboard load `language.js` with `20261018-challenge-series`;
+Home uses the same tag for `index.css`. Home and Leaderboard retain
+`20261018-dev100-challenge` for `leaderboard.css` and `leaderboard.js`.
+Leaderboard also retains that tag for `site.js` and `leaderboard-dev100.js`,
+and both board entries retain it for the shared `leaderboard-board.js` import.
+Data imports keep their existing tags: `20261011-release` for `leaderboard-data.js`,
+`20261012-dual-board` for `leaderboard-dev100-data.js` and its JSON, and
+`20260917-harness` for the Selected_1000 results JSON. Other asset tags remain
+versioned independently in their page HTML. Strings shared by several pages,
+such as the reading-route labels and scroll hints, live in `language.js`.
 
 The Leaderboard page holds two separate boards, in this order, and the hero
 navigation lists them in the same order. `#leaderboard-dev100` comes first, with
@@ -391,9 +386,9 @@ this section; the old anchors (`#rankings`, `#public`, `#climb`, `#table`,
 `#research`, `#protocol`) still resolve. Home shows only the Selected_1000
 board, plus a news item and one link to the development release.
 
-The open-source Challenge will use the existing Dev100 set of 100 tasks, as
-confirmed on 18 October 2026. The data package, official rules, submission
-channel and dates have not been published. The v10 table preserves historical
+The econometric replication sub-track will open-source the existing Dev100 set of 100 tasks.
+This scope was confirmed on 18 October 2026. The sub-track data package, official
+rules, submission channel and dates have not been published. The v10 table preserves historical
 development results, not official Challenge rankings. It is not directly
 comparable with the Selected_1000 historical research results. It reads `assets/data/dev100-v10-results.json`, a
 sanitized derivation of the v10 four-harness report: 14 models × 4 harnesses,
