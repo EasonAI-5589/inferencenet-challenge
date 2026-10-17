@@ -154,6 +154,22 @@ case card repeats this data context. Interaction budgets remain explicit.
 Agent CSS uses release tag `20260917-case-data`; its dictionary follows the
 language.js release tag.
 
+## Agent replay video (draft for review)
+
+`assets/video/agent-replay-task0001.mp4` is a silent 71-second replay
+(1920×1080, 30 fps, H.264) of recorded task 0001, GPT-5.6 Sol with DeepAgents.
+Five chapters follow the run: the task and its six sub-problems, four
+run_python calls, the harness refusing a fifth tool call and asking for the
+final program, the evaluator running that program and the scorer comparing it
+with the sealed reference, and the full-replication result. Code excerpts,
+outputs, token counts, timings, budgets and scores come from the run record;
+only the time axis is compressed, and the captions add no new numbers.
+`agent-replay-task0001-poster.jpg` is its poster frame.
+
+The video is not yet embedded in any page; its placement is under review. The
+animation source and export scripts stay in the research workspace.
+`scripts/check.mjs` accepts `.mp4` files under `assets/` for this video.
+
 ## Self-evolving: improving a harness
 
 The Self-evolving page (`evolution.html`) first explains harness self-evolution:
