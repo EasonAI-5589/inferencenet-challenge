@@ -44,8 +44,8 @@ of future updates unless explicitly requested again.
 
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
-Home, Data and Leaderboard load `language.js` with `20261018-university-marks`;
-Home uses `20261018-university-crests` for `index.css`. Home and Leaderboard retain
+Home, Data and Leaderboard load `language.js` with `20261018-subtracks`;
+Home uses `20261018-subtracks` for `index.css`. Home and Leaderboard retain
 `20261018-dev100-challenge` for `leaderboard.css` and `leaderboard.js`.
 Leaderboard also retains that tag for `site.js` and `leaderboard-dev100.js`,
 and both board entries retain it for the shared `leaderboard-board.js` import.
@@ -169,8 +169,8 @@ the status updates, with a poster and native playback controls. It does not
 autoplay. English and Chinese captions identify the historical single-task
 demonstration, its English-only silent video and compressed timeline, and link
 to `data.html#case-0001`. The existing task 0011 walkthrough remains separate.
-Homepage CSS uses `20261018-university-crests`; the Home, Data and Leaderboard
-translations use `20261018-university-marks`.
+Homepage CSS uses `20261018-subtracks`; the Home, Data and Leaderboard
+translations use `20261018-subtracks`.
 The animation source and export scripts stay in the research workspace.
 `scripts/check.mjs` accepts `.mp4` files under `assets/` for this video.
 
@@ -279,11 +279,18 @@ and [trajectory-based reinforcement learning](https://arxiv.org/abs/2508.03680).
 
 ## Homepage presentation
 
-Home follows five sections: benchmark directions and the econometric workflow,
+Home follows five sections: Challenge sub-tracks and the econometric workflow,
 recorded GPT-5.5 task 0011, historical research results, three research directions
 and participation. The econometric replication sub-track will open-source the existing Dev100 set of 100 tasks.
-Finance/business and social-science/research cards invite contributions to
-additional sub-tracks; they do not claim that those sub-tracks are available.
+Sub-track 01 is econometric replication. Sub-track 02 is professional tasks,
+with finance and HR demos contributed by Prof. Liwen Zhang’s team at Shanghai
+University of Finance and Economics. The finance demo concerns July month-end
+close remediation and review workpapers; the HR demo concerns cold-chain
+warehouse supervisor training and procurement acceptance, in a fictional
+scenario. Agents produce documents and spreadsheets checked against the task's
+rubric. These examples describe the supplied demos, not an open submission
+channel or finalized competition protocol. The workflow below is explicitly
+scoped to Sub-track 01.
 The 2,644-task source corpus and historical Selected_1000 results are research
 context, not the replication sub-track release size. The sub-track task package,
 rules, dates and submission channel remain to be announced. Full task
@@ -375,8 +382,8 @@ mechanism comparisons and deeper breakdowns are curated separately.
 
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
-Home, Data and Leaderboard load `language.js` with `20261018-university-marks`;
-Home uses `20261018-university-crests` for `index.css`. Home and Leaderboard retain
+Home, Data and Leaderboard load `language.js` with `20261018-subtracks`;
+Home uses `20261018-subtracks` for `index.css`. Home and Leaderboard retain
 `20261018-dev100-challenge` for `leaderboard.css` and `leaderboard.js`.
 Leaderboard also retains that tag for `site.js` and `leaderboard-dev100.js`,
 and both board entries retain it for the shared `leaderboard-board.js` import.
