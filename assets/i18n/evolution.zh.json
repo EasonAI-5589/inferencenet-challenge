@@ -1,5 +1,5 @@
 {
-  "Self-evolving — InferenceNet Challenge": "自进化 — InferenceNet 挑战赛",
+  "Self-evolving — InferenceNet": "自进化 — InferenceNet",
   "Skip to content": "跳转到正文",
   "Home": "首页",
   "Data": "数据",
@@ -661,7 +661,6 @@
   ", main at 8123cca of 1 Oct 2026, linked from the paper’s project page; MIT license. The repository is a cleaned-up release and does not include the math experiment.": "，main 分支 8123cca（2026 年 10 月 1 日），由论文项目页链接；MIT 许可证。该仓库是整理后的发布版，不包含数学实验。",
   "§3, Algorithm 1, §4.1–4.3 and appendices A and D: the proposer, its filesystem, validation, the Pareto frontier and the evaluation settings.": "§3、Algorithm 1、§4.1–4.3 及附录 A、D：提出者、它的文件系统、校验、Pareto 前沿和评测设定。",
   "The InferenceNet study’s own sources, run identifiers and scoring definitions are in the run record at the end of section 05; its aggregated values are in": "InferenceNet 研究自身的来源、运行标识和评分定义见第 05 节末尾的运行记录；汇总数值见",
-  "AI for econometric research.": "面向计量经济学研究的 AI。",
   "Contact": "联系",
   "Main navigation": "主导航",
   "On this page": "本页导航",

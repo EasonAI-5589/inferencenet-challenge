@@ -2,10 +2,11 @@
 
 [Live website](https://easonai-5589.github.io/inferencenet-challenge/)
 
-Public presentation site for InferenceNet: AI for Business, Social Science and Research. The
-site brings together Home, Data, Agent, Harness, Self-evolving, Leaderboard and Teams, with
-Chinese / English and light / dark controls on every page.
-The seven page links are visible by default, including the four-column menu (three columns below 352 px) on
+Public presentation site for the Global InferenceNet Initiative: AI for Business,
+Social Science and Research. The site brings together Home, Challenge, Data, Agent,
+Harness, Self-evolving, Leaderboard and Teams, with Chinese / English and light / dark
+controls on every page.
+The eight page links are visible by default, including the four-column menu (three columns below 352 px) on
 narrow screens. Visitors can collapse it manually; each new page opens it again.
 The Self-evolving page keeps its original URL, `evolution.html`, and its anchors.
 
@@ -31,12 +32,13 @@ of future updates unless explicitly requested again.
 | Page or layer | Files |
 |---|---|
 | Home, research overview and resources | `index.html`, `index.css` |
+| Challenge: initiative, sub-tracks, timeline and awards | `challenge.html`, `challenge.css`, `assets/i18n/challenge.zh.json` |
 | Dataset distributions and examples | `data.html`, `data.css` |
 | Agent case and evaluation | `agent.html`, `agent.css` |
 | Harness: definition, system structure, selected 2025–2026 milestones, common mechanism comparison, catalogue by role, three breakdowns and InferenceNet’s four configurations | `harness.html`, `harness.css`; reuses `data.css`, `agent.css`, `evolution.css` |
 | Self-evolving: concept, research map by adaptation regime, method comparison, three detailed offline cases and InferenceNet’s development study | `evolution.html`, `evolution.css`, `evolution.js`, `assets/data/modular-rsi-evolution.json` |
 | Leaderboard and configuration filters | `leaderboard.html`, `leaderboard.css` |
-| Team, institutions and Yichen Guo contact | `teams.html`, `teams.css` |
+| Leadership, student leaders, team, NTU GIFTS, partner teams and Yichen Guo contact | `teams.html`, `teams.css` |
 | Shared layout, navigation and theme | `styles.css`, `site.css`, `site.js`, `theme.js` |
 | Chinese translations and language control | `assets/i18n/*.zh.json`, `language.js`, `language.css` |
 | Charts and mountain leaderboard | `charts.js`, `mountain.js`, `mountain.css` |
@@ -51,7 +53,9 @@ Leaderboard also retains that tag for `site.js` and `leaderboard-dev100.js`,
 and both board entries retain it for the shared `leaderboard-board.js` import.
 Data imports keep their existing tags: `20261011-release` for `leaderboard-data.js`,
 `20261012-dual-board` for `leaderboard-dev100-data.js` and its JSON, and
-`20260917-harness` for the Selected_1000 results JSON. Other asset tags remain
+`20260917-harness` for the Selected_1000 results JSON. Challenge, Teams, Agent,
+Harness and Self-evolving load `language.js` with `20261018-initiative`, and
+`challenge.css` and `teams.css` use the same tag. Other asset tags remain
 versioned independently in their page HTML. Strings shared by several pages,
 such as the reading-route labels and scroll hints, live in `language.js`.
 
@@ -68,8 +72,14 @@ and verification is deferred for now unless the user requests it.
 
 ## Research content
 
-Faculty roles, student leaders and institutional profiles live on `teams.html`.
-Home links to that page instead of duplicating the roster.
+Faculty roles, student leaders and institutional profiles live on `teams.html`, in
+this order: Leadership (Lin William Cong, Ye Luo, Liwen Zhang), Student leaders
+(Yichen Guo and Yujie Cai, with Tianyang Han listed alongside), Team (Yang Liu and
+Dacheng Tao), Research institution (NTU GIFTS, which hosts the Initiative),
+Collaborating partners (HKU AI-Agents Lab and SUFE-AIFLM-Lab) and Contact. The leader
+cards carry the institution (NTU, HKU, SUFE) instead of a Faculty Lead / Co-Lead
+label; the official NTU GIFTS page, linked from the section heading, lists the formal
+roles. Home links to the Teams page instead of duplicating the roster.
 Every footer links to `teams.html#contact`, with only Yichen Guo’s email, WeChat
 ID and homepage. The personal WeChat QR image will be added when supplied.
 Previously shared Home team anchors redirect to the corresponding Teams section.
@@ -136,8 +146,38 @@ To update results, first verify a published JSON/CSV pair and its provenance,
 then run `node scripts/build-leaderboard.mjs` to regenerate the saved table on
 each page. If JavaScript or data loading fails, one combined 12-row table remains
 readable on each page. Check changes with
-`node --test scripts/test-leaderboard.mjs scripts/test-run-card.mjs` and
+`node --test scripts/test-leaderboard.mjs scripts/test-run-card.mjs scripts/test-initiative.mjs` and
 `node scripts/check.mjs`, then verify both pages in the browser.
+
+## Initiative and Challenge
+
+The tagline is "AI for Business, Social Science and Research" and the wordmark label
+is INITIATIVE on every page; Challenge is the second item in the navigation. Home keeps
+the hero, the two sub-track cards and the status list described under Homepage
+presentation, and links to the Challenge page from the sub-track section and from
+Get involved. `challenge.html` holds the details: the Initiative (01), the sub-tracks
+(02), the timeline (03), the awards (04) and how to take part (05).
+
+- **Sub-track 01** is econometric replication: the existing Dev100 set of 100 tasks,
+  to be open-sourced, with the task package and rules announced with the release.
+  **Sub-track 02** is professional tasks: a Finance demo (month-end close review) and
+  an HR demo (training and procurement acceptance) from Prof. Liwen Zhang's team at
+  SUFE. The Challenge page uses the same wording and facts as Home, and says that the
+  sub-track 02 inputs, outputs, evaluation and submission rules are still to be
+  confirmed.
+- The Hugging Face dataset is described as the research data source; the replication
+  sub-track itself will use Dev100.
+- The timeline lists stages, never dates. The two planned awards are a private,
+  domain-specialized dataset and prize money for AI-agent tuning solutions that rise on
+  the Challenge leaderboard; amounts, eligibility and timing are marked "To be
+  confirmed". Issue #23 also lists participation, completion and Top 3 awards and an
+  open-source condition; those are not on the page because no rule has been given.
+- Unconfirmed content is labelled "To be confirmed" or "To be announced" (a dashed
+  status tag), never presented as final. `scripts/test-initiative.mjs` fails if the
+  Challenge page gains a year, a calendar date or a currency amount, or if Home,
+  Challenge and Teams stop agreeing on the two sub-tracks. Per issue #23, have Lin
+  William Cong and the partner teams confirm the wording before it is published as the
+  official Challenge description.
 
 ## Agent case walkthrough
 
@@ -217,8 +257,8 @@ calls instead of 6 and 4). The values table on the page remains readable without
 ## Challenge student leaders
 
 - [Yichen Guo](https://easonai-5589.github.io/) — Student Leader.
-- [Tianyang Han](https://www.hkubs.hku.hk/people/tianyang-han/) — Student Leader.
 - [Yujie Cai (@caiyujie)](https://github.com/caiyujie) — Student Leader.
+- [Tianyang Han](https://www.hkubs.hku.hk/people/tianyang-han/) — Student Leader (listed alongside).
 
 See the [team page](https://easonai-5589.github.io/inferencenet-challenge/teams.html)
 for the full project roster.
@@ -367,12 +407,13 @@ mechanism comparisons and deeper breakdowns are curated separately.
 | Page or layer | Files |
 |---|---|
 | Home, research overview and resources | `index.html`, `index.css` |
+| Challenge: initiative, sub-tracks, timeline and awards | `challenge.html`, `challenge.css`, `assets/i18n/challenge.zh.json` |
 | Dataset distributions and examples | `data.html`, `data.css` |
 | Agent case and evaluation | `agent.html`, `agent.css` |
 | Harness: definition, system structure, selected 2025–2026 milestones, common mechanism comparison, catalogue by role, three breakdowns and InferenceNet’s four configurations | `harness.html`, `harness.css`; reuses `data.css`, `agent.css`, `evolution.css` |
 | Self-evolving: concept, research map by adaptation regime, method comparison, three detailed offline cases and InferenceNet’s development study | `evolution.html`, `evolution.css`, `evolution.js`, `assets/data/modular-rsi-evolution.json` |
 | Leaderboard: the Dev100 / v10 development release, then the Selected_1000 historical research results | `leaderboard.html`, `leaderboard.css` |
-| Team, institutions and Yichen Guo contact | `teams.html`, `teams.css` |
+| Leadership, student leaders, team, NTU GIFTS, partner teams and Yichen Guo contact | `teams.html`, `teams.css` |
 | Shared layout, navigation and theme | `styles.css`, `site.css`, `site.js`, `theme.js` |
 | Chinese translations and language control | `assets/i18n/*.zh.json`, `language.js`, `language.css` |
 | Charts and mountain leaderboard | `charts.js`, `mountain.js`, `mountain.css` |
@@ -389,7 +430,9 @@ Leaderboard also retains that tag for `site.js` and `leaderboard-dev100.js`,
 and both board entries retain it for the shared `leaderboard-board.js` import.
 Data imports keep their existing tags: `20261011-release` for `leaderboard-data.js`,
 `20261012-dual-board` for `leaderboard-dev100-data.js` and its JSON, and
-`20260917-harness` for the Selected_1000 results JSON. Other asset tags remain
+`20260917-harness` for the Selected_1000 results JSON. Challenge, Teams, Agent,
+Harness and Self-evolving load `language.js` with `20261018-initiative`, and
+`challenge.css` and `teams.css` use the same tag. Other asset tags remain
 versioned independently in their page HTML. Strings shared by several pages,
 such as the reading-route labels and scroll hints, live in `language.js`.
 
@@ -425,5 +468,5 @@ then run `node scripts/build-leaderboard.mjs` to regenerate the saved table on
 each page. If JavaScript or data loading fails, one combined 12-row table remains
 readable on each page. For the development release, verify a new sanitized
 JSON, CSV and provenance, then run `node scripts/build-dev100-board.mjs`. Check changes with
-`node --test scripts/test-leaderboard.mjs scripts/test-run-card.mjs scripts/test-dev100.mjs scripts/test-dual-board.mjs`
+`node --test scripts/test-leaderboard.mjs scripts/test-run-card.mjs scripts/test-dev100.mjs scripts/test-dual-board.mjs scripts/test-initiative.mjs`
 and `node scripts/check.mjs`, then verify both pages in the browser.

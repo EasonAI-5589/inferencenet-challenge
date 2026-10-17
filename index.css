@@ -91,3 +91,5 @@
 @media(max-width:860px){.participate-steps{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:700px){.case-comparison{grid-template-columns:1fr}.case-arm+.case-arm{border-left:0;border-top:1px solid var(--line)}.case-question,.case-arm{padding:24px}.case-footer,.participate-panel{padding:22px 24px}.research-directions{--cols:1}.hero-purpose{font-size:15px}.case-question h3{font-size:21px}}
 @media(max-width:520px){.hero-actions .button{width:100%}.home-status{padding:16px}.home-status-list li{grid-template-columns:minmax(0,1fr)}.home-resources ul{flex-direction:column}.case-question,.case-arm,.case-footer,.participate-panel{padding:20px}}
+/* styles.css gives the last crest half the row on phones; keep all three at 104px and let them wrap. */
+@media(max-width:520px){.hero-affiliations{flex-wrap:wrap;gap:14px}.hero-affiliations a:last-child{width:104px}}
