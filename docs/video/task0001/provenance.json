@@ -1,0 +1,122 @@
+{
+  "duration_seconds": 285.267,
+  "frames": 8558,
+  "fps": "30/1",
+  "resolution": [
+    1920,
+    1080
+  ],
+  "video_codec": "h264",
+  "pixel_format": "yuv420p",
+  "color_space": "bt709",
+  "audio_codec": "aac",
+  "audio_sample_rate": "48000",
+  "audio_channels": 1,
+  "audio_is_synthetic": true,
+  "voice": "en-US-AriaNeural",
+  "burned_captions": [
+    "en",
+    "zh"
+  ],
+  "source_commit": "884e89e58f62a185cd06572979fbd1548ea67e4b",
+  "recorded_run_seconds": 121.038,
+  "replay_data_sha256": "14446bc5bbc421aa59664d062a7cec2c8c6a9f160fbe538612e204b9b42d1841",
+  "version": "deepagents-flow-v3.2",
+  "task_id": "0001",
+  "model": "GPT-5.6 Sol",
+  "harness": "DeepAgents",
+  "run_id": "sol-deepagents-full1000-20260911-chain-03",
+  "source_path": "video-demo/task0001",
+  "original_animation_seconds": 71.4,
+  "original_phase_count": 32,
+  "replay_data_unchanged": true,
+  "chapter_navigation_includes_opening": true,
+  "presentation": "Diagram-first tool loop; original code and stdout remain optional evidence in the editable animation.",
+  "tool_boundary": "Four executed run_python calls; fifth requested call rejected by InferenceNet budget guard. Sixth model call submits the program, which is executed separately by the evaluator.",
+  "historical_tools": "Historical virtual-note tools are shown as inactive context; no actual file-tool or subagent calls are claimed.",
+  "chapters": [
+    {
+      "name": "TASK",
+      "start_seconds": 0.0,
+      "end_seconds": 37.52960528603721
+    },
+    {
+      "name": "AGENT",
+      "start_seconds": 37.52960528603721,
+      "end_seconds": 170.74333507216136
+    },
+    {
+      "name": "HARNESS",
+      "start_seconds": 170.74333507216136,
+      "end_seconds": 211.15983307250914
+    },
+    {
+      "name": "CHECK",
+      "start_seconds": 211.15983307250914,
+      "end_seconds": 260.9215301686664
+    },
+    {
+      "name": "RESULT",
+      "start_seconds": 260.9215301686664,
+      "end_seconds": 285.2666666666667
+    }
+  ],
+  "files": {
+    "assets/video/agent-replay-task0001.mp4": {
+      "bytes": 36244746,
+      "sha256": "978e3ae49c6d0d293d2cc08d6f75422aa35668a4534d0d8ce20950116daf05b0"
+    },
+    "assets/video/agent-replay-task0001-poster.jpg": {
+      "bytes": 255240,
+      "sha256": "9c7804d17e2371b57f663d8a45180d02b2874936e3b0f3d29d7c49771e652291"
+    },
+    "docs/video/task0001/captions.en.srt": {
+      "bytes": 4737,
+      "sha256": "b8b284af819b6c327db8bf75b42aded0d3bf0085d9186c007f493fb5e277f88f"
+    },
+    "docs/video/task0001/captions.zh.srt": {
+      "bytes": 4301,
+      "sha256": "fbcf8c114f5adbb3952ff69869f9053d6c04ece1242dd81e1471679f3393b369"
+    },
+    "docs/video/task0001/captions.bilingual.srt": {
+      "bytes": 7824,
+      "sha256": "c273734166293bae498cec0d3d0a292f0d62dc6f16c2eb449304db89674e632d"
+    }
+  },
+  "pitch_preserved": true,
+  "audio_processing": "Original v3 lossless mix, atempo=1.1200046739892497, padded/trimmed to 13692800 samples at 48 kHz.",
+  "shots_preserved": 37,
+  "scene_order_unchanged": true,
+  "caption_text_unchanged": true,
+  "native_render": true,
+  "native_render_note": "Every output frame was directly evaluated at frame * 1000 / 30 milliseconds. No retiming or frame dropping of a prior MP4.",
+  "pacing_matches_version": "deepagents-flow-v3.1",
+  "pacing_factor_relative_to_v3": 1.1200046739892497,
+  "motion_changes": [
+    "Per-shot source-time clamp prevents one-frame phase mismatch",
+    "Continuous pet and baton paths",
+    "Signal endpoints and rounded return route",
+    "Smooth initial panes, chapter cards and loop text changes",
+    "Sequential result/outro foregrounds avoid overlapping titles"
+  ],
+  "animation_sources_sha256": {
+    "site/harness-flow.js": "cd5ee274e224b5c08e913a061df2bb8a04963eb8db49eef5ad24473f8321bd1d",
+    "site/harness-flow.css": "2f531228b6bf24d868a58b344ffcd77277c3496a229eaa6485d8b80951224ff1",
+    "site/original-guide.js": "9246340ec582e46bdc2339a8824deba064ec2fa30dbb3be9c6839ee815b95e68",
+    "site/enhancement.js": "a660659f9c2256c050b8918125578bdb51df571faea7c1144cbd9aae9932a817",
+    "site/timeline.json": "9dce3e3d6b10f4cfc51183ce62be61761ac49742b5adf40a9b079f4490281861",
+    "shotlist.json": "adbef4a4bfd4269053c29db0508000f72d21a3308963ce8b0d7f495017b9a81c"
+  },
+  "validation": {
+    "source_and_phase_preservation": "PASS; 11 original render functions, 32 source phases, 37 shots",
+    "all_output_frames_and_boundary_clock_checks": "PASS; exact exporter arithmetic, no phase mismatch",
+    "guide_motion": "PASS; 8,558 frames and 36 boundaries, source geometry and timing checks",
+    "layout": "PASS; 124 SVG/canvas samples, no reported caption/flow overflow",
+    "native_frame_render": "PASS; all 8,558 contiguous 1920x1080 frames validated",
+    "full_audio_video_decode": "PASS",
+    "encoded_packet_timing": "PASS; 8,558 video packets, no repeated timestamp or large interval",
+    "encoded_motion_samples": "PASS; contact sheets from 1,025 consecutive frames across 14 targeted motion ranges reviewed; previously observed jumps and outro title overlap absent in reviewed samples",
+    "browser_playback": "PASS; five preview chapter seeks, paused state, HTTP Range 206, homepage v3.2 media metadata and audio decode/loading",
+    "audio_review_scope": "Previous transcription review retained; no new ASR run or full subjective listening review claimed"
+  }
+}
