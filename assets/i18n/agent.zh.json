@@ -1,5 +1,5 @@
 {
-  "Agent — InferenceNet Challenge": "Agent — InferenceNet 挑战赛",
+  "Agent — InferenceNet": "Agent — InferenceNet",
   "Skip to content": "跳转到正文",
   "Main navigation": "主导航",
   "CHALLENGE": "挑战赛",
@@ -389,7 +389,6 @@
   "Page sequence": "页面顺序",
   "Previous": "上一页",
   "Next": "下一页",
-  "AI for econometric research.": "用 AI 开展计量经济学研究。",
   "Research workspace": "研究工作区",
   "(collaborator access)": "（需协作者权限）",
   "β, SE relative errors < 5%; no p gate; includes perfect": "β、标准误的相对误差 < 5%；无 p 值门槛；包含完全复现",
