@@ -9,6 +9,15 @@
 
 两份均为 1920×1080、30 fps、H.264、无声 MP4。Task 0001 是 16:9 v2，替代旧的 `InferenceNet-task0001-agent-replay-demo-20261016.zip` 中的 4:5 动画；金融采用最新 story 版。
 
+## 单独下载源码 ZIP
+
+- [Task 0001 最新源码包](source-archives/InferenceNet-task0001-source-20261018.zip)
+- [FIN-T1-003 金融故事版源码包](source-archives/InferenceNet-FIN-T1-003-story-source-20261018.zip)
+
+每包包含该视频的可编辑动画、已有数据快照、字体与许可证、导出脚本、独立 README 和校验表。MP4 从上表单独下载。解压后按包内 README 预览或导出，无需克隆整个网站。仓库仍保留展开源码，便于直接修改、提交。
+
+修改源码后运行 `python3 video-demo/build_source_archives.py`（从仓库根目录）可重新打包并更新交付校验表。
+
 ## 获取和预览
 
 ```sh
