@@ -113,7 +113,7 @@ test('Challenge page: every challenge has its own recorded run, with a poster an
     assert.equal(videos.length, names.length, `${id}: one video per task`);
     videos.forEach(([, attributes, inner], index) => {
       const name = names[index];
-      const mediaVersion = name === 'agent-replay-task0001' ? '\\?v=20261018-deepagents-flow-v3-2' : '\\?v=20261019-claude-sufe-v1';
+      const mediaVersion = name === 'agent-replay-task0001' ? '\\?v=20261018-deepagents-flow-v3-2' : '\\?v=20261019-claude-relay-v2';
       assert.match(attributes, /\bcontrols\b/, `${name}: native controls`);
       assert.doesNotMatch(attributes, /\bautoplay\b/, `${name}: no autoplay`);
       assert.match(attributes, /preload="metadata"/, `${name}: metadata only`);

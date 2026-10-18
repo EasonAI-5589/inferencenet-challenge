@@ -1,76 +1,469 @@
 {
-  "video": "hr-final.mp4",
-  "task": "HR-T3-114",
-  "duration_seconds": 175.556,
-  "bytes": 9946357,
-  "sha256": "b64a1611aeecb9e15e82de5d35376efa06ee342bb2f5969d1349e3959e245dce",
-  "poster_sha256": "38a9a2d0a80440ba37906c5ca7e42e3cfe0fde4f3ee2c59ff21aecc8f04b3353",
-  "shots": 19,
-  "voice": "en-US-AriaNeural (Microsoft Edge neural TTS), same voice as the Task 0001 walkthrough",
-  "audio_is_synthetic": true,
-  "burned_captions": [
-    "en",
-    "zh"
+  "version": "sufe-claude-relay-v2",
+  "task_id": "HR-T3-114",
+  "run": "hr",
+  "status": "approved for publication",
+  "model": "qwen3.7-max",
+  "harness": "Claude Code 2.1.114",
+  "runner": "Harbor 0.20.0",
+  "judge_model": "qwen3.7-plus",
+  "recorded_agent_seconds": 364.9,
+  "model_requests": 28,
+  "tool_calls": 44,
+  "reward": 0.207547,
+  "duration_seconds": 245.433,
+  "frames": 7363,
+  "fps": "30/1",
+  "resolution": [
+    1920,
+    1080
   ],
   "streams": [
     {
       "codec_name": "h264",
+      "profile": "High",
       "codec_type": "video",
       "width": 1920,
       "height": 1080,
       "pix_fmt": "yuv420p",
+      "color_range": "tv",
       "color_space": "bt709",
-      "r_frame_rate": "30/1"
+      "color_transfer": "bt709",
+      "color_primaries": "bt709",
+      "r_frame_rate": "30/1",
+      "nb_frames": "7363"
     },
     {
       "codec_name": "aac",
+      "profile": "LC",
       "codec_type": "audio",
       "sample_rate": "48000",
       "channels": 1,
-      "r_frame_rate": "0/0"
+      "r_frame_rate": "0/0",
+      "nb_frames": "11506"
     }
   ],
+  "voice": "en-US-AriaNeural (same voice as the approved PR #27 replay), rate +12% to match its 1.12 pacing",
+  "audio_is_synthetic": true,
+  "audio_processing": "per-shot neural TTS clips placed on the shot timeline, loudnorm I=-16.5 LUFS, AAC 48 kHz mono",
+  "burned_captions": [
+    "en",
+    "zh"
+  ],
+  "renderer": "offline Skia (skia-python) frame renderer; no browser, no CDP; H.264 High via libx264",
   "chapters": [
     {
       "name": "TASK",
       "start_seconds": 0.0,
-      "end_seconds": 39.176
+      "end_seconds": 42.022
     },
     {
       "name": "AGENT",
-      "start_seconds": 39.176,
-      "end_seconds": 115.892
+      "start_seconds": 42.472,
+      "end_seconds": 145.097
     },
     {
-      "name": "HANDOFF",
-      "start_seconds": 115.892,
-      "end_seconds": 125.368
+      "name": "HARNESS",
+      "start_seconds": 145.547,
+      "end_seconds": 173.529
     },
     {
       "name": "CHECK",
-      "start_seconds": 125.368,
-      "end_seconds": 156.724
+      "start_seconds": 173.979,
+      "end_seconds": 217.07
     },
     {
       "name": "RESULT",
-      "start_seconds": 156.724,
-      "end_seconds": 175.556
+      "start_seconds": 217.52,
+      "end_seconds": 244.933
     }
   ],
-  "source": "research/sufe-video-claude-redesign-20261018 (engine.py, chrome.py, scenes*.py, story_*.py, voice.py, compose.py, render.py)",
-  "recorded_run": {
-    "agent_model": "qwen3.7-max",
-    "harness": "Claude Code 2.1.114",
-    "runner": "Harbor 0.20.0",
-    "judge_model": "qwen3.7-plus",
-    "agent_seconds": 364.9,
-    "model_responses": 28,
-    "tool_calls": 44
+  "shots": [
+    {
+      "id": "h00",
+      "chapter": "TASK",
+      "kind": "open",
+      "start_seconds": 0.0,
+      "end_seconds": 8.211,
+      "narration_en": "One model, one harness, one training review. Follow how the agent works inside Claude Code, and how its files are checked.",
+      "caption_zh": "一个模型、一套 Harness、一次培训评估。看 Agent 如何在 Claude Code 里工作，交付物又如何被检验。",
+      "trace_seconds": null
+    },
+    {
+      "id": "h01",
+      "chapter": "TASK",
+      "kind": "sites",
+      "start_seconds": 8.211,
+      "end_seconds": 16.724,
+      "narration_en": "A fictional cold-chain operator trained supervisors at three sites for six weeks. A fourth site, trained later, is the comparison.",
+      "caption_zh": "一家虚构的冷链运营商在三个中心对一线主管进行了六周训练；第四个中心延期参训，作为同期对照。",
+      "trace_seconds": null
+    },
+    {
+      "id": "h02",
+      "chapter": "TASK",
+      "kind": "packages",
+      "start_seconds": 16.724,
+      "end_seconds": 25.32,
+      "narration_en": "The agent must judge what the training changed, then decide acceptance and payment for three vendor work packages, worth 816,000 yuan.",
+      "caption_zh": "Agent 要判断训练带来了什么变化，再对三个服务采购工作包给出验收和付款建议，合计 816,000 元。",
+      "trace_seconds": null
+    },
+    {
+      "id": "h03",
+      "chapter": "TASK",
+      "kind": "io",
+      "start_seconds": 25.32,
+      "end_seconds": 35.842,
+      "narration_en": "17 files go in: rosters, attendance, tests, field observations, work orders and procurement rules. A workbook and a decision memo must come out.",
+      "caption_zh": "输入 17 份材料：花名册、出勤、测验、现场观察、工单和采购规则；产出一份工作簿和一份决策备忘录。",
+      "trace_seconds": null
+    },
+    {
+      "id": "h04",
+      "chapter": "TASK",
+      "kind": "sealed",
+      "start_seconds": 35.842,
+      "end_seconds": 42.022,
+      "narration_en": "The scoring rubric is not in the container. The agent works without seeing how it will be judged.",
+      "caption_zh": "评分标准不在容器里。Agent 在看不到评判方式的情况下工作。",
+      "trace_seconds": null
+    },
+    {
+      "id": "h05",
+      "chapter": "AGENT",
+      "kind": "loop_intro",
+      "start_seconds": 42.472,
+      "end_seconds": 52.581,
+      "narration_en": "Claude Code runs the loop. The model chooses an action, Claude Code turns it into a tool call, the call runs inside the container, and the result returns to the model.",
+      "caption_zh": "Claude Code 负责运行循环：模型选择动作，Claude Code 把它变成工具调用，调用在容器里执行，结果再回到模型。",
+      "trace_seconds": [
+        0.0,
+        7.1
+      ]
+    },
+    {
+      "id": "h06",
+      "chapter": "AGENT",
+      "kind": "fanout",
+      "start_seconds": 52.581,
+      "end_seconds": 61.563,
+      "narration_en": "After listing the inputs, the second request sends eight tool calls at once, one preview per data ledger. All eight results come back together.",
+      "caption_zh": "列出输入目录之后，第二次请求一次发出 8 个工具调用，逐个预览数据台账；8 个结果一起返回。",
+      "trace_seconds": [
+        7.1,
+        16.5
+      ]
+    },
+    {
+      "id": "h07",
+      "chapter": "AGENT",
+      "kind": "plan",
+      "start_seconds": 61.563,
+      "end_seconds": 70.103,
+      "narration_en": "Request three writes a plan with TodoWrite: validate the samples, analyze learning and behavior, compare the sites, and compute the payments.",
+      "caption_zh": "第三次请求用 TodoWrite 写下计划：核定样本、分析学习与行为、比较各中心，再计算付款。",
+      "trace_seconds": [
+        23.5,
+        25.4
+      ]
+    },
+    {
+      "id": "h08",
+      "chapter": "AGENT",
+      "kind": "rules",
+      "start_seconds": 70.103,
+      "end_seconds": 79.341,
+      "narration_en": "Then it reads the workbooks and Word files. One rule matters: individual learning data may only be used for assessment, support and acceptance.",
+      "caption_zh": "接着它读取工作簿和 Word 文件。其中一条规则很关键：个人学习数据只能用于项目评估、支持性辅导和采购验收。",
+      "trace_seconds": [
+        31.5,
+        52.0
+      ]
+    },
+    {
+      "id": "h09",
+      "chapter": "AGENT",
+      "kind": "write",
+      "start_seconds": 79.341,
+      "end_seconds": 88.568,
+      "narration_en": "Then comes one long response. For over two minutes the model writes a single analysis script, and Claude Code's Write tool saves it in the container.",
+      "caption_zh": "接着是一次很长的响应：模型用了两分多钟写出一整个分析脚本，Claude Code 的 Write 工具把它保存进容器。",
+      "trace_seconds": [
+        67.2,
+        199.9
+      ]
+    },
+    {
+      "id": "h10",
+      "chapter": "AGENT",
+      "kind": "run",
+      "start_seconds": 88.568,
+      "end_seconds": 98.789,
+      "narration_en": "Bash runs the script. It loads every ledger and writes both files. Work package A comes out as accepted, yet 10% of its payment is held back.",
+      "caption_zh": "Bash 运行这个脚本，读入全部台账并写出两份文件。工作包 A 的结果是“验收通过”，却又扣留了 10% 的款项。",
+      "trace_seconds": [
+        204.0,
+        206.0
+      ]
+    },
+    {
+      "id": "h11",
+      "chapter": "AGENT",
+      "kind": "notice",
+      "start_seconds": 98.789,
+      "end_seconds": 108.228,
+      "narration_en": "The run succeeded, with no error. But after reading its own output, the model reports problems in the WP-A status logic and the sample filter.",
+      "caption_zh": "运行成功，没有报错。但读完自己的输出后，模型指出 WP-A 的状态判定和样本筛选存在问题。",
+      "trace_seconds": [
+        206.0,
+        222.1
+      ]
+    },
+    {
+      "id": "h12",
+      "chapter": "AGENT",
+      "kind": "edits",
+      "start_seconds": 108.228,
+      "end_seconds": 117.968,
+      "narration_en": "It checks the scope: 81 people included, 2 observation-limited, 1 excluded. Then it reads the script, edits it four times, and runs it again.",
+      "caption_zh": "它核对样本范围：81 人纳入、2 人观察受限、1 人排除。随后读取脚本、修改 4 处，再重新运行。",
+      "trace_seconds": [
+        221.8,
+        282.4
+      ]
+    },
+    {
+      "id": "h13",
+      "chapter": "AGENT",
+      "kind": "rerun",
+      "start_seconds": 117.968,
+      "end_seconds": 129.606,
+      "narration_en": "Same script, still no error. This time WP-A is a conditional acceptance: 220,320 yuan to approve, 24,480 retained.",
+      "caption_zh": "同一个脚本，依旧没有报错。这次 WP-A 变为附条件验收：建议提交审批 220,320 元，保留 24,480 元。",
+      "trace_seconds": [
+        282.2,
+        283.5
+      ]
+    },
+    {
+      "id": "h14",
+      "chapter": "AGENT",
+      "kind": "verify",
+      "start_seconds": 129.606,
+      "end_seconds": 136.283,
+      "narration_en": "It checks the nine-sheet workbook and the memo, and confirms that only the two required files are in the output folder.",
+      "caption_zh": "它检查 9 张表的工作簿和备忘录，并确认输出目录里只有这两份文件。",
+      "trace_seconds": [
+        287.4,
+        319.0
+      ]
+    },
+    {
+      "id": "h15",
+      "chapter": "AGENT",
+      "kind": "finish",
+      "start_seconds": 136.283,
+      "end_seconds": 145.097,
+      "narration_en": "The plan is ticked off and the agent stops: 28 requests, 44 tool calls, about six minutes. Not one tool call failed.",
+      "caption_zh": "计划全部打勾，Agent 结束：28 次请求、44 次工具调用，约 6 分钟，没有一次工具调用失败。",
+      "trace_seconds": [
+        325.6,
+        364.9
+      ]
+    },
+    {
+      "id": "h16",
+      "chapter": "HARNESS",
+      "kind": "trace",
+      "start_seconds": 145.547,
+      "end_seconds": 157.263,
+      "narration_en": "Here is the whole run. 33 Bash, 4 TodoWrite, 1 Write, 2 Read and 4 Edit calls. The turning point was not a crash; it came from the model reading its own results.",
+      "caption_zh": "这是整次运行：33 次 Bash、4 次 TodoWrite、1 次 Write、2 次 Read、4 次 Edit。转折点不是崩溃，而是模型读了自己的结果。",
+      "trace_seconds": [
+        364.9,
+        364.9
+      ]
+    },
+    {
+      "id": "h17",
+      "chapter": "HARNESS",
+      "kind": "context",
+      "start_seconds": 157.263,
+      "end_seconds": 166.78,
+      "narration_en": "Each result is added to the model's context. By the last request, the prompt has grown from about 25 thousand to about 89 thousand tokens.",
+      "caption_zh": "每个结果都会追加进模型的上下文。到最后一次请求，提示长度从约 2.5 万 token 增长到约 8.9 万。",
+      "trace_seconds": [
+        364.9,
+        364.9
+      ]
+    },
+    {
+      "id": "h18",
+      "chapter": "HARNESS",
+      "kind": "handoff",
+      "start_seconds": 166.78,
+      "end_seconds": 173.529,
+      "narration_en": "When the agent stops, Harbor copies the tests into the same container. Only then does scoring begin.",
+      "caption_zh": "Agent 停止后，Harbor 才把测试复制进同一个容器。评分这时才开始。",
+      "trace_seconds": [
+        364.9,
+        364.9
+      ]
+    },
+    {
+      "id": "h19",
+      "chapter": "CHECK",
+      "kind": "chapter",
+      "start_seconds": 173.979,
+      "end_seconds": 176.817,
+      "narration_en": "An independent check now takes over.",
+      "caption_zh": "接下来，由独立检验接手。",
+      "trace_seconds": null
+    },
+    {
+      "id": "h20",
+      "chapter": "CHECK",
+      "kind": "judges",
+      "start_seconds": 176.817,
+      "end_seconds": 188.722,
+      "narration_en": "RewardKit opens one judge session for each of 34 criteria. The judge model is qwen3.7-plus, a different model from the agent. Nothing flows back to the agent.",
+      "caption_zh": "RewardKit 为 34 条评分项各开一个裁判会话；裁判模型是 qwen3.7-plus，与 Agent 所用模型不同。评分结果不会回传给 Agent。",
+      "trace_seconds": null
+    },
+    {
+      "id": "h21",
+      "chapter": "CHECK",
+      "kind": "wpa",
+      "start_seconds": 188.722,
+      "end_seconds": 194.06,
+      "narration_en": "The WP-A fix holds up: the judge accepts the conditional-acceptance status.",
+      "caption_zh": "WP-A 的修正经受住了检验：裁判认可“附条件验收”这一状态。",
+      "trace_seconds": null
+    },
+    {
+      "id": "h22",
+      "chapter": "CHECK",
+      "kind": "pooled",
+      "start_seconds": 194.06,
+      "end_seconds": 203.041,
+      "narration_en": "Other parts fall short. The workbook pools the three trained sites instead of comparing each one with the delayed site, and it has no source-index sheet.",
+      "caption_zh": "其他部分没有过关：工作簿把三个受训中心合并计算，而不是逐一与延期中心比较；也没有“来源索引”表。",
+      "trace_seconds": null
+    },
+    {
+      "id": "h23",
+      "chapter": "CHECK",
+      "kind": "r32",
+      "start_seconds": 203.041,
+      "end_seconds": 211.409,
+      "narration_en": "And one penalty applies. Ten people had too few chances to show the behavior, yet the workbook marks them as not meeting the standard.",
+      "caption_zh": "还有一项扣分：10 人因机会不足无法评价，工作簿却把他们标为“行为不达标”。",
+      "trace_seconds": null
+    },
+    {
+      "id": "h23b",
+      "chapter": "CHECK",
+      "kind": "r32",
+      "start_seconds": 211.409,
+      "end_seconds": 217.07,
+      "narration_en": "Too little opportunity is not evidence of low ability, so seven weighted points are deducted.",
+      "caption_zh": "机会不足不等于能力不足，因此扣除 7 个原始加权分。",
+      "trace_seconds": null
+    },
+    {
+      "id": "h24",
+      "chapter": "RESULT",
+      "kind": "tally",
+      "start_seconds": 217.52,
+      "end_seconds": 227.015,
+      "narration_en": "Of 28 positive criteria, 6 are met and 22 are not. One of six penalties applies, and this task has no red-line criteria.",
+      "caption_zh": "28 个正向评分项中 6 项满足、22 项未满足；6 个扣分项中触发 1 项；本题没有红线项。",
+      "trace_seconds": null
+    },
+    {
+      "id": "h25",
+      "chapter": "RESULT",
+      "kind": "reward",
+      "start_seconds": 227.015,
+      "end_seconds": 237.492,
+      "narration_en": "The recorded reward is 0.208: 29 points, minus 7, over 106. One pilot run on a fictional task, not a ranking.",
+      "caption_zh": "记录的奖励值为 0.208，即 (29 − 7) / 106。这是虚构任务上的一次试跑，不是排名。",
+      "trace_seconds": null
+    },
+    {
+      "id": "h26",
+      "chapter": "RESULT",
+      "kind": "outro",
+      "start_seconds": 237.492,
+      "end_seconds": 244.933,
+      "narration_en": "A professional task, an agent run, and an independent check. Explore more on the InferenceNet Challenge site.",
+      "caption_zh": "专业任务、Agent 运行、独立检验。更多内容见 InferenceNet Challenge 网站。",
+      "trace_seconds": null
+    }
+  ],
+  "files": {
+    "assets/video/hr-agent-replay.mp4": {
+      "bytes": 42572792,
+      "sha256": "15f71e8d0ab128a658c9f1fa7cf8ba96ee6a415d96d8969f475328eadf9cecb4"
+    },
+    "assets/video/hr-agent-replay-poster.jpg": {
+      "bytes": 376369,
+      "sha256": "a7719d330eab6b94b69a79d98532718e29e9334aad108f1f1f4a857dded499e9"
+    },
+    "docs/video/hr/captions.en.srt": {
+      "bytes": 4499,
+      "sha256": "b0875674f840c3e03743823147b0cdc6e253881899639e798b5fd6d5099b5c0a"
+    },
+    "docs/video/hr/captions.zh.srt": {
+      "bytes": 4276,
+      "sha256": "f395ba891a5acd6fd72ecb0600a96813127fb60483dcd54aa3826dfee5a84ff2"
+    },
+    "docs/video/hr/captions.bilingual.srt": {
+      "bytes": 7833,
+      "sha256": "ca057acdf1aa6e28a94c0403034920775f1d8b68a4804b4bb45da710660e2629"
+    }
   },
-  "notes": [
-    "Timeline is compressed: shot lengths follow the narration, not the recorded run.",
-    "Commands, outputs, file names and scores are taken from the recorded run (video/data/*.json); nothing was re-run.",
-    "Captions and animation only restate recorded facts; no per-step model-request mapping is shown.",
-    "The pilot reward is one run's rubric score, not an accuracy rate or a ranking."
+  "sources": {
+    "run_export": {
+      "path": "HR-T3-114 recorded pilot run export",
+      "sha256": "5aa8822cfb2319fb116cac82b184fa4b6c86609712e56ef0ca94a238ea92037e"
+    },
+    "session_log": {
+      "path": "HR-T3-114 recorded Claude Code session log",
+      "sha256": "9d20ca4383f1e9d8761c9d6d51c49546ca54eb6b3edbb0b16810c805d4f94a9c"
+    },
+    "facts_audit": "HR-T3-114 replay fact audit"
+  },
+  "editable_source": {
+    "directory": "research/sufe-video-claude-relay-20261018/",
+    "files_sha256": {
+      "engine/compose.py": "522a41794601c223e407bad53c1ed8cff28b894dc43b151c2adac6f3b3f57623",
+      "engine/fonts.py": "04808da021f67dc1c4d1e4e1b19043498c3c8575f18c71501f2976a12a57c79b",
+      "engine/gfx.py": "fb2a0dd582a9e0dc0beec8fccf7008a39804e12404d102cdad72687aaa784ed5",
+      "engine/package.py": "06fc11ac6b5bb2f9ff11ffa150167d5841763172c2abded9ef21fd7c9e2097e2",
+      "engine/panels.py": "2e3302c64adbc4d638c8320ec968b9fea81388c7964dd0c908feabda66de2e9a",
+      "engine/render.py": "a747d1c776859a6e8fada8fae99361db729f822c54dbdce7a627c7b4f5c03025",
+      "engine/rundata.py": "5ff37a83d841405a832e6cb83adbea83f5c60490a024f02b5e1fdb49c26cd04a",
+      "engine/scenes.py": "da2d0aa8677295619f5a539ac500df180bd38236714dc3520ec5894d72918235",
+      "engine/scenes_x.py": "3223156871452cb57b30f55756e8caa6dc1a7f53984b0a61b12a5013bf8f5a75",
+      "engine/sheet.py": "f48757b5f58661fa2f0087f66d6202ea5fc3ce7283ccc45d6eb43585ce9d31ae",
+      "engine/timeline.py": "5a6688d656aaf5519e1a7aaf2f6db46a17a9bea8b64f8a05c3d433e2dcce72aa",
+      "engine/ui.py": "00b887cd04f10a2a9ffb03d55a1dce3c2579b853fcecc6d3a10d8b7934f59ca6",
+      "engine/voice.py": "015a1b19d04024c3ddbb5b76d0e8eb05b630d6a9e394bfe45e5b2fa06f7dbfbc",
+      "story/hr.py": "7b509757f5310981e290b586d8cb968e86f58939c433c112c3bf146304bc4384"
+    },
+    "rebuild": [
+      "python engine/voice.py hr",
+      "python engine/render.py hr",
+      "python engine/package.py hr"
+    ]
+  },
+  "boundaries": [
+    "Editorial replay of an existing recorded pilot run; no new agent run, no re-scoring.",
+    "Request numbers are the 28 assistant message ids of the Claude Code session log; tool steps are run-export indexes.",
+    "Claude Code and Bash run inside the task's Docker container; the model is reached through an API.",
+    "The rubric and tests are absent during the agent run; Harbor copies tests into the same container afterwards.",
+    "Judge sessions are separate per criterion; scores never feed back into the recorded agent run."
   ]
 }

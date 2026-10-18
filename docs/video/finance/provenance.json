@@ -1,76 +1,550 @@
 {
-  "video": "fin-final.mp4",
-  "task": "FIN-T1-003",
-  "duration_seconds": 163.656,
-  "bytes": 8838138,
-  "sha256": "e72231ddb0f20c301670231b95016ffc1ccf9fbe4da8e8bc1f389555dd53ba68",
-  "poster_sha256": "505b156b439e5347221eb00b7caa363b90c542419bb7b0e9a2fefc5d115ba703",
-  "shots": 18,
-  "voice": "en-US-AriaNeural (Microsoft Edge neural TTS), same voice as the Task 0001 walkthrough",
-  "audio_is_synthetic": true,
-  "burned_captions": [
-    "en",
-    "zh"
+  "version": "sufe-claude-relay-v2",
+  "task_id": "FIN-T1-003",
+  "run": "fin",
+  "status": "approved for publication",
+  "model": "qwen3.7-max",
+  "harness": "Claude Code 2.1.114",
+  "runner": "Harbor 0.20.0",
+  "judge_model": "deepseek-v4.1-flash",
+  "recorded_agent_seconds": 414.7,
+  "model_requests": 28,
+  "tool_calls": 54,
+  "reward": 0.332849,
+  "duration_seconds": 294.866,
+  "frames": 8846,
+  "fps": "30/1",
+  "resolution": [
+    1920,
+    1080
   ],
   "streams": [
     {
       "codec_name": "h264",
+      "profile": "High",
       "codec_type": "video",
       "width": 1920,
       "height": 1080,
       "pix_fmt": "yuv420p",
+      "color_range": "tv",
       "color_space": "bt709",
-      "r_frame_rate": "30/1"
+      "color_transfer": "bt709",
+      "color_primaries": "bt709",
+      "r_frame_rate": "30/1",
+      "nb_frames": "8846"
     },
     {
       "codec_name": "aac",
+      "profile": "LC",
       "codec_type": "audio",
       "sample_rate": "48000",
       "channels": 1,
-      "r_frame_rate": "0/0"
+      "r_frame_rate": "0/0",
+      "nb_frames": "13823"
     }
   ],
+  "voice": "en-US-AriaNeural (same voice as the approved PR #27 replay), rate +12% to match its 1.12 pacing",
+  "audio_is_synthetic": true,
+  "audio_processing": "per-shot neural TTS clips placed on the shot timeline, loudnorm I=-16.5 LUFS, AAC 48 kHz mono",
+  "burned_captions": [
+    "en",
+    "zh"
+  ],
+  "renderer": "offline Skia (skia-python) frame renderer; no browser, no CDP; H.264 High via libx264",
   "chapters": [
     {
       "name": "TASK",
       "start_seconds": 0.0,
-      "end_seconds": 34.352
+      "end_seconds": 41.225
     },
     {
       "name": "AGENT",
-      "start_seconds": 34.352,
-      "end_seconds": 99.58
+      "start_seconds": 41.675,
+      "end_seconds": 191.728
     },
     {
-      "name": "HANDOFF",
-      "start_seconds": 99.58,
-      "end_seconds": 109.056
+      "name": "HARNESS",
+      "start_seconds": 192.178,
+      "end_seconds": 219.447
     },
     {
       "name": "CHECK",
-      "start_seconds": 109.056,
-      "end_seconds": 145.04
+      "start_seconds": 219.897,
+      "end_seconds": 265.613
     },
     {
       "name": "RESULT",
-      "start_seconds": 145.04,
-      "end_seconds": 163.656
+      "start_seconds": 266.063,
+      "end_seconds": 294.37
     }
   ],
-  "source": "research/sufe-video-claude-redesign-20261018 (engine.py, chrome.py, scenes*.py, story_*.py, voice.py, compose.py, render.py)",
-  "recorded_run": {
-    "agent_model": "qwen3.7-max",
-    "harness": "Claude Code 2.1.114",
-    "runner": "Harbor 0.20.0",
-    "judge_model": "deepseek-v4.1-flash",
-    "agent_seconds": 414.7,
-    "model_responses": 28,
-    "tool_calls": 54
+  "shots": [
+    {
+      "id": "f00",
+      "chapter": "TASK",
+      "kind": "open",
+      "start_seconds": 0.0,
+      "end_seconds": 8.334,
+      "narration_en": "One model, one harness, one month-end close. Follow how the agent works inside Claude Code, and how its files are checked.",
+      "caption_zh": "一个模型、一套 Harness、一次月末结账。看 Agent 如何在 Claude Code 里工作，交付物又如何被检验。",
+      "trace_seconds": null
+    },
+    {
+      "id": "f01",
+      "chapter": "TASK",
+      "kind": "task",
+      "start_seconds": 8.334,
+      "end_seconds": 17.427,
+      "narration_en": "The July books lock at 6 p.m. on 5 August. Six proposed entries are waiting, and each one must be accepted, replaced or rejected.",
+      "caption_zh": "七月账务 8 月 5 日 18:00 锁账。六条待入账意见正在等待处理，每一条都要接受、替换或拒绝。",
+      "trace_seconds": null
+    },
+    {
+      "id": "f02",
+      "chapter": "TASK",
+      "kind": "limits",
+      "start_seconds": 17.427,
+      "end_seconds": 25.471,
+      "narration_en": "Each decision needs amounts and statement effects. Only one independent reviewer is available, for at most six hours a day.",
+      "caption_zh": "每项处理都要算清金额和报表影响；独立复核人只有 1 名，每天最多 6 小时。",
+      "trace_seconds": null
+    },
+    {
+      "id": "f03",
+      "chapter": "TASK",
+      "kind": "io",
+      "start_seconds": 25.471,
+      "end_seconds": 35.044,
+      "narration_en": "55 source files go in: ledgers, valuations, policies and letters. Two files must come out: a Word report and an Excel workbook.",
+      "caption_zh": "输入 55 份材料：台账、估值、政策与函件。产出两份文件：一份 Word 报告，一份 Excel 底稿。",
+      "trace_seconds": null
+    },
+    {
+      "id": "f04",
+      "chapter": "TASK",
+      "kind": "sealed",
+      "start_seconds": 35.044,
+      "end_seconds": 41.225,
+      "narration_en": "The scoring rubric is not in the container. The agent works without seeing how it will be judged.",
+      "caption_zh": "评分标准不在容器里。Agent 在看不到评判方式的情况下工作。",
+      "trace_seconds": null
+    },
+    {
+      "id": "f05",
+      "chapter": "AGENT",
+      "kind": "loop_intro",
+      "start_seconds": 41.675,
+      "end_seconds": 53.045,
+      "narration_en": "Claude Code runs the loop. The model chooses an action. Claude Code turns it into a tool call. The command runs inside Docker, and the output returns to the model.",
+      "caption_zh": "Claude Code 负责运行循环：模型选择动作，Claude Code 把它变成工具调用，命令在 Docker 里执行，输出再回到模型。",
+      "trace_seconds": [
+        0.0,
+        5.2
+      ]
+    },
+    {
+      "id": "f06",
+      "chapter": "AGENT",
+      "kind": "req12",
+      "start_seconds": 53.045,
+      "end_seconds": 63.321,
+      "narration_en": "The first request lists the input folder and creates the output folder. The second asks for two files: the register of proposed entries and the review engagement letter.",
+      "caption_zh": "第一次请求列出输入目录、建好输出目录；第二次请求读取两份文件：待入账意见登记表和复核委托函。",
+      "trace_seconds": [
+        5.2,
+        9.6
+      ]
+    },
+    {
+      "id": "f07",
+      "chapter": "AGENT",
+      "kind": "obs2",
+      "start_seconds": 63.321,
+      "end_seconds": 74.378,
+      "narration_en": "Bash runs both inside the container. The register returns six rows, D01 to D06, all unposted. The Word letter returns raw binary.",
+      "caption_zh": "Bash 在容器里执行这两条命令。登记表返回六行：D01 到 D06，均未过账；Word 委托函返回的却是一串二进制。",
+      "trace_seconds": [
+        9.6,
+        10.4
+      ]
+    },
+    {
+      "id": "f08",
+      "chapter": "AGENT",
+      "kind": "next",
+      "start_seconds": 74.378,
+      "end_seconds": 83.192,
+      "narration_en": "That observation shapes the next step. Request three reads the letter again with a Python Word library, and this time the text comes through.",
+      "caption_zh": "这个观察决定了下一步：第三次请求改用 Python 的 Word 库重新读取委托函，这次正文正常返回。",
+      "trace_seconds": [
+        13.0,
+        14.9
+      ]
+    },
+    {
+      "id": "f09",
+      "chapter": "AGENT",
+      "kind": "fanout",
+      "start_seconds": 83.192,
+      "end_seconds": 92.375,
+      "narration_en": "One response can carry several tool calls. Request four reads four source files at once, and Claude Code returns all four results together.",
+      "caption_zh": "一次响应可以携带多个工具调用。第四次请求同时读取四份材料，Claude Code 把四个结果一起送回。",
+      "trace_seconds": [
+        24.1,
+        27.2
+      ]
+    },
+    {
+      "id": "f10",
+      "chapter": "AGENT",
+      "kind": "plan",
+      "start_seconds": 92.375,
+      "end_seconds": 99.52,
+      "narration_en": "Request five writes a plan with TodoWrite: read the sources, analyze each entry, then build the workbook and the report.",
+      "caption_zh": "第五次请求用 TodoWrite 写下计划：读材料、逐条分析各项意见，再做底稿和报告。",
+      "trace_seconds": [
+        31.5,
+        33.8
+      ]
+    },
+    {
+      "id": "f11",
+      "chapter": "AGENT",
+      "kind": "montage",
+      "start_seconds": 99.52,
+      "end_seconds": 110.243,
+      "narration_en": "Over the next requests it keeps reading: designation documents, policies, standards and letters. By request 12, it has opened 27 of the 55 files.",
+      "caption_zh": "接下来的请求里它持续阅读：套期指定文件、内部政策、准则摘录和往来函件。到第 12 次请求，它已打开 55 份材料中的 27 份。",
+      "trace_seconds": [
+        36.6,
+        73.1
+      ]
+    },
+    {
+      "id": "f12",
+      "chapter": "AGENT",
+      "kind": "selfmark",
+      "start_seconds": 110.243,
+      "end_seconds": 118.443,
+      "narration_en": "Request 13 updates the plan and marks all six analyses done. That status is the agent's own claim, not a check.",
+      "caption_zh": "第 13 次请求更新计划，把六项分析全部标为已完成。这只是 Agent 自己的标记，不是检验结果。",
+      "trace_seconds": [
+        101.5,
+        103.4
+      ]
+    },
+    {
+      "id": "f13",
+      "chapter": "AGENT",
+      "kind": "valq",
+      "start_seconds": 118.443,
+      "end_seconds": 125.354,
+      "narration_en": "To size the swap's July change, it queries the daily valuation file for 30 June and 31 July.",
+      "caption_zh": "为量化利率互换七月的价值变动，它查询逐日估值明细，取 6 月 30 日和 7 月 31 日两天。",
+      "trace_seconds": [
+        118.4,
+        121.0
+      ]
+    },
+    {
+      "id": "f14",
+      "chapter": "AGENT",
+      "kind": "valobs",
+      "start_seconds": 125.354,
+      "end_seconds": 134.123,
+      "narration_en": "−1.28 million, then −4.40 million. The July change is −3.12 million yuan.",
+      "caption_zh": "6 月末 −1,277,351.45 元，7 月末 −4,395,835.74 元，七月变动 −3,118,484.29 元。",
+      "trace_seconds": [
+        121.0,
+        121.0
+      ]
+    },
+    {
+      "id": "f15",
+      "chapter": "AGENT",
+      "kind": "workbook",
+      "start_seconds": 134.123,
+      "end_seconds": 141.699,
+      "narration_en": "Next the model writes a long Python script. Bash runs it, and the workbook appears with three sheets, then two more.",
+      "caption_zh": "接着模型写出一段很长的 Python 脚本。Bash 执行后，底稿先出现三张表，随后再补上两张。",
+      "trace_seconds": [
+        147.3,
+        205.4
+      ]
+    },
+    {
+      "id": "f16",
+      "chapter": "AGENT",
+      "kind": "error",
+      "start_seconds": 141.699,
+      "end_seconds": 148.308,
+      "narration_en": "Then a script to enrich two sheets prints \"enhanced\" twice, and stops with a NameError: a misspelled variable.",
+      "caption_zh": "随后，一段补充两张表的脚本先打印两次 enhanced，接着因变量名拼错，以 NameError 中止。",
+      "trace_seconds": [
+        214.1,
+        240.3
+      ]
+    },
+    {
+      "id": "f17",
+      "chapter": "AGENT",
+      "kind": "notsaved",
+      "start_seconds": 148.308,
+      "end_seconds": 155.337,
+      "narration_en": "The script crashed before saving, so neither change reached the file. Sheet one still holds three rows.",
+      "caption_zh": "脚本在保存之前就崩溃了，两处修改都没有写进文件。第一张表仍然只有 3 行。",
+      "trace_seconds": [
+        240.3,
+        240.3
+      ]
+    },
+    {
+      "id": "f18",
+      "chapter": "AGENT",
+      "kind": "moveon",
+      "start_seconds": 155.337,
+      "end_seconds": 163.28,
+      "narration_en": "The agent doesn't notice yet. It enriches sheets three and four, then writes the Word report, one section for each entry.",
+      "caption_zh": "Agent 此时还没察觉。它补充了第三、四张表，然后写 Word 报告：每条意见一节。",
+      "trace_seconds": [
+        242.7,
+        338.3
+      ]
+    },
+    {
+      "id": "f19",
+      "chapter": "AGENT",
+      "kind": "selfcheck",
+      "start_seconds": 163.28,
+      "end_seconds": 168.947,
+      "narration_en": "Then it reads its own files back. The check shows sheet one with only three rows.",
+      "caption_zh": "然后它读回自己的文件。检查结果显示，第一张表只有 3 行。",
+      "trace_seconds": [
+        341.3,
+        343.7
+      ]
+    },
+    {
+      "id": "f20",
+      "chapter": "AGENT",
+      "kind": "realize",
+      "start_seconds": 168.947,
+      "end_seconds": 175.858,
+      "narration_en": "It looks once more, then states it plainly: the sheet one and two enhancements weren't saved, because of the earlier error.",
+      "caption_zh": "它又查了一次，然后明确说出原因：第一、二张表的补充因为之前的错误没有保存。",
+      "trace_seconds": [
+        365.1,
+        378.3
+      ]
+    },
+    {
+      "id": "f21",
+      "chapter": "AGENT",
+      "kind": "repair",
+      "start_seconds": 175.858,
+      "end_seconds": 183.668,
+      "narration_en": "It runs the edit again. This time the receipt reads \"All enhancements saved\", and both sheets now hold 39 rows.",
+      "caption_zh": "它重新执行这次修改。这次回执是 All enhancements saved，两张表都变成 39 行。",
+      "trace_seconds": [
+        378.2,
+        401.3
+      ]
+    },
+    {
+      "id": "f22",
+      "chapter": "AGENT",
+      "kind": "finish",
+      "start_seconds": 183.668,
+      "end_seconds": 191.728,
+      "narration_en": "A final check, the plan is ticked off, and the agent stops: 28 model requests, 54 tool calls, about seven minutes.",
+      "caption_zh": "最后再检查一遍，计划全部打勾，Agent 结束：28 次模型请求、54 次工具调用，约 7 分钟。",
+      "trace_seconds": [
+        396.6,
+        414.7
+      ]
+    },
+    {
+      "id": "f23",
+      "chapter": "HARNESS",
+      "kind": "trace",
+      "start_seconds": 192.178,
+      "end_seconds": 203.236,
+      "narration_en": "Here is the whole run. 50 Bash commands and 4 TodoWrite updates, all through Claude Code. It never used the Read, Edit or Write tools; all file work went through Bash.",
+      "caption_zh": "这是整次运行：50 次 Bash、4 次 TodoWrite，全部经由 Claude Code。它没有使用 Read、Edit、Write 工具，所有文件操作都走 Bash。",
+      "trace_seconds": [
+        414.7,
+        414.7
+      ]
+    },
+    {
+      "id": "f24",
+      "chapter": "HARNESS",
+      "kind": "context",
+      "start_seconds": 203.236,
+      "end_seconds": 212.697,
+      "narration_en": "Each result is added to the model's context. By the last request, the prompt has grown from about 27 thousand to about 100 thousand tokens.",
+      "caption_zh": "每个结果都会追加进模型的上下文。到最后一次请求，提示长度从约 2.7 万 token 增长到约 10 万。",
+      "trace_seconds": [
+        414.7,
+        414.7
+      ]
+    },
+    {
+      "id": "f25",
+      "chapter": "HARNESS",
+      "kind": "handoff",
+      "start_seconds": 212.697,
+      "end_seconds": 219.447,
+      "narration_en": "When the agent stops, Harbor copies the tests into the same container. Only then does scoring begin.",
+      "caption_zh": "Agent 停止后，Harbor 才把测试复制进同一个容器。评分这时才开始。",
+      "trace_seconds": [
+        414.7,
+        414.7
+      ]
+    },
+    {
+      "id": "f26",
+      "chapter": "CHECK",
+      "kind": "chapter",
+      "start_seconds": 219.897,
+      "end_seconds": 222.734,
+      "narration_en": "An independent check now takes over.",
+      "caption_zh": "接下来，由独立检验接手。",
+      "trace_seconds": null
+    },
+    {
+      "id": "f27",
+      "chapter": "CHECK",
+      "kind": "judges",
+      "start_seconds": 222.734,
+      "end_seconds": 233.78,
+      "narration_en": "RewardKit opens a separate judge session for each of 27 criteria. The judge model is deepseek-v4.1-flash. Nothing flows back to the agent.",
+      "caption_zh": "RewardKit 为 27 条评分项各开一个独立的裁判会话，裁判模型是 deepseek-v4.1-flash。评分结果不会回传给 Agent。",
+      "trace_seconds": null
+    },
+    {
+      "id": "f28",
+      "chapter": "CHECK",
+      "kind": "dv01",
+      "start_seconds": 233.78,
+      "end_seconds": 244.804,
+      "narration_en": "One number holds. The workbook's DV01 matches the judge's recomputation from the five-basis-point scenarios. The agent copied it from the valuation sheet.",
+      "caption_zh": "有一个数字对上了：底稿里的 DV01 与裁判按正负 5BP 情景复算的结果一致。这个值是 Agent 从估值底稿里取用的。",
+      "trace_seconds": null
+    },
+    {
+      "id": "f29",
+      "chapter": "CHECK",
+      "kind": "d02",
+      "start_seconds": 244.804,
+      "end_seconds": 256.955,
+      "narration_en": "D02 is subtler. The agent didn't book the loan's loss to the cash-flow hedge reserve, so the red line holds. But accepting it as a provisional net-investment hedge earns only half marks.",
+      "caption_zh": "D02 更微妙：Agent 没有把借款汇兑损失记入现金流量套期储备，红线未触发；但它把该意见作为净投资套期的暂行处理接受，只拿到一半分。",
+      "trace_seconds": null
+    },
+    {
+      "id": "f30",
+      "chapter": "CHECK",
+      "kind": "formulas",
+      "start_seconds": 256.955,
+      "end_seconds": 265.613,
+      "narration_en": "And none of the five sheets contains a formula. The amounts are typed-in values, so the calculation chain can't be traced to the source fields.",
+      "caption_zh": "此外，五张表里一个公式都没有。金额都是直接写入的数值，计算链无法追溯到来源字段。",
+      "trace_seconds": null
+    },
+    {
+      "id": "f31",
+      "chapter": "RESULT",
+      "kind": "tally",
+      "start_seconds": 266.063,
+      "end_seconds": 275.056,
+      "narration_en": "Of 20 positive criteria, 3 are met, 6 partly met, and 11 not met. No penalties were triggered, and both red lines held.",
+      "caption_zh": "20 个正向评分项中，3 项满足、6 项部分满足、11 项未满足；5 个扣分项均未触发，两条红线都守住了。",
+      "trace_seconds": null
+    },
+    {
+      "id": "f32",
+      "chapter": "RESULT",
+      "kind": "reward",
+      "start_seconds": 275.056,
+      "end_seconds": 286.928,
+      "narration_en": "The recorded reward is 0.333: 57.25 of 172 weighted points. One pilot run's rubric score, not accuracy, and not a ranking.",
+      "caption_zh": "记录的奖励值为 0.333，即加权得分 57.25 / 172。这是一次试跑的评分结果，不是准确率，也不是排名。",
+      "trace_seconds": null
+    },
+    {
+      "id": "f33",
+      "chapter": "RESULT",
+      "kind": "outro",
+      "start_seconds": 286.928,
+      "end_seconds": 294.37,
+      "narration_en": "A professional task, an agent run, and an independent check. Explore more on the InferenceNet Challenge site.",
+      "caption_zh": "专业任务、Agent 运行、独立检验。更多内容见 InferenceNet Challenge 网站。",
+      "trace_seconds": null
+    }
+  ],
+  "files": {
+    "assets/video/finance-story-demo.mp4": {
+      "bytes": 51589067,
+      "sha256": "d8792c91fa0cc43e107cae89e5be901bb4d19028cba243fc166327d1aa3b65be"
+    },
+    "assets/video/finance-story-demo-poster.jpg": {
+      "bytes": 341611,
+      "sha256": "67cc3b24a44ccb3988b0b9039c3e183d67a1ee64adcf5825f066070a564f19e2"
+    },
+    "docs/video/finance/captions.en.srt": {
+      "bytes": 5358,
+      "sha256": "712dedd5bb8e79286cf6b4c1f68a6588826d52098a9537e4e07d806a774dce5b"
+    },
+    "docs/video/finance/captions.zh.srt": {
+      "bytes": 5238,
+      "sha256": "7148ce61ec1f7d2b5027c384e870abcce6d40f86010fdf84eb72fa2b2240bff1"
+    },
+    "docs/video/finance/captions.bilingual.srt": {
+      "bytes": 9450,
+      "sha256": "fe244158da776ab646764a6290399dbf1bcd1b6a8e3f1bb8d79a31532a80f417"
+    }
   },
-  "notes": [
-    "Timeline is compressed: shot lengths follow the narration, not the recorded run.",
-    "Commands, outputs, file names and scores are taken from the recorded run (video/data/*.json); nothing was re-run.",
-    "Captions and animation only restate recorded facts; no per-step model-request mapping is shown.",
-    "The pilot reward is one run's rubric score, not an accuracy rate or a ranking."
+  "sources": {
+    "run_export": {
+      "path": "FIN-T1-003 recorded pilot run export",
+      "sha256": "d404dbf2a1b95a831f71ba580c1da7f07c3af7a75138548fc5eee8b239bd1cfd"
+    },
+    "session_log": {
+      "path": "FIN-T1-003 recorded Claude Code session log",
+      "sha256": "c8cc4a4e201bd16ad59cdee341ec4a80be4a03684e9ac4ceb9136f942df8069e"
+    },
+    "facts_audit": "FIN-T1-003 replay fact audit"
+  },
+  "editable_source": {
+    "directory": "research/sufe-video-claude-relay-20261018/",
+    "files_sha256": {
+      "engine/compose.py": "522a41794601c223e407bad53c1ed8cff28b894dc43b151c2adac6f3b3f57623",
+      "engine/fonts.py": "04808da021f67dc1c4d1e4e1b19043498c3c8575f18c71501f2976a12a57c79b",
+      "engine/gfx.py": "fb2a0dd582a9e0dc0beec8fccf7008a39804e12404d102cdad72687aaa784ed5",
+      "engine/package.py": "06fc11ac6b5bb2f9ff11ffa150167d5841763172c2abded9ef21fd7c9e2097e2",
+      "engine/panels.py": "2e3302c64adbc4d638c8320ec968b9fea81388c7964dd0c908feabda66de2e9a",
+      "engine/render.py": "a747d1c776859a6e8fada8fae99361db729f822c54dbdce7a627c7b4f5c03025",
+      "engine/rundata.py": "5ff37a83d841405a832e6cb83adbea83f5c60490a024f02b5e1fdb49c26cd04a",
+      "engine/scenes.py": "da2d0aa8677295619f5a539ac500df180bd38236714dc3520ec5894d72918235",
+      "engine/scenes_x.py": "9d5e276729050da50be3bc5b2e6be5d77892f8258dbe3c6fb1cb43ab5f14a9a0",
+      "engine/sheet.py": "f48757b5f58661fa2f0087f66d6202ea5fc3ce7283ccc45d6eb43585ce9d31ae",
+      "engine/timeline.py": "5a6688d656aaf5519e1a7aaf2f6db46a17a9bea8b64f8a05c3d433e2dcce72aa",
+      "engine/ui.py": "00b887cd04f10a2a9ffb03d55a1dce3c2579b853fcecc6d3a10d8b7934f59ca6",
+      "engine/voice.py": "015a1b19d04024c3ddbb5b76d0e8eb05b630d6a9e394bfe45e5b2fa06f7dbfbc",
+      "story/fin.py": "15136eac786f2681d8b7aa25e1fac7d91cba3e6afe03b3640fb5e2570d0a8fcd"
+    },
+    "rebuild": [
+      "python engine/voice.py fin",
+      "python engine/render.py fin",
+      "python engine/package.py fin"
+    ]
+  },
+  "boundaries": [
+    "Editorial replay of an existing recorded pilot run; no new agent run, no re-scoring.",
+    "Request numbers are the 28 assistant message ids of the Claude Code session log; tool steps are run-export indexes.",
+    "Claude Code and Bash run inside the task's Docker container; the model is reached through an API.",
+    "The rubric and tests are absent during the agent run; Harbor copies tests into the same container afterwards.",
+    "Judge sessions are separate per criterion; scores never feed back into the recorded agent run."
   ]
 }

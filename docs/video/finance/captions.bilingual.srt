@@ -1,89 +1,169 @@
 1
-00:00:00,450 --> 00:00:06,975
-A model, a harness, and a month-end close. Follow how the agent works, and how it is checked.
-一个模型、一套 Harness、一次月末结账。看 Agent 如何工作，又如何被检验。
+00:00:00,270 --> 00:00:08,014
+One model, one harness, one month-end close. Follow how the agent works inside Claude Code, and how its files are checked.
+一个模型、一套 Harness、一次月末结账。看 Agent 如何在 Claude Code 里工作，交付物又如何被检验。
 
 2
-00:00:08,702 --> 00:00:16,189
-July books lock on the fifth of August. Six pending entries have been filed, and each one needs a decision.
-七月账务 8 月 5 日锁账。共享中心提交了六条待入账意见，每一条都要作出处理。
+00:00:08,604 --> 00:00:17,107
+The July books lock at 6 p.m. on 5 August. Six proposed entries are waiting, and each one must be accepted, replaced or rejected.
+七月账务 8 月 5 日 18:00 锁账。六条待入账意见正在等待处理，每一条都要接受、替换或拒绝。
 
 3
-00:00:17,914 --> 00:00:23,902
-Fifty-five source files go in. A Word report and an Excel workbook must come out.
-输入是五十五份材料，要交付一份 Word 报告和一份 Excel 底稿。
+00:00:17,697 --> 00:00:25,151
+Each decision needs amounts and statement effects. Only one independent reviewer is available, for at most six hours a day.
+每项处理都要算清金额和报表影响；独立复核人只有 1 名，每天最多 6 小时。
 
 4
-00:00:25,638 --> 00:00:33,076
-The model works through Claude Code, inside a Docker container. The scoring rubric stays sealed, out of its reach.
-模型通过 Claude Code，在 Docker 容器里工作。评分标准处于封存状态，Agent 接触不到。
+00:00:25,741 --> 00:00:34,724
+55 source files go in: ledgers, valuations, policies and letters. Two files must come out: a Word report and an Excel workbook.
+输入 55 份材料：台账、估值、政策与函件。产出两份文件：一份 Word 报告，一份 Excel 底稿。
 
 5
-00:00:34,802 --> 00:00:42,577
-First request: read the register of pending entries. Claude Code runs it in Docker, and the six rows come back.
-第一个请求：读取待入账意见登记表。Claude Code 在 Docker 里执行，六行记录返回给模型。
+00:00:35,314 --> 00:00:40,905
+The scoring rubric is not in the container. The agent works without seeing how it will be judged.
+评分标准不在容器里。Agent 在看不到评判方式的情况下工作。
 
 6
-00:00:44,302 --> 00:00:51,890
-Then it writes its own plan: one line for each entry, D01 to D06, then the workbook and the report.
-接着它自己列出计划：D01 到 D06 每项一条，然后是底稿和报告。
+00:00:41,945 --> 00:00:52,725
+Claude Code runs the loop. The model chooses an action. Claude Code turns it into a tool call. The command runs inside Docker, and the output returns to the model.
+Claude Code 负责运行循环：模型选择动作，Claude Code 把它变成工具调用，命令在 Docker 里执行，输出再回到模型。
 
 7
-00:00:53,610 --> 00:01:01,548
-To size the swap's value change, the model asks for two valuation dates. Docker pulls the rows and returns them.
-为了量化互换的价值变动，模型要两个估值日的数据。Docker 取出对应行，返回给模型。
+00:00:53,315 --> 00:01:03,001
+The first request lists the input folder and creates the output folder. The second asks for two files: the register of proposed entries and the review engagement letter.
+第一次请求列出输入目录、建好输出目录；第二次请求读取两份文件：待入账意见登记表和复核委托函。
 
 8
-00:01:03,278 --> 00:01:09,366
-With the evidence in hand, it writes the workbook. Five sheets appear in the output folder.
-证据在手，它开始写底稿。输出目录里出现五张工作表。
+00:01:03,591 --> 00:01:14,058
+Bash runs both inside the container. The register returns six rows, D01 to D06, all unposted. The Word letter returns raw binary.
+Bash 在容器里执行这两条命令。登记表返回六行：D01 到 D06，均未过账；Word 委托函返回的却是一串二进制。
 
 9
-00:01:11,098 --> 00:01:19,110
-Then a real error. The script that polishes two sheets fails on a misspelled variable, and nothing from that run is saved.
-接着出现一个真实的错误。美化两张表的脚本因变量名拼错而失败，这次运行的内容没有保存。
+00:01:14,648 --> 00:01:22,872
+That observation shapes the next step. Request three reads the letter again with a Python Word library, and this time the text comes through.
+这个观察决定了下一步：第三次请求改用 Python 的 Word 库重新读取委托函，这次正文正常返回。
 
 10
-00:01:20,838 --> 00:01:28,463
-It moves on and writes the Word report. D01 to D06 each get a section with a recommendation.
-它继续往下，写 Word 报告。D01 到 D06 各有一节，并给出处理建议。
+00:01:23,462 --> 00:01:32,055
+One response can carry several tool calls. Request four reads four source files at once, and Claude Code returns all four results together.
+一次响应可以携带多个工具调用。第四次请求同时读取四份材料，Claude Code 把四个结果一起送回。
 
 11
-00:01:30,194 --> 00:01:38,306
-Then it checks its own files. The first sheet still has only three rows. The earlier polish never saved.
-然后它检查自己的文件。第一张表仍然只有三行，之前的美化根本没有保存。
+00:01:32,645 --> 00:01:39,200
+Request five writes a plan with TodoWrite: read the sources, analyze each entry, then build the workbook and the report.
+第五次请求用 TodoWrite 写下计划：读材料、逐条分析各项意见，再做底稿和报告。
 
 12
-00:01:40,030 --> 00:01:47,792
-The agent finishes. Only now does Harbor put the tests into the same container, and a separate judge session starts.
-Agent 完成交付。直到这时，Harbor 才把测试放进同一个容器，另起独立的裁判会话。
+00:01:39,790 --> 00:01:49,923
+Over the next requests it keeps reading: designation documents, policies, standards and letters. By request 12, it has opened 27 of the 55 files.
+接下来的请求里它持续阅读：套期指定文件、内部政策、准则摘录和往来函件。到第 12 次请求，它已打开 55 份材料中的 27 份。
 
 13
-00:01:49,506 --> 00:01:57,618
-The judge scores the two submitted files against the rubric, one criterion at a time. Nothing flows back to the agent.
-裁判按评分标准逐条评审这两份提交的文件。评分结果不会回传给 Agent。
+00:01:50,513 --> 00:01:58,123
+Request 13 updates the plan and marks all six analyses done. That status is the agent's own claim, not a check.
+第 13 次请求更新计划，把六项分析全部标为已完成。这只是 Agent 自己的标记，不是检验结果。
 
 14
-00:01:59,342 --> 00:02:07,942
-One number matches: the hedge sensitivity. The agent copied it from a source sheet, and the judge recomputed it from the scenarios.
-有一个数字对上了：套保敏感度。Agent 是从底稿里取用的，裁判用情景数据重新计算，结果一致。
+00:01:58,713 --> 00:02:05,034
+To size the swap's July change, it queries the daily valuation file for 30 June and 31 July.
+为量化利率互换七月的价值变动，它查询逐日估值明细，取 6 月 30 日和 7 月 31 日两天。
 
 15
-00:02:09,682 --> 00:02:16,257
-Entry D02 is subtler. The red line holds, but the treatment earns only half marks.
-D02 更微妙。红线没有被触碰，但处理方式只拿到一半分数。
+00:02:05,624 --> 00:02:13,803
+−1.28 million, then −4.40 million. The July change is −3.12 million yuan.
+6 月末 −1,277,351.45 元，7 月末 −4,395,835.74 元，七月变动 −3,118,484.29 元。
 
 16
-00:02:17,982 --> 00:02:23,757
-And the workbook contains no formulas at all, so its amounts cannot be traced back to their sources.
-而且底稿里一个公式都没有，金额无法追溯到来源。
+00:02:14,393 --> 00:02:21,379
+Next the model writes a long Python script. Bash runs it, and the workbook appears with three sheets, then two more.
+接着模型写出一段很长的 Python 脚本。Bash 执行后，底稿先出现三张表，随后再补上两张。
 
 17
-00:02:25,490 --> 00:02:35,352
-The reward is point three three three. Three criteria met, six partly met, eleven not met. One pilot run, not a ranking.
-奖励值为 0.333：三项满足、六项部分满足、十一项未满足。这只是一次试跑，不是排名。
+00:02:21,969 --> 00:02:27,988
+Then a script to enrich two sheets prints "enhanced" twice, and stops with a NameError: a misspelled variable.
+随后，一段补充两张表的脚本先打印两次 enhanced，接着因变量名拼错，以 NameError 中止。
 
 18
-00:02:37,078 --> 00:02:42,378
-From professional task to agent run, independent check, and what to improve next.
-从专业任务到 Agent 运行，再到独立检验，以及下一步该改进什么。
+00:02:28,578 --> 00:02:35,017
+The script crashed before saving, so neither change reached the file. Sheet one still holds three rows.
+脚本在保存之前就崩溃了，两处修改都没有写进文件。第一张表仍然只有 3 行。
+
+19
+00:02:35,607 --> 00:02:42,960
+The agent doesn't notice yet. It enriches sheets three and four, then writes the Word report, one section for each entry.
+Agent 此时还没察觉。它补充了第三、四张表，然后写 Word 报告：每条意见一节。
+
+20
+00:02:43,550 --> 00:02:48,627
+Then it reads its own files back. The check shows sheet one with only three rows.
+然后它读回自己的文件。检查结果显示，第一张表只有 3 行。
+
+21
+00:02:49,217 --> 00:02:55,538
+It looks once more, then states it plainly: the sheet one and two enhancements weren't saved, because of the earlier error.
+它又查了一次，然后明确说出原因：第一、二张表的补充因为之前的错误没有保存。
+
+22
+00:02:56,128 --> 00:03:03,348
+It runs the edit again. This time the receipt reads "All enhancements saved", and both sheets now hold 39 rows.
+它重新执行这次修改。这次回执是 All enhancements saved，两张表都变成 39 行。
+
+23
+00:03:03,938 --> 00:03:11,408
+A final check, the plan is ticked off, and the agent stops: 28 model requests, 54 tool calls, about seven minutes.
+最后再检查一遍，计划全部打勾，Agent 结束：28 次模型请求、54 次工具调用，约 7 分钟。
+
+24
+00:03:12,448 --> 00:03:22,916
+Here is the whole run. 50 Bash commands and 4 TodoWrite updates, all through Claude Code. It never used the Read, Edit or Write tools; all file work went through Bash.
+这是整次运行：50 次 Bash、4 次 TodoWrite，全部经由 Claude Code。它没有使用 Read、Edit、Write 工具，所有文件操作都走 Bash。
+
+25
+00:03:23,506 --> 00:03:32,377
+Each result is added to the model's context. By the last request, the prompt has grown from about 27 thousand to about 100 thousand tokens.
+每个结果都会追加进模型的上下文。到最后一次请求，提示长度从约 2.7 万 token 增长到约 10 万。
+
+26
+00:03:32,967 --> 00:03:39,127
+When the agent stops, Harbor copies the tests into the same container. Only then does scoring begin.
+Agent 停止后，Harbor 才把测试复制进同一个容器。评分这时才开始。
+
+27
+00:03:40,167 --> 00:03:42,414
+An independent check now takes over.
+接下来，由独立检验接手。
+
+28
+00:03:43,004 --> 00:03:53,460
+RewardKit opens a separate judge session for each of 27 criteria. The judge model is deepseek-v4.1-flash. Nothing flows back to the agent.
+RewardKit 为 27 条评分项各开一个独立的裁判会话，裁判模型是 deepseek-v4.1-flash。评分结果不会回传给 Agent。
+
+29
+00:03:54,050 --> 00:04:04,484
+One number holds. The workbook's DV01 matches the judge's recomputation from the five-basis-point scenarios. The agent copied it from the valuation sheet.
+有一个数字对上了：底稿里的 DV01 与裁判按正负 5BP 情景复算的结果一致。这个值是 Agent 从估值底稿里取用的。
+
+30
+00:04:05,074 --> 00:04:16,635
+D02 is subtler. The agent didn't book the loan's loss to the cash-flow hedge reserve, so the red line holds. But accepting it as a provisional net-investment hedge earns only half marks.
+D02 更微妙：Agent 没有把借款汇兑损失记入现金流量套期储备，红线未触发；但它把该意见作为净投资套期的暂行处理接受，只拿到一半分。
+
+31
+00:04:17,225 --> 00:04:25,293
+And none of the five sheets contains a formula. The amounts are typed-in values, so the calculation chain can't be traced to the source fields.
+此外，五张表里一个公式都没有。金额都是直接写入的数值，计算链无法追溯到来源字段。
+
+32
+00:04:26,333 --> 00:04:34,736
+Of 20 positive criteria, 3 are met, 6 partly met, and 11 not met. No penalties were triggered, and both red lines held.
+20 个正向评分项中，3 项满足、6 项部分满足、11 项未满足；5 个扣分项均未触发，两条红线都守住了。
+
+33
+00:04:35,326 --> 00:04:46,608
+The recorded reward is 0.333: 57.25 of 172 weighted points. One pilot run's rubric score, not accuracy, and not a ranking.
+记录的奖励值为 0.333，即加权得分 57.25 / 172。这是一次试跑的评分结果，不是准确率，也不是排名。
+
+34
+00:04:47,198 --> 00:04:54,050
+A professional task, an agent run, and an independent check. Explore more on the InferenceNet Challenge site.
+专业任务、Agent 运行、独立检验。更多内容见 InferenceNet Challenge 网站。

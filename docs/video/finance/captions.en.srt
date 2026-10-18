@@ -1,71 +1,135 @@
 1
-00:00:00,450 --> 00:00:06,975
-A model, a harness, and a month-end close. Follow how the agent works, and how it is checked.
+00:00:00,270 --> 00:00:08,014
+One model, one harness, one month-end close. Follow how the agent works inside Claude Code, and how its files are checked.
 
 2
-00:00:08,702 --> 00:00:16,189
-July books lock on the fifth of August. Six pending entries have been filed, and each one needs a decision.
+00:00:08,604 --> 00:00:17,107
+The July books lock at 6 p.m. on 5 August. Six proposed entries are waiting, and each one must be accepted, replaced or rejected.
 
 3
-00:00:17,914 --> 00:00:23,902
-Fifty-five source files go in. A Word report and an Excel workbook must come out.
+00:00:17,697 --> 00:00:25,151
+Each decision needs amounts and statement effects. Only one independent reviewer is available, for at most six hours a day.
 
 4
-00:00:25,638 --> 00:00:33,076
-The model works through Claude Code, inside a Docker container. The scoring rubric stays sealed, out of its reach.
+00:00:25,741 --> 00:00:34,724
+55 source files go in: ledgers, valuations, policies and letters. Two files must come out: a Word report and an Excel workbook.
 
 5
-00:00:34,802 --> 00:00:42,577
-First request: read the register of pending entries. Claude Code runs it in Docker, and the six rows come back.
+00:00:35,314 --> 00:00:40,905
+The scoring rubric is not in the container. The agent works without seeing how it will be judged.
 
 6
-00:00:44,302 --> 00:00:51,890
-Then it writes its own plan: one line for each entry, D01 to D06, then the workbook and the report.
+00:00:41,945 --> 00:00:52,725
+Claude Code runs the loop. The model chooses an action. Claude Code turns it into a tool call. The command runs inside Docker, and the output returns to the model.
 
 7
-00:00:53,610 --> 00:01:01,548
-To size the swap's value change, the model asks for two valuation dates. Docker pulls the rows and returns them.
+00:00:53,315 --> 00:01:03,001
+The first request lists the input folder and creates the output folder. The second asks for two files: the register of proposed entries and the review engagement letter.
 
 8
-00:01:03,278 --> 00:01:09,366
-With the evidence in hand, it writes the workbook. Five sheets appear in the output folder.
+00:01:03,591 --> 00:01:14,058
+Bash runs both inside the container. The register returns six rows, D01 to D06, all unposted. The Word letter returns raw binary.
 
 9
-00:01:11,098 --> 00:01:19,110
-Then a real error. The script that polishes two sheets fails on a misspelled variable, and nothing from that run is saved.
+00:01:14,648 --> 00:01:22,872
+That observation shapes the next step. Request three reads the letter again with a Python Word library, and this time the text comes through.
 
 10
-00:01:20,838 --> 00:01:28,463
-It moves on and writes the Word report. D01 to D06 each get a section with a recommendation.
+00:01:23,462 --> 00:01:32,055
+One response can carry several tool calls. Request four reads four source files at once, and Claude Code returns all four results together.
 
 11
-00:01:30,194 --> 00:01:38,306
-Then it checks its own files. The first sheet still has only three rows. The earlier polish never saved.
+00:01:32,645 --> 00:01:39,200
+Request five writes a plan with TodoWrite: read the sources, analyze each entry, then build the workbook and the report.
 
 12
-00:01:40,030 --> 00:01:47,792
-The agent finishes. Only now does Harbor put the tests into the same container, and a separate judge session starts.
+00:01:39,790 --> 00:01:49,923
+Over the next requests it keeps reading: designation documents, policies, standards and letters. By request 12, it has opened 27 of the 55 files.
 
 13
-00:01:49,506 --> 00:01:57,618
-The judge scores the two submitted files against the rubric, one criterion at a time. Nothing flows back to the agent.
+00:01:50,513 --> 00:01:58,123
+Request 13 updates the plan and marks all six analyses done. That status is the agent's own claim, not a check.
 
 14
-00:01:59,342 --> 00:02:07,942
-One number matches: the hedge sensitivity. The agent copied it from a source sheet, and the judge recomputed it from the scenarios.
+00:01:58,713 --> 00:02:05,034
+To size the swap's July change, it queries the daily valuation file for 30 June and 31 July.
 
 15
-00:02:09,682 --> 00:02:16,257
-Entry D02 is subtler. The red line holds, but the treatment earns only half marks.
+00:02:05,624 --> 00:02:13,803
+−1.28 million, then −4.40 million. The July change is −3.12 million yuan.
 
 16
-00:02:17,982 --> 00:02:23,757
-And the workbook contains no formulas at all, so its amounts cannot be traced back to their sources.
+00:02:14,393 --> 00:02:21,379
+Next the model writes a long Python script. Bash runs it, and the workbook appears with three sheets, then two more.
 
 17
-00:02:25,490 --> 00:02:35,352
-The reward is point three three three. Three criteria met, six partly met, eleven not met. One pilot run, not a ranking.
+00:02:21,969 --> 00:02:27,988
+Then a script to enrich two sheets prints "enhanced" twice, and stops with a NameError: a misspelled variable.
 
 18
-00:02:37,078 --> 00:02:42,378
-From professional task to agent run, independent check, and what to improve next.
+00:02:28,578 --> 00:02:35,017
+The script crashed before saving, so neither change reached the file. Sheet one still holds three rows.
+
+19
+00:02:35,607 --> 00:02:42,960
+The agent doesn't notice yet. It enriches sheets three and four, then writes the Word report, one section for each entry.
+
+20
+00:02:43,550 --> 00:02:48,627
+Then it reads its own files back. The check shows sheet one with only three rows.
+
+21
+00:02:49,217 --> 00:02:55,538
+It looks once more, then states it plainly: the sheet one and two enhancements weren't saved, because of the earlier error.
+
+22
+00:02:56,128 --> 00:03:03,348
+It runs the edit again. This time the receipt reads "All enhancements saved", and both sheets now hold 39 rows.
+
+23
+00:03:03,938 --> 00:03:11,408
+A final check, the plan is ticked off, and the agent stops: 28 model requests, 54 tool calls, about seven minutes.
+
+24
+00:03:12,448 --> 00:03:22,916
+Here is the whole run. 50 Bash commands and 4 TodoWrite updates, all through Claude Code. It never used the Read, Edit or Write tools; all file work went through Bash.
+
+25
+00:03:23,506 --> 00:03:32,377
+Each result is added to the model's context. By the last request, the prompt has grown from about 27 thousand to about 100 thousand tokens.
+
+26
+00:03:32,967 --> 00:03:39,127
+When the agent stops, Harbor copies the tests into the same container. Only then does scoring begin.
+
+27
+00:03:40,167 --> 00:03:42,414
+An independent check now takes over.
+
+28
+00:03:43,004 --> 00:03:53,460
+RewardKit opens a separate judge session for each of 27 criteria. The judge model is deepseek-v4.1-flash. Nothing flows back to the agent.
+
+29
+00:03:54,050 --> 00:04:04,484
+One number holds. The workbook's DV01 matches the judge's recomputation from the five-basis-point scenarios. The agent copied it from the valuation sheet.
+
+30
+00:04:05,074 --> 00:04:16,635
+D02 is subtler. The agent didn't book the loan's loss to the cash-flow hedge reserve, so the red line holds. But accepting it as a provisional net-investment hedge earns only half marks.
+
+31
+00:04:17,225 --> 00:04:25,293
+And none of the five sheets contains a formula. The amounts are typed-in values, so the calculation chain can't be traced to the source fields.
+
+32
+00:04:26,333 --> 00:04:34,736
+Of 20 positive criteria, 3 are met, 6 partly met, and 11 not met. No penalties were triggered, and both red lines held.
+
+33
+00:04:35,326 --> 00:04:46,608
+The recorded reward is 0.333: 57.25 of 172 weighted points. One pilot run's rubric score, not accuracy, and not a ranking.
+
+34
+00:04:47,198 --> 00:04:54,050
+A professional task, an agent run, and an independent check. Explore more on the InferenceNet Challenge site.

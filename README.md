@@ -71,10 +71,10 @@ of future updates unless explicitly requested again.
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
 All ten pages load `styles.css` and `site.css` with `20261018-shared-nav`, and
-`language.js` with `20261018-challenge-videos`, except Challenge and Business Analysis, which use
-`20261018-sufe-harness-v1` for the narrated replay captions. The base stylesheet carries the same
+`language.js` with `20261018-challenge-videos`, except Challenge, which uses `20261019-challenge-relay-v2`, and Business Analysis,
+which uses `20261019-claude-relay-v2` for the SUFE walkthrough captions. The base stylesheet carries the same
 versioned reference on every page, so preview navigation does not reuse the earlier
-unversioned base-style URL. `challenge.css` uses `20261018-challenge-videos`.
+unversioned base-style URL. `challenge.css` uses `20261018-demo-briefs`.
 Home uses `20261018-two-demos`
 for `index.css` and loads no leaderboard assets. Leaderboard retains
 `20261018-dev100-challenge` for `leaderboard.css` and `site.js`; its Dev100 entry
@@ -268,30 +268,52 @@ The animation source and export scripts stay in the research workspace.
 
 ## Business analysis narrated demos
 
-Finance (`finance-story-demo.mp4`) is 187.133 seconds; HR (`hr-agent-replay.mp4`)
-is 192.200 seconds. Both are native 1920×1080, 30 fps H.264/AAC exports with
-English synthetic narration (installed macOS Samantha voice) and burned English /
-Chinese captions. They follow the same TASK → AGENT → HARNESS → CHECK → RESULT
-structure as the approved PR #27 replay, with animated tool request / execution /
-feedback paths and a separate scoring path. PR #27 uses Aria; the two new SUFE
-exports use Samantha. No new agent run or re-scoring was performed.
+Finance (`finance-story-demo.mp4`) is 294.866 seconds (4 min 55 s); HR
+(`hr-agent-replay.mp4`) is 245.433 seconds (4 min 05 s). Both are 1920×1080, 30 fps
+H.264 High / AAC 48 kHz mono (BT.709) with English narration in `en-US-AriaNeural`, the
+voice of the approved PR #27 replay requested at +12 % to match its 1.12 pace, and burned
+English / Chinese captions. They use the PR #27 layout and chapters (TASK → AGENT →
+HARNESS → CHECK → RESULT): the task card, the agent's own TodoWrite plan, the run ledger
+(requests, tool calls by type, output tokens, latest prompt size), findings and
+`/app/output` stay on screen while a pixel guide points at what the narration describes.
 
-Finance shows 28 model requests, 54 tool calls, the actual NameError and saved-file
-repair, source-derived DV01, and missing spreadsheet formulas. HR shows 28 model
-requests, 44 tool calls, successful execution followed by logic correction, and
-the R32 opportunity/behavior error. Tool counters are labeled as observed run
-totals, not budgets. After each agent stops, Harbor adds tests to the same Docker
-container and RewardKit launches independent per-criterion judge sessions.
-The recorded rewards remain 0.332849 and 0.207547; these pilot rubric rewards
-are not official Challenge rankings or replication accuracy.
+The AGENT chapter follows the recorded requests. Request numbers are the 28 assistant
+message ids of each Claude Code session log, so the replay shows what one request carried:
+Finance request 4 and HR request 2 send 4 and 8 parallel Bash calls; TodoWrite is handled
+by Claude Code without a shell; HR's analysis script is saved with the Write tool and
+changed with Read / Edit. Claude Code and Bash run inside the task's Docker container; the
+model is reached through an API.
 
-Home and the professional task page share Finance's exact media; Challenge embeds
-both. All references use `?v=20261018-sufe-harness-v1`, native controls, metadata
-preload, posters and download fallbacks. The professional task page explains the
-new length and narration in both languages. Provenance, chapter times and all
-three SRT variants live in `docs/video/finance/` and `docs/video/hr/`.
-Editable scripts, narration WAVs, frozen data snapshots and per-video source ZIPs
-are in the local research workspace `research/sufe-video-alignment-20261018/`.
+Finance (34 shots): six unposted entries in the register; a `.docx` read with `cat`
+returns ZIP bytes, so request 3 switches to python-docx; the swap valuations for 30 June
+and 31 July; the workbook; the recorded `NameError` that crashed before the save; the
+read-back, the model's own statement of the cause, the re-run and the 39-row check; then
+the whole-run trace, prompt growth from 26,560 to 99,752 tokens and the handoff. CHECK
+shows DV01 (copied from sheet 16, recomputed by the judge), D02 (red line G2 clear,
+R51 = 0.5) and zero formulas (R19). Reward 0.332849 = 57.25 / 172.
+
+HR (28 shots, fictional task): eight parallel previews; the data-use rule; one
+19,223-token response that writes a 1,336-line script; a clean first run that labels WP-A
+“验收通过” while retaining 10 %; the model's review of its own output, two checks, two
+Reads, four Edits and a re-run that makes WP-A “附条件验收”. No tool call failed. CHECK
+shows R20 met, pooled rather than per-site comparisons (R14–R16), no source index
+(R1, R19) and penalty R32: all ten people with too few opportunities were marked as not
+meeting the standard (−7 raw weighted points). Reward 0.207547 = (29 − 7) / 106.
+
+Commands, outputs, file names, counts and scores come from the recorded runs
+(`research/benchmark-expansion-finance-hr-20261018/video/data/*.json` and the Claude
+Code session logs); nothing was re-run or re-scored. Shot lengths follow the narration,
+so the replay is time-compressed; the header clock shows the recorded agent time. The
+rewards are pilot rubric scores, not accuracy rates, rankings or general model performance.
+
+Home and the professional task page share Finance's media; Challenge embeds both. All
+media URLs use `?v=20261019-claude-relay-v2`, native controls, metadata preload, posters
+and download fallbacks. `docs/video/finance/` and `docs/video/hr/` hold the three SRT
+variants, generated from the same storyboard text that was synthesised, and
+`provenance.json` (streams, chapters, every shot with its narration, file and source
+hashes). The editable source (offline Skia renderer, scenes, storyboards, voice, render
+and package scripts) is in `research/sufe-video-claude-relay-20261018/` and stays outside
+the website; the edition it replaced is backed up in that directory's `site-before-relay/`.
 
 ## Self-evolving: improving a harness
 

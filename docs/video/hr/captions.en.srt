@@ -1,75 +1,111 @@
 1
-00:00:00,450 --> 00:00:08,325
-A model, a harness, and a training programme to evaluate. This one is fictional, so the data can be shown freely.
+00:00:00,270 --> 00:00:07,891
+One model, one harness, one training review. Follow how the agent works inside Claude Code, and how its files are checked.
 
 2
-00:00:10,070 --> 00:00:20,245
-Three warehouse sites finished six weeks of training. A fourth, delayed site gives a fair comparison. The agent must decide what to pay the vendor.
+00:00:08,481 --> 00:00:16,404
+A fictional cold-chain operator trained supervisors at three sites for six weeks. A fourth site, trained later, is the comparison.
 
 3
-00:00:21,970 --> 00:00:29,382
-Seventeen files go in: ledgers, rules, minutes. A workbook and a decision memo must come out.
+00:00:16,994 --> 00:00:25,000
+The agent must judge what the training changed, then decide acceptance and payment for three vendor work packages, worth 816,000 yuan.
 
 4
-00:00:31,110 --> 00:00:37,897
-The model works through Claude Code in a Docker container. The scoring rubric is sealed, out of its reach.
+00:00:25,590 --> 00:00:35,522
+17 files go in: rosters, attendance, tests, field observations, work orders and procurement rules. A workbook and a decision memo must come out.
 
 5
-00:00:39,626 --> 00:00:48,263
-It begins by looking at the data. A request goes out, Claude Code runs it in Docker, and the first rows of the test ledger come back.
+00:00:36,112 --> 00:00:41,702
+The scoring rubric is not in the container. The agent works without seeing how it will be judged.
 
 6
-00:00:49,990 --> 00:00:55,790
-Then it writes a plan for itself: seven tasks, from reading the sources to writing the memo.
+00:00:42,742 --> 00:00:52,261
+Claude Code runs the loop. The model chooses an action, Claude Code turns it into a tool call, the call runs inside the container, and the result returns to the model.
 
 7
-00:00:57,522 --> 00:01:06,147
-It reads the rules too. A Word document comes back with the data boundary: individual results are for assessment and support only.
+00:00:52,851 --> 00:01:01,243
+After listing the inputs, the second request sends eight tool calls at once, one preview per data ledger. All eight results come back together.
 
 8
-00:01:07,862 --> 00:01:12,187
-Now it writes a long script that builds both deliverables from the sources.
+00:01:01,833 --> 00:01:09,783
+Request three writes a plan with TodoWrite: validate the samples, analyze learning and behavior, compare the sites, and compute the payments.
 
 9
-00:01:13,930 --> 00:01:20,255
-It runs the script. Seven source tables load, and the run ends with no error at all.
+00:01:10,373 --> 00:01:19,021
+Then it reads the workbooks and Word files. One rule matters: individual learning data may only be used for assessment, support and acceptance.
 
 10
-00:01:21,990 --> 00:01:30,052
-But running without error is not the same as being right. The agent says it noticed issues, and checks who is actually in scope.
+00:01:19,611 --> 00:01:28,248
+Then comes one long response. For over two minutes the model writes a single analysis script, and Claude Code's Write tool saves it in the container.
 
 11
-00:01:31,778 --> 00:01:38,790
-So it opens its own script and edits it: the sample filter first, then the logic that decides the first work package.
+00:01:28,838 --> 00:01:38,469
+Bash runs the script. It loads every ledger and writes both files. Work package A comes out as accepted, yet 10% of its payment is held back.
 
 12
-00:01:40,510 --> 00:01:46,398
-Then the same pipeline runs again. It succeeds again, now with the corrected scope.
+00:01:39,059 --> 00:01:47,908
+The run succeeded, with no error. But after reading its own output, the model reports problems in the WP-A status logic and the sample filter.
 
 13
-00:01:48,114 --> 00:01:54,626
-It checks the finished files. The workbook has nine sheets, the memo seventy-three paragraphs.
+00:01:48,498 --> 00:01:57,648
+It checks the scope: 81 people included, 2 observation-limited, 1 excluded. Then it reads the script, edits it four times, and runs it again.
 
 14
-00:01:56,342 --> 00:02:04,104
-The agent finishes. Only now does Harbor put the tests into the same container, and a separate judge session starts.
+00:01:58,238 --> 00:02:09,286
+Same script, still no error. This time WP-A is a conditional acceptance: 220,320 yuan to approve, 24,480 retained.
 
 15
-00:02:05,818 --> 00:02:13,793
-The judge scores the two submitted files against thirty-four criteria, one at a time. Nothing flows back to the agent.
+00:02:09,876 --> 00:02:15,963
+It checks the nine-sheet workbook and the memo, and confirms that only the two required files are in the output folder.
 
 16
-00:02:15,510 --> 00:02:23,997
-Some things were right. The first work package was correctly judged conditional. But the second came out half a unit short.
+00:02:16,553 --> 00:02:24,777
+The plan is ticked off and the agent stops: 28 requests, 44 tool calls, about six minutes. Not one tool call failed.
 
 17
-00:02:25,730 --> 00:02:35,442
-One penalty fired, and it is the most important one. Eight supervisors had too few chances to be rated, yet all were marked as not meeting the standard.
+00:02:25,817 --> 00:02:36,943
+Here is the whole run. 33 Bash, 4 TodoWrite, 1 Write, 2 Read and 4 Edit calls. The turning point was not a crash; it came from the model reading its own results.
 
 18
-00:02:37,174 --> 00:02:47,249
-The reward is point two zero eight. Six criteria met, twenty-two not met, one penalty. One pilot run, not a ranking.
+00:02:37,533 --> 00:02:46,460
+Each result is added to the model's context. By the last request, the prompt has grown from about 25 thousand to about 89 thousand tokens.
 
 19
-00:02:48,978 --> 00:02:54,278
-From professional task to agent run, independent check, and what to improve next.
+00:02:47,050 --> 00:02:53,209
+When the agent stops, Harbor copies the tests into the same container. Only then does scoring begin.
+
+20
+00:02:54,249 --> 00:02:56,497
+An independent check now takes over.
+
+21
+00:02:57,087 --> 00:03:08,402
+RewardKit opens one judge session for each of 34 criteria. The judge model is qwen3.7-plus, a different model from the agent. Nothing flows back to the agent.
+
+22
+00:03:08,992 --> 00:03:13,740
+The WP-A fix holds up: the judge accepts the conditional-acceptance status.
+
+23
+00:03:14,330 --> 00:03:22,721
+Other parts fall short. The workbook pools the three trained sites instead of comparing each one with the delayed site, and it has no source-index sheet.
+
+24
+00:03:23,311 --> 00:03:31,089
+And one penalty applies. Ten people had too few chances to show the behavior, yet the workbook marks them as not meeting the standard.
+
+25
+00:03:31,679 --> 00:03:36,750
+Too little opportunity is not evidence of low ability, so seven weighted points are deducted.
+
+26
+00:03:37,790 --> 00:03:46,695
+Of 28 positive criteria, 6 are met and 22 are not. One of six penalties applies, and this task has no red-line criteria.
+
+27
+00:03:47,285 --> 00:03:57,172
+The recorded reward is 0.208: 29 points, minus 7, over 106. One pilot run on a fictional task, not a ranking.
+
+28
+00:03:57,762 --> 00:04:04,613
+A professional task, an agent run, and an independent check. Explore more on the InferenceNet Challenge site.

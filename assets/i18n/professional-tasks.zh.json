@@ -148,5 +148,5 @@
   "Finance task demo": "金融任务演示",
   "Download the finance demo": "下载金融案例演示",
   "Subtrack 2 · Business Analysis & Deliverables": "赛道二 · 业务分析与交付",
-  "A 2-minute 44-second narrated walkthrough of FIN-T1-003: the task, each tool round trip inside Claude Code, a real script error and the agent’s own repair, then the independent review and pilot result. English synthetic narration with English / Chinese captions; the timeline is compressed from a recorded run.": "2 分 44 秒讲解 FIN-T1-003：任务、Claude Code 中的每次工具往返、一次真实的脚本报错与 Agent 自己的修复，然后是独立评审与试运行结果。英文合成配音，中英文字幕；时间轴已从真实运行记录中压缩。"
+  "A 4-minute 55-second narrated walkthrough of FIN-T1-003: the task, each request and tool round trip inside Claude Code, a real script error and the agent’s own repair, then the independent review and pilot result. English synthetic narration with English / Chinese captions; the timeline is compressed from a recorded run.": "4 分 55 秒讲解 FIN-T1-003：任务、Claude Code 中的每次请求与工具往返、一次真实的脚本报错与 Agent 自己的修复，然后是独立评审与试运行结果。英文合成配音，中英文字幕；时间轴已从真实运行记录中压缩。"
 }

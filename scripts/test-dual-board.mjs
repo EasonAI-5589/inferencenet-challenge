@@ -276,10 +276,7 @@ test('the development module loads only on leaderboard.html, with the release ta
   }
   for (const page of PAGES) {
     const html = await read(page);
-    const languageTag = {
-      'challenge.html': '20261019-challenge-copy',
-      'professional-tasks.html': '20261018-sufe-harness-v1',
-    }[page] || LANGUAGE_TAG;
+    const languageTag = { 'challenge.html': '20261019-challenge-relay-v2', 'professional-tasks.html': '20261019-claude-relay-v2' }[page] || LANGUAGE_TAG;
     assert.match(html, new RegExp(`"language\\.js\\?v=${languageTag}"`), `${page}: language.js`);
   }
   assert.match(await read('index.html'), /"index\.css\?v=20261018-two-demos"/);
