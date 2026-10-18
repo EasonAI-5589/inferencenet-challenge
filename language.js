@@ -7,8 +7,8 @@
   const common = {
     'Home': '首页', 'Data': '数据', 'Agent': '智能体', 'Evolution': '自进化', 'Self-evolving': '自进化', 'Leaderboard': '排行榜',
     'Teams': '团队', 'Challenge': '挑战赛', 'Contact': '联系', 'Menu': '菜单', 'Light': '浅色', 'Dark': '深色',
-    'AI for Business, Social Science and Research': '面向商业、社会科学与研究的 AI',
-    'AI for Business, Social Science and Research.': '面向商业、社会科学与研究的 AI。',
+    'AI Agents for Business, Finance and Social Science': '面向商业、金融与社会科学的 AI 智能体',
+    'AI Agents for Business, Finance and Social Science.': '面向商业、金融与社会科学的 AI 智能体。',
     'Dark theme': '深色主题', 'Switch to dark theme': '切换深色主题',
     'Skip to content': '跳转到正文', 'Main navigation': '主导航',
     'On this page': '本页导航', 'Legend': '图例', 'Rank': '排名',
