@@ -551,9 +551,10 @@
   "Explore training and improvement →": "探索训练与改进 →",
   "Bring your domain expertise, a new challenge, an agent implementation or evaluation ideas. Work with the community to turn challenging problems into reusable tasks, reproducible evaluation and better agents.": "带着领域经验、新挑战方案、智能体实现或评测想法加入我们。与社区共同把复杂问题转化为可复用的任务、可复现的评测，以及更有能力的智能体。",
   "InferenceNet Challenge — AI Agents for Business, Finance and Social Science": "InferenceNet Challenge — 面向商业、金融与社会科学的 AI 智能体",
-  "sets out a vision of shared infrastructure for AI agents in business, finance and social science. InferenceNet Challenge advances this vision by building an open-source community, bringing together challenging problems, and developing a standard framework for model training and evaluation.": "提出面向商业、金融与社会科学 AI 智能体的共享基础设施愿景。InferenceNet Challenge 以此为方向，构建开源社区、汇集挑战性问题，建设模型训练与评测的标准框架。",
   "Our aims": "建设目标",
   "03 / Our aims": "03 / 建设目标",
   "What InferenceNet Challenge builds": "InferenceNet Challenge 的建设目标",
-  "Four ways InferenceNet Challenge advances the Initiative: community collaboration, challenging problems, standard evaluation, and model training and improvement.": "通过社区协作、挑战性问题、标准评测与模型改进，InferenceNet Challenge 将全球计划的愿景转化为可共同参与的工作。"
+  "Four ways InferenceNet Challenge advances the Initiative: community collaboration, challenging problems, standard evaluation, and model training and improvement.": "通过社区协作、挑战性问题、标准评测与模型改进，InferenceNet Challenge 将全球计划的愿景转化为可共同参与的工作。",
+  "sets out a vision of shared infrastructure for AI agents in business, finance and social science.": "提出面向商业、金融与社会科学 AI 智能体的共享基础设施愿景。",
+  "advances this vision by building an open-source community, bringing together challenging problems, and developing a standard framework for model training and evaluation.": "以此为方向，构建开源社区、汇集挑战性问题，建设模型训练与评测的标准框架。"
 }

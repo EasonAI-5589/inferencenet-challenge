@@ -75,7 +75,7 @@ of future updates unless explicitly requested again.
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
 All ten pages load `styles.css` and `site.css` with `20261018-shared-nav`, and
-`language.js` with `20261018-challenge-videos`, except Home (`20261019-home-release`),
+`language.js` with `20261018-challenge-videos`, except Home (`20261019-hero-link`),
 Challenge (`20261019-challenge-links`) and Business Analysis (`20261019-claude-relay-v2`).
 Home presents both challenges with the same workflow, difficulty, deliverable and
 independent-evaluation structure, followed by two concrete descriptions of the work. The base stylesheet carries the same
