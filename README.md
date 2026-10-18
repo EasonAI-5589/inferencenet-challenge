@@ -45,7 +45,7 @@ of future updates unless explicitly requested again.
 
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
-Home loads `language.js` with `20261018-guided-replay`; the other seven pages
+Home loads `language.js` with `20261018-deepagents-flow`; the other seven pages
 retain `20261018-branding-review`.
 Home uses `20261018-subtracks` for `index.css`. Home and Leaderboard retain
 `20261018-dev100-challenge` for `leaderboard.css` and `leaderboard.js`.
@@ -193,28 +193,38 @@ language.js release tag.
 
 ## Homepage agent replay video
 
-`assets/video/agent-replay-task0001.mp4` is the 274.6-second guided replay
-(1920×1080, 30 fps, H.264/AAC) of recorded task 0001, GPT-5.6 Sol with DeepAgents.
-It adds English synthetic narration, burned-in English/Chinese captions, a moving
-pixel guide with a baton, local highlights and particles, and longer reading holds.
-Five chapters follow the run: the task and its six sub-problems, four
-run_python calls, the harness refusing a fifth tool call and asking for the
-final program, the evaluator running that program and the scorer comparing it
-with the sealed reference, and the full-replication result. Code excerpts,
-outputs, token counts, timings, budgets and scores come from the unchanged derived
-run snapshot. The original three-column dashboard, all 32 phases and five-chapter
-order are preserved; the presentation timeline is slowed down. The recorded run
-took 121.038 seconds, which is distinct from the edited video duration. Passing
-the scorer's tolerance does not mean that the displayed values are exactly equal.
+`assets/video/agent-replay-task0001.mp4` is the 319.5-second DeepAgents execution
+walkthrough (1920×1080, 30 fps, H.264/AAC) of recorded task 0001, GPT-5.6 Sol with
+DeepAgents. It adds English synthetic narration, burned-in English/Chinese
+captions, a moving pixel guide with a baton, local highlights and particles,
+and longer reading holds.
+Five chapters follow the task, the graphical execution loop, the budget boundary,
+independent evaluation and the result. Each round shows the model request,
+InferenceNet's custom run_python execution, and the observation returned to the
+model context. Four run_python calls execute; the fifth requested call is refused
+by this evaluation's budget gate. The sixth model call submits the final program,
+which is run separately by the independent evaluator before scoring.
+The inactive historical tool shelf lists ls, read_file, write_file, edit_file,
+glob and grep as setup context; no calls to those six tools are observed here.
+The walkthrough also makes no claim that write_todos, task or subagents were
+called. The six-subproblem checklist is explanatory bookkeeping, not a
+write_todos trace. Code excerpts and stdout remain available as
+supporting evidence in the editable animation's browser control; code typing is
+no longer the main video view. That evidence control is not part of the MP4.
+The original three-column layout, five-chapter order, 11 source rendering
+functions and all 32 source intervals are retained, while the center column uses
+an execution-flow overlay. The derived run snapshot is unchanged. The recorded
+run took 121.038 seconds, distinct from the edited video duration. Passing the
+scorer's tolerance does not mean that the displayed values are exactly equal.
 `agent-replay-task0001-poster.jpg` is its poster frame.
 
 The video is embedded on the homepage below the hero action buttons and before
 the status updates, with a poster and native playback controls. It does not
 autoplay. English and Chinese page text identifies the historical single-task
-demonstration, synthetic narration, bilingual captions and slower timeline, and links
+demonstration, synthetic narration, bilingual captions and execution walkthrough, and links
 to `data.html#case-0001`. The existing task 0011 walkthrough remains separate.
 Homepage CSS uses `20261018-subtracks`; its dictionary, video and poster URLs
-use `20261018-guided-replay` to avoid stale cached assets.
+use `20261018-deepagents-flow` to avoid stale cached assets.
 The animation source and export scripts stay in the research workspace. Source
 provenance, media checksums, chapter times and standalone SRT captions are in
 [`docs/video/task0001/`](docs/video/task0001/README.md).

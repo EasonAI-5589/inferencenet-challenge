@@ -1,10 +1,11 @@
-# Task 0001 guided replay
+# Task 0001 DeepAgents execution walkthrough
 
-This version expands the original replay with slower reading holds, a moving
-pixel guide and baton, local highlights, particles, English synthetic narration
-and burned-in English/Chinese captions. It preserves the original three-column
-dashboard, five chapters and all 32 phases, including the code excerpts, tool
-outputs, sub-problem progress, budgets, token counts and independent scoring.
+This version explains each round through a graphical execution flow, with slower
+reading holds, a moving pixel guide and baton, local highlights, particles,
+English synthetic narration and burned-in English/Chinese captions. The original
+three-column layout and five-chapter order remain. The center column now shows
+requests, execution and returned observations; code is supporting evidence in
+the editable animation, rather than the main video view.
 
 - [Video](../../../assets/video/agent-replay-task0001.mp4)
 - [Poster](../../../assets/video/agent-replay-task0001-poster.jpg)
@@ -19,48 +20,74 @@ The recorded example is **task 0001, GPT-5.6 Sol + DeepAgents**, run
 The derived `replay-data.js` snapshot is unchanged. Private raw traces are not
 included, and no new model evaluation was run to make this video.
 
-The source's original 11 rendering functions and 32 phases were retained; an
-additional timing and guide layer expands the 71.4-second animation into
-274.6 seconds. The recorded task itself took **121.038 seconds**. Four executed
-interactive tool calls, a rejected fifth request and the final evaluator run
-remain distinct. The three checked values pass the task's tolerances; they
-are not claimed to be numerically identical. Published references keep the
-website's rounded precision. This is a historical single-task illustration,
-not a new benchmark result.
+The source's original 11 rendering functions and all 32 chronological intervals
+are retained. A timing layer expands the 71.4-second source animation into
+319.5 seconds, while an explanatory overlay changes the central presentation.
+The original code excerpts and stdout remain in the snapshot and are accessible
+through an evidence control in the editable browser animation. That control is
+not shown in the MP4; not every original code view is directly displayed.
+
+The walkthrough distinguishes these recorded events:
+
+1. Four `run_python` calls execute through InferenceNet's custom tool, with
+   observations returned to the model context.
+2. A fifth requested tool execution is refused by this evaluation's budget gate.
+   It is not a fifth executed tool call or a native DeepAgents-only feature.
+3. The sixth model call submits the final program; submission is not execution.
+4. The independent evaluator runs that program, produces the result JSON, then
+   compares the prediction with the sealed reference.
+
+The inactive historical tool shelf lists `ls`, `read_file`, `write_file`,
+`edit_file`, `glob` and `grep` as setup context; no calls to those six tools are
+observed here. Separately, the walkthrough makes no claim that `write_todos`,
+`task` or subagents were called. The Stata data is read inside Python. The
+six-subproblem checklist is explanatory bookkeeping, not a `write_todos` trace.
+Returned observations explain the flow without inventing private chain-of-thought.
+
+The recorded task itself took **121.038 seconds**, with **6 model calls**, **4
+executed interactive tool calls**, and **46,496 total recorded tokens**. The three
+checked values pass the task's tolerances; they are not claimed to be numerically
+identical. Coefficient and standard error use 1% relative error; p-value uses 0.01
+absolute error. Published references keep the website's rounded precision. This
+is a historical single-task illustration, not a new benchmark result or evidence
+that one harness outperforms another.
 
 ## Media
 
-- Duration: **4:34.6** (274.6 seconds), **8,238** frames.
+- Duration: **5:19.5** (319.5 seconds; rounded to **5 min 20 sec** on the homepage),
+  **9,585** frames.
 - Video: **1920 x 1080, 30 fps**, H.264, yuv420p, BT.709, fast-start MP4.
 - Audio: AAC, 48 kHz, mono. English synthetic voice: `en-US-AriaNeural`.
-- Size: **37,380,095 bytes**.
-- SHA-256: `3413035276e1398e427826d0746edb0961cabbb1903cdffe9d50634bf29230b5`.
+- Exact byte size and SHA-256 are recorded in [provenance.json](provenance.json).
 - Captions are already burned into the video. SRT files are supplied for editing;
   enabling them as an extra player track would duplicate the visible captions.
 
 The MP4 chapter navigation includes the opening in the first chapter. The TASK
-card itself appears at 0:11.3; no animation timing was changed for navigation.
+card itself appears at **0:10.500**. Times below come from the v3 narration timeline.
 
 | Chapter | Start |
 | --- | --- |
 | TASK, including opening | 0:00.000 |
-| AGENT | 0:42.833 |
-| HARNESS | 2:38.067 |
-| CHECK | 3:18.867 |
-| RESULT | 4:09.667 |
+| AGENT | 0:42.033 |
+| HARNESS | 3:11.233 |
+| CHECK | 3:56.500 |
+| RESULT | 4:52.233 |
 
 ## Validation
 
-The delivered file was checked with FFprobe, and its complete audio/video streams
-decoded with FFmpeg without errors. Export verified all 8,238 contiguous frames.
-The unchanged source snapshot and preserved scene functions were checked by
-hash, and all original intervals are covered in order. There were no JavaScript
-errors in 124 layout samples. Independent keyframe review covered task details,
-code and outputs, budget rejection, scoring, the result and the outro. The guide
-trajectory was checked across all frames for caption intrusion and stable baton
-targeting. Narration timing, levels and selected automatic transcriptions were
-checked; these checks are not a claim of full human listening review.
+Source review checks the unchanged replay snapshot and 11 original rendering
+functions by hash, and confirms all original intervals remain covered in order.
+The 37 bilingual narration records and execution graph were checked against the
+derived snapshot, including the rejected request, submission-before-execution,
+independent evaluator and result-JSON timing. This source review does not by itself
+certify the final encoded media.
+
+Release verification covers all 9,585 contiguous frames, FFprobe media metadata,
+complete FFmpeg audio/video decoding, sampled layouts and guide motion. The final
+media checks and hashes belong to this version's provenance record. Narration
+timing, levels and selected automatic transcriptions are separate from human
+listening; automated checks are not a claim of full human listening review.
 
 The editable animation and export bundle is maintained separately in the research
-workspace. This website change contains the approved media, captions and public
+workspace. This website change contains the proposed media, captions and public
 provenance, not browser profiles, rendering caches or private runtime files.

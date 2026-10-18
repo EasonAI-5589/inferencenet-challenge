@@ -1,6 +1,6 @@
 {
-  "duration_seconds": 274.6,
-  "frames": 8238,
+  "duration_seconds": 319.5,
+  "frames": 9585,
   "fps": "30/1",
   "resolution": [
     1920,
@@ -21,7 +21,7 @@
   "source_commit": "884e89e58f62a185cd06572979fbd1548ea67e4b",
   "recorded_run_seconds": 121.038,
   "replay_data_sha256": "14446bc5bbc421aa59664d062a7cec2c8c6a9f160fbe538612e204b9b42d1841",
-  "version": "original-enhanced-v2",
+  "version": "deepagents-flow-v3",
   "task_id": "0001",
   "model": "GPT-5.6 Sol",
   "harness": "DeepAgents",
@@ -31,53 +31,56 @@
   "original_phase_count": 32,
   "replay_data_unchanged": true,
   "chapter_navigation_includes_opening": true,
+  "presentation": "Diagram-first tool loop; original code and stdout remain optional evidence in the editable animation.",
+  "tool_boundary": "Four executed run_python calls; fifth requested call rejected by InferenceNet budget guard. Sixth model call submits the program, which is executed separately by the evaluator.",
+  "historical_tools": "Historical virtual-note tools are shown as inactive context; no actual file-tool or subagent calls are claimed.",
   "chapters": [
     {
       "name": "TASK",
       "start_seconds": 0.0,
-      "end_seconds": 42.833333333333336
+      "end_seconds": 42.03333333333333
     },
     {
       "name": "AGENT",
-      "start_seconds": 42.833333333333336,
-      "end_seconds": 158.06666666666666
+      "start_seconds": 42.03333333333333,
+      "end_seconds": 191.23333333333332
     },
     {
       "name": "HARNESS",
-      "start_seconds": 158.06666666666666,
-      "end_seconds": 198.86666666666667
+      "start_seconds": 191.23333333333332,
+      "end_seconds": 236.5
     },
     {
       "name": "CHECK",
-      "start_seconds": 198.86666666666667,
-      "end_seconds": 249.66666666666666
+      "start_seconds": 236.5,
+      "end_seconds": 292.23333333333335
     },
     {
       "name": "RESULT",
-      "start_seconds": 249.66666666666666,
-      "end_seconds": 274.6
+      "start_seconds": 292.23333333333335,
+      "end_seconds": 319.5
     }
   ],
   "files": {
     "assets/video/agent-replay-task0001.mp4": {
-      "bytes": 37380095,
-      "sha256": "3413035276e1398e427826d0746edb0961cabbb1903cdffe9d50634bf29230b5"
+      "bytes": 39901642,
+      "sha256": "27664d57aefa863f0c30aa258881f197790dad5a563016cb7a0f71a73af9b9e8"
     },
     "assets/video/agent-replay-task0001-poster.jpg": {
-      "bytes": 245824,
-      "sha256": "2064bde58e1c7a0c308bbe84f537fd6757e1d0ac689c52c1d754596669d3dd5d"
+      "bytes": 261396,
+      "sha256": "1f1eff42081b1fdb0e6360592655031fc6303d841d8623ac30802a0de9f61b5c"
     },
     "docs/video/task0001/captions.en.srt": {
-      "bytes": 4152,
-      "sha256": "ed4b1f4c895432fea0f1422510bed0aa7544ed0fc2c04ef2a14eb091ac6c8672"
+      "bytes": 4737,
+      "sha256": "9d598d3844bcbee636b1abbf4548a0500457858fce21f2397e9aefe7371cd540"
     },
     "docs/video/task0001/captions.zh.srt": {
-      "bytes": 3737,
-      "sha256": "a1bd9b4453fb3c3a74a6e84ab72d73ffdf76049bf43f4db9b6ddf5ed1fca276e"
+      "bytes": 4301,
+      "sha256": "3dd935976531d7f423166662df434e65828e24ec192b64b08a207e3c71b3feea"
     },
     "docs/video/task0001/captions.bilingual.srt": {
-      "bytes": 6716,
-      "sha256": "5848ad38ee90b14beb81dd7013fb95f01eb6e28632e624eb35153b2246a44151"
+      "bytes": 7824,
+      "sha256": "dad6ca998bab0985aa041ea66de2382e1be2a6fe94005314248177ce9f2d02d9"
     }
   }
 }
