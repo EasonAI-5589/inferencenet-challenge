@@ -1,6 +1,6 @@
 # Task 0001 DeepAgents execution walkthrough
 
-This version explains each round through a graphical execution flow, with slower
+This version explains each round through a graphical execution flow, with
 reading holds, a moving pixel guide and baton, local highlights, particles,
 English synthetic narration and burned-in English/Chinese captions. The original
 three-column layout and five-chapter order remain. The center column now shows
@@ -21,8 +21,12 @@ The derived `replay-data.js` snapshot is unchanged. Private raw traces are not
 included, and no new model evaluation was run to make this video.
 
 The source's original 11 rendering functions and all 32 chronological intervals
-are retained. A timing layer expands the 71.4-second source animation into
-319.5 seconds, while an explanatory overlay changes the central presentation.
+are retained. V3 expanded the 71.4-second source animation into 319.5 seconds,
+with an explanatory overlay in the center column. V3.1 adjusts only its pacing:
+all v3 scenes, information and their order remain, with no editorial cuts.
+Picture, narration, subtitles and chapters are scaled together by the exact
+speed ratio **9585 / 8558**, approximately **1.120004674×**. FFmpeg `atempo`
+preserves the narration's pitch. The resulting timeline lasts **285.266667 seconds**.
 The original code excerpts and stdout remain in the snapshot and are accessible
 through an evidence control in the editable browser animation. That control is
 not shown in the MP4; not every original code view is directly displayed.
@@ -54,8 +58,8 @@ that one harness outperforms another.
 
 ## Media
 
-- Duration: **5:19.5** (319.5 seconds; rounded to **5 min 20 sec** on the homepage),
-  **9,585** frames.
+- Duration: **4:45.27** (285.266667 seconds; rounded to **4 min 45 sec** on the homepage),
+  **8,558** frames.
 - Video: **1920 x 1080, 30 fps**, H.264, yuv420p, BT.709, fast-start MP4.
 - Audio: AAC, 48 kHz, mono. English synthetic voice: `en-US-AriaNeural`.
 - Exact byte size and SHA-256 are recorded in [provenance.json](provenance.json).
@@ -63,30 +67,32 @@ that one harness outperforms another.
   enabling them as an extra player track would duplicate the visible captions.
 
 The MP4 chapter navigation includes the opening in the first chapter. The TASK
-card itself appears at **0:10.500**. Times below come from the v3 narration timeline.
+card itself appears at **0:09.375**. Times below are the v3 narration timeline
+divided by the exact speed ratio; values are rounded to the nearest millisecond.
 
 | Chapter | Start |
 | --- | --- |
 | TASK, including opening | 0:00.000 |
-| AGENT | 0:42.033 |
-| HARNESS | 3:11.233 |
-| CHECK | 3:56.500 |
-| RESULT | 4:52.233 |
+| AGENT | 0:37.530 |
+| HARNESS | 2:50.743 |
+| CHECK | 3:31.160 |
+| RESULT | 4:20.922 |
 
 ## Validation
 
-Source review checks the unchanged replay snapshot and 11 original rendering
-functions by hash, and confirms all original intervals remain covered in order.
-The 37 bilingual narration records and execution graph were checked against the
-derived snapshot, including the rejected request, submission-before-execution,
-independent evaluator and result-JSON timing. This source review does not by itself
-certify the final encoded media.
+V3.1 retains v3's source, factual, layout, guide-motion and automatic
+transcription reviews; those reviews were not rerun for this pacing-only change.
+The v3 source review checked the unchanged replay snapshot and 11 original
+rendering functions by hash, chronological coverage, and all 37 bilingual
+narration records and execution-graph events against the derived snapshot.
 
-Release verification covers all 9,585 contiguous frames, FFprobe media metadata,
-complete FFmpeg audio/video decoding, sampled layouts and guide motion. The final
-media checks and hashes belong to this version's provenance record. Narration
-timing, levels and selected automatic transcriptions are separate from human
-listening; automated checks are not a claim of full human listening review.
+This version's checks cover synchronized retiming of the picture, narration,
+subtitles and chapters, the 8,558-frame output and FFprobe media metadata,
+complete FFmpeg audio/video decoding, updated homepage text and media loading,
+chapter seeking, and a matching frame/subtitle spot check. Final media hashes and
+retiming evidence are recorded in this version's provenance record. The retained
+ASR and signal-level checks are not a claim of a new transcription run or full
+human listening review.
 
 The editable animation and export bundle is maintained separately in the research
 workspace. This website change contains the proposed media, captions and public

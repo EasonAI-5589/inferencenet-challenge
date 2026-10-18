@@ -45,7 +45,7 @@ of future updates unless explicitly requested again.
 
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
-Home loads `language.js` with `20261018-deepagents-flow`; the other seven pages
+Home loads `language.js` with `20261018-deepagents-flow-v3-1`; the other seven pages
 retain `20261018-branding-review`.
 Home uses `20261018-subtracks` for `index.css`. Home and Leaderboard retain
 `20261018-dev100-challenge` for `leaderboard.css` and `leaderboard.js`.
@@ -193,11 +193,16 @@ language.js release tag.
 
 ## Homepage agent replay video
 
-`assets/video/agent-replay-task0001.mp4` is the 319.5-second DeepAgents execution
+`assets/video/agent-replay-task0001.mp4` is the 285.267-second DeepAgents execution
 walkthrough (1920×1080, 30 fps, H.264/AAC) of recorded task 0001, GPT-5.6 Sol with
 DeepAgents. It adds English synthetic narration, burned-in English/Chinese
 captions, a moving pixel guide with a baton, local highlights and particles,
-and longer reading holds.
+and reading holds.
+Version 3.1 is a synchronized pacing adjustment of v3: all scenes, information
+and their order are retained, with no editorial cuts. Picture, narration,
+subtitles and chapters run at approximately 1.12× speed (exactly 9585 / 8558,
+about 1.120004674×); FFmpeg atempo preserves the narration's pitch. The new
+30 fps export contains 8,558 frames and lasts 285.266667 seconds.
 Five chapters follow the task, the graphical execution loop, the budget boundary,
 independent evaluation and the result. Each round shows the model request,
 InferenceNet's custom run_python execution, and the observation returned to the
@@ -224,7 +229,7 @@ autoplay. English and Chinese page text identifies the historical single-task
 demonstration, synthetic narration, bilingual captions and execution walkthrough, and links
 to `data.html#case-0001`. The existing task 0011 walkthrough remains separate.
 Homepage CSS uses `20261018-subtracks`; its dictionary, video and poster URLs
-use `20261018-deepagents-flow` to avoid stale cached assets.
+use `20261018-deepagents-flow-v3-1` to avoid stale cached assets.
 The animation source and export scripts stay in the research workspace. Source
 provenance, media checksums, chapter times and standalone SRT captions are in
 [`docs/video/task0001/`](docs/video/task0001/README.md).

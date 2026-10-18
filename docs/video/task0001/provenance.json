@@ -1,6 +1,6 @@
 {
-  "duration_seconds": 319.5,
-  "frames": 9585,
+  "duration_seconds": 285.267,
+  "frames": 8558,
   "fps": "30/1",
   "resolution": [
     1920,
@@ -21,7 +21,7 @@
   "source_commit": "884e89e58f62a185cd06572979fbd1548ea67e4b",
   "recorded_run_seconds": 121.038,
   "replay_data_sha256": "14446bc5bbc421aa59664d062a7cec2c8c6a9f160fbe538612e204b9b42d1841",
-  "version": "deepagents-flow-v3",
+  "version": "deepagents-flow-v3.1",
   "task_id": "0001",
   "model": "GPT-5.6 Sol",
   "harness": "DeepAgents",
@@ -38,33 +38,33 @@
     {
       "name": "TASK",
       "start_seconds": 0.0,
-      "end_seconds": 42.03333333333333
+      "end_seconds": 37.52960528603721
     },
     {
       "name": "AGENT",
-      "start_seconds": 42.03333333333333,
-      "end_seconds": 191.23333333333332
+      "start_seconds": 37.52960528603721,
+      "end_seconds": 170.74333507216136
     },
     {
       "name": "HARNESS",
-      "start_seconds": 191.23333333333332,
-      "end_seconds": 236.5
+      "start_seconds": 170.74333507216136,
+      "end_seconds": 211.15983307250914
     },
     {
       "name": "CHECK",
-      "start_seconds": 236.5,
-      "end_seconds": 292.23333333333335
+      "start_seconds": 211.15983307250914,
+      "end_seconds": 260.9215301686664
     },
     {
       "name": "RESULT",
-      "start_seconds": 292.23333333333335,
-      "end_seconds": 319.5
+      "start_seconds": 260.9215301686664,
+      "end_seconds": 285.2666666666667
     }
   ],
   "files": {
     "assets/video/agent-replay-task0001.mp4": {
-      "bytes": 39901642,
-      "sha256": "27664d57aefa863f0c30aa258881f197790dad5a563016cb7a0f71a73af9b9e8"
+      "bytes": 39142806,
+      "sha256": "32e0dc7a64a99b3b19061f9112cfea51087843f00c2e19014216934dc17f7e6b"
     },
     "assets/video/agent-replay-task0001-poster.jpg": {
       "bytes": 261396,
@@ -72,15 +72,24 @@
     },
     "docs/video/task0001/captions.en.srt": {
       "bytes": 4737,
-      "sha256": "9d598d3844bcbee636b1abbf4548a0500457858fce21f2397e9aefe7371cd540"
+      "sha256": "b8b284af819b6c327db8bf75b42aded0d3bf0085d9186c007f493fb5e277f88f"
     },
     "docs/video/task0001/captions.zh.srt": {
       "bytes": 4301,
-      "sha256": "3dd935976531d7f423166662df434e65828e24ec192b64b08a207e3c71b3feea"
+      "sha256": "fbcf8c114f5adbb3952ff69869f9053d6c04ece1242dd81e1471679f3393b369"
     },
     "docs/video/task0001/captions.bilingual.srt": {
       "bytes": 7824,
-      "sha256": "dad6ca998bab0985aa041ea66de2382e1be2a6fe94005314248177ce9f2d02d9"
+      "sha256": "c273734166293bae498cec0d3d0a292f0d62dc6f16c2eb449304db89674e632d"
     }
-  }
+  },
+  "playback_speed": 1.1200046739892497,
+  "source_video_sha256": "27664d57aefa863f0c30aa258881f197790dad5a563016cb7a0f71a73af9b9e8",
+  "source_video_seconds": 319.5,
+  "pitch_preserved": true,
+  "audio_processing": "FFmpeg atempo applied to the lossless v3 narration track",
+  "shots_preserved": 37,
+  "scene_order_unchanged": true,
+  "caption_text_unchanged": true,
+  "retimed_from_commit": "c226421dd9a620866afac1c665018cdc5d1b7226"
 }

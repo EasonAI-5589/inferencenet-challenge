@@ -1,143 +1,143 @@
 1
-00:00:00,450 --> 00:00:10,234
+00:00:00,402 --> 00:00:09,137
 A model, a harness, and a research task. Follow how GPT five point six Sol and DeepAgents reach a checked result.
 
 2
-00:00:12,750 --> 00:00:21,958
+00:00:11,384 --> 00:00:19,605
 The paper studies consumption smoothing in interwar Japan. How does household consumption respond to disposable income?
 
 3
-00:00:22,683 --> 00:00:31,843
+00:00:20,253 --> 00:00:28,431
 Six pieces must agree: data, regression, fixed effects, controls, clustered standard errors, and the result file.
 
 4
-00:00:32,683 --> 00:00:41,771
+00:00:29,181 --> 00:00:37,295
 The reference stays sealed. The agent must produce the coefficient, standard error, and p-value without seeing it.
 
 5
-00:00:42,483 --> 00:00:48,931
+00:00:37,931 --> 00:00:43,688
 DeepAgents connects each model request to a tool, then brings observations back.
 
 6
-00:00:49,650 --> 00:00:54,178
+00:00:44,330 --> 00:00:48,373
 The model first asks to inspect the household panel.
 
 7
-00:00:54,883 --> 00:01:01,667
+00:00:49,002 --> 00:00:55,060
 DeepAgents routes that request through run Python, the tool used for this recorded run.
 
 8
-00:01:02,883 --> 00:01:11,059
+00:00:56,145 --> 00:01:03,445
 The sandbox reads the Stata file. Shape, columns, and household counts flow back to the model.
 
 9
-00:01:12,883 --> 00:01:20,195
+00:01:05,074 --> 00:01:11,602
 Eighteen eighty rows, sixty-three columns, four quarters, and two hundred thirty-seven households.
 
 10
-00:01:21,383 --> 00:01:27,639
+00:01:12,663 --> 00:01:18,249
 Using that observation, the model asks what packages and samples are available.
 
 11
-00:01:28,350 --> 00:01:35,710
+00:01:18,884 --> 00:01:25,455
 DeepAgents routes another run Python request, carrying the next data and environment checks.
 
 12
-00:01:36,417 --> 00:01:45,385
+00:01:26,086 --> 00:01:34,093
 The sandbox checks installed packages, missing values, and observations per household, then returns the findings.
 
 13
-00:01:46,117 --> 00:02:00,173
+00:01:34,747 --> 00:01:47,297
 Linearmodels, statsmodels, and scipy are available. Pyreadstat is missing. All eleven variables are complete, averaging seven point nine three observations per household.
 
 14
-00:02:00,883 --> 00:02:06,227
+00:01:47,931 --> 00:01:52,702
 The next request compares regression methods and standard errors.
 
 15
-00:02:06,950 --> 00:02:14,574
+00:01:53,348 --> 00:02:00,155
 The request includes fixed effects, composition-by-quarter controls, and household-clustered errors.
 
 16
-00:02:15,283 --> 00:02:24,155
+00:02:00,788 --> 00:02:08,709
 Run Python evaluates the variants in the sandbox. Their outputs become evidence for the next model decision.
 
 17
-00:02:24,883 --> 00:02:36,947
+00:02:09,359 --> 00:02:20,131
 The coefficient stays near zero point three nine one eight six five. Four methods give different standard errors. The small-sample correction matters.
 
 18
-00:02:37,650 --> 00:02:42,298
+00:02:20,758 --> 00:02:24,908
 The model follows up by asking for variable labels.
 
 19
-00:02:43,017 --> 00:02:49,297
+00:02:25,550 --> 00:02:31,157
 DeepAgents routes this fourth run Python request to inspect the Stata metadata.
 
 20
-00:02:50,017 --> 00:02:58,433
+00:02:31,800 --> 00:02:39,315
 Pandas inspects labels and notes in the same data file. The tool brings these observations back to the model.
 
 21
-00:02:59,150 --> 00:03:10,974
+00:02:39,955 --> 00:02:50,512
 H I D means household ID. T F E is the year-month count. Quarter maps the survey periods, and disposable income is measured in yen.
 
 22
-00:03:11,683 --> 00:03:19,187
+00:02:51,145 --> 00:02:57,845
 The harness routed every earlier step. Now this evaluation's tool budget is reached.
 
 23
-00:03:19,917 --> 00:03:23,437
+00:02:58,497 --> 00:03:01,639
 The model proposes one more check.
 
 24
-00:03:24,150 --> 00:03:29,230
+00:03:02,276 --> 00:03:06,812
 It requests another Panel OLS fit with a group adjustment.
 
 25
-00:03:29,950 --> 00:03:39,926
+00:03:07,455 --> 00:03:16,362
 All four allowed tool calls are used. This evaluation's budget guard rejects the fifth request and asks for the final program.
 
 26
-00:03:40,650 --> 00:03:45,034
+00:03:17,008 --> 00:03:20,922
 The sixth model call prepares the final submission.
 
 27
-00:03:45,750 --> 00:03:56,230
+00:03:21,562 --> 00:03:30,919
 The submitted main dot py contains demeaning, regression, clustered correction, and JSON-writing logic. It has not run yet.
 
 28
-00:03:56,950 --> 00:04:01,118
+00:03:31,562 --> 00:03:35,283
 An independent evaluator now takes over.
 
 29
-00:04:01,850 --> 00:04:10,602
+00:03:35,937 --> 00:03:43,751
 The independent evaluator runs main dot py. This execution writes the required result JSON.
 
 30
-00:04:11,317 --> 00:04:19,469
+00:03:44,389 --> 00:03:51,668
 The program exits successfully and saves a valid prediction: coefficient, standard error, and p-value.
 
 31
-00:04:20,183 --> 00:04:27,735
+00:03:52,305 --> 00:03:59,048
 The reference is revealed. The coefficient passes its one-percent relative-error tolerance.
 
 32
-00:04:28,450 --> 00:04:33,866
+00:03:59,686 --> 00:04:04,522
 The standard error also passes the one-percent relative-error check.
 
 33
-00:04:34,583 --> 00:04:40,911
+00:04:05,162 --> 00:04:10,812
 The p-value passes a separate absolute-error tolerance of zero point zero one.
 
 34
-00:04:41,617 --> 00:04:51,953
+00:04:11,443 --> 00:04:20,671
 All three pass. The earlier dummy-variable standard error would fail. Within tolerance does not mean identical digits.
 
 35
-00:04:52,683 --> 00:05:03,811
+00:04:21,323 --> 00:04:31,259
 Complete reproduction: six model calls, four tool calls, forty-six thousand four hundred ninety-six tokens, and about two minutes of recorded runtime.
 
 36
-00:05:04,683 --> 00:05:18,235
+00:04:32,037 --> 00:04:44,137
 DeepAgents connects decisions, tools, and observations. The evaluator checks the result. This trace shows one complete workflow, not a ranking of harnesses.
