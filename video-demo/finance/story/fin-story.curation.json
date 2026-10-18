@@ -1,0 +1,44 @@
+{
+  "_note": "Editorial choices for the FIN-T1-003 story demo. Everything else in fin-story.json is extracted from run records by build_story_data.py. English lines are translations of the Chinese sources.",
+  "title_question": "Can an AI agent review a month-end close?",
+  "title_question_zh": "AI agent 能做月结复核吗？",
+  "closing_question": "Can your agent close the books?",
+  "entries": {
+    "D01": {"title_en": "Keep the HR-01 swap in the cash-flow hedge reserve under the original relationship",
+            "criteria": ["R10", "R45", "R46", "R48", "R49", "R78"]},
+    "D02": {"title_en": "Book the HR-03 USD loan's July FX loss to the cash-flow hedge reserve",
+            "criteria": ["G2", "R51", "R30", "R81"]},
+    "D03": {"title_en": "On termination, release HR-01's opening reserve to profit or loss at once",
+            "criteria": ["R53", "R80"]},
+    "D04": {"title_en": "HKSub June comparatives: fix rounding only and park the gap in translation differences",
+            "criteria": ["R62", "R79"]},
+    "D05": {"title_en": "Accrue a USSub disposal gain in July at 15/70 of the cumulative translation difference",
+            "criteria": ["R31", "R72"]},
+    "D06": {"title_en": "Replace the adopted IRS-2026-0031 value with the counterparty's and call the whole gap CVA",
+            "criteria": ["R11", "R12", "R41", "R42", "R74"]}
+  },
+  "across_criteria": ["R19", "R20", "R25", "R27", "R75", "G1"],
+  "grouping_rule": "Each criterion is grouped under the entry whose object (HR-01, HR-03, HKSub, USSub, IRS-2026-0031) or entry number it names; criteria about the whole close are listed as 'across the close'.",
+  "decision_en": {
+    "D01": "Rejects the entry and drafts a replacement",
+    "D02": "Accepts it as a provisional treatment, re-labelled to the net-investment hedge reserve",
+    "D03": "Rejects it: no July entry",
+    "D04": "Accepts it with corrections",
+    "D05": "Rejects a July entry; rehearses the sale only",
+    "D06": "Rejects it: no July entry"
+  },
+  "key_steps": [
+    {"step": 3, "caption_en": "It starts from the register of six pending entries", "caption_zh": "先读六条待入账意见的登记表"},
+    {"step": 13, "caption_en": "Its own plan: one item for each entry, D01 to D06", "caption_zh": "自己列计划：D01 到 D06 每条一项"},
+    {"step": 40, "caption_en": "Pulls the IRS-2026-0031 valuations for 30 June and 31 July", "caption_zh": "取 IRS-2026-0031 在 6月30日 和 7月31日 的估值"},
+    {"step": 46, "caption_en": "A script error stops two sheet edits from being saved", "caption_zh": "脚本报错，两张表的补充没有保存"},
+    {"step": 58, "caption_en": "Its own check finds the gap, and it redoes the edits", "caption_zh": "自检发现问题，重新补上", "also_steps": [59]}
+  ],
+  "montage": {"from": 4, "to": 33, "caption_en": "Reads the commission, hedge designations, policies and standards", "caption_zh": "阅读委托、套期指定文档、内部政策和准则"},
+  "report_step": {"step": 51, "caption_en": "Writes the remediation report, entry by entry", "caption_zh": "逐条撰写整改报告"},
+  "reveals": [
+    {"key": "dv01", "criterion": "R11", "title_en": "A number that has to match", "caption_en": "DV01 matches the rubric to the cent"},
+    {"key": "red-line", "criterion": "G2", "partner": "R51", "title_en": "A trap in D02", "caption_en": "The red line holds, but the treatment earns only half marks"},
+    {"key": "formulas", "criterion": "R19", "title_en": "Workings must be traceable", "caption_en": "The workbook has no formulas, so the amounts cannot be traced"}
+  ]
+}

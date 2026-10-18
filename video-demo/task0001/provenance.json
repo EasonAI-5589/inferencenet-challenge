@@ -1,0 +1,33 @@
+{
+  "files": {
+    "result.json": "0756a2c30c6b080e53e00ffaca5ada771485c493f2c0fe695ffe9cbca837f0ac",
+    "scoring.json": "4c2598ca118fc9d7a82297e42838bc447c5880cd12be115fc99a149fe8350ff4",
+    "trace.json": "e4a4715bf7f09ea242120e0b124332887828bbf28ee88636159e1ae170909f22",
+    "model_calls/0001/outcome.json": "0b66051f9a2d6b6b71735f3c36b83da5730e4deb8823566f76378b6306cbefc7",
+    "model_calls/0002/outcome.json": "3d804e975649e6bf141e3628156f8031348eadbc60197dfefca1f60be4eb1ae9",
+    "model_calls/0003/outcome.json": "513a69c0877e2c3ed8c13dc2afe6a87b41799ff4006b2d283e4cb434420cfce6",
+    "model_calls/0004/outcome.json": "de821f75eec4a81209b24d486b5c7db1dc550d83d90fa17abad48102d6cb35eb",
+    "model_calls/0005/outcome.json": "65c9b19839883388c36b722a6ee43373417b61b72111067fd353efa1f75ca64c",
+    "model_calls/0006/outcome.json": "6537b42e9db6a1b3e9e255df4ae1737cd90d9ce43b183844c6f5aa5976d54439",
+    "tool_runs/0001/execution.json": "cdb142e005fb8c34be36110275b98706b8d171afcd59f0b49edc05e967959fdd",
+    "tool_runs/0001/model/code/main.py": "231ad77ef456dfd1444a6e254d88f376210959c8a5254b56a69a9af2b52ccae6",
+    "tool_runs/0001/model/stdout.txt": "2a35eaea56f7513cec9ed9f22353fcc4c7ebb1668f262bf79bd74a4939089af7",
+    "tool_runs/0002/execution.json": "324a240e41c4c41ec116a691f3ceb5d01862d94bb68a4eb3d81206b94d55aa27",
+    "tool_runs/0002/model/code/main.py": "f506a71747d818a6d8dfbe6fae61cf52ec1dad0bc0a013c0324c6c4f7bf0a968",
+    "tool_runs/0002/model/stdout.txt": "cc8af07e5dde419eb10ad14033f728f3da6cbbb758d50012849be0ece729dad3",
+    "tool_runs/0003/execution.json": "26750e050c982c3c11872bed2dd483a2880f62165469c90ca088b1577f369d91",
+    "tool_runs/0003/model/code/main.py": "d8add930de773bfaf84ef0861011e5ffa6f342c6f84d6d72df81e1bd312aa09e",
+    "tool_runs/0003/model/stdout.txt": "d1e6df57540fe89a607641acac5c2d0238aa67f796659c871a7226ab1ab54520",
+    "tool_runs/0004/execution.json": "8f224202b48e520909585ca3573c752a8f100256fe22f584c52a6da7ce1bda74",
+    "tool_runs/0004/model/code/main.py": "7e43c649946e07f5ae2b364531375881755b7a734dc374b6a1fcffab766f6e99",
+    "tool_runs/0004/model/stdout.txt": "8cfd2576024119d865066acf498d00142850b651965b2915e40384de05d7131e",
+    "final/execution.json": "5db79bef89cdad40c4ff792e997c42934d789f4861cbce6ec23b920284c1c79b",
+    "final/model/code/main.py": "472850ba10e0eeb0420bace2b945852ff8f54f5511d2bbb96e268881fc5dc3ec",
+    "final/model/stdout.txt": "9c7341d02c350036fe0b459f9f3b472cd6d726f598da52a1e7249574685161fd"
+  },
+  "reference_source": "Challenge website data.html, task 0001 (rounded as published)",
+  "run_id": "sol-deepagents-full1000-20260911-chain-03",
+  "task_id": "0001",
+  "arm": "deepagents",
+  "publication_note": "Personal filesystem location omitted; original source-file hashes retained."
+}

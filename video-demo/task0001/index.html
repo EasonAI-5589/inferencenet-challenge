@@ -1,0 +1,1158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>InferenceNet · Agent Replay v2 · 16:9 · Task 0001</title>
+<!--
+  约 71 秒的 16:9 演示视频（导出 1920×1080）：开场 → 01 任务 → 02 agent 执行 → 03 harness 拦截 → 04 独立评分 → 05 结果与片尾。
+  代码、输出、token、耗时、评分和子问题对应关系全部来自 replay-data.js（build_replay_data.py 从运行目录生成），只压缩了时间轴；
+  字幕只解释这些记录，不引入新的数字。图标全部是内联 SVG，不依赖系统字体里的符号。
+  画面完全由时间 t 决定（不用 CSS 过渡），逐帧导出与实时播放一致。
+  空格暂停 / 继续；← → 前后跳 2 秒；?t=秒数 从指定时刻开始，加 &pause 停在该帧。
+-->
+<style>
+  @font-face { font-family: Inter; font-style: normal; font-weight: 100 900; font-display: block; src: url("fonts/inter-latin.woff2") format("woff2"); }
+  :root {
+    color-scheme: dark;
+    --page: #05070a;
+    --win: #0b1017;
+    --panel: rgba(16, 22, 31, .9);
+    --edge: #222b39;
+    --fg: #dbe1ea;
+    --dim: #7f8899;
+    --faint: #364052;
+    --brand: #8fadd6;
+    --brand-tint: #1c2738;
+    --model: #f0925f;
+    --harness: #b9a4f7;
+    --sandbox: #73d59c;
+    --scorer: #8fadd6;
+    --pass: #73d59c;
+    --fail: #f2777a;
+    --mono: "SF Mono", SFMono-Regular, ui-monospace, Menlo, Consolas, monospace;
+    --sans: Inter, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--page); color: var(--fg); }
+  body { display: grid; place-items: center; overflow: hidden; }
+  #stage {
+    position: relative; flex: none; width: 1280px; height: 720px; overflow: hidden;
+    background: radial-gradient(90% 75% at 50% 0%, #111a26 0%, var(--win) 58%, #070a0f 100%);
+    font: 13px/19px var(--mono); color: var(--fg); transform-origin: center;
+  }
+  .ab { position: absolute; white-space: nowrap; }
+  .ctr { left: 0; right: 0; text-align: center; }
+  .layer { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; }
+  .b { font-weight: 700; }
+  .dim { color: var(--dim); }
+  .fg { color: var(--fg); }
+  .brand { color: var(--brand); }
+  .model { color: var(--model); }
+  .harness { color: var(--harness); }
+  .sandbox { color: var(--sandbox); }
+  .scorer { color: var(--scorer); }
+  .pass { color: var(--pass); }
+  .fail { color: var(--fail); }
+  .sans { font-family: var(--sans); }
+  .kick { font-size: 11px; line-height: 16px; letter-spacing: .14em; font-weight: 700; }
+  .icon { display: block; overflow: visible; }
+  .card { position: absolute; border: 1px solid var(--edge); border-radius: 10px; background: var(--panel); }
+  .pill { position: absolute; padding: 0 8px; border: 1px solid currentColor; border-radius: 10px; font-size: 11px; line-height: 18px; white-space: nowrap; }
+
+  /* 顶栏与章节进度 */
+  .topbar { position: absolute; left: 0; top: 0; width: 1280px; height: 56px; border-bottom: 1px solid #18202c; background: rgba(8, 11, 16, .62); }
+  .mark { position: absolute; width: 26px; height: 26px; border-radius: 7px; background: #191919; border: 1px solid #3a4352;
+    color: #fff; font: 18px/24px Georgia, serif; text-align: center; }
+  .wordmark { position: absolute; color: #fff; font: 600 21px/26px var(--sans); letter-spacing: -.035em; white-space: nowrap; }
+  .wordmark span, .big-word span { color: var(--brand); }
+  .wordmark small { margin-left: 10px; font-family: var(--mono); font-size: 10px; font-weight: 400; letter-spacing: .14em;
+    color: var(--dim); vertical-align: 3px; }
+  .chap { position: absolute; top: 11px; height: 26px; text-align: center; font: 600 12px/26px var(--sans); letter-spacing: .08em; white-space: nowrap; }
+  .chap i { font: 400 10px/26px var(--mono); font-style: normal; margin-right: 6px; letter-spacing: .1em; }
+  .track { position: absolute; top: 40px; height: 3px; border-radius: 2px; background: #1c2431; overflow: hidden; }
+  .track b { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 2px; }
+
+  /* 子问题清单 */
+  .row { position: absolute; left: 12px; right: 12px; height: 34px; border-radius: 6px; }
+  .row .ic { position: absolute; left: 6px; top: 6px; width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid var(--faint);
+    color: var(--dim); font: 700 13px/19px var(--mono); text-align: center; }
+  .row .lb { position: absolute; left: 40px; top: 7px; font: 500 14.5px/20px var(--sans); color: var(--dim); white-space: nowrap; }
+  .row .st { position: absolute; right: 8px; top: 8px; font-size: 11px; line-height: 18px; color: var(--dim); }
+  .row.done .ic { border-color: var(--pass); background: rgba(115, 213, 156, .14); color: var(--pass); }
+  .row.done .lb { color: var(--fg); }
+  .row.prog .ic { border-color: var(--brand); color: var(--brand); }
+  .row.prog .lb { color: var(--brand); }
+
+  .seg { position: absolute; height: 12px; border-radius: 3px; background: #222b39; }
+
+  /* 代码与输出 */
+  .codebox { position: absolute; font-size: 14px; line-height: 22px; white-space: pre; }
+  .cl { position: relative; height: 22px; }
+  .cl .ln { display: inline-block; width: 4ch; margin-right: 1.2ch; text-align: right; color: #4f596b; }
+  .cl .tg { position: absolute; right: 0; top: 2px; padding: 0 7px; border: 1px solid rgba(143, 173, 214, .55); border-radius: 9px;
+    font-size: 11px; line-height: 16px; color: var(--brand); background: rgba(143, 173, 214, .08); }
+  .caret { display: inline-block; width: 8px; height: 15px; margin-left: 1px; background: var(--sandbox); vertical-align: -2px; }
+  .outbox { position: absolute; font-size: 13px; line-height: 20px; white-space: pre; color: var(--fg); }
+  .divider { position: absolute; height: 16px; display: flex; align-items: center; gap: 8px; color: var(--dim); font-size: 11px; letter-spacing: .1em; }
+  .divider::before { content: ""; width: 10px; border-top: 1px solid var(--faint); }
+  .divider::after { content: ""; flex: 1; border-top: 1px solid var(--faint); }
+
+  /* 拆解方块与飞行标签 */
+  .tile { position: absolute; width: 190px; height: 74px; border: 1.5px solid var(--brand); border-radius: 8px;
+    background: rgba(143, 173, 214, .07); transform-origin: 0 0; }
+  .tile .k { position: absolute; left: 12px; top: 9px; font-size: 10.5px; line-height: 15px; letter-spacing: .12em; font-weight: 700; color: var(--brand); white-space: nowrap; }
+  .tile .m { position: absolute; left: 12px; top: 29px; font: 600 14.5px/20px var(--sans); color: var(--fg); white-space: nowrap; }
+  .tile .s { position: absolute; left: 12px; top: 50px; font-size: 11.5px; line-height: 16px; color: var(--dim); white-space: nowrap; }
+  .chip { position: absolute; left: 0; top: 0; padding: 0 10px; border-radius: 11px; font-size: 12.5px; line-height: 22px; white-space: nowrap;
+    border: 1px solid currentColor; background: rgba(11, 16, 23, .94); }
+
+  .stamp { position: absolute; padding: 3px 16px; border: 3px solid var(--harness); border-radius: 8px; color: var(--harness);
+    font: 800 30px/38px var(--sans); letter-spacing: .14em; white-space: nowrap; background: rgba(11, 16, 23, .55); }
+
+  /* 字幕 */
+  .cap { position: absolute; left: 40px; right: 40px; text-align: center; white-space: nowrap; }
+  .cap-main { top: 614px; font: 600 25px/32px var(--sans); color: #fff; letter-spacing: -.01em; }
+  .cap-sub { top: 654px; font-size: 13.5px; line-height: 20px; color: var(--dim); }
+
+  /* 覆盖层 */
+  .ov { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; }
+  .big-word { color: #fff; font: 600 58px/66px var(--sans); letter-spacing: -.035em; white-space: nowrap; }
+  .spaced { font-size: 12px; line-height: 16px; letter-spacing: .34em; color: var(--dim); }
+  .url span { display: inline-block; padding: 8px 20px; border: 1px solid var(--brand); border-radius: 22px; background: var(--brand-tint);
+    color: var(--brand); font-size: 16px; line-height: 22px; }
+  .ptc { position: absolute; left: 0; top: 0; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <!-- 顶栏：标志、章节进度、真实运行计时 -->
+  <div class="topbar" id="top">
+    <div class="mark" style="left:28px;top:15px">N</div>
+    <div class="wordmark" style="left:64px;top:15px">Inference<span>Net</span><small>CHALLENGE</small></div>
+    <div id="rail"></div>
+    <div class="ab kick dim" style="right:28px;top:10px;font-weight:400">REAL TRACE · TIME COMPRESSED</div>
+    <div class="ab" id="clock" style="right:28px;top:28px;font-size:12px"></div>
+  </div>
+
+  <!-- 左栏：任务卡与子问题清单 -->
+  <div id="left">
+    <div class="card" style="left:28px;top:72px;width:264px;height:204px">
+      <div class="ab kick brand" style="left:16px;top:15px">TASK <span id="task-id"></span></div>
+      <div class="pill brand" id="task-method" style="right:14px;top:13px"></div>
+      <div class="ab sans fg" id="task-title" style="left:16px;top:42px;width:232px;white-space:normal;font-weight:600;font-size:19px;line-height:24px"></div>
+      <div class="ab dim" id="task-source" style="left:16px;top:96px;width:232px;white-space:normal;font-size:12px;line-height:17px"></div>
+      <div class="ab sans" id="task-q" style="left:16px;top:138px;width:232px;white-space:normal;font-size:12.5px;line-height:17px;color:#aeb6c4"></div>
+    </div>
+    <div class="card" style="left:28px;top:288px;width:264px;height:308px">
+      <div class="ab kick dim" style="left:16px;top:15px">SUB-PROBLEMS</div>
+      <div class="ab" id="solved" style="right:16px;top:13px;font-size:12px"></div>
+      <div id="rows"></div>
+    </div>
+  </div>
+
+  <!-- 右栏：harness 预算与 agent 发现 -->
+  <div id="right">
+    <div class="card" style="left:988px;top:72px;width:264px;height:220px">
+      <div class="ab" id="budget-ic" style="left:15px;top:13px"></div>
+      <div class="ab kick harness" style="left:38px;top:15px">HARNESS BUDGET</div>
+      <div class="ab dim" style="left:16px;top:44px;font-size:12px">model calls</div>
+      <div class="ab fg" id="n-calls" style="right:16px;top:44px;font-size:12px"></div>
+      <div id="seg-calls"></div>
+      <div class="ab dim" style="left:16px;top:90px;font-size:12px">run_python</div>
+      <div class="ab fg" id="n-tools" style="right:16px;top:90px;font-size:12px"></div>
+      <div id="seg-tools"></div>
+      <div class="ab dim" style="left:16px;top:140px;font-size:12px">tokens</div>
+      <div class="ab sans fg" id="n-tokens" style="left:16px;top:158px;font-weight:600;font-size:28px;line-height:34px"></div>
+      <div class="ab dim" style="right:16px;top:140px;font-size:12px">wall time</div>
+      <div class="ab fg" id="n-wall" style="right:16px;top:166px;font-size:13px"></div>
+    </div>
+    <div class="card" style="left:988px;top:308px;width:264px;height:288px">
+      <div class="ab kick brand" style="left:16px;top:15px">AGENT FOUND</div>
+      <div id="facts"></div>
+    </div>
+  </div>
+
+  <!-- 中栏：角色流水线与主舞台 -->
+  <svg id="railsvg" class="layer" viewBox="0 0 1280 720" style="pointer-events:none"></svg>
+  <div id="nodes"></div>
+  <div class="card" id="main" style="left:312px;top:140px;width:656px;height:456px"></div>
+
+  <div class="layer" id="sc-task">
+    <div class="ab kick brand ctr" id="tk-kick" style="top:164px"></div>
+    <div class="ab sans ctr" id="tk-q" style="top:188px;color:#fff;font-weight:600;font-size:22px;line-height:30px"></div>
+    <div class="ab dim ctr" id="tk-src" style="top:254px;font-size:12px"></div>
+    <div id="tiles"></div>
+    <div class="ab" id="tk-lock" style="left:460px;top:476px;width:360px;height:68px;border:1.5px solid rgba(143,173,214,.6);border-radius:8px;background:rgba(143,173,214,.06)">
+      <div class="ab" id="tk-lock-ic" style="left:16px;top:16px"></div>
+      <div class="ab kick brand" style="left:62px;top:14px">SCORER · INDEPENDENT</div>
+      <div class="ab fg" style="left:62px;top:34px;font-size:12.5px">reference sealed · never shown to the agent</div>
+    </div>
+  </div>
+
+  <div class="layer" id="sc-model">
+    <svg class="ab" id="md-rings" width="240" height="240" viewBox="0 0 240 240" style="left:520px;top:118px;overflow:visible"></svg>
+    <div class="ab" id="md-ic" style="left:608px;top:206px"></div>
+    <div class="ab sans ctr" id="md-title" style="top:300px;color:#fff;font-weight:600;font-size:26px;line-height:32px"></div>
+    <div class="ab dim ctr" id="md-call" style="top:340px;font-size:14px"></div>
+    <div class="ab sans ctr model" id="md-tok" style="top:368px;font-weight:600;font-size:36px;line-height:44px"></div>
+    <div class="ab dim ctr" id="md-next" style="top:432px;font-size:13px"></div>
+  </div>
+
+  <div class="layer" id="sc-code">
+    <div class="ab" id="cd-ic" style="left:332px;top:157px"></div>
+    <div class="ab sans fg" id="cd-title" style="left:360px;top:154px;font-weight:600;font-size:16px;line-height:24px"></div>
+    <div class="ab" id="cd-status" style="right:332px;top:157px;font-size:12.5px"></div>
+    <div class="ab" style="left:332px;top:188px;width:616px;height:2px;background:#1c2431;overflow:hidden"><div id="cd-bar" style="position:absolute;top:0;left:0;height:2px;width:160px"></div></div>
+    <div class="codebox" id="cd-code" style="left:332px;top:200px;width:616px"></div>
+    <div class="divider" style="left:332px;width:616px;top:364px">stdout</div>
+    <div class="outbox" id="cd-out" style="left:332px;top:388px;width:616px"></div>
+  </div>
+
+  <div class="layer" id="sc-guard">
+    <div class="ab" id="gd-ic" style="left:332px;top:157px"></div>
+    <div class="ab sans harness" id="gd-title" style="left:360px;top:154px;font-weight:600;font-size:16px;line-height:24px"></div>
+    <div class="ab" id="gd-used" style="right:332px;top:157px;font-size:12.5px"></div>
+    <div class="ab kick harness" style="left:762px;top:212px">BUDGET GUARD</div>
+    <div class="ab" id="gd-bar" style="left:800px;top:234px;width:10px;height:152px;border-radius:3px;background:#b9a4f7"></div>
+    <div class="ab" id="gd-dest" style="left:850px;top:284px"></div>
+    <div class="ab dim" style="left:842px;top:326px;font-size:12px">sandbox</div>
+    <div class="ab" id="gd-card" style="left:336px;top:262px;width:236px;height:96px;border-radius:8px">
+      <div class="ab kick" id="gd-card-k" style="left:14px;top:12px"></div>
+      <div class="ab fg" id="gd-card-code" style="left:14px;top:38px;font-size:12px"></div>
+      <div class="ab dim" style="left:14px;top:64px;font-size:12px">→ sandbox</div>
+    </div>
+    <div class="stamp" id="gd-stamp">BLOCKED</div>
+    <div class="ab harness ctr" id="gd-err" style="top:430px;font-size:14px"></div>
+    <div class="ab sans ctr fg" id="gd-ins" style="top:458px;font-weight:600;font-size:21px;line-height:28px"></div>
+  </div>
+
+  <div class="layer" id="sc-score">
+    <div class="ab" id="sc-ic" style="left:332px;top:157px"></div>
+    <div class="ab sans scorer" style="left:360px;top:154px;font-weight:600;font-size:16px;line-height:24px">Independent scorer</div>
+    <div class="ab" id="sc-status" style="right:332px;top:157px;font-size:12.5px"></div>
+    <div class="ab" id="sc-lock" style="left:614px;top:194px"></div>
+    <div id="sc-table"></div>
+    <div class="ab sans ctr pass" id="sc-verdict" style="top:432px;font-weight:700;font-size:30px;line-height:38px;letter-spacing:.04em"></div>
+    <div class="ab ctr" id="sc-trap" style="top:484px;font-size:13px"></div>
+  </div>
+
+  <div class="layer" id="chips" style="pointer-events:none"></div>
+
+  <div class="cap cap-main" id="cap-main"></div>
+  <div class="cap cap-sub" id="cap-sub"></div>
+
+  <!-- 章节转场卡 -->
+  <div class="ov" id="ov-card">
+    <div class="ab" id="cc-bg" style="left:0;top:57px;width:1280px;height:663px"></div>
+    <svg class="ab" id="cc-rings" width="320" height="320" viewBox="0 0 320 320" style="left:480px;top:110px;overflow:visible"></svg>
+    <div class="ab" id="cc-ic" style="left:600px;top:230px"></div>
+    <div class="ab ctr dim" id="cc-n" style="top:338px;font-size:12px;letter-spacing:.32em"></div>
+    <div class="ab sans ctr" id="cc-t" style="top:362px;color:#fff;font-weight:600;font-size:50px;line-height:58px;letter-spacing:-.02em"></div>
+    <div class="ab sans ctr dim" id="cc-s" style="top:432px;font-size:19px;line-height:26px"></div>
+  </div>
+
+  <!-- 结果 -->
+  <div class="ov" id="ov-result">
+    <div class="ab" style="left:0;top:0;width:1280px;height:720px;background:radial-gradient(45% 55% at 50% 38%, rgba(115,213,156,.11) 0%, rgba(5,7,10,.94) 70%)"></div>
+    <div class="layer" id="burst"></div>
+    <div class="ab" id="rs-ic" style="left:592px;top:150px"></div>
+    <div class="ab sans ctr pass" id="rs-t" style="top:272px;font-weight:700;font-size:60px;line-height:70px;letter-spacing:.02em"></div>
+    <div class="ab sans ctr fg" id="rs-run" style="top:358px;font-size:19px;line-height:26px"></div>
+    <div class="ab ctr dim" id="rs-stats" style="top:398px;font-size:15px"></div>
+    <div class="ab ctr dim" id="rs-delta" style="top:430px;font-size:13px"></div>
+  </div>
+
+  <!-- 片尾 -->
+  <div class="ov" id="ov-end">
+    <div class="ab" style="left:0;top:0;width:1280px;height:720px;background:radial-gradient(70% 60% at 50% 45%, #0f1621 0%, #070a0f 75%)"></div>
+    <div class="mark" id="end-mark" style="left:610px;top:150px;width:60px;height:60px;border-radius:14px;font-size:42px;line-height:58px">N</div>
+    <div class="ab ctr big-word" id="end-word" style="top:226px">Inference<span>Net</span></div>
+    <div class="ab ctr spaced" id="end-ch" style="top:300px">CHALLENGE</div>
+    <div class="ab ctr sans" id="end-tag" style="top:326px;font-size:18px;line-height:24px;color:#aeb6c4">AI for econometric research.</div>
+    <div class="ab" id="end-rule" style="left:500px;top:378px;width:280px;border-top:1px solid #364052"></div>
+    <div class="ab ctr sans" id="end-h" style="top:404px;color:#fff;font-weight:600;font-size:36px;line-height:44px">Can your agent replicate it?</div>
+    <div class="ab ctr url" id="end-url" style="top:470px"><span>easonai-5589.github.io/inferencenet-challenge</span></div>
+    <div class="ab ctr dim" id="end-small" style="top:532px;font-size:13px">1,000 econometric replication tasks · 15 journals</div>
+  </div>
+
+  <!-- 开场 -->
+  <div class="ov" id="ov-open">
+    <div class="layer" id="ptc-open"></div>
+    <div class="mark" id="op-mark" style="left:610px;top:206px;width:60px;height:60px;border-radius:14px;font-size:42px;line-height:58px">N</div>
+    <div class="ab ctr big-word" id="op-word" style="top:282px">Inference<span>Net</span></div>
+    <div class="ab ctr spaced" id="op-ch" style="top:356px">CHALLENGE</div>
+    <div class="ab ctr sans" id="op-q" style="top:410px;color:#fff;font-weight:500;font-size:28px;line-height:36px"></div>
+    <div class="ab ctr dim" id="op-s" style="top:462px;font-size:13px;letter-spacing:.06em"></div>
+  </div>
+</div>
+
+<script src="replay-data.js"></script>
+<script>
+const R = window.REPLAY;
+const $ = (id) => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+const SPIN = ["◐", "◓", "◑", "◒"];
+const C = { model: "#f0925f", harness: "#b9a4f7", sandbox: "#73d59c", scorer: "#8fadd6", pass: "#73d59c", fail: "#f2777a",
+  brand: "#8fadd6", dim: "#7f8899", faint: "#364052" };
+const ROLE = ["model", "harness", "sandbox", "scorer"];
+const NODE_X = [394, 558, 722, 886];
+const TRACK_Y = 128;
+const CODE = { x: 332, y: 200, w: 616, lh: 22 };
+const OUT = { x: 332, y: 388, lh: 20 };
+const ROW0 = 288 + 44;
+const ROW_GAP = 42;
+const FACT0 = 308 + 44;
+const FACT_GAP = 58;
+const TAG_W = 142;
+const OPEN_QUESTION = "Can AI reproduce econometric findings from real research data?";
+
+const clamp01 = (x) => Math.min(1, Math.max(0, x));
+const lerp = (a, b, p) => a + (b - a) * clamp01(p);
+const ease = (x) => { x = clamp01(x); return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+const easeOut = (x) => 1 - Math.pow(1 - clamp01(x), 3);
+const easeBack = (x) => { x = clamp01(x); const c1 = 1.70158; const c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+const bump = (dt, rise = 160, fall = 1100) => (dt < 0 ? 0 : dt < rise ? dt / rise : Math.max(0, 1 - (dt - rise) / fall));
+const fmtInt = (n) => Math.round(n).toLocaleString("en-US");
+const fit = (s, n) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
+const pct = (d) => `${(d * 100).toFixed(2)}%`;
+const rgba = (hex, a) => `rgba(${parseInt(hex.slice(1, 3), 16)}, ${parseInt(hex.slice(3, 5), 16)}, ${parseInt(hex.slice(5, 7), 16)}, ${a})`;
+function mulberry32(seed) {
+  return () => {
+    seed = (seed + 0x6d2b79f5) | 0;
+    let x = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x;
+    return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function el(tag, className, style, text) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (style) node.setAttribute("style", style);
+  if (text !== undefined) node.textContent = text;
+  return node;
+}
+function setText(node, text) {
+  if (node.textContent !== text) node.textContent = text;
+}
+function setHTML(node, html) {
+  if (node.__html !== html) { node.innerHTML = html; node.__html = html; }
+}
+function escapeHTML(s) {
+  return String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+}
+function svgEl(svg, tag, attrs) {
+  const node = document.createElementNS(NS, tag);
+  for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, v);
+  svg.append(node);
+  return node;
+}
+function show(node, a) {
+  node.style.opacity = a;
+  node.style.visibility = a > 0.001 ? "visible" : "hidden";
+}
+
+// ---------- 图标：四个角色各有固定形状，全部用 SVG 画 ----------
+function icon(kind, size, color, sw = 2.4) {
+  const body = {
+    model: `<path d="M12 2.5 L21.5 12 L12 21.5 L2.5 12 Z" fill="${color}"/>`,
+    harness: `<path d="M12 2.5 L20.5 7.25 V16.75 L12 21.5 L3.5 16.75 V7.25 Z" fill="none" stroke="${color}" stroke-width="${sw}" stroke-linejoin="round"/><circle cx="12" cy="12" r="2.6" fill="${color}"/>`,
+    sandbox: `<rect x="3.5" y="3.5" width="17" height="17" rx="3" fill="none" stroke="${color}" stroke-width="${sw}"/><rect x="8.5" y="8.5" width="7" height="7" rx="1.2" fill="${color}"/>`,
+    scorer: `<circle cx="12" cy="12" r="8.8" fill="none" stroke="${color}" stroke-width="${sw}"/><circle cx="12" cy="12" r="3.6" fill="${color}"/>`,
+    task: `<rect x="4.5" y="2.5" width="15" height="19" rx="2.5" fill="none" stroke="${color}" stroke-width="${sw * 0.9}"/><path d="M8.5 8 H15.5 M8.5 12 H15.5 M8.5 16 H12.5" stroke="${color}" stroke-width="${sw * 0.9}" stroke-linecap="round"/>`,
+    check: `<circle cx="12" cy="12" r="9.6" fill="none" stroke="${color}" stroke-width="${sw * 0.9}"/><path d="M7.3 12.4 L10.6 15.7 L16.8 8.7" fill="none" stroke="${color}" stroke-width="${sw * 1.1}" stroke-linecap="round" stroke-linejoin="round"/>`,
+  }[kind];
+  return `<svg class="icon" width="${size}" height="${size}" viewBox="0 0 24 24">${body}</svg>`;
+}
+function lockSVG(size, color, open) {
+  const lift = (4.6 * open).toFixed(2);
+  const swing = (3.4 * open).toFixed(2);
+  return `<svg class="icon" width="${size}" height="${size}" viewBox="0 0 24 24">`
+    + `<path d="M8 11 V7.6 a4 4 0 0 1 8 0 V11" transform="translate(${swing} ${-lift})" fill="none" stroke="${color}" stroke-width="2.2" stroke-linecap="round"/>`
+    + `<rect x="4.5" y="10.5" width="15" height="11" rx="2.4" fill="${color}"/><circle cx="12" cy="15.6" r="1.6" fill="#0b1017"/></svg>`;
+}
+function renderRings(svg, cx, cy, tt, color, r0, r1, period, count = 2) {
+  if (!svg.__rings) svg.__rings = Array.from({ length: count }, () => svgEl(svg, "circle", { cx, cy, fill: "none", "stroke-width": 1.6 }));
+  svg.__rings.forEach((c, k) => {
+    const q = (((tt / period) + k / count) % 1 + 1) % 1;
+    c.setAttribute("r", (r0 + (r1 - r0) * easeOut(q)).toFixed(1));
+    c.setAttribute("stroke", color);
+    c.setAttribute("opacity", (0.55 * (1 - q)).toFixed(3));
+  });
+}
+function charWidth(px) {
+  const probe = el("span", null, `position:absolute;left:0;top:0;visibility:hidden;white-space:pre;font:${px}px/1 var(--mono)`, "0".repeat(40));
+  $("stage").append(probe);
+  const w = probe.offsetWidth / 40;
+  probe.remove();
+  return w;
+}
+
+// ---------- 时间线（毫秒） ----------
+const FINAL = R.steps[R.steps.length - 1];
+const GUARD = R.steps.find((s) => s.guard);
+const PH = [];
+const add = (kind, ms, extra = {}) => PH.push({ kind, ms, ...extra });
+add("open", 5000, { ch: -1 });
+add("card", 1300, { ch: 0 });
+add("task", 9000, { ch: 0 });
+add("card", 1300, { ch: 1 });
+let harnessCard = false;
+for (const step of R.steps) {
+  if (step === FINAL) {
+    if (!harnessCard) { add("card", 1300, { ch: 2 }); harnessCard = true; }
+    add("think", 1300, { ch: 2, step });
+    add("type", 2800, { ch: 2, step });
+    add("card", 1300, { ch: 3 });
+    add("run", 900, { ch: 3, step });
+    add("output", 1900, { ch: 3, step });
+  } else if (step.guard) {
+    if (!harnessCard) { add("card", 1300, { ch: 2 }); harnessCard = true; }
+    add("think", 1000, { ch: 2, step });
+    add("type", 1300, { ch: 2, step });
+    add("guard", 3400, { ch: 2, step });
+  } else {
+    add("think", 1100, { ch: 1, step });
+    add("type", 2000, { ch: 1, step });
+    add("run", 700, { ch: 1, step });
+    add("output", 2300, { ch: 1, step });
+  }
+}
+add("score", 5600, { ch: 3 });
+add("result", 4400, { ch: 4 });
+add("outro", 5200, { ch: 4 });
+let acc = 0;
+for (const ph of PH) { ph.start = acc; acc += ph.ms; ph.end = acc; }
+const TOTAL = acc;
+const phaseOf = (kind, n) => PH.find((ph) => ph.kind === kind && (n === undefined || (ph.step && ph.step.n === n)));
+const OPEN = phaseOf("open");
+const TASK = phaseOf("task");
+const SCORE = phaseOf("score");
+const RESULT = phaseOf("result");
+const OUTRO = phaseOf("outro");
+const FIRST_THINK = phaseOf("think");
+const FLY_AT = 7400;
+const outputAt = (n, frac = 0.5) => { const o = phaseOf("output", n); return o.start + o.ms * frac; };
+
+const CHAPTERS = [
+  { label: "TASK", icon: "task", color: C.brand, title: "The task", sub: "One real research task, checked independently." },
+  { label: "AGENT", icon: "model", color: C.model, title: "The agent works",
+    sub: `${R.agent.model} writes Python, runs it and reads the output, inside ${R.agent.harness}.` },
+  { label: "HARNESS", icon: "harness", color: C.harness, title: "The harness steps in",
+    sub: `${R.agent.harness} enforces the budget: ${R.limits.model_calls} model calls, ${R.limits.tool_calls} tool runs.` },
+  { label: "CHECK", icon: "scorer", color: C.scorer, title: "Independent check",
+    sub: "The final program is run, then scored against a sealed reference." },
+  { label: "RESULT", icon: "check", color: C.pass, title: "Result", sub: "" },
+];
+
+// ---------- 字幕（只解释记录，数字都取自数据） ----------
+const STEP_COPY = {
+  "inspect data": "Inspect the data",
+  "check env": "Check the tools and the data",
+  "compare s.e.": "Fit the model, compare standard-error formulas",
+  "read labels": "Read the variable labels",
+};
+const CAPS = [];
+const cap = (from, to, text) => CAPS.push({ from, to, text });
+cap(TASK.start, TASK.start + 3000, `A real paper: “${R.task.title.join(" ")}”`);
+cap(TASK.start + 3000, TASK.start + 6200, `${R.subproblems.length} things the program has to get right`);
+cap(TASK.start + 6200, TASK.end, "The reference answer stays sealed. The agent never sees it.");
+for (const step of R.steps) {
+  if (step === FINAL) {
+    cap(phaseOf("think", step.n).start, phaseOf("type", step.n).end, "The model writes its final, complete program");
+    cap(phaseOf("run", step.n).start, phaseOf("output", step.n).end, "The evaluator runs the final program and saves its prediction");
+  } else if (step.guard) {
+    cap(phaseOf("think", step.n).start, phaseOf("guard", step.n).start,
+      `The model asks for another run, but the tool budget is used: ${R.limits.tool_calls} of ${R.limits.tool_calls}`);
+    cap(phaseOf("guard", step.n).start, phaseOf("guard", step.n).end, "The harness blocks the call and asks for the final program");
+  } else {
+    cap(phaseOf("think", step.n).start, phaseOf("output", step.n).end, `Step ${step.n} · ${STEP_COPY[step.title] || step.title}`);
+  }
+}
+cap(SCORE.start, SCORE.start + SCORE.ms * 0.3, "The scorer unseals the reference values");
+cap(SCORE.start + SCORE.ms * 0.3, SCORE.start + SCORE.ms * 0.72, "Coefficient, standard error and p-value are compared within tolerance");
+cap(SCORE.start + SCORE.ms * 0.72, SCORE.end, R.metrics.perfect ? "All three match: full replication" : "Not every value matches: not replicated");
+
+// ---------- 尺寸 ----------
+const CH14 = charWidth(14);
+const CH13 = charWidth(13);
+const GUTTER = 5.2 * CH14;
+const CODE_COLS = Math.floor((CODE.w - GUTTER) / CH14) - 1;
+const CODE_COLS_TAGGED = Math.floor((CODE.w - GUTTER - TAG_W) / CH14) - 1;
+const OUT_COLS = Math.floor(CODE.w / CH13) - 1;
+
+// ---------- 顶栏 ----------
+const RAIL = { x: 384, w: 512 };
+const CH_W = RAIL.w / CHAPTERS.length;
+CHAPTERS.forEach((c, i) => {
+  const ps = PH.filter((p) => p.ch === i);
+  c.start = ps[0].start;
+  c.end = ps[ps.length - 1].end;
+  c.node = el("div", "chap", `left:${RAIL.x + i * CH_W}px;width:${CH_W}px`);
+  c.node.innerHTML = `<i>${String(i + 1).padStart(2, "0")}</i>${c.label}`;
+  c.track = el("div", "track", `left:${RAIL.x + i * CH_W + 10}px;width:${CH_W - 20}px`);
+  c.fill = el("b");
+  c.fill.style.background = c.color;
+  c.track.append(c.fill);
+  $("rail").append(c.node, c.track);
+});
+
+// ---------- 左栏 ----------
+setText($("task-id"), R.task.id);
+setText($("task-method"), R.task.method);
+setText($("task-title"), R.task.title.join(" "));
+$("task-source").innerHTML = `${escapeHTML(R.task.journal_full)}<br>${escapeHTML(R.task.notation)}`;
+setText($("task-q"), R.task.question.join(" "));
+const SP_ROWS = R.subproblems.map((sp, i) => {
+  const row = el("div", "row", `top:${44 + i * ROW_GAP}px`);
+  const ic = el("div", "ic", null, "");
+  const st = el("div", "st", null, "");
+  row.append(ic, el("div", "lb", null, sp.label), st);
+  $("rows").append(row);
+  return { sp, i, row, ic, st, landAt: TASK.start + FLY_AT + i * 70 + 940, doneAt: Infinity, progAt: Infinity };
+});
+const stepByN = (n) => R.steps.find((s) => s.n === n);
+function makeChip(text, color) {
+  const chip = el("div", "chip", `color:${color}`, text);
+  chip.style.opacity = 0;
+  $("chips").append(chip);
+  return chip;
+}
+{
+  const order = {};
+  for (const r of SP_ROWS) {
+    const k = (order[r.sp.solved] = (order[r.sp.solved] ?? -1) + 1);
+    r.doneAt = outputAt(r.sp.solved, 0.42) + k * 230;
+    const step = stepByN(r.sp.solved);
+    const idx = Math.max(0, step.code.findIndex((c) => c[2] === r.sp.label));
+    r.from = { x: CODE.x + CODE.w - (r.sp.label.length * 6.8 + 22), y: CODE.y + idx * CODE.lh };
+    r.to = { x: 28 + 12 + 34, y: ROW0 + r.i * ROW_GAP + 6 };
+    r.chip = makeChip(r.sp.label, C.pass);
+  }
+  for (const r of SP_ROWS) {
+    if (r.sp.started) r.progAt = outputAt(r.sp.started, 0.42) + (order[r.sp.started] + 1) * 230;
+  }
+}
+
+// ---------- 右栏 ----------
+$("budget-ic").innerHTML = icon("harness", 18, C.harness);
+function segs(container, n, top) {
+  const w = (232 - 6 * (n - 1)) / n;
+  return Array.from({ length: n }, (_, i) => {
+    const s = el("div", "seg", `left:${16 + i * (w + 6)}px;top:${top}px;width:${w}px`);
+    container.append(s);
+    return s;
+  });
+}
+const SEG_CALLS = segs($("seg-calls"), R.limits.model_calls, 64);
+const SEG_TOOLS = segs($("seg-tools"), R.limits.tool_calls, 110);
+const FACTS = [];
+{
+  const order = {};
+  [["rows", "rows"], ["cols", "columns"], ["households", "households"], ["missing", "missing values"]].forEach(([key, label], i) => {
+    const src = R.steps.find((s) => s.facts && key in s.facts);
+    if (!src) return;
+    const k = (order[src.n] = (order[src.n] ?? -1) + 1);
+    const value = el("div", "ab sans", `left:16px;top:${62 + i * FACT_GAP}px;font-weight:600;font-size:24px;line-height:30px`, "—");
+    $("facts").append(el("div", "ab dim", `left:16px;top:${44 + i * FACT_GAP}px;font-size:12px`, label), value);
+    FACTS.push({ value, text: src.facts[key], at: outputAt(src.n, 0.55) + k * 220,
+      chip: makeChip(`${src.facts[key]} ${label}`, C.brand),
+      from: { x: OUT.x + 380 + k * 24, y: OUT.y + 98 + k * 32 }, to: { x: 988 + 16, y: FACT0 + 18 + i * FACT_GAP } });
+  });
+}
+
+// ---------- 中栏：流水线 ----------
+const NODES = ROLE.map((role, i) => {
+  const node = el("div", "card", `left:${NODE_X[i] - 74}px;top:72px;width:148px;height:44px;border-radius:9px`);
+  node.innerHTML = `<div class="ab" style="left:12px;top:13px">${icon(role, 18, C[role])}</div>`
+    + `<div class="ab kick" style="left:40px;top:6px;color:${C[role]}">${["MODEL", "HARNESS", "SANDBOX", "SCORER"][i]}</div>`
+    + `<div class="ab dim" style="left:40px;top:22px;font-size:11.5px;line-height:16px">${escapeHTML([R.agent.returned_model, R.agent.harness.toLowerCase(), "run_python", "independent"][i])}</div>`;
+  $("nodes").append(node);
+  return node;
+});
+const railSvg = $("railsvg");
+svgEl(railSvg, "line", { x1: NODE_X[0], y1: TRACK_Y, x2: NODE_X[3], y2: TRACK_Y, stroke: "#222b39", "stroke-width": 2, "stroke-linecap": "round" });
+const TICKS = NODE_X.map((x) => svgEl(railSvg, "circle", { cx: x, cy: TRACK_Y, r: 3.4, fill: "#2b3546" }));
+const TOKEN_GLOW = svgEl(railSvg, "circle", { cy: TRACK_Y, r: 15, opacity: 0 });
+const TRAIL = [5.2, 4.2, 3.2].map((r) => svgEl(railSvg, "circle", { cy: TRACK_Y, r, opacity: 0 }));
+const TOKEN_RING = svgEl(railSvg, "circle", { cy: TRACK_Y, r: 8, fill: "none", "stroke-width": 1.6, opacity: 0 });
+const TOKEN = svgEl(railSvg, "circle", { cy: TRACK_Y, r: 6.5, opacity: 0 });
+const phaseIndexAt = (t) => { const i = PH.findIndex((x) => t < x.end); return i < 0 ? PH.length - 1 : i; };
+function railAt(t) {
+  if (t < 0) return null;
+  const ph = PH[phaseIndexAt(t)];
+  const p = clamp01((t - ph.start) / ph.ms);
+  switch (ph.kind) {
+    case "think": return { pos: 0, active: 0, pulse: true };
+    case "type": return p < 0.72 ? { pos: 0, active: 0 } : { pos: ease((p - 0.72) / 0.28), active: p < 0.95 ? 0 : 1 };
+    case "run": return { pos: 1 + ease(p / 0.45), active: p < 0.45 ? 1 : 2, pulse: p >= 0.45 };
+    case "output":
+      if (ph.step === FINAL) return { pos: 2, active: 2 };
+      return { pos: 2 - 2 * ease((p - 0.4) / 0.45), active: p < 0.62 ? 2 : 0 };
+    case "guard":
+      if (p < 0.22) return { pos: 1 + 0.42 * ease(p / 0.22), active: 1 };
+      return { pos: 1.42 - 0.42 * easeOut((p - 0.22) / 0.16), active: 1, blocked: true };
+    case "score": return { pos: 2 + ease(p / 0.16), active: p < 0.16 ? 2 : 3, pulse: p >= 0.16 };
+    default: return null;
+  }
+}
+const railX = (pos) => { const i = Math.min(2, Math.floor(pos)); return NODE_X[i] + (NODE_X[i + 1] - NODE_X[i]) * (pos - i); };
+
+// ---------- 中栏：各场景 ----------
+const SCENES = { task: $("sc-task"), model: $("sc-model"), code: $("sc-code"), guard: $("sc-guard"), score: $("sc-score") };
+const SCENE_COLOR = { task: C.brand, model: C.model, code: C.sandbox, guard: C.harness, score: C.scorer };
+const sceneKind = (ph) => ({ task: "task", think: "model", type: "code", run: "code", output: "code", guard: "guard", score: "score" }[ph.kind] || null);
+function sceneStart(i) {
+  const k = sceneKind(PH[i]);
+  let j = i;
+  while (j > 0 && sceneKind(PH[j - 1]) === k && PH[j - 1].step === PH[i].step) j--;
+  return PH[j].start;
+}
+
+setText($("tk-kick"), `TASK ${R.task.id} · ${R.task.method.toUpperCase()}`);
+$("tk-q").innerHTML = R.task.question.map(escapeHTML).join("<br>");
+setText($("tk-src"), `${R.task.title.join(" ")} · ${R.task.journal_full} · ${R.task.notation}`);
+$("tk-lock-ic").innerHTML = lockSVG(34, C.scorer, 0);
+const TILE_X = [339, 545, 751];
+const TILE_Y = [290, 376];
+const TILES = R.subproblems.map((sp, i) => {
+  const x = TILE_X[i % 3];
+  const y = TILE_Y[Math.floor(i / 3)];
+  const node = el("div", "tile", `left:${x}px;top:${y}px`);
+  node.append(el("div", "k", null, `${String(i + 1).padStart(2, "0")} · ${sp.title}`), el("div", "m", null, sp.main), el("div", "s", null, sp.sub));
+  $("tiles").append(node);
+  return { node, x, y, tx: 40, ty: ROW0 + i * ROW_GAP };
+});
+
+$("md-ic").innerHTML = icon("model", 64, C.model);
+setText($("md-title"), `${R.agent.model} is thinking`);
+$("cd-ic").innerHTML = icon("sandbox", 18, C.sandbox);
+$("cd-bar").style.background = `linear-gradient(90deg, transparent, ${C.sandbox}, transparent)`;
+$("gd-ic").innerHTML = icon("harness", 18, C.harness);
+setText($("gd-title"), `${R.agent.harness} · budget guard`);
+$("gd-used").innerHTML = `<span class="harness">run_python ${R.limits.tool_calls} / ${R.limits.tool_calls} used</span>`;
+$("gd-dest").innerHTML = icon("sandbox", 34, C.dim);
+if (GUARD) {
+  setText($("gd-card-k"), `RUN_PYTHON #${GUARD.n}`);
+  setText($("gd-card-code"), fit(GUARD.code[0][1], 28));
+  setText($("gd-err"), `{"error": "${GUARD.guard.error}"}`);
+  setText($("gd-ins"), `“${GUARD.guard.instruction}”`);
+}
+$("sc-ic").innerHTML = icon("scorer", 18, C.scorer);
+
+const ck = R.checks;
+const SCORE_KEYS = [["coefficient", "coefficient"], ["standard_error", "std. error"], ["p_value", "p-value"]];
+const fmtVal = (key, v) => (key === "p_value" ? v.toExponential(2) : v.toFixed(6));
+const fmtDelta = (key, d) => (key === "p_value" ? d.toExponential(1) : pct(d));
+const fmtTol = (key) => (key === "p_value" ? `≤ ${R.tolerance.p_value_abs}` : `≤ ${R.tolerance.relative * 100}%`);
+const SC_COLS = [340, 476, 616, 762, 852, 930];
+SC_COLS.slice(1, 5).forEach((x, i) => {
+  $("sc-table").append(el("div", "ab kick dim", `left:${x}px;top:262px;font-weight:400`, ["AGENT", "REFERENCE", "Δ", "TOLERANCE"][i]));
+});
+const SCORE_ROWS = SCORE_KEYS.map(([key, label], i) => {
+  const top = 290 + i * 42;
+  const cells = SC_COLS.slice(0, 5).map((x, c) => {
+    const cell = el("div", "ab", `left:${x}px;top:${top}px;font-size:15px;line-height:22px`);
+    cell.className = `ab ${["fg", "model", "scorer", "fg", "dim"][c]}`;
+    $("sc-table").append(cell);
+    return cell;
+  });
+  setText(cells[0], label);
+  setText(cells[4], fmtTol(key));
+  const mark = el("div", "ab", `left:${SC_COLS[5]}px;top:${top - 1}px;transform-origin:12px 12px`);
+  mark.innerHTML = icon(ck[key].pass ? "check" : "scorer", 24, ck[key].pass ? C.pass : C.fail);
+  $("sc-table").append(mark);
+  return { key, cells, mark, ref: fmtVal(key, R.reference[key]) };
+});
+setText($("sc-verdict"), R.metrics.perfect ? "FULL REPLICATION" : "NOT REPLICATED");
+$("sc-trap").innerHTML = `<span class="dim">the ${escapeHTML(R.trap.label)} standard error ${R.trap.standard_error.toFixed(6)} would have missed by </span>`
+  + `<span class="fail">+${(R.trap.delta * 100).toFixed(1)}%</span>`;
+
+// ---------- 覆盖层文案 ----------
+setText($("op-q"), OPEN_QUESTION);
+setText($("op-s"), `Real replay · Task ${R.task.id} · ${R.agent.model} + ${R.agent.harness}`);
+$("rs-ic").innerHTML = icon("check", 96, C.pass, 2);
+setText($("rs-t"), R.metrics.perfect ? "FULL REPLICATION" : "NOT REPLICATED");
+$("rs-t").className = `ab sans ctr ${R.metrics.perfect ? "pass" : "fail"}`;
+setText($("rs-run"), `${R.agent.model} + ${R.agent.harness} · Task ${R.task.id} · ${R.task.notation}`);
+setText($("rs-stats"), `${R.totals.model_calls} model calls · ${R.totals.tool_calls} tool runs · ${fmtInt(R.totals.tokens)} tokens · ${R.totals.seconds.toFixed(1)} s`);
+setText($("rs-delta"), `coefficient Δ ${pct(ck.coefficient.delta)} · std. error Δ ${pct(ck.standard_error.delta)} · p-value Δ ${ck.p_value.delta.toExponential(1)}`);
+
+// ---------- 粒子（固定随机种子，逐帧可复现） ----------
+const rnd = mulberry32(20261018);
+const S1 = (R.steps.find((s) => s.facts && s.facts.rows) || {}).facts || {};
+const OPEN_WORDS = ["β", "σ", "p", "Δ", "s.e.", "FE", "OLS", S1.rows, S1.households, R.prediction.coefficient.toFixed(4), "{ }", "%"].filter(Boolean);
+const SHAPES = ["model", "harness", "sandbox", "scorer"];
+const PALETTE = [C.model, C.harness, C.sandbox, C.scorer, C.brand];
+const OPEN_PTC = Array.from({ length: 84 }, (_, i) => {
+  const color = PALETTE[Math.floor(rnd() * PALETTE.length)];
+  const node = el("div", "ptc");
+  if (i % 3 === 0) {
+    node.textContent = OPEN_WORDS[Math.floor(rnd() * OPEN_WORDS.length)];
+    node.style.font = `${(14 + rnd() * 8).toFixed(1)}px/1 var(--mono)`;
+    node.style.color = color;
+  } else {
+    node.innerHTML = icon(SHAPES[Math.floor(rnd() * SHAPES.length)], Math.round(12 + rnd() * 16), color);
+  }
+  $("ptc-open").append(node);
+  const ang = rnd() * Math.PI * 2;
+  const rad = 260 + rnd() * 300;
+  return { node, x0: 640 + Math.cos(ang) * rad * 1.25, y0: 300 + Math.sin(ang) * rad * 0.62,
+    x1: 640 + (rnd() - 0.5) * 26, y1: 236 + (rnd() - 0.5) * 20, delay: rnd() * 600, curve: (rnd() - 0.5) * 240,
+    spin: (rnd() - 0.5) * 260, dx: (rnd() - 0.5) * 36, dy: (rnd() - 0.5) * 36 };
+});
+const BURST = Array.from({ length: 46 }, () => {
+  const kind = ["model", "harness", "sandbox", "scorer", "check"][Math.floor(rnd() * 5)];
+  const node = el("div", "ptc");
+  node.innerHTML = icon(kind, Math.round(10 + rnd() * 14), kind === "check" ? C.pass : C[kind]);
+  $("burst").append(node);
+  return { node, ang: rnd() * Math.PI * 2, dist: 170 + rnd() * 340, delay: rnd() * 260, spin: (rnd() - 0.5) * 320 };
+});
+const placePtc = (node, x, y, rot, scale, a) => {
+  node.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -50%) rotate(${rot.toFixed(1)}deg) scale(${scale.toFixed(3)})`;
+  node.style.opacity = a.toFixed(3);
+};
+
+// ---------- 渲染：画面完全由时间 t 决定 ----------
+function renderOpen(t) {
+  for (const q of OPEN_PTC) {
+    const k = clamp01((t - 500 - q.delay) / 1900);
+    const e = ease(k);
+    const ox = q.x0 + q.dx * (t / 1000);
+    const oy = q.y0 + q.dy * (t / 1000);
+    const nx = -(q.y1 - oy);
+    const ny = q.x1 - ox;
+    const len = Math.hypot(nx, ny) || 1;
+    const bend = Math.sin(Math.PI * e) * q.curve;
+    const x = lerp(ox, q.x1, e) + (nx / len) * bend;
+    const y = lerp(oy, q.y1, e) + (ny / len) * bend;
+    const a = clamp01((t - q.delay * 0.4) / 450) * (1 - clamp01((k - 0.8) / 0.2)) * 0.9;
+    placePtc(q.node, x, y, q.spin * e, 1 - 0.5 * e, a);
+  }
+  const logo = easeBack((t - 2050) / 650);
+  for (const id of ["op-mark", "op-word", "op-ch"]) {
+    $(id).style.opacity = clamp01((t - 2050) / 450);
+    $(id).style.transform = `scale(${0.86 + 0.14 * logo})`;
+  }
+  $("op-q").style.opacity = clamp01((t - 2850) / 500);
+  $("op-q").style.transform = `translateY(${(1 - easeOut((t - 2850) / 600)) * 12}px)`;
+  $("op-s").style.opacity = clamp01((t - 3350) / 500);
+}
+
+function renderCard(t, ph) {
+  const c = CHAPTERS[ph.ch];
+  const tt = t - ph.start;
+  show($("ov-card"), Math.min(clamp01(tt / 260), clamp01((ph.ms - tt) / 320)));
+  $("cc-bg").style.background = `radial-gradient(38% 46% at 50% 40%, ${rgba(c.color, 0.16)} 0%, rgba(5, 7, 10, .97) 72%)`;
+  setHTML($("cc-ic"), icon(c.icon, 80, c.color, 2));
+  $("cc-ic").style.transform = `scale(${(0.7 + 0.3 * easeBack(tt / 520)).toFixed(3)})`;
+  renderRings($("cc-rings"), 160, 160, tt, c.color, 46, 158, 1300);
+  setText($("cc-n"), `CHAPTER ${String(ph.ch + 1).padStart(2, "0")}`);
+  setText($("cc-t"), c.title);
+  setText($("cc-s"), c.sub);
+  const up = (1 - easeOut((tt - 120) / 420)) * 14;
+  $("cc-t").style.transform = `translateY(${up.toFixed(1)}px)`;
+  $("cc-s").style.transform = `translateY(${(up * 1.3).toFixed(1)}px)`;
+  $("cc-t").style.opacity = clamp01((tt - 120) / 300);
+  $("cc-s").style.opacity = clamp01((tt - 260) / 300);
+}
+
+function renderTask(t) {
+  const tt = t - TASK.start;
+  $("tk-kick").style.opacity = clamp01(tt / 400);
+  $("tk-q").style.opacity = clamp01((tt - 150) / 450);
+  $("tk-q").style.transform = `translateY(${((1 - easeOut((tt - 150) / 500)) * 10).toFixed(1)}px)`;
+  $("tk-src").style.opacity = clamp01((tt - 450) / 450);
+  TILES.forEach((tl, i) => {
+    const appear = 3000 + i * 300;
+    const a = clamp01((tt - appear) / 320);
+    const q = clamp01((tt - FLY_AT - i * 70) / 1100);
+    const e = ease(q);
+    tl.node.style.transform = q > 0
+      ? `translate(${((tl.tx - tl.x) * e).toFixed(1)}px, ${((tl.ty - tl.y) * e).toFixed(1)}px) scale(${(1 - 0.58 * e).toFixed(3)})`
+      : `translateY(${((1 - easeOut(a)) * 12).toFixed(1)}px) scale(${(0.94 + 0.06 * easeOut(a)).toFixed(3)})`;
+    tl.node.style.opacity = (a * (1 - clamp01((q - 0.78) / 0.22))).toFixed(3);
+    const glow = bump(tt - appear, 120, 700);
+    tl.node.style.boxShadow = glow > 0 ? `0 0 20px ${rgba(C.brand, 0.4 * glow)}` : "none";
+  });
+  const lockA = clamp01((tt - 6200) / 400);
+  $("tk-lock").style.opacity = (lockA * (1 - clamp01((tt - FLY_AT) / 600))).toFixed(3);
+  $("tk-lock").style.transform = `translateY(${((1 - easeOut(lockA)) * 10).toFixed(1)}px)`;
+  const lb = bump(tt - 6300, 150, 900);
+  $("tk-lock").style.boxShadow = lb > 0 ? `0 0 22px ${rgba(C.scorer, 0.35 * lb)}` : "none";
+}
+
+function renderModel(t, ph, p) {
+  const st = ph.step;
+  const call = R.calls[st.n - 1];
+  renderRings($("md-rings"), 120, 120, t - ph.start, C.model, 34, 116, 950, 3);
+  $("md-ic").style.transform = `scale(${(1 + 0.06 * Math.sin((t - ph.start) / 150)).toFixed(3)})`;
+  setText($("md-call"), `model call ${call.n} / ${R.limits.model_calls}`);
+  setText($("md-tok"), `+${fmtInt(lerp(0, call.tokens, p / 0.9))} tokens`);
+  const used = R.steps.filter((s) => s !== FINAL && !s.guard && s.n < st.n).length;
+  setText($("md-next"), st === FINAL ? "→ next: the final program"
+    : st.guard ? `→ next: run_python #${st.n} · tool budget ${used} / ${R.limits.tool_calls} used` : `→ next: run_python #${st.n}`);
+}
+
+function colorMarks(s) {
+  return escapeHTML(s).replace(/✓/g, '<span class="pass">✓</span>').replace(/✗/g, '<span class="fail">✗</span>');
+}
+function renderCode(t, ph, p, spin) {
+  const st = ph.step;
+  const final = st === FINAL;
+  setText($("cd-title"), final ? "main.py · final program" : `run_python #${st.n}`);
+  let status;
+  if (ph.kind === "type") status = `<span class="model">model · writing</span>`;
+  else if (ph.kind === "run") status = `<span class="sandbox">${final ? "evaluator · running" : "running"} ${spin}</span>`;
+  else status = `<span class="sandbox">exit ${st.tool.exit} · ${st.tool.seconds.toFixed(2)} s</span>`;
+  setHTML($("cd-status"), status);
+
+  const typing = ph.kind === "type";
+  const tagged = st.code.some((c) => c[2]);
+  const cols = tagged ? CODE_COLS_TAGGED : CODE_COLS;
+  const lines = st.code.map(([no, text, tag]) => [no, fit(text, cols), tag]);
+  let budget = typing ? Math.floor(clamp01(p / 0.92) * lines.reduce((n, [, s]) => n + s.length, 0)) : Infinity;
+  setHTML($("cd-code"), lines.map(([no, text, tag], i) => {
+    if (typing && budget <= 0) return "";
+    const part = text.slice(0, Math.max(0, budget));
+    const done = part.length === text.length;
+    budget -= text.length;
+    const caret = typing && budget <= 0 && (!done || i === lines.length - 1) ? `<span class="caret"></span>` : "";
+    const tg = tag && done ? `<span class="tg">${escapeHTML(tag)}</span>` : "";
+    return `<div class="cl"><span class="ln">${no}</span>${escapeHTML(part)}${caret}${tg}</div>`;
+  }).join(""));
+
+  const out = st.output || [];
+  let shown = 0;
+  if (ph.kind === "output") shown = Math.floor(clamp01(p / 0.6) * (out.length + 1));
+  setHTML($("cd-out"), out.slice(0, shown).map((l) => colorMarks(fit(l, OUT_COLS))).join("\n"));
+
+  const runQ = ph.kind === "run" ? ((t - ph.start) % 700) / 700 : 0;
+  $("cd-bar").style.opacity = ph.kind === "run" ? 1 : 0;
+  $("cd-bar").style.transform = `translateX(${(-160 + (CODE.w + 160) * runQ).toFixed(1)}px)`;
+}
+
+function renderGuard(t, ph, p) {
+  const hit = 0.22;
+  let x = lerp(336, 560, ease(p / hit));
+  if (p > hit) {
+    const k = clamp01((p - hit) / 0.14);
+    x -= 18 * Math.sin(k * Math.PI) + 4 * Math.sin((t - ph.start) / 18) * (1 - k);
+  }
+  const blocked = p > hit;
+  const card = $("gd-card");
+  card.style.left = `${x.toFixed(1)}px`;
+  card.style.border = `1.5px solid ${blocked ? C.harness : C.model}`;
+  card.style.background = blocked ? rgba(C.harness, 0.1) : rgba(C.model, 0.08);
+  $("gd-card-k").style.color = blocked ? C.harness : C.model;
+  const glow = bump(t - (ph.start + hit * ph.ms), 80, 1000);
+  $("gd-bar").style.boxShadow = `0 0 ${(10 + 34 * glow).toFixed(1)}px ${rgba(C.harness, 0.3 + 0.55 * glow)}`;
+  const sa = clamp01((p - 0.3) / 0.08);
+  const stamp = $("gd-stamp");
+  stamp.style.left = `${(x + 118 - 92).toFixed(1)}px`;
+  stamp.style.top = "286px";
+  stamp.style.opacity = sa;
+  stamp.style.transform = `rotate(-8deg) scale(${(1.8 - 0.8 * easeBack((p - 0.3) / 0.12)).toFixed(3)})`;
+  $("gd-err").style.opacity = clamp01((p - 0.45) / 0.12);
+  $("gd-ins").style.opacity = clamp01((p - 0.55) / 0.12);
+  $("gd-ins").style.transform = `translateY(${((1 - easeOut((p - 0.55) / 0.15)) * 10).toFixed(1)}px)`;
+}
+
+function renderScore(t, ph, p, spin) {
+  const open = ease((p - 0.04) / 0.12);
+  setHTML($("sc-lock"), lockSVG(52, C.scorer, Math.round(open * 20) / 20));
+  $("sc-lock").style.opacity = (1 - 0.6 * clamp01((p - 0.2) / 0.1)).toFixed(3);
+  setHTML($("sc-status"), p < 0.72 ? `<span class="brand">verifying ${spin}</span>` : `<span class="pass b">verified</span>`);
+  SCORE_ROWS.forEach((r, i) => {
+    setText(r.cells[1], fmtVal(r.key, R.prediction[r.key]));
+    const k = Math.floor(clamp01((p - 0.1 - i * 0.04) / 0.16) * r.ref.length);
+    setText(r.cells[2], r.ref.slice(0, k) + "•".repeat(r.ref.length - k));
+    const at = 0.3 + i * 0.12;
+    setText(r.cells[3], p >= at ? fmtDelta(r.key, ck[r.key].delta) : "");
+    r.mark.style.opacity = clamp01((p - at) / 0.04);
+    r.mark.style.transform = `scale(${(0.4 + 0.6 * easeBack((p - at) / 0.07)).toFixed(3)})`;
+  });
+  const va = clamp01((p - 0.72) / 0.08);
+  $("sc-verdict").style.opacity = va;
+  $("sc-verdict").style.transform = `scale(${(0.9 + 0.1 * easeBack((p - 0.72) / 0.1)).toFixed(3)})`;
+  $("sc-trap").style.opacity = clamp01((p - 0.86) / 0.06);
+}
+
+function renderResult(t) {
+  const tt = t - RESULT.start;
+  show($("ov-result"), t < OUTRO.start ? clamp01(tt / 400) : 1 - clamp01((t - OUTRO.start) / 450));
+  $("rs-ic").style.opacity = clamp01((tt - 100) / 250);
+  $("rs-ic").style.transform = `scale(${(0.5 + 0.5 * easeBack((tt - 100) / 520)).toFixed(3)})`;
+  $("rs-t").style.opacity = clamp01((tt - 260) / 350);
+  $("rs-t").style.transform = `translateY(${((1 - easeOut((tt - 260) / 450)) * 12).toFixed(1)}px)`;
+  $("rs-run").style.opacity = clamp01((tt - 650) / 400);
+  $("rs-stats").style.opacity = clamp01((tt - 900) / 400);
+  $("rs-delta").style.opacity = clamp01((tt - 1150) / 400);
+  for (const b of BURST) {
+    const q = clamp01((tt - 150 - b.delay) / 1400);
+    const e = easeOut(q);
+    const a = q > 0 ? 1 - clamp01((q - 0.5) / 0.5) : 0;
+    placePtc(b.node, 640 + Math.cos(b.ang) * b.dist * e, 198 + Math.sin(b.ang) * b.dist * e * 0.8, b.spin * e, 1 - 0.3 * e, a * 0.9);
+  }
+}
+
+function renderEnd(t) {
+  const tt = t - OUTRO.start;
+  show($("ov-end"), clamp01((tt - 250) / 500));
+  for (const [id, at] of [["end-mark", 250], ["end-word", 300], ["end-ch", 380], ["end-tag", 460], ["end-rule", 700],
+    ["end-h", 900], ["end-url", 1200], ["end-small", 1400]]) {
+    $(id).style.opacity = clamp01((tt - at) / 400);
+  }
+  $("end-h").style.transform = `translateY(${((1 - easeOut((tt - 900) / 500)) * 12).toFixed(1)}px)`;
+}
+
+function subCaption(ph, p, t, spin, callTokens) {
+  const st = ph.step;
+  switch (ph.kind) {
+    case "task": {
+      const tt = t - ph.start;
+      if (tt < 3000) return `${escapeHTML(R.task.journal_full)} · ${escapeHTML(R.task.notation)} · ${escapeHTML(R.task.method)}`;
+      if (tt < 6200) return `<span class="brand">${R.subproblems.map((s) => escapeHTML(s.label)).join(" · ")}</span>`;
+      return `<span class="scorer">scorer</span> · coefficient &amp; s.e. within ${R.tolerance.relative * 100}% · p-value within ${R.tolerance.p_value_abs}`;
+    }
+    case "think":
+      return `<span class="model">model</span> · call ${st.n} / ${R.limits.model_calls} · +${fmtInt(callTokens)} tokens`;
+    case "type":
+      return st === FINAL ? `<span class="model">model</span> · writing main.py` : `<span class="model">model</span> · writing run_python #${st.n}`;
+    case "run":
+      return st === FINAL ? `<span class="sandbox">evaluator</span> · running main.py ${spin}`
+        : `<span class="harness">harness</span> → <span class="sandbox">sandbox</span> · running #${st.n} ${spin}`;
+    case "output":
+      return st === FINAL ? `<span class="sandbox">evaluator</span> · ${colorMarks(st.log.replace("evaluator run · ", ""))}`
+        : `<span class="sandbox">sandbox</span> · #${st.n} · ${st.tool.seconds.toFixed(2)} s · ${colorMarks(st.log)}`;
+    case "guard":
+      return `<span class="harness">harness</span> · ${escapeHTML(st.guard.error)} · “${escapeHTML(st.guard.instruction)}”`;
+    case "score":
+      return p < 0.3 + 2 * 0.12
+        ? `<span class="scorer">scorer</span> · coefficient &amp; s.e. within ${R.tolerance.relative * 100}% · p-value within ${R.tolerance.p_value_abs}`
+        : `coefficient Δ ${pct(ck.coefficient.delta)} · std. error Δ ${pct(ck.standard_error.delta)} · p-value Δ ${ck.p_value.delta.toExponential(1)}`;
+    default:
+      return "";
+  }
+}
+
+function flyChip(chip, from, to, at, t, dur = 650) {
+  const q = clamp01((t - (at - dur)) / dur);
+  if (q <= 0 || q >= 1) { chip.style.opacity = 0; return; }
+  const e = ease(q);
+  const x = from.x + (to.x - from.x) * e;
+  const y = from.y + (to.y - from.y) * e - Math.sin(Math.PI * e) * 26;
+  chip.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) scale(${(1 - 0.12 * e).toFixed(3)})`;
+  chip.style.opacity = Math.min(1, q / 0.12, (1 - q) / 0.1).toFixed(3);
+}
+
+function renderAt(t) {
+  const pi = phaseIndexAt(t);
+  const ph = PH[pi];
+  const p = clamp01((t - ph.start) / ph.ms);
+  const spin = SPIN[Math.floor(t / 140) % SPIN.length];
+
+  // 开场、顶栏、转场卡、结果、片尾
+  const openA = t < OPEN.end ? 1 - clamp01((t - 4400) / 600) : 0;
+  show($("ov-open"), openA);
+  if (openA > 0) renderOpen(t);
+  show($("top"), t < OPEN.end ? clamp01((t - 4300) / 600) : ph.kind === "outro" ? 1 - clamp01((t - ph.start) / 500) : 1);
+  if (ph.kind === "card") renderCard(t, ph); else show($("ov-card"), 0);
+  if (t >= RESULT.start) renderResult(t); else show($("ov-result"), 0);
+  if (ph.kind === "outro") renderEnd(t); else show($("ov-end"), 0);
+
+  // 章节进度
+  CHAPTERS.forEach((c) => {
+    const q = clamp01((t - c.start) / (c.end - c.start));
+    c.fill.style.width = `${(q * 100).toFixed(2)}%`;
+    const on = t >= c.start && t < c.end;
+    c.node.style.color = on ? "#ffffff" : t >= c.end ? c.color : "#4a5468";
+  });
+
+  // 模型调用、token、耗时（与 v1 相同的计算）
+  let calls = 0, tokens = 0, wall = 0, callTokens = 0;
+  for (const step of R.steps) {
+    const think = phaseOf("think", step.n);
+    const c = R.calls[step.n - 1];
+    const prev = R.calls[step.n - 2] || { cum_tokens: 0, wall: 0 };
+    if (t >= think.end) {
+      calls = c.n; tokens = c.cum_tokens; wall = c.wall; callTokens = c.tokens;
+    } else if (t >= think.start) {
+      const q = (t - think.start) / think.ms;
+      calls = c.n;
+      tokens = lerp(prev.cum_tokens, c.cum_tokens, q / 0.9);
+      wall = lerp(prev.wall, c.wall, q);
+      callTokens = lerp(0, c.tokens, q / 0.9);
+    }
+  }
+  const finalRun = phaseOf("run", FINAL.n);
+  if (t >= finalRun.end) wall = R.totals.seconds;
+  else if (t >= finalRun.start) wall = lerp(R.calls[R.calls.length - 1].wall, R.totals.seconds, (t - finalRun.start) / finalRun.ms);
+  const toolsUsed = R.steps.filter((s) => s !== FINAL && !s.guard && t >= phaseOf("run", s.n).start).length;
+  setHTML($("clock"), `<span class="dim">agent run </span>+${wall.toFixed(1).padStart(5, "0")} s`);
+
+  // 主体可见度
+  const dashA = t < OPEN.end ? clamp01((t - (OPEN.end - 300)) / 300) : 1;
+  const leftA = t >= TASK.start - 400 ? 1 : 0;
+  const rightA = t >= FIRST_THINK.start - 1300 ? 1 : 0;
+  let leftFocus = ph.kind === "task" ? 1 : 0;
+  let rightFocus = ph.kind === "guard" ? 1 : 0;
+  for (const r of SP_ROWS) leftFocus = Math.max(leftFocus, bump(t - r.doneAt + 650, 200, 1300), bump(t - r.progAt + 300, 200, 1100));
+  for (const f of FACTS) rightFocus = Math.max(rightFocus, bump(t - f.at + 650, 200, 1300));
+  for (const step of R.steps) {
+    rightFocus = Math.max(rightFocus, bump(t - phaseOf("think", step.n).start, 150, 800));
+    const run = phaseOf("run", step.n);
+    if (run) rightFocus = Math.max(rightFocus, bump(t - run.start, 150, 800));
+  }
+  $("left").style.opacity = (leftA * dashA * (0.56 + 0.44 * leftFocus)).toFixed(3);
+  $("right").style.opacity = (rightA * dashA * (0.56 + 0.44 * rightFocus)).toFixed(3);
+
+  // 左栏：子问题
+  let solved = 0;
+  for (const r of SP_ROWS) {
+    const done = t >= r.doneAt;
+    const prog = !done && t >= r.progAt;
+    if (done) solved++;
+    r.row.style.opacity = clamp01((t - r.landAt) / 260);
+    r.row.classList.toggle("done", done);
+    r.row.classList.toggle("prog", prog);
+    const flash = Math.max(bump(t - r.doneAt, 100, 900), bump(t - r.progAt, 100, 900));
+    r.row.style.background = flash > 0 ? rgba(done ? C.pass : C.brand, 0.16 * flash) : "transparent";
+    setText(r.ic, done ? "✓" : prog ? "◐" : "");
+    setText(r.st, done ? (r.sp.solved === FINAL.n ? "final" : `#${r.sp.solved}`) : prog ? `#${r.sp.started}…` : "");
+    flyChip(r.chip, r.from, r.to, r.doneAt, t);
+  }
+  setHTML($("solved"), `<span class="${solved === SP_ROWS.length ? "pass" : "dim"}">${solved} / ${SP_ROWS.length} solved</span>`);
+
+  // 右栏：预算与发现
+  const segPulse = 0.55 + 0.45 * Math.abs(Math.sin(t / 220));
+  const thinkingNow = ph.kind === "think";
+  SEG_CALLS.forEach((s, i) => {
+    const on = i < calls;
+    const live = thinkingNow && i === calls - 1;
+    s.style.background = on ? C.model : "#222b39";
+    s.style.opacity = live ? segPulse.toFixed(3) : 1;
+  });
+  const guardFlash = ph.kind === "guard" ? 0.5 + 0.5 * Math.abs(Math.sin((t - ph.start) / 160)) : 0;
+  SEG_TOOLS.forEach((s, i) => {
+    s.style.background = ph.kind === "guard" ? C.harness : i < toolsUsed ? C.sandbox : "#222b39";
+    s.style.opacity = ph.kind === "guard" ? (0.45 + 0.55 * guardFlash).toFixed(3) : 1;
+  });
+  setText($("n-calls"), `${calls} / ${R.limits.model_calls}`);
+  setText($("n-tools"), `${toolsUsed} / ${R.limits.tool_calls}`);
+  setText($("n-tokens"), fmtInt(tokens));
+  setText($("n-wall"), `${wall.toFixed(1)} s / ${R.limits.wall_seconds} s`);
+  for (const f of FACTS) {
+    const seen = t >= f.at;
+    setText(f.value, seen ? f.text : "—");
+    f.value.style.color = seen && t < f.at + 1200 ? C.brand : seen ? "#dbe1ea" : "#4a5468";
+    flyChip(f.chip, f.from, f.to, f.at, t);
+  }
+
+  // 中栏：流水线与光点
+  railSvg.style.opacity = dashA;
+  const rs = railAt(t);
+  const sealed = ph.kind === "task" && t >= TASK.start + 6200;
+  NODES.forEach((node, i) => {
+    const on = (rs && rs.active === i) || (sealed && i === 3);
+    const col = C[ROLE[i]];
+    node.style.opacity = (dashA * (on ? 1 : 0.5)).toFixed(3);
+    node.style.borderColor = on ? rgba(col, 0.9) : "#222b39";
+    node.style.background = on ? rgba(col, 0.13) : "rgba(16, 22, 31, .9)";
+    node.style.boxShadow = on ? `0 0 ${rs && rs.blocked && i === 1 ? 34 : 22}px ${rgba(col, rs && rs.blocked && i === 1 ? 0.5 : 0.28)}` : "none";
+    TICKS[i].setAttribute("fill", on ? col : "#2b3546");
+  });
+  if (rs) {
+    const col = rs.blocked ? C.harness : C[ROLE[rs.active]];
+    const x = railX(rs.pos);
+    for (const c of [TOKEN, TOKEN_GLOW]) { c.setAttribute("cx", x.toFixed(1)); c.setAttribute("fill", col); }
+    TOKEN.setAttribute("opacity", dashA);
+    TOKEN_GLOW.setAttribute("opacity", (0.22 * dashA).toFixed(3));
+    TRAIL.forEach((c, k) => {
+      const r2 = railAt(t - (k + 1) * 55);
+      const x2 = r2 ? railX(r2.pos) : x;
+      c.setAttribute("cx", x2.toFixed(1));
+      c.setAttribute("fill", col);
+      c.setAttribute("opacity", r2 && Math.abs(x2 - x) > 0.5 ? ((0.5 - k * 0.14) * dashA).toFixed(3) : 0);
+    });
+    if (rs.pulse) {
+      const q = ((t % 900) + 900) % 900 / 900;
+      TOKEN_RING.setAttribute("cx", x.toFixed(1));
+      TOKEN_RING.setAttribute("r", (7 + 10 * easeOut(q)).toFixed(1));
+      TOKEN_RING.setAttribute("stroke", col);
+      TOKEN_RING.setAttribute("opacity", ((1 - q) * 0.8 * dashA).toFixed(3));
+    } else TOKEN_RING.setAttribute("opacity", 0);
+  } else {
+    for (const c of [TOKEN, TOKEN_GLOW, TOKEN_RING, ...TRAIL]) c.setAttribute("opacity", 0);
+  }
+
+  // 中栏：主舞台
+  const sk = sceneKind(ph);
+  const main = $("main");
+  main.style.opacity = dashA;
+  if (sk) {
+    const col = SCENE_COLOR[sk];
+    main.style.borderColor = rgba(col, 0.5);
+    main.style.boxShadow = `0 0 0 1px ${rgba(col, 0.1)}, 0 0 44px ${rgba(col, 0.1)}, 0 18px 50px rgba(0, 0, 0, .45)`;
+  } else {
+    main.style.borderColor = "#222b39";
+    main.style.boxShadow = "none";
+  }
+  const sceneA = sk ? clamp01((t - sceneStart(pi)) / 260) : 0;
+  for (const [k, node] of Object.entries(SCENES)) show(node, k === sk ? sceneA * dashA : 0);
+  if (sk === "task") renderTask(t);
+  else if (sk === "model") renderModel(t, ph, p);
+  else if (sk === "code") renderCode(t, ph, p, spin);
+  else if (sk === "guard") renderGuard(t, ph, p);
+  else if (sk === "score") renderScore(t, ph, p, spin);
+
+  // 字幕
+  const cp = CAPS.find((c) => t >= c.from && t < c.to);
+  if (cp) {
+    setText($("cap-main"), cp.text);
+    const a = Math.min(clamp01((t - cp.from) / 240), clamp01((cp.to - t) / 200));
+    $("cap-main").style.opacity = a.toFixed(3);
+    $("cap-main").style.transform = `translateY(${((1 - easeOut((t - cp.from) / 320)) * 6).toFixed(1)}px)`;
+    setHTML($("cap-sub"), subCaption(ph, p, t, spin, callTokens));
+    $("cap-sub").style.opacity = a.toFixed(3);
+  } else {
+    $("cap-main").style.opacity = 0;
+    $("cap-sub").style.opacity = 0;
+  }
+}
+
+// ---------- 播放控制 ----------
+const params = new URLSearchParams(location.search);
+let t = (Math.max(0, Number(params.get("t") || 0)) * 1000) % TOTAL;
+let paused = params.has("pause");
+let last = performance.now();
+function frame(now) {
+  const dt = Math.min(100, now - last);
+  last = now;
+  if (!paused) t = (t + dt) % TOTAL;
+  renderAt(t);
+  requestAnimationFrame(frame);
+}
+function fitStage() {
+  // capture.mjs 截图时舞台按 1:1 放在左上角
+  if (params.has("capture")) { $("stage").style.transform = "none"; document.body.style.display = "block"; return; }
+  const s = Math.min(2, (innerWidth - 32) / 1280, (innerHeight - 32) / 720);
+  $("stage").style.transform = `scale(${Math.max(0.2, s)})`;
+}
+addEventListener("resize", fitStage);
+addEventListener("keydown", (e) => {
+  if (e.code === "Space") { paused = !paused; e.preventDefault(); }
+  if (e.code === "ArrowRight") t = (t + 2000) % TOTAL;
+  if (e.code === "ArrowLeft") t = (t - 2000 + TOTAL) % TOTAL;
+});
+window.replay = {
+  renderAt, total: TOTAL, phases: PH, captions: CAPS,
+  seek(ms) { t = ms; paused = true; renderAt(t); },
+};
+fitStage();
+renderAt(t);
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

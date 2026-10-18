@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>InferenceNet · Professional task story · FIN-T1-003</title>
+<!--
+  Narrative 16:9 story of one finance pilot run (export 1920×1080), modelled on agent-replay-demo-v2:
+  open → 01 the task (scene, six pending entries, sealed rubric) → 02 the agent works (key steps, montage, decisions)
+  → 03 independent check (scorecards, three reveals, tally) → 04 result and outro.
+  Reads ?data=data/fin-story.json (schema inferencenet-protask-story/1). Every number and sentence comes from that file
+  except fixed labels and short captions that describe what is shown. The frame is a pure function of time t.
+  Space pause/resume · ← → seek ±2 s · ?t=seconds start time · &pause hold the frame · &capture stage 1:1 top-left.
+-->
+<style>
+  @font-face { font-family: Inter; font-style: normal; font-weight: 100 900; font-display: block; src: url("fonts/inter-latin.woff2") format("woff2"); }
+  :root {
+    color-scheme: dark;
+    --page: #05070a; --win: #0b1017; --panel: rgba(16, 22, 31, .92); --edge: #222b39; --fg: #dbe1ea; --dim: #7f8899;
+    --faint: #364052; --off: #4a5468; --brand: #8fadd6; --brand-tint: #1c2738; --model: #f0925f; --harness: #b9a4f7;
+    --sandbox: #73d59c; --scorer: #8fadd6; --pass: #73d59c; --fail: #f2777a; --warn: #e6c069;
+    --mono: "SF Mono", SFMono-Regular, ui-monospace, Menlo, Consolas, "PingFang SC", "Hiragino Sans GB", monospace;
+    --sans: Inter, "PingFang SC", "Hiragino Sans GB", "Heiti SC", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--page); color: var(--fg); }
+  body { display: grid; place-items: center; overflow: hidden; }
+  #stage { position: relative; flex: none; width: 1280px; height: 720px; overflow: hidden;
+    background: radial-gradient(90% 75% at 50% 0%, #111a26 0%, var(--win) 58%, #070a0f 100%);
+    font: 13px/19px var(--mono); color: var(--fg); transform-origin: center; }
+  .ab { position: absolute; white-space: nowrap; }
+  .ctr { left: 0; right: 0; text-align: center; }
+  .layer, .ov { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; }
+  .b { font-weight: 700; }
+  .dim { color: var(--dim); } .fg { color: var(--fg); } .brand { color: var(--brand); } .model { color: var(--model); }
+  .harness { color: var(--harness); } .sandbox { color: var(--sandbox); } .scorer { color: var(--scorer); }
+  .pass { color: var(--pass); } .fail { color: var(--fail); } .warn { color: var(--warn); }
+  .sans { font-family: var(--sans); } .mono { font-family: var(--mono); }
+  .kick { font-size: 11px; line-height: 16px; letter-spacing: .14em; font-weight: 700; }
+  .icon { display: block; overflow: visible; }
+  .card { position: absolute; border: 1px solid var(--edge); border-radius: 10px; background: var(--panel); }
+  .pill { position: absolute; padding: 0 8px; border: 1px solid currentColor; border-radius: 10px; font-size: 11px; line-height: 18px; white-space: nowrap; }
+  .chipi { display: inline-block; padding: 0 9px; border: 1px solid currentColor; border-radius: 11px; font-size: 12px; line-height: 20px; white-space: nowrap; }
+  .clip { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .clamp { display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; white-space: normal; overflow-wrap: anywhere; }
+
+  .topbar { position: absolute; left: 0; top: 0; width: 1280px; height: 56px; border-bottom: 1px solid #18202c; background: rgba(8, 11, 16, .62); }
+  .mark { position: absolute; width: 26px; height: 26px; border-radius: 7px; background: #191919; border: 1px solid #3a4352;
+    color: #fff; font: 18px/24px Georgia, serif; text-align: center; }
+  .wordmark { position: absolute; color: #fff; font: 600 21px/26px var(--sans); letter-spacing: -.035em; white-space: nowrap; }
+  .wordmark span, .big-word span { color: var(--brand); }
+  .wordmark small { margin-left: 10px; font-family: var(--mono); font-size: 10px; font-weight: 400; letter-spacing: .14em; color: var(--dim); vertical-align: 3px; }
+  .chap { position: absolute; top: 11px; height: 26px; text-align: center; font: 600 12px/26px var(--sans); letter-spacing: .08em; white-space: nowrap; }
+  .chap i { font: 400 10px/26px var(--mono); font-style: normal; margin-right: 6px; letter-spacing: .1em; }
+  .track { position: absolute; top: 40px; height: 3px; border-radius: 2px; background: #1c2431; overflow: hidden; }
+  .track b { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 2px; }
+
+  /* session card (v2 rhythm) */
+  .codebox { position: absolute; font-size: 13.5px; line-height: 21px; white-space: pre; }
+  .cl { position: relative; height: 21px; overflow: hidden; text-overflow: ellipsis; }
+  .cl .ln { display: inline-block; width: 3.4ch; margin-right: 1.2ch; text-align: right; color: #4f596b; }
+  .caret { display: inline-block; width: 8px; height: 15px; margin-left: 1px; background: var(--sandbox); vertical-align: -2px; }
+  .outbox { position: absolute; font-size: 12.5px; line-height: 19px; white-space: pre; color: var(--fg); }
+  .ol { height: 19px; overflow: hidden; text-overflow: ellipsis; }
+  .divider { position: absolute; height: 16px; display: flex; align-items: center; gap: 8px; color: var(--dim); font-size: 11px; letter-spacing: .1em; }
+  .divider::before { content: ""; width: 10px; border-top: 1px solid var(--faint); }
+  .divider::after { content: ""; flex: 1; border-top: 1px solid var(--faint); }
+
+  /* entry cards and checklist */
+  .ent { position: absolute; border: 1.5px solid rgba(143, 173, 214, .55); border-radius: 9px; background: rgba(143, 173, 214, .06); transform-origin: 0 0; }
+  .eid { display: inline-block; padding: 0 7px; border-radius: 6px; font: 700 12.5px/20px var(--mono); color: #0b1017; background: var(--brand); }
+  .chk { position: absolute; left: 12px; width: 240px; border-radius: 7px; }
+  .dec { display: inline-block; padding: 0 6px; border-radius: 5px; font: 700 10px/16px var(--mono); letter-spacing: .1em; }
+  .dec.reject { color: #1a0f08; background: var(--model); }
+  .dec.accept { color: var(--model); border: 1px solid var(--model); line-height: 14px; }
+
+  /* criterion chips */
+  .cc { position: absolute; width: 74px; height: 34px; border-radius: 6px; border: 1.5px solid #2b3546; overflow: hidden; }
+  .cc .fl { position: absolute; left: 0; top: 0; bottom: 0; }
+  .cc .id { position: absolute; left: 6px; top: 3px; font: 700 11.5px/14px var(--mono); white-space: nowrap; }
+  .cc .w { position: absolute; right: 6px; top: 3px; font: 10px/14px var(--mono); color: #7f8899; white-space: nowrap; }
+  .cc .st { position: absolute; left: 6px; bottom: 3px; font: 600 10px/13px var(--mono); white-space: nowrap; }
+
+  .cap { position: absolute; left: 40px; width: 1200px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cap-main { top: 612px; height: 36px; font: 600 25px/34px var(--sans); color: #fff; letter-spacing: -.01em; }
+  .cap-sub { top: 654px; height: 20px; font-size: 13.5px; line-height: 20px; color: var(--dim); }
+  .big-word { color: #fff; font: 600 58px/66px var(--sans); letter-spacing: -.035em; white-space: nowrap; }
+  .spaced { font-size: 12px; line-height: 16px; letter-spacing: .34em; color: var(--dim); }
+  .url span { display: inline-block; padding: 8px 20px; border: 1px solid var(--brand); border-radius: 22px; background: var(--brand-tint); color: var(--brand); font-size: 16px; line-height: 22px; }
+  .ptc { position: absolute; left: 0; top: 0; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="topbar" id="top">
+    <div class="mark" style="left:28px;top:15px">N</div>
+    <div class="wordmark" style="left:64px;top:15px">Inference<span>Net</span><small>PROFESSIONAL TASKS</small></div>
+    <div id="rail"></div>
+    <div class="ab kick dim" style="right:28px;top:10px;font-weight:400">REAL TRACE · TIME COMPRESSED</div>
+    <div class="ab" id="clock" style="right:28px;top:28px;font-size:12px"></div>
+  </div>
+  <svg id="railsvg" class="layer" viewBox="0 0 1280 720" style="pointer-events:none"></svg>
+  <div class="layer" id="nodes"></div>
+  <div class="layer" id="sc-task"></div>
+  <div class="layer" id="sc-agent"></div>
+  <div class="layer" id="sc-check"></div>
+  <div class="cap cap-main" id="cap-main"></div>
+  <div class="cap cap-sub" id="cap-sub"></div>
+  <div class="ov" id="ov-card">
+    <div class="ab" id="cc-bg" style="left:0;top:57px;width:1280px;height:663px"></div>
+    <svg class="ab" id="cc-rings" width="320" height="320" viewBox="0 0 320 320" style="left:480px;top:110px;overflow:visible"></svg>
+    <div class="ab" id="cc-ic" style="left:600px;top:230px"></div>
+    <div class="ab ctr dim" id="cc-n" style="top:338px;font-size:12px;letter-spacing:.32em"></div>
+    <div class="ab sans ctr" id="cc-t" style="top:362px;color:#fff;font-weight:600;font-size:50px;line-height:58px;letter-spacing:-.02em"></div>
+    <div class="ab sans ctr dim clip" id="cc-s" style="top:432px;font-size:19px;line-height:26px;left:120px;right:120px"></div>
+  </div>
+  <div class="ov" id="ov-result"></div>
+  <div class="ov" id="ov-end"></div>
+  <div class="ov" id="ov-open"></div>
+  <div class="ov" id="err" style="pointer-events:none"></div>
+</div>
+<script src="story.js"></script>
+</body>
+</html>

@@ -2,6 +2,12 @@
 
 [Live website](https://easonai-5589.github.io/inferencenet-challenge/)
 
+## Video demo development branch
+
+The `codex/video-demo` branch contains the latest Task 0001 replay and FIN-T1-003
+finance story video, with editable animation sources, bundled data, fonts,
+MP4s and export instructions. Start with the [video demo handoff](video-demo/README.md).
+
 Public presentation site for the Global InferenceNet Initiative: AI Agents for Business, Finance and Social Science. The site brings together Home, Challenge, Data, Agent,
 Harness, Self-evolving, Leaderboard and Teams, with Chinese / English and light / dark
 controls on every page.
@@ -209,7 +215,8 @@ demonstration, its English-only silent video and compressed timeline, and link
 to `data.html#case-0001`. The existing task 0011 walkthrough remains separate.
 Homepage CSS uses `20261018-subtracks`; all page
 translations use `20261018-branding-review`.
-The animation source and export scripts stay in the research workspace.
+On `codex/video-demo`, the animation source and export scripts are also available
+in [`video-demo/task0001/`](video-demo/task0001/).
 `scripts/check.mjs` accepts `.mp4` files under `assets/` for this video.
 
 ## Self-evolving: improving a harness
