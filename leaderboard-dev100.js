@@ -1,4 +1,4 @@
-import { mountBoard } from './leaderboard-board.js?v=20261012-dual-board';
+import { mountBoard } from './leaderboard-board.js?v=20261018-dev100-challenge';
 import { devBoardDescriptor } from './leaderboard-dev100-data.js?v=20261012-dual-board';
 
 // Only leaderboard.html loads this module, so a missing or malformed development
