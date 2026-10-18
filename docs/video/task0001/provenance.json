@@ -1,0 +1,83 @@
+{
+  "duration_seconds": 274.6,
+  "frames": 8238,
+  "fps": "30/1",
+  "resolution": [
+    1920,
+    1080
+  ],
+  "video_codec": "h264",
+  "pixel_format": "yuv420p",
+  "color_space": "bt709",
+  "audio_codec": "aac",
+  "audio_sample_rate": "48000",
+  "audio_channels": 1,
+  "audio_is_synthetic": true,
+  "voice": "en-US-AriaNeural",
+  "burned_captions": [
+    "en",
+    "zh"
+  ],
+  "source_commit": "884e89e58f62a185cd06572979fbd1548ea67e4b",
+  "recorded_run_seconds": 121.038,
+  "replay_data_sha256": "14446bc5bbc421aa59664d062a7cec2c8c6a9f160fbe538612e204b9b42d1841",
+  "version": "original-enhanced-v2",
+  "task_id": "0001",
+  "model": "GPT-5.6 Sol",
+  "harness": "DeepAgents",
+  "run_id": "sol-deepagents-full1000-20260911-chain-03",
+  "source_path": "video-demo/task0001",
+  "original_animation_seconds": 71.4,
+  "original_phase_count": 32,
+  "replay_data_unchanged": true,
+  "chapter_navigation_includes_opening": true,
+  "chapters": [
+    {
+      "name": "TASK",
+      "start_seconds": 0.0,
+      "end_seconds": 42.833333333333336
+    },
+    {
+      "name": "AGENT",
+      "start_seconds": 42.833333333333336,
+      "end_seconds": 158.06666666666666
+    },
+    {
+      "name": "HARNESS",
+      "start_seconds": 158.06666666666666,
+      "end_seconds": 198.86666666666667
+    },
+    {
+      "name": "CHECK",
+      "start_seconds": 198.86666666666667,
+      "end_seconds": 249.66666666666666
+    },
+    {
+      "name": "RESULT",
+      "start_seconds": 249.66666666666666,
+      "end_seconds": 274.6
+    }
+  ],
+  "files": {
+    "assets/video/agent-replay-task0001.mp4": {
+      "bytes": 37380095,
+      "sha256": "3413035276e1398e427826d0746edb0961cabbb1903cdffe9d50634bf29230b5"
+    },
+    "assets/video/agent-replay-task0001-poster.jpg": {
+      "bytes": 245824,
+      "sha256": "2064bde58e1c7a0c308bbe84f537fd6757e1d0ac689c52c1d754596669d3dd5d"
+    },
+    "docs/video/task0001/captions.en.srt": {
+      "bytes": 4152,
+      "sha256": "ed4b1f4c895432fea0f1422510bed0aa7544ed0fc2c04ef2a14eb091ac6c8672"
+    },
+    "docs/video/task0001/captions.zh.srt": {
+      "bytes": 3737,
+      "sha256": "a1bd9b4453fb3c3a74a6e84ab72d73ffdf76049bf43f4db9b6ddf5ed1fca276e"
+    },
+    "docs/video/task0001/captions.bilingual.srt": {
+      "bytes": 6716,
+      "sha256": "5848ad38ee90b14beb81dd7013fb95f01eb6e28632e624eb35153b2246a44151"
+    }
+  }
+}

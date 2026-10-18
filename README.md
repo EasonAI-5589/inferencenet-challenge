@@ -45,7 +45,8 @@ of future updates unless explicitly requested again.
 
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
-All eight pages load `language.js` with `20261018-branding-review`;
+Home loads `language.js` with `20261018-guided-replay`; the other seven pages
+retain `20261018-branding-review`.
 Home uses `20261018-subtracks` for `index.css`. Home and Leaderboard retain
 `20261018-dev100-challenge` for `leaderboard.css` and `leaderboard.js`.
 Leaderboard also retains that tag for `site.js` and `leaderboard-dev100.js`,
@@ -192,24 +193,31 @@ language.js release tag.
 
 ## Homepage agent replay video
 
-`assets/video/agent-replay-task0001.mp4` is a silent 71-second replay
-(1920×1080, 30 fps, H.264) of recorded task 0001, GPT-5.6 Sol with DeepAgents.
+`assets/video/agent-replay-task0001.mp4` is the 274.6-second guided replay
+(1920×1080, 30 fps, H.264/AAC) of recorded task 0001, GPT-5.6 Sol with DeepAgents.
+It adds English synthetic narration, burned-in English/Chinese captions, a moving
+pixel guide with a baton, local highlights and particles, and longer reading holds.
 Five chapters follow the run: the task and its six sub-problems, four
 run_python calls, the harness refusing a fifth tool call and asking for the
 final program, the evaluator running that program and the scorer comparing it
 with the sealed reference, and the full-replication result. Code excerpts,
-outputs, token counts, timings, budgets and scores come from the run record;
-only the time axis is compressed, and the captions add no new numbers.
+outputs, token counts, timings, budgets and scores come from the unchanged derived
+run snapshot. The original three-column dashboard, all 32 phases and five-chapter
+order are preserved; the presentation timeline is slowed down. The recorded run
+took 121.038 seconds, which is distinct from the edited video duration. Passing
+the scorer's tolerance does not mean that the displayed values are exactly equal.
 `agent-replay-task0001-poster.jpg` is its poster frame.
 
 The video is embedded on the homepage below the hero action buttons and before
 the status updates, with a poster and native playback controls. It does not
-autoplay. English and Chinese captions identify the historical single-task
-demonstration, its English-only silent video and compressed timeline, and link
+autoplay. English and Chinese page text identifies the historical single-task
+demonstration, synthetic narration, bilingual captions and slower timeline, and links
 to `data.html#case-0001`. The existing task 0011 walkthrough remains separate.
-Homepage CSS uses `20261018-subtracks`; all page
-translations use `20261018-branding-review`.
-The animation source and export scripts stay in the research workspace.
+Homepage CSS uses `20261018-subtracks`; its dictionary, video and poster URLs
+use `20261018-guided-replay` to avoid stale cached assets.
+The animation source and export scripts stay in the research workspace. Source
+provenance, media checksums, chapter times and standalone SRT captions are in
+[`docs/video/task0001/`](docs/video/task0001/README.md).
 `scripts/check.mjs` accepts `.mp4` files under `assets/` for this video.
 
 ## Self-evolving: improving a harness

@@ -1,0 +1,127 @@
+1
+00:00:00,450 --> 00:00:11,026
+One real research task. GPT five point six Sol and DeepAgents. Follow the complete recorded sequence.
+
+2
+00:00:13,550 --> 00:00:22,758
+The paper studies consumption smoothing in interwar Japan. How does household consumption respond to disposable income?
+
+3
+00:00:23,483 --> 00:00:32,643
+Six pieces must agree: data, regression, fixed effects, controls, clustered standard errors, and the result file.
+
+4
+00:00:33,483 --> 00:00:42,571
+The reference stays sealed. The agent must produce the coefficient, standard error, and p-value without seeing it.
+
+5
+00:00:43,283 --> 00:00:46,371
+Now watch the agent work.
+
+6
+00:00:47,083 --> 00:00:51,275
+First, inspect the monthly household panel.
+
+7
+00:00:51,983 --> 00:01:00,591
+Python loads the Stata file, then checks shape, column names, quarters, and candidate household identifiers.
+
+8
+00:01:02,817 --> 00:01:10,129
+Eighteen eighty rows, sixty-three columns, four quarters, and two hundred thirty-seven households.
+
+9
+00:01:11,317 --> 00:01:16,277
+Next, check the environment and usable observations.
+
+10
+00:01:16,983 --> 00:01:24,991
+The code checks Python packages, missing values in eleven variables, and observations per household.
+
+11
+00:01:27,217 --> 00:01:41,273
+Linearmodels, statsmodels, and scipy are available. Pyreadstat is missing. All eleven variables are complete, averaging seven point nine three observations per household.
+
+12
+00:01:41,983 --> 00:01:47,231
+Now compare regression implementations and their standard errors.
+
+13
+00:01:47,950 --> 00:01:56,486
+The program adds household and month-year fixed effects, composition controls by quarter, and household-clustered errors.
+
+14
+00:01:58,917 --> 00:02:10,981
+The coefficient stays near zero point three nine one eight six five. Four methods give different standard errors. The small-sample correction matters.
+
+15
+00:02:11,683 --> 00:02:15,995
+The agent now investigates the variable labels.
+
+16
+00:02:16,717 --> 00:02:23,765
+Stata metadata reveals the data label, value labels, variable labels, and notes.
+
+17
+00:02:25,983 --> 00:02:37,807
+H I D means household ID. T F E is the year-month count. Quarter maps the survey periods, and disposable income is measured in yen.
+
+18
+00:02:38,517 --> 00:02:42,205
+Now the harness enforces the budget.
+
+19
+00:02:42,917 --> 00:02:46,437
+The model proposes one more check.
+
+20
+00:02:47,150 --> 00:02:52,230
+It requests another Panel OLS fit with a group adjustment.
+
+21
+00:02:52,950 --> 00:03:02,614
+But four interactive tool calls are already used. DeepAgents blocks this request and asks for the final complete program.
+
+22
+00:03:03,317 --> 00:03:07,701
+The sixth model call prepares the final submission.
+
+23
+00:03:08,417 --> 00:03:18,609
+The final program removes household means, solves the regression, applies the clustered covariance correction, and writes the required JSON file.
+
+24
+00:03:19,317 --> 00:03:23,485
+An independent evaluator now takes over.
+
+25
+00:03:24,217 --> 00:03:28,025
+It runs the submitted program separately.
+
+26
+00:03:28,750 --> 00:03:36,902
+The program exits successfully and saves a valid prediction: coefficient, standard error, and p-value.
+
+27
+00:03:37,617 --> 00:03:45,169
+The reference is revealed. The coefficient passes its one-percent relative-error tolerance.
+
+28
+00:03:45,883 --> 00:03:51,299
+The standard error also passes the one-percent relative-error check.
+
+29
+00:03:52,017 --> 00:03:58,345
+The p-value passes a separate absolute-error tolerance of zero point zero one.
+
+30
+00:03:59,050 --> 00:04:09,386
+All three pass. The earlier dummy-variable standard error would fail. Within tolerance does not mean identical digits.
+
+31
+00:04:10,117 --> 00:04:21,245
+Complete reproduction: six model calls, four tool calls, forty-six thousand four hundred ninety-six tokens, and about two minutes of recorded runtime.
+
+32
+00:04:22,117 --> 00:04:33,341
+One question, an executable program, and independently checked evidence. The complete recorded sequence is preserved, with a slower presentation.
