@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="no-referrer">
+  <title>Business Analysis &amp; Deliverables — InferenceNet</title>
+  <meta name="description" content="Preview the InferenceNet Business Analysis &amp; Deliverables subtrack: agent workflows for finance and HR, from task planning and evidence analysis to checked submissions and independent review.">
+  <meta property="og:title" content="InferenceNet — Business Analysis &amp; Deliverables">
+  <meta property="og:description" content="Explore two business-analysis tasks, the agent work cycle and independent rubric review, with a four-run pilot and its calibration limits.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="styles.css?v=20261018-shared-nav">
+  <link rel="stylesheet" href="site.css?v=20261018-shared-nav">
+  <link rel="stylesheet" href="professional-tasks.css?v=20261018-business-integration">
+  <script src="site.js?v=20261011-release" defer></script>
+  <link rel="stylesheet" href="language.css">
+  <script src="language.js?v=20261018-sufe-harness-v1" defer></script>
+</head>
+<body class="professional-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress"></span></div>
+  <header class="site-header">
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="wordmark" href="index.html">Inference<span>Net</span><small>INITIATIVE</small></a>
+      <div class="nav-links open" id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="challenge.html" aria-current="true">Challenge</a>
+        <a href="data.html">Data</a>
+        <a href="agent.html">Agent</a>
+        <a href="harness.html">Harness</a>
+        <a href="evolution.html">Self-evolving</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="teams.html">Teams</a>
+      </div>
+      <div class="nav-controls">
+        <button class="theme-toggle" data-theme-toggle aria-label="Switch to dark theme" aria-pressed="false" type="button" hidden>
+          <span class="theme-icon" aria-hidden="true"></span><span data-theme-label>Light</span>
+        </button>
+        <button class="menu-toggle" type="button" aria-controls="nav-links" aria-expanded="true" hidden>Menu <span aria-hidden="true">−</span></button>
+      </div>
+    </nav>
+  </header>
+  <nav class="track-nav" aria-label="Challenge navigation">
+    <div class="container track-nav-inner">
+      <span class="track-nav-label">Challenge</span>
+      <div class="track-nav-links">
+        <a href="challenge.html">Overview</a>
+        <a href="replication.html">Subtrack 1 · Econometric replication</a>
+        <a href="professional-tasks.html" aria-current="page">Subtrack 2 · Business Analysis &amp; Deliverables</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main" tabindex="-1">
+    <section class="page-hero container professional-hero" aria-labelledby="page-title">
+      <div>
+        <p class="kicker">Subtrack 2 · Business Analysis &amp; Deliverables</p>
+        <h1 id="page-title"><span>Business Analysis</span> <span>&amp; Deliverables</span></h1>
+        <p class="professional-deck">Reason through a business problem. Deliver work that holds up.</p>
+        <p class="lead">Research replication and business analysis both involve agent workflows. This subtrack is organized by its task goal: analyze a business problem, support decisions with evidence and deliver a reviewable report and workbook.</p>
+        <div class="professional-hero-links">
+          <a class="button primary" href="#cases">Explore the two tasks <span aria-hidden="true">↓</span></a>
+          <a class="text-link" href="#demo">Watch the finance demo <span aria-hidden="true">↓</span></a>
+        </div>
+      </div>
+      <aside class="professional-hero-note" aria-label="Preview scope">
+        <p class="kicker">The work product</p>
+        <div class="professional-artifact"><span class="professional-extension" data-no-translate>DOCX</span><div><strong>Review document</strong><p>Decisions, reasoning and follow-up</p></div></div>
+        <div class="professional-artifact"><span class="professional-extension" data-no-translate>XLSX</span><div><strong>Supporting workbook</strong><p>Calculations linked to evidence</p></div></div>
+        <p class="professional-status">Two task packages · Pilot completed</p>
+        <p class="note">Preview only. The official task set, rules and submission entry point are yet to be announced.</p>
+      </aside>
+    </section>
+
+    <section class="container professional-demo" id="demo" aria-labelledby="demo-title">
+      <div class="professional-demo-heading">
+        <p class="kicker">Agent in action · Finance</p>
+        <h2 id="demo-title">From a finance task to independent review</h2>
+      </div>
+      <figure>
+        <video controls playsinline preload="metadata" width="1920" height="1080" poster="assets/video/finance-story-demo-poster.jpg?v=20261019-claude-sufe-v1" aria-label="Finance task demo" aria-describedby="demo-caption">
+          <source src="assets/video/finance-story-demo.mp4?v=20261019-claude-sufe-v1" type="video/mp4">
+          <a href="assets/video/finance-story-demo.mp4?v=20261019-claude-sufe-v1">Download the finance demo</a>
+        </video>
+        <figcaption id="demo-caption">A 2-minute 44-second narrated walkthrough of FIN-T1-003: the task, each tool round trip inside Claude Code, a real script error and the agent’s own repair, then the independent review and pilot result. English synthetic narration with English / Chinese captions; the timeline is compressed from a recorded run.</figcaption>
+      </figure>
+    </section>
+
+    <nav class="subnav" aria-label="On this page">
+      <ol class="container">
+        <li><a href="#workflow"><span class="subnav-number">01</span>Agent workflow</a></li>
+        <li><a href="#cases"><span class="subnav-number">02</span>Task cases</a></li>
+        <li><a href="#review"><span class="subnav-number">03</span>How review works</a></li>
+        <li><a href="#pilot"><span class="subnav-number">04</span>Pilot &amp; calibration</a></li>
+      </ol>
+    </nav>
+
+    <section class="section container" id="workflow" aria-labelledby="workflow-title">
+      <div class="section-heading">
+        <div><p class="kicker">01 / Agent workflow</p><h2 id="workflow-title">From the task goal to a checked submission</h2></div>
+        <p class="lead">The agent needs to plan, use tools, inspect evidence and revise its work. The outline below describes how these tasks can be approached; the pilot results show what the first runs actually delivered.</p>
+      </div>
+      <figure class="professional-workflow-figure" aria-labelledby="workflow-caption">
+        <div class="professional-goal">
+          <span class="professional-step" aria-hidden="true">01</span>
+          <div><h3>Task goal</h3><p>The brief defines the decisions to support, the scope and the expected work product.</p></div>
+          <p class="professional-goal-example">Finance: close corrections and review planning. HR: training impact and procurement recommendations.</p>
+        </div>
+        <div class="professional-agent-work">
+          <div class="professional-workflow-label"><h3>Inside the agent workflow</h3><p>The agent has the brief and materials; the rubric and reference outputs are withheld.</p></div>
+          <ol class="professional-workflow" start="2">
+            <li><span class="professional-step" aria-hidden="true">02</span><h4>Understand &amp; plan</h4><p>Break the goal into questions, find the relevant files and choose the calculations and tools.</p></li>
+            <li><span class="professional-step" aria-hidden="true">03</span><h4>Read, reconcile &amp; calculate</h4><p>Use tools to inspect multiple files, connect claims to evidence, resolve inconsistencies and compute results.</p></li>
+            <li><span class="professional-step" aria-hidden="true">04</span><h4>Build the work product</h4><p>Write the report and workbook with supporting evidence, calculations and explicit conclusions.</p></li>
+            <li><span class="professional-step" aria-hidden="true">05</span><h4>Check &amp; revise</h4><p>Reopen the files, verify formulas and totals, and check that both deliverables support the same conclusions.</p></li>
+          </ol>
+          <div class="professional-workflow-loop">
+            <span aria-hidden="true">↶</span><div><strong>Read → calculate → check → revise → read again</strong><p>If checks reveal a gap, revisit the evidence, calculations or plan and update the deliverables.</p></div>
+          </div>
+        </div>
+        <div class="professional-submission"><span aria-hidden="true">↓</span><span>Submit the report and workbook</span></div>
+        <div class="professional-judge">
+          <span class="professional-step" aria-hidden="true">06</span>
+          <div><p class="kicker">After submission · Independent evaluation</p><h3>Judge against the rubric and source evidence</h3><p>A separate judge evaluates the submitted files using the task rubric and supplied materials. Agent self-checks do not replace this final evaluation.</p></div>
+          <a class="text-link" href="#review">See how scoring works <span aria-hidden="true">↓</span></a>
+        </div>
+        <figcaption id="workflow-caption">Conceptual workflow: new evidence can change the plan and repeat earlier steps. This diagram is not a replay of either pilot run.</figcaption>
+      </figure>
+      <div class="professional-observed">
+        <p class="kicker">Observed in the HR pilot</p>
+        <div><p>Read rules and evidence → write and run a Python script → inspect results → edit the script and rerun → check the Word and Excel files.</p><p class="note">These tool checks and revisions did not prevent the attendance errors and behavioral misclassification documented below.</p></div>
+      </div>
+      <p class="note professional-workflow-note">The finance package combines public references with synthetic business records. The HR package uses synthetic materials. Both task briefs require using the supplied materials.</p>
+    </section>
+
+    <section class="section container ruled" id="cases" aria-labelledby="cases-title">
+      <div class="section-heading">
+        <div><p class="kicker">02 / Task cases</p><h2 id="cases-title">Two briefs. Two kinds of judgment.</h2></div>
+        <p class="lead">Open each case to see the input, the required work product and what a review can catch. Descriptions summarize the task packages; source records are not included here.</p>
+      </div>
+      <details class="professional-case" open>
+        <summary>
+          <span class="professional-case-id"><span class="kicker">Finance</span><code>FIN-T1-003</code></span>
+          <span class="professional-case-heading"><span class="professional-case-title">July Month-End Close: Corrections and Review Planning</span><span class="professional-case-subtitle">Resolve accounting issues and prepare a group close review supported by a calculation workbook.</span></span>
+          <span class="professional-case-count"><strong>55</strong><span>input files</span></span>
+          <span class="professional-case-toggle" aria-hidden="true"></span>
+        </summary>
+        <div class="professional-case-body">
+          <div class="professional-case-columns">
+            <div><h3>Materials</h3><p>Ledgers, internal policies and correspondence, accounting standards and annual reports.</p><p class="professional-format">18 CSV · 28 DOCX · 4 PDF · 4 HTML · 1 LOG</p></div>
+            <div><h3>Deliverables</h3><p>A Word review document and an Excel workbook with five non-empty worksheets, retaining the formulas needed to trace the calculations.</p><p class="professional-format">DOCX + XLSX</p></div>
+            <div><h3>What review checks</h3><p>Accounting treatment, hedge calculations, partial disposal analysis, traceability and consistency between the narrative and workbook.</p><p class="professional-format">25 scored criteria, including 5 penalties · 2 red lines</p></div>
+          </div>
+          <div class="professional-failure"><p class="kicker">What the pilot exposed</p><p>The agent produced all five worksheets without formulas, failing the traceability check. It also failed to distinguish a 70% economic hedging target from the accounting hedge ratio and omitted parts of the disposal analysis.</p></div>
+        </div>
+      </details>
+      <details class="professional-case">
+        <summary>
+          <span class="professional-case-id"><span class="kicker">Human resources</span><code>HR-T3-114</code></span>
+          <span class="professional-case-heading"><span class="professional-case-title">Cold-Chain Supervisor Training: Impact Review and Procurement Acceptance</span><span class="professional-case-subtitle">Assess training impact and recommend acceptance and payment for three procurement packages.</span></span>
+          <span class="professional-case-count"><strong>17</strong><span>input files</span></span>
+          <span class="professional-case-toggle" aria-hidden="true"></span>
+        </summary>
+        <div class="professional-case-body">
+          <div class="professional-case-columns">
+            <div><h3>Materials</h3><p>Training and attendance records, operational results, procurement evidence and supporting documents.</p><p class="professional-format">8 CSV · 5 XLSX · 4 DOCX</p></div>
+            <div><h3>Deliverables</h3><p>An Excel analysis workbook and a Word memorandum covering training outcomes, package acceptance and the allocation of payments.</p><p class="professional-format">XLSX + DOCX</p></div>
+            <div><h3>What review checks</h3><p>Population scope, attendance, center-level impact estimates, evidence-unit acceptance and payment categories. Limited opportunity to demonstrate a skill must be distinguished from poor performance.</p><p class="professional-format">34 scored criteria, including 6 penalties · No red lines</p></div>
+          </div>
+          <div class="professional-failure"><p class="kicker">What the pilot exposed</p><p>The agent omitted the source index, reported 80/81 attendance instead of 82/83 and used an average across centers instead of center-level net changes. A penalty was triggered when it marked everyone with insufficient opportunity as failing the behavioral standard.</p></div>
+        </div>
+      </details>
+    </section>
+
+    <section class="section container ruled" id="review" aria-labelledby="review-title">
+      <div class="section-heading">
+        <div><p class="kicker">03 / How review works</p><h2 id="review-title">Independent review after submission</h2></div>
+        <p class="lead">The judge evaluates the final submission separately from the agent’s own checks. It examines the output files against the rubric and uses the supplied materials to verify their claims.</p>
+      </div>
+      <div class="professional-review-grid">
+        <div class="professional-rubric">
+          <p class="kicker">Rubric reward · 0–1</p>
+          <p class="professional-formula">Weighted positive credit − weighted violations</p>
+          <p class="professional-denominator">divided by the total positive weight</p>
+          <p class="note">The result is clipped to [0, 1]. Penalties do not increase the denominator. A confirmed red-line violation makes the finance reward zero.</p>
+        </div>
+        <dl class="professional-review-rules">
+          <div><dt>Multiple dimensions</dt><dd>Professional standards, correct conclusions, calculations, instruction following, analysis, factual fidelity and safety.</dd></div>
+          <div><dt>Reference outputs</dt><dd>Used to calibrate structure and scale, not as an answer to copy. A different valid solution should not lose credit for differing from the reference.</dd></div>
+          <div><dt>Scoring failures</dt><dd><code>verifier_error</code><span> marks an unavailable score that needs reevaluation, not a valid zero. It must be reported separately from scored outcomes.</span></dd></div>
+        </dl>
+      </div>
+      <p class="note professional-scoring-note">Finance uses binary and five-level criteria; five-level ratings are normalized to [0, 1]. HR uses binary criteria. Total positive weight: finance 172; HR 106.</p>
+    </section>
+
+    <section class="section container ruled" id="pilot" aria-labelledby="pilot-title">
+      <div class="section-heading">
+        <div><p class="kicker">04 / Pilot &amp; calibration</p><h2 id="pilot-title">A first run, with limits in view</h2></div>
+        <p class="lead">On 18 Oct 2026, each task had one reference-output scoring run and one agent run. All four received a score with no verifier error. This is a pipeline pilot, not evidence of broad model performance.</p>
+      </div>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Pilot rubric rewards">
+        <table class="compare-table professional-pilot-table">
+          <caption>Four recorded runs · Rubric reward on a 0–1 scale</caption>
+          <thead><tr><th scope="col">Task</th><th scope="col">Run</th><th scope="col" class="num">Rubric reward</th><th scope="col">Review outcome</th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><code>FIN-T1-003</code></th><td>Reference output</td><td class="num professional-reward">1.000</td><td>No penalty or red-line violation</td></tr>
+            <tr><th scope="row"><code>FIN-T1-003</code></th><td>Agent · qwen3.7-max</td><td class="num professional-reward">0.333</td><td>No penalty or red-line violation</td></tr>
+            <tr><th scope="row"><code>HR-T3-114</code></th><td>Reference output</td><td class="num professional-reward">0.783</td><td>3 positive criteria unmet; no penalty</td></tr>
+            <tr><th scope="row"><code>HR-T3-114</code></th><td>Agent · qwen3.7-max</td><td class="num professional-reward">0.208</td><td>1 penalty triggered</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="professional-pilot-context">
+        <p class="note">Scores are rounded to three decimals and are not accuracy rates. The two task rubrics differ; these four runs are not a leaderboard or a controlled comparison across domains.</p>
+        <a class="text-link" href="assets/data/professional-tasks-pilot.json">Download the pilot summary <span aria-hidden="true">↗</span></a>
+      </div>
+      <p class="note">The downloadable summary records task versions and hashes of the result and reward files. Original task materials and submissions are not included on this public site.</p>
+      <dl class="professional-setup">
+        <div><dt>Runner &amp; agent</dt><dd>Harbor 0.20.0 · Claude Code 2.1.114 · qwen3.7-max</dd></div>
+        <div><dt>Finance judge</dt><dd><code>deepseek-v4.1-flash</code><span> overrides the package default </span><code>deepseek-flash</code><span>.</span></dd></div>
+        <div><dt>HR judge</dt><dd><code>qwen3.7-plus</code><span> uses the package default.</span></dd></div>
+      </dl>
+      <div class="professional-calibration" aria-labelledby="calibration-title">
+        <div><p class="kicker">Before formal evaluation</p><h3 id="calibration-title">The reference also needs calibration</h3><p>The HR reference scored 0.783. Its three unmet criteria reveal two issues to resolve before this becomes a formal subtrack.</p></div>
+        <ol>
+          <li><h4>Clarify cross-file requirements</h4><p>Two criteria were read as requiring accepted evidence-unit counts in both the workbook and memorandum. The reference gave the counts only in the workbook. The rubric wording and reference need to agree on what each file must state.</p></li>
+          <li><h4>Define formula recalculation</h4><p>Thirteen formulas in the reference payment sheet had no cached values. Reading the cached results returned blanks and caused one criterion to fail. Recalculation and formula-reading rules need to be standardized.</p></li>
+        </ol>
+      </div>
+      <div class="professional-release-note"><p class="kicker">Subtrack status</p><p>Task set, evaluation rules and submission entry point: to be announced. This page presents the task format and the initial pilot while rubric calibration is still in progress.</p></div>
+    </section>
+
+    <div class="container">
+      <nav class="page-footer-nav" aria-label="Page sequence">
+        <a href="data.html"><small>Explore the benchmark</small><span><span aria-hidden="true">←</span> Research replication data</span></a>
+        <a href="harness.html"><small>Explore execution</small><span>Harness <span aria-hidden="true">→</span></span></a>
+      </nav>
+    </div>
+  </main>
+  <footer class="site-footer container"><a class="wordmark" href="index.html">Inference<span>Net</span></a><p>AI Agents for Business, Finance and Social Science.</p><a href="teams.html#contact">Contact <span aria-hidden="true">→</span></a></footer>
+</body>
+</html>

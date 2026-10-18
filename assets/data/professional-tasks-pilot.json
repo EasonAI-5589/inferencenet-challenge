@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "release_status": "pilot-preview",
+  "date": "2026-10-18",
+  "title": "Business Analysis & Deliverables: Finance and Human Resources",
+  "evidence_class": "curated-summary-of-local-trial-results",
+  "runner": {
+    "name": "Harbor",
+    "version": "0.20.0"
+  },
+  "agent_harness": {
+    "name": "Claude Code",
+    "version": "2.1.114"
+  },
+  "protocol": {
+    "provider": "Bailian Anthropic-compatible endpoint",
+    "agent_model": "qwen3.7-max",
+    "request_settings": {
+      "thinking": "adaptive",
+      "effort": "high",
+      "max_tokens": 32000,
+      "source": "observed Claude Code defaults"
+    },
+    "agent_runs_per_task": 1,
+    "reference_runs_per_task": 1
+  },
+  "tasks": [
+    {
+      "id": "FIN-T1-003",
+      "version": "1.1.2",
+      "domain": "Finance",
+      "inputs": 55,
+      "source_type": "Public reference documents and synthetic business records",
+      "outputs": [
+        "docx",
+        "xlsx"
+      ],
+      "graded_criteria": 25,
+      "penalty_criteria_included": 5,
+      "gating_criteria": 2,
+      "positive_weight_sum": 172,
+      "judge_model": "deepseek-v4.1-flash",
+      "default_judge_model": "deepseek-flash"
+    },
+    {
+      "id": "HR-T3-114",
+      "version": "1.0.0",
+      "domain": "Human Resources",
+      "inputs": 17,
+      "source_type": "Synthetic materials",
+      "outputs": [
+        "xlsx",
+        "docx"
+      ],
+      "graded_criteria": 34,
+      "penalty_criteria_included": 6,
+      "gating_criteria": 0,
+      "positive_weight_sum": 106,
+      "judge_model": "qwen3.7-plus",
+      "default_judge_model": "qwen3.7-plus"
+    }
+  ],
+  "runs": [
+    {
+      "task_id": "FIN-T1-003",
+      "task_checksum": "74a37955bebdc51000449bac2e119b19615c2d7179fd62635c582fb052e34d2d",
+      "agent": "oracle",
+      "agent_version": "1.0.0",
+      "model": null,
+      "status": "scored",
+      "reward": 1.0,
+      "graded_score": 1.0,
+      "gating": 1.0,
+      "verifier_error": 0.0,
+      "criteria_counted": 25.0,
+      "missing_outputs": [],
+      "role": "reference",
+      "evidence_sha256": {
+        "result.json": "763659ba61acb2eea91ada7dd1c0eb28b995518f021d27810efee5da6eff1332",
+        "reward.json": "3b5cf538afb08c4c06ceb638da311f9edc3aa36eb434adb04d17a3a300cd94a2"
+      }
+    },
+    {
+      "task_id": "FIN-T1-003",
+      "task_checksum": "74a37955bebdc51000449bac2e119b19615c2d7179fd62635c582fb052e34d2d",
+      "agent": "claude-code",
+      "agent_version": "2.1.114",
+      "model": "qwen3.7-max",
+      "status": "scored",
+      "reward": 0.332849,
+      "graded_score": 0.332849,
+      "gating": 1.0,
+      "verifier_error": 0.0,
+      "criteria_counted": 25.0,
+      "missing_outputs": [],
+      "role": "agent",
+      "evidence_sha256": {
+        "result.json": "67a9eb435a054bef5a569eeef90d4ec383952d98aaccc2eba2f0ec62d215b735",
+        "reward.json": "bc1235c50cb110d000bf89eb21ce4c1c5586f888178ebb4002748138a3a20fb5"
+      }
+    },
+    {
+      "task_id": "HR-T3-114",
+      "task_checksum": "7d047e2194a153d21fc1780c6e165346ad9cf827c09c3317627f8266671781bb",
+      "agent": "oracle",
+      "agent_version": "1.0.0",
+      "model": null,
+      "status": "scored",
+      "reward": 0.783019,
+      "graded_score": 0.783019,
+      "gating": null,
+      "verifier_error": 0.0,
+      "criteria_counted": 34.0,
+      "missing_outputs": [],
+      "role": "reference",
+      "evidence_sha256": {
+        "result.json": "5506fd51ceed51695662da485cf47fb569a9e4dbfbed3438673a0000521bcecc",
+        "reward.json": "293beec1cde595fdc0df17cff445d89f92a3c540043ce1f34d351b71a6786894"
+      }
+    },
+    {
+      "task_id": "HR-T3-114",
+      "task_checksum": "7d047e2194a153d21fc1780c6e165346ad9cf827c09c3317627f8266671781bb",
+      "agent": "claude-code",
+      "agent_version": "2.1.114",
+      "model": "qwen3.7-max",
+      "status": "scored",
+      "reward": 0.207547,
+      "graded_score": 0.207547,
+      "gating": null,
+      "verifier_error": 0.0,
+      "criteria_counted": 34.0,
+      "missing_outputs": [],
+      "role": "agent",
+      "evidence_sha256": {
+        "result.json": "2b84628c0b4a9fa32d8edc461febcdf983815aa73fc2e222f3b16a685daad63a",
+        "reward.json": "6c9ea2bbd0b0cf6ca8027c9e27f9fb2edb07e2da0f7bcc9699feb6386a485032"
+      }
+    }
+  ],
+  "caveats": [
+    "Two tasks with one agent run each; these are pilot observations, not official Challenge rankings or estimates of general performance.",
+    "Task-specific rubric reward ranges from 0 to 1 and is not replication accuracy. Different tasks and judges should not be pooled into a headline score.",
+    "HR reference scoring needs calibration: R21/R22 interpreted required details across both deliverables; R23 encountered missing cached spreadsheet formula values.",
+    "verifier_error=1 denotes unavailable scoring, not a valid zero score. All four recorded trials have verifier_error=0.",
+    "Final task release, competition rules and submission process are to be announced."
+  ],
+  "provenance": {
+    "records_sha256": "227eebf8a3b8c65ebb806fd0a38d5cb226d6f807f59722f1820e464516b19d02",
+    "method": "Summary fields checked against trial results and verifier rewards; original tasks and deliverables remain outside the public website."
+  }
+}

@@ -1158,7 +1158,6 @@
   "Agent: one recorded run →": "Agent：一次运行记录 →",
   "Agent: failure case study →": "Agent：失败案例 →",
   "Self-evolving: InferenceNet’s development study →": "自进化：InferenceNet 的开发研究 →",
-  "Leaderboard: Dev100 v10 and Selected_1000 →": "排行榜：Dev100 v10 与 Selected_1000 →",
   "07 / Update · 12 Oct 2026": "07 / 更新 · 2026 年 10 月 12 日",
   "A dated follow-up": "一次带日期的补充",
   "Stars and forks are one snapshot taken on 12 Oct 2026. They show attention and reuse, not task success, cost or maintainability.": "Star 与 Fork 是 2026 年 10 月 12 日的一次快照，反映的是关注与复用程度，不代表任务成功率、成本或可维护性。",
@@ -1775,5 +1774,6 @@
   "; OpenCode’s": "；OpenCode 的",
   "configuration": "配置",
   "pages.": "页面。",
-  "General agent frameworks such as LangChain, Google ADK, Microsoft Agent Framework, Mastra, smolagents and CrewAI supply building blocks rather than a ready harness and are not listed. During 2026 several makers added a harness layer: sandbox agents in the OpenAI Agents SDK (listed above; a beta from 15 Apr 2026), Pydantic AI Harness, the Strands harness, the AI SDK’s HarnessAgent and the Mastra Code SDK. This describes current capabilities; InferenceNet’s fourth Dev100 v10 configuration (section 06) keeps its recorded composition from the SDK’s Runner with run_python as the one function tool, and its results are unchanged.": "LangChain、Google ADK、Microsoft Agent Framework、Mastra、smolagents、CrewAI 等通用 Agent 框架提供的是构建模块，而不是现成的 Harness，因此不在此列。2026 年间有几家加入了 Harness 层：OpenAI Agents SDK 的沙箱 Agent（见上表；自 2026 年 4 月 15 日起为测试版）、Pydantic AI Harness、Strands harness、AI SDK 的 HarnessAgent 和 Mastra Code SDK。这里描述的是当前能力；InferenceNet 在 Dev100 v10 中的第四种配置（第 06 节）保持其记录的组合方式，即 SDK 的 Runner 加上 run_python 这唯一一个函数工具，其结果不变。"
+  "General agent frameworks such as LangChain, Google ADK, Microsoft Agent Framework, Mastra, smolagents and CrewAI supply building blocks rather than a ready harness and are not listed. During 2026 several makers added a harness layer: sandbox agents in the OpenAI Agents SDK (listed above; a beta from 15 Apr 2026), Pydantic AI Harness, the Strands harness, the AI SDK’s HarnessAgent and the Mastra Code SDK. This describes current capabilities; InferenceNet’s fourth Dev100 v10 configuration (section 06) keeps its recorded composition from the SDK’s Runner with run_python as the one function tool, and its results are unchanged.": "LangChain、Google ADK、Microsoft Agent Framework、Mastra、smolagents、CrewAI 等通用 Agent 框架提供的是构建模块，而不是现成的 Harness，因此不在此列。2026 年间有几家加入了 Harness 层：OpenAI Agents SDK 的沙箱 Agent（见上表；自 2026 年 4 月 15 日起为测试版）、Pydantic AI Harness、Strands harness、AI SDK 的 HarnessAgent 和 Mastra Code SDK。这里描述的是当前能力；InferenceNet 在 Dev100 v10 中的第四种配置（第 06 节）保持其记录的组合方式，即 SDK 的 Runner 加上 run_python 这唯一一个函数工具，其结果不变。",
+  "Leaderboard: Dev100 v10 →": "排行榜：Dev100 v10 →"
 }

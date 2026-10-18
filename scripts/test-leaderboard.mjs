@@ -2,6 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
+import { fileURLToPath } from 'node:url';
 import { validateSnapshot, rankModels, tableRows, chartLabel, METRICS } from '../leaderboard-data.js';
 const root = new URL('../', import.meta.url);
 const bytes = await readFile(new URL('assets/data/paired-results.json', root));
@@ -51,17 +54,15 @@ test('invalid denominators, changed scores and mixed scoring profiles reject the
   }
 });
 
-test('each page contains exactly one combined fallback table and no legacy entries', async () => {
-  for (const file of ['index.html','leaderboard.html']) {
-    const html=await readFile(new URL(file,root),'utf8');
-    assert.ok(html.includes(tableRows(data)));
-    assert.equal((html.match(/class="paired-table"/g)||[]).length,1);
-    assert.equal((html.match(/<tr data-model=/g)||[]).length,12);
-    assert.doesNotMatch(html,/data-ranking-panel|data-ranking-arm/);
-    assert.doesNotMatch(html,/Fourteen|14 entries|GPT 4o -|32\.8%|69\.7%/);
-  }
-  const js=await readFile(new URL('leaderboard.js',root),'utf8');
-  assert.doesNotMatch(js,/https?:|results\.csv/);
+test('the historical validator preserves public pages instead of regenerating the archived board', async () => {
+  const pages = ['index.html', 'leaderboard.html'].map(file => new URL(file, root));
+  const before = await Promise.all(pages.map(file => readFile(file, 'utf8')));
+  const { stdout } = await promisify(execFile)(process.execPath, [fileURLToPath(new URL('scripts/build-leaderboard.mjs', root))]);
+  assert.match(stdout, /12 configurations, 12000 records/);
+  assert.match(stdout, /No public HTML was generated/);
+  assert.deepEqual(await Promise.all(pages.map(file => readFile(file, 'utf8'))), before);
+  // The retained renderer still reproduces all archived configurations.
+  assert.equal((tableRows(data).match(/<tr data-model=/g) || []).length, 12);
 });
 
 

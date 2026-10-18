@@ -1,0 +1,94 @@
+1
+00:00:00,450 --> 00:00:08,325
+A model, a harness, and a training programme to evaluate. This one is fictional, so the data can be shown freely.
+一个模型、一套 Harness、一项待评估的培训项目。这是虚构任务，数据可以放心展示。
+
+2
+00:00:10,070 --> 00:00:20,245
+Three warehouse sites finished six weeks of training. A fourth, delayed site gives a fair comparison. The agent must decide what to pay the vendor.
+三个仓储中心完成了六周训练，延期参训的第四个中心可作对照。Agent 要判断该向服务方付多少款。
+
+3
+00:00:21,970 --> 00:00:29,382
+Seventeen files go in: ledgers, rules, minutes. A workbook and a decision memo must come out.
+输入十七份材料：台账、规则、会议纪要。要交付一份工作簿和一份决策备忘录。
+
+4
+00:00:31,110 --> 00:00:37,897
+The model works through Claude Code in a Docker container. The scoring rubric is sealed, out of its reach.
+模型通过 Claude Code，在 Docker 容器里工作。评分标准处于封存状态，Agent 接触不到。
+
+5
+00:00:39,626 --> 00:00:48,263
+It begins by looking at the data. A request goes out, Claude Code runs it in Docker, and the first rows of the test ledger come back.
+它先看数据。请求发出，Claude Code 在 Docker 里执行，测验台账的前几行返回给模型。
+
+6
+00:00:49,990 --> 00:00:55,790
+Then it writes a plan for itself: seven tasks, from reading the sources to writing the memo.
+接着它给自己列计划：七项任务，从读材料到写备忘录。
+
+7
+00:00:57,522 --> 00:01:06,147
+It reads the rules too. A Word document comes back with the data boundary: individual results are for assessment and support only.
+它也读规则。一份 Word 文档返回了数据边界：个人结果只用于评估与支持。
+
+8
+00:01:07,862 --> 00:01:12,187
+Now it writes a long script that builds both deliverables from the sources.
+现在它写一个长脚本，从材料直接生成两份交付物。
+
+9
+00:01:13,930 --> 00:01:20,255
+It runs the script. Seven source tables load, and the run ends with no error at all.
+它运行脚本。七张源表载入，运行结束，没有任何报错。
+
+10
+00:01:21,990 --> 00:01:30,052
+But running without error is not the same as being right. The agent says it noticed issues, and checks who is actually in scope.
+但没有报错不等于逻辑正确。Agent 自己说发现了问题，并去核对哪些人真正在范围内。
+
+11
+00:01:31,778 --> 00:01:38,790
+So it opens its own script and edits it: the sample filter first, then the logic that decides the first work package.
+于是它打开自己的脚本并修改：先改样本过滤条件，再改决定第一个工作包状态的逻辑。
+
+12
+00:01:40,510 --> 00:01:46,398
+Then the same pipeline runs again. It succeeds again, now with the corrected scope.
+然后同一条流水线再跑一次。这次仍然成功，用的是修正后的范围。
+
+13
+00:01:48,114 --> 00:01:54,626
+It checks the finished files. The workbook has nine sheets, the memo seventy-three paragraphs.
+它检查生成好的文件。工作簿有九张表，备忘录七十三段。
+
+14
+00:01:56,342 --> 00:02:04,104
+The agent finishes. Only now does Harbor put the tests into the same container, and a separate judge session starts.
+Agent 完成交付。直到这时，Harbor 才把测试放进同一个容器，另起独立的裁判会话。
+
+15
+00:02:05,818 --> 00:02:13,793
+The judge scores the two submitted files against thirty-four criteria, one at a time. Nothing flows back to the agent.
+裁判按三十四条标准逐条评审这两份提交的文件。评分结果不会回传给 Agent。
+
+16
+00:02:15,510 --> 00:02:23,997
+Some things were right. The first work package was correctly judged conditional. But the second came out half a unit short.
+有些判断是对的：第一个工作包被正确判为附条件验收。但第二个差了半个单元。
+
+17
+00:02:25,730 --> 00:02:35,442
+One penalty fired, and it is the most important one. Eight supervisors had too few chances to be rated, yet all were marked as not meeting the standard.
+有一条扣分项被触发，也是最重要的一条。八名主管缺乏被评价的机会，却全被标成不达标。
+
+18
+00:02:37,174 --> 00:02:47,249
+The reward is point two zero eight. Six criteria met, twenty-two not met, one penalty. One pilot run, not a ranking.
+奖励值为 0.208：六项满足、二十二项未满足、一条扣分。这只是一次试跑，不是排名。
+
+19
+00:02:48,978 --> 00:02:54,278
+From professional task to agent run, independent check, and what to improve next.
+从专业任务到 Agent 运行，再到独立检验，以及下一步该改进什么。

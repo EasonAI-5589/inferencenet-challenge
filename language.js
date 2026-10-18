@@ -7,6 +7,12 @@
   const common = {
     'Home': '首页', 'Data': '数据', 'Agent': '智能体', 'Evolution': '自进化', 'Self-evolving': '自进化', 'Leaderboard': '排行榜',
     'Teams': '团队', 'Challenge': '挑战赛', 'Contact': '联系', 'Menu': '菜单', 'Light': '浅色', 'Dark': '深色',
+    'Subtrack 1': '赛道一', 'Subtrack 2': '赛道二', 'Overview': '概览', 'Harness': 'Harness',
+    'Subtrack 1: Econometric replication': '赛道一：计量经济学复现',
+    'Subtrack 2: Business Analysis & Deliverables': '赛道二：业务分析与交付',
+    'Challenge navigation': '挑战赛导航', 'Econometric replication': '计量经济学复现',
+    'Subtrack 1 · Econometric replication': '赛道一 · 计量经济学复现',
+    'Subtrack 2 · Business Analysis & Deliverables': '赛道二 · 业务分析与交付',
     'AI Agents for Business, Finance and Social Science': '面向商业、金融与社会科学的 AI 智能体',
     'AI Agents for Business, Finance and Social Science.': '面向商业、金融与社会科学的 AI 智能体。',
     'Dark theme': '深色主题', 'Switch to dark theme': '切换深色主题',
@@ -124,7 +130,7 @@
   function loadDictionary() {
     if (!dictionaryPromise) {
       const filename = location.pathname.split('/').pop() || 'index.html';
-      const page = ['index.html', 'challenge.html', 'data.html', 'agent.html', 'harness.html', 'evolution.html', 'leaderboard.html', 'teams.html'].includes(filename)
+      const page = ['index.html', 'challenge.html', 'data.html', 'agent.html', 'harness.html', 'evolution.html', 'leaderboard.html', 'teams.html', 'professional-tasks.html', 'replication.html'].includes(filename)
         ? filename.replace('.html', '') : 'index';
       const dictionaryURL = new URL(`assets/i18n/${page}.zh.json`, scriptURL);
       // Keep a page's release-tagged script and dictionary on the same version.

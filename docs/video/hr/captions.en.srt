@@ -1,0 +1,75 @@
+1
+00:00:00,450 --> 00:00:08,325
+A model, a harness, and a training programme to evaluate. This one is fictional, so the data can be shown freely.
+
+2
+00:00:10,070 --> 00:00:20,245
+Three warehouse sites finished six weeks of training. A fourth, delayed site gives a fair comparison. The agent must decide what to pay the vendor.
+
+3
+00:00:21,970 --> 00:00:29,382
+Seventeen files go in: ledgers, rules, minutes. A workbook and a decision memo must come out.
+
+4
+00:00:31,110 --> 00:00:37,897
+The model works through Claude Code in a Docker container. The scoring rubric is sealed, out of its reach.
+
+5
+00:00:39,626 --> 00:00:48,263
+It begins by looking at the data. A request goes out, Claude Code runs it in Docker, and the first rows of the test ledger come back.
+
+6
+00:00:49,990 --> 00:00:55,790
+Then it writes a plan for itself: seven tasks, from reading the sources to writing the memo.
+
+7
+00:00:57,522 --> 00:01:06,147
+It reads the rules too. A Word document comes back with the data boundary: individual results are for assessment and support only.
+
+8
+00:01:07,862 --> 00:01:12,187
+Now it writes a long script that builds both deliverables from the sources.
+
+9
+00:01:13,930 --> 00:01:20,255
+It runs the script. Seven source tables load, and the run ends with no error at all.
+
+10
+00:01:21,990 --> 00:01:30,052
+But running without error is not the same as being right. The agent says it noticed issues, and checks who is actually in scope.
+
+11
+00:01:31,778 --> 00:01:38,790
+So it opens its own script and edits it: the sample filter first, then the logic that decides the first work package.
+
+12
+00:01:40,510 --> 00:01:46,398
+Then the same pipeline runs again. It succeeds again, now with the corrected scope.
+
+13
+00:01:48,114 --> 00:01:54,626
+It checks the finished files. The workbook has nine sheets, the memo seventy-three paragraphs.
+
+14
+00:01:56,342 --> 00:02:04,104
+The agent finishes. Only now does Harbor put the tests into the same container, and a separate judge session starts.
+
+15
+00:02:05,818 --> 00:02:13,793
+The judge scores the two submitted files against thirty-four criteria, one at a time. Nothing flows back to the agent.
+
+16
+00:02:15,510 --> 00:02:23,997
+Some things were right. The first work package was correctly judged conditional. But the second came out half a unit short.
+
+17
+00:02:25,730 --> 00:02:35,442
+One penalty fired, and it is the most important one. Eight supervisors had too few chances to be rated, yet all were marked as not meeting the standard.
+
+18
+00:02:37,174 --> 00:02:47,249
+The reward is point two zero eight. Six criteria met, twenty-two not met, one penalty. One pilot run, not a ranking.
+
+19
+00:02:48,978 --> 00:02:54,278
+From professional task to agent run, independent check, and what to improve next.

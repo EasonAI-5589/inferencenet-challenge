@@ -1,0 +1,76 @@
+{
+  "video": "hr-final.mp4",
+  "task": "HR-T3-114",
+  "duration_seconds": 175.556,
+  "bytes": 9946357,
+  "sha256": "b64a1611aeecb9e15e82de5d35376efa06ee342bb2f5969d1349e3959e245dce",
+  "poster_sha256": "38a9a2d0a80440ba37906c5ca7e42e3cfe0fde4f3ee2c59ff21aecc8f04b3353",
+  "shots": 19,
+  "voice": "en-US-AriaNeural (Microsoft Edge neural TTS), same voice as the Task 0001 walkthrough",
+  "audio_is_synthetic": true,
+  "burned_captions": [
+    "en",
+    "zh"
+  ],
+  "streams": [
+    {
+      "codec_name": "h264",
+      "codec_type": "video",
+      "width": 1920,
+      "height": 1080,
+      "pix_fmt": "yuv420p",
+      "color_space": "bt709",
+      "r_frame_rate": "30/1"
+    },
+    {
+      "codec_name": "aac",
+      "codec_type": "audio",
+      "sample_rate": "48000",
+      "channels": 1,
+      "r_frame_rate": "0/0"
+    }
+  ],
+  "chapters": [
+    {
+      "name": "TASK",
+      "start_seconds": 0.0,
+      "end_seconds": 39.176
+    },
+    {
+      "name": "AGENT",
+      "start_seconds": 39.176,
+      "end_seconds": 115.892
+    },
+    {
+      "name": "HANDOFF",
+      "start_seconds": 115.892,
+      "end_seconds": 125.368
+    },
+    {
+      "name": "CHECK",
+      "start_seconds": 125.368,
+      "end_seconds": 156.724
+    },
+    {
+      "name": "RESULT",
+      "start_seconds": 156.724,
+      "end_seconds": 175.556
+    }
+  ],
+  "source": "research/sufe-video-claude-redesign-20261018 (engine.py, chrome.py, scenes*.py, story_*.py, voice.py, compose.py, render.py)",
+  "recorded_run": {
+    "agent_model": "qwen3.7-max",
+    "harness": "Claude Code 2.1.114",
+    "runner": "Harbor 0.20.0",
+    "judge_model": "qwen3.7-plus",
+    "agent_seconds": 364.9,
+    "model_responses": 28,
+    "tool_calls": 44
+  },
+  "notes": [
+    "Timeline is compressed: shot lengths follow the narration, not the recorded run.",
+    "Commands, outputs, file names and scores are taken from the recorded run (video/data/*.json); nothing was re-run.",
+    "Captions and animation only restate recorded facts; no per-step model-request mapping is shown.",
+    "The pilot reward is one run's rubric score, not an accuracy rate or a ranking."
+  ]
+}

@@ -25,8 +25,9 @@ Source page: https://www.hkubs.hku.hk/about-us/overview/visual-identity/
 Original: https://www.hkubs.hku.hk/wp-content/uploads/2025/05/HKUBS_Horizontal_Coloured_Shield_Blue_Text_Logo.png
 SHA-256: 35b327da36ede548a1f5dbd0e9984a02e70c72671d2c27ab27545db59c2089cd
 
-All marks retain their original colors and aspect ratios. White plates
-preserve the original appearance in either site theme.
+All source files retain their original bytes and aspect ratios. The college and
+business-school marks above use white plates on the Teams page. Homepage
+display treatment is documented below.
 
 Nanyang Technological University, Singapore
 File: ntu-university-official.png (3006 x 1079)
@@ -56,7 +57,26 @@ The SUFE seal comes from the university charter and includes the university
 name in Chinese and English within the seal itself. The HKU standalone crest
 is referenced by the official page as its square 310px icon.
 
-Homepage presentation: all three crests have a 72px display height. A CSS window
+Shanghai University of Finance and Economics — transparent homepage mark
+File: sufe-university-transparent-official.png (702 x 142)
+Retrieved: 2026-10-18
+Owner: Shanghai University of Finance and Economics
+Source page: https://www.sufe.edu.cn/
+Original: https://www.sufe.edu.cn/_upload/tpl/02/d6/726/template726/images/logo.png
+SHA-256: c57a0b9fe8b47804ff1c3c5d13e7545545fb56c4588a832faed8beae36cd8fba
+The official white logo has a transparent alpha channel. The crest occupies
+the first 145 pixels of its 702-pixel width; the adjacent wordmark is not shown.
+Display color #811c21 is used by the official homepage's tlogo.svg:
+https://www.sufe.edu.cn/_upload/tpl/02/d6/726/template726/images/tlogo.svg
+
+Homepage presentation: all three crests have a 72px display height in a borderless
+row below the action buttons. Full university names remain available as hover
+titles and accessible image descriptions. A CSS window
 shows the NTU shield from the original university logo without the adjacent
 wordmark. The source image bytes are unchanged; the window preserves the
-shield itself and its original proportions.
+shield itself and its original proportions. SUFE uses the transparent homepage
+asset's alpha channel as a CSS mask: red (#811c21) in both light and dark mode.
+The background, including the space inside the seal, is
+transparent. The opaque charter asset above is retained for provenance.
+NTU and HKU retain their original colors, including white within their shields.
+No source image bytes are changed.

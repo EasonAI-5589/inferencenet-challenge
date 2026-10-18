@@ -7,10 +7,10 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 // The explicit public-file allowlist (plus the whole reviewed `assets/` tree).
 // Private test pages (`_*.html`), DESIGN.md, README.md and scripts/ are never listed.
-export const pages = ['index.html', 'challenge.html', 'data.html', 'agent.html', 'harness.html', 'evolution.html', 'leaderboard.html', 'teams.html'];
+export const pages = ['index.html', 'challenge.html', 'replication.html', 'data.html', 'agent.html', 'harness.html', 'evolution.html', 'leaderboard.html', 'teams.html', 'professional-tasks.html'];
 export const publicFiles = [
   ...pages,
-  'styles.css', 'site.css', 'language.css', 'mountain.css', 'index.css', 'challenge.css', 'data.css', 'agent.css', 'evolution.css', 'harness.css', 'leaderboard.css', 'teams.css',
+  'styles.css', 'site.css', 'language.css', 'mountain.css', 'index.css', 'challenge.css', 'data.css', 'agent.css', 'evolution.css', 'harness.css', 'leaderboard.css', 'teams.css', 'professional-tasks.css',
   'theme.js', 'site.js', 'language.js', 'charts.js', 'mountain.js', 'leaderboard.js', 'leaderboard-data.js', 'leaderboard-board.js', 'leaderboard-dev100.js', 'leaderboard-dev100-data.js', 'evolution.js',
   '.nojekyll',
 ];
@@ -94,7 +94,7 @@ for (const file of scanned) {
   if (/\/Users\/|127\.0\.0\.1|localhost|local\/runs|sources\.lock\.json/.test(source)) throw new Error(`Private workspace reference in ${file}`);
   if (/\/mnt\/|\b(?:\d{1,3}\.){3}\d{1,3}\b|\b[A-Z]:[\\/]/.test(source)) throw new Error(`Server path or address in ${file}`);
   if (/\bTODO\b|lorem ipsum/i.test(source)) throw new Error(`Placeholder text in ${file}`);
-  const translatedAsset = file === 'language.js' || /^assets\/i18n\/(index|challenge|data|agent|harness|evolution|leaderboard|teams)\.zh\.json$/.test(file);
+  const translatedAsset = file === 'language.js' || /^assets\/i18n\/(index|challenge|replication|data|agent|harness|evolution|leaderboard|teams|professional-tasks)\.zh\.json$/.test(file);
   if (/[一-鿿]/.test(source) && !translatedAsset) throw new Error(`CJK text outside the reviewed translation layer in ${file}`);
   if (file.startsWith('assets/i18n/')) {
     const dictionary = JSON.parse(source);

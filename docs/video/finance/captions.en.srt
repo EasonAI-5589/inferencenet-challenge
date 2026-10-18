@@ -1,0 +1,71 @@
+1
+00:00:00,450 --> 00:00:06,975
+A model, a harness, and a month-end close. Follow how the agent works, and how it is checked.
+
+2
+00:00:08,702 --> 00:00:16,189
+July books lock on the fifth of August. Six pending entries have been filed, and each one needs a decision.
+
+3
+00:00:17,914 --> 00:00:23,902
+Fifty-five source files go in. A Word report and an Excel workbook must come out.
+
+4
+00:00:25,638 --> 00:00:33,076
+The model works through Claude Code, inside a Docker container. The scoring rubric stays sealed, out of its reach.
+
+5
+00:00:34,802 --> 00:00:42,577
+First request: read the register of pending entries. Claude Code runs it in Docker, and the six rows come back.
+
+6
+00:00:44,302 --> 00:00:51,890
+Then it writes its own plan: one line for each entry, D01 to D06, then the workbook and the report.
+
+7
+00:00:53,610 --> 00:01:01,548
+To size the swap's value change, the model asks for two valuation dates. Docker pulls the rows and returns them.
+
+8
+00:01:03,278 --> 00:01:09,366
+With the evidence in hand, it writes the workbook. Five sheets appear in the output folder.
+
+9
+00:01:11,098 --> 00:01:19,110
+Then a real error. The script that polishes two sheets fails on a misspelled variable, and nothing from that run is saved.
+
+10
+00:01:20,838 --> 00:01:28,463
+It moves on and writes the Word report. D01 to D06 each get a section with a recommendation.
+
+11
+00:01:30,194 --> 00:01:38,306
+Then it checks its own files. The first sheet still has only three rows. The earlier polish never saved.
+
+12
+00:01:40,030 --> 00:01:47,792
+The agent finishes. Only now does Harbor put the tests into the same container, and a separate judge session starts.
+
+13
+00:01:49,506 --> 00:01:57,618
+The judge scores the two submitted files against the rubric, one criterion at a time. Nothing flows back to the agent.
+
+14
+00:01:59,342 --> 00:02:07,942
+One number matches: the hedge sensitivity. The agent copied it from a source sheet, and the judge recomputed it from the scenarios.
+
+15
+00:02:09,682 --> 00:02:16,257
+Entry D02 is subtler. The red line holds, but the treatment earns only half marks.
+
+16
+00:02:17,982 --> 00:02:23,757
+And the workbook contains no formulas at all, so its amounts cannot be traced back to their sources.
+
+17
+00:02:25,490 --> 00:02:35,352
+The reward is point three three three. Three criteria met, six partly met, eleven not met. One pilot run, not a ranking.
+
+18
+00:02:37,078 --> 00:02:42,378
+From professional task to agent run, independent check, and what to improve next.

@@ -7,7 +7,8 @@ import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = file => readFile(resolve(root, file), 'utf8');
-const PAGES = ['index', 'challenge', 'data', 'agent', 'harness', 'evolution', 'leaderboard', 'teams'];
+const PAGES = ['index', 'challenge', 'replication', 'data', 'agent', 'harness', 'evolution', 'leaderboard', 'teams', 'professional-tasks'];
+const CHALLENGE_PAGES = ['challenge', 'replication', 'professional-tasks'];
 const TAGLINE = 'AI Agents for Business, Finance and Social Science';
 
 const section = (html, id) => {
@@ -16,11 +17,19 @@ const section = (html, id) => {
   return match[0];
 };
 const cardNames = html => [...html.matchAll(/<h3><a [^>]*>([^<]+?)\s*<span aria-hidden="true">/g)].map(match => match[1]);
+const attribute = (attributes, name) => attributes.match(new RegExp(`\\b${name}="([^"]*)"`))?.[1] ?? null;
+const links = html => [...html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/g)].map(([, attributes, text]) => ({
+  href: attribute(attributes, 'href'),
+  label: text.replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim(),
+  current: attribute(attributes, 'aria-current'),
+}));
 
 test('every page carries the initiative identity: Challenge in the navigation, INITIATIVE label, new tagline', async () => {
   for (const page of PAGES) {
     const html = await read(`${page}.html`);
-    assert.match(html, /<a href="index\.html"(?: aria-current="page")?>Home<\/a>\s*<a href="challenge\.html"(?: aria-current="page")?>Challenge<\/a>/, `${page}: nav`);
+    const header = html.match(/<header\b[\s\S]*?<\/header>/)?.[0];
+    assert.ok(header, `${page}: site header`);
+    assert.match(header, /<a\b(?=[^>]*\bclass="[^"]*\bwordmark\b)(?=[^>]*\bhref="index\.html")[^>]*>/, `${page}: brand returns Home`);
     assert.equal(html.split('<small>INITIATIVE</small>').length, 2, `${page}: wordmark label`);
     assert.doesNotMatch(html, /<small>CHALLENGE<\/small>/, page);
     assert.ok(html.includes(`<p>${TAGLINE}.</p>`), `${page}: footer tagline`);
@@ -78,27 +87,78 @@ test('Challenge page: initiative, two subtracks, timeline, two awards, take part
   assert.ok(positions.every((position, index) => position > 0 && (index === 0 || position > positions[index - 1])), `sections ${positions}`);
   assert.ok(html.includes('id="subtrack-econometric"') && html.includes('id="subtrack-professional"'));
   assert.equal((section(html, 'tracks').match(/<article class="track" /g) || []).length, 2);
-  assert.equal((section(html, 'tracks').match(/<li class="subtrack">/g) || []).length, 2);
-  assert.match(section(html, 'tracks'), /Subtrack 01[\s\S]*Econometric replication[\s\S]*Subtrack 02[\s\S]*Professional tasks/);
+  assert.match(section(html, 'tracks'), /Subtrack 01[\s\S]*Econometric replication[\s\S]*Subtrack 02[\s\S]*Business Analysis &amp; Deliverables/);
   assert.match(section(html, 'tracks'), /Finance demo[\s\S]*Month-end close review[\s\S]*HR demo[\s\S]*Training and procurement acceptance/);
   const awards = section(html, 'awards');
   assert.equal((awards.match(/<article class="card award">/g) || []).length, 2);
   assert.match(awards, /Specialized dataset award[\s\S]*Leaderboard prize/);
   assert.match(awards, /private, domain-specialized dataset/);
   assert.match(awards, /AI-agent tuning solution[\s\S]*prize money/);
-  assert.match(html, /<li><span class="timeline-when">Now<\/span>/);
-  assert.equal((section(html, 'timeline').match(/class="status is-tbc"/g) || []).length, 4);
+  const timeline = section(html, 'timeline');
+  assert.equal((timeline.match(/<li class="plan-stage/g) || []).length, 5, 'five planned stages');
+  assert.equal((timeline.match(/class="status is-open">Now</g) || []).length, 1, 'only the first stage is under way');
+  assert.match(timeline, /Open exploration[\s\S]*Registration and pilot[\s\S]*Challenge window[\s\S]*Independent evaluation[\s\S]*Results and awards/);
+});
+
+test('Challenge page: every challenge has its own recorded run, with a poster and a download fallback', async () => {
+  const html = await read('challenge.html');
+  const expected = {
+    'subtrack-econometric': ['agent-replay-task0001'],
+    'subtrack-professional': ['finance-story-demo', 'hr-agent-replay'],
+  };
+  const files = new Set();
+  for (const [id, names] of Object.entries(expected)) {
+    const track = html.match(new RegExp(`<article class="track" id="${id}"[\\s\\S]*?</article>`))[0];
+    const videos = [...track.matchAll(/<video\b([^>]*)>([\s\S]*?)<\/video>/g)];
+    assert.equal(videos.length, names.length, `${id}: one video per task`);
+    videos.forEach(([, attributes, inner], index) => {
+      const name = names[index];
+      const mediaVersion = name === 'agent-replay-task0001' ? '\\?v=20261018-deepagents-flow-v3-2' : '\\?v=20261019-claude-sufe-v1';
+      assert.match(attributes, /\bcontrols\b/, `${name}: native controls`);
+      assert.doesNotMatch(attributes, /\bautoplay\b/, `${name}: no autoplay`);
+      assert.match(attributes, /preload="metadata"/, `${name}: metadata only`);
+      assert.match(attributes, new RegExp(`poster="assets/video/${name}(?:-poster)?\\.jpg${mediaVersion}"`), `${name}: poster`);
+      assert.ok(attribute(attributes, 'aria-label'), `${name}: accessible name`);
+      assert.match(inner, new RegExp(`<source src="assets/video/${name}\\.mp4${mediaVersion}" type="video/mp4">`), `${name}: source`);
+      assert.match(inner, new RegExp(`<a href="assets/video/${name}\\.mp4${mediaVersion}">Download`), `${name}: download fallback`);
+      files.add(name);
+    });
+  }
+  assert.equal(files.size, 3, 'three distinct recordings');
+  const finance = html.match(/<figure class="track-video"[^>]*aria-labelledby="demo-finance-title"[\s\S]*?<\/figure>/)[0];
+  const hr = html.match(/<figure class="track-video"[^>]*aria-labelledby="demo-hr-title"[\s\S]*?<\/figure>/)[0];
+  assert.match(finance, /FIN-T1-003/);
+  assert.match(hr, /HR-T3-114/);
+  const professional = html.match(/<article class="track" id="subtrack-professional"[\s\S]*?<\/article>/)[0];
+  assert.doesNotMatch(professional, /\d+ (?:input files|scored criteria|tasks|task packages|scored runs)/, 'business demos describe the work without task-scale counts');
+  // Media bytes are shared with Home and the business page, so the two copies cannot drift apart.
+  const home = await read('index.html');
+  assert.ok(home.includes('assets/video/agent-replay-task0001.mp4') && home.includes('assets/video/finance-story-demo.mp4'));
+  assert.ok((await read('professional-tasks.html')).includes('assets/video/finance-story-demo.mp4'));
+});
+
+test('Challenge page states what is open, not open and still to come once, near the top', async () => {
+  const html = await read('challenge.html');
+  const strip = html.match(/<ul class="status-strip"[\s\S]*?<\/ul>/)[0];
+  assert.match(strip, /status is-open">Open now<[\s\S]*status">Not open yet<[\s\S]*status is-tbc">To be announced</);
+  assert.match(strip, /Registration and submission/);
+  assert.match(strip, /Dates, rules and awards/);
+  assert.ok(html.indexOf('status-strip') < html.indexOf('id="initiative"'), 'before the first section');
+  const body = html.slice(html.indexOf('<main'), html.indexOf('</main>'));
+  assert.ok((body.match(/to be (?:announced|confirmed)/gi) || []).length <= 4, 'caveats are not repeated on every block');
 });
 
 test('Challenge page promises nothing that is not confirmed: no dates, no amounts', async () => {
   const html = await read('challenge.html');
   const body = html.slice(html.indexOf('<main'), html.indexOf('</main>'));
-  assert.doesNotMatch(body, /\b(?:19|20)\d\d\b/, 'a year or date');
-  assert.doesNotMatch(body, /\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.? \d{1,2}\b/, 'a calendar date');
-  assert.doesNotMatch(body, /[$€£¥]|\b(?:USD|SGD|RMB|CNY|HKD)\b/, 'a prize amount');
-  assert.match(body, /No amount, date or eligibility rule is final until it is announced here/);
-  assert.match(body, /have not been set\. They will be posted here once they are confirmed/);
-  assert.match(body, /for this subtrack will be set out here once they are confirmed/);
+  // Check what readers see; the 1920×1080 video dimensions live in attributes and are not a year.
+  const visible = body.replace(/<[^>]+>/g, ' ');
+  assert.doesNotMatch(visible, /\b(?:19|20)\d\d\b/, 'a year or date');
+  assert.doesNotMatch(visible, /\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.? \d{1,2}\b/, 'a calendar date');
+  assert.doesNotMatch(visible, /[$€£¥]|\b(?:USD|SGD|RMB|CNY|HKD)\b/, 'a prize amount');
+  assert.match(section(html, 'timeline'), /Dates will be announced here/);
+  assert.match(section(html, 'awards'), /Details will be announced here/);
+  assert.match(body, /Dates, rules and awards\./);
 });
 
 test('wording stays within what is confirmed: exploration is open, registration is not, nothing is "delivered"', async () => {
@@ -109,12 +169,11 @@ test('wording stays within what is confirmed: exploration is open, registration 
     assert.doesNotMatch(html, /initiated at/, name);
   }
   const econometric = challenge.match(/<article class="track" id="subtrack-econometric"[\s\S]*?<\/article>/)[0];
-  assert.match(econometric, /Release to be announced/);
   assert.doesNotMatch(econometric, /Open now|Open for exploration/);
-  assert.match(challenge, /Registration and submission are not open yet/);
+  assert.match(challenge, /<span class="status">Not open yet<\/span><p>Registration and submission\.<\/p>/);
   assert.match(section(challenge, 'initiative'), /Aim 1[\s\S]*Aim 2[\s\S]*Aim 3/);
   assert.match(section(challenge, 'awards'), /planned as a prize/);
-  assert.match(section(challenge, 'timeline'), /The stages below are planned; no date has been set/);
+  assert.match(section(challenge, 'timeline'), /planned as five stages/);
   assert.match(section(challenge, 'timeline'), /Tell us if you are interested in the pilot/);
 });
 
@@ -123,14 +182,19 @@ test('Home, Challenge and Teams use the same subtracks and facts: Dev100 to be o
   for (const [name, html] of [['index', home], ['challenge', challenge], ['teams', teams]]) {
     assert.doesNotMatch(html, /\bTrack [12]\b|Subtrack 2[AB]|AI task scenario|HR task scenario/, `${name}: old track wording`);
   }
-  assert.match(home, /Subtrack 01 · Dev100 · 100 tasks/);
-  assert.match(home, /Subtrack 02 · Finance &amp; HR demos/);
+  assert.match(home, /Challenge 1 · Dev100 · 100 tasks/);
+  assert.match(home, /Challenge 2 · Finance &amp; HR demos/);
+  for (const [name, html] of [['index', home], ['challenge', challenge]]) {
+    assert.match(html, /Business Analysis &amp; Deliverables/, `${name}: business challenge title`);
+    assert.match(html, /agent workflows/i, `${name}: both challenges use agents`);
+    assert.match(html, /href="professional-tasks\.html"/, `${name}: business challenge entry`);
+  }
   const econometric = challenge.match(/<article class="track" id="subtrack-econometric"[\s\S]*?<\/article>/)[0];
   assert.match(econometric, /existing Dev100 set of 100 tasks, to be open-sourced/);
   assert.match(econometric, /not official Challenge rankings/);
   const professional = challenge.match(/<article class="track" id="subtrack-professional"[\s\S]*?<\/article>/)[0];
   assert.match(professional, /Prof\. Liwen Zhang’s team at Shanghai University of Finance and Economics/);
-  assert.match(professional, /Release details to be announced/);
+  assert.match(professional, /official task set is to be announced/);
   // The Hugging Face dataset is the research data source; the subtrack itself will use Dev100.
   assert.doesNotMatch(challenge, /benchmark is published on Hugging Face|Explore the public data/);
   assert.match(section(challenge, 'take-part'), /CamoAiLab hosts the source research dataset on Hugging Face/);
@@ -138,19 +202,56 @@ test('Home, Challenge and Teams use the same subtracks and facts: Dev100 to be o
   assert.match(section(challenge, 'take-part'), /subtrack will use the 100-task Dev100 set/);
 });
 
-test('the navigation with eight links stays on one row between 861 and 1180 px', async () => {
-  assert.match(await read('language.css'), /\(min-width:861px\) and \(max-width:1180px\)\{[^@]*?\.nav-links a\{font-size:13px;white-space:nowrap\}/);
+test('every page has eight unique primary destinations and one current section', async () => {
+  const destinations = [
+    ['Home', 'index.html'], ['Challenge', 'challenge.html'], ['Data', 'data.html'], ['Agent', 'agent.html'],
+    ['Harness', 'harness.html'], ['Self-evolving', 'evolution.html'], ['Leaderboard', 'leaderboard.html'], ['Teams', 'teams.html'],
+  ];
+  for (const page of PAGES) {
+    const html = await read(`${page}.html`);
+    const navigation = html.match(/<div\b[^>]*\bid="nav-links"[^>]*>([\s\S]*?)<\/div>/)?.[1];
+    assert.ok(navigation, `${page}: primary navigation`);
+    const items = links(navigation);
+    assert.deepEqual(items.map(item => [item.label, item.href]), destinations, `${page}: destinations in order, each exactly once`);
+    const target = CHALLENGE_PAGES.includes(page) ? 'challenge' : page;
+    const current = page === target ? 'page' : 'true';
+    assert.deepEqual(items.filter(item => item.current !== null).map(item => [item.href, item.current]), [[`${target}.html`, current]], `${page}: current section`);
+  }
 });
 
-test('Home keeps the PR #25 hero and sections, with the Initiative tagline and links to the Challenge page', async () => {
+test('Challenge and its two subtracks share secondary navigation without assigning shared research pages to a subtrack', async () => {
+  const destinations = [
+    ['Overview', 'challenge.html'], ['Subtrack 1 · Econometric replication', 'replication.html'],
+    ['Subtrack 2 · Business Analysis & Deliverables', 'professional-tasks.html'],
+  ];
+  for (const page of PAGES) {
+    const html = await read(`${page}.html`);
+    const navigation = [...html.matchAll(/<nav\b([^>]*)>([\s\S]*?)<\/nav>/g)]
+      .filter(([, attributes]) => (attribute(attributes, 'class') || '').split(/\s+/).includes('track-nav'));
+    assert.equal(navigation.length, CHALLENGE_PAGES.includes(page) ? 1 : 0, `${page}: secondary navigation scope`);
+    if (!navigation.length) continue;
+    const [[markup, attributes, contents]] = navigation;
+    assert.ok(attribute(attributes, 'aria-label'), `${page}: secondary navigation label`);
+    const items = links(contents);
+    assert.deepEqual(items.map(item => [item.label, item.href]), destinations, `${page}: secondary destinations`);
+    assert.deepEqual(items.filter(item => item.current !== null).map(item => [item.href, item.current]), [[`${page}.html`, 'page']], `${page}: actual current page`);
+    const position = html.indexOf(markup);
+    assert.ok(position > html.indexOf('</header>') && position < html.indexOf('<main'), `${page}: navigation before page content`);
+  }
+});
+
+test('Home keeps the Initiative hero and four challenge-focused sections with working navigation', async () => {
   const html = await read('index.html');
   assert.match(html, /<h1 id="hero-title">InferenceNet Challenge<\/h1>\s*<p class="hero-subtitle">AI Agents for Business, Finance and Social Science<\/p>/);
   assert.match(html, /<meta name="description" content="The Global InferenceNet Initiative aims to build shared infrastructure/);
   const kickers = [...html.matchAll(/<p class="kicker">(\d\d) \/ ([^<]+)<\/p>/g)].map(match => match[1]);
-  assert.deepEqual(kickers, ['01', '02', '03', '04', '05']);
+  assert.deepEqual(kickers, ['01', '02', '03', '04']);
   const subnav = [...html.match(/<nav class="subnav"[\s\S]*?<\/nav>/)[0].matchAll(/<a href="#([^"]+)"><span class="subnav-number">(\d\d)<\/span>/g)];
-  assert.deepEqual(subnav.map(match => match[2]), ['01', '02', '03', '04', '05']);
+  assert.deepEqual(subnav.map(match => match[2]), ['01', '02', '03', '04']);
+  assert.deepEqual(subnav.map(match => match[1]), ['overview', 'tasks', 'harness', 'participate']);
   for (const [, id] of subnav) assert.ok(html.includes(`id="${id}"`), `#${id}`);
+  assert.match(section(html, 'overview'), /id="subtracks"/);
+  assert.match(section(html, 'tasks'), /<video\b[\s\S]*agent-replay-task0001\.mp4/);
   const link = '<a class="text-link" href="challenge.html">Subtracks, timeline and awards <span aria-hidden="true">→</span></a>';
   assert.equal(html.split(link).length, 3, 'two links from Home to the Challenge page');
   assert.ok(html.includes('<a href="challenge.html"><small>Next</small><span>Challenge <span aria-hidden="true">→</span></span></a>'));
@@ -164,21 +265,23 @@ function translatableStrings(html) {
   h = h.replace(/<head>[\s\S]*?<\/head>/, head => [...head.matchAll(/<title>([\s\S]*?)<\/title>/g)].map(match => `<title>${match[1]}</title>`).join(''));
   h = h.replace(/<(script|style|code|pre|textarea)\b[^>]*>[\s\S]*?<\/\1>/g, '<i></i>');
   h = h.replace(/<a class="wordmark"[^>]*>[\s\S]*?<\/a>/g, '<i></i>');
-  h = h.replace(/<span data-no-translate[^>]*>[\s\S]*?<\/span>/g, '<i></i>');
+  h = h.replace(/<span\b[^>]*\bdata-no-translate\b[^>]*>[\s\S]*?<\/span>/g, '<i></i>');
   const found = new Set();
   for (const [, text] of h.matchAll(/>([^<]+)</g)) found.add(normalize(text));
   for (const [, , value] of h.matchAll(/\b(aria-label|title|alt|placeholder)="([^"]*)"/g)) found.add(normalize(value));
   return [...found].filter(text => /[A-Za-z]/.test(text));
 }
 
-test('index, challenge and teams have a Chinese translation for every string', async () => {
+test('Home, Challenge, both subtrack entries and Teams have complete Chinese translations', async () => {
   const common = new Function(`return (${(await read('language.js')).match(/const common = (\{[\s\S]*?\n  \});/)[1]});`)();
-  for (const page of ['index', 'challenge', 'teams']) {
+  for (const page of ['index', 'challenge', 'replication', 'teams', 'professional-tasks']) {
     const dictionary = JSON.parse(await read(`assets/i18n/${page}.zh.json`));
     const missing = translatableStrings(await read(`${page}.html`)).filter(text => !(text in dictionary) && !(text in common));
     assert.deepEqual(missing, [], `${page}: untranslated strings`);
   }
   const language = await read('language.js');
   assert.match(language, /'challenge\.html'/);
+  assert.match(language, /'replication\.html'/);
+  assert.match(language, /'professional-tasks\.html'/);
   assert.equal(common.Challenge, '挑战赛');
 });

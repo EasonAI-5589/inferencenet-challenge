@@ -395,7 +395,7 @@ test('the card keeps the shared evidence-card shape, notes and links', () => {
   assert.ok(html.includes(`<div class="table-scroll" tabindex="0" role="region" aria-label="Run outcomes"><table class="run-card-metrics dev-card-metrics"><caption>Outcomes on the 100 development tasks</caption>`));
   assert.ok(html.includes(`</table></div><p class="scroll-hint" aria-hidden="true" hidden>${CARD_SCROLL_HINT}</p></div><ul class="run-card-notes">`));
   for (const note of [
-    /not directly comparable with the 1,000-task Selected_1000 board/,
+    /This is a descriptive comparison on a fixed 100-task development set; it is not an official Challenge ranking\./,
     /stay in the 100-task denominator; they are never counted as false or as successes/,
     /Unknown or missing covers failed, unknown or pending tasks plus scored tasks with no recorded value for that metric/,
     /routes, reasoning settings and budgets differ, so differences are descriptive only/,

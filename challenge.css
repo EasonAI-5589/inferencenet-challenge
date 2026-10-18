@@ -1,4 +1,4 @@
-/* Challenge page: tracks, timeline and awards. Reuses the shared cards, pills and section headings. */
+/* Challenge page: status, subtracks with a recorded run each, planned stages and awards. Reuses the shared cards, pills and section headings. */
 .initiative-pillars{--cols:3;--cols-cap:3}
 .open-call{margin:30px 0 0;max-width:760px;font-size:16px;line-height:1.8;color:var(--soft)}
 .open-call-link{margin:6px 0 0}
@@ -7,37 +7,72 @@
 .status.is-open{border-color:var(--ink);color:var(--ink);background:var(--surface)}
 .status.is-tbc{border-style:dashed;border-color:var(--strong-line)}
 
+/* One line under the hero says what is open, what is not and what is still to come. */
+.status-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 32px;margin:30px 0 0;padding:0;list-style:none;max-width:900px}
+.status-strip li{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding-top:14px;border-top:1px solid var(--line)}
+.status-strip p{margin:0;font-size:14px;line-height:1.7;color:var(--soft)}
+
 .track{padding:32px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
 .track+.track{margin-top:24px}
 .track{scroll-margin-top:calc(var(--header-offset,78px) + 58px)}
 .track-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.track-tag{font-family:var(--mono);font-size:11px;line-height:1.6;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .track h3{font-size:26px;font-weight:600;line-height:1.35;letter-spacing:-.02em;margin:18px 0 0}
 .track-summary{max-width:780px;margin:12px 0 0;font-size:16px;line-height:1.8;color:var(--soft)}
-.track-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 44px;margin:26px 0 0;border-top:1px solid var(--line)}
+
+/* Each challenge has its own recorded run: one video for the replication subtrack, two for business analysis. */
+.track-body{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:0 44px;align-items:start;margin-top:26px}
+.track-demos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;margin-top:26px}
+.track-video{display:flex;flex-direction:column;min-width:0;margin:0}
+.track-video video{display:block;width:100%;height:auto;aspect-ratio:16/9;border:1px solid var(--line);border-radius:var(--radius);background:#111}
+.track-video figcaption{display:flex;flex-direction:column;gap:8px;margin-top:16px;font-size:14px;line-height:1.7;color:var(--soft)}
+.track-video figcaption p{margin:0}
+.demo-label{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.demo-label code{font-size:12px;color:var(--muted)}
+.track-video h4{margin:0;font-size:19px;font-weight:600;line-height:1.4;letter-spacing:-.01em;color:var(--ink)}
+.demo-spec{font-family:var(--mono);font-size:12px;line-height:1.6;color:var(--muted)}
+.demo-meta{display:flex;flex-wrap:wrap;gap:2px 14px;font-size:12px;line-height:1.7;color:var(--muted)}
+
+/* The business cases keep the goal and work product visible, with deeper context on demand. */
+#subtrack-professional .demo-deliverables{margin:10px 0 0;border-top:1px solid var(--line)}
+#subtrack-professional .demo-deliverables>div{display:grid;grid-template-columns:48px minmax(0,1fr);gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+#subtrack-professional .demo-deliverables dt{font-family:var(--mono);font-size:12px;color:var(--ink)}
+#subtrack-professional .demo-deliverables dd{margin:0}
+#subtrack-professional .demo-brief{margin-top:8px}
+#subtrack-professional .demo-brief summary{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:10px 0;cursor:pointer;list-style:none;font-weight:600;color:var(--ink)}
+#subtrack-professional .demo-brief summary::-webkit-details-marker{display:none}
+#subtrack-professional .demo-brief summary::after{content:'+';font-family:var(--mono);font-size:18px;font-weight:400}
+#subtrack-professional .demo-brief[open] summary::after{content:'−'}
+#subtrack-professional .demo-brief summary:focus-visible{outline:2px solid var(--ink);outline-offset:4px;border-radius:2px}
+#subtrack-professional .demo-brief-body{padding:0 0 16px}
+#subtrack-professional .demo-brief h5{margin:16px 0 6px;font-size:13px;font-weight:600;line-height:1.5;color:var(--ink)}
+#subtrack-professional .demo-brief h5:first-child{margin-top:4px}
+#subtrack-professional .demo-brief ul{margin:0;padding-left:19px}
+#subtrack-professional .demo-brief li+li{margin-top:8px}
+#subtrack-professional .demo-source-note{margin-top:8px;font-size:12px;line-height:1.7;color:var(--muted)}
+
+.track-facts{display:grid;grid-template-columns:minmax(0,1fr);margin:0;border-top:1px solid var(--line)}
+.track-body .track-facts{align-self:start}
+.track>.track-facts{margin-top:26px;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 44px}
 .track-facts div{display:grid;grid-template-columns:104px minmax(0,1fr);gap:14px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line)}
 .track-facts dt{font-family:var(--mono);font-size:11px;line-height:1.7;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .track-facts dd{margin:0;font-size:14px;line-height:1.7;color:var(--soft)}
 .track-links{display:flex;flex-wrap:wrap;gap:6px 28px;margin-top:20px}
 .track-links .text-link{margin-top:6px}
 
-.subtracks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:26px 0 0;padding:0;list-style:none}
-.subtrack{padding:22px;border:1px dashed var(--strong-line);border-radius:var(--radius);background:var(--tint)}
-.subtrack h4{margin:12px 0 0;font-size:19px;font-weight:600;line-height:1.4;letter-spacing:-.01em}
-.subtrack p{margin:8px 0 0;font-size:14px;line-height:1.75;color:var(--soft)}
-.track-note{margin:22px 0 0;max-width:780px;font-size:14px;line-height:1.8;color:var(--soft)}
-
-.timeline-list{margin:0;padding:0;list-style:none;border-top:1px solid var(--line)}
-.timeline-list li{display:grid;grid-template-columns:170px minmax(0,1fr) auto;gap:24px;align-items:baseline;padding:22px 0;border-bottom:1px solid var(--line)}
-.timeline-when{font-family:var(--mono);font-size:12px;line-height:1.6;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.timeline-list h3{margin:0;font-size:19px;font-weight:600;line-height:1.4;letter-spacing:-.01em}
-.timeline-list p{margin:6px 0 0;font-size:14px;line-height:1.75;color:var(--soft)}
-.timeline-note{margin:22px 0 0;max-width:780px;font-size:14px;line-height:1.8;color:var(--soft)}
+/* Five planned stages in one row; only the first is under way. */
+.plan-stages{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0 24px;margin:0;padding:0;list-style:none}
+.plan-stage{padding-top:18px;border-top:1px solid var(--strong-line)}
+.plan-stage.is-current{border-top-color:var(--ink)}
+.plan-meta{display:flex;align-items:center;gap:10px;min-height:26px;margin-bottom:12px}
+.plan-number{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--muted)}
+.plan-stage h3{margin:0;font-size:18px;font-weight:600;line-height:1.4;letter-spacing:-.01em}
+.plan-stage p{margin:8px 0 0;font-size:14px;line-height:1.75;color:var(--soft)}
 
 .award-grid{--cols:2}
 .award h3{margin:0;font-size:24px;font-weight:600;line-height:1.35;letter-spacing:-.02em}
 .award p{margin:12px 0 0;font-size:15px;line-height:1.8;color:var(--soft)}
 .award .card-label{margin-bottom:16px}
-.award .award-tbc{margin-top:18px;padding-top:16px;border-top:1px dashed var(--strong-line);font-size:14px}
 
 .take-part{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin:0;padding:0;list-style:none}
 .take-part li{display:flex;flex-direction:column;padding-top:18px;border-top:1px solid var(--ink)}
@@ -45,12 +80,23 @@
 .take-part p{margin:8px 0 0;font-size:14px;line-height:1.75;color:var(--soft)}
 .take-part .text-link{margin-top:14px;align-self:flex-start}
 
+@media(max-width:1100px){
+  .plan-stages{grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 24px}
+}
 @media(max-width:1000px){
-  .track-facts,.subtracks,.award-grid{grid-template-columns:1fr}
-  .initiative-pillars,.take-part{grid-template-columns:1fr}
+  .track-body,.track-demos,.track>.track-facts,.award-grid{grid-template-columns:1fr}
+  .track-body .track-facts{margin-top:24px}
+  .track-demos{gap:32px}
+  .initiative-pillars,.take-part,.status-strip{grid-template-columns:1fr}
+  .status-strip{gap:14px}
 }
 @media(max-width:860px){
-  .timeline-list li{grid-template-columns:1fr;gap:8px}
+  .plan-stages{grid-template-columns:1fr;gap:0}
+  .plan-stage{display:grid;grid-template-columns:96px minmax(0,1fr);gap:0 18px;padding:18px 0;border-top:0;border-bottom:1px solid var(--line)}
+  .plan-stage:first-child{border-top:1px solid var(--strong-line)}
+  .plan-stage.is-current{border-top:1px solid var(--ink)}
+  .plan-meta{grid-row:1/3;flex-direction:column;align-items:flex-start;gap:8px;margin:0}
+  .plan-stage h3,.plan-stage p{grid-column:2}
   .track{padding:24px}
   .track-facts div{grid-template-columns:1fr;gap:2px}
 }

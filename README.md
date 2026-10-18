@@ -2,11 +2,19 @@
 
 [Live website](https://easonai-5589.github.io/inferencenet-challenge/)
 
-Public presentation site for the Global InferenceNet Initiative: AI Agents for Business, Finance and Social Science. The site brings together Home, Challenge, Data, Agent,
-Harness, Self-evolving, Leaderboard and Teams, with Chinese / English and light / dark
-controls on every page.
-The eight page links are visible by default, including the four-column menu (three columns below 352 px) on
-narrow screens. Visitors can collapse it manually; each new page opens it again.
+Public presentation site for the Global InferenceNet Initiative: AI Agents for
+Business, Finance and Social Science. All ten pages share Chinese / English and
+light / dark controls.
+
+The primary navigation has eight entries: Home, Challenge, Data, Agent, Harness,
+Self-evolving, Leaderboard and Teams. Agent and Harness are shared resources for
+both subtracks. The brand logo also returns to Home.
+Only Challenge and its two subtrack pages have secondary navigation: Overview
+(`challenge.html`), Subtrack 1 · Econometric replication (`replication.html`) and
+Subtrack 2 · Business Analysis & Deliverables (`professional-tasks.html`). The
+primary Challenge entry marks the section on either subtrack page, while the
+secondary navigation marks the actual page. Data, Agent, Harness and Self-evolving
+retain their own primary current-page indicators and have no subtrack navigation.
 The Self-evolving page keeps its original URL, `evolution.html`, and its anchors.
 
 ## Edit the website
@@ -17,12 +25,25 @@ No frontend framework or package installation is required.
 ```sh
 git clone https://github.com/EasonAI-5589/inferencenet-challenge.git
 cd inferencenet-challenge
-python3 -m http.server 4193 --bind 127.0.0.1
 ```
 
-Open `http://127.0.0.1:4193/` to preview. Create a branch for your changes and
-submit a pull request against `main`; include the affected page links and a
-screenshot for visual changes.
+For this shared local workspace, use the fixed preview service:
+
+```sh
+python3 /Users/user/Documents/ChatGPT/InferenceNet/research/website-preview/serve.py
+```
+
+Use only [http://127.0.0.1:4198/](http://127.0.0.1:4198/) for user-facing previews;
+do not assign a new port to each branch. The service root comes from the
+`/Users/user/Documents/ChatGPT/InferenceNet/research/website-preview/current`
+symlink, which the main coordinating session switches to the workspace being
+reviewed. It currently points to
+`/Users/user/Documents/ChatGPT/InferenceNet/worktrees/website/website/home-challenges-20261018`.
+If port 4198 is occupied, inspect and verify the existing service before taking
+action; do not automatically choose another port or terminate another session.
+
+Review the local preview before opening a pull request against `main`; include
+the affected page links and a screenshot for visual changes.
 
 Development and acceptance target the desktop website. As requested on
 13 October 2026, mobile adaptation and mobile testing are outside the scope
@@ -30,28 +51,38 @@ of future updates unless explicitly requested again.
 
 | Page or layer | Files |
 |---|---|
-| Home, research overview and resources | `index.html`, `index.css` |
+| Home: two challenges, two agent demos, research and participation | `index.html`, `index.css` |
 | Challenge: initiative, subtracks, timeline and awards | `challenge.html`, `challenge.css`, `assets/i18n/challenge.zh.json` |
+| Subtrack 1 overview: econometric replication, Dev100 scope, workflow and research pages | `replication.html`, `assets/i18n/replication.zh.json`; reuses `styles.css`, `site.css` |
+| Business Analysis & Deliverables: Finance and HR cases, rubric scoring and pilot evidence | `professional-tasks.html`, `professional-tasks.css`, `assets/i18n/professional-tasks.zh.json`, `assets/data/professional-tasks-pilot.json` |
 | Dataset distributions and examples | `data.html`, `data.css` |
 | Agent case and evaluation | `agent.html`, `agent.css` |
 | Harness: definition, system structure, selected 2025–2026 milestones, common mechanism comparison, catalogue by role, three breakdowns and InferenceNet’s four configurations | `harness.html`, `harness.css`; reuses `data.css`, `agent.css`, `evolution.css` |
 | Self-evolving: concept, research map by adaptation regime, method comparison, three detailed offline cases and InferenceNet’s development study | `evolution.html`, `evolution.css`, `evolution.js`, `assets/data/modular-rsi-evolution.json` |
-| Leaderboard and configuration filters | `leaderboard.html`, `leaderboard.css` |
+| Leaderboard: the Dev100 / v10 development release | `leaderboard.html`, `leaderboard.css` |
 | Leadership, student leaders, team, NTU GIFTS, partner teams and Yichen Guo contact | `teams.html`, `teams.css` |
 | Shared layout, navigation and theme | `styles.css`, `site.css`, `site.js`, `theme.js` |
 | Chinese translations and language control | `assets/i18n/*.zh.json`, `language.js`, `language.css` |
 | Charts and mountain leaderboard | `charts.js`, `mountain.js`, `mountain.css` |
-| Shared homepage and leaderboard results | `leaderboard.js`, `leaderboard-data.js`, `assets/data/paired-results.*` |
+| Historical results retained for validation, not mounted on public pages | `leaderboard.js`, `leaderboard-data.js`, `assets/data/paired-results.*` |
+| Shared renderer for Dev100 and historical-data tests | `leaderboard-board.js` |
+| Dev100 / v10 development release data, validation and saved table | `leaderboard-dev100.js`, `leaderboard-dev100-data.js`, `assets/data/dev100-v10-results.*`, `scripts/build-dev100-board.mjs` |
 
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
-All eight pages load `language.js` with `20261018-branding-review`;
-Home uses `20261018-subtracks` for `index.css`. Home and Leaderboard retain
-`20261018-dev100-challenge` for `leaderboard.css` and `leaderboard.js`.
-Leaderboard also retains that tag for `site.js` and `leaderboard-dev100.js`,
-and both board entries retain it for the shared `leaderboard-board.js` import.
+All ten pages load `styles.css` and `site.css` with `20261018-shared-nav`, and
+`language.js` with `20261018-challenge-videos`, except Challenge and Business Analysis, which use
+`20261018-sufe-harness-v1` for the narrated replay captions. The base stylesheet carries the same
+versioned reference on every page, so preview navigation does not reuse the earlier
+unversioned base-style URL. `challenge.css` uses `20261018-challenge-videos`.
+Home uses `20261018-two-demos`
+for `index.css` and loads no leaderboard assets. Leaderboard retains
+`20261018-dev100-challenge` for `leaderboard.css` and `site.js`; its Dev100 entry
+and `leaderboard-dev100-data.js` import use `20261018-home-challenges`.
+Both board entries retain `20261018-dev100-challenge` for the shared
+`leaderboard-board.js` import.
 Data imports keep their existing tags: `20261011-release` for `leaderboard-data.js`,
-`20261012-dual-board` for `leaderboard-dev100-data.js` and its JSON, and
+`20261012-dual-board` for the Dev100 results JSON, and
 `20260917-harness` for the Selected_1000 results JSON. `challenge.css` and `teams.css` retain `20261018-initiative`. Other asset tags remain
 versioned independently in their page HTML. Strings shared by several pages,
 such as the reading-route labels and scroll hints, live in `language.js`.
@@ -64,10 +95,41 @@ navigation, images, chart fallbacks and language controls. Mobile layout tuning
 and verification is deferred for now unless the user requests it.
 
 同事可以直接修改对应页面的 HTML / CSS，并同步更新 `assets/i18n/` 下的中文词典。
-建议每次改动单独开分支、提交 PR，说明页面和修改点；有布局调整时附一张截图。
+建议每次改动单独开分支，先一起看本地预览，再提交 PR；说明页面和修改点，有布局调整时附一张截图。
 `main` 合并后由 GitHub Pages 自动发布。
 
 ## Research content
+
+### Business Analysis & Deliverables
+
+Both challenges use agent workflows: econometric replication checks reproduced
+statistics, while business analysis checks editable professional deliverables.
+Home and Challenge name the second challenge Business Analysis & Deliverables
+and link to `professional-tasks.html`; Data also links to the task preview.
+Home's `#subtracks` alias remains within the existing `#overview` section.
+The business page uses the shared eight-entry navigation and is registered for
+publication, static checks and translation. Its CSS is explicitly published;
+its Chinese dictionary and curated pilot JSON pass through the reviewed asset
+tree and the same public-file boundary checks.
+
+The supplied tasks are FIN-T1-003 (55 input files, 25 graded criteria including
+five penalties, plus two gates) and HR-T3-114 (17 input files, 34 binary criteria
+including six penalties, no gates). Finance combines public references and
+synthetic business records; HR uses synthetic materials. Both ask for editable
+Word and Excel deliverables. The workflow separates planning, tool execution,
+checking and revision from independent evaluation after submission; the diagram
+does not claim that pilot agents completed every intended check.
+
+`assets/data/professional-tasks-pilot.json` is the curated evidence source: two
+reference evaluations and one Claude Code / qwen3.7-max run per task on
+18 October 2026. It records task checksums and result/reward hashes without
+publishing private paths, source task materials, deliverables or conversation
+exports. Task-specific reward uses a 0–1 scale, separately from replication
+accuracy. The page discloses the two judges, the Finance judge override, HR
+reference calibration issues, and unavailable scoring versus a genuine zero.
+These four observations are a pilot, not official Challenge rankings or a
+general performance estimate. Task release, final rules and submissions remain
+to be announced; only reviewed summaries belong in the public website.
 
 Faculty profiles, student leaders and institutional profiles live on `teams.html`, in
 this order: Leadership (Lin William Cong, Ye Luo, Liwen Zhang, alphabetically by surname), Student leaders
@@ -94,88 +156,73 @@ a recorded GPT-5.5 trajectory and the evaluation.
 It does not execute models or analysis. Raw datasets, private run directories,
 credentials and research repository history are not part of this repository.
 
-Home and Leaderboard share the six-model release merged in
+The repository preserves the historical six-model release merged in
 [HF PR #4](https://huggingface.co/spaces/CamoAiLab/InferenceNet-Leaderboard/discussions/4).
 The source JSON and CSV are preserved in `assets/data/paired-results.*`; the
-release commit and checksum are in `paired-results-provenance.json`. Gemini is
-displayed as **Gemini 3.1 Pro**; its archived model ID and source name remain
+release commit and checksum are in `paired-results-provenance.json`. Its renderer
+uses **Gemini 3.1 Pro**; the archived model ID and source name remain
 unchanged for traceability. These are
 12 groups with 1,000 tasks each. Failed, unknown and invalid records remain in
 the denominator. Historical protocols differ across models, and official
 scorer parity remains unverified.
 
-The Selected_1000 Results section and its chart use Historical research results, without
-duplicate count or combined-ranking headings. One table ranks all 12 model
-configurations together by default, ordered by
-Full replication, with Partial replication and three additional metrics also
-available. Public metric labels omit scoring profile names; protocol notes retain
-`local-paper-v1` for full replication and `hf-leaderboard-v1` for the other four
-metrics. Renaming labels does not rescore or modify the published snapshot.
-The configuration dropdown filters All, Model or Model + Harness. The Harness
-column names the actual architecture; a dash denotes the Model configuration.
-Current harness results use DeepAgents; archived version details remain in the
-cell title and source data. The two filtered views currently contain six entries
-each. The mountain and table share the selected filter, metric and global ranking
-within that selection. The old 14-entry source is no longer fetched.
+Home and Leaderboard no longer display or load this historical board. The data,
+provenance, ranking functions and shared renderer tests remain available for
+regression checks. The historical snapshot keeps `local-paper-v1` for full
+replication and `hf-leaderboard-v1` for its other four metrics; removing its page
+presentation does not rescore it or change its 1,000-task denominators.
+Tests still cover all 12 configurations, configuration filters, score ordering,
+evidence cards, invalid records and independent renderer state.
 
-Each model name in the table is a button that opens one run evidence card below
-the table (Escape or Close returns to the row). The card uses only fields already
-in `paired-results.json`: the configuration, the harness label as recorded (a
-version is shown only when the label contains one), the model call cap, the date
-the summary was generated, the interruption, task-level unknown and
-invalid-evidence counts, the evidence class, archive path and source revision,
-and for each metric the passed, failed and unknown counts with the scoring
-profile and source recorded for it. A missing or null field reads "Not recorded"
-and is never shown as 0. Unknown outcomes are described only as counted in the
-1,000-task denominator without earning a success. Time limits, API mode and
-sandbox are not in this summary and are not shown. The card follows the selected
-filter and metric; a run removed by the filter closes its card. The saved
-fallback table stays plain, so pages without JavaScript are unchanged.
-
-Configuration categories are derived from each run’s `harness` metadata, not its
-archive arm ID. Rendering and validation enumerate the recorded arms, so further
-harness architectures can join the same table and Model + Harness filter without
-redefining the categories. Published snapshots still require reviewed provenance
-and compatible scoring profiles. Tests use synthetic records to exercise this
-path; no additional harness results are claimed or published. Legacy
-`?view=deepagents` links open the Model + Harness view.
-
-To update results, first verify a published JSON/CSV pair and its provenance,
-then run `node scripts/build-leaderboard.mjs` to regenerate the saved table on
-each page. If JavaScript or data loading fails, one combined 12-row table remains
-readable on each page. Check changes with
-`node --test scripts/test-leaderboard.mjs scripts/test-run-card.mjs scripts/test-initiative.mjs` and
-`node scripts/check.mjs`, then verify both pages in the browser.
+`scripts/build-leaderboard.mjs` is now a read-only historical validator. It does
+not generate public HTML. Use `scripts/build-dev100-board.mjs` for the active
+Dev100 leaderboard, after verifying its JSON, CSV and provenance. The retained
+historical checks run with `node --test scripts/test-leaderboard.mjs scripts/test-run-card.mjs`.
 
 ## Initiative and Challenge
 
 The tagline is "AI Agents for Business, Finance and Social Science" and the wordmark label
-is INITIATIVE on every page; Challenge is the second item in the navigation. Home keeps
-the hero, the two subtrack cards and the status list described under Homepage
+is INITIATIVE on every page; Home is the first navigation item and Challenge is
+the second. Home keeps
+the hero, the two challenge cards and the status list described under Homepage
 presentation, and links to the Challenge page from the subtrack section and from
-Get involved. `challenge.html` holds the details: the Initiative (01), the subtracks
-(02), the timeline (03), the awards (04) and how to take part (05).
+Get involved. `challenge.html` holds the details: a status line under the hero, the
+Initiative (01), the subtracks (02), the timeline (03), the awards (04) and how to
+take part (05).
 
 - **Subtrack 01** is econometric replication: the existing Dev100 set of 100 tasks,
   to be open-sourced, with the task package and rules announced with the release.
-  **Subtrack 02** is professional tasks: a Finance demo (month-end close review) and
+  **Subtrack 02** is Business Analysis & Deliverables: a Finance demo (month-end close review) and
   an HR demo (training and procurement acceptance) from Prof. Liwen Zhang's team at
-  SUFE. The Challenge page uses the same wording and facts as Home, and says that the
-  subtrack 02 inputs, outputs, evaluation and submission rules are still to be
-  confirmed.
+  SUFE. Home labels these Challenge 1 and Challenge 2. The Challenge page keeps the
+  same scope and facts, and says once that the official task set for subtrack 02 is
+  to be announced.
+- **Each challenge has its own recorded run on the Challenge page**: one video for
+  Subtrack 01 (`agent-replay-task0001.mp4`, research task 0001) and two for
+  Subtrack 02 (`finance-story-demo.mp4`, FIN-T1-003, and `hr-agent-replay.mp4`,
+  HR-T3-114). All use posters, native controls, `preload="metadata"`, no autoplay and
+  a download link as fallback. The first two are the same bytes as on Home and the
+  business page. Finance and HR now use narrated five-chapter replays with the
+  same model/harness/sandbox/judge roles as the PR #27 reference. Their source
+  records and scores are unchanged. Task 0001 is shown as a research-dataset task and is
+  not claimed to belong to Dev100.
 - The Hugging Face dataset is described as the research data source; the replication
   subtrack itself will use Dev100.
-- The timeline lists stages, never dates. The two planned awards are a private,
-  domain-specialized dataset and prize money for AI-agent tuning solutions that rise on
-  the Challenge leaderboard; amounts, eligibility and timing are marked "To be
-  confirmed". Issue #23 also lists participation, completion and Top 3 awards and an
-  open-source condition; those are not on the page because no rule has been given.
-- Unconfirmed content is labelled "To be confirmed" or "To be announced" (a dashed
-  status tag), never presented as final. `scripts/test-initiative.mjs` fails if the
-  Challenge page gains a year, a calendar date or a currency amount, or if Home,
-  Challenge and Teams stop agreeing on the two subtracks. Per issue #23, have Lin
-  William Cong and the partner teams confirm the wording before it is published as the
-  official Challenge description.
+- The timeline lists five planned stages, never dates; only the first is marked
+  "Now". The two planned awards are a private, domain-specialized dataset and prize
+  money for AI-agent tuning solutions that rise on the Challenge leaderboard. Issue #23
+  also lists participation, completion and Top 3 awards and an open-source condition;
+  those are not on the page because no rule has been given.
+- What is not yet settled is said once, in the status line under the hero: open now
+  (explore tasks, watch recorded runs, read results), not open yet (registration and
+  submission) and to be announced (dates, rules and awards). The timeline and awards
+  each add one sentence saying details will be announced here. Do not add a "to be
+  confirmed" tag or note to every block; `scripts/test-initiative.mjs` limits the
+  page to four such phrases. The same test fails if the Challenge page gains a year,
+  a calendar date or a currency amount in its visible text, if any challenge loses
+  its video, or if Home, Challenge and Teams stop agreeing on the two subtracks. Per
+  issue #23, have Lin William Cong and the partner teams confirm the wording before
+  it is published as the official Challenge description.
 
 ## Agent case walkthrough
 
@@ -190,27 +237,61 @@ case card repeats this data context. Interaction budgets remain explicit.
 Agent CSS uses release tag `20260917-case-data`; its dictionary follows the
 language.js release tag.
 
-## Homepage agent replay video
+## Homepage agent demos
 
-`assets/video/agent-replay-task0001.mp4` is a silent 71-second replay
-(1920×1080, 30 fps, H.264) of recorded task 0001, GPT-5.6 Sol with DeepAgents.
-Five chapters follow the run: the task and its six sub-problems, four
-run_python calls, the harness refusing a fifth tool call and asking for the
-final program, the evaluator running that program and the scorer comparing it
-with the sealed reference, and the full-replication result. Code excerpts,
-outputs, token counts, timings, budgets and scores come from the run record;
-only the time axis is compressed, and the captions add no new numbers.
-`agent-replay-task0001-poster.jpg` is its poster frame.
+`assets/video/agent-replay-task0001.mp4` is the 285.267-second narrated walkthrough
+(1920×1080, 30 fps, H.264/AAC) of recorded task 0001, GPT-5.6 Sol with DeepAgents,
+from PR #27 at `c0b9abdd`. It includes English synthetic narration, burned-in
+English/Chinese captions and graphical execution-flow guidance. Four interactive
+run_python calls execute; a fifth requested call is refused by the budget gate.
+The final program is executed and checked separately by the independent evaluator.
+No new model evaluation was run. The recorded run took 121.038 seconds; the
+edited explanatory video lasts 285.267 seconds.
+`agent-replay-task0001-poster.jpg` is its poster frame. Public provenance,
+checksums, chapter times and SRT captions are in `docs/video/task0001/`.
+Home and Challenge load this video and poster with `20261018-deepagents-flow-v3-2`.
+The Challenge dictionary uses `20261018-challenge-pr27` for its updated caption;
+other pages keep their existing translation release tags.
 
-The video is embedded on the homepage below the hero action buttons and before
-the status updates, with a poster and native playback controls. It does not
-autoplay. English and Chinese captions identify the historical single-task
-demonstration, its English-only silent video and compressed timeline, and link
-to `data.html#case-0001`. The existing task 0011 walkthrough remains separate.
-Homepage CSS uses `20261018-subtracks`; all page
-translations use `20261018-branding-review`.
+The homepage's Agent in action section (`#tasks`) presents two demos side by side
+on desktop: the econometric replay above and `assets/video/finance-story-demo.mp4`
+for Business Analysis & Deliverables. Both reuse existing video files, with
+posters, native playback controls, no autoplay and links to their respective
+subtrack pages (`replication.html` and `professional-tasks.html`). The finance
+video is shared with the business task page; this presentation adds no new video assets,
+task data or evaluation results. The homepage omits replay production details;
+the existing task 0011 walkthrough remains on Agent. Homepage CSS uses
+`20261018-two-demos`; translations use
+`20261018-challenge-videos`.
 The animation source and export scripts stay in the research workspace.
-`scripts/check.mjs` accepts `.mp4` files under `assets/` for this video.
+`scripts/check.mjs` accepts `.mp4` files under `assets/` for these videos.
+
+## Business analysis narrated demos
+
+Finance (`finance-story-demo.mp4`) is 187.133 seconds; HR (`hr-agent-replay.mp4`)
+is 192.200 seconds. Both are native 1920×1080, 30 fps H.264/AAC exports with
+English synthetic narration (installed macOS Samantha voice) and burned English /
+Chinese captions. They follow the same TASK → AGENT → HARNESS → CHECK → RESULT
+structure as the approved PR #27 replay, with animated tool request / execution /
+feedback paths and a separate scoring path. PR #27 uses Aria; the two new SUFE
+exports use Samantha. No new agent run or re-scoring was performed.
+
+Finance shows 28 model requests, 54 tool calls, the actual NameError and saved-file
+repair, source-derived DV01, and missing spreadsheet formulas. HR shows 28 model
+requests, 44 tool calls, successful execution followed by logic correction, and
+the R32 opportunity/behavior error. Tool counters are labeled as observed run
+totals, not budgets. After each agent stops, Harbor adds tests to the same Docker
+container and RewardKit launches independent per-criterion judge sessions.
+The recorded rewards remain 0.332849 and 0.207547; these pilot rubric rewards
+are not official Challenge rankings or replication accuracy.
+
+Home and the professional task page share Finance's exact media; Challenge embeds
+both. All references use `?v=20261018-sufe-harness-v1`, native controls, metadata
+preload, posters and download fallbacks. The professional task page explains the
+new length and narration in both languages. Provenance, chapter times and all
+three SRT variants live in `docs/video/finance/` and `docs/video/hr/`.
+Editable scripts, narration WAVs, frozen data snapshots and per-video source ZIPs
+are in the local research workspace `research/sufe-video-alignment-20261018/`.
 
 ## Self-evolving: improving a harness
 
@@ -273,13 +354,16 @@ The MetricsAI workflow is attributed to Figure 1 of Chen et al.,
 image and the 2026-09-15 vector redraws retain their source and permission notes
 in `assets/figures/ATTRIBUTION.txt`. They illustrate related research.
 
-The homepage shows only the university crests for NTU Singapore, the University
-of Hong Kong and Shanghai University of Finance and Economics, all at 72px tall.
-HKU and SUFE use standalone crest assets; a CSS window shows the shield from
-the unchanged NTU university logo asset without its wordmark. Its GIFTS text link
-remains in the introduction. Teams retains the existing college and business-school
-marks. Original assets and ownership notes are recorded in
-`assets/institutions/ATTRIBUTION.txt`.
+The homepage shows the university crests for NTU Singapore, the University of
+Hong Kong and Shanghai University of Finance and Economics in a transparent,
+borderless row below the hero buttons. Each crest is 72px tall, with no university
+wordmark. HKU uses its standalone crest; a CSS window shows the shield from the
+unchanged NTU university logo asset. SUFE uses the alpha channel of the official
+transparent asset, `assets/institutions/sufe-university-transparent-official.png`,
+as a CSS mask filled with `#811c21`; this color stays the same in light and dark
+themes. The GIFTS text link remains in the introduction. Teams retains the
+existing college and business-school marks. Original assets and ownership notes
+are recorded in `assets/institutions/ATTRIBUTION.txt`.
 Faculty profiles and institutional research profiles link their official
 sources. The leadership cards are listed alphabetically by surname, without
 Initiative Lead or Co-Lead designations. Institutional trademarks are not covered by code or font licenses.
@@ -318,33 +402,32 @@ and [trajectory-based reinforcement learning](https://arxiv.org/abs/2508.03680).
 
 ## Homepage presentation
 
-Home follows five sections: Challenge subtracks and the econometric workflow,
-recorded GPT-5.5 task 0011, historical research results, three research directions
-and participation. The econometric replication subtrack will open-source the existing Dev100 set of 100 tasks.
-Subtrack 01 is econometric replication. Subtrack 02 is professional tasks,
+Home follows four sections: Inference Challenge (`#overview`), Agent in action
+(`#tasks`), Research (`#harness`) and Get involved (`#participate`). Its two cards
+explain each challenge's task, deliverable and evaluation. Both challenges use
+agent workflows; their goals, outputs and evaluation criteria distinguish them.
+Challenge 1 is econometric replication and will open-source the existing Dev100
+set of 100 tasks. Challenge 2 is Business Analysis & Deliverables,
 with finance and HR demos contributed by Prof. Liwen Zhang’s team at Shanghai
 University of Finance and Economics. The finance demo concerns July month-end
 close remediation and review workpapers; the HR demo concerns cold-chain
 warehouse supervisor training and procurement acceptance, in a fictional
 scenario. Agents produce documents and spreadsheets checked against the task's
 rubric. These examples describe the supplied demos, not an open submission
-channel or finalized competition protocol. The workflow below is explicitly
-scoped to Subtrack 01.
-The 2,644-task source corpus and historical Selected_1000 results are research
-context, not the replication subtrack release size. The subtrack task package,
-rules, dates and submission channel remain to be announced. Full task
-coverage and provenance remain on Data; the detailed execution trace remains
-on Agent. Below the hero, a dated status list keeps the published leaderboard
-(17 Sep 2026), the historical development study frozen on 9 Oct 2026 (held-out
-tasks not run as of that snapshot) and the 10 Oct 2026 Harness and Self-evolving
-explainers apart, and notes that Challenge rules, dates and the submission channel
-have not been announced; trajectory-based post-training is stated as a research
-goal. The model–harness research card links to the Harness page. Get involved
-lists what is open now: a task package as the model sees it, the public data
-(with the verified CamoAiLab and MetricsAI sentences) and how to ask for access to
-the private evaluation framework. No Quickstart or submission path is implied.
-Resources and citations remain available below. "Hidden" reference results mean
-results the model does not see during a run.
+channel or finalized competition protocol. Two desktop demos in Agent in action
+illustrate the econometric and business workflows, each with its subtrack entry.
+Home has no results table and does not load
+leaderboard scripts, leaderboard CSS or mountain CSS; it links to the Dev100
+results page instead.
+Task packages, rules, dates and submission channels remain to be announced. Data
+keeps research coverage and provenance, and Agent keeps the detailed task 0011
+execution trace. The status list links the business task preview, the Dev100
+open-source scope confirmed on 18 Oct 2026 and the development report generated
+at `2026-10-11T16:35:49Z`. These updates do not imply that competition submissions
+are open or that pilot and development scores are official Challenge rankings.
+The three research directions and participation resources remain. Get involved
+offers routes to explore a challenge, build an agent and contribute a task, with
+research resources and citations below.
 
 ## Harness: definition, ecosystem and breakdowns
 
@@ -402,50 +485,18 @@ reproduced in that snapshot, and paper full texts were not read for it. Sources
 remain section 08. New catalogue entries need a role and a primary source;
 mechanism comparisons and deeper breakdowns are curated separately.
 
+## Dev100 leaderboard
 
-| Page or layer | Files |
-|---|---|
-| Home, research overview and resources | `index.html`, `index.css` |
-| Challenge: initiative, subtracks, timeline and awards | `challenge.html`, `challenge.css`, `assets/i18n/challenge.zh.json` |
-| Dataset distributions and examples | `data.html`, `data.css` |
-| Agent case and evaluation | `agent.html`, `agent.css` |
-| Harness: definition, system structure, selected 2025–2026 milestones, common mechanism comparison, catalogue by role, three breakdowns and InferenceNet’s four configurations | `harness.html`, `harness.css`; reuses `data.css`, `agent.css`, `evolution.css` |
-| Self-evolving: concept, research map by adaptation regime, method comparison, three detailed offline cases and InferenceNet’s development study | `evolution.html`, `evolution.css`, `evolution.js`, `assets/data/modular-rsi-evolution.json` |
-| Leaderboard: the Dev100 / v10 development release, then the Selected_1000 historical research results | `leaderboard.html`, `leaderboard.css` |
-| Leadership, student leaders, team, NTU GIFTS, partner teams and Yichen Guo contact | `teams.html`, `teams.css` |
-| Shared layout, navigation and theme | `styles.css`, `site.css`, `site.js`, `theme.js` |
-| Chinese translations and language control | `assets/i18n/*.zh.json`, `language.js`, `language.css` |
-| Charts and mountain leaderboard | `charts.js`, `mountain.js`, `mountain.css` |
-| Shared homepage and leaderboard results | `leaderboard.js`, `leaderboard-data.js`, `assets/data/paired-results.*` |
-| Shared board renderer used by both boards | `leaderboard-board.js` |
-| Dev100 / v10 development release data, validation and saved table | `leaderboard-dev100.js`, `leaderboard-dev100-data.js`, `assets/data/dev100-v10-results.*`, `scripts/build-dev100-board.mjs` |
-
-When updating translations or shared scripts, refresh the `?v=` release tag
-in the HTML. `language.js` forwards its release tag to the page dictionary URL.
-All eight pages load `language.js` with `20261018-branding-review`;
-Home uses `20261018-subtracks` for `index.css`. Home and Leaderboard retain
-`20261018-dev100-challenge` for `leaderboard.css` and `leaderboard.js`.
-Leaderboard also retains that tag for `site.js` and `leaderboard-dev100.js`,
-and both board entries retain it for the shared `leaderboard-board.js` import.
-Data imports keep their existing tags: `20261011-release` for `leaderboard-data.js`,
-`20261012-dual-board` for `leaderboard-dev100-data.js` and its JSON, and
-`20260917-harness` for the Selected_1000 results JSON. `challenge.css` and `teams.css` retain `20261018-initiative`. Other asset tags remain
-versioned independently in their page HTML. Strings shared by several pages,
-such as the reading-route labels and scroll hints, live in `language.js`.
-
-The Leaderboard page holds two separate boards, in this order, and the hero
-navigation lists them in the same order. `#leaderboard-dev100` comes first, with
-the Dev100 / v10 development release described below. `#leaderboard-selected-1000`
-follows with the complete results on the historical 1,000-task study described in
-this section; the old anchors (`#rankings`, `#public`, `#climb`, `#table`,
-`#research`, `#protocol`) still resolve. Home shows only the Selected_1000
-board, plus a news item and one link to the development release.
+The Leaderboard page holds only the Dev100 / v10 development release at
+`#leaderboard-dev100`, followed by its report, methodology and research
+directions. Home has no board and links to these Dev100 results. The removed
+historical board's old anchors are not public navigation targets; in-site links
+point to Dev100 or to `#research` where appropriate.
 
 The econometric replication subtrack will open-source the existing Dev100 set of 100 tasks.
 This scope was confirmed on 18 October 2026. The subtrack data package, official
 rules, submission channel and dates have not been published. The v10 table preserves historical
-development results, not official Challenge rankings. It is not directly
-comparable with the Selected_1000 historical research results. It reads `assets/data/dev100-v10-results.json`, a
+development results, not official Challenge rankings. It reads `assets/data/dev100-v10-results.json`, a
 sanitized derivation of the v10 four-harness report: 14 models × 4 harnesses,
 100 development tasks per combination, 5,600 task results. The report checksums and the derivation are in
 `dev100-v10-results-provenance.json`. Task IDs, server paths and per-task
@@ -460,10 +511,10 @@ and each field states its basis: recomputed from the report's embedded records,
 checked against result receipts for 5,182 runs, or taken from the study's run
 notes. Metric values are not re-scored.
 
-To update results, first verify a published JSON/CSV pair and its provenance,
-then run `node scripts/build-leaderboard.mjs` to regenerate the saved table on
-each page. If JavaScript or data loading fails, one combined 12-row table remains
-readable on each page. For the development release, verify a new sanitized
-JSON, CSV and provenance, then run `node scripts/build-dev100-board.mjs`. Check changes with
+To update the development release, verify a new sanitized JSON, CSV and
+provenance, then run `node scripts/build-dev100-board.mjs`. If JavaScript or data
+loading fails, the saved Dev100 table and report remain readable on Leaderboard.
+The historical validator does not publish a table. Check changes with
 `node --test scripts/test-leaderboard.mjs scripts/test-run-card.mjs scripts/test-dev100.mjs scripts/test-dual-board.mjs scripts/test-initiative.mjs`
-and `node scripts/check.mjs`, then verify both pages in the browser.
+and `node scripts/check.mjs`, then review Home and Leaderboard in the local browser
+before opening a pull request.

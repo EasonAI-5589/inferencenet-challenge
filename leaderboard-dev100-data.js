@@ -299,8 +299,12 @@ const CARD_CAPTION = 'Outcomes on the 100 development tasks';
 const EVIDENCE = Object.freeze({ 'accepted-final-report': 'Accepted final report' });
 // The summit names the ranked metric, so a full score on Correct sign never reads as full replication.
 const peak = metric => `100% · ${DEV_METRICS[metric]} on every task`;
+const DEV_SCOPE_NOTE = 'This is a descriptive comparison on a fixed 100-task development set; it is not an official Challenge ranking.';
+// Keep the archived caveat in the source data; the page no longer displays the other board.
+const displayDevCaveat = caveat => caveat === 'This is a descriptive comparison on a fixed 100-task development set; it is not a Challenge leaderboard and is not directly comparable with the Selected_1000 board.'
+  ? DEV_SCOPE_NOTE : caveat;
 const DEV_NOTES = Object.freeze([
-  'This development board is not directly comparable with the 1,000-task Selected_1000 board.',
+  DEV_SCOPE_NOTE,
   'Failed and unknown tasks stay in the 100-task denominator; they are never counted as false or as successes.',
   'Unknown or missing covers failed, unknown or pending tasks plus scored tasks with no recorded value for that metric.',
   'Historical DeepAgents slots and new runs have separate provenance, and their routes, reasoning settings and budgets differ, so differences are descriptive only.',
@@ -504,7 +508,7 @@ export function devReportHTML(data) {
     ${Object.entries(FIELD_EVIDENCE).map(([key, label]) => fact(label, prose(data.field_evidence[key]))).join('\n    ')}
   </dl>${data.caveats.length ? `
   <h4>Caveats</h4>
-  <ul class="dev-report-caveats">${data.caveats.map(caveat => `<li>${escapeHTML(caveat)}</li>`).join('')}</ul>` : ''}
+  <ul class="dev-report-caveats">${data.caveats.map(caveat => `<li>${escapeHTML(displayDevCaveat(caveat))}</li>`).join('')}</ul>` : ''}
   <p class="dev-report-links">${DEV_LINKS.slice(0, 3).map(([href, label]) => `<a class="text-link" href="${href}">${label}</a>`).join('')}</p>
 </div>`;
 }
@@ -515,7 +519,7 @@ export function devDataText(data) {
   return [...new Set([
     ...data.runs.flatMap(run => run.settings.thinking.values.map(item => item.value)),
     ...(Object.hasOwn(EVIDENCE, data.evidence_status) ? [] : [data.evidence_status]),
-    data.dataset.label, data.dataset.relation ?? '', ...Object.values(data.field_evidence), ...data.caveats,
+    data.dataset.label, data.dataset.relation ?? '', ...Object.values(data.field_evidence), ...data.caveats.map(displayDevCaveat),
     ...Object.values(data.report_summary.acceptance ?? {}).filter(sentence), devSavedStatus(data),
   ].map(value => value.replace(/\s+/g, ' ').trim()).filter(Boolean))];
 }

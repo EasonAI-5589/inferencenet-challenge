@@ -1,25 +1,31 @@
-/* Homepage: five sections for a guided research presentation. */
+/* Homepage: challenges, task examples, research and participation. */
 .hero{padding-bottom:38px}
 .hero-subtitle{max-width:780px;margin-inline:auto}
 .hero-description{max-width:780px}
 .hero-actions{max-width:900px;margin-inline:auto}
 .hero-description .hero-initiative-link{color:var(--ink);font-weight:700;text-decoration:underline;text-underline-offset:3px}
 /* The three university crests share one visible height without stretching. */
-.hero-affiliations{display:flex;justify-content:center;gap:28px;max-width:900px}
-.hero-affiliations a{width:104px;height:104px;min-height:0;padding:15px;flex:none}
+.hero-affiliations{display:flex;justify-content:center;align-items:center;gap:clamp(12px,3vw,36px);max-width:900px;margin:28px auto 0}
+.hero-affiliations a,.hero-affiliations a:last-child{width:80px;height:80px;min-height:0;padding:0;flex:none;border:0;border-radius:0;background:transparent}
+.hero-affiliations a:focus-visible{outline:2px solid var(--ink);outline-offset:5px}
 .hero-affiliations img{width:auto;height:72px;max-width:80px;object-fit:contain}
+/* Use the official transparent artwork's alpha, showing only its 145px-wide seal.
+   Preserve SUFE red in both themes while keeping the background transparent. */
+.hero-affiliations .sufe-crest{display:block;width:74px;height:72px;flex:none;background:#811c21;-webkit-mask:url("assets/institutions/sufe-university-transparent-official.png") left center/auto 72px no-repeat;mask:url("assets/institutions/sufe-university-transparent-official.png") left center/auto 72px no-repeat}
 /* Retain the original NTU asset, displaying its shield without the wordmark. */
 .hero-affiliations .ntu-crest{display:block;width:56px;height:72px;overflow:hidden;flex:none}
 .hero-affiliations .ntu-crest img{width:auto;height:72px;max-width:none}
-/* Historical single-task replay, played on request with native controls. */
-.home-replay{max-width:900px;margin:32px auto 0;text-align:left}
+/* One task from each subtrack, played on request with native controls. */
+.home-replays{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;margin-top:32px}
+.home-replay{display:flex;flex-direction:column;min-width:0;margin:0;text-align:left}
 .home-replay video{display:block;width:100%;height:auto;aspect-ratio:16/9;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
-.home-replay figcaption{margin-top:12px;font-size:13px;line-height:1.65;color:var(--soft)}
+.home-replay figcaption{display:flex;flex-direction:column;flex:1;margin-top:18px;font-size:14px;line-height:1.7;color:var(--soft)}
 .home-replay figcaption p{margin:0}
-.home-replay .home-replay-meta{margin-top:4px;color:var(--muted)}
-.home-replay .text-link{display:inline-block;margin-top:8px;font-size:13px}
-/* Dated status: published results, the historical study and what is still to come stay apart. */
-.home-status{max-width:900px;margin:30px auto 0;padding:18px 22px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);text-align:left}
+.home-replay figcaption .card-label{margin-bottom:8px;font-size:11px}
+.home-replay h3{margin:0 0 10px;color:var(--ink);font-size:22px;line-height:1.35}
+.home-replay .text-link{align-self:flex-start;display:inline-block;margin-top:auto;padding-top:14px;font-size:13px}
+/* Challenge announcements and development results. */
+.home-status{max-width:none;margin:30px auto 0;padding:18px 22px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);text-align:left}
 .home-status-title{margin:0 0 10px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .home-status-list{display:grid;gap:10px;margin:0;padding:0;list-style:none}
 .home-status-list li{display:grid;grid-template-columns:96px minmax(0,1fr);gap:2px 16px;font-size:13.5px;line-height:1.65;color:var(--soft)}
@@ -40,31 +46,6 @@
 .subtrack-demos span{font-size:13px;line-height:1.7;color:var(--soft)}
 .benchmark-directions .subtrack-status{margin-top:auto;padding-top:18px}
 .subtrack-status .badge{white-space:normal;border-style:dashed}
-.benchmark-workflow-title{margin-top:36px}
-#overview .research-flow{margin-top:20px}
-.featured-case{border:1px solid var(--strong-line);border-radius:var(--radius);overflow:hidden;background:var(--surface)}
-.case-question{padding:28px 30px}
-.case-question .kicker{margin-bottom:12px}
-.case-question h3{font-size:24px;max-width:850px}
-.case-question>p:not(.kicker){margin-top:14px;font-size:15px;color:var(--soft)}
-.case-data{display:flex;align-items:center;flex-wrap:wrap;gap:8px 20px}
-.case-data code{font-family:var(--mono);font-size:12px;color:var(--ink)}
-.case-data .text-link{font-size:13px}
-.case-comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--line)}
-.case-arm{padding:28px 30px;min-width:0}
-.case-arm+.case-arm{border-left:1px solid var(--line)}
-.case-arm .kicker{margin-bottom:10px}
-.case-arm h3{font-size:21px;margin-bottom:14px}
-.case-arm p:not(.kicker){font-size:15px;line-height:1.8;color:var(--soft)}
-.case-arm .case-outcome{margin-top:16px;color:var(--ink)!important}
-.case-arm .case-budget{margin-top:18px;font-size:12px!important;font-family:var(--mono)}
-.case-harness{background:var(--tint)}
-.case-footer{display:flex;align-items:center;justify-content:space-between;gap:18px 32px;padding:22px 30px;border-top:1px solid var(--line)}
-.case-footer p{max-width:60ch;font-size:13px;color:var(--soft)}
-.case-footer .button{flex:none}
-.results-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:10px 32px;margin-top:18px}
-.results-foot .chart-source{max-width:72ch;margin:0}
-.results-foot .text-link{flex:none}
 .research-directions .card-label{margin-bottom:16px}
 .participate-panel{display:flex;justify-content:space-between;align-items:center;gap:24px 40px;padding:26px 30px;border:1px solid var(--strong-line);border-radius:var(--radius);background:var(--tint)}
 .participate-panel>p{max-width:64ch;color:var(--soft);font-size:15px}
@@ -87,9 +68,27 @@
 .home-citations p{margin-top:16px;max-width:90ch}
 .home-citations ul{list-style:none;display:grid;gap:10px;padding:0;margin:16px 0 0}
 .home-citations .text-link{font-size:13px}
-@media(max-width:1000px){.case-footer,.participate-panel{align-items:flex-start;flex-direction:column}.participate-actions{flex-shrink:1}}
+@media(max-width:1000px){.participate-panel{align-items:flex-start;flex-direction:column}.participate-actions{flex-shrink:1}}
 @media(max-width:860px){.participate-steps{grid-template-columns:minmax(0,1fr)}}
-@media(max-width:700px){.case-comparison{grid-template-columns:1fr}.case-arm+.case-arm{border-left:0;border-top:1px solid var(--line)}.case-question,.case-arm{padding:24px}.case-footer,.participate-panel{padding:22px 24px}.research-directions{--cols:1}.hero-purpose{font-size:15px}.case-question h3{font-size:21px}}
-@media(max-width:520px){.hero-actions .button{width:100%}.home-status{padding:16px}.home-status-list li{grid-template-columns:minmax(0,1fr)}.home-resources ul{flex-direction:column}.case-question,.case-arm,.case-footer,.participate-panel{padding:20px}}
-/* styles.css gives the last crest half the row on phones; keep all three at 104px and let them wrap. */
-@media(max-width:520px){.hero-affiliations{flex-wrap:wrap;gap:14px}.hero-affiliations a:last-child{width:104px}}
+@media(max-width:700px){.participate-panel{padding:22px 24px}.research-directions{--cols:1}}
+@media(max-width:520px){.hero-actions .button{width:100%}.home-status{padding:16px}.home-status-list li{grid-template-columns:minmax(0,1fr)}.home-resources ul{flex-direction:column}.participate-panel{padding:20px}}
+/* Keep the same three 80px crest frames on narrow screens. */
+@media(max-width:520px){.hero-affiliations{flex-wrap:wrap;gap:14px}}
+
+/* Both challenges use the same task / deliverable / evaluation structure. */
+.benchmark-directions .card h3{font-size:25px;line-height:1.25}
+.challenge-spec{display:grid;gap:14px;margin:20px 0 0}
+.challenge-spec>div{display:grid;grid-template-columns:88px minmax(0,1fr);gap:12px;padding-top:14px;border-top:1px solid var(--line)}
+.challenge-spec dt{font-size:13px;font-weight:600;color:var(--ink)}
+.challenge-spec dd{margin:0;font-size:14px;line-height:1.7;color:var(--soft)}
+.benchmark-directions .challenge-partner,.benchmark-directions .challenge-note{font-size:13px;line-height:1.75;color:var(--muted)}
+.benchmark-directions .challenge-note{margin-top:20px}
+.benchmark-directions .subtrack-status{margin-top:18px;padding-top:0}
+.challenge-links{display:flex;flex-wrap:wrap;gap:12px 24px;margin-top:auto;padding-top:24px}
+.benchmark-directions .challenge-links .text-link{margin-top:0;padding-top:0}
+.home-status-list time{white-space:nowrap}
+#overview .section-heading{align-items:baseline}
+@media(max-width:520px){.challenge-spec>div{grid-template-columns:70px minmax(0,1fr);gap:10px}}
+
+/* Compatibility anchor for links from the business-task preview. */
+.challenge-anchor{display:block;scroll-margin-top:calc(var(--header-h) + 58px)}
