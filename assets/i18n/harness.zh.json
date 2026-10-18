@@ -1596,7 +1596,7 @@
   "The counts measure different things: 17 timeline milestones are dated events from 14 systems, 7 systems are compared mechanism by mechanism, and the catalogue lists 69 entries as of 13 Oct 2026. None of them is a complete census of the field.": "这些数字衡量的对象不同：时间线上的 17 个节点是来自 14 个系统的带日期事件，7 个系统按机制逐项对比，目录截至 2026 年 10 月 13 日收录 69 项。它们都不是对这个领域的完整普查。",
   "The runnable harness is the unit compared on this page. Above it, OpenClaw’s gateway chooses a runtime per model, Qwen-Live-Harness runs a realtime voice and video loop that hands tasks to a background harness, and platforms such as QM and OpenAgentCore run the harness they select. Extensions load into a host; optimizers change a harness offline between runs or online across tasks or within a run. Names are representative; the catalogue lists more.": "可运行的 Harness 是本页比较的单位。它的上方：OpenClaw 的网关按模型选择运行时；Qwen-Live-Harness 运行实时语音与视频循环，并把任务交给后台 Harness；QM 和 OpenAgentCore 这类平台运行它们选定的 Harness。扩展加载到宿主之中；优化器可以在两次运行之间离线修改 Harness，也可以跨任务或在一次运行之内在线修改。图中名称只是代表，目录列出更多。",
   "OpenClaw runtimes": "OpenClaw 运行时",
-  "Self-evolving: optimization regimes": "自进化：优化方式",
+  "Self-evolving: optimization regimes": "自进化：优化范式",
   "How the systems changed, 2025–2026": "这些系统如何演变，2025–2026",
   "Seventeen milestones from fourteen systems: DeepAgents appears three times and Codex twice, so milestones are not a count of systems. Dates mark the named release, paper or engineering account, not necessarily the first launch; Pi Durable is experimental and Cloudflare’s PiHarness (2 Oct) is a beta. Systems without a verified launch date, such as Hermes Agent, OpenClaw, Hive and jcode, appear in the map and catalogue instead. Lines do not imply product ancestry.": "来自 14 个系统的 17 个发展节点：DeepAgents 出现三次，Codex 出现两次，所以节点数不等于系统数。日期对应所列版本、论文或工程文章，不一定是首次发布；Pi Durable 是实验性的，Cloudflare 的 PiHarness（10 月 2 日）是测试版。Hermes Agent、OpenClaw、Hive、jcode 等没有核实首次发布日期的系统，放在结构图和目录中。连线不表示产品继承关系。",
   "Seven harnesses in one template: documented mechanisms, not measured quality": "七个 Harness 用同一模板对比：列的是文档记载的机制，不是测得的质量",
@@ -2162,5 +2162,8 @@
   "RRSI (arXiv 2609.24972)": "RRSI (arXiv 2609.24972)",
   "Harness-Zero (arXiv 2609.24974)": "Harness-Zero (arXiv 2609.24974)",
   "Subtrack 2 runs Harbor 0.20.0 with Claude Code; mounting DeepAgents, DeepSeek Harness, OpenAI Agents SDK": "赛道二已采用 Harbor 0.20.0 驱动 Claude Code；将 DeepAgents、DeepSeek Harness、OpenAI Agents SDK",
-  "and evolved hooks as Harbor agent adapters gives both subtracks one container lifecycle, trace format and independent grading boundary.": "及自进化 Hook 封装为 Harbor 适配器后，两个赛道即可共享同一套容器生命周期、轨迹格式与独立评分边界。"
+  "and evolved hooks as Harbor agent adapters gives both subtracks one container lifecycle, trace format and independent grading boundary.": "及自进化 Hook 封装为 Harbor 适配器后，两个赛道即可共享同一套容器生命周期、轨迹格式与独立评分边界。",
+  "(used for ModularRSI evolution)": "（用于 ModularRSI 自进化）",
+  "), and documents InferenceNet’s Phase 1 ModularRSI evolution study alongside our Phase 2 roadmap for Harbor and Claude Code.": "），并完整记录了 InferenceNet 第一阶段的 ModularRSI 自进化实验以及面向 Harbor + Claude Code 的第二阶段改造计划。",
+  "Read InferenceNet’s ModularRSI evolution results →": "阅读 InferenceNet ModularRSI 自进化实验结果 →"
 }

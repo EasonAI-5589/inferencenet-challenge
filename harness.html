@@ -385,7 +385,8 @@
 <line x1="550" y1="478" x2="550" y2="454" class="hc-line" marker-end="url(#hc-arrow)"/>
 <line x1="800" y1="454" x2="830" y2="478" class="hc-line" marker-end="url(#hc-arrow)"/>
 <text x="560" y="594" class="hc-small" text-anchor="middle">Arrows show roles, not product ancestry.</text>
-</svg></div><figcaption>The runnable harness is the unit compared on this page. Above it, OpenClaw’s gateway chooses a runtime per model, Qwen-Live-Harness runs a realtime voice and video loop that hands tasks to a background harness, and platforms such as QM and OpenAgentCore run the harness they select. Extensions load into a host; optimizers change a harness offline between runs or online across tasks or within a run. Names are representative; primary repository links are collected in section 06. <a href="https://picrew.github.io/LLM-Harness/main.pdf">Survey: taxonomy (§2.3) and systems (§6)</a> · <a href="https://code.claude.com/docs/en/how-claude-code-works">Claude Code architecture</a> · <a href="https://docs.openclaw.ai/concepts/agent-runtimes">OpenClaw runtimes</a> · <a href="https://github.com/QwenLM/Qwen-Live-Harness">Qwen-Live-Harness</a> · <a href="evolution.html#research-map">Self-evolving: optimi      <h3 class="harness-subtitle" id="timeline">How the systems changed, 2025–2026</h3>
+</svg></div><figcaption>The runnable harness is the unit compared on this page. Above it, OpenClaw’s gateway chooses a runtime per model, Qwen-Live-Harness runs a realtime voice and video loop that hands tasks to a background harness, and platforms such as QM and OpenAgentCore run the harness they select. Extensions load into a host; optimizers change a harness offline between runs or online across tasks or within a run. Names are representative; primary repository links are collected in section 06. <a href="https://picrew.github.io/LLM-Harness/main.pdf">Survey: taxonomy (§2.3) and systems (§6)</a> · <a href="https://code.claude.com/docs/en/how-claude-code-works">Claude Code architecture</a> · <a href="https://docs.openclaw.ai/concepts/agent-runtimes">OpenClaw runtimes</a> · <a href="https://github.com/QwenLM/Qwen-Live-Harness">Qwen-Live-Harness</a> · <a href="evolution.html#research-map">Self-evolving: optimization regimes</a></figcaption></figure>
+      <h3 class="harness-subtitle" id="timeline">How the systems changed, 2025–2026</h3>
       <figure class="hs-timeline"><div class="diagram-scroll hs-timeline-scroll" tabindex="0" role="region" aria-label="Harness timeline; scroll sideways on a narrow screen"><svg viewBox="0 0 1260 924" role="img" aria-labelledby="hs-focus-title hs-focus-desc">
 <title id="hs-focus-title">Agent Harness systems: selected developments, 2025–2026</title>
 <desc id="hs-focus-desc">Twenty-eight milestones across interactive harnesses, programmable and plugin runtimes, managed and durable platforms, and skills extensions or automated harness self-evolution in 2025 and 2026. A dot marks the date; lines connect labels to dates and do not imply product ancestry.</desc>
@@ -1360,7 +1361,7 @@
             </tr>
             <tr>
               <th scope="row">Extension surface</th>
-              <td>Python <code>AgentMiddleware</code> hooks and <code>HarnessProfile</code> (used for ModularRSI V1/V2)</td>
+              <td>Python <code>AgentMiddleware</code> hooks and <code>HarnessProfile</code> (used for ModularRSI evolution)</td>
               <td>Cordis plugin bundles and declarative YAML patch files (<code>cordis.patch.yml</code>)</td>
               <td>MCP tool servers, lifecycle hooks and <code>CLAUDE.md</code> / skill packages (used on Harbor in Subtrack 2)</td>
               <td>Python function tools, guardrails and run hooks</td>
@@ -1384,11 +1385,11 @@
         </div>
         <p class="lead">An execution loop runs a fixed harness configuration on a task; an optimization loop sits outside execution, inspects trajectories and failure modes across tasks, proposes targeted edits to the harness (prompts, tool descriptions, observation formatting, middleware hooks or code), and retains only non-regressive improvements under a fixed evaluator.</p>
       </div>
-      <p class="harness-evo-note">The Self-evolving page presents the two-layer execution-and-optimization diagram, compares recent offline and online self-evolution methods (<a href="evolution.html#method-modularrsi">ModularRSI</a>, <a href="evolution.html#method-self-harness">Self-Harness</a>, <a href="evolution.html#method-meta-harness">Meta-Harness</a>, <a href="evolution.html#rm-ahe">AHE</a>, <a href="evolution.html#rm-rho">RHO</a>, <a href="evolution.html#rm-harness-r1">Harness-R1</a>, <a href="evolution.html#rm-rrsi">RRSI</a> and <a href="evolution.html#rm-whale">WHALE</a>), and documents InferenceNet’s Phase 1 ModularRSI v1/v2 experiments alongside our Phase 2 roadmap for Harbor and Claude Code.</p>
+      <p class="harness-evo-note">The Self-evolving page presents the two-layer execution-and-optimization diagram, compares recent offline and online self-evolution methods (<a href="evolution.html#method-modularrsi">ModularRSI</a>, <a href="evolution.html#method-self-harness">Self-Harness</a>, <a href="evolution.html#method-meta-harness">Meta-Harness</a>, <a href="evolution.html#rm-ahe">AHE</a>, <a href="evolution.html#rm-rho">RHO</a>, <a href="evolution.html#rm-harness-r1">Harness-R1</a>, <a href="evolution.html#rm-rrsi">RRSI</a> and <a href="evolution.html#rm-whale">WHALE</a>), and documents InferenceNet’s Phase 1 ModularRSI evolution study alongside our Phase 2 roadmap for Harbor and Claude Code.</p>
       <div class="case-links">
         <a class="text-link" href="evolution.html#improvement-directions">Explore capability targets and the Phase 1 / Phase 2 roadmap →</a>
         <a class="text-link" href="evolution.html#cycle">See the execution vs. optimization loop diagram →</a>
-        <a class="text-link" href="evolution.html#rsi-versions">Read InferenceNet’s ModularRSI v1 and v2 results →</a>
+        <a class="text-link" href="evolution.html#rsi-versions">Read InferenceNet’s ModularRSI evolution results →</a>
       </div>
     </section>
 

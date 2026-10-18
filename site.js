@@ -202,6 +202,25 @@
     window.addEventListener('resize', () => scrollers.forEach(sync), { passive: true });
   }
 
+  /* Auto-fit timeline tag boxes to rendered text width (EN / ZH) -------------- */
+  const fitTimelineTags = () => {
+    for (const node of document.querySelectorAll('.hs-timeline .hs-node')) {
+      const rect = node.querySelector('rect.hs-tag');
+      const texts = [...node.querySelectorAll('text')];
+      if (!rect || !texts.length) continue;
+      let maxW = 0;
+      for (const t of texts) {
+        try { maxW = Math.max(maxW, t.getComputedTextLength()); } catch {}
+      }
+      if (maxW > 0) rect.setAttribute('width', String(Math.ceil(maxW + 20)));
+    }
+  };
+  if (document.querySelector('.hs-timeline')) {
+    fitTimelineTags();
+    window.addEventListener('resize', fitTimelineTags, { passive: true });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitTimelineTags);
+  }
+
   /* Charts ----------------------------------------------------------------------- */
   if (document.querySelector('[data-chart]')) {
     const base = scriptUrl || window.location.href;
