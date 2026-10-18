@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="challenge.css?v=20261019-data-in-challenge">
   <script src="site.js?v=20261011-release" defer></script>
   <link rel="stylesheet" href="language.css">
-  <script src="language.js?v=20261019-data-in-challenge" defer></script>
+  <script src="language.js?v=20261019-agent-directions" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -29,7 +29,6 @@
       <div class="nav-links open" id="nav-links">
         <a href="index.html">Home</a>
         <a href="challenge.html" aria-current="page">Challenge</a>
-        <a href="agent.html">Agent</a>
         <a href="harness.html">Harness</a>
         <a href="evolution.html">Self-evolving</a>
         <a href="leaderboard.html">Leaderboard</a>
@@ -86,7 +85,7 @@
             <div><dt>Evaluation</dt><dd>An independent evaluator checks the three numbers against reference results that the model never sees during the run.</dd></div>
           </dl>
         </div>
-        <figure class="track-video replication-demo" aria-labelledby="demo-replication-title">
+        <figure id="replication-demo" class="track-video replication-demo" aria-labelledby="demo-replication-title">
             <video width="1920" height="1080" controls playsinline preload="metadata" poster="assets/video/agent-replay-task0001-poster.jpg?v=20261018-deepagents-flow-v3-2" aria-label="Econometric replication example">
               <source src="assets/video/agent-replay-task0001.mp4?v=20261018-deepagents-flow-v3-2" type="video/mp4">
               <a href="assets/video/agent-replay-task0001.mp4?v=20261018-deepagents-flow-v3-2">Download the replay video (MP4)</a>
@@ -101,7 +100,7 @@
           </figure>
         <div class="track-links">
           <a class="text-link" href="replication.html">Explore Subtrack 1 <span aria-hidden="true">→</span></a>
-          <a class="text-link" href="agent.html">Follow a recorded run <span aria-hidden="true">→</span></a>
+          <a class="text-link" href="evolution.html#improvement-directions">Explore improvement directions <span aria-hidden="true">→</span></a>
         </div>
       </article>
 
@@ -215,7 +214,7 @@
     <div class="container">
       <nav class="page-footer-nav" aria-label="Page sequence">
         <a href="index.html"><small>Previous</small><span><span aria-hidden="true">←</span> Home</span></a>
-        <a href="agent.html"><small>Next</small><span>Agent <span aria-hidden="true">→</span></span></a>
+        <a href="harness.html"><small>Next</small><span>Harness <span aria-hidden="true">→</span></span></a>
       </nav>
     </div>
   </main>

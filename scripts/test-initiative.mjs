@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = file => readFile(resolve(root, file), 'utf8');
-const PAGES = ['index', 'challenge', 'replication', 'agent', 'harness', 'evolution', 'leaderboard', 'teams', 'professional-tasks'];
+const PAGES = ['index', 'challenge', 'replication', 'harness', 'evolution', 'leaderboard', 'teams', 'professional-tasks'];
 const CHALLENGE_PAGES = ['challenge', 'replication', 'professional-tasks'];
 const TAGLINE = 'AI Agents for Business, Finance and Social Science';
 
@@ -207,9 +207,9 @@ test('Home, Challenge and Teams use the same subtracks and facts: Dev100 to be o
   assert.match(home, /href="https:\/\/huggingface\.co\/datasets\/CamoAiLab\/InferenceNet"/);
 });
 
-test('every content page has seven unique primary destinations and one current section', async () => {
+test('every content page has six unique primary destinations and one current section', async () => {
   const destinations = [
-    ['Home', 'index.html'], ['Challenge', 'challenge.html'], ['Agent', 'agent.html'],
+    ['Home', 'index.html'], ['Challenge', 'challenge.html'],
     ['Harness', 'harness.html'], ['Self-evolving', 'evolution.html'], ['Leaderboard', 'leaderboard.html'], ['Teams', 'teams.html'],
   ];
   for (const page of PAGES) {
@@ -225,7 +225,7 @@ test('every content page has seven unique primary destinations and one current s
 });
 
 test('the retired Data URL leads to Challenge data, Dev100 and its demo in order', async () => {
-  const [legacy, challenge, agent] = await Promise.all(['data', 'challenge', 'agent'].map(page => read(`${page}.html`)));
+  const [legacy, challenge] = await Promise.all(['data', 'challenge'].map(page => read(`${page}.html`)));
   const target = 'challenge.html#replication-data';
   const refresh = [...legacy.matchAll(/<meta\b[^>]*>/gi)].map(match => match[0]).find(tag => attribute(tag, 'http-equiv') === 'refresh');
   const canonical = [...legacy.matchAll(/<link\b[^>]*>/gi)].map(match => match[0]).find(tag => attribute(tag, 'rel') === 'canonical');
@@ -241,8 +241,7 @@ test('the retired Data URL leads to Challenge data, Dev100 and its demo in order
   assert.match(econometric.slice(positions[1], positions[2]), /Dev100: 100 econometric replication tasks/);
   for (const page of PAGES) assert.doesNotMatch(await read(`${page}.html`), /\bhref="data\.html(?:[?#][^"]*)?"/, `${page}: content links bypass the compatibility redirect`);
   const footerLinks = html => links(html.match(/<nav\b[^>]*class="page-footer-nav"[^>]*>([\s\S]*?)<\/nav>/)?.[1] || '');
-  assert.ok(footerLinks(challenge).some(link => link.href === 'agent.html' && link.label.startsWith('Next')), 'Challenge continues to Agent');
-  assert.ok(footerLinks(agent).some(link => link.href === 'challenge.html' && link.label.startsWith('Previous')), 'Agent returns to Challenge');
+  assert.ok(footerLinks(challenge).some(link => link.href === 'harness.html' && link.label.startsWith('Next')), 'Challenge continues to Harness');
 });
 
 test('Challenge content links both subtracks without a duplicate navigation row', async () => {
@@ -289,6 +288,32 @@ function translatableStrings(html) {
   for (const [, , value] of h.matchAll(/\b(aria-label|title|alt|placeholder)="([^"]*)"/g)) found.add(normalize(value));
   return [...found].filter(text => /[A-Za-z]/.test(text));
 }
+
+test('retired Agent bookmarks lead to improvement directions and active links use their destinations directly', async () => {
+  const legacy = await read('agent.html');
+  const target = 'evolution.html#improvement-directions';
+  assert.match(legacy, /http-equiv="refresh" content="0; url=evolution\.html#improvement-directions"/);
+  assert.match(legacy, /rel="canonical" href="evolution\.html#improvement-directions"/);
+  assert.ok(links(legacy).some(link => link.href === target));
+  const directions = section(await read('evolution.html'), 'improvement-directions');
+  assert.match(directions, /Model training[\s\S]*Model–Harness co-evolution/);
+  for (const page of PAGES) {
+    assert.doesNotMatch(await read(`${page}.html`), /\bhref="agent\.html(?:[?#][^"]*)?"/, `${page}: active links bypass the retired Agent page`);
+  }
+  assert.match(await read('challenge.html'), /<figure id="replication-demo"/);
+  for (const page of ['replication', 'harness']) {
+    assert.ok(links(await read(`${page}.html`)).some(link => link.href === 'challenge.html#replication-demo'), `${page}: demo entry`);
+  }
+});
+
+test('new improvement directions and hero have complete Chinese translations', async () => {
+  const html = await read('evolution.html');
+  const dictionary = JSON.parse(await read('assets/i18n/evolution.zh.json'));
+  const hero = html.match(/<section class="page-hero[\s\S]*?<\/section>/)[0];
+  const strings = translatableStrings(hero + section(html, 'improvement-directions'));
+  const missing = strings.filter(text => !(text in dictionary));
+  assert.deepEqual(missing, [], 'all new research-direction copy is translated');
+});
 
 test('Home, Challenge, both subtrack entries and Teams have complete Chinese translations', async () => {
   const common = new Function(`return (${(await read('language.js')).match(/const common = (\{[\s\S]*?\n  \});/)[1]});`)();

@@ -138,5 +138,6 @@
   "Files require signing in to Hugging Face and accepting the repository’s access conditions.": "访问文件需登录 Hugging Face，并接受仓库的访问条件。",
   "Dev100: 100 econometric replication tasks": "Dev100：100 道计量经济学复现任务",
   "The econometric replication challenge will open-source the existing Dev100 task set. Agents inspect the data, implement the specified analysis and submit results for independent evaluation.": "计量经济学复现挑战将开源现有 Dev100 题目集。智能体需要检查数据、按要求完成分析，并提交结果供独立评测。",
-  "Explore Dev100 / v10 development results": "查看 Dev100 / v10 开发评测结果"
+  "Explore Dev100 / v10 development results": "查看 Dev100 / v10 开发评测结果",
+  "Explore improvement directions": "探索改进方向"
 }

@@ -6,9 +6,9 @@
   <meta name="color-scheme" content="light">
   <meta name="referrer" content="no-referrer">
   <title>Self-evolving — InferenceNet</title>
-  <meta name="description" content="Harness self-evolution: a research map of when recent methods change a harness and what feedback decides, a detailed comparison of ModularRSI, Self-Harness and Meta-Harness, and InferenceNet’s ModularRSI-style development study on DeepAgents.">
+  <meta name="description" content="Research directions for agent improvement through model training and model–harness co-evolution, followed by harness optimization methods and InferenceNet’s development study.">
   <meta property="og:title" content="InferenceNet — Self-evolving">
-  <meta property="og:description" content="Harness self-evolution: a research map of when recent methods change a harness and what feedback decides, a detailed comparison of ModularRSI, Self-Harness and Meta-Harness, and InferenceNet’s ModularRSI-style development study on DeepAgents.">
+  <meta property="og:description" content="Research directions for agent improvement through model training and model–harness co-evolution, followed by harness optimization methods and InferenceNet’s development study.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -16,11 +16,11 @@
   <link rel="stylesheet" href="styles.css?v=20261018-shared-nav">
   <link rel="stylesheet" href="site.css?v=20261018-shared-nav">
   <link rel="stylesheet" href="agent.css?v=20260917-case-data">
-  <link rel="stylesheet" href="evolution.css?v=20261014-rsi-structure">
+  <link rel="stylesheet" href="evolution.css?v=20261019-agent-directions">
   <script src="site.js?v=20261011-release" defer></script>
   <script src="evolution.js?v=20261014-rsi-structure" defer></script>
   <link rel="stylesheet" href="language.css">
-  <script src="language.js?v=20261018-challenge-videos" defer></script>
+  <script src="language.js?v=20261019-agent-directions" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -31,7 +31,6 @@
       <div class="nav-links open" id="nav-links">
         <a href="index.html">Home</a>
         <a href="challenge.html">Challenge</a>
-        <a href="agent.html">Agent</a>
         <a href="harness.html">Harness</a>
         <a href="evolution.html" aria-current="page">Self-evolving</a>
         <a href="leaderboard.html">Leaderboard</a>
@@ -48,12 +47,13 @@
 
   <main id="main" class="agent-case evolution-page">
     <section class="page-hero container" aria-labelledby="page-title">
-      <p class="kicker">Phase 2 · Harness self-evolution</p>
-      <h1 id="page-title">Self-evolving harnesses improve from execution feedback.</h1>
-      <p class="lead">A harness is the software that runs a model as an agent. This page follows the path from research ideas to implementation and evidence: first map and compare harness self-evolution methods; then see how InferenceNet applies modular revision in v1 and v2, what changes in the code, and what the frozen-harness experiments show.</p>
+      <p class="kicker">Model training · Model–Harness co-evolution</p>
+      <h1 id="page-title">Learning from tasks. Improving agents.</h1>
+      <p class="lead">InferenceNet challenges reveal capabilities that agents need to develop: understanding research requirements, interpreting data and constructing justified analyses. We explore model training and model–harness co-evolution as two routes to improvement. The three detailed harness methods and the current InferenceNet experiments keep model weights fixed.</p>
       <ul class="page-meta"><li>Research map · selected work, checked on 13 Oct 2026</li><li>Three detailed methods · checked against papers and code on 10 Oct 2026</li><li>InferenceNet study · development set only</li><li>Implementation update · v1 and v2, audited 14 Oct 2026</li><li><a href="harness.html#definition">What a harness is →</a></li></ul>
     </section>
     <nav class="subnav" aria-label="On this page"><ol class="container">
+      <li><a href="#improvement-directions">Improvement directions</a></li>
       <li><a href="#concept"><span class="subnav-number">01</span>Concept</a></li>
       <li><a href="#research-map">Research map</a></li>
       <li><a href="#cycle"><span class="subnav-number">02</span>Improvement loop</a></li>
@@ -64,6 +64,7 @@
     </ol></nav>
     <nav class="reading-routes container" aria-label="How to read this page">
       <div class="reading-route"><p class="reading-route-title">Quick read</p><ol>
+          <li><a href="#improvement-directions">Capabilities and improvement paths</a></li>
           <li><a href="#concept">Concepts and boundaries</a></li>
           <li><a href="#method-modularrsi">The ModularRSI paper method</a></li>
           <li><a href="#rsi-versions">InferenceNet: V1 / V2 implementations</a></li>
@@ -83,6 +84,24 @@
           <li><a href="#sources">Sources</a></li>
       </ol></div>
     </nav>
+
+    <section class="section container ruled improvement-directions" id="improvement-directions" aria-labelledby="improvement-title">
+      <div class="case-heading"><p class="kicker">Research directions</p><h2 id="improvement-title">What should agents learn from these challenges?</h2></div>
+      <p class="case-intro">The task demonstrations lead to three questions about the capabilities behind a reliable analysis.</p>
+      <ul class="se-tiles improvement-capabilities" aria-label="Capabilities to improve">
+        <li><span class="se-role">Statistical reasoning</span><h3>How do research requirements become the right analysis?</h3><p>Understand the requested method and constraints, then carry them into sample selection, model specification and statistical inference.</p></li>
+        <li><span class="se-role">Data interpretation</span><h3>How can an agent understand unfamiliar data?</h3><p>Use task materials and data evidence to identify what each observation represents, how variables are coded, and what units and groups mean.</p></li>
+        <li><span class="se-role">Feature construction</span><h3>How can it construct and verify the right variables?</h3><p>Turn the research question into justified transformations, scaling and interactions. Check their meaning against the task and data, alongside checking that the code runs.</p></li>
+      </ul>
+      <p class="case-caption improvement-task-design">Well-specified tasks provide the background and data clues needed for these judgments. Ambiguous variable definitions also inform improvements to task design and evaluation.</p>
+      <h3 class="improvement-paths-title">Two paths for developing these capabilities</h3>
+      <div class="improvement-paths">
+        <article><p class="se-role">01 / Model training</p><h4>Learn from verified analyses and execution traces</h4><p>Study how supervised fine-tuning, distillation and reinforcement learning can teach models to interpret data, plan analyses, use tools and verify their work. Use verified training tasks and evaluate the learned capabilities on held-out tasks.</p></article>
+        <article><p class="se-role">02 / Model–Harness co-evolution</p><h4>Improve model capabilities and harness behavior together</h4><p>Explore alternating model updates with improvements to planning, tools, context and evidence checks. Compare model-only, harness-only and joint changes on held-out tasks under the same evaluation conditions.</p></article>
+      </div>
+      <p class="case-caption improvement-scope">These are research directions. The InferenceNet v1 and v2 studies below change the harness while keeping model weights fixed.</p>
+      <div class="se-links"><a class="text-link" href="challenge.html#replication-demo">Watch the replication demo →</a><a class="text-link" href="challenge.html#subtrack-professional">Explore the business task demos →</a></div>
+    </section>
 
     <section class="section container ruled" id="concept" aria-labelledby="concept-title">
       <div class="case-heading"><p class="kicker">01 / Concept</p><h2 id="concept-title">What self-evolution changes, and what it leaves alone</h2></div>
@@ -986,7 +1005,6 @@ def agent_loop(remaining_model_calls: int, last_tool_failed: bool) -&gt; dict[st
           <a class="text-link" href="https://github.com/YTZSR/chatpilot_evaluator/tree/dev-modular-rsi">Branch dev-modular-rsi (private repository) →</a>
           <a class="text-link" href="https://github.com/YTZSR/chatpilot_evaluator/blob/06f2890616ef93a9bd634a08b65b4e4df45c822e/inferencenet/modular_rsi/runtime_modules.py">Where the hooks attach (private repository) →</a>
           <a class="text-link" href="https://github.com/YTZSR/chatpilot_evaluator/blob/06f2890616ef93a9bd634a08b65b4e4df45c822e/docs/MODULAR_RSI_REAL100_PROTOCOL.md">Evolution protocol (private repository) →</a>
-          <a class="text-link" href="agent.html">Phase 1: one task with DeepAgents →</a>
         </div>
       </div>
       <details class="case-archive" id="run-record"><summary>Run record and sources</summary>

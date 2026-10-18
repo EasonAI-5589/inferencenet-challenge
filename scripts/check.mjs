@@ -7,8 +7,8 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 // The explicit public-file allowlist (plus the whole reviewed `assets/` tree).
 // Private test pages (`_*.html`), DESIGN.md, README.md and scripts/ are never listed.
-export const pages = ['index.html', 'challenge.html', 'replication.html', 'agent.html', 'harness.html', 'evolution.html', 'leaderboard.html', 'teams.html', 'professional-tasks.html'];
-const redirects = { 'data.html': 'challenge.html#replication-data' };
+export const pages = ['index.html', 'challenge.html', 'replication.html', 'harness.html', 'evolution.html', 'leaderboard.html', 'teams.html', 'professional-tasks.html'];
+const redirects = { 'data.html': 'challenge.html#replication-data', 'agent.html': 'evolution.html#improvement-directions' };
 export const publicFiles = [
   ...pages,
   ...Object.keys(redirects),

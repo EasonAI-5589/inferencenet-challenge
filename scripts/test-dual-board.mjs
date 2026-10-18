@@ -17,7 +17,7 @@ const devData = await exists(DEV_JSON) ? JSON.parse(await read(DEV_JSON)) : null
 const malformed = JSON.parse(await readFile(new URL('fixtures/dev100-malformed.json', import.meta.url), 'utf8'));
 const selected = selectedBoardDescriptor('assets/data/paired-results.json');
 const PAGE = 'https://example.org/leaderboard.html';
-const PAGES = ['index.html', 'challenge.html', 'replication.html', 'agent.html', 'harness.html', 'evolution.html', 'leaderboard.html', 'teams.html', 'professional-tasks.html'];
+const PAGES = ['index.html', 'challenge.html', 'replication.html', 'harness.html', 'evolution.html', 'leaderboard.html', 'teams.html', 'professional-tasks.html'];
 const TAG = '20261018-dev100-challenge';
 const DEV100_TAG = '20261018-home-challenges';
 const LANGUAGE_TAG = '20261018-challenge-videos';
@@ -276,7 +276,7 @@ test('the development module loads only on leaderboard.html, with the release ta
   }
   for (const page of PAGES) {
     const html = await read(page);
-    const languageTag = { 'index.html': '20261019-agent-demos', 'challenge.html': '20261019-data-in-challenge', 'agent.html': '20261019-data-in-challenge', 'replication.html': '20261019-data-in-challenge', 'professional-tasks.html': '20261019-claude-relay-v2' }[page] || LANGUAGE_TAG;
+    const languageTag = '20261019-agent-directions';
     assert.match(html, new RegExp(`"language\\.js\\?v=${languageTag}"`), `${page}: language.js`);
   }
   assert.match(await read('index.html'), /"index\.css\?v=20261019-aims-grid"/);

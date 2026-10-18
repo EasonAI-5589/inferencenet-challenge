@@ -3,12 +3,11 @@
 [Live website](https://easonai-5589.github.io/inferencenet-challenge/)
 
 Public website for InferenceNet Challenge, part of the Global InferenceNet Initiative: AI Agents for
-Business, Finance and Social Science. All nine content pages share Chinese / English and
-light / dark controls. The former Data URL remains as a compatibility redirect.
+Business, Finance and Social Science. All eight content pages share Chinese / English and
+light / dark controls. The former Data and Agent URLs remain as compatibility redirects.
 
-The primary navigation has seven entries: Home, Challenge, Agent, Harness,
-Self-evolving, Leaderboard and Teams. Agent and Harness are shared resources for
-both subtracks. The brand logo also returns to Home.
+The primary navigation has six entries: Home, Challenge, Harness,
+Self-evolving, Leaderboard and Teams. Harness is a shared resource for both subtracks. The brand logo also returns to Home.
 Home’s challenge cards and demo captions link directly to the corresponding
 Challenge sections (`challenge.html#subtrack-econometric` and
 `challenge.html#subtrack-professional`). Initial deep links align after language
@@ -17,14 +16,14 @@ Challenge links to both subtrack pages from their descriptions in the page conte
 Econometric replication (`replication.html`) and Business Analysis & Deliverables
 (`professional-tasks.html`). These pages use the shared primary navigation without
 a second navigation row. The primary Challenge entry marks the section on either
-subtrack page. Agent, Harness and Self-evolving retain their own primary
+subtrack page. Harness and Self-evolving retain their own primary
 current-page indicators.
 The Self-evolving page keeps its original URL, `evolution.html`, and its anchors.
 Research data is introduced within the econometric replication subtrack at
 `challenge.html#replication-data`, followed by the 100-task Dev100 section and its
 recorded demonstration. `data.html` redirects to that data introduction, with a
 matching canonical URL and clickable fallback; it no longer has separate content
-or language controls. Challenge and Agent link directly to each other in the page sequence.
+or language controls. Challenge continues to Harness in the page sequence.
 
 ## Edit the website
 
@@ -65,9 +64,9 @@ of future updates unless explicitly requested again.
 | Subtrack 1 overview: econometric replication, Dev100 scope, workflow and research pages | `replication.html`, `assets/i18n/replication.zh.json`; reuses `styles.css`, `site.css` |
 | Business Analysis & Deliverables: Finance and HR cases, rubric scoring and pilot evidence | `professional-tasks.html`, `professional-tasks.css`, `assets/i18n/professional-tasks.zh.json`, `assets/data/professional-tasks-pilot.json` |
 | Former Data URL: compatibility redirect to Challenge's research data introduction | `data.html`; `data.css` remains available for Harness |
-| Agent case and evaluation | `agent.html`, `agent.css` |
+| Former Agent URL: redirects to improvement directions | `agent.html`; `agent.css` remains shared by Harness and Self-evolving |
 | Harness: definition, system structure, selected 2025–2026 milestones, common mechanism comparison, catalogue by role, three breakdowns and InferenceNet’s four configurations | `harness.html`, `harness.css`; reuses `data.css`, `agent.css`, `evolution.css` |
-| Self-evolving: concept, research map by adaptation regime, method comparison, three detailed offline cases and InferenceNet’s development study | `evolution.html`, `evolution.css`, `evolution.js`, `assets/data/modular-rsi-evolution.json` |
+| Self-evolving: capability questions, model training and co-evolution directions, concept, research map by adaptation regime, method comparison, three detailed offline cases and InferenceNet’s development study | `evolution.html`, `evolution.css`, `evolution.js`, `assets/data/modular-rsi-evolution.json` |
 | Leaderboard: the Dev100 / v10 development release | `leaderboard.html`, `leaderboard.css` |
 | Leadership, student leaders, team, NTU GIFTS, partner teams and Yichen Guo contact | `teams.html`, `teams.css` |
 | Shared layout, navigation and theme | `styles.css`, `site.css`, `site.js`, `theme.js` |
@@ -79,10 +78,8 @@ of future updates unless explicitly requested again.
 
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
-All nine content pages load `styles.css` and `site.css` with `20261018-shared-nav`, and
-`language.js` with `20261018-challenge-videos`, except Home (`20261019-agent-demos`),
-Challenge, Agent and the replication detail page (`20261019-data-in-challenge`),
-and Business Analysis (`20261019-claude-relay-v2`).
+All eight content pages load `styles.css` and `site.css` with `20261018-shared-nav`, and
+`language.js` with `20261019-agent-directions`. Evolution CSS uses the same tag.
 Home presents both challenges with the same workflow, difficulty, deliverable and
 independent-evaluation structure, followed by two concrete descriptions of the work. The base stylesheet carries the same
 versioned reference on every page, so preview navigation does not reuse the earlier
@@ -119,7 +116,7 @@ statistics, while business analysis checks editable professional deliverables.
 Home and Challenge name the second challenge Business Analysis & Deliverables
 and link to `professional-tasks.html`.
 Home's `#subtracks` alias remains within the existing `#overview` section.
-The business page uses the shared seven-entry navigation and is registered for
+The business page uses the shared six-entry navigation and is registered for
 publication, static checks and translation. Its CSS is explicitly published;
 its Chinese dictionary and curated pilot JSON pass through the reviewed asset
 tree and the same public-file boundary checks.
@@ -248,20 +245,18 @@ followed by the timeline (02), awards (03) and how to take part (04).
   tentative launch month; exact dates, evaluation access and award details remain
   TBD as stated on the Challenge page.
 
-## Agent case walkthrough
+## Agent improvement directions
 
-The Agent page follows recorded GPT-5.5 task 0011: the input table, the
-single-generation program and its month-column error, the three DeepAgents
-tool executions, and the independently replayed result. Code excerpts and
-returned evidence sit beside each step; the original prompt, programs and
-trace remain in a collapsed record. Both languages distinguish the full
-4,550-row, 38-column file, the 984-row time window and the 977 observations
-used for regression. The same-task link opens the task's `task_row.json` on
-Hugging Face at revision `59f9512a38e594528807744214a60ee00367434e`, under
-`Selected_1000/0011/`. The task collection link opens the dataset's
-`#selected_1000-dataset` section. Interaction budgets remain explicit.
-Agent CSS uses release tag `20260917-case-data`; its dictionary follows the
-language.js release tag.
+The standalone Agent walkthrough has been retired. `agent.html`, including old
+fragment links, redirects to `evolution.html#improvement-directions` with a canonical
+link and a clickable fallback. The Self-evolving page retains the three capability
+questions: statistical reasoning, data interpretation and feature construction.
+It connects them to model training and model–harness co-evolution as research
+directions. Existing v1/v2 results still describe fixed-model harness changes.
+The previous Agent page's task 0011 and failure trace remain in Git history; the
+Challenge's task 0001 video is a different recorded run. Links to demonstrations
+now go directly to `challenge.html#replication-demo`. Shared `agent.css` and source
+assets are retained for other pages and provenance.
 
 ## Homepage agent demos
 
@@ -287,7 +282,7 @@ sections on the Challenge page (`#subtrack-econometric` and
 `#subtrack-professional`). The finance
 video is shared with the business task page; this presentation adds no new video assets,
 task data or evaluation results. The homepage omits replay production details;
-the existing task 0011 walkthrough remains on Agent. Homepage CSS uses
+the retired task 0011 walkthrough remains available in Git history. Homepage CSS uses
 `20261019-aims-grid`; translations use
 `20261018-challenge-videos`.
 The animation source and export scripts stay in the research workspace.
@@ -473,8 +468,8 @@ leaderboard scripts, leaderboard CSS or mountain CSS; it links to the Dev100
 results page instead.
 Task packages, rules, exact dates and submission channels remain to be announced.
 Challenge introduces the replication data and links to its Hugging Face source;
-Home's dataset versions and provenance link also opens that source. Agent keeps
-the detailed task 0011 execution trace. The status list links the business task preview, the Dev100
+Home's dataset versions and provenance link also opens that source. Capability
+questions from the retired Agent page now introduce the Self-evolving research directions. The status list links the business task preview, the Dev100
 open-source scope confirmed on 18 Oct 2026 and the development report generated
 at `2026-10-11T16:35:49Z`. These updates do not imply that competition submissions
 are open or that pilot and development scores are official Challenge rankings.
