@@ -503,12 +503,6 @@ export function devReportHTML(data) {
   <dl class="dev-report-facts">
     ${facts}
   </dl>
-  <h4>How each field was established</h4>
-  <dl class="dev-report-evidence">
-    ${Object.entries(FIELD_EVIDENCE).map(([key, label]) => fact(label, prose(data.field_evidence[key]))).join('\n    ')}
-  </dl>${data.caveats.length ? `
-  <h4>Caveats</h4>
-  <ul class="dev-report-caveats">${data.caveats.map(caveat => `<li>${escapeHTML(displayDevCaveat(caveat))}</li>`).join('')}</ul>` : ''}
   <p class="dev-report-links">${DEV_LINKS.slice(0, 3).map(([href, label]) => `<a class="text-link" href="${href}">${label}</a>`).join('')}</p>
 </div>`;
 }

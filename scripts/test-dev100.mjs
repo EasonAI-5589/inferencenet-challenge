@@ -651,8 +651,6 @@ test('the static report summary lists totals, attribution, sources and field evi
   assert.equal(fact(html, 'Acceptance'), `<span class="run-missing">${NOT_RECORDED}</span>`);
   assert.equal(fact(html, 'Dataset relation'), `<span class="run-missing">${NOT_RECORDED}</span>`);
   assert.equal(fact(html, 'Report generated'), '<time datetime="2026-10-11">2026-10-11</time>');
-  assert.equal(fact(html, 'Run dates'), '<span>Fixture evidence for run_date.</span>');
-  assert.match(html, /<h4>Caveats<\/h4>\n  <ul class="dev-report-caveats"><li>Fixture caveat\.<\/li><\/ul>/);
   for (const href of ['assets/data/dev100-v10-results.json', 'assets/data/dev100-v10-results-provenance.json', 'assets/data/dev100-v10-results.csv']) {
     assert.ok(html.includes(`<a class="text-link" href="${href}">`), href);
   }

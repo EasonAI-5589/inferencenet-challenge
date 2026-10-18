@@ -1061,5 +1061,15 @@
   "and": "与",
   "Evolves": "进化",
   "600 s": "600 秒",
-  "1,800 s": "1,800 秒"
+  "1,800 s": "1,800 秒",
+  "Inspect the evolved modules ↓": "查看进化模块实现 ↓",
+  "Each mechanism summary follows the paper and its official repository, tracing one iteration of the method’s improvement loop.": "每项机制概述均对照原论文及其官方开源仓库整理，完整呈现该方法单轮进化迭代的流程。",
+  "The rows answer the six questions from section 02, alongside the evaluation benchmarks and our ModularRSI adaptation on DeepAgents.": "表中各行依次回答第 02 节提出的六个核心问题，并列出评测基准以及我们在 DeepAgents 上的 ModularRSI 改造方案。",
+  "Grouped by when the harness changes across the four optimization regimes": "按四类优化范式（Harness 何时发生改变）分组的方法汇总",
+  "Dev100 development split (80 proposal / 20 validation tasks)": "Dev100 开发集切分（80 道提案题 / 20 道验证题）",
+  "Dev100 development tasks (100 tasks)": "Dev100 计量复现题集（100 题）",
+  "InferenceNet Dev100 econometric replication tasks": "InferenceNet Dev100 计量经济学复现任务",
+  "Evaluated with GPT-5.6 Sol via OpenRouter Responses (non-streaming, explicit high reasoning effort) across all 100 Dev100 tasks under identical sandbox and budget limits.": "使用 GPT-5.6 Sol 经 OpenRouter Responses（非流式、显式 high 推理强度）在全部 100 道 Dev100 题目上完成配对评测，两组共享完全一致的沙箱与预算上限。",
+  "Strict replication requires coefficient and standard-error relative errors ≤ 1% and p-value absolute error ≤ 0.01 (": "严格复现要求系数与标准误相对误差 ≤ 1% 且 p 值绝对误差 ≤ 0.01（",
+  "). Partial replication checks coefficient error ≤ 5%; significance compares p-value bands at 0.01, 0.05 and 0.1. All 100 tasks remain in the denominator.": "）。部分复现检查系数相对误差 ≤ 5%；显著性比较 0.01、0.05 与 0.1 三档 p 值区间。全部 100 道题均计入分母。"
 }

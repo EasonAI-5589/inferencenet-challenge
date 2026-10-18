@@ -2165,5 +2165,11 @@
   "and evolved hooks as Harbor agent adapters gives both subtracks one container lifecycle, trace format and independent grading boundary.": "及自进化 Hook 封装为 Harbor 适配器后，两个赛道即可共享同一套容器生命周期、轨迹格式与独立评分边界。",
   "(used for ModularRSI evolution)": "（用于 ModularRSI 自进化）",
   "), and documents InferenceNet’s Phase 1 ModularRSI evolution study alongside our Phase 2 roadmap for Harbor and Claude Code.": "），并完整记录了 InferenceNet 第一阶段的 ModularRSI 自进化实验以及面向 Harbor + Claude Code 的第二阶段改造计划。",
-  "Read InferenceNet’s ModularRSI evolution results →": "阅读 InferenceNet ModularRSI 自进化实验结果 →"
+  "Read InferenceNet’s ModularRSI evolution results →": "阅读 InferenceNet ModularRSI 自进化实验结果 →",
+  "Twenty-eight milestones across four lanes: interactive and CLI harnesses, programmable and plugin runtimes, managed or durable platforms, and skills extensions or self-evolution methods, based on verified releases, repositories and papers in 2025–2026.": "四条演进主线上的 28 个代表性节点：涵盖交互式与 CLI Harness、可编程与插件化运行时、托管与持久化平台，以及技能扩展包与自进化方法（基于 2025–2026 年经核实的发布版本、开源仓库与论文）。",
+  "How seven representative harnesses organize their execution loop, context, state, tools, delegation and extension surfaces.": "七个代表性 Harness 如何组织其执行循环、上下文、状态恢复、工具环境、子代理委派与扩展接口。",
+  "Core runtime mechanisms across seven representative harnesses": "七个代表性 Harness 的核心运行时机制对比",
+  "InferenceNet evaluation wiring": "InferenceNet 评测接线",
+  "How InferenceNet wires DeepAgents for evaluation": "InferenceNet 如何接入 DeepAgents 进行评测",
+  "InferenceNet’s DeepAgents evaluation wiring. Blue marks what InferenceNet configures around DeepAgents 0.7.13: a budgeted model client, six virtual file tools for notes, and the isolated run_python container tool.": "InferenceNet 的 DeepAgents 评测接线架构。蓝色标出 InferenceNet 围绕 DeepAgents 0.7.13 配置的组件：带预算管控的模型客户端、六个记笔记用的虚拟文件工具，以及隔离的 run_python 容器执行工具。"
 }
