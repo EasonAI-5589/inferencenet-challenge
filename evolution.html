@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="styles.css?v=20261018-shared-nav">
   <link rel="stylesheet" href="site.css?v=20261018-shared-nav">
   <link rel="stylesheet" href="agent.css?v=20260917-case-data">
-  <link rel="stylesheet" href="evolution.css?v=20261019-agent-directions">
+  <link rel="stylesheet" href="evolution.css?v=20261019-harness-roadmap">
   <script src="site.js?v=20261011-release" defer></script>
   <script src="evolution.js?v=20261014-rsi-structure" defer></script>
   <link rel="stylesheet" href="language.css">
@@ -72,6 +72,7 @@
           <li><a href="#rsi-v1-archive">Explore the v1 experiment archive</a></li>
       </ol></div>
       <div class="reading-route"><p class="reading-route-title">Full route</p><ol>
+          <li><a href="#improvement-directions">Capabilities and improvement paths</a></li>
           <li><a href="#concept">Concept</a></li>
           <li><a href="#research-map">Research map</a></li>
           <li><a href="#cycle">Improvement loop</a></li>
@@ -87,20 +88,26 @@
 
     <section class="section container ruled improvement-directions" id="improvement-directions" aria-labelledby="improvement-title">
       <div class="case-heading"><p class="kicker">Research directions</p><h2 id="improvement-title">What should agents learn from these challenges?</h2></div>
-      <p class="case-intro">The task demonstrations lead to three questions about the capabilities behind a reliable analysis.</p>
+      <p class="case-intro">The task demonstrations across econometric replication and business analysis lead to four questions about the capabilities behind reliable agent work.</p>
       <ul class="se-tiles improvement-capabilities" aria-label="Capabilities to improve">
         <li><span class="se-role">Statistical reasoning</span><h3>How do research requirements become the right analysis?</h3><p>Understand the requested method and constraints, then carry them into sample selection, model specification and statistical inference.</p></li>
         <li><span class="se-role">Data interpretation</span><h3>How can an agent understand unfamiliar data?</h3><p>Use task materials and data evidence to identify what each observation represents, how variables are coded, and what units and groups mean.</p></li>
         <li><span class="se-role">Feature construction</span><h3>How can it construct and verify the right variables?</h3><p>Turn the research question into justified transformations, scaling and interactions. Check their meaning against the task and data, alongside checking that the code runs.</p></li>
+        <li><span class="se-role">Deliverable verification</span><h3>How do multi-file findings become traceable reports and workbooks?</h3><p>Reconcile rules and records across source documents, preserve live calculation formulas in spreadsheets, and verify that reports and workpapers agree before submission.</p></li>
       </ul>
-      <p class="case-caption improvement-task-design">Well-specified tasks provide the background and data clues needed for these judgments. Ambiguous variable definitions also inform improvements to task design and evaluation.</p>
+      <p class="case-caption improvement-task-design">Well-specified tasks provide the background and data clues needed for these judgments. Ambiguous variable definitions and rubric edge cases also inform improvements to task design and evaluation.</p>
       <h3 class="improvement-paths-title">Two paths for developing these capabilities</h3>
       <div class="improvement-paths">
         <article><p class="se-role">01 / Model training</p><h4>Learn from verified analyses and execution traces</h4><p>Study how supervised fine-tuning, distillation and reinforcement learning can teach models to interpret data, plan analyses, use tools and verify their work. Use verified training tasks and evaluate the learned capabilities on held-out tasks.</p></article>
         <article><p class="se-role">02 / Model–Harness co-evolution</p><h4>Improve model capabilities and harness behavior together</h4><p>Explore alternating model updates with improvements to planning, tools, context and evidence checks. Compare model-only, harness-only and joint changes on held-out tasks under the same evaluation conditions.</p></article>
       </div>
-      <p class="case-caption improvement-scope">These are research directions. The InferenceNet v1 and v2 studies below change the harness while keeping model weights fixed.</p>
-      <div class="se-links"><a class="text-link" href="challenge.html#replication-demo">Watch the replication demo →</a><a class="text-link" href="challenge.html#subtrack-professional">Explore the business task demos →</a></div>
+      <h3 class="improvement-paths-title" id="harness-stage-roadmap">Where our harness work stands — and what changes next</h3>
+      <div class="improvement-paths improvement-stage-grid">
+        <article><p class="se-role">Phase 1 · Completed on Econometric Replication</p><h4>From submission recovery (V1) and audit prompts (V2) to executable diagnostics</h4><p>Our current four-harness Dev100 comparison and the ModularRSI v1/v2 studies below were conducted in Phase 1 on econometric replication tasks in InferenceNet’s run_python sandbox. V1 improved final program submission; V2 appended static audit guidance in LangGraph’s ToolNode (64% → 67% strict replication with GPT-5.6 Sol). The next step for Subtrack 1 is replacing static text nudges with executable diagnostic hooks that automatically inspect sample attrition, collinearity drops, cluster granularity and unit scaling before final submission.</p></article>
+        <article><p class="se-role">Phase 2 · Planned for Finance &amp; HR (Harbor + Claude Code)</p><h4>Adapting harness checks and evolution to Harbor</h4><p>Subtrack 2 (Business Analysis &amp; Deliverables) has not yet undergone harness optimization. Its tasks currently run on the Harbor (0.20.0) evaluation framework driving Claude Code (2.1.114), where pilot errors stemmed from missing Excel formulas, cross-file count mismatches and rubric misclassifications. We plan to adapt our modular harness hooks and evolution loop to the Harbor + Claude Code workflow—adding pre-submission readback checks for spreadsheet formulas (.xlsx), report-to-workbook consistency (.docx/.xlsx) and source-evidence indexing.</p></article>
+      </div>
+      <p class="case-caption improvement-scope">These are research directions. The InferenceNet v1 and v2 studies below change the harness on econometric replication tasks while keeping model weights fixed.</p>
+      <div class="se-links"><a class="text-link" href="challenge.html#replication-demo">Watch the replication demo →</a><a class="text-link" href="challenge.html#subtrack-professional">Explore the business task demos →</a><a class="text-link" href="harness.html#challenge-harnesses">Compare how both challenges run harnesses →</a></div>
     </section>
 
     <section class="section container ruled" id="concept" aria-labelledby="concept-title">
@@ -1076,6 +1083,12 @@ def agent_loop(remaining_model_calls: int, last_tool_failed: bool) -&gt; dict[st
       <p class="case-caption">The InferenceNet study’s own sources, run identifiers and scoring definitions are in the run record at the end of section 05; its aggregated values are in <a href="assets/data/modular-rsi-evolution.json">modular-rsi-evolution.json</a>.</p>
       <p class="case-caption">Sources for the research map are linked beside each entry. They were checked on 13 Oct 2026 against each paper’s arXiv record and its own description of the method; code links are the ones the authors give, and nothing was rerun.</p>
     </section>
+    <div class="container">
+      <nav class="page-footer-nav" aria-label="Page sequence">
+        <a href="harness.html"><small>Previous</small><span><span aria-hidden="true">←</span> Harness</span></a>
+        <a href="leaderboard.html"><small>Next</small><span>Leaderboard <span aria-hidden="true">→</span></span></a>
+      </nav>
+    </div>
   </main>
   <footer class="site-footer container"><a class="wordmark" href="index.html">Inference<span>Net</span></a><p>AI Agents for Business, Finance and Social Science.</p><a href="teams.html#contact">Contact <span aria-hidden="true">→</span></a></footer>
 </body>

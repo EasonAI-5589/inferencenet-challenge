@@ -414,8 +414,9 @@ html[lang="zh-CN"] .evolution-page .se-map-zone strong,html[lang="zh-CN"] .evolu
   .evolution-page .se-map .g-freeze{stroke:CanvasText}
 }
 
-/* Agent improvement directions: capability questions followed by two research paths. */
+/* Agent improvement directions: capability questions followed by two research paths and stage roadmap. */
 .improvement-directions .case-intro{max-width:940px}
+.improvement-directions .improvement-capabilities{grid-template-columns:repeat(2,minmax(0,1fr))}
 .improvement-directions .improvement-task-design{margin-top:20px}
 .improvement-paths-title{font-size:24px;line-height:1.4;margin:42px 0 20px}
 .improvement-paths{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
@@ -423,4 +424,4 @@ html[lang="zh-CN"] .evolution-page .se-map-zone strong,html[lang="zh-CN"] .evolu
 .improvement-paths h4{font-size:21px;line-height:1.45;margin:10px 0 14px}
 .improvement-paths article>p:last-child{font-size:15px;line-height:1.8;color:var(--soft);margin:0}
 .improvement-directions .improvement-scope{margin-top:22px}
-@media(max-width:700px){.improvement-paths{grid-template-columns:1fr}}
+@media(max-width:700px){.improvement-paths,.improvement-directions .improvement-capabilities{grid-template-columns:1fr}}

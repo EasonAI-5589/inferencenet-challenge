@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="data.css">
   <link rel="stylesheet" href="agent.css?v=20260917-case-data">
   <link rel="stylesheet" href="evolution.css?v=20261013-coverage">
-  <link rel="stylesheet" href="harness.css?v=20261013-coverage">
+  <link rel="stylesheet" href="harness.css?v=20261019-harness-timeline">
   <script src="site.js?v=20261011-release" defer></script>
   <link rel="stylesheet" href="language.css">
   <script src="language.js?v=20261019-agent-directions" defer></script>
@@ -62,6 +62,7 @@
 
     <nav class="subnav" aria-label="On this page">
       <ol class="container">
+        <li><a href="#challenge-harnesses">Challenge harnesses</a></li>
         <li><a href="#definition"><span class="subnav-number">01</span>Definition</a></li>
         <li><a href="#development"><span class="subnav-number">02</span>Harness systems</a></li>
         <li><a href="#breakdowns"><span class="subnav-number">03</span>Breakdowns</a></li>
@@ -76,6 +77,7 @@
       <div class="reading-route">
         <p class="reading-route-title">Quick read</p>
         <ol>
+          <li><a href="#challenge-harnesses">Harnesses for the two challenges</a></li>
           <li><a href="#definition">What a harness is</a></li>
           <li><a href="#development">Agent Harness systems, 2025–2026</a></li>
           <li><a href="#mechanisms">Core mechanisms compared</a></li>
@@ -85,6 +87,7 @@
       <div class="reading-route">
         <p class="reading-route-title">Full route</p>
         <ol>
+          <li><a href="#challenge-harnesses">Harnesses for the two challenges</a></li>
           <li><a href="#definition">What a harness is</a></li>
           <li><a href="#development">Agent Harness systems, 2025–2026</a></li>
           <li><a href="#mechanisms">Core mechanisms compared</a></li>
@@ -100,6 +103,44 @@
         </ol>
       </div>
     </nav>
+
+    <section class="section container ruled challenge-harnesses" id="challenge-harnesses" aria-labelledby="challenge-harnesses-title">
+      <div class="section-heading">
+        <div>
+          <p class="kicker">Challenge harnesses</p>
+          <h2 id="challenge-harnesses-title">Designing harnesses for the two challenges</h2>
+        </div>
+        <p class="lead">InferenceNet Challenge invites participants to build agents for empirical research and business analysis. A harness organizes context, tool execution, state and verification around a model. Our current multi-harness comparisons and self-evolution experiments were completed in Phase 1 on econometric replication; extending harness adaptation to the finance and HR workflow on Harbor and Claude Code is the next stage.</p>
+      </div>
+      <ul class="se-tiles harness-pillars" aria-label="Four responsibilities of a challenge harness">
+        <li><span class="se-role">01 · Context and information</span><h3>What enters each step</h3><p>Arrange how task requirements, domain rules and source materials enter the context, and preserve key findings, intermediate progress and unresolved questions across long runs.</p></li>
+        <li><span class="se-role">02 · Tools and actions</span><h3>How the agent acts on data and files</h3><p>Provide clear operations for inspecting datasets, running statistical or financial scripts, and generating documents or workbooks, returning structured execution output to the model.</p></li>
+        <li><span class="se-role">03 · Checks and recovery</span><h3>How errors and gaps become feedback</h3><p>Turn runtime errors, statistical diagnostics and file readbacks into evidence for the next decision so the model can revise its analysis or deliverables before stopping.</p></li>
+        <li><span class="se-role">04 · Resources and delivery</span><h3>How limits and final outputs are enforced</h3><p>Manage permissions, call caps, token budgets and sandbox timeouts, and check that required outputs exist, retain required formulas or code, and follow the submission format.</p></li>
+      </ul>
+      <div class="harness-subtrack-grid" role="group" aria-label="Harness status across the two challenge subtracks">
+        <article class="harness-subtrack-card">
+          <p class="se-role">Subtrack 01 · Phase 1 completed</p>
+          <h3>Econometric replication: four harnesses on Dev100</h3>
+          <p>Evaluated in InferenceNet’s own runner with an isolated <code>run_python</code> sandbox tool. An agent inspects research data, implements sample and estimator specifications, and submits a final Python program for private scoring. In Phase 1 we evaluated 14 models across four harness configurations—DeepAgents, DeepSeek Harness, Claude Agent SDK and an OpenAI Agents SDK runtime—on the 100-task Dev100 set, and studied modular harness self-evolution on DeepAgents.</p>
+          <div class="case-links">
+            <a class="text-link" href="#configurations">See the four Dev100 configurations ↓</a>
+            <a class="text-link" href="challenge.html#replication-demo">Watch the replication demo →</a>
+            <a class="text-link" href="leaderboard.html#leaderboard-dev100">View Dev100 results →</a>
+          </div>
+        </article>
+        <article class="harness-subtrack-card">
+          <p class="se-role">Subtrack 02 · Pilot on Harbor · Next stage</p>
+          <h3>Business Analysis &amp; Deliverables: Harbor + Claude Code</h3>
+          <p>The finance and HR tasks contributed by Prof. Liwen Zhang’s team at SUFE currently use the <strong>Harbor (0.20.0)</strong> evaluation framework driving <strong>Claude Code (2.1.114)</strong> to reconcile multi-file evidence and produce Word (<code>.docx</code>) and Excel (<code>.xlsx</code>) deliverables for independent rubric grading. Multi-harness comparisons and harness evolution have not yet been run on this subtrack; adapting custom verification hooks and harness profiles to Harbor is our next stage.</p>
+          <div class="case-links">
+            <a class="text-link" href="professional-tasks.html">Explore Business Analysis &amp; Deliverables →</a>
+            <a class="text-link" href="challenge.html#subtrack-professional">Watch the finance and HR demos →</a>
+            <a class="text-link" href="evolution.html#improvement-directions">See next-stage harness plans →</a>
+          </div>
+        </article>
+      </div>
+    </section>
 
     <section class="section container ruled" id="definition" aria-labelledby="definition-title">
       <div class="section-heading">
@@ -266,7 +307,7 @@
     <section class="section container ruled" id="development" aria-labelledby="development-title">
       <div class="section-heading"><div><p class="kicker">02 / Harness systems</p><h2 id="development-title">Agent Harness systems, 2025–2026</h2></div><p class="lead">First the structure: where a runnable harness sits among the systems that host it, the extensions it loads and the roles around it. Then a curated timeline of design changes, a common comparison of seven systems and a catalogue.</p></div>
       <p class="harness-prose">A benchmark supplies tasks and scores; a protocol connects tools; a framework supplies building blocks. They belong to the surrounding ecosystem, but are different comparison units from a configured, runnable harness.</p>
-      <p class="harness-prose hs-counts">The counts measure different things: 17 timeline milestones are dated events from 14 systems, 7 systems are compared mechanism by mechanism, and the catalogue lists 69 entries as of 13 Oct 2026. None of them is a complete census of the field.</p>
+      <p class="harness-prose hs-counts">The counts measure different things: 28 timeline milestones trace runnable harnesses, platforms, extensions and self-evolution methods across 2025–2026, 7 systems are compared mechanism by mechanism, and the catalogue lists 69 entries. None of them is a complete census of the field.</p>
       <h3 class="harness-subtitle" id="architecture">What belongs to the harness — and what surrounds it</h3>
       <figure class="hs-composition"><div class="diagram-scroll" tabindex="0"><svg viewBox="0 0 1100 604" role="img" aria-labelledby="hc-title hc-desc">
 <title id="hc-title">Harness systems and their surrounding ecosystem</title>
@@ -350,162 +391,248 @@
 <line x1="550" y1="478" x2="550" y2="454" class="hc-line" marker-end="url(#hc-arrow)"/>
 <line x1="800" y1="454" x2="830" y2="478" class="hc-line" marker-end="url(#hc-arrow)"/>
 <text x="560" y="594" class="hc-small" text-anchor="middle">Arrows show roles, not product ancestry.</text>
-</svg></div><figcaption>The runnable harness is the unit compared on this page. Above it, OpenClaw’s gateway chooses a runtime per model, Qwen-Live-Harness runs a realtime voice and video loop that hands tasks to a background harness, and platforms such as QM and OpenAgentCore run the harness they select. Extensions load into a host; optimizers change a harness offline between runs or online across tasks or within a run. Names are representative; the catalogue lists more. <a href="https://picrew.github.io/LLM-Harness/main.pdf">Survey: taxonomy (§2.3) and systems (§6)</a> · <a href="https://code.claude.com/docs/en/how-claude-code-works">Claude Code architecture</a> · <a href="https://docs.openclaw.ai/concepts/agent-runtimes">OpenClaw runtimes</a> · <a href="https://github.com/QwenLM/Qwen-Live-Harness">Qwen-Live-Harness</a> · <a href="evolution.html#research-map">Self-evolving: optimization regimes</a></figcaption></figure>
-      <h3 class="harness-subtitle" id="timeline">How the systems changed, 2025–2026</h3>
-      <figure class="hs-timeline"><div class="diagram-scroll hs-timeline-scroll" tabindex="0" role="region" aria-label="Harness timeline; scroll sideways on a narrow screen"><svg viewBox="0 0 1200 740" role="img" aria-labelledby="hs-focus-title hs-focus-desc">
+</svg></div><figcaption>The runnable harness is the unit compared on this page. Above it, OpenClaw’s gateway chooses a runtime per model, Qwen-Live-Harness runs a realtime voice and video loop that hands tasks to a background harness, and platforms such as QM and OpenAgentCore run the harness they select. Extensions load into a host; optimizers change a harness offline between runs or online across tasks or within a run. Names are representative; the catalogue lists more. <a href="https://picrew.github.io/LLM-Harness/main.pdf">Survey: taxonomy (§2.3) and systems (§6)</a> · <a href="https://code.claude.com/docs/en/how-claude-code-works">Claude Code architecture</a> · <a href="https://docs.openclaw.ai/concepts/agent-runtimes">OpenClaw runtimes</a> · <a href="https://github.com/QwenLM/Qwen-Live-Harness">Qwen-Live-Harness</a> · <a href="evolution.html#research-map">Self-evolving: optimi      <h3 class="harness-subtitle" id="timeline">How the systems changed, 2025–2026</h3>
+      <figure class="hs-timeline"><div class="diagram-scroll hs-timeline-scroll" tabindex="0" role="region" aria-label="Harness timeline; scroll sideways on a narrow screen"><svg viewBox="0 0 1260 924" role="img" aria-labelledby="hs-focus-title hs-focus-desc">
 <title id="hs-focus-title">Agent Harness systems: selected developments, 2025–2026</title>
-<desc id="hs-focus-desc">Seventeen milestones from fourteen runnable harnesses, grouped by interactive, programmable, and managed or durable delivery. A dot marks the date; lines do not imply ancestry. Benchmarks and protocols are outside this comparison.</desc>
+<desc id="hs-focus-desc">Twenty-eight milestones across interactive harnesses, programmable and plugin runtimes, managed and durable platforms, and skills extensions or automated harness self-evolution in 2025 and 2026. A dot marks the date; lines connect labels to dates and do not imply product ancestry.</desc>
 <defs><marker id="hs-axis-head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="hs-axis-head"/></marker></defs>
 <text x="12" y="23" class="hf-title" text-anchor="start">Agent Harness systems, 2025–2026</text>
-<text x="12" y="45" class="hc-small" text-anchor="start">How the running system changed — selected releases, papers and engineering accounts</text>
-<rect x="724" y="59" width="470" height="673" rx="5" class="hs-band"/>
-<line x1="220" y1="76" x2="1182" y2="76" class="hs-axis" marker-end="url(#hs-axis-head)"/>
-<rect x="194" y="64" width="58" height="24" rx="5" class="hs-pill"/>
-<text x="223" y="82" class="hs-pill-t" text-anchor="middle">2025</text>
-<rect x="698" y="64" width="58" height="24" rx="5" class="hs-pill"/>
-<text x="727" y="82" class="hs-pill-t" text-anchor="middle">2026</text>
-<line x1="346" y1="87" x2="346" y2="728" class="hs-grid"/>
-<text x="346" y="68" class="hs-q" text-anchor="middle">Apr</text>
-<line x1="472" y1="87" x2="472" y2="728" class="hs-grid"/>
-<text x="472" y="68" class="hs-q" text-anchor="middle">Jul</text>
-<line x1="598" y1="87" x2="598" y2="728" class="hs-grid"/>
-<text x="598" y="68" class="hs-q" text-anchor="middle">Oct</text>
-<line x1="850" y1="87" x2="850" y2="728" class="hs-grid"/>
-<text x="850" y="68" class="hs-q" text-anchor="middle">Apr</text>
-<line x1="976" y1="87" x2="976" y2="728" class="hs-grid"/>
-<text x="976" y="68" class="hs-q" text-anchor="middle">Jul</text>
-<line x1="1102" y1="87" x2="1102" y2="728" class="hs-grid"/>
-<text x="1102" y="68" class="hs-q" text-anchor="middle">Oct</text>
-<line x1="220" y1="264" x2="1180" y2="264" class="hs-rail"/>
-<text x="12" y="237" class="hf-lane" text-anchor="start">Interactive harnesses</text>
-<text x="12" y="257" class="hc-small" text-anchor="start">terminal, app, realtime</text>
-<g class="hs-node"><path d="M297.3,264 V256 H297.3 V249" class="hs-stem"/>
-<circle cx="297.3" cy="264" r="3.5" class="hs-dot"/>
-<rect x="210" y="184" width="185" height="65" rx="5" class="hs-tag"/>
-<text x="220" y="205" class="hf-name" text-anchor="start">Claude Code</text>
-<text x="220" y="224" class="hf-meta" text-anchor="start">2025-02 · research preview</text>
-<text x="220" y="241" class="hf-meta" text-anchor="start">edit, execute, verify</text>
+<text x="12" y="45" class="hc-small" text-anchor="start">How the running system and its optimization evolved — verified releases, open-source repositories and papers</text>
+<rect x="734" y="59" width="518" height="853" rx="5" class="hs-band"/>
+<line x1="200" y1="76" x2="1246" y2="76" class="hs-axis" marker-end="url(#hs-axis-head)"/>
+<rect x="190" y="64" width="58" height="24" rx="5" class="hs-pill"/>
+<text x="219" y="82" class="hs-pill-t" text-anchor="middle">2025</text>
+<rect x="727" y="64" width="58" height="24" rx="5" class="hs-pill"/>
+<text x="756" y="82" class="hs-pill-t" text-anchor="middle">2026</text>
+<line x1="351" y1="87" x2="351" y2="908" class="hs-grid"/>
+<text x="351" y="68" class="hs-q" text-anchor="middle">Apr</text>
+<line x1="486" y1="87" x2="486" y2="908" class="hs-grid"/>
+<text x="486" y="68" class="hs-q" text-anchor="middle">Jul</text>
+<line x1="621" y1="87" x2="621" y2="908" class="hs-grid"/>
+<text x="621" y="68" class="hs-q" text-anchor="middle">Oct</text>
+<line x1="891" y1="87" x2="891" y2="908" class="hs-grid"/>
+<text x="891" y="68" class="hs-q" text-anchor="middle">Apr</text>
+<line x1="1026" y1="87" x2="1026" y2="908" class="hs-grid"/>
+<text x="1026" y="68" class="hs-q" text-anchor="middle">Jul</text>
+<line x1="1161" y1="87" x2="1161" y2="908" class="hs-grid"/>
+<text x="1161" y="68" class="hs-q" text-anchor="middle">Oct</text>
+<line x1="200" y1="254" x2="1244" y2="254" class="hs-rail"/>
+<text x="12" y="227" class="hf-lane" text-anchor="start">Interactive &amp; CLI harnesses</text>
+<text x="12" y="247" class="hc-small" text-anchor="start">terminal, TUI, realtime</text>
+<g class="hs-node"><path d="M261,254 V248 H261.0 V242" class="hs-stem"/>
+<circle cx="261" cy="254" r="3.5" class="hs-dot"/>
+<rect x="196" y="180" width="194" height="62" rx="5" class="hs-tag"/>
+<text x="206" y="200" class="hf-name" text-anchor="start">Claude Code</text>
+<text x="206" y="218" class="hf-meta" text-anchor="start">2025-02 · research preview</text>
+<text x="206" y="234" class="hf-meta" text-anchor="start">terminal edit, execute, verify</text>
 </g>
-<g class="hs-node"><path d="M367.7,264 V256 H402 V169" class="hs-stem"/>
-<circle cx="367.7" cy="264" r="3.5" class="hs-dot"/>
-<rect x="300" y="104" width="185" height="65" rx="5" class="hs-tag"/>
-<text x="310" y="125" class="hf-name" text-anchor="start">Codex CLI</text>
-<text x="310" y="144" class="hf-meta" text-anchor="start">2025-04 · open-source</text>
-<text x="310" y="161" class="hf-meta" text-anchor="start">repository tool loop</text>
+<g class="hs-node"><path d="M351,254 V248 H394.0 V166" class="hs-stem"/>
+<circle cx="351" cy="254" r="3.5" class="hs-dot"/>
+<rect x="286" y="104" width="194" height="62" rx="5" class="hs-tag"/>
+<text x="296" y="124" class="hf-name" text-anchor="start">Codex CLI</text>
+<text x="296" y="142" class="hf-meta" text-anchor="start">2025-04 · open-source launch</text>
+<text x="296" y="158" class="hf-meta" text-anchor="start">sandboxed repository loop</text>
 </g>
-<g class="hs-node"><path d="M409,264 V256 H422 V249" class="hs-stem"/>
-<circle cx="409" cy="264" r="3.5" class="hs-dot"/>
-<rect x="410" y="184" width="190" height="65" rx="5" class="hs-tag"/>
-<text x="420" y="205" class="hf-name" text-anchor="start">OpenCode</text>
-<text x="420" y="224" class="hf-meta" text-anchor="start">2025-05 · early public project</text>
-<text x="420" y="241" class="hf-meta" text-anchor="start">choose the model provider</text>
+<g class="hs-node"><path d="M396,254 V248 H409.0 V242" class="hs-stem"/>
+<circle cx="396" cy="254" r="3.5" class="hs-dot"/>
+<rect x="398" y="180" width="204" height="62" rx="5" class="hs-tag"/>
+<text x="408" y="200" class="hf-name" text-anchor="start">OpenCode</text>
+<text x="408" y="218" class="hf-meta" text-anchor="start">2025-05 · open-source (216k★)</text>
+<text x="408" y="234" class="hf-meta" text-anchor="start">local server + 75+ providers</text>
 </g>
-<g class="hs-node"><path d="M464.3,264 V256 H610 V169" class="hs-stem"/>
-<circle cx="464.3" cy="264" r="3.5" class="hs-dot"/>
-<rect x="505" y="104" width="190" height="65" rx="5" class="hs-tag"/>
-<text x="515" y="125" class="hf-name" text-anchor="start">Gemini CLI</text>
-<text x="515" y="144" class="hf-meta" text-anchor="start">2025-06 · open-source</text>
-<text x="515" y="161" class="hf-meta" text-anchor="start">terminal tools in the loop</text>
+<g class="hs-node"><path d="M441,254 V248 H606.0 V166" class="hs-stem"/>
+<circle cx="441" cy="254" r="3.5" class="hs-dot"/>
+<rect x="490" y="104" width="200" height="62" rx="5" class="hs-tag"/>
+<text x="500" y="124" class="hf-name" text-anchor="start">Gemini CLI · Qwen Code</text>
+<text x="500" y="142" class="hf-meta" text-anchor="start">2025-06 · open-source CLIs</text>
+<text x="500" y="158" class="hf-meta" text-anchor="start">terminal loop, MCP, subagents</text>
 </g>
-<g class="hs-node"><path d="M754.5,264 V256 H754.5 V169" class="hs-stem"/>
-<circle cx="754.5" cy="264" r="3.5" class="hs-dot"/>
-<rect x="705" y="104" width="220" height="65" rx="5" class="hs-tag"/>
-<text x="715" y="125" class="hf-name" text-anchor="start">Codex harness</text>
-<text x="715" y="144" class="hf-meta" text-anchor="start">2026-01 · engineering account</text>
-<text x="715" y="161" class="hf-meta" text-anchor="start">prompt → model → tools → repeat</text>
+<g class="hs-node"><path d="M486,254 V248 H620.0 V242" class="hs-stem"/>
+<circle cx="486" cy="254" r="3.5" class="hs-dot"/>
+<rect x="610" y="180" width="216" height="62" rx="5" class="hs-tag"/>
+<text x="620" y="200" class="hf-name" text-anchor="start">Hermes Agent</text>
+<text x="620" y="218" class="hf-meta" text-anchor="start">2025-07 · NousResearch (255k★)</text>
+<text x="620" y="234" class="hf-meta" text-anchor="start">general-purpose MCP runtime</text>
 </g>
-<g class="hs-node"><path d="M781.8,264 V256 H781.8 V249" class="hs-stem"/>
-<circle cx="781.8" cy="264" r="3.5" class="hs-dot"/>
-<rect x="770" y="184" width="220" height="65" rx="5" class="hs-tag"/>
-<text x="780" y="205" class="hf-name" text-anchor="start">mini-SWE-agent</text>
-<text x="780" y="224" class="hf-meta" text-anchor="start">2026-02 · v2.0.0 release</text>
-<text x="780" y="241" class="hf-meta" text-anchor="start">native tool calls, linear loop</text>
+<g class="hs-node"><path d="M756,254 V248 H830.0 V166" class="hs-stem"/>
+<circle cx="756" cy="254" r="3.5" class="hs-dot"/>
+<rect x="706" y="104" width="194" height="62" rx="5" class="hs-tag"/>
+<text x="716" y="124" class="hf-name" text-anchor="start">jcode</text>
+<text x="716" y="142" class="hf-meta" text-anchor="start">2026-01 · Rust TUI (21k★)</text>
+<text x="716" y="158" class="hf-meta" text-anchor="start">heavy multi-agent workflows</text>
 </g>
-<g class="hs-node"><path d="M1088.7,264 V256 H1088.7 V249" class="hs-stem"/>
-<circle cx="1088.7" cy="264" r="3.5" class="hs-dot"/>
-<rect x="1000" y="184" width="190" height="65" rx="5" class="hs-tag"/>
-<text x="1010" y="205" class="hf-name" text-anchor="start">Qwen-Live-Harness</text>
-<text x="1010" y="224" class="hf-meta" text-anchor="start">2026-09 · v1.0.0 release</text>
-<text x="1010" y="241" class="hf-meta" text-anchor="start">realtime A/V + delegation</text>
+<g class="hs-node"><path d="M801,254 V248 H844.0 V242" class="hs-stem"/>
+<circle cx="801" cy="254" r="3.5" class="hs-dot"/>
+<rect x="834" y="180" width="194" height="62" rx="5" class="hs-tag"/>
+<text x="844" y="200" class="hf-name" text-anchor="start">mini-SWE-agent 2.0</text>
+<text x="844" y="218" class="hf-meta" text-anchor="start">2026-02 · v2.0.0 release</text>
+<text x="844" y="234" class="hf-meta" text-anchor="start">native tool calls, minimal loop</text>
 </g>
-<line x1="220" y1="530" x2="1180" y2="530" class="hs-rail"/>
-<text x="12" y="503" class="hf-lane" text-anchor="start">Programmable harnesses</text>
-<text x="12" y="523" class="hc-small" text-anchor="start">libraries, SDKs, runtimes</text>
-<g class="hs-node"><path d="M512,530 V522 H512 V515" class="hs-stem"/>
-<circle cx="512" cy="530" r="3.5" class="hs-dot"/>
-<rect x="420" y="450" width="200" height="65" rx="5" class="hs-tag"/>
-<text x="430" y="471" class="hf-name" text-anchor="start">DeepAgents</text>
-<text x="430" y="490" class="hf-meta" text-anchor="start">2025-07 · introduction</text>
-<text x="430" y="507" class="hf-meta" text-anchor="start">planning, files, delegation</text>
+<g class="hs-node"><path d="M1026,254 V248 H1032.0 V166" class="hs-stem"/>
+<circle cx="1026" cy="254" r="3.5" class="hs-dot"/>
+<rect x="920" y="104" width="220" height="62" rx="5" class="hs-tag"/>
+<text x="930" y="124" class="hf-name" text-anchor="start">Grok Build</text>
+<text x="930" y="142" class="hf-meta" text-anchor="start">2026-07 · xAI open-source (27k★)</text>
+<text x="930" y="158" class="hf-meta" text-anchor="start">fullscreen Rust TUI harness</text>
 </g>
-<g class="hs-node"><path d="M646.3,530 V522 H640 V435" class="hs-stem"/>
-<circle cx="646.3" cy="530" r="3.5" class="hs-dot"/>
-<rect x="440" y="370" width="220" height="65" rx="5" class="hs-tag"/>
-<text x="450" y="391" class="hf-name" text-anchor="start">OpenHands SDK</text>
-<text x="450" y="410" class="hf-meta" text-anchor="start">2025-11 · architecture paper</text>
-<text x="450" y="427" class="hf-meta" text-anchor="start">engine, workspace, agent server</text>
+<g class="hs-node"><path d="M1116,254 V248 H1116.0 V242" class="hs-stem"/>
+<circle cx="1116" cy="254" r="3.5" class="hs-dot"/>
+<rect x="1036" y="180" width="216" height="62" rx="5" class="hs-tag"/>
+<text x="1046" y="200" class="hf-name" text-anchor="start">ZCode · Qwen-Live-Harness</text>
+<text x="1046" y="218" class="hf-meta" text-anchor="start">2026-09 · Z.ai &amp; Qwen releases</text>
+<text x="1046" y="234" class="hf-meta" text-anchor="start">coding TUI &amp; realtime A/V loop</text>
 </g>
-<g class="hs-node"><path d="M675.7,530 V522 H680 V355" class="hs-stem"/>
-<circle cx="675.7" cy="530" r="3.5" class="hs-dot"/>
-<rect x="560" y="290" width="240" height="65" rx="5" class="hs-tag"/>
-<text x="570" y="311" class="hf-name" text-anchor="start">Claude Agent SDK</text>
-<text x="570" y="330" class="hf-meta" text-anchor="start">2025-11 · long-running harness design</text>
-<text x="570" y="347" class="hf-meta" text-anchor="start">progress artifacts across sessions</text>
+<line x1="200" y1="468" x2="1244" y2="468" class="hs-rail"/>
+<text x="12" y="441" class="hf-lane" text-anchor="start">Programmable &amp; plugin runtimes</text>
+<text x="12" y="461" class="hc-small" text-anchor="start">libraries, SDKs, modular loops</text>
+<g class="hs-node"><path d="M441,468 V462 H340.0 V380" class="hs-stem"/>
+<circle cx="441" cy="468" r="3.5" class="hs-dot"/>
+<rect x="230" y="318" width="222" height="62" rx="5" class="hs-tag"/>
+<text x="240" y="338" class="hf-name" text-anchor="start">Strands · Ruflo</text>
+<text x="240" y="356" class="hf-meta" text-anchor="start">2025-05/06 · SDK &amp; swarm (76k★)</text>
+<text x="240" y="372" class="hf-meta" text-anchor="start">model-driven loop &amp; federation</text>
 </g>
-<g class="hs-node"><path d="M790.8,530 V522 H790.8 V435" class="hs-stem"/>
-<circle cx="790.8" cy="530" r="3.5" class="hs-dot"/>
-<rect x="700" y="370" width="220" height="65" rx="5" class="hs-tag"/>
-<text x="710" y="391" class="hf-name" text-anchor="start">DeepAgents</text>
-<text x="710" y="410" class="hf-meta" text-anchor="start">2026-02 · harness engineering</text>
-<text x="710" y="427" class="hf-meta" text-anchor="start">verification + loop-detection hooks</text>
+<g class="hs-node"><path d="M486,468 V462 H486.0 V456" class="hs-stem"/>
+<circle cx="486" cy="468" r="3.5" class="hs-dot"/>
+<rect x="348" y="394" width="204" height="62" rx="5" class="hs-tag"/>
+<text x="358" y="414" class="hf-name" text-anchor="start">DeepAgents</text>
+<text x="358" y="432" class="hf-meta" text-anchor="start">2025-07 · LangChain (30k★)</text>
+<text x="358" y="448" class="hf-meta" text-anchor="start">middleware, virtual files, task</text>
 </g>
-<g class="hs-node"><path d="M870.3,530 V522 H870.3 V515" class="hs-stem"/>
-<circle cx="870.3" cy="530" r="3.5" class="hs-dot"/>
-<rect x="800" y="450" width="228" height="65" rx="5" class="hs-tag"/>
-<text x="810" y="471" class="hf-name" text-anchor="start">OpenAI Agents SDK</text>
-<text x="810" y="490" class="hf-meta" text-anchor="start">2026-04 · sandbox agents (beta)</text>
-<text x="810" y="507" class="hf-meta" text-anchor="start">workspace, snapshots, resume</text>
+<g class="hs-node"><path d="M666,468 V462 H558.0 V380" class="hs-stem"/>
+<circle cx="666" cy="468" r="3.5" class="hs-dot"/>
+<rect x="462" y="318" width="204" height="62" rx="5" class="hs-tag"/>
+<text x="472" y="338" class="hf-name" text-anchor="start">OpenHands SDK</text>
+<text x="472" y="356" class="hf-meta" text-anchor="start">2025-11 · architecture paper</text>
+<text x="472" y="372" class="hf-meta" text-anchor="start">engine, event log, agent server</text>
 </g>
-<g class="hs-node"><path d="M1092.9,530 V522 H1092.9 V435" class="hs-stem"/>
-<circle cx="1092.9" cy="530" r="3.5" class="hs-dot"/>
-<rect x="935" y="370" width="225" height="65" rx="5" class="hs-tag"/>
-<text x="945" y="391" class="hf-name" text-anchor="start">DeerFlow 2.1</text>
-<text x="945" y="410" class="hf-meta" text-anchor="start">2026-09 · release</text>
-<text x="945" y="427" class="hf-meta" text-anchor="start">durable delegation and memory</text>
+<g class="hs-node"><path d="M666,468 V462 H666.0 V456" class="hs-stem"/>
+<circle cx="666" cy="468" r="3.5" class="hs-dot"/>
+<rect x="564" y="394" width="204" height="62" rx="5" class="hs-tag"/>
+<text x="574" y="414" class="hf-name" text-anchor="start">Claude Agent SDK</text>
+<text x="574" y="432" class="hf-meta" text-anchor="start">2025-11 · SDK + long-running</text>
+<text x="574" y="448" class="hf-meta" text-anchor="start">progress artifacts across runs</text>
 </g>
-<g class="hs-node"><path d="M1110.8,530 V522 H1175 V355" class="hs-stem"/>
-<circle cx="1110.8" cy="530" r="3.5" class="hs-dot"/>
-<rect x="960" y="290" width="225" height="65" rx="5" class="hs-tag"/>
-<text x="970" y="311" class="hf-name" text-anchor="start">DeepAgents</text>
-<text x="970" y="330" class="hf-meta" text-anchor="start">2026-10 · skills update</text>
-<text x="970" y="347" class="hf-meta" text-anchor="start">load skills and tools on demand</text>
+<g class="hs-node"><path d="M801,468 V462 H776.0 V380" class="hs-stem"/>
+<circle cx="801" cy="468" r="3.5" class="hs-dot"/>
+<rect x="676" y="318" width="218" height="62" rx="5" class="hs-tag"/>
+<text x="686" y="338" class="hf-name" text-anchor="start">OpenHuman · Hive</text>
+<text x="686" y="356" class="hf-meta" text-anchor="start">2026-01/02 · open-source (42k★)</text>
+<text x="686" y="372" class="hf-meta" text-anchor="start">high-density &amp; production agents</text>
 </g>
-<line x1="220" y1="716" x2="1180" y2="716" class="hs-rail"/>
-<text x="12" y="689" class="hf-lane" text-anchor="start">Managed and durable</text>
-<text x="12" y="709" class="hc-small" text-anchor="start">hosted or checkpointed</text>
-<g class="hs-node"><path d="M860.5,716 V708 H860.5 V701" class="hs-stem"/>
-<circle cx="860.5" cy="716" r="3.5" class="hs-dot"/>
-<rect x="640" y="636" width="240" height="65" rx="5" class="hs-tag"/>
-<text x="650" y="657" class="hf-name" text-anchor="start">Claude Managed Agents</text>
-<text x="650" y="676" class="hf-meta" text-anchor="start">2026-04 · architecture account</text>
-<text x="650" y="693" class="hf-meta" text-anchor="start">separate harness, session, sandbox</text>
+<g class="hs-node"><path d="M891,468 V462 H891.0 V456" class="hs-stem"/>
+<circle cx="891" cy="468" r="3.5" class="hs-dot"/>
+<rect x="784" y="394" width="210" height="62" rx="5" class="hs-tag"/>
+<text x="794" y="414" class="hf-name" text-anchor="start">OpenHarness · Agents SDK</text>
+<text x="794" y="432" class="hf-meta" text-anchor="start">2026-04 · HKUDS &amp; OpenAI v0.14</text>
+<text x="794" y="448" class="hf-meta" text-anchor="start">personal agent &amp; sandbox beta</text>
 </g>
-<g class="hs-node"><path d="M1073.3,716 V708 H1073.3 V701" class="hs-stem"/>
-<circle cx="1073.3" cy="716" r="3.5" class="hs-dot"/>
-<rect x="895" y="636" width="195" height="65" rx="5" class="hs-tag"/>
-<text x="905" y="657" class="hf-name" text-anchor="start">OpenAI Agents API</text>
-<text x="905" y="676" class="hf-meta" text-anchor="start">2026-09 · public beta</text>
-<text x="905" y="693" class="hf-meta" text-anchor="start">managed Codex harness</text>
+<g class="hs-node"><path d="M1071,468 V462 H1002.0 V380" class="hs-stem"/>
+<circle cx="1071" cy="468" r="3.5" class="hs-dot"/>
+<rect x="904" y="318" width="218" height="62" rx="5" class="hs-tag"/>
+<text x="914" y="338" class="hf-name" text-anchor="start">DeepSeek Harness (DSH)</text>
+<text x="914" y="356" class="hf-meta" text-anchor="start">2026-08/09 · preview (253k★)</text>
+<text x="914" y="372" class="hf-meta" text-anchor="start">every part is a Cordis plugin</text>
 </g>
-<g class="hs-node"><path d="M1102.7,716 V708 H1102.7 V621" class="hs-stem"/>
-<circle cx="1102.7" cy="716" r="3.5" class="hs-dot"/>
-<rect x="955" y="556" width="235" height="65" rx="5" class="hs-tag"/>
-<text x="965" y="577" class="hf-name" text-anchor="start">Pi 1.0 · Pi Durable</text>
-<text x="965" y="596" class="hf-meta" text-anchor="start">2026-10 · release + experimental</text>
-<text x="965" y="613" class="hf-meta" text-anchor="start">checkpointed steps, replay-safe tools</text>
+<g class="hs-node"><path d="M1116,468 V462 H1116.0 V456" class="hs-stem"/>
+<circle cx="1116" cy="468" r="3.5" class="hs-dot"/>
+<rect x="1010" y="394" width="238" height="62" rx="5" class="hs-tag"/>
+<text x="1020" y="414" class="hf-name" text-anchor="start">DeerFlow 2.1 · DeepAgents 0.7</text>
+<text x="1020" y="432" class="hf-meta" text-anchor="start">2026-09/10 · runtime updates</text>
+<text x="1020" y="448" class="hf-meta" text-anchor="start">durable memory &amp; on-demand skills</text>
 </g>
-</svg></div><figcaption>Seventeen milestones from fourteen systems: DeepAgents appears three times and Codex twice, so milestones are not a count of systems. Dates mark the named release, paper or engineering account, not necessarily the first launch; Pi Durable is experimental and Cloudflare’s PiHarness (2 Oct) is a beta. Systems without a verified launch date, such as Hermes Agent, OpenClaw, Hive and jcode, appear in the map and catalogue instead. Lines do not imply product ancestry.</figcaption></figure>
-      <details class="hs-details"><summary>Milestone dates and primary sources</summary><div class="table-scroll" tabindex="0"><table class="compare-table hs-source-table"><caption>17 developments in runnable harnesses</caption><thead><tr><th scope="col">Date</th><th scope="col">Harness</th><th scope="col">Milestone</th><th scope="col">Mechanism</th></tr></thead><tbody><tr><td><time datetime="2025-02-24">2025-02-24</time></td><th scope="row"><a href="https://www.anthropic.com/news/claude-3-7-sonnet">Claude Code</a></th><td>research preview</td><td>edit, execute, verify</td></tr><tr><td><time datetime="2025-04-16">2025-04-16</time></td><th scope="row"><a href="https://openai.com/index/introducing-o3-and-o4-mini/">Codex CLI</a></th><td>open-source launch</td><td>repository tool loop</td></tr><tr><td><time datetime="2025-05">2025-05</time></td><th scope="row"><a href="https://github.com/anomalyco/opencode">OpenCode</a></th><td>early public project</td><td>choose the model provider</td></tr><tr><td><time datetime="2025-06-25">2025-06-25</time></td><th scope="row"><a href="https://blog.google/innovation-and-ai/technology/developers-tools/introducing-gemini-cli-open-source-ai-agent/">Gemini CLI</a></th><td>open-source launch</td><td>terminal tools in the loop</td></tr><tr><td><time datetime="2025-07-30">2025-07-30</time></td><th scope="row"><a href="https://www.langchain.com/blog/deep-agents">DeepAgents</a></th><td>introduction</td><td>planning, files, delegation</td></tr><tr><td><time datetime="2025-11-05">2025-11-05</time></td><th scope="row"><a href="https://arxiv.org/abs/2511.03690">OpenHands Software Agent SDK</a></th><td>architecture paper (v1; v2 on 22 Apr 2026)</td><td>agent, conversation, workspace and agent server as separate parts</td></tr><tr><td><time datetime="2025-11-26">2025-11-26</time></td><th scope="row"><a href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents">Claude Agent SDK</a></th><td>long-running harness design</td><td>progress artifacts across sessions</td></tr><tr><td><time datetime="2026-01-23">2026-01-23</time></td><th scope="row"><a href="https://openai.com/index/unrolling-the-codex-agent-loop/">Codex harness</a></th><td>engineering account</td><td>prompt → model → tools → repeat</td></tr><tr><td><time datetime="2026-02-11">2026-02-11</time></td><th scope="row"><a href="https://github.com/SWE-agent/mini-swe-agent/releases/tag/v2.0.0">mini-SWE-agent</a></th><td>v2.0.0 release</td><td>native tool calls by default; text-action parsing optional</td></tr><tr><td><time datetime="2026-02-17">2026-02-17</time></td><th scope="row"><a href="https://www.langchain.com/blog/improving-deep-agents-with-harness-engineering">DeepAgents</a></th><td>harness engineering</td><td>verification + loop-detection hooks</td></tr><tr><td><time datetime="2026-04-08">2026-04-08</time></td><th scope="row"><a href="https://www.anthropic.com/engineering/managed-agents">Claude Managed Agents</a></th><td>architecture account</td><td>separate harness, session, sandbox</td></tr><tr><td><time datetime="2026-04-15">2026-04-15</time></td><th scope="row"><a href="https://openai.com/index/the-next-evolution-of-the-agents-sdk/">OpenAI Agents SDK</a> · <a href="https://github.com/openai/openai-agents-python/releases/tag/v0.14.0">v0.14.0</a></th><td>sandbox agents added as a beta SDK surface (v0.14.0)</td><td>workspace manifest, sandbox tools, snapshots and resume</td></tr><tr><td><time datetime="2026-09-10">2026-09-10</time></td><th scope="row"><a href="https://openai.com/index/introducing-the-agents-api/">OpenAI Agents API</a></th><td>public beta</td><td>managed Codex harness</td></tr><tr><td><time datetime="2026-09-21">2026-09-21</time></td><th scope="row"><a href="https://github.com/QwenLM/Qwen-Live-Harness">Qwen-Live-Harness</a></th><td>v1.0.0 release</td><td>realtime audio and video; tasks delegated to background harnesses over ACP</td></tr><tr><td><time datetime="2026-09-24">2026-09-24</time></td><th scope="row"><a href="https://github.com/bytedance/deer-flow/discussions/5832">DeerFlow 2.1</a></th><td>release</td><td>durable delegation and memory</td></tr><tr><td><time datetime="2026-10-01">2026-10-01</time></td><th scope="row"><a href="https://earendil.com/posts/pi-1-0/">Pi 1.0</a> · <a href="https://earendil.com/posts/pi-durable/">Pi Durable</a> · <a href="https://developers.cloudflare.com/changelog/post/2026-10-02-pi-harness/">PiHarness</a></th><td>Pi 1.0; Pi Durable as an experimental package; Cloudflare PiHarness beta on 2 Oct</td><td>each step checkpointed; an interrupted tool reruns only if marked replay-safe</td></tr><tr><td><time datetime="2026-10-07">2026-10-07</time></td><th scope="row"><a href="https://www.langchain.com/blog/revamping-skills-in-deep-agents">DeepAgents</a></th><td>skills update</td><td>load skills and tools on demand</td></tr></tbody></table></div></details>
+<line x1="200" y1="682" x2="1244" y2="682" class="hs-rail"/>
+<text x="12" y="655" class="hf-lane" text-anchor="start">Managed, durable &amp; platforms</text>
+<text x="12" y="675" class="hc-small" text-anchor="start">hosted loops, sandboxes, workspaces</text>
+<g class="hs-node"><path d="M621,682 V676 H621.0 V670" class="hs-stem"/>
+<circle cx="621" cy="682" r="3.5" class="hs-dot"/>
+<rect x="456" y="608" width="216" height="62" rx="5" class="hs-tag"/>
+<text x="466" y="628" class="hf-name" text-anchor="start">LangGraph 1.0 · Sandboxing</text>
+<text x="466" y="646" class="hf-meta" text-anchor="start">2025-10 · runtime milestones</text>
+<text x="466" y="662" class="hf-meta" text-anchor="start">durable state &amp; OS-bounded bash</text>
+</g>
+<g class="hs-node"><path d="M756,682 V676 H680.0 V594" class="hs-stem"/>
+<circle cx="756" cy="682" r="3.5" class="hs-dot"/>
+<rect x="566" y="532" width="216" height="62" rx="5" class="hs-tag"/>
+<text x="576" y="552" class="hf-name" text-anchor="start">Codex harness &amp; app-server</text>
+<text x="576" y="570" class="hf-meta" text-anchor="start">2026-01 · engineering account</text>
+<text x="576" y="586" class="hf-meta" text-anchor="start">JSONL thread protocol &amp; sandbox</text>
+</g>
+<g class="hs-node"><path d="M891,682 V676 H891.0 V670" class="hs-stem"/>
+<circle cx="891" cy="682" r="3.5" class="hs-dot"/>
+<rect x="688" y="608" width="224" height="62" rx="5" class="hs-tag"/>
+<text x="698" y="628" class="hf-name" text-anchor="start">Claude Managed · Browser</text>
+<text x="698" y="646" class="hf-meta" text-anchor="start">2026-04 · Anthropic &amp; browser-use</text>
+<text x="698" y="662" class="hf-meta" text-anchor="start">decoupled session &amp; Chrome loop</text>
+</g>
+<g class="hs-node"><path d="M1026,682 V676 H920.0 V594" class="hs-stem"/>
+<circle cx="1026" cy="682" r="3.5" class="hs-dot"/>
+<rect x="820" y="532" width="216" height="62" rx="5" class="hs-tag"/>
+<text x="830" y="552" class="hf-name" text-anchor="start">QM</text>
+<text x="830" y="570" class="hf-meta" text-anchor="start">2026-07 · yc-software (15.4k★)</text>
+<text x="830" y="586" class="hf-meta" text-anchor="start">multiplayer workspace harness</text>
+</g>
+<g class="hs-node"><path d="M1116,682 V676 H1116.0 V670" class="hs-stem"/>
+<circle cx="1116" cy="682" r="3.5" class="hs-dot"/>
+<rect x="928" y="608" width="208" height="62" rx="5" class="hs-tag"/>
+<text x="938" y="628" class="hf-name" text-anchor="start">OpenAI Agents API</text>
+<text x="938" y="646" class="hf-meta" text-anchor="start">2026-09 · public beta</text>
+<text x="938" y="662" class="hf-meta" text-anchor="start">hosted Codex loop &amp; compaction</text>
+</g>
+<g class="hs-node"><path d="M1161,682 V676 H1161.0 V594" class="hs-stem"/>
+<circle cx="1161" cy="682" r="3.5" class="hs-dot"/>
+<rect x="1052" y="532" width="196" height="62" rx="5" class="hs-tag"/>
+<text x="1062" y="552" class="hf-name" text-anchor="start">Pi 1.0 · Pi Durable</text>
+<text x="1062" y="570" class="hf-meta" text-anchor="start">2026-10 · release (114k★)</text>
+<text x="1062" y="586" class="hf-meta" text-anchor="start">checkpointed replay</text>
+</g>
+<line x1="200" y1="896" x2="1244" y2="896" class="hs-rail"/>
+<text x="12" y="869" class="hf-lane" text-anchor="start">Extensions &amp; self-evolution</text>
+<text x="12" y="889" class="hc-small" text-anchor="start">skills packages &amp; automated search</text>
+<g class="hs-node"><path d="M621,896 V890 H621.0 V884" class="hs-stem"/>
+<circle cx="621" cy="896" r="3.5" class="hs-dot"/>
+<rect x="428" y="822" width="234" height="62" rx="5" class="hs-tag"/>
+<text x="438" y="842" class="hf-name" text-anchor="start">Superpowers</text>
+<text x="438" y="860" class="hf-meta" text-anchor="start">2025-10 → v7.0 (301k★)</text>
+<text x="438" y="876" class="hf-meta" text-anchor="start">plan, TDD &amp; review skills for 16 hosts</text>
+</g>
+<g class="hs-node"><path d="M756,896 V890 H670.0 V808" class="hs-stem"/>
+<circle cx="756" cy="896" r="3.5" class="hs-dot"/>
+<rect x="560" y="746" width="214" height="62" rx="5" class="hs-tag"/>
+<text x="570" y="766" class="hf-name" text-anchor="start">ECC · Trellis</text>
+<text x="570" y="784" class="hf-meta" text-anchor="start">2026-01 · open-source (283k★)</text>
+<text x="570" y="800" class="hf-meta" text-anchor="start">skills, instincts, memory, security</text>
+</g>
+<g class="hs-node"><path d="M846,896 V890 H846.0 V884" class="hs-stem"/>
+<circle cx="846" cy="896" r="3.5" class="hs-dot"/>
+<rect x="676" y="822" width="226" height="62" rx="5" class="hs-tag"/>
+<text x="686" y="842" class="hf-name" text-anchor="start">Meta-Harness · AHE</text>
+<text x="686" y="860" class="hf-meta" text-anchor="start">2026-03/04 · arXiv papers</text>
+<text x="686" y="876" class="hf-meta" text-anchor="start">trace-guided code &amp; module search</text>
+</g>
+<g class="hs-node"><path d="M981,896 V890 H908.0 V808" class="hs-stem"/>
+<circle cx="981" cy="896" r="3.5" class="hs-dot"/>
+<rect x="794" y="746" width="224" height="62" rx="5" class="hs-tag"/>
+<text x="804" y="766" class="hf-name" text-anchor="start">Self-Harness · RHO</text>
+<text x="804" y="784" class="hf-meta" text-anchor="start">2026-06 · arXiv papers</text>
+<text x="804" y="800" class="hf-meta" text-anchor="start">non-regressive &amp; retro harness edits</text>
+</g>
+<g class="hs-node"><path d="M1071,896 V890 H1071.0 V884" class="hs-stem"/>
+<circle cx="1071" cy="896" r="3.5" class="hs-dot"/>
+<rect x="914" y="822" width="218" height="62" rx="5" class="hs-tag"/>
+<text x="924" y="842" class="hf-name" text-anchor="start">Harness-R1 · WHALE</text>
+<text x="924" y="860" class="hf-meta" text-anchor="start">2026-08 · arXiv papers</text>
+<text x="924" y="876" class="hf-meta" text-anchor="start">RL hook engineer &amp; co-evolution</text>
+</g>
+<g class="hs-node"><path d="M1116,896 V890 H1138.0 V808" class="hs-stem"/>
+<circle cx="1116" cy="896" r="3.5" class="hs-dot"/>
+<rect x="1030" y="746" width="218" height="62" rx="5" class="hs-tag"/>
+<text x="1040" y="766" class="hf-name" text-anchor="start">ModularRSI · RRSI</text>
+<text x="1040" y="784" class="hf-meta" text-anchor="start">2026-09 · arXiv papers</text>
+<text x="1040" y="800" class="hf-meta" text-anchor="start">contrastive 5-module evolution</text>
+</g>
+</svg></div><figcaption>Twenty-eight milestones across four lanes: interactive and CLI harnesses, programmable and plugin runtimes, managed or durable platforms, and skills extensions or self-evolution methods. Dates mark the verified repository creation, initial release, paper or engineering account; star counts are October 2026 GitHub snapshots that reflect community adoption rather than task accuracy. Lines connect labels to dates and do not imply product ancestry.</figcaption></figure>
+      <details class="hs-details"><summary>Milestone dates and primary sources</summary><div class="table-scroll" tabindex="0"><table class="compare-table hs-source-table"><caption>28 developments across runnable harnesses, platforms, extensions and self-evolution</caption><thead><tr><th scope="col">Date</th><th scope="col">Harness or method</th><th scope="col">Milestone</th><th scope="col">Mechanism</th></tr></thead><tbody><tr><td><time datetime="2025-02-24">2025-02-24</time></td><th scope="row"><a href="https://www.anthropic.com/news/claude-3-7-sonnet">Claude Code</a></th><td>research preview</td><td>terminal edit, execute and verify loop</td></tr><tr><td><time datetime="2025-04-16">2025-04-16</time></td><th scope="row"><a href="https://openai.com/index/introducing-o3-and-o4-mini/">Codex CLI</a></th><td>open-source launch</td><td>repository tool loop with local sandbox</td></tr><tr><td><time datetime="2025-04-30">2025-04-30</time></td><th scope="row"><a href="https://github.com/anomalyco/opencode">OpenCode</a></th><td>open-source repository (216k★)</td><td>client–server TUI and multi-provider agent runtime</td></tr><tr><td><time datetime="2025-05-14">2025-05-14</time></td><th scope="row"><a href="https://github.com/strands-agents/harness-sdk">Strands Harness SDK</a> · <a href="https://github.com/ruvnet/ruflo">Ruflo</a></th><td>open-source launches (8.9k★ / 76k★)</td><td>model-driven SDK loop and multi-agent swarm orchestration</td></tr><tr><td><time datetime="2025-06-25">2025-06-25</time></td><th scope="row"><a href="https://blog.google/innovation-and-ai/technology/developers-tools/introducing-gemini-cli-open-source-ai-agent/">Gemini CLI</a> · <a href="https://github.com/QwenLM/qwen-code">Qwen Code</a></th><td>open-source launches (28.6k★)</td><td>terminal tool loops, MCP integration and subagents</td></tr><tr><td><time datetime="2025-07-22">2025-07-22</time></td><th scope="row"><a href="https://github.com/NousResearch/hermes-agent">Hermes Agent</a></th><td>open-source launch (255k★)</td><td>general-purpose agent runtime with MCP extensions</td></tr><tr><td><time datetime="2025-07-30">2025-07-30</time></td><th scope="row"><a href="https://www.langchain.com/blog/deep-agents">DeepAgents</a></th><td>introduction (30.4k★)</td><td>LangGraph middleware stack, virtual file system and subagent delegation</td></tr><tr><td><time datetime="2025-10-09">2025-10-09</time></td><th scope="row"><a href="https://github.com/obra/superpowers">Superpowers</a> · <a href="https://github.com/MoonshotAI/kimi-cli">Kimi Code CLI</a></th><td>open-source launches (301k★ / 11.4k★)</td><td>composable brainstorm, plan, TDD and review skills for 16 hosts; Kimi terminal harness</td></tr><tr><td><time datetime="2025-11-05">2025-11-05</time></td><th scope="row"><a href="https://arxiv.org/abs/2511.03690">OpenHands Software Agent SDK</a></th><td>architecture paper (v1; v2 on 22 Apr 2026)</td><td>agent, conversation, workspace and agent server as separate parts</td></tr><tr><td><time datetime="2025-11-26">2025-11-26</time></td><th scope="row"><a href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents">Claude Agent SDK</a></th><td>long-running harness design</td><td>progress artifacts and state handoff across sessions</td></tr><tr><td><time datetime="2026-01-05">2026-01-05</time></td><th scope="row"><a href="https://github.com/1jehuang/jcode">jcode</a> · <a href="https://github.com/aden-hive/hive">Hive</a></th><td>open-source launches (21k★ / 11.1k★)</td><td>Rust multi-agent coding harness and production multi-agent runtime</td></tr><tr><td><time datetime="2026-01-18">2026-01-18</time></td><th scope="row"><a href="https://github.com/affaan-m/ECC">ECC</a> · <a href="https://github.com/mindfold-ai/Trellis">Trellis</a></th><td>open-source launches (283k★ / 15k★)</td><td>cross-harness skills, instincts, memory and security optimization</td></tr><tr><td><time datetime="2026-01-23">2026-01-23</time></td><th scope="row"><a href="https://openai.com/index/unrolling-the-codex-agent-loop/">Codex harness</a></th><td>engineering account</td><td>prompt → model → tools → repeat, exposed over an app-server JSONL protocol</td></tr><tr><td><time datetime="2026-02-11">2026-02-11</time></td><th scope="row"><a href="https://github.com/SWE-agent/mini-swe-agent/releases/tag/v2.0.0">mini-SWE-agent</a> · <a href="https://github.com/tinyhumansai/openhuman">OpenHuman</a></th><td>v2.0.0 release &amp; launch (42k★)</td><td>native tool calls in a minimal bash loop; high-density lightweight agent harness</td></tr><tr><td><time datetime="2026-03-30">2026-03-30</time></td><th scope="row"><a href="https://arxiv.org/abs/2603.28052">Meta-Harness</a> · <a href="https://arxiv.org/abs/2604.25850">AHE</a></th><td>arXiv preprints</td><td>outer-loop harness code search over raw traces and file-level component attribution</td></tr><tr><td><time datetime="2026-04-01">2026-04-01</time></td><th scope="row"><a href="https://github.com/HKUDS/OpenHarness">OpenHarness</a></th><td>open-source launch (16k★)</td><td>open agent harness with built-in personal agent</td></tr><tr><td><time datetime="2026-04-08">2026-04-08</time></td><th scope="row"><a href="https://www.anthropic.com/engineering/managed-agents">Claude Managed Agents</a></th><td>architecture account</td><td>decouple harness, session log and sandbox for recoverable runs</td></tr><tr><td><time datetime="2026-04-15">2026-04-15</time></td><th scope="row"><a href="https://openai.com/index/the-next-evolution-of-the-agents-sdk/">OpenAI Agents SDK</a> · <a href="https://github.com/browser-use/browser-harness">Browser Harness</a></th><td>v0.14.0 sandbox beta &amp; launch (18.5k★)</td><td>workspace manifests and snapshots; real logged-in Chrome harness</td></tr><tr><td><time datetime="2026-06-08">2026-06-08</time></td><th scope="row"><a href="https://arxiv.org/abs/2606.09498">Self-Harness</a> · <a href="https://arxiv.org/abs/2606.05922">RHO</a></th><td>arXiv preprints</td><td>self-diagnosed non-regressive edits on DeepAgents and retrospective optimization on Codex and Claude Code</td></tr><tr><td><time datetime="2026-07-14">2026-07-14</time></td><th scope="row"><a href="https://github.com/xai-org/grok-build">Grok Build</a> · <a href="https://github.com/yc-software/qm">QM</a></th><td>open-source launches (27.4k★ / 15.4k★)</td><td>xAI fullscreen TUI harness and multiplayer work harness</td></tr><tr><td><time datetime="2026-08-03">2026-08-03</time></td><th scope="row"><a href="https://arxiv.org/abs/2608.02276">Harness-R1</a> · <a href="https://arxiv.org/abs/2609.00196">WHALE</a></th><td>arXiv preprints</td><td>RL-trained 9B engineer for four lifecycle hooks; alternating weight and harness co-evolution</td></tr><tr><td><time datetime="2026-08-13">2026-08-13</time></td><th scope="row"><a href="https://github.com/deepseek-ai/deepseek-harness">DeepSeek Harness (DSH)</a></th><td>open-source launch &amp; v0.1.5-rc.1 (253k★)</td><td>every part—including the agent loop—is a hot-swappable Cordis plugin</td></tr><tr><td><time datetime="2026-09-10">2026-09-10</time></td><th scope="row"><a href="https://openai.com/index/introducing-the-agents-api/">OpenAI Agents API</a></th><td>public beta</td><td>hosted Codex harness with compaction, tool search and parallel subagents</td></tr><tr><td><time datetime="2026-09-14">2026-09-14</time></td><th scope="row"><a href="https://arxiv.org/abs/2609.14857">ModularRSI</a> · <a href="https://arxiv.org/abs/2609.24972">RRSI</a></th><td>arXiv preprints</td><td>contrastive 5-module harness evolution and critic-pruned recursive improvement</td></tr><tr><td><time datetime="2026-09-21">2026-09-21</time></td><th scope="row"><a href="https://github.com/zai-org/ZCode">ZCode</a> · <a href="https://github.com/QwenLM/Qwen-Live-Harness">Qwen-Live-Harness</a></th><td>releases (7.9k★)</td><td>extensible coding harness and realtime audio/video loop delegating over ACP</td></tr><tr><td><time datetime="2026-09-24">2026-09-24</time></td><th scope="row"><a href="https://github.com/bytedance/deer-flow/discussions/5832">DeerFlow 2.1</a></th><td>release (84k★)</td><td>durable subagent delegation, sandbox and memory workspaces</td></tr><tr><td><time datetime="2026-10-01">2026-10-01</time></td><th scope="row"><a href="https://earendil.com/posts/pi-1-0/">Pi 1.0</a> · <a href="https://earendil.com/posts/pi-durable/">Pi Durable</a> · <a href="https://developers.cloudflare.com/changelog/post/2026-10-02-pi-harness/">PiHarness</a></th><td>Pi 1.0 &amp; Pi Durable (114k★)</td><td>each step checkpointed; an interrupted tool reruns only if marked replay-safe</td></tr><tr><td><time datetime="2026-10-07">2026-10-07</time></td><th scope="row"><a href="https://www.langchain.com/blog/revamping-skills-in-deep-agents">DeepAgents</a> · <a href="https://github.com/obra/superpowers/releases/tag/v7.0.0">Superpowers v7.0</a></th><td>skills updates</td><td>on-demand skill-bound tool loading and unified implementer/reviewer subagent gates</td></tr></tbody></table></div></details>
       <h3 class="harness-subtitle" id="mechanisms">Core mechanisms compared</h3>
       <p class="config-intro">Claude Code, Codex, OpenCode, Pi and the OpenHands SDK as documented on the dates shown; DeepAgents and DeepSeek Harness at the versions broken down in section 03. Each cell names a mechanism, not a quality or performance level.</p>
       <div class="table-scroll" tabindex="0">
@@ -1838,7 +1965,7 @@
         <div class="case-links">
           <a class="text-link" href="challenge.html#replication-demo">Watch the replication demo →</a>
           <a class="text-link" href="evolution.html#improvement-directions">Explore improvement directions →</a>
-          <a class="text-link" href="evolution.html#practice">Self-evolving: InferenceNet’s development study →</a>
+          <a class="text-link" href="evolution.html#rsi-versions">Self-evolving: InferenceNet’s development study →</a>
           <a class="text-link" href="leaderboard.html#leaderboard-dev100">Leaderboard: Dev100 v10 →</a>
         </div>
       </div>
@@ -1995,6 +2122,12 @@
       </ul>
       <p class="case-caption">Landscape rows link to each maker’s repository or documentation as read on 10 Oct 2026, and the 13 Oct additions to the sources above. Nothing was installed or run, and claims of performance in these sources are not repeated. Versions, model lists and owners change often.</p>
     </section>
+    <div class="container">
+      <nav class="page-footer-nav" aria-label="Page sequence">
+        <a href="challenge.html"><small>Previous</small><span><span aria-hidden="true">←</span> Challenge</span></a>
+        <a href="evolution.html"><small>Next</small><span>Self-evolving <span aria-hidden="true">→</span></span></a>
+      </nav>
+    </div>
   </main>
 
   <footer class="site-footer container"><a class="wordmark" href="index.html">Inference<span>Net</span></a><p>AI Agents for Business, Finance and Social Science.</p><a href="teams.html#contact">Contact <span aria-hidden="true">→</span></a></footer>

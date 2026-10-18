@@ -212,3 +212,15 @@ html[data-theme="dark"] .hs-timeline{--hs-e:#eba57f;--hs-c:#93d093;--hs-v:#d2a5e
 @media(max-width:860px){
   .harness-page #architecture,.harness-page #timeline,.harness-page #mechanisms{scroll-margin-top:calc(var(--header-h) + 16px)}
 }
+
+/* Challenge-first harness overview: 2x2 responsibilities and two-subtrack status cards. */
+.challenge-harnesses .harness-pillars{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:24px}
+.challenge-harnesses .harness-subtrack-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:28px}
+.challenge-harnesses .harness-subtrack-card{min-width:0;padding:26px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);display:flex;flex-direction:column;gap:12px}
+.challenge-harnesses .harness-subtrack-card h3{font-size:21px;line-height:1.4;margin:2px 0 0}
+.challenge-harnesses .harness-subtrack-card p{font-size:15px;line-height:1.75;color:var(--soft);margin:0}
+.challenge-harnesses .harness-subtrack-card .se-role{margin:0}
+.challenge-harnesses .harness-subtrack-card .case-links{margin-top:auto;padding-top:8px}
+@media(max-width:760px){
+  .challenge-harnesses .harness-pillars,.challenge-harnesses .harness-subtrack-grid{grid-template-columns:1fr}
+}

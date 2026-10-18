@@ -172,7 +172,7 @@
     let id;
     try { id = decodeURIComponent(hash.slice(1)); } catch { return async () => {}; }
     const target = document.getElementById(id);
-    if (!target || !target.matches('article.track, #replication-data, #replication-dev100, #replication-demo, #improvement-directions')) return async () => {};
+    if (!target || !target.matches('article.track, #replication-data, #replication-dev100, #replication-demo, #improvement-directions, #challenge-harnesses, #harness-stage-roadmap, #rsi-versions')) return async () => {};
     let interrupted = false;
     const cancel = () => { interrupted = true; };
     const inputs = ['wheel', 'touchstart', 'pointerdown', 'keydown'];

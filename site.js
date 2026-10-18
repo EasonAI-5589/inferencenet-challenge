@@ -146,13 +146,16 @@
     select(initial);
   });
 
-  // Deep links: a hash that names a tab, a panel, or anything inside a panel opens that panel.
+  // Deep links: a hash that names a tab, a panel, or anything inside a panel or <details> opens it.
   const openForHash = () => {
     const id = decodeURIComponent(window.location.hash.slice(1));
     if (!id) return false;
     const target = document.getElementById(id);
     if (!target) return false;
     let opened = false;
+    for (let node = target.parentElement; node; node = node.parentElement) {
+      if (node.tagName === 'DETAILS' && !node.open) { node.open = true; opened = true; }
+    }
     tabGroups.forEach(group => {
       const tabIndex = group.tabs.indexOf(target);
       if (tabIndex >= 0) { group.select(tabIndex); opened = true; return; }
@@ -162,10 +165,8 @@
     if (opened) requestAnimationFrame(() => target.scrollIntoView({ block: 'start' }));
     return opened;
   };
-  if (tabGroups.length) {
-    openForHash();
-    window.addEventListener('hashchange', openForHash);
-  }
+  openForHash();
+  window.addEventListener('hashchange', openForHash);
 
   /* Scroll containers: a tab stop only while they actually overflow ----------- */
   const scrollers = [...document.querySelectorAll('.table-scroll, .diagram-scroll, .mountain-table-wrap, .code-panel pre')];

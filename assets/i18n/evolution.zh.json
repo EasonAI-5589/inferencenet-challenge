@@ -921,5 +921,22 @@
   "Explore alternating model updates with improvements to planning, tools, context and evidence checks. Compare model-only, harness-only and joint changes on held-out tasks under the same evaluation conditions.": "探索交替更新模型能力与 Harness 的规划、工具、上下文和证据检查机制。在独立留出任务上，以相同评测条件比较只改模型、只改 Harness 与联合改进。",
   "These are research directions. The InferenceNet v1 and v2 studies below change the harness while keeping model weights fixed.": "以上是研究方向。下文 InferenceNet 的 v1、v2 实验改进 Harness，保持模型权重不变。",
   "Watch the replication demo →": "观看计量复现演示 →",
-  "Explore the business task demos →": "查看业务任务演示 →"
+  "Explore the business task demos →": "查看业务任务演示 →",
+  "The task demonstrations across econometric replication and business analysis lead to four questions about the capabilities behind reliable agent work.": "从计量经济学复现与业务分析两类任务演示出发，可靠的智能体工作需要回答四个能力问题。",
+  "Deliverable verification": "交付物核验",
+  "How do multi-file findings become traceable reports and workbooks?": "如何将多文档分析落实为可追溯的报告与工作簿？",
+  "Reconcile rules and records across source documents, preserve live calculation formulas in spreadsheets, and verify that reports and workpapers agree before submission.": "跨原始文档核对业务规则与数据记录，在电子表格中保留可追溯的动态计算公式，并在提交前核验报告正文与工作底稿之间的一致性。",
+  "Well-specified tasks provide the background and data clues needed for these judgments. Ambiguous variable definitions and rubric edge cases also inform improvements to task design and evaluation.": "清晰的任务说明提供作出这些判断所需的背景与数据线索；变量定义中的歧义与评分细则边界也有助于改进任务设计与评测。",
+  "Where our harness work stands — and what changes next": "当前 Harness 研究阶段与下一步改造计划",
+  "Phase 1 · Completed on Econometric Replication": "第一阶段 · 已在计量经济学复现上完成",
+  "From submission recovery (V1) and audit prompts (V2) to executable diagnostics": "从提交兜底（V1）与审计提示（V2）走向可执行诊断",
+  "Our current four-harness Dev100 comparison and the ModularRSI v1/v2 studies below were conducted in Phase 1 on econometric replication tasks in InferenceNet’s run_python sandbox. V1 improved final program submission; V2 appended static audit guidance in LangGraph’s ToolNode (64% → 67% strict replication with GPT-5.6 Sol). The next step for Subtrack 1 is replacing static text nudges with executable diagnostic hooks that automatically inspect sample attrition, collinearity drops, cluster granularity and unit scaling before final submission.": "目前的 Dev100 四套 Harness 对比以及下文的 ModularRSI v1/v2 实验，均在第一阶段基于 InferenceNet 的 run_python 沙箱针对计量经济学复现任务完成。V1 改善了最终程序提交率；V2 在 LangGraph 的 ToolNode 中追加了静态统计审计提示（GPT-5.6 Sol 严格复现率从 64% 提升至 67%）。赛道一的下一步是将静态文本提示升级为可执行诊断 hook，在最终提交前自动检查样本流失、共线性删列、聚类粒度与单位缩放。",
+  "Phase 2 · Planned for Finance & HR (Harbor + Claude Code)": "第二阶段 · 面向金融与 HR 赛道的改造计划（Harbor + Claude Code）",
+  "Adapting harness checks and evolution to Harbor": "将 Harness 核验与自进化机制适配到 Harbor",
+  "Subtrack 2 (Business Analysis & Deliverables) has not yet undergone harness optimization. Its tasks currently run on the Harbor (0.20.0) evaluation framework driving Claude Code (2.1.114), where pilot errors stemmed from missing Excel formulas, cross-file count mismatches and rubric misclassifications. We plan to adapt our modular harness hooks and evolution loop to the Harbor + Claude Code workflow—adding pre-submission readback checks for spreadsheet formulas (.xlsx), report-to-workbook consistency (.docx/.xlsx) and source-evidence indexing.": "赛道二（业务分析与交付）目前尚未开展 Harness 优化实验。其任务当前运行在 Harbor (0.20.0) 评测框架及 Claude Code (2.1.114) 之上，先导评测暴露出的主要失分点包括 Excel 缺失动态公式、跨文件统计口径不一致以及量表归类错误。我们计划将模块化 Harness hook 与自进化循环适配到 Harbor + Claude Code 工作流中，加入提交前回读核验（检查 .xlsx 公式保留、.docx/.xlsx 数据一致性与来源证据索引）。",
+  "These are research directions. The InferenceNet v1 and v2 studies below change the harness on econometric replication tasks while keeping model weights fixed.": "以上是研究方向。下文 InferenceNet 的 v1、v2 实验在计量经济学复现任务上改进 Harness，并保持模型权重不变。",
+  "Compare how both challenges run harnesses →": "对比两类挑战如何运行 Harness →",
+  "Page sequence": "页面顺序",
+  "← Harness": "← Harness",
+  "Leaderboard →": "排行榜 →"
 }
