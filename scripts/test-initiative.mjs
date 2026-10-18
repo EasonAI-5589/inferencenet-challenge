@@ -137,15 +137,13 @@ test('Challenge page: every challenge has its own recorded run, with a poster an
   assert.ok((await read('professional-tasks.html')).includes('assets/video/finance-story-demo.mp4'));
 });
 
-test('Challenge page states what is open, not open and still to come once, near the top', async () => {
+test('Challenge page presents tasks and participation without repeated status disclaimers', async () => {
   const html = await read('challenge.html');
-  const strip = html.match(/<ul class="status-strip"[\s\S]*?<\/ul>/)[0];
-  assert.match(strip, /status is-open">Open now<[\s\S]*status">Not open yet<[\s\S]*status is-tbc">To be announced</);
-  assert.match(strip, /Registration and submission/);
-  assert.match(strip, /Dates, rules and awards/);
-  assert.ok(html.indexOf('status-strip') < html.indexOf('id="initiative"'), 'before the first section');
   const body = html.slice(html.indexOf('<main'), html.indexOf('</main>'));
-  assert.ok((body.match(/to be (?:announced|confirmed)/gi) || []).length <= 4, 'caveats are not repeated on every block');
+  assert.doesNotMatch(body, /so far|Not open yet|To be announced|planned as|plans two|The plan is|These demos introduce|They are not official/i);
+  assert.match(body, /Challenge subtracks/);
+  assert.match(body, /Dev100 \/ v10 development results/);
+  assert.match(section(html, 'take-part'), /register your interest in the pilot/);
 });
 
 test('Challenge page promises nothing that is not confirmed: no dates, no amounts', async () => {
@@ -156,9 +154,8 @@ test('Challenge page promises nothing that is not confirmed: no dates, no amount
   assert.doesNotMatch(visible, /\b(?:19|20)\d\d\b/, 'a year or date');
   assert.doesNotMatch(visible, /\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.? \d{1,2}\b/, 'a calendar date');
   assert.doesNotMatch(visible, /[$€£¥]|\b(?:USD|SGD|RMB|CNY|HKD)\b/, 'a prize amount');
-  assert.match(section(html, 'timeline'), /Dates will be announced here/);
-  assert.match(section(html, 'awards'), /Details will be announced here/);
-  assert.match(body, /Dates, rules and awards\./);
+  assert.match(section(html, 'awards'), /Award proposals/);
+  assert.doesNotMatch(body, /registration (?:is )?open|Register now/i);
 });
 
 test('wording stays within what is confirmed: exploration is open, registration is not, nothing is "delivered"', async () => {
@@ -170,11 +167,11 @@ test('wording stays within what is confirmed: exploration is open, registration 
   }
   const econometric = challenge.match(/<article class="track" id="subtrack-econometric"[\s\S]*?<\/article>/)[0];
   assert.doesNotMatch(econometric, /Open now|Open for exploration/);
-  assert.match(challenge, /<span class="status">Not open yet<\/span><p>Registration and submission\.<\/p>/);
+  assert.doesNotMatch(challenge, /Register now|registration (?:is )?open/i);
   assert.match(section(challenge, 'initiative'), /Aim 1[\s\S]*Aim 2[\s\S]*Aim 3/);
-  assert.match(section(challenge, 'awards'), /planned as a prize/);
-  assert.match(section(challenge, 'timeline'), /planned as five stages/);
-  assert.match(section(challenge, 'timeline'), /Tell us if you are interested in the pilot/);
+  assert.match(section(challenge, 'awards'), /Award proposals/);
+  assert.match(section(challenge, 'timeline'), /Five stages/);
+  assert.match(section(challenge, 'timeline'), /Register your interest in a pilot/);
 });
 
 test('Home, Challenge and Teams use the same subtracks and facts: Dev100 to be open-sourced, a Finance demo and an HR demo', async () => {
@@ -190,11 +187,11 @@ test('Home, Challenge and Teams use the same subtracks and facts: Dev100 to be o
     assert.match(html, /href="professional-tasks\.html"/, `${name}: business challenge entry`);
   }
   const econometric = challenge.match(/<article class="track" id="subtrack-econometric"[\s\S]*?<\/article>/)[0];
-  assert.match(econometric, /existing Dev100 set of 100 tasks, to be open-sourced/);
-  assert.match(econometric, /not official Challenge rankings/);
+  assert.match(econometric, /Dev100: 100 econometric replication tasks/);
+  assert.match(econometric, /Dev100 \/ v10 development results/);
   const professional = challenge.match(/<article class="track" id="subtrack-professional"[\s\S]*?<\/article>/)[0];
   assert.match(professional, /Prof\. Liwen Zhang’s team at Shanghai University of Finance and Economics/);
-  assert.match(professional, /official task set is to be announced/);
+  assert.match(professional, /task-specific rubric that the agent never sees/);
   // The Hugging Face dataset is the research data source; the subtrack itself will use Dev100.
   assert.doesNotMatch(challenge, /benchmark is published on Hugging Face|Explore the public data/);
   assert.match(section(challenge, 'take-part'), /CamoAiLab hosts the source research dataset on Hugging Face/);
