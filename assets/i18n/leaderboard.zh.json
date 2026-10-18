@@ -318,5 +318,7 @@
   "Challenge 1: Econometric replication will open-source the existing Dev100 set of 100 tasks. Its task package, official rules, submission channel and dates have not been published. The v10 table below preserves development results for 14 models × 4 harnesses; it is not an official Challenge ranking.": "挑战 1“计量经济学复现”将开源现有 Dev100 的 100 道任务。任务包、正式规则、提交渠道和日期尚未发布。下方 v10 表保留 14 个模型 × 4 种 Harness 的开发评测结果，并非正式挑战赛排名。",
   "This is a descriptive comparison on a fixed 100-task development set; it is not an official Challenge ranking.": "这是在固定的 100 题开发集上的描述性比较，并非正式挑战赛排名。",
   "All five metrics use the local-paper-v1 scoring profile, and every score divides by all 100 tasks of its combination.": "五项指标均采用 local-paper-v1 评分配置，每项得分都以该组合的全部 100 道题为分母。",
-  "This is a descriptive development comparison. Within this release, cells mix new runs with older results recorded under other settings, so differences between cells are not equal-cost comparisons and do not establish causes. Equal recorded caps do not mean equal reasoning compute. Cost and running time are not reported.": "这是一项描述性的开发比较。在本版本内部，各单元混合了新运行与在其他设置下记录的较早结果，因此单元之间的差异不是等成本比较，也不能说明因果。记录的上限相同并不意味着推理算力相同。成本与运行时间未报告。"
+  "This is a descriptive development comparison. Within this release, cells mix new runs with older results recorded under other settings, so differences between cells are not equal-cost comparisons and do not establish causes. Equal recorded caps do not mean equal reasoning compute. Cost and running time are not reported.": "这是一项描述性的开发比较。在本版本内部，各单元混合了新运行与在其他设置下记录的较早结果，因此单元之间的差异不是等成本比较，也不能说明因果。记录的上限相同并不意味着推理算力相同。成本与运行时间未报告。",
+  "Harness: architecture, Harbor integration and four compared →": "Harness：体系架构、Harbor 统一集成与四套配置对比 →",
+  "← Self-evolving": "← 自进化"
 }

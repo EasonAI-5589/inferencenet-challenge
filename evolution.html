@@ -291,7 +291,7 @@
           </table>
         </div>
       </details>
-      <div class="se-links"><a class="text-link" href="harness.html#update-optimization">Harness: RRSI, RHO, Harness-R1 and WHALE from their repositories →</a><a class="text-link" href="harness.html#development">Harness: runnable systems, 2025–2026 →</a></div>
+      <div class="se-links"><a class="text-link" href="harness.html#development">Harness: runnable systems and 2025–2026 timeline →</a><a class="text-link" href="harness.html#landscape">Harness: unified evaluation via Harbor →</a></div>
     </section>
 
 
@@ -300,6 +300,58 @@
     <section class="section container ruled" id="cycle" aria-labelledby="cycle-title">
       <div class="case-heading"><p class="kicker">02 / Improvement loop</p><h2 id="cycle-title">One loop behind all three methods</h2></div>
       <p class="case-intro">The methods differ in how much of the harness they open up, who writes a change and how a candidate is judged. Each iteration still has the same five steps, and the candidates evaluated so far, with their run evidence, inform the proposals of the next round.</p>
+      <figure class="diagram wide rsi-figure" style="--diagram-min:860px">
+        <div class="diagram-scroll" tabindex="0">
+          <svg viewBox="0 0 1000 300" role="img" aria-label="Running a harness and optimizing it. On the left, the execution loop of harness version n runs one task with its current configuration: it builds the context, calls the model, runs the tool calls in the reply and feeds the results back. Some harnesses can swap plugins, skills or settings during a run, but that does not choose a better version. On the right, an optimization loop, usually run between runs, puts the harness on a set of tasks, reads the trajectories and scores, proposes an edit and tests it; each method keeps candidates by its own rule, and the next version runs next. The evaluator holds the tasks, the budget and the scoring fixed, and the model is usually fixed too.">
+            <defs>
+              <marker id="ev-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="f-ah"/></marker>
+              <marker id="ev-arrow-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="f-ahr"/></marker>
+            </defs>
+            <text x="14" y="24" class="f-big">An execution loop inside an optimization loop</text>
+            <text x="986" y="24" text-anchor="end" class="f-s f-mu">running a configuration is not choosing one</text>
+
+            <rect x="14" y="40" width="452" height="196" rx="6" class="f-strong"/>
+            <text x="28" y="62" class="f-tt">Execution harness · version n</text>
+            <text x="452" y="62" text-anchor="end" class="f-s f-mu">runs its current configuration</text>
+            <rect x="32" y="80" width="150" height="54" rx="4" class="f-box"/>
+            <text x="107" y="103" text-anchor="middle" class="f-tt">Model</text>
+            <text x="107" y="122" text-anchor="middle" class="f-s f-mu">context in, reply out</text>
+            <rect x="298" y="80" width="150" height="54" rx="4" class="f-box"/>
+            <text x="373" y="103" text-anchor="middle" class="f-tt">Tools</text>
+            <text x="373" y="122" text-anchor="middle" class="f-s f-mu">act on the environment</text>
+            <line x1="184" y1="98" x2="296" y2="98" class="f-ln" marker-end="url(#ev-arrow)"/>
+            <text x="240" y="91" text-anchor="middle" class="f-s f-mu">tool calls</text>
+            <line x1="296" y1="118" x2="184" y2="118" class="f-ln" marker-end="url(#ev-arrow)"/>
+            <text x="240" y="132" text-anchor="middle" class="f-s f-mu">results</text>
+            <text x="32" y="162" class="f-s">The execution loop: build the context, call the model, run</text>
+            <text x="32" y="180" class="f-s">tool calls, feed the results back, stop on an answer or a limit.</text>
+            <text x="32" y="204" class="f-s f-mu">Some harnesses can swap plugins, skills or settings mid-run;</text>
+            <text x="32" y="222" class="f-s f-mu">that alone does not pick a better version.</text>
+
+            <line x1="468" y1="88" x2="520" y2="88" class="f-ln" marker-end="url(#ev-arrow)"/>
+            <text x="494" y="80" text-anchor="middle" class="f-s f-mu">runs</text>
+            <line x1="520" y1="206" x2="468" y2="206" class="f-lr" marker-end="url(#ev-arrow-b)"/>
+            <text x="494" y="198" text-anchor="middle" class="f-s f-b">next</text>
+
+            <rect x="522" y="40" width="464" height="196" rx="6" class="f-rsi"/>
+            <text x="536" y="62" class="f-tt f-b">Optimization loop · uses feedback</text>
+            <text x="972" y="62" text-anchor="end" class="f-s f-b">mostly between runs</text>
+            <rect x="536" y="74" width="436" height="32" rx="3" class="f-box"/>
+            <text x="548" y="95" class="f-s"><tspan class="f-m f-b">1</tspan>  Run the harness on a set of tasks</text>
+            <rect x="536" y="112" width="436" height="32" rx="3" class="f-box"/>
+            <text x="548" y="133" class="f-s"><tspan class="f-m f-b">2</tspan>  Read the trajectories, failures and scores</text>
+            <rect x="536" y="150" width="436" height="32" rx="3" class="f-box"/>
+            <text x="548" y="171" class="f-s"><tspan class="f-m f-b">3</tspan>  Propose an edit to the harness: a module, a function or its code</text>
+            <rect x="536" y="188" width="436" height="32" rx="3" class="f-box"/>
+            <text x="548" y="209" class="f-s"><tspan class="f-m f-b">4</tspan>  Test it; the method’s rule decides what is kept</text>
+
+            <rect x="14" y="250" width="972" height="40" rx="4" class="f-quiet"/>
+            <text x="28" y="275" class="f-s"><tspan class="f-bold">Held fixed:</tspan> the evaluator’s tasks, budget and scoring, and usually the model. Who proposes the edit and which test decides differ by method.</text>
+          </svg>
+        </div>
+        <figcaption>Two layers. The execution loop runs a harness configuration, which some harnesses can adjust while they run; the optimization loop proposes, tests and keeps harness versions using feedback. The three methods below run the optimization loop mostly offline. The parts they edit are the loop, tools, context and extension points, or the harness code itself.</figcaption>
+      </figure>
+
       <figure class="se-cycle-figure">
         <ol class="se-cycle">
           <li><span class="se-cycle-step">1</span><h3>Run</h3><p>Run the current harness version on the search tasks with the fixed model.</p></li>
