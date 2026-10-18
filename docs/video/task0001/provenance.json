@@ -21,7 +21,7 @@
   "source_commit": "884e89e58f62a185cd06572979fbd1548ea67e4b",
   "recorded_run_seconds": 121.038,
   "replay_data_sha256": "14446bc5bbc421aa59664d062a7cec2c8c6a9f160fbe538612e204b9b42d1841",
-  "version": "deepagents-flow-v3.1",
+  "version": "deepagents-flow-v3.2",
   "task_id": "0001",
   "model": "GPT-5.6 Sol",
   "harness": "DeepAgents",
@@ -63,12 +63,12 @@
   ],
   "files": {
     "assets/video/agent-replay-task0001.mp4": {
-      "bytes": 39142806,
-      "sha256": "32e0dc7a64a99b3b19061f9112cfea51087843f00c2e19014216934dc17f7e6b"
+      "bytes": 36244746,
+      "sha256": "978e3ae49c6d0d293d2cc08d6f75422aa35668a4534d0d8ce20950116daf05b0"
     },
     "assets/video/agent-replay-task0001-poster.jpg": {
-      "bytes": 261396,
-      "sha256": "1f1eff42081b1fdb0e6360592655031fc6303d841d8623ac30802a0de9f61b5c"
+      "bytes": 255240,
+      "sha256": "9c7804d17e2371b57f663d8a45180d02b2874936e3b0f3d29d7c49771e652291"
     },
     "docs/video/task0001/captions.en.srt": {
       "bytes": 4737,
@@ -83,13 +83,40 @@
       "sha256": "c273734166293bae498cec0d3d0a292f0d62dc6f16c2eb449304db89674e632d"
     }
   },
-  "playback_speed": 1.1200046739892497,
-  "source_video_sha256": "27664d57aefa863f0c30aa258881f197790dad5a563016cb7a0f71a73af9b9e8",
-  "source_video_seconds": 319.5,
   "pitch_preserved": true,
-  "audio_processing": "FFmpeg atempo applied to the lossless v3 narration track",
+  "audio_processing": "Original v3 lossless mix, atempo=1.1200046739892497, padded/trimmed to 13692800 samples at 48 kHz.",
   "shots_preserved": 37,
   "scene_order_unchanged": true,
   "caption_text_unchanged": true,
-  "retimed_from_commit": "c226421dd9a620866afac1c665018cdc5d1b7226"
+  "native_render": true,
+  "native_render_note": "Every output frame was directly evaluated at frame * 1000 / 30 milliseconds. No retiming or frame dropping of a prior MP4.",
+  "pacing_matches_version": "deepagents-flow-v3.1",
+  "pacing_factor_relative_to_v3": 1.1200046739892497,
+  "motion_changes": [
+    "Per-shot source-time clamp prevents one-frame phase mismatch",
+    "Continuous pet and baton paths",
+    "Signal endpoints and rounded return route",
+    "Smooth initial panes, chapter cards and loop text changes",
+    "Sequential result/outro foregrounds avoid overlapping titles"
+  ],
+  "animation_sources_sha256": {
+    "site/harness-flow.js": "cd5ee274e224b5c08e913a061df2bb8a04963eb8db49eef5ad24473f8321bd1d",
+    "site/harness-flow.css": "2f531228b6bf24d868a58b344ffcd77277c3496a229eaa6485d8b80951224ff1",
+    "site/original-guide.js": "9246340ec582e46bdc2339a8824deba064ec2fa30dbb3be9c6839ee815b95e68",
+    "site/enhancement.js": "a660659f9c2256c050b8918125578bdb51df571faea7c1144cbd9aae9932a817",
+    "site/timeline.json": "9dce3e3d6b10f4cfc51183ce62be61761ac49742b5adf40a9b079f4490281861",
+    "shotlist.json": "adbef4a4bfd4269053c29db0508000f72d21a3308963ce8b0d7f495017b9a81c"
+  },
+  "validation": {
+    "source_and_phase_preservation": "PASS; 11 original render functions, 32 source phases, 37 shots",
+    "all_output_frames_and_boundary_clock_checks": "PASS; exact exporter arithmetic, no phase mismatch",
+    "guide_motion": "PASS; 8,558 frames and 36 boundaries, source geometry and timing checks",
+    "layout": "PASS; 124 SVG/canvas samples, no reported caption/flow overflow",
+    "native_frame_render": "PASS; all 8,558 contiguous 1920x1080 frames validated",
+    "full_audio_video_decode": "PASS",
+    "encoded_packet_timing": "PASS; 8,558 video packets, no repeated timestamp or large interval",
+    "encoded_motion_samples": "PASS; contact sheets from 1,025 consecutive frames across 14 targeted motion ranges reviewed; previously observed jumps and outro title overlap absent in reviewed samples",
+    "browser_playback": "PASS; five preview chapter seeks, paused state, HTTP Range 206, homepage v3.2 media metadata and audio decode/loading",
+    "audio_review_scope": "Previous transcription review retained; no new ASR run or full subjective listening review claimed"
+  }
 }

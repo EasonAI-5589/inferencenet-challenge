@@ -21,12 +21,22 @@ The derived `replay-data.js` snapshot is unchanged. Private raw traces are not
 included, and no new model evaluation was run to make this video.
 
 The source's original 11 rendering functions and all 32 chronological intervals
-are retained. V3 expanded the 71.4-second source animation into 319.5 seconds,
-with an explanatory overlay in the center column. V3.1 adjusts only its pacing:
-all v3 scenes, information and their order remain, with no editorial cuts.
-Picture, narration, subtitles and chapters are scaled together by the exact
-speed ratio **9585 / 8558**, approximately **1.120004674×**. FFmpeg `atempo`
-preserves the narration's pitch. The resulting timeline lasts **285.266667 seconds**.
+are retained, with an explanatory execution-flow overlay in the center column.
+V3.2 keeps the approved v3.1 pacing: **37 shots over 285.266667 seconds**, with
+all scenes, information and their order preserved. Each of the **8,558 frames**
+is rendered directly from the animation source at 30 fps on this presentation
+timeline; the picture is not made by dropping frames from the earlier MP4.
+Narration is derived from the original v3 lossless audio with FFmpeg `atempo`
+at the same exact ratio **9585 / 8558**, approximately **1.120004674×**, preserving
+pitch. Captions and chapter timestamps follow the same presentation timeline.
+
+The motion update corrects a one-frame disagreement between the current shot
+and the original phase at a boundary. The pixel guide, baton and flow signals
+now move continuously across those boundaries; panel, chapter and card handoffs
+also transition without an intermediate content flash. The baton stays outside
+the guide's body and the main card text, while the flow signals use paths around
+the node labels. The result foreground fades out before the outro foreground
+appears, keeping the result title and the InferenceNet logo separate.
 The original code excerpts and stdout remain in the snapshot and are accessible
 through an evidence control in the editable browser animation. That control is
 not shown in the MP4; not every original code view is directly displayed.
@@ -67,8 +77,9 @@ that one harness outperforms another.
   enabling them as an extra player track would duplicate the visible captions.
 
 The MP4 chapter navigation includes the opening in the first chapter. The TASK
-card itself appears at **0:09.375**. Times below are the v3 narration timeline
-divided by the exact speed ratio; values are rounded to the nearest millisecond.
+card itself appears at **0:09.375**. Times below follow the approved presentation
+timeline, which scales the v3 narration timeline by the exact speed ratio;
+values are rounded to the nearest millisecond.
 
 | Chapter | Start |
 | --- | --- |
@@ -80,19 +91,29 @@ divided by the exact speed ratio; values are rounded to the nearest millisecond.
 
 ## Validation
 
-V3.1 retains v3's source, factual, layout, guide-motion and automatic
-transcription reviews; those reviews were not rerun for this pacing-only change.
-The v3 source review checked the unchanged replay snapshot and 11 original
-rendering functions by hash, chronological coverage, and all 37 bilingual
-narration records and execution-graph events against the derived snapshot.
+The retained v3 source and factual review checked the unchanged replay snapshot
+and 11 original rendering functions by hash, chronological coverage, and all
+37 bilingual narration records and execution-graph events against the derived
+snapshot. No new model run or factual scene has been added for v3.2.
 
-This version's checks cover synchronized retiming of the picture, narration,
-subtitles and chapters, the 8,558-frame output and FFprobe media metadata,
-complete FFmpeg audio/video decoding, updated homepage text and media loading,
-chapter seeking, and a matching frame/subtitle spot check. Final media hashes and
-retiming evidence are recorded in this version's provenance record. The retained
-ASR and signal-level checks are not a claim of a new transcription run or full
-human listening review.
+The v3.2 review of **124 rendered stills** and the mathematical motion checks
+passed. The motion audit traverses all **8,558 output frames**
+and shot boundaries, checking guide and baton continuity, caption clearance,
+baton/body and baton/card-text intersections, and flow-signal clearance from
+node text. Mathematical geometry checks are separate from visual frame review.
+
+Final encoded-video QA passed: FFprobe metadata and frame count, complete FFmpeg
+audio/video decoding, 8,558 continuous video packet timestamps, homepage media
+and audio loading, and five chapter seeks. Contact sheets from 1,025 consecutive
+encoded frames across 14 motion ranges were visually reviewed, including the
+opening, loop transitions, chapter changes and outro. No previously observed
+one-frame jump or title overlap was seen in those samples. Final media hashes
+and export evidence are in this version's provenance record.
+
+These are targeted motion checks plus full decoding, not a claim of subjective
+viewing of the entire film. The retained ASR and signal-level checks concern the
+original v3 narration; ASR was not rerun and no full human listening review is
+claimed for v3.2.
 
 The editable animation and export bundle is maintained separately in the research
 workspace. This website change contains the proposed media, captions and public
