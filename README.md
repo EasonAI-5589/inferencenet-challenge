@@ -75,7 +75,7 @@ of future updates unless explicitly requested again.
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
 All ten pages load `styles.css` and `site.css` with `20261018-shared-nav`, and
-`language.js` with `20261018-challenge-videos`, except Home (`20261019-hero-link`),
+`language.js` with `20261018-challenge-videos`, except Home (`20261019-agent-demos`),
 Challenge (`20261019-challenge-links`) and Business Analysis (`20261019-claude-relay-v2`).
 Home presents both challenges with the same workflow, difficulty, deliverable and
 independent-evaluation structure, followed by two concrete descriptions of the work. The base stylesheet carries the same
@@ -259,7 +259,7 @@ Home and Challenge load this video and poster with `20261018-deepagents-flow-v3-
 The Challenge dictionary uses `20261018-challenge-pr27` for its updated caption;
 other pages keep their existing translation release tags.
 
-The homepage's Agent in action section (`#tasks`) presents two demos side by side
+The homepage's Agent demonstrations section (`#tasks`) presents two demos side by side
 on desktop: the econometric replay above and `assets/video/finance-story-demo.mp4`
 for Business Analysis & Deliverables. Both reuse existing video files, with
 posters, native playback controls, no autoplay and links to their respective
@@ -434,7 +434,7 @@ and [trajectory-based reinforcement learning](https://arxiv.org/abs/2508.03680).
 
 ## Homepage presentation
 
-Home follows four sections: Inference Challenge (`#overview`), Agent in action
+Home follows four sections: Inference Challenge (`#overview`), Agent demonstrations
 (`#tasks`), Our aims (`#initiative`) and Get involved (`#participate`). Its two cards
 explain each challenge's task, deliverable and evaluation. Both challenges use
 agent workflows; their goals, outputs and evaluation criteria distinguish them.
@@ -446,7 +446,7 @@ close remediation and review workpapers; the HR demo concerns cold-chain
 warehouse supervisor training and procurement acceptance, in a fictional
 scenario. Agents produce documents and spreadsheets checked against the task's
 rubric. These examples describe the supplied demos, not an open submission
-channel or finalized competition protocol. Two desktop demos in Agent in action
+channel or finalized competition protocol. Two desktop demos in Agent demonstrations
 illustrate the econometric and business workflows, each with its subtrack entry.
 Home has no results table and does not load
 leaderboard scripts, leaderboard CSS or mountain CSS; it links to the Dev100
