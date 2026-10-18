@@ -276,7 +276,7 @@ test('the development module loads only on leaderboard.html, with the release ta
   }
   for (const page of PAGES) {
     const html = await read(page);
-    const languageTag = '20261019-agent-directions';
+    const languageTag = '20261019-modular-rsi';
     assert.match(html, new RegExp(`"language\\.js\\?v=${languageTag}"`), `${page}: language.js`);
   }
   assert.match(await read('index.html'), /"index\.css\?v=20261019-aims-grid"/);
