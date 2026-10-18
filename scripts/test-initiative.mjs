@@ -35,7 +35,7 @@ test('every page carries the initiative identity: Challenge in the navigation, I
     assert.ok(html.includes(`<p>${TAGLINE}.</p>`), `${page}: footer tagline`);
     assert.doesNotMatch(html, /AI for econometric research/i, page);
     const title = html.match(/<title>([^<]+)<\/title>/)[1];
-    if (page === 'index') assert.equal(title, `InferenceNet — ${TAGLINE}`);
+    if (page === 'index') assert.equal(title, `InferenceNet Challenge — ${TAGLINE}`);
     else assert.match(title, /^[^—]+ — InferenceNet$/, `${page}: title`);
   }
 });
@@ -216,36 +216,28 @@ test('every page has eight unique primary destinations and one current section',
   }
 });
 
-test('Challenge and its two subtracks share secondary navigation without assigning shared research pages to a subtrack', async () => {
-  const destinations = [
-    ['Overview', 'challenge.html'], ['Subtrack 1 · Econometric replication', 'replication.html'],
-    ['Subtrack 2 · Business Analysis & Deliverables', 'professional-tasks.html'],
-  ];
+test('Challenge content links both subtracks without a duplicate navigation row', async () => {
   for (const page of PAGES) {
     const html = await read(`${page}.html`);
-    const navigation = [...html.matchAll(/<nav\b([^>]*)>([\s\S]*?)<\/nav>/g)]
-      .filter(([, attributes]) => (attribute(attributes, 'class') || '').split(/\s+/).includes('track-nav'));
-    assert.equal(navigation.length, CHALLENGE_PAGES.includes(page) ? 1 : 0, `${page}: secondary navigation scope`);
-    if (!navigation.length) continue;
-    const [[markup, attributes, contents]] = navigation;
-    assert.ok(attribute(attributes, 'aria-label'), `${page}: secondary navigation label`);
-    const items = links(contents);
-    assert.deepEqual(items.map(item => [item.label, item.href]), destinations, `${page}: secondary destinations`);
-    assert.deepEqual(items.filter(item => item.current !== null).map(item => [item.href, item.current]), [[`${page}.html`, 'page']], `${page}: actual current page`);
-    const position = html.indexOf(markup);
-    assert.ok(position > html.indexOf('</header>') && position < html.indexOf('<main'), `${page}: navigation before page content`);
+    assert.doesNotMatch(html, /<nav\b[^>]*class="track-nav"/, `${page}: no duplicate challenge navigation`);
+  }
+  const challenge = await read('challenge.html');
+  const main = challenge.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1];
+  const destinations = links(main).map(item => item.href);
+  for (const href of ['replication.html', 'professional-tasks.html']) {
+    assert.ok(destinations.includes(href), `${href}: reachable from Challenge content`);
   }
 });
 
 test('Home keeps the Initiative hero and four challenge-focused sections with working navigation', async () => {
   const html = await read('index.html');
   assert.match(html, /<h1 id="hero-title">InferenceNet Challenge<\/h1>\s*<p class="hero-subtitle">AI Agents for Business, Finance and Social Science<\/p>/);
-  assert.match(html, /<meta name="description" content="The Global InferenceNet Initiative aims to build shared infrastructure/);
+  assert.match(html, /<meta name="description" content="The Global InferenceNet Initiative sets out a vision of shared infrastructure/);
   const kickers = [...html.matchAll(/<p class="kicker">(\d\d) \/ ([^<]+)<\/p>/g)].map(match => match[1]);
   assert.deepEqual(kickers, ['01', '02', '03', '04']);
   const subnav = [...html.match(/<nav class="subnav"[\s\S]*?<\/nav>/)[0].matchAll(/<a href="#([^"]+)"><span class="subnav-number">(\d\d)<\/span>/g)];
   assert.deepEqual(subnav.map(match => match[2]), ['01', '02', '03', '04']);
-  assert.deepEqual(subnav.map(match => match[1]), ['overview', 'tasks', 'harness', 'participate']);
+  assert.deepEqual(subnav.map(match => match[1]), ['overview', 'tasks', 'initiative', 'participate']);
   for (const [, id] of subnav) assert.ok(html.includes(`id="${id}"`), `#${id}`);
   assert.match(section(html, 'overview'), /id="subtracks"/);
   assert.match(section(html, 'tasks'), /<video\b[\s\S]*agent-replay-task0001\.mp4/);

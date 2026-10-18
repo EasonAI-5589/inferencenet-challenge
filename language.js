@@ -165,6 +165,34 @@
     }
   }
 
+  // Initial fragment positioning happens before async translation and font layout.
+  // Re-align only challenge articles, once, unless the visitor has taken control.
+  function prepareInitialTrackAlignment() {
+    const hash = location.hash;
+    let id;
+    try { id = decodeURIComponent(hash.slice(1)); } catch { return async () => {}; }
+    const target = document.getElementById(id);
+    if (!target || !target.matches('article.track')) return async () => {};
+    let interrupted = false;
+    const cancel = () => { interrupted = true; };
+    const inputs = ['wheel', 'touchstart', 'pointerdown', 'keydown'];
+    inputs.forEach(type => window.addEventListener(type, cancel, { passive: true }));
+    const loaded = document.readyState === 'complete' ? Promise.resolve()
+      : new Promise(resolve => window.addEventListener('load', resolve, { once: true }));
+    return async () => {
+      try {
+        await loaded;
+        if (document.fonts) await document.fonts.ready;
+        await new Promise(resolve => requestAnimationFrame(resolve));
+        if (!interrupted && location.hash === hash && target.isConnected) {
+          target.scrollIntoView({ block: 'start', behavior: 'instant' });
+        }
+      } finally {
+        inputs.forEach(type => window.removeEventListener(type, cancel));
+      }
+    };
+  }
+
   function init() {
     const nav = document.querySelector('.nav-controls');
     if (!nav) return;
@@ -201,7 +229,9 @@
       observe();
     });
     observe();
-    if (requested === 'zh') void setLanguage('zh');
+    const alignTrack = prepareInitialTrackAlignment();
+    if (requested === 'zh') void setLanguage('zh').then(alignTrack);
+    else void alignTrack();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });

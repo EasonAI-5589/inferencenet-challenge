@@ -2,19 +2,23 @@
 
 [Live website](https://easonai-5589.github.io/inferencenet-challenge/)
 
-Public presentation site for the Global InferenceNet Initiative: AI Agents for
+Public website for InferenceNet Challenge, part of the Global InferenceNet Initiative: AI Agents for
 Business, Finance and Social Science. All ten pages share Chinese / English and
 light / dark controls.
 
 The primary navigation has eight entries: Home, Challenge, Data, Agent, Harness,
 Self-evolving, Leaderboard and Teams. Agent and Harness are shared resources for
 both subtracks. The brand logo also returns to Home.
-Only Challenge and its two subtrack pages have secondary navigation: Overview
-(`challenge.html`), Subtrack 1 · Econometric replication (`replication.html`) and
-Subtrack 2 · Business Analysis & Deliverables (`professional-tasks.html`). The
-primary Challenge entry marks the section on either subtrack page, while the
-secondary navigation marks the actual page. Data, Agent, Harness and Self-evolving
-retain their own primary current-page indicators and have no subtrack navigation.
+Home’s challenge cards and demo captions link directly to the corresponding
+Challenge sections (`challenge.html#subtrack-econometric` and
+`challenge.html#subtrack-professional`). Initial deep links align after language
+and font layout; user interaction cancels this one-time correction.
+Challenge links to both subtrack pages from their descriptions in the page content:
+Econometric replication (`replication.html`) and Business Analysis & Deliverables
+(`professional-tasks.html`). These pages use the shared primary navigation without
+a second navigation row. The primary Challenge entry marks the section on either
+subtrack page. Data, Agent, Harness and Self-evolving retain their own primary
+current-page indicators.
 The Self-evolving page keeps its original URL, `evolution.html`, and its anchors.
 
 ## Edit the website
@@ -51,7 +55,7 @@ of future updates unless explicitly requested again.
 
 | Page or layer | Files |
 |---|---|
-| Home: two challenges, two agent demos, research and participation | `index.html`, `index.css` |
+| Home: two challenges, two agent demos, Initiative priorities and participation | `index.html`, `index.css` |
 | Challenge: initiative, subtracks, timeline and awards | `challenge.html`, `challenge.css`, `assets/i18n/challenge.zh.json` |
 | Subtrack 1 overview: econometric replication, Dev100 scope, workflow and research pages | `replication.html`, `assets/i18n/replication.zh.json`; reuses `styles.css`, `site.css` |
 | Business Analysis & Deliverables: Finance and HR cases, rubric scoring and pilot evidence | `professional-tasks.html`, `professional-tasks.css`, `assets/i18n/professional-tasks.zh.json`, `assets/data/professional-tasks-pilot.json` |
@@ -71,11 +75,13 @@ of future updates unless explicitly requested again.
 When updating translations or shared scripts, refresh the `?v=` release tag
 in the HTML. `language.js` forwards its release tag to the page dictionary URL.
 All ten pages load `styles.css` and `site.css` with `20261018-shared-nav`, and
-`language.js` with `20261018-challenge-videos`, except Challenge, which uses `20261019-challenge-relay-v2`, and Business Analysis,
-which uses `20261019-claude-relay-v2` for the SUFE walkthrough captions. The base stylesheet carries the same
+`language.js` with `20261018-challenge-videos`, except Home (`20261019-home-release`),
+Challenge (`20261019-challenge-links`) and Business Analysis (`20261019-claude-relay-v2`).
+Home presents both challenges with the same workflow, difficulty, deliverable and
+independent-evaluation structure, followed by two concrete descriptions of the work. The base stylesheet carries the same
 versioned reference on every page, so preview navigation does not reuse the earlier
 unversioned base-style URL. `challenge.css` uses `20261018-demo-briefs`.
-Home uses `20261018-two-demos`
+Home uses `20261019-participation`
 for `index.css` and loads no leaderboard assets. Leaderboard retains
 `20261018-dev100-challenge` for `leaderboard.css` and `site.js`; its Dev100 entry
 and `leaderboard-dev100-data.js` import use `20261018-home-challenges`.
@@ -83,7 +89,7 @@ Both board entries retain `20261018-dev100-challenge` for the shared
 `leaderboard-board.js` import.
 Data imports keep their existing tags: `20261011-release` for `leaderboard-data.js`,
 `20261012-dual-board` for the Dev100 results JSON, and
-`20260917-harness` for the Selected_1000 results JSON. `challenge.css` and `teams.css` retain `20261018-initiative`. Other asset tags remain
+`20260917-harness` for the Selected_1000 results JSON. `teams.css` retains `20261018-initiative`. Other asset tags remain
 versioned independently in their page HTML. Strings shared by several pages,
 such as the reading-route labels and scroll hints, live in `language.js`.
 
@@ -257,11 +263,12 @@ The homepage's Agent in action section (`#tasks`) presents two demos side by sid
 on desktop: the econometric replay above and `assets/video/finance-story-demo.mp4`
 for Business Analysis & Deliverables. Both reuse existing video files, with
 posters, native playback controls, no autoplay and links to their respective
-subtrack pages (`replication.html` and `professional-tasks.html`). The finance
+sections on the Challenge page (`#subtrack-econometric` and
+`#subtrack-professional`). The finance
 video is shared with the business task page; this presentation adds no new video assets,
 task data or evaluation results. The homepage omits replay production details;
 the existing task 0011 walkthrough remains on Agent. Homepage CSS uses
-`20261018-two-demos`; translations use
+`20261019-participation`; translations use
 `20261018-challenge-videos`.
 The animation source and export scripts stay in the research workspace.
 `scripts/check.mjs` accepts `.mp4` files under `assets/` for these videos.
@@ -401,8 +408,11 @@ into this public repository.
 ## Research framing
 
 InferenceNet Challenge is a public series of challenges for AI agents. The
-homepage introduces the Global InferenceNet Initiative through a bold inline
-link, then explains the Challenge series in the same paragraph. Its Inference
+homepage keeps InferenceNet Challenge as its main title. The hero first introduces
+the Global InferenceNet Initiative’s vision of shared infrastructure, then describes
+how the Challenge advances it through an open-source community, challenging
+problems, and a standard framework for model training and evaluation. The Initiative
+name links to the official NTU GIFTS description. Its Inference
 Challenge section presents each specific challenge as a subtrack with its own
 tasks and evaluation criteria.
 Econometric replication is one subtrack. The Global InferenceNet Initiative
@@ -425,7 +435,7 @@ and [trajectory-based reinforcement learning](https://arxiv.org/abs/2508.03680).
 ## Homepage presentation
 
 Home follows four sections: Inference Challenge (`#overview`), Agent in action
-(`#tasks`), Research (`#harness`) and Get involved (`#participate`). Its two cards
+(`#tasks`), Our aims (`#initiative`) and Get involved (`#participate`). Its two cards
 explain each challenge's task, deliverable and evaluation. Both challenges use
 agent workflows; their goals, outputs and evaluation criteria distinguish them.
 Challenge 1 is econometric replication and will open-source the existing Dev100
@@ -447,9 +457,18 @@ execution trace. The status list links the business task preview, the Dev100
 open-source scope confirmed on 18 Oct 2026 and the development report generated
 at `2026-10-11T16:35:49Z`. These updates do not imply that competition submissions
 are open or that pilot and development scores are official Challenge rankings.
-The three research directions and participation resources remain. Get involved
-offers routes to explore a challenge, build an agent and contribute a task, with
-research resources and citations below.
+The Our aims section presents four numbered cards describing the Challenge’s
+contribution to the Initiative: an
+open-source community, challenging problems, a standard evaluation framework,
+and model training and improvement. The fourth links to training and improvement
+research on the Leaderboard page; it describes research aims, not a released
+training product. Its navigation uses `#initiative`; the previous `#harness` anchor remains
+available. Technical research stays on the Harness and Self-evolving pages. Get involved
+offers six routes: explore a challenge, propose a new challenge, build an agent,
+contribute tasks and data, improve evaluation, and study training and improvement.
+The status list separates dates, headings, descriptions and links; its date column
+fits translated labels without overlapping the copy. Research resources and
+citations follow below.
 
 ## Harness: definition, ecosystem and breakdowns
 

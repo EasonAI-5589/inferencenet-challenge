@@ -101,13 +101,6 @@ summary:focus-visible,pre:focus-visible,[role="tabpanel"]:focus-visible{outline:
 html[data-theme="dark"] .theme-icon{transform:rotate(180deg)}
 .menu-toggle{display:none}
 
-/* Challenge subtracks sit below the shared site navigation. */
-.track-nav{border-bottom:1px solid var(--line);background:var(--tint)}
-.track-nav-inner{display:flex;align-items:center;gap:30px;padding-block:0}
-.track-nav-label{font-size:12px;font-weight:600;color:var(--brand);flex-shrink:0}
-.track-nav-links{display:flex;flex-wrap:wrap;gap:0 24px}
-.track-nav-links a{font-size:12px;line-height:1.5;padding:14px 0 12px;color:var(--soft);white-space:nowrap;border-bottom:2px solid transparent}
-.track-nav-links a:hover,.track-nav-links a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--ink)}
 
 /* 4 · Page hero, subnav, prose --------------------------------------------------- */
 .page-hero{padding-block:54px 40px;border-bottom:1px solid var(--line)}
@@ -414,15 +407,6 @@ details.code-panel:not([open])>summary.code-panel-head{border-bottom:0}
   .page-footer-nav a{padding:20px 0}
   .page-footer-nav span{font-size:16px}
 }
-/* Secondary navigation follows the shared header layout. */
-@media(max-width:860px){
-  .track-nav-inner{display:block;padding-top:14px}
-  .track-nav-label{display:block;margin-bottom:2px}
-  .track-nav-links{gap:0 20px}
-}
-@media(max-width:420px){
-  .track-nav-links{gap:0 16px}
-}
 @media(max-width:520px){
   .container{width:calc(100% - 40px)}
   .wordmark{font-size:20px}
@@ -472,7 +456,7 @@ details.code-panel:not([open])>summary.code-panel-head{border-bottom:0}
 @media print{
   html,html[data-theme="dark"]{color-scheme:light;--paper:#fff;--surface:#fff;--ink:#191919;--soft:#555;--muted:#666;--line:#dedede;--strong-line:#bbb;--tint:#f5f5f5;--inverse:#fff;--brand:#264873;--brand-tint:#edf2fb;--chart-1:#264873;--chart-2:#929292;--chart-3:#3a6aa7;--chart-4:#484848;--chart-5:#5d8ece;--chart-6:#696969;--chart-muted:#a6a6a6;--chart-grid:#e8e8e8}
   body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .site-header,.reading-progress,.skip-link,.menu-toggle,.theme-toggle,.subnav,.track-nav,.page-footer-nav{display:none!important}
+  .site-header,.reading-progress,.skip-link,.menu-toggle,.theme-toggle,.subnav,.page-footer-nav{display:none!important}
   .section{padding-block:32px}
   .card,.chart,.code-panel,.callout,.diagram,.step,.stat-strip,.compare-table tr{break-inside:avoid}
   .code-panel pre{max-height:none;overflow:visible;white-space:pre-wrap}

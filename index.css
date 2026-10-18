@@ -24,15 +24,18 @@
 .home-replay figcaption .card-label{margin-bottom:8px;font-size:11px}
 .home-replay h3{margin:0 0 10px;color:var(--ink);font-size:22px;line-height:1.35}
 .home-replay .text-link{align-self:flex-start;display:inline-block;margin-top:auto;padding-top:14px;font-size:13px}
-/* Challenge announcements and development results. */
-.home-status{max-width:none;margin:30px auto 0;padding:18px 22px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);text-align:left}
-.home-status-title{margin:0 0 10px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.home-status-list{display:grid;gap:10px;margin:0;padding:0;list-style:none}
-.home-status-list li{display:grid;grid-template-columns:96px minmax(0,1fr);gap:2px 16px;font-size:13.5px;line-height:1.65;color:var(--soft)}
-.home-status-list time{padding-top:2px;font-family:var(--mono);font-size:12px;color:var(--muted)}
-.home-status-list p{margin:0}
-.home-status-list strong{font-weight:600;color:var(--ink)}
-.home-status-list a{margin-left:4px;color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--muted)}
+/* Dates keep their intrinsic width so translated labels cannot collide with copy. */
+.home-status{max-width:none;margin:30px auto 0;padding:24px 26px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);text-align:left}
+.home-status-title{margin:0 0 18px;font-size:16px;font-weight:600;line-height:1.4;color:var(--ink)}
+.home-status-list{display:grid;margin:0;padding:0;list-style:none}
+.home-status-list li{display:grid;grid-template-columns:minmax(10rem,max-content) minmax(0,1fr);gap:6px 24px;padding:16px 0;font-size:13.5px;line-height:1.65;color:var(--soft)}
+.home-status-list li:first-child{padding-top:0}
+.home-status-list li:last-child{padding-bottom:0}
+.home-status-list li+li{border-top:1px solid var(--line)}
+.home-status-list time{padding-top:2px;font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--muted)}
+.home-status-list p{min-width:0;margin:0}
+.home-status-list strong{display:block;margin-bottom:4px;font-size:14px;font-weight:600;color:var(--ink)}
+.home-status-list a{display:block;width:fit-content;margin-top:6px;color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--muted)}
 .home-status-next{margin:12px 0 0;padding-top:10px;border-top:1px solid var(--line);font-size:12.5px;line-height:1.6;color:var(--muted)}
 .home-source{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;margin-top:20px;font-size:13px;line-height:1.7;color:var(--soft)}
 .home-source .text-link{font-size:13px}
@@ -52,7 +55,7 @@
 .participate-actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px 24px;flex-shrink:0}
 .participate-now{margin-top:30px}
 .participate-now h3{font-size:16px}
-.participate-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 28px;margin:14px 0 0;padding:0;list-style:none}
+.participate-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin:14px 0 0;padding:0;list-style:none}
 .participate-steps li{display:flex;flex-direction:column;gap:8px;min-width:0;padding-top:14px;border-top:1px solid var(--line)}
 .participate-steps h4{margin:0;font-size:15px;font-weight:600;line-height:1.4;color:var(--ink)}
 .participate-steps p{margin:0;font-size:14px;line-height:1.75;color:var(--soft)}
