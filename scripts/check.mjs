@@ -7,9 +7,11 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 // The explicit public-file allowlist (plus the whole reviewed `assets/` tree).
 // Private test pages (`_*.html`), DESIGN.md, README.md and scripts/ are never listed.
-export const pages = ['index.html', 'challenge.html', 'replication.html', 'data.html', 'agent.html', 'harness.html', 'evolution.html', 'leaderboard.html', 'teams.html', 'professional-tasks.html'];
+export const pages = ['index.html', 'challenge.html', 'replication.html', 'agent.html', 'harness.html', 'evolution.html', 'leaderboard.html', 'teams.html', 'professional-tasks.html'];
+const redirects = { 'data.html': 'challenge.html#replication-data' };
 export const publicFiles = [
   ...pages,
+  ...Object.keys(redirects),
   'styles.css', 'site.css', 'language.css', 'mountain.css', 'index.css', 'challenge.css', 'data.css', 'agent.css', 'evolution.css', 'harness.css', 'leaderboard.css', 'teams.css', 'professional-tasks.css',
   'theme.js', 'site.js', 'language.js', 'charts.js', 'mountain.js', 'leaderboard.js', 'leaderboard-data.js', 'leaderboard-board.js', 'leaderboard-dev100.js', 'leaderboard-dev100-data.js', 'evolution.js',
   '.nojekyll',
@@ -34,15 +36,26 @@ async function listAssets(directory, out = []) {
 const assetFiles = await listAssets(resolve(root, 'assets'));
 
 const documents = new Map();
-for (const file of pages) {
+for (const file of [...pages, ...Object.keys(redirects)]) {
   const html = await readFile(resolve(root, file), 'utf8');
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
   if (new Set(ids).size !== ids.length) throw new Error(`Duplicate HTML IDs in ${file}`);
   if (!html.includes('<html lang="en">') || !html.includes('name="viewport"')) throw new Error(`Missing document accessibility metadata in ${file}`);
   if ((html.match(/<h1\b/g) || []).length !== 1) throw new Error(`Expected exactly one <h1> in ${file}`);
   if (/\son[a-z]+="/i.test(html)) throw new Error(`Inline event handler in ${file}`);
-  if (!/\bsrc="language\.js(?:\?v=[A-Za-z0-9_-]+)?"/.test(html) || !html.includes('href="language.css"')) throw new Error(`Missing language control assets in ${file}`);
-  await access(resolve(root, `assets/i18n/${file.replace('.html', '')}.zh.json`));
+  if (Object.hasOwn(redirects, file)) {
+    const target = redirects[file];
+    const refresh = [...html.matchAll(/<meta\b[^>]*>/gi)].map(match => match[0]).find(tag => /\bhttp-equiv="refresh"/i.test(tag));
+    if (refresh?.match(/\bcontent="([^"]+)"/)?.[1] !== `0; url=${target}`) throw new Error(`Unexpected redirect target in ${file}`);
+    const canonical = [...html.matchAll(/<link\b[^>]*>/gi)].map(match => match[0]).find(tag => /\brel="canonical"/.test(tag));
+    if (canonical?.match(/\bhref="([^"]+)"/)?.[1] !== target) throw new Error(`Missing redirect canonical in ${file}`);
+    const body = html.match(/<body\b[^>]*>([\s\S]*?)<\/body>/i)?.[1] || '';
+    if (![...body.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g)].some(match => match[1] === target)) throw new Error(`Missing redirect fallback link in ${file}`);
+    if (/\b(?:src|href)="language\.(?:js|css)(?:\?[^"]*)?"/.test(html)) throw new Error(`Redirect should not load language controls in ${file}`);
+  } else {
+    if (!/\bsrc="language\.js(?:\?v=[A-Za-z0-9_-]+)?"/.test(html) || !html.includes('href="language.css"')) throw new Error(`Missing language control assets in ${file}`);
+    await access(resolve(root, `assets/i18n/${file.replace('.html', '')}.zh.json`));
+  }
   documents.set(file, { html, ids });
 }
 
@@ -104,4 +117,4 @@ for (const file of scanned) {
   }
 }
 const anchorCount = [...documents.values()].reduce((sum, doc) => sum + doc.ids.length, 0);
-console.log(`Checked ${documents.size} pages, ${anchorCount} anchors, ${referenceCount} references, ${scanned.length} text files (${assetFiles.length} assets), public asset types and private-path boundaries.`);
+console.log(`Checked ${pages.length} content pages and ${Object.keys(redirects).length} redirect, ${anchorCount} anchors, ${referenceCount} references, ${scanned.length} text files (${assetFiles.length} assets), public asset types and private-path boundaries.`);

@@ -74,10 +74,10 @@
 .award p{margin:12px 0 0;font-size:15px;line-height:1.8;color:var(--soft)}
 .award .card-label{margin-bottom:16px}
 
-.take-part{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin:0;padding:0;list-style:none}
+.take-part{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px 28px;margin:0;padding:0;list-style:none}
 .take-part li{display:flex;flex-direction:column;padding-top:18px;border-top:1px solid var(--ink)}
 .take-part h3{margin:0;font-size:18px;font-weight:600;line-height:1.45;letter-spacing:-.01em}
-.take-part p{margin:8px 0 0;font-size:14px;line-height:1.75;color:var(--soft)}
+.take-part p{flex:1;margin:8px 0 0;font-size:14px;line-height:1.75;color:var(--soft)}
 .take-part .text-link{margin-top:14px;align-self:flex-start}
 
 @media(max-width:1100px){
@@ -87,7 +87,8 @@
   .track-body,.track-demos,.track>.track-facts,.award-grid{grid-template-columns:1fr}
   .track-body .track-facts{margin-top:24px}
   .track-demos{gap:32px}
-  .initiative-pillars,.take-part,.status-strip{grid-template-columns:1fr}
+  .initiative-pillars,.status-strip{grid-template-columns:1fr}
+  .take-part{grid-template-columns:repeat(2,minmax(0,1fr))}
   .status-strip{gap:14px}
 }
 @media(max-width:860px){
@@ -99,4 +100,28 @@
   .plan-stage h3,.plan-stage p{grid-column:2}
   .track{padding:24px}
   .track-facts div{grid-template-columns:1fr;gap:2px}
+}
+
+@media(max-width:700px){
+  .take-part{grid-template-columns:1fr}
+}
+
+/* Econometric subtrack: research data, the Dev100 task set, then a recorded demonstration. */
+#subtrack-econometric .replication-data,
+#subtrack-econometric .replication-task-set{margin-top:28px;padding-top:24px;border-top:1px solid var(--line);scroll-margin-top:calc(var(--header-offset,78px) + 72px)}
+#subtrack-econometric .replication-data h4,
+#subtrack-econometric .replication-task-intro h4{margin:0;font-size:20px;font-weight:600;line-height:1.4;letter-spacing:-.01em}
+#subtrack-econometric .replication-data p,
+#subtrack-econometric .replication-task-intro p{max-width:84ch;margin:12px 0 0;font-size:15px;line-height:1.8;color:var(--soft)}
+#subtrack-econometric .replication-data .text-link,
+#subtrack-econometric .replication-task-intro .text-link{margin-top:14px}
+#subtrack-econometric .replication-data .dataset-access{font-size:12px;color:var(--muted)}
+#subtrack-econometric .replication-task-set{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:28px 36px}
+#subtrack-econometric .replication-task-set .track-facts{border-top:0}
+#subtrack-econometric .replication-task-set .track-facts>div:first-child{padding-top:0}
+#subtrack-econometric .replication-demo{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:24px 36px;margin-top:28px;padding-top:28px;border-top:1px solid var(--line)}
+#subtrack-econometric .replication-demo figcaption{margin-top:0}
+@media(max-width:860px){
+  #subtrack-econometric .replication-task-set,
+  #subtrack-econometric .replication-demo{grid-template-columns:1fr}
 }

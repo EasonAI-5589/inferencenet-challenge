@@ -166,13 +166,13 @@
   }
 
   // Initial fragment positioning happens before async translation and font layout.
-  // Re-align only challenge articles, once, unless the visitor has taken control.
+  // Re-align challenge articles and their data/task overviews once, unless the visitor has taken control.
   function prepareInitialTrackAlignment() {
     const hash = location.hash;
     let id;
     try { id = decodeURIComponent(hash.slice(1)); } catch { return async () => {}; }
     const target = document.getElementById(id);
-    if (!target || !target.matches('article.track')) return async () => {};
+    if (!target || !target.matches('article.track, #replication-data, #replication-dev100')) return async () => {};
     let interrupted = false;
     const cancel = () => { interrupted = true; };
     const inputs = ['wheel', 'touchstart', 'pointerdown', 'keydown'];

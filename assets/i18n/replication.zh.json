@@ -49,7 +49,6 @@
   "Use these existing resources to understand the task format, agent execution and how results are examined.": "通过现有资源了解任务形式、智能体执行过程以及结果核验方式。",
   "Tasks and execution": "任务与执行",
   "See what an agent receives and does": "了解智能体的输入与执行过程",
-  "The Data page opens a research task package. The Agent page follows a recorded run and its execution feedback.": "数据页展示研究任务包，智能体页呈现一次已记录的运行及其执行反馈。",
   "Explore task materials →": "查看任务材料 →",
   "Follow an agent run →": "查看智能体运行 →",
   "Harnesses and improvement": "Harness 与改进",
@@ -62,5 +61,6 @@
   "The v10 report records 14 models with four harnesses on the 100-task development set. Run settings, provenance and limitations accompany the results; this is not an official Challenge ranking.": "v10 报告记录了 14 个模型搭配四种 Harness 在 100 题开发集上的结果，并附运行设置、来源与局限说明；这些结果并非正式挑战赛排名。",
   "Explore Dev100 results →": "查看 Dev100 结果 →",
   "← Challenge": "← 挑战赛",
-  "Business analysis & deliverables →": "业务分析与交付 →"
+  "Business analysis & deliverables →": "业务分析与交付 →",
+  "The Hugging Face repository provides the research data and task descriptions. The Agent page follows a recorded run and its execution feedback.": "Hugging Face 仓库提供研究数据与任务说明，智能体页呈现一次已记录的运行及其执行反馈。"
 }

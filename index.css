@@ -40,6 +40,7 @@
 .home-source{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;margin-top:20px;font-size:13px;line-height:1.7;color:var(--soft)}
 .home-source .text-link{font-size:13px}
 .benchmark-directions{--cols:2}
+.research-directions{--cols:2}
 .benchmark-directions .card{display:flex;flex-direction:column}
 .benchmark-directions .card-label{margin-bottom:16px}
 .benchmark-directions .text-link{align-self:flex-start;display:inline-block;margin-top:auto;padding-top:18px}

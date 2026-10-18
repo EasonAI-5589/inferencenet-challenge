@@ -461,7 +461,6 @@
   "These are two separate runs of the same task. The DeepAgents run starts from the task instructions, with its own interaction budget; it does not continue from the failed program.": "这是同一道题的两次独立运行。DeepAgents 配置从任务说明开始，使用自己的交互预算，并非接着前面的失败程序继续执行。",
   "One example, many research tasks": "一个示例，更多研究任务",
   "This recorded GPT-5.5 case explains how an agent works. Explore other tasks in the benchmark, or compare current models and harnesses across 1,000 tasks on the leaderboard.": "这个 GPT-5.5 运行案例用于说明智能体如何工作。你可以继续查看其他基准任务，或在排行榜中比较当前模型与 Harness 在 1,000 道任务上的表现。",
-  "Explore more tasks →": "查看更多任务 →",
   "Compare on the leaderboard →": "前往排行榜比较 →",
   "Run details, original code and execution trace": "运行设置、原始代码与执行记录",
   "Recorded on 13 Sep 2026 using GPT-5.5 and DeepAgents 0.7.13 on Selected_1000 task 0011, dataset revision 59f9512.": "记录于 2026 年 9 月 13 日，使用 GPT-5.5 与 DeepAgents 0.7.13，任务为 Selected_1000 中的 0011，数据版本为 59f9512。",
@@ -529,7 +528,6 @@
   "At full precision, the differences are floating-point rounding. All three statistics pass this run’s full-replication thresholds; exact values remain in the original record below.": "在完整精度下，差异处于浮点舍入范围，三个统计量均通过这次运行的完整复现判定。精确数值保留在下方原始记录中。",
   "We use one actual InferenceNet run to examine the task, the data and where GPT-5.5’s first program went wrong. Then we follow the same model with DeepAgents to see how execution feedback helps it reproduce the result.": "我们用 InferenceNet 的一个真实运行案例，分析题目、输入数据，以及 GPT-5.5 原程序的问题，再沿着同一模型配合 DeepAgents 的执行过程，说明反馈如何帮助它完成复现。",
   "What data does the model receive?": "模型拿到的数据是什么？",
-  "See this task on the Data page →": "在 Data 页查看同一道题 →",
   "The input is data_np.dta, a Stata table with 4,550 observations and 38 columns, spanning 1821–2010. Each row is an observation. The regression variables listed below are only a few of its columns; the program can read the whole file.": "输入是 Stata 数据文件 data_np.dta，包含 4,550 条观测、38 个字段，年份范围为 1821—2010 年，每行是一条观测。下方列出的回归变量只是部分字段，程序可以读取完整文件。",
   "From the full data file to the regression sample": "从完整数据文件到回归样本",
   "Rows in the full file": "完整文件中的观测",
@@ -954,5 +952,7 @@
   "Model call 10 submits and requests no tool. Submission is not a Python run.": "第 10 次模型调用提交程序，没有再请求工具。提交本身不是 Python 运行。",
   "Evaluator replays the submission": "评估器重放所提交的程序",
   "exit 0 · direction only": "退出码 0 · 只匹配方向",
-  "Execution succeeded. Replication matched the coefficient direction, not the reference construction.": "执行成功。复现匹配了系数方向，没有匹配参考变量构造。"
+  "Execution succeeded. Replication matched the coefficient direction, not the reference construction.": "执行成功。复现匹配了系数方向，没有匹配参考变量构造。",
+  "See this task on Hugging Face ↗": "在 Hugging Face 查看这道任务 ↗",
+  "Explore more research tasks ↗": "浏览更多研究任务 ↗"
 }
