@@ -21,6 +21,8 @@ const PAGES = ['index.html', 'challenge.html', 'replication.html', 'harness.html
 const TAG = '20261018-dev100-challenge';
 const DEV100_TAG = '20261018-home-challenges';
 const LANGUAGE_TAG = '20261018-challenge-videos';
+// Shared assets released with the site motion (styles, site, language, index, teams and leaderboard CSS).
+const RELEASE_TAG = '20261019-motion';
 const devBlock = html => html.slice(html.indexOf('<!-- dev100-ranking:start -->'), html.indexOf('<!-- dev100-ranking:end -->'));
 const pattern = text => text.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&');
 
@@ -276,12 +278,12 @@ test('the development module loads only on leaderboard.html, with the release ta
   }
   for (const page of PAGES) {
     const html = await read(page);
-    const languageTag = '20261019-clean-v2';
+    const languageTag = RELEASE_TAG;
     assert.match(html, new RegExp(`"language\\.js\\?v=${languageTag}"`), `${page}: language.js`);
   }
-  assert.match(await read('index.html'), /"index\.css\?v=20261019-aims-grid"/);
-  assert.match(await read('leaderboard.html'), new RegExp(`"leaderboard\\.css\\?v=${TAG}"`));
-  assert.match(await read('leaderboard.html'), new RegExp(`"site\\.js\\?v=${TAG}"`));
+  assert.match(await read('index.html'), new RegExp(`"index\\.css\\?v=${RELEASE_TAG}"`));
+  assert.match(await read('leaderboard.html'), new RegExp(`"leaderboard\\.css\\?v=${RELEASE_TAG}"`));
+  assert.match(await read('leaderboard.html'), new RegExp(`"site\\.js\\?v=${RELEASE_TAG}"`));
 });
 
 test('Home links Dev100 results without loading a board and preserves the dated development news', async () => {
