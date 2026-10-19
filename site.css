@@ -4,7 +4,7 @@
  * Sections: 1 tokens · 2 shared primitives · 3 header/nav · 4 page hero + subnav ·
  * 5 stats/cards/kv/tables · 6 charts · 7 steps/code/callouts ·
  * 8 badges/tabs/diagram/footer nav · 9 responsive · 10 print/forced colors ·
- * 11 motion. */
+ * 11 motion · 12 material and type. */
 
 /* 1 · Tokens ---------------------------------------------------------------- */
 :root{
@@ -541,3 +541,15 @@ details[open]::details-content{opacity:1;transition:opacity 220ms var(--ease-out
   .subnav .has-marker::after{display:none}
   .subnav .has-marker a[aria-current="location"]{border-bottom-color:CanvasText}
 }
+
+/* 12 · Material and type ---------------------------------------------------------- */
+/* Sticky bars are translucent paper: content stays faintly present as it passes under. */
+@supports ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
+  .site-header,.subnav{background:color-mix(in srgb,var(--paper) 88%,transparent);-webkit-backdrop-filter:saturate(1.8) blur(20px);backdrop-filter:saturate(1.8) blur(20px)}
+}
+@media(prefers-reduced-transparency:reduce),(prefers-contrast:more){
+  .site-header,.subnav{background:var(--paper);-webkit-backdrop-filter:none;backdrop-filter:none}
+}
+/* Headings break into even lines and paragraphs avoid a stranded last word. */
+h1,h2,h3{text-wrap:balance}
+p{text-wrap:pretty}
