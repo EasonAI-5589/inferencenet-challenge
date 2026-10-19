@@ -104,6 +104,12 @@ summary:focus-visible,pre:focus-visible,[role="tabpanel"]:focus-visible{outline:
 .theme-icon{width:14px;height:14px;display:block;border:1.5px solid currentColor;border-radius:50%;background:linear-gradient(90deg,currentColor 50%,transparent 50%)}
 html[data-theme="dark"] .theme-icon{transform:rotate(180deg)}
 .menu-toggle{display:none}
+/* The header holds its final layout from the first frame. theme.js sets data-theme
+ * before paint, so the theme button shows at once at a width that fits every label,
+ * and language.css reserves the switch that language.js adds: opening a page never
+ * makes the navigation jump. */
+html[data-theme] .theme-toggle[hidden]{display:inline-flex!important}
+@media(min-width:521px){.theme-toggle{min-width:80px}}
 
 
 /* 4 · Page hero, subnav, prose --------------------------------------------------- */
@@ -375,6 +381,7 @@ details.code-panel:not([open])>summary.code-panel-head{border-bottom:0}
   .nav{flex-wrap:wrap;gap:0;justify-content:space-between;padding-block:12px}
   .nav-controls{margin-left:auto}
   .js .menu-toggle{display:inline-flex}
+  html[data-theme] .menu-toggle[hidden]{display:inline-flex!important}
   .nav-links{order:3;width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 16px;margin:12px 0 0;padding:6px 0 4px;border-top:1px solid var(--line)}
   .nav-links a{padding:9px 0;justify-self:start;font-size:13px}
   .nav-links a[aria-current="location"]::after,.nav-links a[aria-current="page"]::after,.nav-links a[aria-current="true"]::after{bottom:3px}
@@ -507,6 +514,22 @@ details.code-panel:not([open])>summary.code-panel-head{border-bottom:0}
  * also eases the brightness change; the theme icon turns with it. */
 ::view-transition-old(root),::view-transition-new(root){animation-duration:250ms;animation-timing-function:ease}
 .theme-icon{transition:transform 300ms var(--ease-in-out)}
+
+/* Moving between pages: the header holds still, the current-page underline slides
+ * to its new item, and the content fades through (the old page leaves before the
+ * new one arrives, so two pages of text never overlap). Browsers without
+ * cross-document view transitions, and reduced motion, change pages instantly. */
+@media(prefers-reduced-motion:no-preference){@view-transition{navigation:auto;types:page}}
+.site-header{view-transition-name:site-header}
+.nav-links a[aria-current="page"]::after,.nav-links a[aria-current="true"]::after{view-transition-name:nav-current}
+::view-transition-group(nav-current){animation-duration:250ms;animation-timing-function:var(--ease-in-out)}
+html:active-view-transition-type(page)::view-transition-old(root){animation:page-leave 120ms var(--ease-out) both}
+html:active-view-transition-type(page)::view-transition-new(root){animation:page-arrive 240ms var(--ease-out) 70ms both}
+@keyframes page-leave{to{opacity:0}}
+@keyframes page-arrive{from{opacity:0;transform:translateY(6px)}}
+/* A Chinese page stays unpainted until language.js has translated it (theme.js), so
+ * the incoming page never shows English first. */
+html.lang-pending body{visibility:hidden}
 
 /* Narrative pages opt in with <main data-motion="reveal">. Blocks that start below
  * the fold settle in once as they arrive; site.js arms this on the first scroll. */

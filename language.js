@@ -135,15 +135,27 @@
       const dictionaryURL = new URL(`assets/i18n/${page}.zh.json`, scriptURL);
       // Keep a page's release-tagged script and dictionary on the same version.
       dictionaryURL.search = new URL(scriptURL).search;
-      dictionaryPromise = fetch(dictionaryURL)
+      // A page read once this session translates again without waiting for the network.
+      const cacheKey = `inferencenet-i18n:${dictionaryURL.pathname}${dictionaryURL.search}`;
+      let cached = null;
+      try { cached = JSON.parse(sessionStorage.getItem(cacheKey)); } catch {}
+      dictionaryPromise = (cached ? Promise.resolve(cached) : fetch(dictionaryURL)
         .then(response => { if (!response.ok) throw new Error('Translation unavailable'); return response.json(); })
+        .then(values => {
+          try { sessionStorage.setItem(cacheKey, JSON.stringify(values)); } catch {}
+          return values;
+        }))
         .then(values => {
           if (!values || Array.isArray(values) || typeof values !== 'object' || Object.values(values).some(value => typeof value !== 'string')) {
             throw new Error('Invalid translation dictionary');
           }
           dictionary = { ...values, ...common };
         })
-        .catch(error => { dictionaryPromise = undefined; throw error; });
+        .catch(error => {
+          dictionaryPromise = undefined;
+          try { sessionStorage.removeItem(cacheKey); } catch {}
+          throw error;
+        });
     }
     return dictionaryPromise;
   }
@@ -164,6 +176,8 @@
     } finally {
       controls.setAttribute('aria-busy', 'false');
       controls.querySelectorAll('button').forEach(button => { button.disabled = false; });
+      // theme.js holds a Chinese page's first paint until this point.
+      document.documentElement.classList.remove('lang-pending');
     }
   }
 
@@ -197,7 +211,7 @@
 
   function init() {
     const nav = document.querySelector('.nav-controls');
-    if (!nav) return;
+    if (!nav) { document.documentElement.classList.remove('lang-pending'); return; }
     controls = document.createElement('div');
     controls.className = 'language-switch';
     controls.dataset.languageControl = '';
@@ -234,6 +248,14 @@
     const alignTrack = prepareInitialTrackAlignment();
     if (requested === 'zh') void setLanguage('zh').then(alignTrack);
     else void alignTrack();
+    // A page prerendered in the background (site.js) follows a language chosen meanwhile.
+    if (document.prerendering) {
+      document.addEventListener('prerenderingchange', () => {
+        let stored = 'en';
+        try { if (localStorage.getItem(storageKey) === 'zh') stored = 'zh'; } catch {}
+        if (stored !== language) void setLanguage(stored);
+      }, { once: true });
+    }
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });

@@ -31,6 +31,22 @@
   document.documentElement.classList.add('js');
   const legacy = Boolean(document.querySelector('script[src="script.js"], script[src$="/script.js"]'));
 
+  /* Page switches: a site page the visitor hovers or presses in the navigation or
+   * the page pager is prerendered (Chromium), so it is shown finished, with fonts,
+   * header controls and translation in place, and the transition in site.css
+   * section 11 has nothing left to settle. */
+  if (window.HTMLScriptElement && HTMLScriptElement.supports && HTMLScriptElement.supports('speculationrules')) {
+    const rules = document.createElement('script');
+    rules.type = 'speculationrules';
+    rules.textContent = JSON.stringify({
+      prerender: [{
+        where: { and: [{ href_matches: '/*' }, { selector_matches: '.nav-links a:not([aria-current="page"]), .page-footer-nav a' }] },
+        eagerness: 'moderate',
+      }],
+    });
+    document.head.append(rules);
+  }
+
   /* Mobile menu -------------------------------------------------------------- */
   const menu = document.querySelector('.menu-toggle');
   const nav = document.getElementById('nav-links');
