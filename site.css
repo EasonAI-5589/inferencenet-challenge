@@ -3,7 +3,8 @@
  * system: white paper, 1px --line rules, no shadows, Inter, one navy accent.
  * Sections: 1 tokens · 2 shared primitives · 3 header/nav · 4 page hero + subnav ·
  * 5 stats/cards/kv/tables · 6 charts · 7 steps/code/callouts ·
- * 8 badges/tabs/diagram/footer nav · 9 responsive · 10 print/forced colors. */
+ * 8 badges/tabs/diagram/footer nav · 9 responsive · 10 print/forced colors ·
+ * 11 motion. */
 
 /* 1 · Tokens ---------------------------------------------------------------- */
 :root{
@@ -31,6 +32,9 @@
   --chart-5-ink:#fff;
   --chart-6-ink:#fff;
   --chart-muted-ink:#191919;
+  /* Motion curves (section 11): strong ease-out for entering, ease-in-out for moving. */
+  --ease-out:cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out:cubic-bezier(0.77, 0, 0.175, 1);
 }
 html[data-theme="dark"]{
   --brand:#8fadd6;
@@ -475,4 +479,65 @@ details.code-panel:not([open])>summary.code-panel-head{border-bottom:0}
   .chart-canvas .grid,.chart-canvas .baseline{stroke:GrayText}
   .swatch{border:1px solid CanvasText}
   .badge,.pill,.role-badge,.callout,.card,.chart,.code-panel,.diagram{border-color:CanvasText}
+}
+
+/* 11 · Motion -------------------------------------------------------------------
+ * Motion confirms a press, connects a change of state or eases an occasional
+ * moment. Scores, tables and charts never move for style, and keyboard focus is
+ * never animated. Movement uses transform and opacity only; hover motion is
+ * pointer-only; reduced motion keeps fades and drops movement. */
+
+/* Hover and current-section colours ease instead of snapping. */
+.nav-links a,.subnav a,.text-link,.page-meta a,.reading-route a,.prose a,.chart-table summary{transition:color 150ms ease,border-color 150ms ease,text-decoration-color 150ms ease}
+
+/* Press feedback on everything drawn as a button. */
+.button,.theme-toggle,.menu-toggle,.language-switch button,.hero-affiliations a{transition:background-color 180ms ease,border-color 180ms ease,color 180ms ease,transform 160ms var(--ease-out)}
+.button:active,.theme-toggle:active,.menu-toggle:active,.language-switch button:active,.hero-affiliations a:active{transform:scale(.97)}
+
+/* Button and pager arrows lean the way the link goes; site.js names each direction. */
+[data-arrow]{display:inline-block;transition:transform 200ms var(--ease-out)}
+@media(hover:hover) and (pointer:fine){
+  a:hover [data-arrow="right"]{transform:translateX(3px)}
+  a:hover [data-arrow="left"]{transform:translateX(-3px)}
+  a:hover [data-arrow="down"]{transform:translateY(2px)}
+  a:hover [data-arrow="up"]{transform:translateY(-2px)}
+}
+
+/* Theme and language switches crossfade the page (theme.js, language.js), which
+ * also eases the brightness change; the theme icon turns with it. */
+::view-transition-old(root),::view-transition-new(root){animation-duration:250ms;animation-timing-function:ease}
+.theme-icon{transition:transform 300ms var(--ease-in-out)}
+
+/* Narrative pages opt in with <main data-motion="reveal">. Blocks that start below
+ * the fold settle in once as they arrive; site.js arms this on the first scroll. */
+[data-reveal]{opacity:0;transform:translateY(12px)}
+[data-reveal="in"]{opacity:1;transform:none;transition:opacity 600ms var(--ease-out) var(--reveal-delay,0ms),transform 600ms var(--ease-out) var(--reveal-delay,0ms)}
+
+/* One subnav marker slides to the current section instead of jumping (site.js). */
+.subnav .has-marker{position:relative}
+.subnav .has-marker::after{content:"";position:absolute;top:0;left:0;width:100px;height:2px;background:var(--ink);pointer-events:none;transform-origin:0 0;transform:translate(var(--marker-x,0px),var(--marker-y,0px)) scaleX(var(--marker-scale,0));opacity:var(--marker-opacity,0);transition:transform 250ms var(--ease-in-out),opacity 150ms ease}
+.subnav .has-marker.is-placing::after{transition:none}
+.subnav .has-marker a[aria-current="location"]{border-bottom-color:transparent}
+
+/* Disclosures fade their content in as they open; closing stays instant. */
+details::details-content{opacity:0}
+details[open]::details-content{opacity:1;transition:opacity 220ms var(--ease-out)}
+
+/* The narrow-screen menu drops in once a visitor has toggled it (site.js). */
+@media(max-width:860px){
+  .js .nav-links.open[data-animate]{transition:opacity 200ms var(--ease-out),transform 200ms var(--ease-out)}
+  @starting-style{.js .nav-links.open[data-animate]{opacity:0;transform:translateY(-4px)}}
+}
+
+@media(prefers-reduced-motion:reduce){
+  [data-arrow],.theme-icon{transition:none}
+  a:hover [data-arrow]{transform:none}
+  .subnav .has-marker::after{transition:opacity 150ms ease}
+}
+@media print{
+  [data-reveal]{opacity:1!important;transform:none!important}
+}
+@media(forced-colors:active){
+  .subnav .has-marker::after{display:none}
+  .subnav .has-marker a[aria-current="location"]{border-bottom-color:CanvasText}
 }

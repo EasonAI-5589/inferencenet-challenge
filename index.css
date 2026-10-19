@@ -1,5 +1,15 @@
 /* Homepage: challenges, task examples, research and participation. */
 .hero{padding-bottom:38px}
+/* The front door settles in once per load, in reading order (site.css section 11). */
+@media(prefers-reduced-motion:no-preference){
+  .hero>*{animation:hero-enter 600ms var(--ease-out) backwards}
+  .hero>:nth-child(2){animation-delay:60ms}
+  .hero>:nth-child(3){animation-delay:120ms}
+  .hero>:nth-child(4){animation-delay:180ms}
+  .hero>:nth-child(5){animation-delay:240ms}
+  .hero>:nth-child(6){animation-delay:300ms}
+}
+@keyframes hero-enter{from{opacity:0;transform:translateY(10px)}}
 .hero-subtitle{max-width:780px;margin-inline:auto}
 .hero-description{max-width:780px}
 .hero-actions{max-width:900px;margin-inline:auto}

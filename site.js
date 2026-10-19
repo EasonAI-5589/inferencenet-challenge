@@ -2,8 +2,10 @@
  * Classic script, load with `defer` on every page. Provides: the mobile menu
  * (same behaviour as script.js), the reading-progress bar, in-page subnav
  * scroll-spy, generic accessible tabs for [role="tablist"], focusable scroll
- * containers (tabindex only while they overflow), and chart mounting via a
- * dynamic import of charts.js. Theme switching stays in theme.js.
+ * containers (tabindex only while they overflow), chart mounting via a
+ * dynamic import of charts.js, and the motion hooks of site.css section 11
+ * (subnav marker, arrow directions, once-only reveals). Theme switching stays
+ * in theme.js.
  * When the legacy script.js is also present on a page (index.html), this file
  * leaves the menu, progress bar and .sample-tabs to it. */
 (() => {
@@ -41,7 +43,11 @@
     };
     setOpen(true);
     menu.hidden = false;
-    menu.addEventListener('click', () => setOpen(menu.getAttribute('aria-expanded') !== 'true'));
+    menu.addEventListener('click', () => {
+      // Only a visitor's own toggle animates; the menu starts open without motion.
+      nav.dataset.animate = '';
+      setOpen(menu.getAttribute('aria-expanded') !== 'true');
+    });
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape' && nav.classList.contains('open')
         && menu.getClientRects().length && menu.closest('.site-header').contains(document.activeElement)) {
@@ -72,13 +78,47 @@
   const subnavLinks = [...document.querySelectorAll('.subnav a[href^="#"]')]
     .map(link => ({ link, target: document.getElementById(decodeURIComponent(link.hash.slice(1))) }))
     .filter(item => item.target);
+  if (progress) {
+    // The bar scales on the compositor instead of changing width every scroll frame.
+    progress.style.width = '100%';
+    progress.style.transformOrigin = '0 50%';
+  }
+  // One marker slides to the current section (site.css section 11).
+  const track = subnavLinks.length ? subnavLinks[0].link.closest('.subnav ol, .subnav ul') : null;
+  if (track) track.classList.add('has-marker');
+  let marked = null;
+  let markerShown = false;
+  const placeMarker = (link, remeasure) => {
+    if (!track || (link === marked && !remeasure)) return;
+    marked = link;
+    if (!link || !track.contains(link) || !link.getClientRects().length) {
+      track.style.setProperty('--marker-opacity', '0');
+      markerShown = false;
+      return;
+    }
+    const box = track.getBoundingClientRect();
+    const rect = link.getBoundingClientRect();
+    // A marker that appears, or a layout that changed, takes its place without sliding.
+    const instant = remeasure || !markerShown;
+    if (instant) track.classList.add('is-placing');
+    track.style.setProperty('--marker-x', `${rect.left - box.left - track.clientLeft + track.scrollLeft}px`);
+    track.style.setProperty('--marker-y', `${rect.bottom - box.top - track.clientTop + track.scrollTop - 2}px`);
+    track.style.setProperty('--marker-scale', String(rect.width / 100));
+    if (instant) {
+      void getComputedStyle(track, '::after').transform;
+      track.classList.remove('is-placing');
+    }
+    track.style.setProperty('--marker-opacity', '1');
+    markerShown = true;
+  };
   if (progress || subnavLinks.length) {
     let pending = false;
+    let remeasure = true;
     const update = () => {
       pending = false;
       if (progress) {
         const total = document.documentElement.scrollHeight - window.innerHeight;
-        progress.style.width = `${total > 0 ? Math.min(100, Math.max(0, (window.scrollY / total) * 100)) : 0}%`;
+        progress.style.transform = `scaleX(${total > 0 ? Math.min(1, Math.max(0, window.scrollY / total)) : 0})`;
       }
       if (subnavLinks.length) {
         const threshold = Math.round(window.innerHeight * 0.3);
@@ -89,12 +129,62 @@
           if (item === active) item.link.setAttribute('aria-current', 'location');
           else item.link.removeAttribute('aria-current');
         });
+        placeMarker(active ? active.link : null, remeasure);
       }
+      remeasure = false;
     };
     const schedule = () => { if (!pending) { pending = true; requestAnimationFrame(update); } };
+    const relayout = () => { remeasure = true; schedule(); };
     window.addEventListener('scroll', schedule, { passive: true });
-    window.addEventListener('resize', schedule, { passive: true });
+    window.addEventListener('resize', relayout, { passive: true });
+    if (track && document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
     update();
+  }
+
+  /* Arrows on buttons and the page pager lean the way they point (site.css 11). */
+  const arrowDirections = { '→': 'right', '←': 'left', '↓': 'down', '↑': 'up' };
+  for (const arrow of document.querySelectorAll('.button > span[aria-hidden="true"], .page-footer-nav span[aria-hidden="true"]')) {
+    const direction = arrowDirections[arrow.textContent.trim()];
+    if (direction) arrow.dataset.arrow = direction;
+  }
+
+  /* Once-only reveals on narrative pages (<main data-motion="reveal">) -------- */
+  // Armed by the first scroll, so blocks already on screen never blink and a
+  // page that is printed or captured without scrolling is never hidden.
+  const revealScope = document.querySelector('main[data-motion~="reveal"]');
+  const revealable = [
+    '.section-heading > *', '.card-grid > *', '.home-replays > *', '.participate-now > h3', '.participate-steps > *',
+    '.team-grid > *', '.research-groups > *', '.research-group-grid > *', '.contact-grid > *', '.plan-stages > *', '.take-part > *',
+    '.track', '.anchor-schools', '.participate-panel', '.home-status', '.home-resources', '.home-citations', '.home-source',
+  ].join(', ');
+  if (revealScope && 'IntersectionObserver' in window && window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+    const observer = new IntersectionObserver(entries => {
+      let order = 0;
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const block = entry.target;
+        observer.unobserve(block);
+        // Blocks arriving together cascade 60ms apart, capped so none waits long.
+        block.style.setProperty('--reveal-delay', `${Math.min(order++, 4) * 60}ms`);
+        block.dataset.reveal = 'in';
+        block.addEventListener('transitionend', function settled(event) {
+          if (event.target !== block || event.propertyName !== 'transform') return;
+          block.removeEventListener('transitionend', settled);
+          block.removeAttribute('data-reveal');
+          block.style.removeProperty('--reveal-delay');
+        });
+      }
+    }, { rootMargin: '0px 0px -48px 0px' });
+    const arm = () => {
+      window.removeEventListener('scroll', arm);
+      const fold = window.innerHeight;
+      for (const block of revealScope.querySelectorAll(revealable)) {
+        if (block.parentElement.closest(revealable) || block.getBoundingClientRect().top <= fold) continue;
+        block.dataset.reveal = '';
+        observer.observe(block);
+      }
+    };
+    window.addEventListener('scroll', arm, { passive: true });
   }
 
   /* Generic accessible tabs ---------------------------------------------------- */
