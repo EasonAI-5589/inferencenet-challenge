@@ -40,7 +40,7 @@ test('every page carries the Challenge identity: navigation, wordmark label and 
   }
 });
 
-test('Teams: leadership is alphabetical by surname without lead roles; separate team and student leaders', async () => {
+test('Teams: leadership is alphabetical by surname without lead roles; separate team, student leaders and contributors', async () => {
   const html = await read('teams.html');
   assert.deepEqual(cardNames(section(html, 'team')), ['Lin William Cong', 'Ye Luo', 'Liwen Zhang']);
   assert.doesNotMatch(section(html, 'team'), /Yang Liu|Dacheng Tao/);
@@ -49,7 +49,11 @@ test('Teams: leadership is alphabetical by surname without lead roles; separate 
   assert.deepEqual(cardNames(section(html, 'team-members')), ['Yang Liu', 'Dacheng Tao']);
   const students = section(html, 'student-leaders');
   assert.deepEqual(cardNames(students), ['Yichen Guo', 'Yujie Cai']);
-  assert.match(students, /class="student-also"[^>]*>[\s\S]*Tianyang Han/);
+  // Contributors follow the student leaders in one labelled row, alphabetical by surname.
+  const contributors = students.match(/<ul class="contributor-list"[^>]*>([\s\S]*?)<\/ul>/)?.[1] ?? '';
+  assert.deepEqual([...contributors.matchAll(/<li>([\s\S]*?)<\/li>/g)].map(([, item]) => item.replace(/<[^>]+>|↗/g, '').trim()),
+    ['Tianyang Han', 'Binling Jiang', 'Hao Jiang', 'Renyuan Li', 'Jiajie Xu', 'Wei Zhang']);
+  assert.match(students, /id="contributors-label">Contributors<\/span>/);
   const order = ['team', 'student-leaders', 'team-members', 'institutions', 'partners', 'contact'].map(id => html.indexOf(`id="${id}"`));
   assert.ok(order.every((position, index) => position > 0 && (index === 0 || position > order[index - 1])), `section order ${order}`);
   // Anchors from earlier links (site.js redirects old Home anchors here) must keep working.

@@ -36,11 +36,13 @@
   .contact-details div{grid-template-columns:1fr;gap:2px}
 }
 
-/* Initiative layout: three leaders, student leaders, team, GIFTS feature and partner teams. */
+/* Initiative layout: three leaders, student leaders and contributors, team, GIFTS feature and partner teams. */
 .team-grid-leaders{grid-template-columns:repeat(3,minmax(0,1fr))}
 .team-grid-compact .team-member{padding:24px 28px}
-.student-also{display:flex;align-items:center;gap:14px;margin:22px 0 0}
-.student-also .text-link{margin-top:0;font-size:15px}
+/* Contributors: one labelled row under the student leaders, alphabetical by surname. */
+.contributors{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin:22px 0 0}
+.contributor-list{display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px;margin:0;padding:0;list-style:none;font-size:15px;line-height:1.6;color:var(--ink)}
+.contributor-list .text-link{margin-top:0;font-size:15px}
 .research-group h3{font-size:21px;line-height:1.3;letter-spacing:-.025em;margin:13px 0 0;font-weight:600}
 .group-project h4{font-size:12px;line-height:1.6;font-weight:600;margin:0 0 8px}
 .research-group>.pill{align-self:flex-start;margin-bottom:14px}

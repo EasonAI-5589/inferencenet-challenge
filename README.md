@@ -68,7 +68,7 @@ of future updates unless explicitly requested again.
 | Harness: definition, system structure, selected 2025–2026 milestones, common mechanism comparison, catalogue by role, three breakdowns and InferenceNet’s four configurations | `harness.html`, `harness.css`; reuses `data.css`, `agent.css`, `evolution.css` |
 | Self-evolving: capability questions, model training and co-evolution directions, concept, research map by adaptation regime, method comparison, three detailed offline cases and InferenceNet’s development study | `evolution.html`, `evolution.css`, `evolution.js`, `assets/data/modular-rsi-evolution.json` |
 | Leaderboard: the Dev100 / v10 development release | `leaderboard.html`, `leaderboard.css` |
-| Leadership, student leaders, team, NTU GIFTS, partner teams and Yichen Guo contact | `teams.html`, `teams.css` |
+| Leadership, student leaders and contributors, team, NTU GIFTS, partner teams and Yichen Guo contact | `teams.html`, `teams.css` |
 | Shared layout, navigation and theme | `styles.css`, `site.css`, `site.js`, `theme.js` |
 | Chinese translations and language control | `assets/i18n/*.zh.json`, `language.js`, `language.css` |
 | Charts and mountain leaderboard | `charts.js`, `mountain.js`, `mountain.css` |
@@ -140,9 +140,10 @@ These four observations are a pilot, not official Challenge rankings or a
 general performance estimate. Task release, final rules and submissions remain
 to be announced; only reviewed summaries belong in the public website.
 
-Faculty profiles, student leaders and institutional profiles live on `teams.html`, in
+Faculty profiles, student leaders, contributors and institutional profiles live on `teams.html`, in
 this order: Leadership (Lin William Cong, Ye Luo, Liwen Zhang, alphabetically by surname), Student leaders
-(Yichen Guo and Yujie Cai, with Tianyang Han listed alongside), Team (Yang Liu and
+(Yichen Guo and Yujie Cai, followed by one Contributors row: Tianyang Han, Binling Jiang, Hao Jiang,
+Renyuan Li, Jiajie Xu and Wei Zhang, alphabetically by surname), Team (Yang Liu and
 Dacheng Tao), Research institution (NTU GIFTS, which hosts the Initiative),
 Collaborating partners (HKU AI-Agents Lab and Liwen Zhang’s team) and Contact.
 The faculty cards carry institution labels without assigning Initiative Lead or
@@ -381,7 +382,17 @@ calls instead of 6 and 4). The values table on the page remains readable without
 
 - [Yichen Guo](https://easonai-5589.github.io/) — Student Leader.
 - [Yujie Cai (@caiyujie)](https://github.com/caiyujie) — Student Leader.
-- [Tianyang Han](https://www.hkubs.hku.hk/people/tianyang-han/) — Student Leader (listed alongside).
+
+## Contributors
+
+Listed alphabetically by surname.
+
+- [Tianyang Han](https://www.hkubs.hku.hk/people/tianyang-han/)
+- Binling Jiang
+- Hao Jiang
+- Renyuan Li
+- Jiajie Xu
+- Wei Zhang
 
 See the [team page](https://easonai-5589.github.io/inferencenet-challenge/teams.html)
 for the full project roster.
