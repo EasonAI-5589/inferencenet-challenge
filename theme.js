@@ -20,11 +20,19 @@
 
   // A Chinese page is not shown until language.js has translated it, so it never
   // flashes in English first; during a page transition the incoming page fades in
-  // already translated. The timer only guards against a failed translation.
+  // already translated. The hold lasts at most 600ms from the page's first frame.
+  // A page that took over 1.5s to reach that frame is on a slow connection, where
+  // the dictionary will be slow too: it is shown at once rather than blank, and the
+  // translation crossfades in when it arrives (language.js).
   try {
     if (window.localStorage.getItem("inferencenet-language") === "zh") {
       root.classList.add("lang-pending");
-      window.setTimeout(() => root.classList.remove("lang-pending"), 1500);
+      const reveal = () => root.classList.remove("lang-pending");
+      // Runs before the first frame is painted, so a slow page is never painted blank.
+      window.requestAnimationFrame(() => {
+        if (performance.now() > 1500) reveal();
+        else window.setTimeout(reveal, 600);
+      });
     }
   } catch { /* Without storage the page stays in English. */ }
 

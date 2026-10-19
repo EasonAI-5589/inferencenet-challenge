@@ -23,6 +23,8 @@ const DEV100_TAG = '20261018-home-challenges';
 const LANGUAGE_TAG = '20261018-challenge-videos';
 // Shared assets released with the site motion (styles, site, language, index, teams and leaderboard CSS).
 const RELEASE_TAG = '20261019-motion';
+// language.js carries its own tag: it also versions the Chinese dictionaries.
+const LANGUAGE_RELEASE_TAG = '20261020-zh-hold';
 const devBlock = html => html.slice(html.indexOf('<!-- dev100-ranking:start -->'), html.indexOf('<!-- dev100-ranking:end -->'));
 const pattern = text => text.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&');
 
@@ -278,7 +280,7 @@ test('the development module loads only on leaderboard.html, with the release ta
   }
   for (const page of PAGES) {
     const html = await read(page);
-    const languageTag = RELEASE_TAG;
+    const languageTag = LANGUAGE_RELEASE_TAG;
     assert.match(html, new RegExp(`"language\\.js\\?v=${languageTag}"`), `${page}: language.js`);
   }
   assert.match(await read('index.html'), new RegExp(`"index\\.css\\?v=${RELEASE_TAG}"`));

@@ -527,8 +527,9 @@ html:active-view-transition-type(page)::view-transition-old(root){animation:page
 html:active-view-transition-type(page)::view-transition-new(root){animation:page-arrive 240ms var(--ease-out) 70ms both}
 @keyframes page-leave{to{opacity:0}}
 @keyframes page-arrive{from{opacity:0;transform:translateY(6px)}}
-/* A Chinese page stays unpainted until language.js has translated it (theme.js), so
- * the incoming page never shows English first. */
+/* A Chinese page stays unpainted until language.js has translated it, for at most
+ * 600ms from its first frame and not at all on a slow connection (theme.js), so the
+ * incoming page never shows English first. */
 html.lang-pending body{visibility:hidden}
 
 /* Narrative pages opt in with <main data-motion="reveal">. Blocks that start below

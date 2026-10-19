@@ -166,8 +166,11 @@
     try {
       if (next === 'zh') await loadDictionary();
       language = next;
-      // A visitor's own switch crossfades the page instead of swapping every word at once.
-      if (animate && document.startViewTransition) await document.startViewTransition(apply).updateCallbackDone;
+      // A visitor's own switch, or a translation that arrives after the page is already
+      // showing (a slow network outlasted theme.js's hold), crossfades the page instead
+      // of swapping every word at once.
+      const late = !animate && next === 'zh' && !document.documentElement.classList.contains('lang-pending');
+      if ((animate || late) && document.startViewTransition) await document.startViewTransition(apply).updateCallbackDone;
       else apply();
       try { localStorage.setItem(storageKey, language); } catch {}
       status.textContent = language === 'zh' ? '已切换到中文' : 'Switched to English';
