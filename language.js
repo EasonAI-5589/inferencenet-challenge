@@ -148,13 +148,15 @@
     return dictionaryPromise;
   }
 
-  async function setLanguage(next) {
+  async function setLanguage(next, { animate = false } = {}) {
     controls.setAttribute('aria-busy', 'true');
     controls.querySelectorAll('button').forEach(button => { button.disabled = true; });
     try {
       if (next === 'zh') await loadDictionary();
       language = next;
-      apply();
+      // A visitor's own switch crossfades the page instead of swapping every word at once.
+      if (animate && document.startViewTransition) await document.startViewTransition(apply).updateCallbackDone;
+      else apply();
       try { localStorage.setItem(storageKey, language); } catch {}
       status.textContent = language === 'zh' ? '已切换到中文' : 'Switched to English';
     } catch {
@@ -209,7 +211,7 @@
       button.textContent = label;
       button.setAttribute('aria-label', accessible);
       button.setAttribute('aria-pressed', String(value === language));
-      button.addEventListener('click', () => { void setLanguage(value); });
+      button.addEventListener('click', () => { void setLanguage(value, { animate: value !== language }); });
       controls.append(button);
     }
     status = document.createElement('span');

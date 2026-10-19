@@ -30,8 +30,10 @@
     });
     buttons.forEach((button) => button.addEventListener("click", () => {
       theme = theme === "dark" ? "light" : "dark";
-      apply();
-      syncButtons();
+      const commit = () => { apply(); syncButtons(); };
+      // Crossfade the page so the brightness change is eased rather than a flash.
+      if (document.startViewTransition) document.startViewTransition(commit);
+      else commit();
       try { window.localStorage.setItem(storageKey, theme); }
       catch { /* The control remains usable when persistence is unavailable. */ }
     }));
