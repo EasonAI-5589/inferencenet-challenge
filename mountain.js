@@ -155,6 +155,8 @@ export function mountain(el, data, options = {}) {
   let d = normalise(data);
   let canvas = el.querySelector(":scope > .mountain-canvas") || h("div", { class: "mountain-canvas" }, el);
   let lastWidth = -1, raf = 0, ro = null;
+  /* What the last render drew, for glide() below; markers are keyed by entry label. */
+  let drawn = { markers: new Map(), list: null, late: [] };
   el.classList.add("mountain");
 
   function render() {
@@ -377,6 +379,7 @@ export function mountain(el, data, options = {}) {
     /* Markers. Drawn last so they sit above route, trails and snow. */
     const markers = s("g", { class: "mtn-markers" }, svg);
     const markerOf = new Map();
+    const markerByLabel = new Map();
     placed.forEach((m) => {
       const it = m.item;
       const cls = ["mtn-marker"];
@@ -394,6 +397,7 @@ export function mountain(el, data, options = {}) {
         s("text", { class: "mtn-marker-val", "text-anchor": "middle", y: -(m.r + 8) }, g, fmt(it.value, d.unit));
         s("desc", { id: `${id}-d${it.rank}` }, g, `${fmt(it.value, d.unit)} ${d.metric || ""}; rank ${it.rank} of ${n}${it.group ? `; ${it.group}` : ""}${it.kind === "internal" ? "; internal study" : ""}.`);
         markerOf.set(it.rank, g);
+        markerByLabel.set(it.label, { g, x: m.x, y: m.y });
       } else {
         s("title", {}, g, `${it.label}: ${fmt(it.value, d.unit)}`);
       }
@@ -407,6 +411,7 @@ export function mountain(el, data, options = {}) {
       li.addEventListener("mouseleave", () => set(false));
       if (g) { g.addEventListener("mouseenter", () => set(true)); g.addEventListener("mouseleave", () => set(false)); }
     });
+    drawn = { markers: markerByLabel, list: pills, late: [connectors, trails] };
 
     /* Caption + legend. */
     const caption = h("div", { class: "mountain-caption" }, canvas);
@@ -455,12 +460,50 @@ export function mountain(el, data, options = {}) {
     raf = requestAnimationFrame(() => { if (canvas.clientWidth !== lastWidth) render(); });
   }
 
+  /* Re-ranking (a new metric or harness): each climber glides to its new altitude so
+   * one entry can be followed through the change. The ranked pills swap columns with
+   * rank parity, so they refresh in place (a short blur into focus) rather than
+   * criss-crossing. Resizes redraw in place; reduced motion redraws without motion. */
+  function snapshot() {
+    if (lastWidth <= 0 || !drawn.markers.size || typeof el.animate !== "function") return null;
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return null;
+    const markers = new Map();
+    drawn.markers.forEach(({ g, x, y }, label) => {
+      /* A climber caught mid-glide continues from where it is, not from where it was going. */
+      const now = g.getAnimations().length ? getComputedStyle(g).transform : "none";
+      const m = now !== "none" ? new DOMMatrixReadOnly(now) : null;
+      markers.set(label, m ? { x: m.e, y: m.f } : { x, y });
+    });
+    return { width: lastWidth, markers };
+  }
+  function glide(before) {
+    if (before.width !== lastWidth) return;
+    /* The site's --ease-in-out and --ease-out curves (site.css); WAAPI cannot read CSS variables. */
+    const move = { duration: 420, easing: "cubic-bezier(0.77, 0, 0.175, 1)" };
+    const settle = "cubic-bezier(0.23, 1, 0.32, 1)";
+    const arrive = { duration: 200, delay: 300, easing: settle, fill: "backwards" };
+    let changed = drawn.markers.size !== before.markers.size;
+    drawn.markers.forEach(({ g, x, y }, label) => {
+      const from = before.markers.get(label);
+      if (!from) { changed = true; g.animate({ opacity: [0, 1] }, arrive); return; }
+      if (Math.abs(from.x - x) < 0.5 && Math.abs(from.y - y) < 0.5) return;
+      changed = true;
+      g.animate({ transform: [`translate(${from.x}px, ${from.y}px)`, `translate(${x}px, ${y}px)`] }, move);
+    });
+    if (!changed) return;
+    if (drawn.list) drawn.list.animate({ opacity: [0.35, 1], filter: ["blur(2px)", "blur(0px)"] }, { duration: 260, easing: settle });
+    /* Connectors and trails point at the final positions: they appear as the climbers land. */
+    drawn.late.forEach((group) => group.animate({ opacity: [0, 1] }, arrive));
+  }
+
   inst = {
     el, render,
     update(next, opts) {
+      const before = snapshot();
       if (next) d = normalise(next);
       if (opts) Object.assign(o, opts);
       lastWidth = -1; render();
+      if (before) glide(before);
     },
     destroy() {
       ro && ro.disconnect(); cancelAnimationFrame(raf);

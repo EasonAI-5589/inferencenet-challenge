@@ -197,3 +197,10 @@ html[data-theme="dark"] .mountain-card[data-series="4"]{--series:#d8ab6c}
  .dev-report{padding:18px 16px}
  .dev-report-evidence div{grid-template-columns:minmax(0,1fr);gap:2px}
 }
+/* Motion (site.css section 11): an opened run card settles in, and the jump links and
+ * run buttons give under the pointer. The tables and scores themselves stay still. */
+.run-card:not([hidden]){transition:opacity 250ms var(--ease-out),transform 250ms var(--ease-out)}
+@starting-style{.run-card:not([hidden]){opacity:0;transform:translateY(6px)}}
+.board-nav a{transition:background-color 180ms ease,border-color 180ms ease,transform 160ms var(--ease-out)}
+.run-toggle,.dev-matrix .dev-cell,.run-card-close{transition:border-color 150ms ease,text-decoration-color 150ms ease,transform 160ms var(--ease-out)}
+.board-nav a:active,.run-toggle:active,.dev-matrix .dev-cell:active,.run-card-close:active{transform:scale(.97)}
