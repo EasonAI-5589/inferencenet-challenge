@@ -40,14 +40,14 @@ test('every page carries the Challenge identity: navigation, wordmark label and 
   }
 });
 
-test('Teams: About GIFTS first, then leadership alphabetical by surname without lead roles, student leaders and contributors', async () => {
+test('Teams: About NTU GIFTS first, then leadership alphabetical by surname without lead roles, student leaders and contributors', async () => {
   const html = await read('teams.html');
   assert.deepEqual(cardNames(section(html, 'team')), ['Lin William Cong', 'Ye Luo', 'Liwen Zhang']);
   assert.match(section(html, 'team'), /Listed alphabetically by surname\./);
   assert.doesNotMatch(html, /Faculty\s+(?:Co-)?Lead\b|Faculty co-leads|Formal roles at NTU GIFTS/i);
   // The separate Initiative team section is retired.
   assert.doesNotMatch(html, /id="team-members"|Initiative team|Yang Liu|Dacheng Tao/);
-  assert.match(section(html, 'institutions'), /<p class="kicker">01 \/ About GIFTS<\/p>/);
+  assert.match(section(html, 'institutions'), /<p class="kicker">01 \/ About NTU GIFTS<\/p>/);
   const students = section(html, 'student-leaders');
   assert.deepEqual(cardNames(students), ['Yichen Guo', 'Yujie Cai']);
   // Contributors follow the student leaders in one labelled row, alphabetical by surname.
@@ -63,7 +63,7 @@ test('Teams: About GIFTS first, then leadership alphabetical by surname without 
   }
 });
 
-test('Teams: About GIFTS introduces the host institute; HKU and SUFE are collaborating partners', async () => {
+test('Teams: About NTU GIFTS introduces the host institute; HKU and SUFE are collaborating partners', async () => {
   const html = await read('teams.html');
   const institutions = section(html, 'institutions');
   assert.match(institutions, /Global Institute of Finance, Technology, and Society/);
