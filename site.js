@@ -170,7 +170,7 @@
   const revealScope = document.querySelector('main[data-motion~="reveal"]');
   const revealable = [
     '.section-heading > *', '.card-grid > *', '.home-replays > *', '.participate-now > h3', '.participate-steps > *',
-    '.team-grid > *', '.research-groups > *', '.research-group-grid > *', '.contact-grid > *', '.plan-stages > *', '.take-part > *',
+    '.team-grid > *', '.contributors', '.research-groups > *', '.research-group-grid > *', '.contact-grid > *', '.plan-stages > *', '.take-part > *',
     '.track', '.anchor-schools', '.participate-panel', '.home-status', '.home-resources', '.home-citations', '.home-source',
   ].join(', ');
   if (revealScope && 'IntersectionObserver' in window && window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
