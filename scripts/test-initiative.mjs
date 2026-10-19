@@ -40,13 +40,14 @@ test('every page carries the Challenge identity: navigation, wordmark label and 
   }
 });
 
-test('Teams: leadership is alphabetical by surname without lead roles; separate team, student leaders and contributors', async () => {
+test('Teams: About GIFTS first, then leadership alphabetical by surname without lead roles, student leaders and contributors', async () => {
   const html = await read('teams.html');
   assert.deepEqual(cardNames(section(html, 'team')), ['Lin William Cong', 'Ye Luo', 'Liwen Zhang']);
-  assert.doesNotMatch(section(html, 'team'), /Yang Liu|Dacheng Tao/);
   assert.match(section(html, 'team'), /Listed alphabetically by surname\./);
   assert.doesNotMatch(html, /Faculty\s+(?:Co-)?Lead\b|Faculty co-leads|Formal roles at NTU GIFTS/i);
-  assert.deepEqual(cardNames(section(html, 'team-members')), ['Yang Liu', 'Dacheng Tao']);
+  // The separate Initiative team section is retired.
+  assert.doesNotMatch(html, /id="team-members"|Initiative team|Yang Liu|Dacheng Tao/);
+  assert.match(section(html, 'institutions'), /<p class="kicker">01 \/ About GIFTS<\/p>/);
   const students = section(html, 'student-leaders');
   assert.deepEqual(cardNames(students), ['Yichen Guo', 'Yujie Cai']);
   // Contributors follow the student leaders in one labelled row, alphabetical by surname.
@@ -54,7 +55,7 @@ test('Teams: leadership is alphabetical by surname without lead roles; separate 
   assert.deepEqual([...contributors.matchAll(/<li>([\s\S]*?)<\/li>/g)].map(([, item]) => item.replace(/<[^>]+>|↗/g, '').trim()),
     ['Tianyang Han', 'Binling Jiang', 'Hao Jiang', 'Renyuan Li', 'Jiajie Xu', 'Wei Zhang']);
   assert.match(students, /id="contributors-label">Contributors<\/span>/);
-  const order = ['team', 'student-leaders', 'team-members', 'institutions', 'partners', 'contact'].map(id => html.indexOf(`id="${id}"`));
+  const order = ['institutions', 'team', 'student-leaders', 'partners', 'contact'].map(id => html.indexOf(`id="${id}"`));
   assert.ok(order.every((position, index) => position > 0 && (index === 0 || position > order[index - 1])), `section order ${order}`);
   // Anchors from earlier links (site.js redirects old Home anchors here) must keep working.
   for (const id of ['team', 'labs', 'ntu-gifts', 'hku-ai-agents-lab', 'sufe-aiflm-lab', 'institutions', 'student-leaders', 'yujie-cai', 'contact']) {
@@ -62,7 +63,7 @@ test('Teams: leadership is alphabetical by surname without lead roles; separate 
   }
 });
 
-test('Teams: GIFTS is the research institution; HKU and SUFE are collaborating partners', async () => {
+test('Teams: About GIFTS introduces the host institute; HKU and SUFE are collaborating partners', async () => {
   const html = await read('teams.html');
   const institutions = section(html, 'institutions');
   assert.match(institutions, /Global Institute of Finance, Technology, and Society/);
