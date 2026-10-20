@@ -1,0 +1,125 @@
+{
+  "fonts": {
+    "CJK400": {
+      "family": "Microsoft YaHei",
+      "probe": "中文财务月末结账模型执行检验报告底稿",
+      "probe_glyphs_present": true,
+      "source": "system-fonts/msyh.ttc",
+      "font_file_sha256": "d79c55e68b1131eea0cc1c47be4f572d964f28c682e143db2ad09c1e4cb07a3f",
+      "source_base": "Operating-system font directory; font not redistributed"
+    },
+    "CJK500": {
+      "family": "Microsoft YaHei",
+      "probe": "中文财务月末结账模型执行检验报告底稿",
+      "probe_glyphs_present": true,
+      "source": "system-fonts/msyh.ttc",
+      "font_file_sha256": "d79c55e68b1131eea0cc1c47be4f572d964f28c682e143db2ad09c1e4cb07a3f",
+      "source_base": "Operating-system font directory; font not redistributed"
+    },
+    "CJK600": {
+      "family": "Microsoft YaHei",
+      "probe": "中文财务月末结账模型执行检验报告底稿",
+      "probe_glyphs_present": true,
+      "source": "system-fonts/msyhbd.ttc",
+      "font_file_sha256": "4508821b3dffe01f0ef5e5326a3e60df705a44633858811f67b6982dce3f6ee6",
+      "source_base": "Operating-system font directory; font not redistributed"
+    },
+    "Inter400": {
+      "family": "Inter",
+      "probe": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+      "probe_glyphs_present": true,
+      "source": "fonts/Inter-400.ttf",
+      "font_file_sha256": "9abf4292c69d1f60fc2fb6807cd92afb38853803d41cc2516be246247d41a73c",
+      "source_base": "editable source root"
+    },
+    "Inter500": {
+      "family": "Inter",
+      "probe": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+      "probe_glyphs_present": true,
+      "source": "fonts/Inter-500.ttf",
+      "font_file_sha256": "42916d78f3ae175bb898f09994b634d44b5aa1ac937eb00d3b03ef5f13d8944e",
+      "source_base": "editable source root"
+    },
+    "Inter600": {
+      "family": "Inter",
+      "probe": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+      "probe_glyphs_present": true,
+      "source": "fonts/Inter-600.ttf",
+      "font_file_sha256": "1e95adeaee63d7db5fccedd63b072d5a1d302ad0dc3f6d609dbd124ba59fa9f4",
+      "source_base": "editable source root"
+    },
+    "Inter700": {
+      "family": "Inter",
+      "probe": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+      "probe_glyphs_present": true,
+      "source": "fonts/Inter-700.ttf",
+      "font_file_sha256": "81dcb42933ee0d63a50400fa32e18f27fab193d5366595b9abae04b002915542",
+      "source_base": "editable source root"
+    },
+    "Inter800": {
+      "family": "Inter",
+      "probe": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+      "probe_glyphs_present": true,
+      "source": "fonts/Inter-800.ttf",
+      "font_file_sha256": "6c27b908a08d3954a0eff8172b1e11c5e937678a32d781d8e4c87e6d0a3c746a",
+      "source_base": "editable source root"
+    },
+    "Misc": {
+      "family": "Segoe UI",
+      "probe": "�",
+      "probe_glyphs_present": true,
+      "source": "system-fonts/segoeui.ttf",
+      "font_file_sha256": "704eada12961a27fd271f7d3b09e2066520e758390c1776744eff430fee30f6e",
+      "source_base": "Operating-system font directory; font not redistributed"
+    },
+    "Mono400": {
+      "family": "Consolas",
+      "probe": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+      "probe_glyphs_present": true,
+      "source": "system-fonts/consola.ttf",
+      "font_file_sha256": "cf00b507b3286870cc5064ebd0633c303f70b491a4af25eec2d32df413db0179",
+      "source_base": "Operating-system font directory; font not redistributed"
+    },
+    "Mono500": {
+      "family": "Consolas",
+      "probe": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+      "probe_glyphs_present": true,
+      "source": "system-fonts/consola.ttf",
+      "font_file_sha256": "cf00b507b3286870cc5064ebd0633c303f70b491a4af25eec2d32df413db0179",
+      "source_base": "Operating-system font directory; font not redistributed"
+    },
+    "Mono600": {
+      "family": "Consolas",
+      "probe": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+      "probe_glyphs_present": true,
+      "source": "system-fonts/consolab.ttf",
+      "font_file_sha256": "7e8de70c92a891722bd3fbd623db005caab2bfe267e5dab5be46b95a44e0c7f1",
+      "source_base": "Operating-system font directory; font not redistributed"
+    },
+    "Mono700": {
+      "family": "Consolas",
+      "probe": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+      "probe_glyphs_present": true,
+      "source": "system-fonts/consolab.ttf",
+      "font_file_sha256": "7e8de70c92a891722bd3fbd623db005caab2bfe267e5dab5be46b95a44e0c7f1",
+      "source_base": "Operating-system font directory; font not redistributed"
+    },
+    "Serif": {
+      "family": "Georgia",
+      "probe": "N",
+      "probe_glyphs_present": true,
+      "source": "system-fonts/georgia.ttf",
+      "font_file_sha256": "38dffcaf1fac89492f7c56c600a14daf36ae42f7c21985cd4134ae113124a58f",
+      "source_base": "Operating-system font directory; font not redistributed"
+    },
+    "Sym": {
+      "family": "Segoe UI Symbol",
+      "probe": "→←↑↓✓×−",
+      "probe_glyphs_present": true,
+      "source": "system-fonts/seguisym.ttf",
+      "font_file_sha256": "a4a35dcc62cd30e1a6c97b695ecef83e59d2b149e3af834f6a49f11851d56b37",
+      "source_base": "Operating-system font directory; font not redistributed"
+    }
+  },
+  "platform": "win32"
+}

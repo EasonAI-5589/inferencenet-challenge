@@ -1,8 +1,8 @@
 {
-  "version": "sufe-claude-relay-v2",
+  "version": "finance-guide-aligned-v2",
   "task_id": "FIN-T1-003",
   "run": "fin",
-  "status": "approved for publication",
+  "status": "approved for publication on 2026-10-20",
   "model": "qwen3.7-max",
   "harness": "Claude Code 2.1.114",
   "runner": "Harbor 0.20.0",
@@ -28,8 +28,6 @@
       "pix_fmt": "yuv420p",
       "color_range": "tv",
       "color_space": "bt709",
-      "color_transfer": "bt709",
-      "color_primaries": "bt709",
       "r_frame_rate": "30/1",
       "nb_frames": "8846"
     },
@@ -51,6 +49,165 @@
     "zh"
   ],
   "renderer": "offline Skia (skia-python) frame renderer; no browser, no CDP; H.264 High via libx264",
+  "runtime": {
+    "python": "3.12.7",
+    "platform": "Windows",
+    "packages": {
+      "skia-python": "144.0.post2",
+      "numpy": "2.3.5",
+      "pybind11": "3.1.0",
+      "fonttools": "4.51.0",
+      "Brotli": "1.0.9",
+      "Pillow": "12.0.0"
+    },
+    "ffmpeg": "ffmpeg version N-119917-g8087777e66-20250617 Copyright (c) 2000-2025 the FFmpeg developers",
+    "ffprobe": "ffprobe version N-119917-g8087777e66-20250617 Copyright (c) 2007-2025 the FFmpeg developers",
+    "phase": "packaging runtime"
+  },
+  "guide_alignment": {
+    "reference_edition": "task0001 v3.2",
+    "reference_file": "replay-deepagents-v3-2/site/original-guide.js",
+    "reference_sha256": "9246340ec582e46bdc2339a8824deba064ec2fa30dbb3be9c6839ee815b95e68",
+    "implementation": "engine/reference_pet.py",
+    "implementation_sha256": "d17cca8578c259620666433559b50fecebe1a0f3fd55558659e109d6adad307f",
+    "svg_path_elements": [
+      {
+        "name": "tail",
+        "path": "M4 13H1v-2h-2V9h2v2h3Z",
+        "color": "#c98a6c"
+      },
+      {
+        "name": "foot_0_0",
+        "path": "M5 15h4v6H5Z",
+        "color": "#805143"
+      },
+      {
+        "name": "foot_0_1",
+        "path": "M6 16h2v4H6Z",
+        "color": "#db9878"
+      },
+      {
+        "name": "foot_1_0",
+        "path": "M11 15h4v6h-4Z",
+        "color": "#805143"
+      },
+      {
+        "name": "foot_1_1",
+        "path": "M12 16h2v4h-2Z",
+        "color": "#db9878"
+      },
+      {
+        "name": "foot_2_0",
+        "path": "M17 15h4v6h-4Z",
+        "color": "#805143"
+      },
+      {
+        "name": "foot_2_1",
+        "path": "M18 16h2v4h-2Z",
+        "color": "#db9878"
+      },
+      {
+        "name": "body_0",
+        "path": "M5 4h3V2h3v2h6V2h3v3h2v3h2v9H2V8h3Z",
+        "color": "#7f5142"
+      },
+      {
+        "name": "body_1",
+        "path": "M5 5h4V3h2v2h6V3h2v3h2v3h2v7H3V9h2Z",
+        "color": "#eda67d"
+      },
+      {
+        "name": "body_2",
+        "path": "M6 5h3V3h2v2h6V3h2v3h2v3H5V7h1Z",
+        "color": "#ffc69a"
+      },
+      {
+        "name": "body_3",
+        "path": "M5 9h16v6H5Z",
+        "color": "#f7b78d"
+      },
+      {
+        "name": "body_4",
+        "path": "M3 14h20v2H3Z",
+        "color": "#ca8469"
+      },
+      {
+        "name": "mouth",
+        "path": "M12 13h1v1h2v-1h1v2h-4Z",
+        "color": "#965c48"
+      },
+      {
+        "name": "cheeks",
+        "path": "M6 13h2v1H6Zm14 0h2v1h-2Z",
+        "color": "#e9997a"
+      }
+    ],
+    "svg_path_element_count": 14,
+    "moving_mouth_alternative": "M12 13h3v2h-3Z",
+    "path_count_note": "14 SVG elements; the mouth has two authored animation states.",
+    "source_svg_viewbox": [
+      0,
+      0,
+      24,
+      22
+    ],
+    "output_svg_unit_pixels": 4.0,
+    "scale_relative_to_task0001_css_pet": 1.5,
+    "reference_files_sha256": {
+      "reference/task0001-v3.2/enhancement.css": "19a0c2227b44218c5790ee3ae66b1d9f62004554edf4195ae14b1a33379e2a9c",
+      "reference/task0001-v3.2/enhancement.js": "a660659f9c2256c050b8918125578bdb51df571faea7c1144cbd9aae9932a817",
+      "reference/task0001-v3.2/index.html": "d229957a3c3b48d3369d817d33427d2845a47e4011e07dff9d103d0bf83a93d7",
+      "reference/task0001-v3.2/original-guide.js": "9246340ec582e46bdc2339a8824deba064ec2fa30dbb3be9c6839ee815b95e68",
+      "reference/task0001-v3.2/pet-overlay.css": "8128bb8336a2202c308873635a9bd1f577734789768d14689e83b1b5ff664616",
+      "reference/task0001-v3.2/timeline.json": "9dce3e3d6b10f4cfc51183ce62be61761ac49742b5adf40a9b079f4490281861"
+    },
+    "orientation_policy": "Fixed right-facing reference pet; no mirroring or turning.",
+    "entrance_exit_policy": "Entrance and exit follow the task0001 v3.2 reference animation and timing relationship.",
+    "scope": "Original pet paths, colors and unmirrored pose equations translated to Skia, plus the reference whole opening and ending presentation. Finance retains its 93-cue narration and financial facts.",
+    "bookends": {
+      "source": "reference/task0001-v3.2/index.html",
+      "source_sha256": "d229957a3c3b48d3369d817d33427d2845a47e4011e07dff9d103d0bf83a93d7",
+      "implementation": "engine/reference_bookends.py",
+      "opening": "84 seeded floating glyphs and original role icons converge; original logo back-easing and staggered title reveal.",
+      "ending": "Original spotlight, logo, rule and sequential copy reveal; the compositor keeps result and ending foregrounds mutually exclusive.",
+      "timing": "Original 5000/5200 ms presentation clocks fit the existing finance opening/ending durations; narration, captions and audio are unchanged.",
+      "copy": "Existing finance role values, task ID, English/Chinese title and ending text retained; particle words use finance evidence."
+    }
+  },
+  "source_relationship": {
+    "upstream_edition": "sufe-claude-relay-v2",
+    "upstream_source_directory": "research/sufe-video-claude-relay-20261018/",
+    "supplied_archive_sha256": "0e6576985e25ef5ab8cb512f13b4068f4a13c7680570215d1027a03651befbb7",
+    "upstream_finance_video_sha256": "d8792c91fa0cc43e107cae89e5be901bb4d19028cba243fc166327d1aa3b65be",
+    "upstream_manifest": {
+      "path": "MANIFEST.json",
+      "sha256": "2eb943a7297c57b95d8f5a7f2cdb4f06133737236a691a425730dbc2b300e1b0"
+    },
+    "preserved": "Original story, financial evidence, request metadata, voice caches, captions and original-source snapshot.",
+    "changed": "Reference-matched entrance/exit, fixed right-facing guide without turns, pointer/focus alignment, and bounded resumable Windows rendering.",
+    "source_snapshot_phase": "packaging",
+    "source_paths_base": "portable editable source root; source files use forward slashes"
+  },
+  "validation": {
+    "geometry_report": "docs/video/finance/guide-geometry-qa.json",
+    "font_selection": "docs/video/finance/font-selection.json",
+    "render_receipt": "docs/video/finance/render-receipt.json",
+    "render_input_fingerprint": "21d31af100e6b1deea457bff35c38b788119bd6b72a446cc252692b5dcacba65",
+    "post_render_packaging_changes": {
+      "engine/package.py": {
+        "render_time_sha256": "9f42e2e76b5dd0b44c1ae10ceb54c31444915629d0977c2a7fd2c60b527b2748",
+        "packaging_time_sha256": "7a62e786b1734b500e4c317e93bc221a4c49d9496ee5f0887f6f4a012351bdcf",
+        "reason": "Correct font-loop variable shadowing of the delivery media name; no frame or audio code changed."
+      }
+    },
+    "geometry_passed": true,
+    "frames_checked": 8846,
+    "cue_boundaries_checked": 93,
+    "video_checks": "Full render frame count, frame rate and dimensions verified with ffprobe before packaging.",
+    "review_scope": "Automated geometry and asset checks; these records do not claim full human viewing or listening.",
+    "full_audio_video_decode": "passed",
+    "encoded_frames_verified": 8846
+  },
   "chapters": [
     {
       "name": "TASK",
@@ -485,12 +642,12 @@
   ],
   "files": {
     "assets/video/finance-story-demo.mp4": {
-      "bytes": 51589067,
-      "sha256": "d8792c91fa0cc43e107cae89e5be901bb4d19028cba243fc166327d1aa3b65be"
+      "bytes": 49148540,
+      "sha256": "9555f279a5348385ae7e30117d653a8b77eb394bc3f6f9da3964256ee5183d82"
     },
     "assets/video/finance-story-demo-poster.jpg": {
-      "bytes": 341611,
-      "sha256": "67cc3b24a44ccb3988b0b9039c3e183d67a1ee64adcf5825f066070a564f19e2"
+      "bytes": 327255,
+      "sha256": "e0cfd58609802e79bca745638ae356e5283a768631c41b47b90ac650e4be653b"
     },
     "docs/video/finance/captions.en.srt": {
       "bytes": 5358,
@@ -503,42 +660,75 @@
     "docs/video/finance/captions.bilingual.srt": {
       "bytes": 9450,
       "sha256": "fe244158da776ab646764a6290399dbf1bcd1b6a8e3f1bb8d79a31532a80f417"
+    },
+    "docs/video/finance/guide-geometry-qa.json": {
+      "bytes": 55238,
+      "sha256": "94c626d557d938e5a14568b4f7036137ea3af207f4ad52e4c37d5c443311511b"
+    },
+    "docs/video/finance/font-selection.json": {
+      "bytes": 5448,
+      "sha256": "a082d541c7a645741dd79bcd47ef714f80991856b8e4ea8fd637d43a913704d9"
+    },
+    "docs/video/finance/render-receipt.json": {
+      "bytes": 14120,
+      "sha256": "5730f9ba5ffc0ebdd6baaf69ea2d3db7690d0e2c22f48a44669fdd268710a0d5"
+    },
+    "docs/video/finance/README.md": {
+      "bytes": 4486,
+      "sha256": "5250d1ae6d005ae131031bc9b7d5aeac8512a008cc0777e3ea8ce7dba7658a54"
     }
   },
   "sources": {
     "run_export": {
-      "path": "FIN-T1-003 recorded pilot run export",
+      "path": "data/fin.json",
       "sha256": "d404dbf2a1b95a831f71ba580c1da7f07c3af7a75138548fc5eee8b239bd1cfd"
     },
-    "session_log": {
-      "path": "FIN-T1-003 recorded Claude Code session log",
-      "sha256": "c8cc4a4e201bd16ad59cdee341ec4a80be4a03684e9ac4ceb9136f942df8069e"
+    "request_metadata": {
+      "path": "data/fin.requests.jsonl",
+      "sha256": "d0d82c95c9b03247f7e9b467051cd4322ea12204709a3773c161f3e96b8b28b9",
+      "note": "Derived metadata only; original transcript is excluded."
     },
-    "facts_audit": "FIN-T1-003 replay fact audit"
+    "facts_audit": {
+      "path": "docs/finance-audit.md",
+      "sha256": "448b721124fd3079483ce9898dc9e6a3167edf8f4b87e83f421724042dec33c4"
+    },
+    "voice_cache_index": {
+      "path": "build/fin/voice.json",
+      "sha256": "e70cbd22f31d49343f9381d4fbe754af2c1ec594861aef3380dc0130fa2c3f04"
+    }
   },
   "editable_source": {
-    "directory": "research/sufe-video-claude-relay-20261018/",
+    "directory": ".",
     "files_sha256": {
-      "engine/compose.py": "522a41794601c223e407bad53c1ed8cff28b894dc43b151c2adac6f3b3f57623",
-      "engine/fonts.py": "04808da021f67dc1c4d1e4e1b19043498c3c8575f18c71501f2976a12a57c79b",
+      "engine/check_guide.py": "9531001e6b8fc905ade618b7f3e7b7a2dfcba1f5f2f8804e81972c903888bbcd",
+      "engine/compose.py": "36cff19b93a40369471e6e3c61b569d4172e8ef7ca40de878c99817d6523f6d2",
+      "engine/fonts.py": "79ab36c54d4362770e63b670304ae7e4118d8e96c88f1530c94ed77c32e415eb",
       "engine/gfx.py": "fb2a0dd582a9e0dc0beec8fccf7008a39804e12404d102cdad72687aaa784ed5",
-      "engine/package.py": "06fc11ac6b5bb2f9ff11ffa150167d5841763172c2abded9ef21fd7c9e2097e2",
-      "engine/panels.py": "2e3302c64adbc4d638c8320ec968b9fea81388c7964dd0c908feabda66de2e9a",
-      "engine/render.py": "a747d1c776859a6e8fada8fae99361db729f822c54dbdce7a627c7b4f5c03025",
-      "engine/rundata.py": "5ff37a83d841405a832e6cb83adbea83f5c60490a024f02b5e1fdb49c26cd04a",
-      "engine/scenes.py": "da2d0aa8677295619f5a539ac500df180bd38236714dc3520ec5894d72918235",
-      "engine/scenes_x.py": "9d5e276729050da50be3bc5b2e6be5d77892f8258dbe3c6fb1cb43ab5f14a9a0",
+      "engine/guide.py": "3be4b340d7863b3aa58d00f8d9d20ac0bbf8f05a871f56f364ae43ba317067a6",
+      "engine/guide_targets.py": "e9579e7ce9b1427bfd08177867d60693c30d5b5d17c54c536a4ec46b59165573",
+      "engine/package.py": "7a62e786b1734b500e4c317e93bc221a4c49d9496ee5f0887f6f4a012351bdcf",
+      "engine/panels.py": "b362eea2736703609560c0d5416be4895b0bd96b6b3d11a5cf453c593afdda41",
+      "engine/reference_bookends.py": "0c577b6d01c5c6802ba70cf524f4e8aa5327ea5d190b91cb405acc4d26a0cc97",
+      "engine/reference_pet.py": "d17cca8578c259620666433559b50fecebe1a0f3fd55558659e109d6adad307f",
+      "engine/render.py": "0caa52bd55c2df8ce5e6b8a9ea5e6d355bf2fb05b04200fcf9e8158441da84cb",
+      "engine/rundata.py": "1952628818e51d809072f316dc430788a2514c11ce1fc1abebd13acb9c5e5dd8",
+      "engine/scenes.py": "41a14374e5209badb88625d0c1b34aa1aece18a500b341e609e2c4cdf305c85c",
+      "engine/scenes_x.py": "3970c7826d0719a1958926ab9bcbac566114a0c1bc082577fb1f0b99fb637e82",
       "engine/sheet.py": "f48757b5f58661fa2f0087f66d6202ea5fc3ce7283ccc45d6eb43585ce9d31ae",
-      "engine/timeline.py": "5a6688d656aaf5519e1a7aaf2f6db46a17a9bea8b64f8a05c3d433e2dcce72aa",
+      "engine/timeline.py": "230b3d80ea5f95264418e1dff69dd97a39630cf0f3bacff76975ae89cae87cb3",
       "engine/ui.py": "00b887cd04f10a2a9ffb03d55a1dce3c2579b853fcecc6d3a10d8b7934f59ca6",
       "engine/voice.py": "015a1b19d04024c3ddbb5b76d0e8eb05b630d6a9e394bfe45e5b2fa06f7dbfbc",
-      "story/fin.py": "15136eac786f2681d8b7aa25e1fac7d91cba3e6afe03b3640fb5e2570d0a8fcd"
+      "story/fin.py": "15136eac786f2681d8b7aa25e1fac7d91cba3e6afe03b3640fb5e2570d0a8fcd",
+      "README-guide-aligned.md": "cf7d1768e0a37e57ca85c59ec9b7f9db459305e1c41e98e19846c56f51c055d8",
+      "requirements-render.txt": "35d63721155ff873f6ccc54bad59f89d17a2f33c5ee689dd5717955bc8ae0526"
     },
+    "requirements": "requirements-render.txt",
+    "instructions": "README-guide-aligned.md",
     "rebuild": [
-      "python engine/voice.py fin",
-      "python engine/render.py fin",
-      "python engine/package.py fin"
-    ]
+      "python -X utf8 engine/render.py fin --workers 2",
+      "python -X utf8 engine/package.py fin"
+    ],
+    "offline": "Uses the 34 supplied narration MP3 clips and voice.json; do not run voice.py for this rebuild."
   },
   "boundaries": [
     "Editorial replay of an existing recorded pilot run; no new agent run, no re-scoring.",

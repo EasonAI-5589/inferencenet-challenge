@@ -1,8 +1,8 @@
-# FIN-T1-003 narrated replay — relay edition
+# FIN-T1-003 narrated replay — task0001 guide alignment
 
 294.866 s (4 min 55 s) · 1920×1080 · 30 fps · H.264 High (BT.709) + AAC 48 kHz mono ·
 English narration `en-US-AriaNeural`, the voice of the approved PR #27 replay (requested at +12 % to match its 1.12 pace) ·
-burned English / Chinese captions. Status: approved for publication.
+burned English / Chinese captions. Status: approved for publication on 20 October 2026.
 
 Chapters: TASK 0.0–41.2 s; AGENT 41.7–191.7 s; HARNESS 192.2–219.4 s; CHECK 219.9–265.6 s; RESULT 266.1–294.4 s.
 
@@ -28,5 +28,36 @@ scores never flow back to it. The reward is one pilot run's rubric score, not ac
 `provenance.json` lists stream parameters, chapters, every shot with its narration and caption, file and source hashes.
 The SRT files are generated from the same storyboard text that was synthesised.
 
-Editable source (outside the website): `research/sufe-video-claude-relay-20261018/` — Skia renderer `engine/`,
-storyboard `story/fin.py`. Rebuild: `python engine/voice.py fin && python engine/render.py fin && python engine/package.py fin`.
+The guide now uses the task0001 v3.2 pet's original SVG paths and colors,
+hand-attached pointer, fixed right-facing global-time movement, layered local
+focus highlights and movement particles. The 93 existing narration cue times
+are preserved. Body-scene cues guide the corresponding finance cards, charts
+and panels; the opening and closing use the reference's resting poses.
+Technical notes wrap below their cards to leave clear pointing lanes;
+their words are unchanged. The entrance uses the reference's 0.45–0.90 s
+pet fade-in and short rightward movement. In the final shot the pet moves to
+the right over 3.2 s, remains visible there, and fades with the complete stage
+in the last 0.65 s. No horizontal mirroring or turning is used.
+The complete opening and closing also follow task0001 v3.2: 84 seeded
+floating symbols converge into the logo, followed by the finance title and
+participants; the closing logo, description and URL appear in sequence.
+Their presentation clocks fit the existing finance shot lengths. The financial
+copy remains intact, and decorative particles stay above the caption band.
+Story, facts, cached voice clips and all three subtitle files retain their source
+hashes. The renderer uses Inter with Windows system-font fallbacks; font
+selection and hashes are recorded in `font-selection.json`.
+
+The complete video has 8846 frames. `guide-geometry-qa.json` records the full-frame
+geometry audit and cue continuity checks. Production review also checked all 93
+settled targets and 465 transition samples for pointer/text intersections.
+Selected rendered and encoded keyframes were visually inspected.
+
+Editable source is distributed separately as
+`InferenceNet-FIN-T1-003-guide-aligned-v2-source.zip`. Its
+`README-guide-aligned.md` documents the Windows setup. Rebuild from the extracted
+source root using cached narration:
+
+```text
+python -X utf8 engine/render.py fin --workers 2 --crf 18
+python -X utf8 engine/package.py fin
+```
