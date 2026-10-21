@@ -27,6 +27,11 @@ or language controls. Challenge continues to Harness in the page sequence.
 
 ## Edit the website
 
+For the next desktop UI and storytelling redesign, see the
+[UI design handoff (2026-10-21)](docs/handoffs/2026-10-21-ui-design.md).
+It records the SimuWorld comparison, design research, proposed page structure,
+implementation boundaries and acceptance criteria; the redesign is not yet implemented.
+
 For the Build with us submission system, see the
 [submission intake handoff (2026-10-21)](docs/handoffs/2026-10-21-submission-intake.md),
 [file format](docs/submissions/SPEC.md), and [API design](docs/submissions/API-DESIGN.md).
