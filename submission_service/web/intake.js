@@ -10,6 +10,7 @@ let language = "en",
   registering = false,
   receipt = null,
   nextCursor = null,
+  sessionKnown = false,
   sessionReady = Promise.resolve();
 try {
   language =
@@ -24,6 +25,7 @@ const definitions = {
       "带来一个真实领域问题、可复现的环境，以及独立衡量结果的方法。",
     ],
     guide: ["A task worth solving", "一个值得解决的任务"],
+    spec: "benchmark.json",
     intro: [
       "Package the task, its data and the evidence needed to verify a solution.",
       "将任务、数据和验证解答所需的材料放进同一份提交包。",
@@ -46,6 +48,7 @@ const definitions = {
       "分享让模型成为智能体的系统：工具、控制流程，以及可复现的起点。",
     ],
     guide: ["A system others can build on", "一套可供他人继续构建的系统"],
+    spec: "harness.json",
     intro: [
       "Keep your source layout. Describe how to load it and what it needs to run.",
       "保留现有源码布局，并说明如何接入、运行需要什么。",
@@ -68,6 +71,7 @@ const definitions = {
       "让失败成为有用的证据。提供固定版本、原始记录，以及准确的复现方式。",
     ],
     guide: ["Evidence we can follow", "一条可以追溯的证据链"],
+    spec: "case.json",
     intro: [
       "Reference accepted benchmark and harness receipts from your account. Keep unavailable scores explicitly unavailable.",
       "引用你账号下已受理的 Benchmark 和 Harness 回执。不可用的分数应明确标为不可用。",
@@ -167,6 +171,10 @@ function translate() {
       ...definition.requirements.map((pair) => element("li", t(...pair))),
     );
     $("folder-tree").textContent = definition.tree;
+    $("folder-hint").textContent = t(
+      "Choose the folder that has " + definition.spec + " at its top level.",
+      "请选择顶层包含 " + definition.spec + " 的文件夹。",
+    );
     $("title").placeholder = t(
       "A concise, descriptive title",
       "简明、具体的成果名称",
@@ -179,6 +187,8 @@ function translate() {
 function renderAccount() {
   $("account").textContent = user ? user.username : t("Sign in", "登录");
   $("logout").hidden = !user;
+  // Wait for the session check so signed-in visitors never see the prompt flash.
+  $("account-callout").hidden = !!user || !sessionKnown;
 }
 function renderAuth() {
   $("auth-title").textContent = registering
@@ -243,6 +253,7 @@ async function refreshSession() {
   const state = await api("/session");
   user = state.user;
   csrf = state.csrf_token;
+  sessionKnown = true;
   renderAccount();
   await refreshRecords();
 }
@@ -733,6 +744,10 @@ $("logout").onclick = async () => {
   } catch (error) {
     notice(error.message, true);
   }
+};
+$("callout-sign-in").onclick = async () => {
+  await sessionReady;
+  signIn();
 };
 $("close-auth").onclick = () => $("auth-dialog").close();
 $("switch-auth").onclick = () => {

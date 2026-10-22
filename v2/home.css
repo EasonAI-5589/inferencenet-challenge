@@ -607,6 +607,15 @@ html.js:not(.rm) .v2-home .ax.reveal {
 .v2-home .rrow:hover .ra, .v2-home .rrow:focus-visible .ra { rotate: -45deg; background: var(--tc); color: #05070E; border-color: transparent; }
 .v2-home .rrow.t1 { --tc: var(--track-1); --tint: var(--track-1-soft); }
 .v2-home .rrow.t2 { --tc: var(--track-2); --tint: var(--track-2-soft); }
+/* Routes without an entry point yet: no hover motion, a visible "In development" tag */
+.v2-home .rrow.is-soon { cursor: default; }
+.v2-home .rrow.is-soon::before { display: none; }
+.v2-home .rrow.is-soon .rt { color: var(--text-secondary); }
+.v2-home .rrow.is-soon:hover .rn { color: var(--text-tertiary); }
+.v2-home .rrow.is-soon:hover .rt { translate: none; }
+.v2-home .rrow.is-soon .rd .rc { justify-self: start; opacity: 1; translate: none; padding: 3px 10px; border: 1px dashed var(--border-strong); border-radius: 999px; color: var(--text-tertiary); }
+.v2-home .rrow.is-soon .ra, .v2-home .rrow.is-soon:hover .ra { rotate: none; background: none; border-style: dashed; color: var(--text-tertiary); border-color: var(--border-strong); }
+.v2-home .rrow.is-soon .ra::before { opacity: 0; }
 /* ---- Custom cursor (pointer devices only) ---- */
 @media (prefers-reduced-motion: reduce) {
 .v2-home .beam, .v2-home .ambient i { animation: none; }
