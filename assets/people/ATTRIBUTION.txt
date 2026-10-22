@@ -20,6 +20,9 @@ yichen-guo.jpg — Yichen Guo
 Source page: https://easonai-5589.github.io/
 Original: https://easonai-5589.github.io/images/profile.png
 
+yujie-cai.jpg — Yujie Cai
+Source: supplied by the InferenceNet Challenge team for this page, 2026-10-22.
+
 tianyang-han.jpg — Tianyang Han
 Source page: https://www.hkubs.hku.hk/people/tianyang-han/
 Original: https://www.hkubs.hku.hk/wp-content/uploads/fly-images/199691/HAN-Tianyang-scaled-940x1000-ct.jpg
