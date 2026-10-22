@@ -150,3 +150,240 @@ video { border-radius: 14px; }
 @media print { body::before, body::after, .v2-backdrop { display: none; } }
 @media (prefers-reduced-motion: reduce) { .v2-aurora i { animation: none; } }
 @media (max-width: 1080px) { .page-hero { min-height: 0; } .v2-veil { background: color-mix(in oklab, var(--paper) 72%, transparent); } }
+
+/* =================================================================
+   8 · Motion and expression layer (driven by v2.js)
+   ================================================================= */
+
+/* Kinetic headings: words rise out of a mask when their block arrives. */
+.v2-content .split-vis .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .1em; margin-bottom: -.1em; }
+.v2-content .split-vis .w > span { display: inline-block; }
+.v2-content .split-vis .w.em > span { color: var(--title-dim); }
+html.js:not(.rm) .v2-content .split-vis .w > span { translate: 0 110%; transition: translate 1.05s var(--ease-emphasized); transition-delay: calc(80ms + var(--wi, 0) * 42ms); }
+html.js .v2-content .v2-in .split-vis .w > span { translate: 0 0; }
+
+/* Header entrance, page index, scroll cue and scroll-linked exit. */
+.v2-content .page-hero { --hx: 0; }
+html.js:not(.rm) .v2-content .page-hero > :not(.v2-backdrop):not(h1):not(.v2-hero-index):not(.v2-scroll-cue) {
+  animation: v2Rise 1s var(--ease-emphasized) both; animation-delay: calc(.25s + var(--hi, 0) * .09s); }
+@keyframes v2Rise { from { opacity: 0; translate: 0 22px; } }
+.v2-content .page-hero > :not(.v2-backdrop):not(.v2-hero-index):not(.v2-scroll-cue) { transform: translateY(calc(var(--hx) * -80px)); filter: opacity(calc(1 - var(--hx) * .9)); }
+.v2-content .v2-backdrop { transform: scale(calc(1 + var(--hx) * .06)); filter: opacity(calc(1 - var(--hx) * .7)); transform-origin: 70% 40%; }
+.v2-hero-index { position: absolute; right: 0; top: clamp(24px, 4vh, 40px); z-index: 1; font: 400 11.5px var(--font-mono); letter-spacing: .14em; color: var(--muted); }
+.v2-hero-index::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 10px; border-radius: 50%; background: var(--brand); box-shadow: 0 0 0 3px var(--brand-tint); vertical-align: 1px; animation: pulse 2s ease-in-out infinite; }
+.v2-scroll-cue { position: absolute; left: 0; bottom: 26px; z-index: 1; display: inline-flex; align-items: center; gap: 12px; font: 400 11px var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.v2-scroll-cue i { position: relative; width: 1px; height: 34px; background: var(--line); overflow: hidden; }
+.v2-scroll-cue i::after { content: ""; position: absolute; left: 0; top: -40%; width: 1px; height: 40%; background: var(--spectrum); animation: v2Cue 2.2s var(--ease-standard) infinite; }
+@keyframes v2Cue { to { top: 100%; } }
+.page-hero:has(.page-meta), .page-hero:has(.board-nav), .page-hero:has(.professional-hero-links) { padding-bottom: clamp(88px, 12vh, 128px); }
+
+/* Card surfaces: depth, spotlight under the pointer, a rim that follows it, slight tilt. */
+.v2-content .v2-card { position: relative; isolation: isolate; overflow: hidden; border: 1px solid var(--line); border-radius: 18px;
+  background: linear-gradient(180deg, color-mix(in oklab, var(--surface), white 2.5%), var(--surface));
+  box-shadow: var(--inner-highlight), var(--shadow-card);
+  transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); }
+html[data-theme="light"] .v2-content .v2-card { background: linear-gradient(180deg, #fff, #FBFAF6); }
+.v2-content .v2-card::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0; transition: opacity var(--duration-slow) var(--ease-standard);
+  background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), var(--brand-tint), transparent 62%); }
+.v2-content .v2-card::after { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; border-radius: inherit; padding: 1px; opacity: 0; transition: opacity var(--duration-slow) var(--ease-standard);
+  background: radial-gradient(300px circle at var(--mx, 50%) var(--my, 50%), var(--brand), transparent 65%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+.v2-content .v2-card:hover::before, .v2-content .v2-card:hover::after, .v2-content .v2-card:focus-within::after { opacity: 1; }
+.v2-content .v2-card:hover { border-color: var(--strong-line); }
+
+/* Staggered reveals; the transform channel stays free for the card tilt. */
+html.js:not(.rm) .v2-content .v2-r { opacity: 0; translate: 0 30px; filter: blur(6px);
+  transition: opacity .9s var(--ease-emphasized), translate 1s var(--ease-emphasized), filter .9s var(--ease-emphasized), transform .45s var(--ease-emphasized), border-color var(--duration-base);
+  transition-delay: calc(var(--i, 0) * 80ms), calc(var(--i, 0) * 80ms), calc(var(--i, 0) * 80ms), 0s, 0s; }
+html.js .v2-content .v2-r.v2-in { opacity: 1; translate: 0 0; filter: none; }
+
+/* Spectrum sweep along the top rule of each section as it arrives. */
+.v2-content main > section.ruled, .v2-content main > .section.ruled { position: relative; border-top-color: transparent; }
+.v2-content main > section.ruled::before { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--line); }
+.v2-content main > section.ruled::after { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--spectrum); opacity: .75;
+  transform: scaleX(0); transform-origin: left; transition: transform 1.8s var(--ease-emphasized); }
+.v2-content main > section.ruled.v2-in::after { transform: scaleX(1); }
+
+/* Section headings at the homepage's scale. */
+.v2-content .section-heading h2 { font-size: clamp(36px, 3.6vw, 54px); line-height: 1.03; letter-spacing: -0.042em; }
+html[lang="zh-CN"] .v2-content .section-heading h2 { line-height: 1.25; letter-spacing: 0; }
+.v2-content .section-heading .kicker { margin-bottom: 18px; }
+
+/* Subnav reading progress. */
+.subnav { position: sticky; }
+.v2-progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; transform-origin: left; transform: scaleX(var(--p, 0)); background: var(--spectrum); pointer-events: none; }
+
+/* Tables read as instruments: glass header, hover row, tabular figures. */
+.v2-content .table-scroll { border: 1px solid var(--line); border-radius: 16px; background: color-mix(in oklab, var(--surface) 80%, transparent); box-shadow: var(--inner-highlight); }
+.v2-content table { border-collapse: separate; border-spacing: 0; }
+.v2-content th { background: color-mix(in oklab, var(--tint) 70%, transparent); border-bottom: 1px solid var(--line); }
+.v2-content tbody tr { transition: background-color var(--duration-fast); }
+.v2-content tbody tr:hover { background: var(--brand-tint); }
+.v2-content td { font-variant-numeric: tabular-nums; border-color: var(--line); }
+
+/* Page sequence: two large destinations. */
+.v2-content .page-footer-nav { gap: 16px; }
+.v2-content .page-footer-nav a { position: relative; overflow: hidden; padding: 26px 28px; border: 1px solid var(--line); border-radius: 18px;
+  background: linear-gradient(180deg, color-mix(in oklab, var(--surface), white 2%), var(--surface)); box-shadow: var(--inner-highlight); transition: border-color var(--duration-base); }
+.v2-content .page-footer-nav a:hover { border-color: var(--strong-line); }
+.v2-content .page-footer-nav small { font: 400 11px var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.v2-content .page-footer-nav a > span { font-size: clamp(22px, 2vw, 28px); font-weight: 600; letter-spacing: -0.025em; display: inline-flex; align-items: center; gap: 10px; }
+
+/* Flow field behind long pages (shown once the header scrolls away). */
+.v2-content .field { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0; transition: opacity 1.2s var(--ease-standard); }
+html.past-hero .v2-content .field { opacity: .32; }
+html[data-theme="light"].past-hero .v2-content .field { opacity: .26; }
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-content .page-hero > *, .v2-content .v2-backdrop { transform: none; filter: none; }
+  .v2-scroll-cue i::after, .v2-hero-index::before { animation: none; }
+}
+.page-hero > .v2-hero-index, .page-hero > .v2-scroll-cue { position: absolute; }
+
+/* =================================================================
+   9 · Shared components with a v2 treatment
+   ================================================================= */
+
+/* Recorded media in a window frame. */
+.v2-media { position: relative; overflow: hidden; border-radius: 16px; background: #05080F; border: 1px solid rgb(255 255 255 / 10%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 7%), 0 30px 60px -36px rgb(0 0 0 / 70%); }
+.v2-media video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; border: 0 !important; border-radius: 0 !important; }
+.v2-media-bar { display: flex; align-items: center; gap: 12px; height: 38px; padding: 0 14px; border-bottom: 1px solid rgb(255 255 255 / 8%); background: rgb(255 255 255 / 3%);
+  font: 400 10.5px var(--font-mono); letter-spacing: .06em; color: #7D889C; }
+.v2-dots { display: flex; gap: 6px; } .v2-dots i { width: 10px; height: 10px; border-radius: 50%; background: rgb(255 255 255 / 13%); }
+.v2-media-name { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.v2-media-badge { display: inline-flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: .1em; }
+.v2-media-badge b { width: 7px; height: 7px; border-radius: 50%; background: oklch(80% 0.12 195); box-shadow: 0 0 0 3px oklch(80% 0.12 195 / 25%); animation: pulse 2s ease-in-out infinite; }
+
+/* Proposed timeline: a track with nodes; the line draws in when the list arrives. */
+.v2-content .plan-stages { position: relative; gap: 0 16px; padding-top: 34px; }
+.v2-content .plan-stages::before, .v2-content .plan-stages::after { content: ""; position: absolute; left: 12px; right: 12px; top: 11px; height: 2px; border-radius: 2px; }
+.v2-content .plan-stages::before { background: var(--line); }
+.v2-content .plan-stages::after { background: var(--spectrum); transform: scaleX(0); transform-origin: left; transition: transform 1.8s var(--ease-emphasized) .2s; }
+.v2-content .plan-stages:has(.v2-in)::after { transform: scaleX(1); }
+.v2-content .plan-stage.v2-card { padding: 22px 20px 24px; border-top: 1px solid var(--line); overflow: visible; }
+.v2-content .plan-stage .plan-meta { position: relative; }
+.v2-content .plan-stage .plan-meta::before { content: ""; position: absolute; left: 0; top: -47px; width: 14px; height: 14px; border-radius: 50%; background: var(--paper); border: 2px solid var(--strong-line); }
+.v2-content .plan-stage:first-child .plan-meta::before { border-color: var(--brand); background: var(--brand); box-shadow: 0 0 0 5px var(--brand-tint); animation: v2Beacon 2.4s var(--ease-standard) infinite; }
+@keyframes v2Beacon { 50% { box-shadow: 0 0 0 9px transparent; } }
+.v2-content .plan-number { font: 400 11.5px var(--font-mono); letter-spacing: .12em; color: var(--muted); }
+.v2-content .status.is-tbc { border-radius: 999px; padding: 3px 9px; font: 400 10.5px var(--font-mono); letter-spacing: .06em; color: var(--caution); background: color-mix(in oklab, var(--caution) 14%, transparent); border: 0; }
+.v2-content .plan-stage h3 { margin-top: 14px; font-size: 18px; letter-spacing: -0.015em; }
+
+/* Ways to take part: numbered cards. */
+.v2-content .take-part { counter-reset: take; gap: 16px; }
+.v2-content .take-part > li.v2-card { counter-increment: take; padding: 26px 26px 24px; border-top: 1px solid var(--line); }
+.v2-content .take-part > li h3 { font-size: 19px; letter-spacing: -0.02em; }
+.v2-content .take-part > li h3::before { content: counter(take, decimal-leading-zero); display: block; margin-bottom: 18px; font: 400 11.5px var(--font-mono); letter-spacing: .12em; color: var(--brand); }
+.v2-content .take-part > li:nth-child(even) h3::before { color: var(--caution); }
+
+/* =================================================================
+   10 · Challenge
+   ================================================================= */
+.v2-page-challenge #subtrack-econometric { --accent: var(--track-1); --accent-soft: var(--track-1-soft); }
+.v2-page-challenge #subtrack-professional { --accent: var(--track-2); --accent-soft: var(--track-2-soft); }
+.v2-page-challenge .track.v2-card { padding: clamp(28px, 3vw, 44px);
+  background: radial-gradient(60% 46% at 100% 0%, var(--accent-soft), transparent 72%), linear-gradient(180deg, color-mix(in oklab, var(--surface), white 2.5%), var(--surface));
+  box-shadow: inset 0 2px 0 var(--accent), var(--inner-highlight), var(--shadow-card); }
+.v2-page-challenge .track + .track { margin-top: 28px; }
+.v2-page-challenge .track-head .pill:first-child { color: var(--accent); background: var(--accent-soft); border-color: transparent; }
+.v2-page-challenge .track > h3 { margin-top: 18px; font-size: clamp(30px, 2.8vw, 42px); line-height: 1.06; letter-spacing: -0.035em; }
+.v2-page-challenge .track-summary { margin-top: 14px; font-size: 17px; color: var(--soft); max-width: 46em; }
+.v2-page-challenge .track-facts dt { font-family: var(--font-mono); font-weight: 400; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.v2-page-challenge .track .v2-card { box-shadow: none; }
+.v2-page-challenge .track-video figcaption h4 { font-size: 21px; letter-spacing: -0.02em; }
+.v2-page-challenge .demo-label .pill { color: var(--accent); background: var(--accent-soft); border-color: transparent; }
+.v2-page-challenge .replication-data { padding: 22px 24px; border-radius: 14px; border: 1px solid var(--line); background: color-mix(in oklab, var(--tint) 60%, transparent); }
+/* arrows inside any content link render as icons */
+.v2-content main a > span[data-arrow] { display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; font-size: 0; vertical-align: -2px; color: var(--brand); }
+.v2-content main a > span[data-arrow]::before { content: ""; width: 14px; height: 14px; background: currentColor; -webkit-mask: var(--icon, var(--i-arrow)) center / contain no-repeat; mask: var(--icon, var(--i-arrow)) center / contain no-repeat; }
+.v2-content main .button > span[data-arrow] { width: 34px; height: 34px; color: var(--ink); vertical-align: middle; }
+.v2-content main .button.primary > span[data-arrow] { color: var(--ink); background: var(--paper); }
+.v2-content main .button > span[data-arrow]::before { width: 15px; height: 15px; }
+@media (max-width: 860px) {
+  .v2-content .plan-stages { padding-top: 0; }
+  .v2-content .plan-stages::before, .v2-content .plan-stages::after, .v2-content .plan-stage .plan-meta::before { display: none; }
+}
+
+/* =================================================================
+   11 · Page accents: each page leads with one colour of the system
+   ================================================================= */
+html[data-theme="dark"] { --track-3: oklch(74% 0.14 290); --track-3-soft: oklch(74% 0.14 290 / 14%); }
+html[data-theme="light"] { --track-3: oklch(50% 0.15 290); --track-3-soft: oklch(50% 0.15 290 / 10%); }
+.v2-page-professional-tasks, .v2-page-leaderboard { --brand: var(--track-2); --brand-tint: var(--track-2-soft); }
+.v2-page-harness { --brand: var(--track-3); --brand-tint: var(--track-3-soft); }
+
+/* =================================================================
+   12 · Subtrack pages: replication workflow and business deliverables
+   ================================================================= */
+.v2-content .steps .step { grid-template-columns: 48px minmax(0, 1fr); column-gap: 22px; padding-bottom: 20px; }
+.v2-content .step::before { left: 23.5px; top: 54px; bottom: 6px; width: 2px; border-radius: 2px; background: linear-gradient(var(--brand), var(--line) 85%); }
+.v2-content .step-marker { width: 48px; height: 48px; border: 1px solid var(--strong-line); background: var(--surface); color: var(--brand); font-size: 13px; box-shadow: var(--inner-highlight); }
+.v2-content .step.is-final .step-marker { background: var(--brand); color: var(--paper); border-color: transparent; box-shadow: 0 0 0 6px var(--brand-tint); }
+.v2-content .step-body { padding: 22px 26px 24px; border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(180deg, color-mix(in oklab, var(--surface), white 2%), var(--surface)); box-shadow: var(--inner-highlight); }
+.v2-content .step-title { font-size: 20px; letter-spacing: -0.02em; }
+.v2-content .card-grid { gap: 16px; }
+.v2-content .card.v2-card { padding: 26px; }
+.v2-content .card-label { font: 400 11px var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--brand); }
+.v2-content .prose { max-width: 46em; font-size: 17px; line-height: 1.75; color: var(--soft); }
+.v2-content .chart-source, .v2-content .note { color: var(--muted); }
+
+.v2-page-professional-tasks .professional-deck { font-size: clamp(20px, 1.8vw, 26px); font-weight: 500; letter-spacing: -0.02em; color: var(--ink); margin-top: 18px; }
+.v2-page-professional-tasks .professional-workflow { gap: 14px; }
+.v2-page-professional-tasks .professional-workflow > li.v2-card { padding: 24px 22px; border-top: 1px solid var(--line); }
+.v2-page-professional-tasks .professional-step { display: inline-block; font: 400 11.5px var(--font-mono); letter-spacing: .12em; color: var(--brand); }
+.v2-page-professional-tasks .professional-workflow h4 { margin-top: 14px; font-size: 18px; letter-spacing: -0.015em; }
+.v2-page-professional-tasks .professional-case.v2-card { padding: clamp(24px, 2.6vw, 36px); box-shadow: inset 0 2px 0 var(--brand), var(--inner-highlight), var(--shadow-card); }
+.v2-page-professional-tasks .professional-case-id { font-family: var(--font-mono); color: var(--brand); letter-spacing: .08em; }
+.v2-page-professional-tasks .professional-case-title { font-size: clamp(24px, 2.2vw, 32px); letter-spacing: -0.03em; }
+.v2-page-professional-tasks .professional-hero-note, .v2-page-professional-tasks .professional-status { color: var(--muted); }
+
+/* =================================================================
+   13 · Harness and Self-evolving: diagrams, timeline, research map
+   ================================================================= */
+.v2-content .diagram-scroll { border-radius: 16px; }
+.v2-content figure.hs-timeline, .v2-content figure.hs-composition, .v2-content figure.rsi-figure, .v2-content .diagram {
+  padding: clamp(16px, 2vw, 28px); border: 1px solid var(--line); border-radius: 20px; background: linear-gradient(180deg, color-mix(in oklab, var(--surface), white 2%), var(--surface)); box-shadow: var(--inner-highlight), var(--shadow-card); }
+.v2-page-harness .hs-timeline .hs-dot { stroke: var(--brand); stroke-width: 2; }
+.v2-content details { border: 1px solid var(--line); background: color-mix(in oklab, var(--surface) 70%, transparent); }
+.v2-content details > summary { cursor: pointer; padding: 14px 18px; font-weight: 600; letter-spacing: -0.01em; }
+.v2-content details[open] > summary { border-bottom: 1px solid var(--line); }
+.v2-content .pill-list .pill, .v2-content .pill { border-radius: 999px; }
+.v2-content .compare-table th:first-child, .v2-content .compare-table td:first-child { position: sticky; left: 0; z-index: 1; background: var(--surface); }
+.v2-content .compare-table th:first-child { background: var(--tint); }
+.v2-content .se-map-zone, .v2-content .se-map-group, .v2-content .se-tiles > * { border-radius: 14px; }
+.v2-content .se-map-glyph { color: var(--brand); }
+.v2-content .se-method.v2-card { padding: 26px; }
+.v2-content .se-role, .v2-content .hc-label, .v2-content .mech-basis { font-family: var(--font-mono); letter-spacing: .06em; }
+.v2-content .case-step-number { color: var(--brand); font-family: var(--font-mono); }
+
+/* =================================================================
+   14 · Leaderboard and Teams
+   ================================================================= */
+html[data-theme="dark"] .v2-content .mountain {
+  --mtn-sky: #0A0F1A; --mtn-sky-low: #0E1523; --mtn-haze: #0E1523;
+  --mtn-pill: #121B2E; --mtn-pill-text: #EEF2F7; --mtn-pill-edge: rgb(255 255 255 / 16%); --mtn-badge: rgb(255 255 255 / 8%);
+  --mtn-marker: #EEF2F7; --mtn-marker-ring: #05070E; }
+.v2-content .mountain { border-radius: 18px; overflow: hidden; border: 1px solid var(--line); box-shadow: var(--inner-highlight), var(--shadow-card); }
+.v2-content .paired-controls select, .v2-content select { border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); padding: 8px 12px; font: 500 13px var(--font-sans); }
+.v2-content .dev-report-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.v2-content .dev-report-facts > div { display: flex; flex-direction: column; gap: 4px; min-width: 0; padding: 18px 20px; border: 1px solid var(--line); border-radius: 14px; background: color-mix(in oklab, var(--surface) 80%, transparent); }
+.v2-content .dev-report-facts dt { font: 400 11px var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.v2-content .dev-report-facts dd { margin: 6px 0 0; font-size: 15px; color: var(--ink); overflow-wrap: anywhere; }
+.v2-content .dev-report-facts dd[data-v2-count] { font-size: clamp(28px, 2.6vw, 40px); font-weight: 600; letter-spacing: -0.035em; font-variant-numeric: tabular-nums; }
+.v2-content .dev-table .is-sorted { color: var(--brand); }
+
+.v2-page-teams .team-member.v2-card, .v2-page-teams .research-group.v2-card, .v2-page-teams .contact-card.v2-card { padding: 26px; }
+.v2-page-teams .team-member img, .v2-page-teams .research-group img { border-radius: 14px; }
+.v2-page-teams .institution-grid > .v2-card { overflow: hidden; }
+.v2-page-teams .institution-logo { border-radius: 12px; }
+.v2-page-teams .group-name, .v2-page-teams .team-member h3 { letter-spacing: -0.02em; }
+.v2-page-teams .group-affiliation, .v2-page-teams .institution-abbreviation { font-family: var(--font-mono); letter-spacing: .08em; color: var(--brand); }
+.v2-page-teams .gifts-feature.v2-card { padding: clamp(26px, 3vw, 44px); background: radial-gradient(60% 50% at 100% 0%, var(--brand-tint), transparent 70%), linear-gradient(180deg, color-mix(in oklab, var(--surface), white 2.5%), var(--surface)); }
+.v2-page-professional-tasks .page-hero.professional-hero { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(300px, 1fr); gap: 56px; align-items: center; }
+.v2-page-professional-tasks .professional-hero h1 { font-size: clamp(44px, 4.8vw, 74px); line-height: 1.02; letter-spacing: -0.048em; max-width: none; }
+.v2-page-professional-tasks .professional-hero .lead { font-size: 16.5px; }
+.v2-page-professional-tasks .professional-hero-note { align-self: center; padding: 26px 26px 22px; border: 1px solid var(--line); border-radius: 20px;
+  background: color-mix(in oklab, var(--surface) 72%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: var(--inner-highlight), var(--shadow-card); }
+.v2-page-professional-tasks .professional-artifact { padding: 14px 0; border-top: 1px solid var(--line); }
+.v2-page-professional-tasks .professional-extension { border-radius: 8px; font-family: var(--font-mono); letter-spacing: .08em; color: var(--brand); background: var(--brand-tint); border-color: transparent; }

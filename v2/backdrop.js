@@ -5,6 +5,7 @@
  *   orbit         Harness: model core, tool ring and environment ring exchanging calls
  *   contour       Self-evolving: a moving fitness landscape with an optimiser climbing it
  *   bump          Leaderboard: a continuously scrolling rank chart
+ *   ledger        Business deliverables: a sheet whose mismatched cells reconcile
  *   constellation Teams: NTU, HKU and SUFE linked, with collaborators around them
  * Usage: Backdrop.mount(canvas, { mode, focus: [x, y] }) → { setTone(i), destroy() }
  */
@@ -125,6 +126,63 @@
         ctx.strokeStyle = css(P.ink, 0.07 + (scanD < 0.06 ? 0.25 * (1 - scanD / 0.06) : 0));
         ctx.lineWidth = 1; ctx.stroke();
       }
+    },
+  };
+
+  MODES.ledger = {
+    init(S) {
+      const R = prng(3);
+      S.colW = [1.5, 1.1, 1.1, 0.9, 0.7]; S.rows = 13; S.cells = [];
+      for (let r = 0; r < S.rows; r++) S.colW.forEach((w, c) => S.cells.push({ r, c, s: 0, k: 0, len: 0.35 + R() * 0.5 }));
+      S.timer = 0;
+    },
+    step(S, dt, t) {
+      S.timer += dt;
+      while (S.timer > 260) {
+        S.timer -= 260;
+        const r = 1 + ((Math.random() * (S.rows - 1)) | 0), c = Math.random() < 0.7 ? S.colW.length - 1 : 3;
+        const cell = S.cells[r * S.colW.length + c];
+        if (cell.s === 0) { cell.s = 1; cell.k = 0; }
+      }
+      for (const c of S.cells) {
+        if (c.s === 1) { c.k += dt / 1100; if (c.k >= 1) { c.s = 2; c.k = 0; } }
+        else if (c.s === 2) { c.k += dt / 2200; if (c.k >= 1) { c.s = 0; c.k = 0; } }
+      }
+      S.scan = (t * 0.00016) % 1.25 - 0.1;
+    },
+    project(S, gx, gy) {
+      const total = S.colW.reduce((a, b) => a + b, 0);
+      const ry = -0.5 + S.pmx * 0.14, rx = 0.95 + S.pmy * 0.08;
+      const x = (gx - total / 2) * 2.2, z = (gy - S.rows / 2) * 0.62;
+      const x1 = x * Math.cos(ry) - z * Math.sin(ry), z1 = x * Math.sin(ry) + z * Math.cos(ry);
+      const y2 = -z1 * Math.sin(rx), z2 = z1 * Math.cos(rx);
+      const f = 14 / (14 + z2), sc = Math.min(S.w, S.h * 1.6) * 0.042;
+      return [S.cx + x1 * f * sc, S.cy + y2 * f * sc];
+    },
+    draw(S, ctx, P) {
+      ctx.clearRect(0, 0, S.w, S.h);
+      const edges = [0]; S.colW.forEach(w => edges.push(edges[edges.length - 1] + w));
+      for (const c of S.cells) {
+        const x0 = edges[c.c] + 0.04, x1 = edges[c.c + 1] - 0.04, y0 = c.r + 0.06, y1 = c.r + 0.94;
+        const a = this.project(S, x0, y0), b = this.project(S, x1, y0), d = this.project(S, x1, y1), e = this.project(S, x0, y1);
+        const scanD = Math.abs(c.r / (S.rows - 1) - S.scan);
+        ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.lineTo(d[0], d[1]); ctx.lineTo(e[0], e[1]); ctx.closePath();
+        let fill = c.r === 0 ? css(P.ink, 0.07) : null;
+        if (c.s === 1) fill = css(P.t2, 0.2 + 0.45 * Math.abs(Math.sin(c.k * Math.PI * 2)));
+        else if (c.s === 2) fill = css(P.t1, 0.38 * (1 - c.k));
+        if (scanD < 0.05 && !fill) fill = css(P.ink, 0.05);
+        if (fill) { ctx.fillStyle = fill; ctx.fill(); }
+        ctx.strokeStyle = css(P.ink, 0.07); ctx.lineWidth = 1; ctx.stroke();
+        // a figure inside the cell
+        const m0 = this.project(S, x0 + 0.12, (y0 + y1) / 2), m1 = this.project(S, x0 + 0.12 + (x1 - x0 - 0.24) * c.len, (y0 + y1) / 2);
+        ctx.strokeStyle = c.s === 1 ? css(P.t2, 0.9) : c.s === 2 ? css(P.t1, 0.9) : css(P.ink, c.r === 0 ? 0.28 : 0.14);
+        ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(m0[0], m0[1]); ctx.lineTo(m1[0], m1[1]); ctx.stroke();
+      }
+      // the scan line across the sheet
+      const s0 = this.project(S, 0, S.scan * S.rows), s1 = this.project(S, edges[edges.length - 1], S.scan * S.rows);
+      const g = ctx.createLinearGradient(s0[0], s0[1], s1[0], s1[1]);
+      g.addColorStop(0, css(P.t1, 0)); g.addColorStop(0.5, css(P.t1, 0.55)); g.addColorStop(1, css(P.t1, 0));
+      ctx.strokeStyle = g; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(s0[0], s0[1]); ctx.lineTo(s1[0], s1[1]); ctx.stroke();
     },
   };
 

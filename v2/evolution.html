@@ -27,7 +27,7 @@
   <script src="backdrop.js?v=20261022-v2" defer></script>
   <script src="v2.js?v=20261022-v2" defer></script>
 </head>
-<body>
+<body class="v2-content v2-page-evolution" data-tone="2">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
     <linearGradient id="lg-dk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:oklch(80% 0.12 195)"/><stop offset="1" style="stop-color:oklch(82% 0.14 75)"/></linearGradient>
@@ -89,7 +89,7 @@
       <p class="kicker">Model training · Model–Harness co-evolution</p>
       <h1 id="page-title">Learning from tasks. Improving agents.</h1>
       <p class="lead">InferenceNet challenges reveal capabilities that agents need to develop: understanding research requirements, interpreting data and constructing justified analyses. We explore model training and model–harness co-evolution as two routes to improvement. The three detailed harness methods and the current InferenceNet experiments keep model weights fixed.</p>
-      <ul class="page-meta"><li>Research map · selected work, checked on 13 Oct 2026</li><li>Three detailed methods · checked against papers and code on 10 Oct 2026</li><li>InferenceNet study · development set only</li><li>ModularRSI study · audited 14 Oct 2026</li><li><a href="harness.html#definition">What a harness is →</a></li></ul>
+      <ul class="page-meta"><li>Research map · selected work, checked on 13 Oct 2026</li><li>Three detailed methods · checked against papers and code on 10 Oct 2026</li><li>InferenceNet study · development set only</li><li>ModularRSI study · audited 14 Oct 2026</li><li><a href="harness.html#definition">What a harness is <span aria-hidden="true">→</span></a></li></ul>
     </section>
     <nav class="subnav" aria-label="On this page"><ol class="container">
       <li><a href="#improvement-directions">Improvement directions</a></li>
@@ -142,7 +142,7 @@
         <article><p class="se-role">Phase 2 · Planned for Finance &amp; HR (Harbor + Claude Code)</p><h4>Adapting harness checks and evolution to Harbor</h4><p>Subtrack 2 (Business Analysis &amp; Deliverables) has not yet undergone harness optimization. Its tasks currently run on the Harbor (0.20.0) evaluation framework driving Claude Code (2.1.114), where pilot errors stemmed from missing Excel formulas, cross-file count mismatches and rubric misclassifications. We plan to adapt our modular harness hooks and evolution loop to the Harbor + Claude Code workflow—adding pre-submission readback checks for spreadsheet formulas (.xlsx), report-to-workbook consistency (.docx/.xlsx) and source-evidence indexing.</p></article>
       </div>
       <p class="case-caption improvement-scope">These are research directions. The InferenceNet ModularRSI study below evolves the harness on econometric replication tasks while keeping model weights fixed.</p>
-      <div class="se-links"><a class="text-link" href="challenge.html#replication-demo">Watch the replication demo →</a><a class="text-link" href="challenge.html#subtrack-professional">Explore the business task demos →</a><a class="text-link" href="harness.html#challenge-harnesses">Compare how both challenges run harnesses →</a></div>
+      <div class="se-links"><a class="text-link" href="challenge.html#replication-demo">Watch the replication demo <span aria-hidden="true">→</span></a><a class="text-link" href="challenge.html#subtrack-professional">Explore the business task demos <span aria-hidden="true">→</span></a><a class="text-link" href="harness.html#challenge-harnesses">Compare how both challenges run harnesses <span aria-hidden="true">→</span></a></div>
     </section>
 
     <section class="section container ruled" id="concept" aria-labelledby="concept-title">
@@ -158,7 +158,7 @@
       </ul>
       <p class="case-caption">The editable boundary must be recorded per method and release. All results below retain their original task split, budget caps and selection policy.</p>
       <p class="case-caption">The six terms follow the Harness page, which also explains how harnesses such as DeepAgents and DeepSeek Harness, and extensions such as Superpowers, are built. This page is about improving a harness once it exists.</p>
-      <div class="se-links"><a class="text-link" href="harness.html#definition">Harness: six terms and their boundaries →</a><a class="text-link" href="harness.html#deepagents-architecture">Harness: how DeepAgents is built →</a></div>
+      <div class="se-links"><a class="text-link" href="harness.html#definition">Harness: six terms and their boundaries <span aria-hidden="true">→</span></a><a class="text-link" href="harness.html#deepagents-architecture">Harness: how DeepAgents is built <span aria-hidden="true">→</span></a></div>
     </section>
 
     <section class="section container ruled" id="research-map" aria-labelledby="research-map-title">
@@ -179,7 +179,7 @@
               <p class="se-map-src"><a href="https://arxiv.org/abs/2609.33439">arXiv 2609.33439</a><span>v1 27 Sep 2026</span></p>
             </div>
           </div>
-          <p class="se-map-link"><span class="se-map-calls" aria-hidden="true"></span>Both call runnable harnesses, which the Harness page maps:<a class="text-link" href="harness.html#development">Harness systems, 2025–2026 →</a></p>
+          <p class="se-map-link"><span class="se-map-calls" aria-hidden="true"></span>Both call runnable harnesses, which the Harness page maps:<a class="text-link" href="harness.html#development">Harness systems, 2025–2026 <span aria-hidden="true">→</span></a></p>
         </div>
 
         <div class="se-map-core">
@@ -326,7 +326,7 @@
           </table>
         </div>
       </details>
-      <div class="se-links"><a class="text-link" href="harness.html#development">Harness: runnable systems and 2025–2026 timeline →</a><a class="text-link" href="harness.html#landscape">Harness: unified evaluation via Harbor →</a></div>
+      <div class="se-links"><a class="text-link" href="harness.html#development">Harness: runnable systems and 2025–2026 timeline <span aria-hidden="true">→</span></a><a class="text-link" href="harness.html#landscape">Harness: unified evaluation via Harbor <span aria-hidden="true">→</span></a></div>
     </section>
 
 
@@ -537,9 +537,9 @@
       <div id="rsi-implementation" class="rsi-implementation">
       <h3 class="rsi-study-subtitle">How ModularRSI evolves the DeepAgents harness</h3>
       <ol class="rsi-release-lineage" aria-label="Modular components in the evolved harness">
-        <li><span class="se-label">01 · Exploration &amp; completion modules</span><h3>Budget-aware exploration and final submission</h3><p>Evolves the <code>agent_loop</code>, <code>tool_use</code> and <code>completion</code> modules so the agent batches exploratory data checks, reserves calls for verification, and submits a complete Python program before budget exhaustion.</p><a href="#rsi-code-boundary">Inspect the evolved modules ↓</a></li>
-        <li><span class="se-label">02 · Runtime integration</span><h3>Scoped SDK wiring</h3><p>Integrates the evolved submission and tool-guidance policies directly into the pinned DeepAgents and LangChain model-binding path so they execute deterministically on every turn.</p><a href="https://github.com/YTZSR/chatpilot_evaluator/blob/32623d31f04c729d9921df8733a02719b19c2f41/inferencenet/modular_rsi/sdk_seed.py">Inspect the SDK integration →</a></li>
-        <li class="is-current"><span class="se-label">03 · Observation module</span><h3>Statistical-audit execution feedback</h3><p>Evolves <code>ToolNode._normalize_tool_response</code> in LangGraph to enrich <code>run_python</code> outputs with structured statistical-audit checks covering sample filtering, model specification and standard-error clustering.</p><a href="https://github.com/YTZSR/chatpilot_evaluator/blob/32623d31f04c729d9921df8733a02719b19c2f41/inferencenet/modular_rsi/releases/v2-observation/observation.patch.json">Inspect the frozen observation patch →</a></li>
+        <li><span class="se-label">01 · Exploration &amp; completion modules</span><h3>Budget-aware exploration and final submission</h3><p>Evolves the <code>agent_loop</code>, <code>tool_use</code> and <code>completion</code> modules so the agent batches exploratory data checks, reserves calls for verification, and submits a complete Python program before budget exhaustion.</p><a href="#rsi-code-boundary">Inspect the evolved modules <span aria-hidden="true">↓</span></a></li>
+        <li><span class="se-label">02 · Runtime integration</span><h3>Scoped SDK wiring</h3><p>Integrates the evolved submission and tool-guidance policies directly into the pinned DeepAgents and LangChain model-binding path so they execute deterministically on every turn.</p><a href="https://github.com/YTZSR/chatpilot_evaluator/blob/32623d31f04c729d9921df8733a02719b19c2f41/inferencenet/modular_rsi/sdk_seed.py">Inspect the SDK integration <span aria-hidden="true">→</span></a></li>
+        <li class="is-current"><span class="se-label">03 · Observation module</span><h3>Statistical-audit execution feedback</h3><p>Evolves <code>ToolNode._normalize_tool_response</code> in LangGraph to enrich <code>run_python</code> outputs with structured statistical-audit checks covering sample filtering, model specification and standard-error clustering.</p><a href="https://github.com/YTZSR/chatpilot_evaluator/blob/32623d31f04c729d9921df8733a02719b19c2f41/inferencenet/modular_rsi/releases/v2-observation/observation.patch.json">Inspect the frozen observation patch <span aria-hidden="true">→</span></a></li>
       </ol>
 
       <div class="se-map rsi-release-map">
