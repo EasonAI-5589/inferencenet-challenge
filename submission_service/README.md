@@ -22,7 +22,10 @@ The user chose the existing system disk; a separate disk is not a prerequisite.
 ```text
 /srv/inferencenet-submit/data/
   intake.sqlite3                 # users, sessions, ownership, versions, inventory
-  submissions/<id>/v<version>/    # immutable payload + generated submission.json
+  submissions/
+    benchmark/<id>/v<version>/   # immutable payload + generated submission.json
+    harness/<id>/v<version>/
+    failure-case/<id>/v<version>/
   receipts/<id>/v<version>.json
 /srv/inferencenet-submit/staging/<upload_id>/
 ```
@@ -76,9 +79,28 @@ loopback health, and switches Caddy after the application is ready. Follow logs
 with `journalctl -u inferencenet-intake -f`. No credentials are embedded in deploy
 sources. Keep the workstation SSH identity and host pinning outside Git.
 
-Rollback the release symlink to the preceding reviewed directory and restart
-`inferencenet-intake`; keep data/staging intact. The initial Caddy placeholder
-configuration is preserved privately on the server for infrastructure fallback.
+The installer preflights the classified storage layout, stops intake/cleanup and
+backup timers, takes a pre-migration backup, then migrates existing directories
+before activating the new release. Each submission directory is renamed on the
+same filesystem after all package and receipt hashes pass verification. IDs,
+versions, ownership, manifests, receipts and API references do not change.
+Unknown directories, conflicting destinations or mismatching bytes stop the
+preflight without moving anything. An interrupted move can be rerun safely.
+
+For a manual migration, stop intake, cleanup and backup jobs first, preserve a
+backup, then run from the new release as the service account:
+
+```sh
+python -m submission_service.manage migrate-layout         # verify and preview
+python -m submission_service.manage migrate-layout --apply # verify and move
+```
+
+Restart intake and the cleanup/backup timers afterwards. If apply fails, keep
+intake stopped until the conflict is resolved and the migration completes.
+Rollback by switching the release symlink only to a release supporting classified
+paths. The original flat-layout release needs an offline reverse migration or
+compatible restore plan; it cannot read the new paths. Keep data/staging intact.
+The initial Caddy placeholder configuration is preserved privately on the server.
 
 The existing daily backup timer now uses SQLite's online backup API. It snapshots
 the DB before copying immutable accepted packages and receipts; in-flight records

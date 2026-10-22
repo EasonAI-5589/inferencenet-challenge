@@ -19,6 +19,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from .validator import SPEC_NAMES, relative_path, strict_json, validate
+from .storage import package_path, sync_directory
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parent
@@ -43,15 +44,6 @@ def timestamp():
 
 def identifier(prefix):
     return prefix + "-" + secrets.token_hex(12)
-
-
-def sync_directory(path):
-    if os.name != "nt":
-        descriptor = os.open(path, os.O_RDONLY | os.O_DIRECTORY)
-        try:
-            os.fsync(descriptor)
-        finally:
-            os.close(descriptor)
 
 
 def create_app(config=None):
@@ -413,8 +405,9 @@ def create_app(config=None):
             if not row or json.loads(row["receipt"])["artifact"] != ref:
                 raise Problem(422, "reference_unavailable", "The referenced version or hash is unavailable to your account.", [name])
             if expected_type == "benchmark":
-                benchmark = strict_json((data / "submissions" / row["id"] / f"v{row['version']}" / "benchmark.json").read_text(encoding="utf-8"))
-                splits_path = data / "submissions" / row["id"] / f"v{row['version']}" / benchmark["splits_path"]
+                benchmark_path = package_path(data, row["type"], row["id"], row["version"])
+                benchmark = strict_json((benchmark_path / "benchmark.json").read_text(encoding="utf-8"))
+                splits_path = benchmark_path / benchmark["splits_path"]
                 splits = strict_json(splits_path.read_text(encoding="utf-8"))
                 if spec["task_id"] not in splits.get(spec["split"], []):
                     raise Problem(422, "reference_mismatch", "Failure task/split does not belong to the referenced benchmark.")
@@ -477,7 +470,7 @@ def create_app(config=None):
                 raise Problem(409, "files_pending", "Upload and verify every file before completing.")
             db.execute("UPDATE submissions SET state='validating' WHERE upload_id=?", (upload_id,))
         # Frozen bytes + deterministic manifest allow the same operation to resume after a crash.
-        destination = data / "submissions" / row["id"] / f"v{row['version']}"
+        destination = package_path(data, row["type"], row["id"], row["version"])
         package = staging / upload_id / "package"
         manifest = {"schema_version": "0.1.0", "submission_id": row["id"], "version": row["version"], "type": row["type"],
                     "title": row["title"], "license": row["license"], "submitter": row["owner"], "created_at": row["created"],
@@ -533,6 +526,7 @@ def create_app(config=None):
                     sync_directory(folder)
                 os.rename(package, destination)
             sync_directory(destination.parent)
+            sync_directory(destination.parent.parent)
             sync_directory(data / "submissions")
             receipt_path = data / "receipts" / row["id"] / f"v{row['version']}.json"
             receipt_path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)

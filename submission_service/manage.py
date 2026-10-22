@@ -1,6 +1,7 @@
 """Local operator tools. Run as the service account; passwords never enter argv."""
 import argparse
 import getpass
+import json
 import os
 from pathlib import Path
 import re
@@ -9,15 +10,20 @@ import sqlite3
 import time
 
 from werkzeug.security import generate_password_hash
+from .storage import migrate_layout
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("cleanup", "reset-password"))
+    parser.add_argument("command", choices=("cleanup", "reset-password", "migrate-layout"))
     parser.add_argument("--username")
+    parser.add_argument("--apply", action="store_true", help="Apply the verified offline layout migration")
     args = parser.parse_args()
     data = Path(os.environ.get("SUBMIT_DATA_DIR", "/srv/inferencenet-submit/data"))
     staging = Path(os.environ.get("SUBMIT_STAGING_DIR", "/srv/inferencenet-submit/staging"))
+    if args.command == "migrate-layout":
+        print(json.dumps(migrate_layout(data, apply=args.apply), indent=2))
+        return
     with sqlite3.connect(data / "intake.sqlite3", timeout=30) as db:
         if args.command == "reset-password":
             row = db.execute("SELECT id FROM users WHERE username=?", ((args.username or "").lower(),)).fetchone()

@@ -35,7 +35,9 @@ type 为 `benchmark`、`harness`、`failure_case`。init 的请求字段为 `{sc
 
 ## 存储与固定引用
 
-用户确认使用现有系统盘：完整包位于 `/srv/inferencenet-submit/data/submissions/<id>/v<version>/`，回执位于 `data/receipts/<id>/v<version>.json`，数据库位于 `data/intake.sqlite3`。暂存位于 `/srv/inferencenet-submit/staging`。这些路径不由客户端指定，也不作为 Web 静态目录发布。
+用户确认使用现有系统盘，并按“类型 → 提交编号 → 版本”存放：完整包位于 `/srv/inferencenet-submit/data/submissions/<类型目录>/<id>/v<version>/`。类型目录为 `benchmark`、`harness`、`failure-case`（API 的 `failure_case` 映射为磁盘上的 `failure-case`）。回执仍位于 `data/receipts/<id>/v<version>.json`，数据库位于 `data/intake.sqlite3`。暂存位于 `/srv/inferencenet-submit/staging`。这些路径不由客户端指定，也不作为 Web 静态目录发布。
+
+已有平铺目录通过 `python -m submission_service.manage migrate-layout --apply` 离线迁移。命令先检查全部待迁移目录、manifest 与 payload 哈希、回执及数据库一致性，再逐个原子移动提交目录；重复运行会校验并跳过已迁移目录，冲突时拒绝覆盖。迁移不修改提交 ID、版本、清单字节、回执、账号或 API 引用，Failure Case 的关联读取同步使用分类后的路径。操作顺序与备份要求见服务部署文档。
 
 回执示意：
 

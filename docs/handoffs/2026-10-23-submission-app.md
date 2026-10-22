@@ -31,9 +31,12 @@ cards to the service. API and operational details are in
 ```text
 /srv/inferencenet-submit/data/
   intake.sqlite3
-  submissions/<submission-id>/v<version>/
-    submission.json
-    <original folder contents>
+  submissions/
+    benchmark/<submission-id>/v<version>/
+    harness/<submission-id>/v<version>/
+    failure-case/<submission-id>/v<version>/
+      submission.json
+      <original folder contents>
   receipts/<submission-id>/v<version>.json
 /srv/inferencenet-submit/staging/<upload-id>/
 ```
@@ -45,8 +48,8 @@ published with an atomic rename, and retries can finish interrupted publication.
 The systemd writable parent mount keeps staging/data on the same mount; separate
 bind mounts would prevent that rename even on the same underlying disk.
 
-Deployed release: `intake-20261023-11e03aaf4e59`.
-Source bundle SHA256:
+Initial deployed release: `intake-20261023-11e03aaf4e59` (before type-directory migration).
+Initial source bundle SHA256:
 `11e03aaf4e59f416efff07396fc5b2f5b6dfe2e1d9291efdab4c5ebd516827b9`.
 The bundle contains the service source, shared v2 CSS and two font files.
 
@@ -57,13 +60,39 @@ Failure cases use fixed receipts from the submitting account. Single-package
 limits are 1 GiB and 2,000 files. Password recovery is an operator reset; email
 recovery and an evaluation/approval queue are outside this implementation.
 
+## Classified storage migration
+
+The current release is `intake-20261023-ed90b71ed574`, with source bundle SHA256
+`ed90b71ed5747e362ef41d562df341bcbd4f6919f56791f6a2b1f54c90a45d1c`.
+All existing packages now use **type → submission ID → version**. The filesystem
+type names are `benchmark`, `harness` and `failure-case`; API type names and
+immutable artifact references are unchanged. Receipts retain their separate
+`receipts/<id>/v<version>.json` location.
+
+The installer stopped intake and cleanup, paused backup scheduling, preserved a
+pre-migration backup, verified the entire migration plan, and moved the existing
+directories without overwriting destinations. It then restarted intake and both
+timers. The migration is repeatable and can finish after an interrupted move.
+Restore a pre-classification backup only while intake is stopped, then run the
+layout migration before starting a release that expects classified paths.
+
+Six sealed versions were migrated, including one synthetic pre-migration QA
+submission. All 68 payload files, manifest bytes, receipt hashes and account
+records were preserved. Comparison against the pre-migration backup confirmed
+byte-for-byte payload/manifest equivalence and identical submission metadata.
+The original QA session still read its record and the identical receipt after
+deployment. New submissions for all three types passed, including harness v2 and
+Failure Case reads of the classified benchmark's task/split. The final check found
+zero remaining flat directories to migrate and verified 9 classified versions /
+104 payload files. The post-migration backup also verified all 9 accepted versions.
+
 ## Verification
 
 Validation ran on 2026-10-22/23 using independent test accounts and synthetic data.
 
 | Check | Result |
 |---|---|
-| `python -m pytest submission_service/tests -q` | 20 passed; ownership, CSRF/Origin, paths, hash failures/retries, versions, idempotency, crash recovery and no payload execution |
+| `python -m pytest submission_service/tests -q` | 25 passed; ownership, CSRF/Origin, paths, hash failures/retries, versions, idempotency, crash recovery, no payload execution, complete/restarted migration and conflict/corruption preflight |
 | `node scripts/check.mjs` | Passed public links, anchors, asset allowlist and private-path boundaries on Windows |
 | JavaScript syntax and incremental SHA256 comparison | Passed; hash comparison against Node crypto across ten input/chunk boundary cases |
 | Browser upload through production HTTPS | All three types accepted; receipts downloaded; no page exceptions |
@@ -71,7 +100,7 @@ Validation ran on 2026-10-22/23 using independent test accounts and synthetic da
 | Login/logout and v2 upload | Passed; v1 retained and v2 received its own receipt |
 | Service restart | Existing session, both version records and receipt download survived |
 | Server-side stored bytes | All 17 benchmark, 10 harness and 9 failure-case payload files matched their manifests; receipt hashes matched manifest bytes |
-| Backup verification | Archive SHA256 passed; restored SQLite integrity was `ok`; all five accepted versions and their receipts were checked against the archive |
+| Backup verification | Archive SHA256 passed; restored SQLite integrity was `ok`; all nine accepted versions and their receipts were checked against the post-migration archive |
 | Visual inspection | Three desktop forms and Chinese light theme inspected at 1440 px; no horizontal overflow |
 
 The backup check restored the snapshot database in an isolated temporary directory

@@ -62,7 +62,7 @@ def test_three_types_and_immutable_receipts(app):
     client, headers = account(app)
     for kind in ("benchmark", "harness", "failure_case"):
         initialized = accepted(client, headers, kind)
-        path = Path(app.config["DATA_DIR"]) / "submissions" / initialized["submission_id"] / "v1"
+        path = Path(app.config["DATA_DIR"]) / "submissions" / kind.replace("_", "-") / initialized["submission_id"] / "v1"
         manifest_bytes = (path / "submission.json").read_bytes()
         receipt = client.get(f"/api/v1/submissions/{initialized['submission_id']}/versions/1/receipt").json
         assert receipt["artifact"]["submission_sha256"] == hashlib.sha256(manifest_bytes).hexdigest()
@@ -150,7 +150,7 @@ def test_new_version_preserves_original(app):
     assert next_version["version"] == 2
     upload(client, headers, next_version, files)
     assert complete(client, headers, next_version).status_code == 200
-    parent = Path(app.config["DATA_DIR"]) / "submissions" / original["submission_id"]
+    parent = Path(app.config["DATA_DIR"]) / "submissions" / "harness" / original["submission_id"]
     assert (parent / "v1/README.md").read_bytes() != (parent / "v2/README.md").read_bytes()
 
 
@@ -224,3 +224,86 @@ def test_duplicate_portable_paths_and_file_prefixes(app):
     assert client.post("/api/v1/submissions/harness/init", json=payload, headers={**headers, "Idempotency-Key": secrets.token_hex(16)}).status_code == 422
     payload["files"][-1]["path"] = "src"
     assert client.post("/api/v1/submissions/harness/init", json=payload, headers={**headers, "Idempotency-Key": secrets.token_hex(16)}).status_code == 422
+
+
+def legacy_layout(app, initialized):
+    from submission_service.storage import package_path
+    data = Path(app.config["DATA_DIR"])
+    for item in initialized:
+        classified = package_path(data, item["type"], item["submission_id"], 1).parent
+        classified.rename(data / "submissions" / item["submission_id"])
+
+
+def test_layout_migration_preserves_all_types_versions_receipts_and_references(app):
+    from submission_service.storage import migrate_layout, package_path
+    client, headers = account(app)
+    items = [accepted(client, headers, kind) for kind in ("benchmark", "harness", "failure_case")]
+    files = example(client, "harness")
+    files["README.md"] += b"\nSecond version before migration\n"
+    second, _ = initialize(client, headers, "harness", files, f"/api/v1/submissions/{items[1]['submission_id']}/versions/init")
+    upload(client, headers, second, files)
+    assert complete(client, headers, second).status_code == 200
+    data = Path(app.config["DATA_DIR"])
+    original = {str(path.relative_to(data)): path.read_bytes() for path in data.rglob("*.json")}
+    legacy_layout(app, items)
+    dry_run = migrate_layout(data)
+    assert dry_run["submissions_to_move"] == 3
+    assert dry_run["versions_to_move"] == 4
+    assert all((data / "submissions" / item["submission_id"]).is_dir() for item in items)
+    report = migrate_layout(data, apply=True)
+    assert report["versions_by_type"] == {"benchmark": 1, "harness": 2, "failure-case": 1}
+    for name, content in original.items():
+        assert (data / name).read_bytes() == content
+    assert not any((data / "submissions" / item["submission_id"]).exists() for item in items)
+    again = migrate_layout(data, apply=True)
+    assert again["submissions_to_move"] == 0
+    assert again["already_classified_versions"] == 4
+    assert again["files_verified"] == report["files_verified"]
+    for item in items:
+        assert client.get(f"/api/v1/submissions/{item['submission_id']}/versions/1/receipt").status_code == 200
+    # This must read the moved benchmark's task/split through the new layout.
+    linked_case = accepted(client, headers, "failure_case")
+    assert package_path(data, "failure_case", linked_case["submission_id"], 1).is_dir()
+
+
+def test_layout_migration_resumes_after_interrupted_move(app, monkeypatch):
+    import submission_service.storage as storage
+    client, headers = account(app)
+    items = [accepted(client, headers, kind) for kind in ("benchmark", "harness")]
+    legacy_layout(app, items)
+    data = Path(app.config["DATA_DIR"])
+    rename = storage.os.rename
+    calls = 0
+    def interrupted(source, destination):
+        nonlocal calls
+        calls += 1
+        if calls == 2:
+            raise OSError("simulated interruption between submissions")
+        rename(source, destination)
+    monkeypatch.setattr(storage.os, "rename", interrupted)
+    with pytest.raises(OSError, match="simulated interruption"):
+        storage.migrate_layout(data, apply=True)
+    monkeypatch.setattr(storage.os, "rename", rename)
+    result = storage.migrate_layout(data, apply=True)
+    assert result["submissions_to_move"] == 1
+    assert result["already_classified_versions"] == 1
+    assert storage.migrate_layout(data)["already_classified_versions"] == 2
+
+
+@pytest.mark.parametrize("failure", ["conflict", "corrupt", "missing"])
+def test_layout_preflight_fails_before_moving_any_submission(app, failure):
+    from submission_service.storage import migrate_layout, package_path
+    client, headers = account(app)
+    items = [accepted(client, headers, kind) for kind in ("benchmark", "harness")]
+    legacy_layout(app, items)
+    data = Path(app.config["DATA_DIR"])
+    target = data / "submissions" / items[1]["submission_id"] / "v1"
+    if failure == "conflict":
+        package_path(data, "harness", items[1]["submission_id"], 1).parent.mkdir()
+    elif failure == "corrupt":
+        (target / "README.md").write_bytes(b"altered bytes")
+    else:
+        target.rename(target.with_name("unexpected-version"))
+    with pytest.raises(ValueError):
+        migrate_layout(data, apply=True)
+    assert all((data / "submissions" / item["submission_id"]).is_dir() for item in items)
