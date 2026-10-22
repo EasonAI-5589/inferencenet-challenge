@@ -62,6 +62,9 @@ For the Build with us submission system, see the
 [file format](docs/submissions/SPEC.md), and [API design](docs/submissions/API-DESIGN.md).
 The four private Hugging Face repositories are initialized; the submission UI remains a local
 prototype and the authenticated intake service is not yet deployed.
+The [submission server handoff (2026-10-22)](docs/handoffs/2026-10-22-submission-server.md)
+moves primary storage to a self-hosted server and lists the domain, DNS and HTTPS setup
+still to be done.
 
 This repository contains the editable static files served by GitHub Pages.
 No frontend framework or package installation is required.
