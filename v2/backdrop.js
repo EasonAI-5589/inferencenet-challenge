@@ -22,6 +22,19 @@
     const d = probe.getImageData(0, 0, 1, 1).data; return [d[0], d[1], d[2]];
   }
   const css = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+  // Soft glows come from one cached radial texture per colour; shadowBlur is far too slow per frame.
+  const sprites = new Map();
+  function glow(ctx, c, x, y, r, a = 1) {
+    const key = c.join(",");
+    let tex = sprites.get(key);
+    if (!tex) {
+      tex = document.createElement("canvas"); tex.width = tex.height = 64;
+      const g = tex.getContext("2d"), grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grd.addColorStop(0, `rgba(${key},1)`); grd.addColorStop(0.3, `rgba(${key},.45)`); grd.addColorStop(1, `rgba(${key},0)`);
+      g.fillStyle = grd; g.fillRect(0, 0, 64, 64); sprites.set(key, tex);
+    }
+    ctx.globalAlpha = a; ctx.drawImage(tex, x - r, y - r, r * 2, r * 2); ctx.globalAlpha = 1;
+  }
   function palette() {
     const cs = getComputedStyle(document.documentElement);
     const dark = document.documentElement.dataset.theme !== "light";
@@ -43,7 +56,7 @@
   MODES.field = {
     init(S) {
       S.parts = [];
-      const n = Math.round(clamp(S.w * S.h / 9000, 60, 190));
+      const n = Math.round(clamp(S.w * S.h / 13000, 50, 130));
       for (let i = 0; i < n; i++) S.parts.push(this.spawn(S, true));
       S.tone = 0; S.toneK = 0;
     },
@@ -122,7 +135,7 @@
         else if (c.s === 2) { fill = P.t1; alpha = 0.42; }
         else if (c.s === 3) { fill = P.t1; alpha = 0.42 * (1 - c.k); }
         ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.lineTo(e[0], e[1]); ctx.lineTo(d[0], d[1]); ctx.closePath();
-        if (fill) { ctx.fillStyle = css(fill, alpha); ctx.fill(); if (c.s === 2) { ctx.shadowColor = css(fill, .8); ctx.shadowBlur = 14; ctx.fill(); ctx.shadowBlur = 0; } }
+        if (fill) { ctx.fillStyle = css(fill, alpha); ctx.fill(); }
         ctx.strokeStyle = css(P.ink, 0.07 + (scanD < 0.06 ? 0.25 * (1 - scanD / 0.06) : 0));
         ctx.lineWidth = 1; ctx.stroke();
       }
@@ -227,8 +240,8 @@
         const g = S.rings[c.g], n = g.nodes[c.n], p = this.pos(S, g, n.a), k = c.out ? c.k : 1 - c.k;
         const x = lerp(S.cx, p[0], k), y = lerp(S.cy, p[1], k), col = c.c ? P.t2 : P.t1;
         ctx.strokeStyle = css(col, 0.18); ctx.beginPath(); ctx.moveTo(S.cx, S.cy); ctx.lineTo(p[0], p[1]); ctx.stroke();
-        ctx.fillStyle = css(col, 1); ctx.shadowColor = css(col, .9); ctx.shadowBlur = 12;
-        ctx.beginPath(); ctx.arc(x, y, 2.4, 0, TAU); ctx.fill(); ctx.shadowBlur = 0;
+        glow(ctx, col, x, y, 12, 0.7);
+        ctx.fillStyle = css(col, 1); ctx.beginPath(); ctx.arc(x, y, 2.4, 0, TAU); ctx.fill();
       }
       // nodes (depth-sorted feel via alpha)
       S.rings.forEach((g, gi) => g.nodes.forEach(n => {
@@ -271,7 +284,7 @@
     },
     draw(S, ctx, P) {
       ctx.clearRect(0, 0, S.w, S.h);
-      const NX = 72, NY = Math.round(NX * S.h / S.w), vals = new Float32Array((NX + 1) * (NY + 1));
+      const NX = 54, NY = Math.round(NX * S.h / S.w), vals = new Float32Array((NX + 1) * (NY + 1));
       for (let j = 0; j <= NY; j++) for (let i = 0; i <= NX; i++) vals[j * (NX + 1) + i] = this.height(S, i / NX, j / NY);
       const sx = S.w / NX, sy = S.h / NY, L = 11;
       ctx.lineWidth = 1;
@@ -301,8 +314,8 @@
           ctx.beginPath(); ctx.moveTo(S.trail[i - 1][0] * S.w, S.trail[i - 1][1] * S.h); ctx.lineTo(S.trail[i][0] * S.w, S.trail[i][1] * S.h); ctx.stroke();
         }
         const h = S.trail[S.trail.length - 1];
-        ctx.fillStyle = css(P.ink, 1); ctx.shadowColor = css(P.t1, 1); ctx.shadowBlur = 16;
-        ctx.beginPath(); ctx.arc(h[0] * S.w, h[1] * S.h, 4, 0, TAU); ctx.fill(); ctx.shadowBlur = 0;
+        glow(ctx, P.t1, h[0] * S.w, h[1] * S.h, 18, 0.9);
+        ctx.fillStyle = css(P.ink, 1); ctx.beginPath(); ctx.arc(h[0] * S.w, h[1] * S.h, 4, 0, TAU); ctx.fill();
       }
     },
   };
@@ -388,20 +401,21 @@
       for (let i = 0; i < 3; i++) for (let j = i + 1; j < 3; j++) { ctx.strokeStyle = css(P.ink, 0.26); this.arc(S, ctx, S.anchors[i], S.anchors[j]); }
       for (const pl of S.pulses) {
         const col = pl.peer ? P.ink : P[pl.to.c], q = this.arc(S, ctx, pl.from, pl.to, pl.k);
-        ctx.fillStyle = css(col, pl.peer ? 0.7 : 1); ctx.shadowColor = css(col, .9); ctx.shadowBlur = 12;
-        ctx.beginPath(); ctx.arc(q[0], q[1], pl.peer ? 1.8 : 2.6, 0, TAU); ctx.fill(); ctx.shadowBlur = 0;
+        if (!pl.peer) glow(ctx, col, q[0], q[1], 12, 0.7);
+        ctx.fillStyle = css(col, pl.peer ? 0.7 : 1); ctx.beginPath(); ctx.arc(q[0], q[1], pl.peer ? 1.8 : 2.6, 0, TAU); ctx.fill();
       }
       for (const p of S.peers) { const q = this.xy(S, p); ctx.fillStyle = css(P.ink, 0.35); ctx.beginPath(); ctx.arc(q[0], q[1], 2, 0, TAU); ctx.fill(); }
       ctx.font = "10.5px 'Space Mono', monospace";
       for (const a of S.anchors) {
         const q = this.xy(S, a), col = P[a.c];
-        const g = ctx.createRadialGradient(q[0], q[1], 0, q[0], q[1], 34); g.addColorStop(0, css(col, 0.5)); g.addColorStop(1, css(col, 0));
-        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(q[0], q[1], 34, 0, TAU); ctx.fill();
+        glow(ctx, col, q[0], q[1], 34, 0.5);
         ctx.fillStyle = css(col, 1); ctx.beginPath(); ctx.arc(q[0], q[1], 5, 0, TAU); ctx.fill();
         ctx.fillStyle = css(P.ink, 0.6); ctx.fillText(a.id, q[0] + 12, q[1] + 4);
       }
     },
   };
+
+  const BUDGETS = { field: { dpr: 1, fps: 36 }, contour: { fps: 30 }, constellation: { fps: 36 }, orbit: { fps: 45 }, dev100: { fps: 40 }, ledger: { fps: 40 }, bump: { fps: 40 } };
 
   /* ------------------------------------------------------------ mount */
   function mount(canvas, opts = {}) {
@@ -410,10 +424,12 @@
     const ctx = canvas.getContext("2d");
     const host = opts.host || canvas.parentElement;
     const S = { w: 0, h: 0, mx: -1e4, my: -1e4, pmx: 0, pmy: 0, tmx: 0, tmy: 0, scrollDy: 0, velocity: opts.velocity || (() => 0) };
-    let P = palette(), raf = 0, running = false, last = 0, lastY = scrollY;
+    let P = palette(), raf = 0, running = false, last = 0, lastY = scrollY, drawn = 0;
+    // Background art does not need retina pixels or 60 fps; the budgets keep it off the critical path.
+    const budget = { dpr: 1.25, fps: 40, ...(BUDGETS[opts.mode] || {}), ...(opts.budget || {}) };
 
     function resize() {
-      const r = canvas.getBoundingClientRect(), dpr = Math.min(devicePixelRatio || 1, 2);
+      const r = canvas.getBoundingClientRect(), dpr = Math.min(devicePixelRatio || 1, budget.dpr);
       S.w = r.width; S.h = r.height;
       canvas.width = Math.round(S.w * dpr); canvas.height = Math.round(S.h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -422,7 +438,9 @@
       if (!running) frame(performance.now(), true);
     }
     function frame(t, once) {
-      const dt = Math.min(48, t - (last || t)); last = t;
+      if (!once && running && t - drawn < 1000 / budget.fps - 1.5) { raf = requestAnimationFrame(frame); return; }
+      drawn = t;
+      const dt = Math.min(64, t - (last || t)); last = t;
       S.pmx = lerp(S.pmx, S.tmx, 0.05); S.pmy = lerp(S.pmy, S.tmy, 0.05);
       S.scrollDy = lerp(S.scrollDy, scrollY - lastY, 0.2); lastY = scrollY;
       mode.step(S, dt || 16, t); mode.draw(S, ctx, P);

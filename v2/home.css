@@ -690,3 +690,24 @@ html[data-theme="light"].past-hero .v2-home .field { opacity: .7; }
 .v2-home .viz .chip { gap: 8px; }
 .v2-home .viz .chip::before { --icon: var(--i-play); width: 9px; height: 9px; color: var(--c1-screen); }
 .v2-home .rrow .ra, .v2-home .res-row .ext { display: flex; align-items: center; justify-content: center; }
+/* =================================================================
+   Performance: compositor-friendly versions of the heavy effects
+   (no animated blur, one ambient layer, glass only on the sticky bars)
+   ================================================================= */
+.v2-home .aurora { filter: none; }
+.v2-home .aurora i { mix-blend-mode: normal; will-change: transform; }
+.v2-home .aurora i:nth-child(1) { background: radial-gradient(closest-side, color-mix(in oklab, var(--track-1) 45%, transparent), transparent); }
+.v2-home .aurora i:nth-child(2) { background: radial-gradient(closest-side, color-mix(in oklab, var(--track-2) 40%, transparent), transparent); }
+.v2-home .aurora i:nth-child(3) { background: radial-gradient(closest-side, oklch(62% 0.16 270 / 35%), transparent); }
+.v2-home .beam { filter: none; will-change: transform; -webkit-mask-image: radial-gradient(closest-side, #000 25%, transparent 72%); mask-image: radial-gradient(closest-side, #000 25%, transparent 72%); }
+.v2-home .hero-bg { will-change: transform, opacity; }
+.v2-home .glare { mix-blend-mode: normal; opacity: .55; }
+html.js:not(.rm) .v2-home .reveal { filter: none; transition: opacity .9s var(--ease-emphasized), translate 1.05s var(--ease-emphasized), transform .45s var(--ease-emphasized), border-color var(--duration-base) var(--ease-standard);
+  transition-delay: calc(var(--i, 0) * 90ms), calc(var(--i, 0) * 90ms), 0s, 0s; }
+.v2-home [data-tilt] { transform-style: flat; }
+.v2-home .ticker, .v2-home .play-btn, .v2-home .viz .chip, .v2-home .preview .play { -webkit-backdrop-filter: none; backdrop-filter: none; }
+.v2-home .ticker { background: color-mix(in oklab, var(--bg-canvas) 88%, transparent); }
+.v2-home .play-btn { background: rgb(255 255 255 / 18%); }
+.v2-home .viz .chip { background: rgb(255 255 255 / 12%); }
+.v2-home .hero h1 .accent { animation: none; background-size: 100% 100%; }
+.v2-home .spot { display: none; }

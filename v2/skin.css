@@ -387,3 +387,27 @@ html[data-theme="dark"] .v2-content .mountain {
   background: color-mix(in oklab, var(--surface) 72%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: var(--inner-highlight), var(--shadow-card); }
 .v2-page-professional-tasks .professional-artifact { padding: 14px 0; border-top: 1px solid var(--line); }
 .v2-page-professional-tasks .professional-extension { border-radius: 8px; font-family: var(--font-mono); letter-spacing: .08em; color: var(--brand); background: var(--brand-tint); border-color: transparent; }
+
+/* =================================================================
+   15 · Performance: compositor-only motion on content pages
+   ================================================================= */
+.v2-aurora { filter: none; }
+.v2-aurora i { mix-blend-mode: normal; will-change: transform; }
+.v2-aurora i:nth-child(1) { background: radial-gradient(closest-side, color-mix(in oklab, var(--track-1) 45%, transparent), transparent); }
+.v2-aurora i:nth-child(2) { background: radial-gradient(closest-side, color-mix(in oklab, var(--track-2) 40%, transparent), transparent); }
+.v2-aurora i:nth-child(3) { background: radial-gradient(closest-side, oklch(62% 0.16 270 / 35%), transparent); }
+/* the entrance only fills backwards, so plain opacity drives the scroll exit afterwards */
+html.js:not(.rm) .v2-content .page-hero > :not(.v2-backdrop):not(h1):not(.v2-hero-index):not(.v2-scroll-cue) { animation-fill-mode: backwards; }
+.v2-content .page-hero > :not(.v2-backdrop):not(.v2-hero-index):not(.v2-scroll-cue) { filter: none; opacity: calc(1 - var(--hx) * .9); }
+.v2-content .v2-backdrop { filter: none; opacity: calc(1 - var(--hx) * .7); will-change: transform, opacity; }
+html.js:not(.rm) .v2-content .v2-r { filter: none;
+  transition: opacity .9s var(--ease-emphasized), translate 1s var(--ease-emphasized), transform .45s var(--ease-emphasized), border-color var(--duration-base);
+  transition-delay: calc(var(--i, 0) * 80ms), calc(var(--i, 0) * 80ms), 0s, 0s; }
+/* cards only take a 3D transform while the pointer is on them */
+.v2-content .v2-card { transform: none; }
+.v2-content .v2-card:hover { transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); }
+/* glass stays on the sticky header and subnav only */
+.button, .page-meta li, .board-nav a, .v2-page-professional-tasks .professional-hero-note { -webkit-backdrop-filter: none; backdrop-filter: none; }
+.button { background: color-mix(in oklab, var(--surface) 88%, transparent); }
+.page-meta li, .board-nav a { background: color-mix(in oklab, var(--surface) 90%, transparent); }
+.v2-page-professional-tasks .professional-hero-note { background: color-mix(in oklab, var(--surface) 92%, transparent); }

@@ -9,7 +9,8 @@
 
   /* Inertial scrolling; native smooth scrolling remains if the library is unavailable. */
   if (!reduce && window.Lenis) {
-    const lenis = new Lenis({ lerp: 0.085, wheelMultiplier: 0.95 });
+    // A light smoothing factor keeps the page close to the wheel or trackpad, so it never feels behind.
+    const lenis = new Lenis({ lerp: 0.14, wheelMultiplier: 1 });
     window.__lenis = lenis;
     const raf = time => { lenis.raf(time); requestAnimationFrame(raf); };
     requestAnimationFrame(raf);
