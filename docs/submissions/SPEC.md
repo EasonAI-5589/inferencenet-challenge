@@ -1,5 +1,7 @@
 # InferenceNet 提交格式 v0.1.0
 
+> 2026-10-22：三类材料结构继续适用。当前提交入口使用用户名＋密码，将文件保存到自有服务器，submitter 为服务端分配的稳定账号 ID；正式引用采用 server 回执。下文 HF 仓库/登录/下载描述为历史方案，当前覆盖规则、限额和合成示例边界见 [SELF-HOSTED.md](SELF-HOSTED.md)。
+
 日期：2026-10-21。适用网页第 2 项 Benchmark、第 3 项 Agent / Harness、第 5 项 Failure Case。
 
 本规范是第一版提交协议。2026-10-21 四个私有 HF Dataset 仓库已创建并上传规范与示例；自动受理和评测服务尚未部署。当前交付状态以 [Handoff](../handoffs/2026-10-21-submission-intake.md) 为准。三个示例只含合成数据。正式任务、模型、预算及评分规则由对应评测协议指定，不把示例参数当成 Dev100 的新协议。

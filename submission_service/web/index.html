@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="robots" content="noindex" />
+    <title>Submit · InferenceNet</title>
+    <script src="/submit-assets/theme.js?v=20261022-intake"></script>
+    <link
+      rel="preload"
+      href="/assets/fonts/inter-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="/shared/v2.css?v=20261022-intake" />
+    <link rel="stylesheet" href="/submit-assets/intake.css?v=20261023-polish" />
+    <script
+      src="/submit-assets/intake.js?v=20261023-polish"
+      type="module"
+    ></script>
+  </head>
+  <body>
+    <a class="skip" href="#main" data-en="Skip to content" data-zh="跳到正文"
+      >Skip to content</a
+    >
+    <header class="topbar">
+      <a
+        class="wordmark"
+        href="https://easonai-5589.github.io/inferencenet-challenge/v2/"
+        aria-label="InferenceNet home"
+        ><svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true">
+          <path
+            d="M7.6 24.5 16 9.9 24.4 24.5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            opacity=".45"
+          />
+          <circle cx="7.6" cy="24.5" r="3" class="node-one" />
+          <circle cx="24.4" cy="24.5" r="4.2" class="node-two" />
+          <circle cx="16" cy="9.9" r="5.4" fill="currentColor" /></svg
+        ><span>Inference<span class="net">Net</span></span></a
+      >
+      <a
+        class="back-link"
+        href="https://easonai-5589.github.io/inferencenet-challenge/v2/"
+        data-en="← Back to the initiative"
+        data-zh="← 返回项目官网"
+        >← Back to the initiative</a
+      >
+      <div class="controls">
+        <button id="language" class="small-button" type="button">中文</button
+        ><button
+          id="theme"
+          class="small-button"
+          type="button"
+          aria-label="Toggle dark theme"
+        >
+          ◐ <span id="theme-label">Dark</span></button
+        ><button
+          id="account"
+          class="small-button"
+          type="button"
+          data-en="Sign in"
+          data-zh="登录"
+        >
+          Sign in</button
+        ><button
+          id="logout"
+          class="small-button"
+          type="button"
+          hidden
+          data-en="Sign out"
+          data-zh="退出"
+        >
+          Sign out
+        </button>
+      </div>
+    </header>
+    <main id="main" class="wrap">
+      <section class="hero">
+        <div class="hero-text">
+        <div class="eyebrow mono">
+          <span class="live-dot"></span
+          ><span
+            data-en="BUILD WITH US / SUBMISSIONS"
+            data-zh="共建 InferenceNet / 提交材料"
+            >BUILD WITH US / SUBMISSIONS</span
+          >
+        </div>
+        <h1 id="page-title">Submit a benchmark<span class="accent">.</span></h1>
+        <p id="page-description" class="lede"></p>
+        <div class="hero-note">
+          <span aria-hidden="true">↗</span
+          ><span
+            data-en="Contribute a reproducible piece of the next generation of domain agents."
+            data-zh="为下一代领域智能体，贡献一份可以复现的成果。"
+            >Contribute a reproducible piece of the next generation of domain
+            agents.</span
+          >
+        </div>
+        </div>
+        <ul class="hero-facts">
+          <li>
+            <span class="mono">01</span>
+            <div>
+              <strong data-en="Private by default" data-zh="默认私有"
+                >Private by default</strong
+              ><span
+                data-en="Only your account and the review team can open your files."
+                data-zh="只有你的账号和审核团队能查看你的材料。"
+                >Only your account and the review team can open your
+                files.</span
+              >
+            </div>
+          </li>
+          <li>
+            <span class="mono">02</span>
+            <div>
+              <strong data-en="Checked file by file" data-zh="逐个文件校验"
+                >Checked file by file</strong
+              ><span
+                data-en="Each file is hashed in your browser and verified again on arrival."
+                data-zh="每个文件先在浏览器计算哈希，到达服务器后再次核对。"
+                >Each file is hashed in your browser and verified again on
+                arrival.</span
+              >
+            </div>
+          </li>
+          <li>
+            <span class="mono">03</span>
+            <div>
+              <strong data-en="Nothing runs on upload" data-zh="上传不运行代码"
+                >Nothing runs on upload</strong
+              ><span
+                data-en="Submitting stores and validates. Evaluation is a separate, reviewed step."
+                data-zh="提交只做保存和格式校验，评测是单独的审核步骤。"
+                >Submitting stores and validates. Evaluation is a separate,
+                reviewed step.</span
+              >
+            </div>
+          </li>
+        </ul>
+      </section>
+      <nav class="track-nav" aria-label="Submission type">
+        <a href="/submit/benchmark/" data-kind="benchmark"
+          ><span class="mono">01</span
+          ><span data-en="Benchmark" data-zh="Benchmark 任务"
+            >Benchmark</span
+          ></a
+        >
+        <a href="/submit/harness/" data-kind="harness"
+          ><span class="mono">02</span><span>Agent / Harness</span></a
+        >
+        <a href="/submit/failure-case/" data-kind="failure_case"
+          ><span class="mono">03</span
+          ><span data-en="Failure case" data-zh="Failure Case 失败案例"
+            >Failure case</span
+          ></a
+        >
+        <a href="/submit/mine/" data-kind="mine" class="mine-link"
+          ><span aria-hidden="true">↗</span
+          ><span data-en="My submissions" data-zh="我的提交"
+            >My submissions</span
+          ><span id="submission-count" class="count">0</span></a
+        >
+      </nav>
+      <div
+        id="notice"
+        class="notice"
+        role="status"
+        aria-live="polite"
+        hidden
+      ></div>
+      <div id="submission-layout" class="layout">
+        <div class="workspace">
+          <div class="steps mono">
+            <span
+              id="step-files"
+              class="current"
+              data-en="01 / PREPARE"
+              data-zh="01 / 准备材料"
+              >01 / PREPARE</span
+            ><i></i
+            ><span id="step-upload" data-en="02 / UPLOAD" data-zh="02 / 上传"
+              >02 / UPLOAD</span
+            ><i></i
+            ><span id="step-receipt" data-en="03 / RECEIPT" data-zh="03 / 回执"
+              >03 / RECEIPT</span
+            >
+          </div>
+          <section class="panel">
+            <div class="section-heading">
+              <span class="section-number mono">01</span>
+              <div>
+                <h2 data-en="Tell us what you built" data-zh="介绍你的成果">
+                  Tell us what you built
+                </h2>
+                <p
+                  data-en="A clear title and license help reviewers understand your contribution."
+                  data-zh="清晰的标题和许可声明，能帮助审核者理解你的贡献。"
+                >
+                  A clear title and license help reviewers understand your
+                  contribution.
+                </p>
+              </div>
+            </div>
+            <label for="title" data-en="Submission title" data-zh="提交标题"
+              >Submission title</label
+            ><input
+              id="title"
+              maxlength="200"
+              autocomplete="off"
+              placeholder="A concise, descriptive title"
+            />
+            <div class="field-row">
+              <div>
+                <label for="license" data-en="License" data-zh="许可协议"
+                  >License</label
+                ><input
+                  id="license"
+                  maxlength="100"
+                  value="MIT"
+                  placeholder="MIT / Apache-2.0 / LicenseRef-…"
+                />
+              </div>
+              <div>
+                <label for="version-of" data-en="Version" data-zh="版本"
+                  >Version</label
+                ><select id="version-of">
+                  <option
+                    value=""
+                    data-en="New submission · v1"
+                    data-zh="新提交 · v1"
+                  >
+                    New submission · v1
+                  </option>
+                </select>
+              </div>
+            </div>
+          </section>
+          <section class="panel file-panel">
+            <div class="section-heading">
+              <span class="section-number mono">02</span>
+              <div>
+                <h2
+                  data-en="Add your submission folder"
+                  data-zh="选择完整提交文件夹"
+                >
+                  Add your submission folder
+                </h2>
+                <p
+                  data-en="Keep the folder structure. We check the file inventory before uploading."
+                  data-zh="保留目录结构，上传前会检查文件清单。"
+                >
+                  Keep the folder structure. We check the file inventory before
+                  uploading.
+                </p>
+              </div>
+            </div>
+            <div class="dropzone" id="dropzone">
+              <svg
+                width="40"
+                height="40"
+                viewBox="0 0 40 40"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M5 12a3 3 0 0 1 3-3h9l4 4h11a3 3 0 0 1 3 3v14a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V12Z"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                />
+                <path
+                  d="M20 28V18m-4 4 4-4 4 4"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                /></svg
+              ><strong
+                data-en="One folder. Everything needed to reproduce it."
+                data-zh="一个文件夹，包含完整的复现材料。"
+                >One folder. Everything needed to reproduce it.</strong
+              ><span
+                data-en="Up to 1 GiB per submission · 2,000 files"
+                data-zh="每份提交最多 1 GiB · 2,000 个文件"
+                >Up to 1 GiB per submission · 2,000 files</span
+              ><button
+                id="choose-folder"
+                class="btn btn-secondary"
+                type="button"
+                data-en="Choose folder"
+                data-zh="选择文件夹"
+              >
+                Choose folder</button
+              ><input
+                id="folder"
+                type="file"
+                webkitdirectory
+                multiple
+                hidden
+              /><small id="folder-hint"></small>
+            </div>
+            <div class="sample-row">
+              <span
+                data-en="Want to try the format first?"
+                data-zh="想先体验一次完整提交？"
+                >Want to try the format first?</span
+              ><button
+                id="load-example"
+                class="text-button"
+                type="button"
+                data-en="Load a synthetic example ↗"
+                data-zh="载入合成示例 ↗"
+              >
+                Load a synthetic example ↗
+              </button>
+            </div>
+            <div id="file-summary" class="file-summary" hidden>
+              <div>
+                <strong id="file-total"></strong
+                ><span id="byte-total" class="mono"></span>
+              </div>
+              <button
+                id="clear-files"
+                class="text-button"
+                type="button"
+                data-en="Clear"
+                data-zh="清空"
+              >
+                Clear
+              </button>
+            </div>
+            <div id="file-list" class="file-list"></div>
+            <p
+              id="manifest-note"
+              class="hint"
+              hidden
+              data-en="The service generates submission.json using your account and the verified file inventory."
+              data-zh="服务端会根据你的账号和已校验的文件清单生成 submission.json。"
+            >
+              The service generates submission.json using your account and the
+              verified file inventory.
+            </p>
+          </section>
+          <section class="panel submit-bar">
+            <div class="section-heading">
+              <span class="section-number mono">03</span>
+              <div>
+                <h2 data-en="Confirm and submit" data-zh="确认并提交">
+                  Confirm and submit
+                </h2>
+                <p
+                  data-en="We check every file before anything is stored."
+                  data-zh="保存之前，会先逐个核对文件。"
+                >
+                  We check every file before anything is stored.
+                </p>
+              </div>
+            </div>
+            <div id="account-callout" class="account-callout" hidden>
+              <p
+                data-en="Submitting needs an account. It keeps your submissions private to you, and lets you add versions and download receipts later."
+                data-zh="提交需要账号。账号让你的提交只对你可见，之后也能用它补交新版本、下载回执。"
+              >
+                Submitting needs an account. It keeps your submissions private
+                to you, and lets you add versions and download receipts later.
+              </p>
+              <button
+                id="callout-sign-in"
+                class="btn btn-secondary"
+                type="button"
+                data-en="Sign in or create an account"
+                data-zh="登录或创建账号"
+              >
+                Sign in or create an account
+              </button>
+            </div>
+            <label class="consent"
+              ><input id="consent" type="checkbox" /><span
+                data-en="I have permission to submit these materials and agree that the project team may review them privately."
+                data-zh="我有权提交这些材料，并同意项目团队对材料进行私下审核。"
+                >I have permission to submit these materials and agree that the
+                project team may review them privately.</span
+              ></label
+            >
+            <div id="progress-area" hidden>
+              <div class="progress-label">
+                <span id="progress-text"></span
+                ><span id="progress-percent" class="mono"></span>
+              </div>
+              <progress id="progress" max="100" value="0"></progress>
+            </div>
+            <div class="submit-actions">
+              <span
+                id="upload-note"
+                class="hint"
+                data-en="Files are stored privately. Submitting does not start an evaluation."
+                data-zh="材料私下保存。完成提交不会自动启动评测。"
+                >Files are stored privately. Submitting does not start an
+                evaluation.</span
+              ><button
+                id="submit"
+                class="btn btn-primary"
+                type="button"
+                data-en="Check & submit →"
+                data-zh="检查并提交 →"
+              >
+                Check & submit →
+              </button>
+            </div>
+          </section>
+          <section id="receipt-panel" class="panel receipt-panel" hidden>
+            <span class="receipt-symbol" aria-hidden="true">✓</span>
+            <div
+              class="mono"
+              data-en="SUBMISSION RECEIVED"
+              data-zh="材料已受理"
+            >
+              SUBMISSION RECEIVED
+            </div>
+            <h2 data-en="Your contribution is in." data-zh="你的贡献已收到。">
+              Your contribution is in.
+            </h2>
+            <p
+              data-en="File validation passed. The next step is review by the project team."
+              data-zh="文件校验已通过，接下来由项目团队审核。"
+            >
+              File validation passed. The next step is review by the project
+              team.
+            </p>
+            <code id="receipt-id"></code>
+            <div class="receipt-actions">
+              <button
+                id="download-receipt"
+                class="btn btn-primary"
+                type="button"
+                data-en="Download receipt ↓"
+                data-zh="下载回执 ↓"
+              >
+                Download receipt ↓</button
+              ><a
+                class="btn btn-secondary"
+                href="/submit/mine/"
+                data-en="View my submissions ↗"
+                data-zh="查看我的提交 ↗"
+                >View my submissions ↗</a
+              >
+            </div>
+          </section>
+        </div>
+        <aside class="guide">
+          <div class="guide-card">
+            <div
+              class="mono guide-label"
+              data-en="WHAT TO INCLUDE"
+              data-zh="材料清单"
+            >
+              WHAT TO INCLUDE
+            </div>
+            <h2 id="guide-title"></h2>
+            <p id="guide-description"></p>
+            <ul id="requirements"></ul>
+            <div class="folder-tree">
+              <div
+                class="tree-head mono"
+                data-en="YOUR FOLDER"
+                data-zh="提交目录"
+              >
+                YOUR FOLDER
+              </div>
+              <pre id="folder-tree"></pre>
+            </div>
+            <a
+              class="text-link"
+              href="/submit-assets/format.html"
+              target="_blank"
+              rel="noopener"
+              data-en="Read the file format ↗"
+              data-zh="阅读完整文件格式 ↗"
+              >Read the file format ↗</a
+            >
+          </div>
+          <div class="guide-foot">
+            <span class="mono" data-en="AFTER YOU SUBMIT" data-zh="提交之后"
+              >AFTER YOU SUBMIT</span
+            >
+            <p
+              data-en="We preserve your files and their hashes. A receipt confirms intake, not benchmark approval or a reproduced result."
+              data-zh="我们保留原始文件与哈希。回执确认材料已受理，不代表任务已接纳或失败已复现。"
+            >
+              We preserve your files and their hashes. A receipt confirms
+              intake, not benchmark approval or a reproduced result.
+            </p>
+          </div>
+        </aside>
+      </div>
+      <section id="mine-panel" hidden>
+        <div class="mine-heading">
+          <div>
+            <h2 data-en="Your contributions" data-zh="你的提交记录">
+              Your contributions
+            </h2>
+            <p
+              class="hint"
+              data-en="Only submissions belonging to your account appear here."
+              data-zh="这里仅显示属于你当前账号的提交。"
+            >
+              Only submissions belonging to your account appear here.
+            </p>
+          </div>
+          <button
+            id="refresh"
+            class="btn btn-secondary"
+            data-en="Refresh ↻"
+            data-zh="刷新 ↻"
+          >
+            Refresh ↻
+          </button>
+        </div>
+        <div id="my-submissions" class="my-submissions"></div>
+        <button
+          id="more"
+          class="btn btn-secondary"
+          hidden
+          data-en="Load more"
+          data-zh="加载更多"
+        >
+          Load more
+        </button>
+      </section>
+      <footer>
+        <a
+          class="wordmark"
+          href="https://easonai-5589.github.io/inferencenet-challenge/v2/"
+          ><span>Inference<span class="net">Net</span></span></a
+        >
+        <p
+          data-en="AI Agents for Business, Finance and Social Science"
+          data-zh="面向商业、金融与社会科学的 AI 智能体"
+        >
+          AI Agents for Business, Finance and Social Science
+        </p>
+        <span class="mono">BUILD. EVALUATE. EVOLVE.</span>
+      </footer>
+    </main>
+    <dialog id="auth-dialog">
+      <form id="auth-form">
+        <button
+          id="close-auth"
+          class="close-button"
+          type="button"
+          aria-label="Close"
+        >
+          ×
+        </button>
+        <div class="eyebrow mono">INFERENCENET / ACCOUNT</div>
+        <h2 id="auth-title">Welcome back.</h2>
+        <p id="auth-description" class="hint"></p>
+        <label for="username" data-en="Username" data-zh="用户名"
+          >Username</label
+        ><input
+          id="username"
+          required
+          minlength="3"
+          maxlength="32"
+          pattern="[A-Za-z0-9][A-Za-z0-9_-]{2,31}"
+          autocomplete="username"
+        /><label for="password" data-en="Password" data-zh="密码"
+          >Password</label
+        ><input
+          id="password"
+          type="password"
+          required
+          maxlength="128"
+          autocomplete="current-password"
+        />
+        <p id="auth-error" class="auth-error" role="alert"></p>
+        <button
+          id="auth-submit"
+          class="btn btn-primary"
+          type="submit"
+          data-en="Sign in →"
+          data-zh="登录 →"
+        >
+          Sign in →</button
+        ><button id="switch-auth" class="text-button" type="button"></button>
+      </form>
+    </dialog>
+  </body>
+</html>

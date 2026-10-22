@@ -79,6 +79,7 @@
 .take-part h3{margin:0;font-size:18px;font-weight:600;line-height:1.45;letter-spacing:-.01em}
 .take-part p{flex:1;margin:8px 0 0;font-size:14px;line-height:1.75;color:var(--soft)}
 .take-part .text-link{margin-top:14px;align-self:flex-start}
+.take-part .soon-tag{margin-top:14px;align-self:flex-start;padding:2px 10px;border:1px dashed var(--line);border-radius:999px;font-size:13px;color:var(--soft)}
 
 @media(max-width:1100px){
   .plan-stages{grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 24px}

@@ -281,6 +281,7 @@ html.past-hero .v2-content .ambient { opacity: 1; }
 .v2-content .take-part > li h3 { font-size: 19px; letter-spacing: -0.02em; }
 .v2-content .take-part > li h3::before { content: counter(take, decimal-leading-zero); display: block; margin-bottom: 18px; font: 400 11.5px var(--font-mono); letter-spacing: .12em; color: var(--brand); }
 .v2-content .take-part > li:nth-child(even) h3::before { color: var(--caution); }
+.v2-content .take-part .soon-tag { padding: 3px 10px; border: 1px dashed var(--border-strong); border-radius: 999px; font: 400 11px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-tertiary); }
 
 /* =================================================================
    10 · Challenge

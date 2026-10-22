@@ -1,0 +1,13 @@
+{
+  "kind": "synthetic-fixture",
+  "author": "example-author",
+  "description": "Three manually chosen integers exercise whether a mean denominator counts zero-valued observations.",
+  "source": "Created for this submission specification; no external dataset or human records",
+  "values": [10, 0, 20],
+  "expected_mean": 10,
+  "calculation": "(10 + 0 + 20) / 3 = 10",
+  "license": "CC0-1.0",
+  "seed_policy": "No random generation or sampling is used",
+  "known_failure": "Excluding zeros from the count yields 30 / 2 = 15",
+  "upload_status": "local fixture only; not uploaded"
+}

@@ -1,0 +1,43 @@
+{
+  "format": "harbor-task-v1.4",
+  "benchmark_id": "toy-mean",
+  "version": "1.0.0",
+  "task_ids": ["toy-mean-001"],
+  "tasks_path": "tasks",
+  "splits_path": "splits.json",
+  "metric_spec": {
+    "name": "mean_exact_with_tolerance",
+    "output_key": "reward",
+    "direction": "higher_is_better",
+    "passing_value": 1,
+    "output_schema": {"mean": "finite JSON number; no additional fields"},
+    "absolute_tolerance": 1e-12,
+    "relative_tolerance": 0.0,
+    "reward_values": [0, 1],
+    "aggregation": "arithmetic mean over the declared task set only when every task is scored",
+    "missing_or_invalid_submission": "scored zero",
+    "infrastructure_error": "reward=null, verifier_error=1, process exit code 2; excluded from a publishable aggregate"
+  },
+  "runtime_profile": {
+    "profile_id": "toy-python312-harbor024-example",
+    "os": "linux",
+    "architecture": "amd64",
+    "host_python": "3.12",
+    "harbor": "0.24.0",
+    "candidate_python": "3.12.7",
+    "environment_backend": "docker",
+    "dependency_policy": "Python standard library only in candidate and verifier; Harbor is supplied by the operator",
+    "image_reference": "python:3.12.7-slim",
+    "image_digest": null,
+    "image_status": "Tag is illustrative and not immutable; the operator must resolve and record actual image digests before an accepted run",
+    "network": "no-network",
+    "integration_status": "not_run"
+  },
+  "oracle_policy": {
+    "entrypoint": "solution/solve.sh",
+    "scope": "Task-local independent arithmetic solution for fixture validation only",
+    "expected_reward": 1,
+    "candidate_access": "Oracle files and reference.json are never copied into the candidate image",
+    "sealed_test_policy": "This example has no sealed tasks; real sealed answers and oracle artifacts stay private"
+  }
+}

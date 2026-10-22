@@ -1,0 +1,15 @@
+{
+  "schema_version": "0.1.0",
+  "kind": "operator-runtime-requirement",
+  "profile_id": "toy-python312-harbor024-example",
+  "host_python": "3.12",
+  "candidate_python": "3.12.7",
+  "harbor": "0.24.0",
+  "submitted_solver_dependencies": [],
+  "submitted_solver_dependency_policy": "Python standard library only",
+  "wrapper_dependencies": "Harbor and its own dependencies are supplied by the operator; no extra submission dependencies",
+  "runtime_inventory_sha256": null,
+  "image_digest": null,
+  "status": "requirements only; operator must supply and freeze the full installed runtime inventory and actual image digest before accepting a Harbor run",
+  "integration_status": "Harbor interface source reviewed; Docker/Harbor execution not run"
+}

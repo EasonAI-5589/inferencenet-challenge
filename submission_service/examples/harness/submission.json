@@ -1,0 +1,63 @@
+{
+  "schema_version": "0.1.0",
+  "submission_id": "harness-toy-mean-001",
+  "type": "harness",
+  "version": 1,
+  "title": "Deterministic toy mean harness",
+  "submitter": "example-author",
+  "license": "Apache-2.0",
+  "created_at": "2026-10-21T00:00:00Z",
+  "spec_path": "harness.json",
+  "files": [
+    {
+      "path": "harness.json",
+      "bytes": 969,
+      "sha256": "b65be9536211819070b43abbc1bbf5294da2c3609ef7b3eb3c380ea5a89ab077"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 10280,
+      "sha256": "074e6e32c86a4c0ef8b3ed25b721ca23aca83df277cd88106ef7177c354615ff"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3446,
+      "sha256": "195253b84eddf2e0187ed77558a16c07b7cd43b9231543a454ea3d810887d5e4"
+    },
+    {
+      "path": "runtime/runtime-lock.json",
+      "bytes": 749,
+      "sha256": "ecab447e71d34d84ad9f90c66cd7ec5fd81e5986438da6dad48876d75f0f6007"
+    },
+    {
+      "path": "smoke/expected-ignore-zero-count.json",
+      "bytes": 15,
+      "sha256": "e30277c67b525716dd39bf9a1ddcb3e9e46aaede819277d20c1db7e3a677caa9"
+    },
+    {
+      "path": "smoke/expected.json",
+      "bytes": 15,
+      "sha256": "e455cacefec07cc1be03422ce76b691abc78c22f609bb786fd1907e33f414050"
+    },
+    {
+      "path": "smoke/input.json",
+      "bytes": 24,
+      "sha256": "a5562afc6120d222d5ff5dbbaf57a0091b72822f5a7c338094fc76be18cbe77e"
+    },
+    {
+      "path": "src/submission_agent/__init__.py",
+      "bytes": 83,
+      "sha256": "c5cdf05def5bdcd4a84e495a5c6f1639acbba3bd8500be2d8e2888f5ecad7907"
+    },
+    {
+      "path": "src/submission_agent/agent.py",
+      "bytes": 2386,
+      "sha256": "dc12421993eb6be8558135b8f3a10ca0ce38b769f83d5c28b42570e4f0432585"
+    },
+    {
+      "path": "src/submission_agent/solver.py",
+      "bytes": 1824,
+      "sha256": "ff6f6947b4b23cce25efd040c3e5199e3ebf29de6c7dc689306b129ffb16f88d"
+    }
+  ]
+}

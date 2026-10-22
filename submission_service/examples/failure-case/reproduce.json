@@ -1,0 +1,28 @@
+{
+  "schema_version": "0.1.0",
+  "mode": "offline_replay",
+  "task_id": "toy-mean-001",
+  "runtime_profile": "toy-python312-harbor024-example",
+  "resource_limits": {
+    "timeout_sec": 30,
+    "max_model_requests": 0
+  },
+  "kwargs": {
+    "mode": "ignore_zero_count"
+  },
+  "deterministic": true,
+  "seed": null,
+  "seed_reason": "The toy solver uses no randomness and makes no model or network requests.",
+  "attempts": 1,
+  "failure_predicate": {
+    "kind": "reward_below",
+    "metric": "reward",
+    "threshold": 1,
+    "threshold_source": "benchmark",
+    "requires_score_available": true,
+    "requires_verifier_error": false
+  },
+  "artifact_policy": "Write new replay and verification artifacts outside this package. Preserve all original evidence bytes.",
+  "score_only_policy": "Score evidence/output/answer.json without running the candidate solver.",
+  "fresh_run_policy": "Run the pinned harness with the declared kwargs in a fresh candidate environment, freeze its output, then score it in a separate verifier."
+}

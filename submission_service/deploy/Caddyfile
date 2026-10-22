@@ -1,0 +1,40 @@
+{
+	servers {
+		protocols h1 h2
+		timeouts {
+			read_header 15s
+			read_body 2h
+			write 2h
+			idle 2m
+		}
+	}
+}
+
+submit.inferencenet.cn {
+	tls {
+		issuer acme {
+			dir https://acme-v02.api.letsencrypt.org/directory
+		}
+	}
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=86400"
+		-Server
+	}
+	request_body {
+		max_size 1GiB
+	}
+	reverse_proxy 127.0.0.1:8100 {
+		transport http {
+			response_header_timeout 2m
+		}
+	}
+	log {
+		output file /var/log/caddy/submit-access.json {
+			roll_size 20MiB
+			roll_keep 5
+			roll_keep_for 168h
+		}
+		format json
+	}
+}

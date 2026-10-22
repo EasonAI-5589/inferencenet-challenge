@@ -1,0 +1,15 @@
+[Unit]
+Description=Expire abandoned InferenceNet uploads
+After=inferencenet-intake.service
+
+[Service]
+Type=oneshot
+User=inferencenet-submit
+Group=inferencenet-submit
+WorkingDirectory=/srv/inferencenet-submit/app/current
+ExecStart=/srv/inferencenet-submit/app/venv/bin/python -m submission_service.manage cleanup
+UMask=0077
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/srv/inferencenet-submit/data /srv/inferencenet-submit/staging

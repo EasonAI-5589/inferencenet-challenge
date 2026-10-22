@@ -61,7 +61,16 @@ For the Build with us submission system, see the
 [submission intake handoff (2026-10-21)](docs/handoffs/2026-10-21-submission-intake.md),
 [file format](docs/submissions/SPEC.md), and [API design](docs/submissions/API-DESIGN.md).
 The four private Hugging Face repositories are initialized; the submission UI remains a local
-prototype and the authenticated intake service is not yet deployed.
+prototype in the original handoff. The self-hosted intake service now provides
+[Benchmark](https://submit.inferencenet.cn/submit/benchmark/),
+[Agent / Harness](https://submit.inferencenet.cn/submit/harness/), and
+[Failure Case](https://submit.inferencenet.cn/submit/failure-case/) submissions,
+with username/password accounts, private uploads, validation and versioned receipts.
+See the [current server API](docs/submissions/SELF-HOSTED.md) and
+[service/deployment guide](submission_service/README.md), with screenshots and
+acceptance results in the [application handoff](docs/handoffs/2026-10-23-submission-app.md).
+Runtime data stays on the
+submission server; GitHub Pages continues to serve the public website.
 
 This repository contains the editable static files served by GitHub Pages.
 No frontend framework or package installation is required.
