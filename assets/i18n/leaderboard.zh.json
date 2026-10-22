@@ -357,5 +357,18 @@
   "Previous site design": "旧版网站",
   "Contact us": "联系我们",
   "Meet the team": "了解团队",
-  "Contact": "联系"
+  "Contact": "联系",
+  "Scroll": "向下滚动",
+  "Recorded replay": "录制回放",
+  "Accepted result archives": "已接收的结果存档",
+  "Scroll the table to see all metrics": "左右滑动表格查看全部指标",
+  "Download results CSV": "下载结果 CSV",
+  "Teams": "团队",
+  "See our ModularRSI-style development study": "查看我们的 ModularRSI 式开发研究",
+  "Harness: what it is, three taken apart": "Harness：是什么，以及三个拆解",
+  "Download development results CSV": "下载开发集结果 CSV",
+  "Harness: architecture, Harbor integration and four compared": "Harness：体系架构、Harbor 统一集成与四套配置对比",
+  "Explore the ModularRSI results": "查看 ModularRSI 实验结果",
+  "See our ModularRSI implementation and results": "查看 ModularRSI 实现与评测结果",
+  "Explore training and co-evolution directions": "探索模型训练与协同进化方向"
 }

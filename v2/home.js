@@ -139,6 +139,7 @@
   // scroll-linked: hero exit, parallax, section ambience
   const hero = document.querySelector(".hero");
   const para = [...document.querySelectorAll("[data-parallax]")];
+  const ambient = document.querySelector(".ambient");
   const ambs = [...document.querySelectorAll(".ambient i")];
   const secs = ambs.map(a => document.getElementById(a.dataset.amb));
   let ticking = false;
@@ -156,6 +157,7 @@
     let cur = -1;
     secs.forEach((sec, i) => { if (sec && sec.getBoundingClientRect().top <= vh * 0.45) cur = i; });
     ambs.forEach((a, i) => a.classList.toggle("on", i === cur));
+    if (ambient) ambient.dataset.amb = cur >= 0 ? ambs[cur].dataset.amb : "";
   }
   addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }, { passive: true });
   addEventListener("resize", frame);
@@ -355,7 +357,7 @@
   readColors();
 
   function resize() {
-    const r = hero.getBoundingClientRect(), dpr = Math.min(devicePixelRatio || 1, 2);
+    const r = hero.getBoundingClientRect(), dpr = Math.min(devicePixelRatio || 1, 1.5);
     W = r.width; H = r.height;
     cvs.width = Math.round(W * dpr); cvs.height = Math.round(H * dpr);
     cvs.style.width = W + "px"; cvs.style.height = H + "px";
@@ -425,12 +427,13 @@
       const { a, b } = p.e, t0 = Math.max(0, p.t - 0.35);
       const hx = a.sx + (b.sx - a.sx) * p.t, hy = a.sy + (b.sy - a.sy) * p.t;
       const tx = a.sx + (b.sx - a.sx) * t0, ty = a.sy + (b.sy - a.sy) * t0;
-      const g = ctx.createLinearGradient(tx, ty, hx, hy), col = C.t[p.c];
-      g.addColorStop(0, `rgba(${col},0)`); g.addColorStop(1, `rgba(${col},0.95)`);
-      ctx.strokeStyle = g; ctx.lineWidth = 1.6 * b.s;
-      ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(hx, hy); ctx.stroke();
-      ctx.fillStyle = `rgba(${col},1)`; ctx.shadowColor = `rgba(${col},0.9)`; ctx.shadowBlur = 12;
-      ctx.beginPath(); ctx.arc(hx, hy, 1.9 * b.s, 0, 7); ctx.fill(); ctx.shadowBlur = 0;
+      // a two-step trail and a solid head: no per-frame gradients or shadow blur
+      const col = C.t[p.c], mx = (tx + hx) / 2, my = (ty + hy) / 2;
+      ctx.lineWidth = 1.6 * b.s;
+      ctx.strokeStyle = `rgba(${col},0.22)`; ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(mx, my); ctx.stroke();
+      ctx.strokeStyle = `rgba(${col},0.8)`; ctx.beginPath(); ctx.moveTo(mx, my); ctx.lineTo(hx, hy); ctx.stroke();
+      ctx.fillStyle = `rgba(${col},0.22)`; ctx.beginPath(); ctx.arc(hx, hy, 5 * b.s, 0, 7); ctx.fill();
+      ctx.fillStyle = `rgba(${col},1)`; ctx.beginPath(); ctx.arc(hx, hy, 1.9 * b.s, 0, 7); ctx.fill();
     }
     ctx.lineWidth = 1;
     for (const n of nodes) {
@@ -448,7 +451,7 @@
   function frame(time) {
     const dt = Math.min(48, time - (last || time)); last = time;
     mx += (tmx - mx) * 0.04; my += (tmy - my) * 0.04;
-    acc += dt; while (acc > 85) { acc -= 85; if (pulses.length < 70) spawn(); }
+    acc += dt; while (acc > 85) { acc -= 85; if (pulses.length < 46) spawn(); }
     step(dt); project(time); draw();
     raf = running ? requestAnimationFrame(frame) : 0;
   }

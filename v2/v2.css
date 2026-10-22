@@ -4,6 +4,8 @@
 
 @font-face { font-family: "Space Mono"; src: url("../assets/fonts/space-mono-latin.woff2") format("woff2"); font-weight: 400; font-display: swap; }
 @property --n { syntax: "<integer>"; inherits: false; initial-value: 0; }
+@property --amb-a { syntax: "<color>"; inherits: false; initial-value: transparent; }
+@property --amb-b { syntax: "<color>"; inherits: false; initial-value: transparent; }
 
 :root {
   --font-sans: "Inter", "PingFang SC", "Noto Sans SC", "Hiragino Sans GB", system-ui, sans-serif;
@@ -250,6 +252,15 @@ html.past-hero .field { opacity: .9; }
 .link .arrow { display: inline-flex; align-items: center; justify-content: center; translate: 0 0; }
 .link:hover .arrow, .link:focus-visible .arrow { translate: 4px 0; }
 .link:hover .arrow.ne, .link:focus-visible .arrow.ne { translate: 3px -3px; }
+.ambient i { display: none; }
+.ambient { transition: --amb-a 1.4s var(--ease-standard), --amb-b 1.4s var(--ease-standard);
+  background: radial-gradient(60% 50% at 85% 0%, var(--amb-a), transparent 70%), radial-gradient(45% 45% at 5% 100%, var(--amb-b), transparent 70%); }
+.ambient[data-amb="challenges"] { --amb-a: var(--track-1-soft); --amb-b: var(--track-2-soft); }
+.ambient[data-amb="demos"] { --amb-a: var(--track-2-soft); --amb-b: transparent; }
+.ambient[data-amb="aims"] { --amb-a: oklch(62% 0.16 270 / 12%); --amb-b: transparent; }
+.ambient[data-amb="involve"] { --amb-a: var(--track-1-soft); --amb-b: transparent; }
+.btn-secondary, .ticker, .play-btn, .viz .chip, .preview .play { -webkit-backdrop-filter: none; backdrop-filter: none; }
+.btn-secondary { background: color-mix(in oklab, var(--surface-1) 88%, transparent); }
 
 @keyframes pop { from { transform: scale(0); } 70% { transform: scale(1.18); } to { transform: scale(1); } }
 @keyframes draw { to { stroke-dashoffset: 0; } }
@@ -273,7 +284,7 @@ html.past-hero .field { opacity: .9; }
 @keyframes beacon { 50% { box-shadow: 0 0 0 8px transparent; } }
 @keyframes shimmer { to { background-position: 100% 0; } }
 @keyframes lineUp { from { translate: 0 108%; } }
-@keyframes introUp { from { opacity: 0; translate: 0 18px; filter: blur(6px); } }
+@keyframes introUp { from { opacity: 0; translate: 0 18px; } }
 @keyframes consoleIn { from { opacity: 0; translate: 0 70px; } }
 @keyframes marquee { to { translate: -50% 0; } }
 @keyframes bandExpand { from { scale: .9; border-radius: 64px; opacity: .35; filter: saturate(.6) brightness(.8); } to { scale: 1; border-radius: 24px; opacity: 1; filter: none; } }
