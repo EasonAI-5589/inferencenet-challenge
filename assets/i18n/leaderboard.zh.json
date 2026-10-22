@@ -348,5 +348,14 @@
   "run_python": "run_python",
   "ToolNode": "ToolNode",
   ": coefficient and standard error within 1% relative error; p-value within 0.01 absolute error (": "：系数与标准误相对误差均 ≤ 1%，p 值绝对误差 ≤ 0.01（",
-  "local-paper-v1": "local-paper-v1"
+  "local-paper-v1": "local-paper-v1",
+  "Pages": "页面",
+  "Resources": "资源",
+  "Research dataset source": "研究数据来源",
+  "Econometrics-Agent code": "Econometrics-Agent 代码",
+  "Website source": "网站源码",
+  "Previous site design": "旧版网站",
+  "Contact us": "联系我们",
+  "Meet the team": "了解团队",
+  "Contact": "联系"
 }

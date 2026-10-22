@@ -1071,5 +1071,13 @@
   "InferenceNet Dev100 econometric replication tasks": "InferenceNet Dev100 计量经济学复现任务",
   "Evaluated with GPT-5.6 Sol via OpenRouter Responses (non-streaming, explicit high reasoning effort) across all 100 Dev100 tasks under identical sandbox and budget limits.": "使用 GPT-5.6 Sol 经 OpenRouter Responses（非流式、显式 high 推理强度）在全部 100 道 Dev100 题目上完成配对评测，两组共享完全一致的沙箱与预算上限。",
   "Strict replication requires coefficient and standard-error relative errors ≤ 1% and p-value absolute error ≤ 0.01 (": "严格复现要求系数与标准误相对误差 ≤ 1% 且 p 值绝对误差 ≤ 0.01（",
-  "). Partial replication checks coefficient error ≤ 5%; significance compares p-value bands at 0.01, 0.05 and 0.1. All 100 tasks remain in the denominator.": "）。部分复现检查系数相对误差 ≤ 5%；显著性比较 0.01、0.05 与 0.1 三档 p 值区间。全部 100 道题均计入分母。"
+  "). Partial replication checks coefficient error ≤ 5%; significance compares p-value bands at 0.01, 0.05 and 0.1. All 100 tasks remain in the denominator.": "）。部分复现检查系数相对误差 ≤ 5%；显著性比较 0.01、0.05 与 0.1 三档 p 值区间。全部 100 道题均计入分母。",
+  "Pages": "页面",
+  "Resources": "资源",
+  "Research dataset source": "研究数据来源",
+  "Econometrics-Agent code": "Econometrics-Agent 代码",
+  "Website source": "网站源码",
+  "Previous site design": "旧版网站",
+  "Contact us": "联系我们",
+  "Meet the team": "了解团队"
 }

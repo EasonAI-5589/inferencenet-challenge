@@ -30,7 +30,30 @@ or language controls. Challenge continues to Harness in the page sequence.
 For the next desktop UI and storytelling redesign, see the
 [UI design handoff (2026-10-21)](docs/handoffs/2026-10-21-ui-design.md).
 It records the SimuWorld comparison, design research, proposed page structure,
-implementation boundaries and acceptance criteria; the redesign is not yet implemented.
+implementation boundaries and acceptance criteria.
+
+### v2 design (`/v2/`)
+
+The redesign is published beside the current site at
+[`/v2/`](https://easonai-5589.github.io/inferencenet-challenge/v2/); the root pages
+are unchanged. `v2/index.html` is a new homepage. The other v2 pages carry the
+current pages' content with the v2 header, footer and theme layer, so content edits
+made to a root page must be repeated in its `v2/` copy until v2 replaces the root.
+
+| Layer | Files |
+|---|---|
+| Design system for every v2 page: fonts, tokens for both themes, logo, buttons, links, icons, header and footer | `v2/v2.css` |
+| Homepage sections, all scoped to `body.v2-home` | `v2/home.css`, `v2/home.js` |
+| Content pages: remaps the `styles.css` / `site.css` tokens and restyles the shared components; animated page header | `v2/skin.css`, `v2/v2.js` |
+| Header backdrops (one canvas renderer, one motif per page) | `v2/backdrop.js` |
+| Theme restore before paint; first visits to v2 use the dark theme | `v2/theme.js` |
+
+v2 pages load the root `site.js`, `language.js`, `charts.js` and page scripts from
+`../`, share `assets/` and the translation dictionaries in `assets/i18n/`, and keep
+the same storage keys, so the theme and language carry between the two designs.
+Smooth scrolling uses Lenis from jsDelivr; without it the pages fall back to native
+smooth scrolling. `scripts/check.mjs` checks the v2 pages with the same rules as the
+root pages.
 
 For the Build with us submission system, see the
 [submission intake handoff (2026-10-21)](docs/handoffs/2026-10-21-submission-intake.md),

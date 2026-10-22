@@ -2171,5 +2171,13 @@
   "Core runtime mechanisms across seven representative harnesses": "七个代表性 Harness 的核心运行时机制对比",
   "InferenceNet evaluation wiring": "InferenceNet 评测接线",
   "How InferenceNet wires DeepAgents for evaluation": "InferenceNet 如何接入 DeepAgents 进行评测",
-  "InferenceNet’s DeepAgents evaluation wiring. Blue marks what InferenceNet configures around DeepAgents 0.7.13: a budgeted model client, six virtual file tools for notes, and the isolated run_python container tool.": "InferenceNet 的 DeepAgents 评测接线架构。蓝色标出 InferenceNet 围绕 DeepAgents 0.7.13 配置的组件：带预算管控的模型客户端、六个记笔记用的虚拟文件工具，以及隔离的 run_python 容器执行工具。"
+  "InferenceNet’s DeepAgents evaluation wiring. Blue marks what InferenceNet configures around DeepAgents 0.7.13: a budgeted model client, six virtual file tools for notes, and the isolated run_python container tool.": "InferenceNet 的 DeepAgents 评测接线架构。蓝色标出 InferenceNet 围绕 DeepAgents 0.7.13 配置的组件：带预算管控的模型客户端、六个记笔记用的虚拟文件工具，以及隔离的 run_python 容器执行工具。",
+  "Pages": "页面",
+  "Resources": "资源",
+  "Research dataset source": "研究数据来源",
+  "Econometrics-Agent code": "Econometrics-Agent 代码",
+  "Website source": "网站源码",
+  "Previous site design": "旧版网站",
+  "Contact us": "联系我们",
+  "Meet the team": "了解团队"
 }

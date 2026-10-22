@@ -1,7 +1,7 @@
 // Static checks for the public website. Imported by build.mjs (which reuses
 // `publicFiles`) and runnable on its own: `node scripts/check.mjs`.
 import { readFile, access, readdir, lstat } from 'node:fs/promises';
-import { dirname, resolve, extname, relative } from 'node:path';
+import { basename, dirname, resolve, extname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -9,15 +9,22 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 // Private test pages (`_*.html`), DESIGN.md, README.md and scripts/ are never listed.
 export const pages = ['index.html', 'challenge.html', 'replication.html', 'harness.html', 'evolution.html', 'leaderboard.html', 'teams.html', 'professional-tasks.html'];
 const redirects = { 'data.html': 'challenge.html#replication-data', 'agent.html': 'evolution.html#improvement-directions' };
+// The v2 design (/v2/) mirrors every content page and redirect. It shares assets/, the
+// translation dictionaries and the root scripts, and adds its own design files.
+export const v2Pages = pages.map(page => `v2/${page}`);
+const v2Redirects = Object.fromEntries(Object.entries(redirects).map(([file, target]) => [`v2/${file}`, target]));
+const v2Files = ['v2/v2.css', 'v2/home.css', 'v2/skin.css', 'v2/theme.js', 'v2/v2.js', 'v2/home.js', 'v2/backdrop.js'];
+const allRedirects = { ...redirects, ...v2Redirects };
 export const publicFiles = [
   ...pages,
   ...Object.keys(redirects),
   'styles.css', 'site.css', 'language.css', 'mountain.css', 'index.css', 'challenge.css', 'data.css', 'agent.css', 'evolution.css', 'harness.css', 'leaderboard.css', 'teams.css', 'professional-tasks.css',
   'theme.js', 'site.js', 'language.js', 'charts.js', 'mountain.js', 'leaderboard.js', 'leaderboard-data.js', 'leaderboard-board.js', 'leaderboard-dev100.js', 'leaderboard-dev100-data.js', 'evolution.js',
+  ...v2Pages, ...Object.keys(v2Redirects), ...v2Files,
   '.nojekyll',
 ];
 for (const file of publicFiles) {
-  if (file.startsWith('_') || file.includes('/') || /\.md$/i.test(file)) throw new Error(`Not publishable: ${file}`);
+  if (file.startsWith('_') || (file.includes('/') && !/^v2\/[^/_][^/]*$/.test(file)) || /\.md$/i.test(file)) throw new Error(`Not publishable: ${file}`);
 }
 const publicSet = new Set(publicFiles);
 const textExtensions = new Set(['.html', '.css', '.js', '.json', '.csv', '.txt', '.svg']);
@@ -36,25 +43,26 @@ async function listAssets(directory, out = []) {
 const assetFiles = await listAssets(resolve(root, 'assets'));
 
 const documents = new Map();
-for (const file of [...pages, ...Object.keys(redirects)]) {
+for (const file of [...pages, ...Object.keys(redirects), ...v2Pages, ...Object.keys(v2Redirects)]) {
   const html = await readFile(resolve(root, file), 'utf8');
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
   if (new Set(ids).size !== ids.length) throw new Error(`Duplicate HTML IDs in ${file}`);
   if (!html.includes('<html lang="en">') || !html.includes('name="viewport"')) throw new Error(`Missing document accessibility metadata in ${file}`);
   if ((html.match(/<h1\b/g) || []).length !== 1) throw new Error(`Expected exactly one <h1> in ${file}`);
   if (/\son[a-z]+="/i.test(html)) throw new Error(`Inline event handler in ${file}`);
-  if (Object.hasOwn(redirects, file)) {
-    const target = redirects[file];
+  if (Object.hasOwn(allRedirects, file)) {
+    const target = allRedirects[file];
     const refresh = [...html.matchAll(/<meta\b[^>]*>/gi)].map(match => match[0]).find(tag => /\bhttp-equiv="refresh"/i.test(tag));
     if (refresh?.match(/\bcontent="([^"]+)"/)?.[1] !== `0; url=${target}`) throw new Error(`Unexpected redirect target in ${file}`);
     const canonical = [...html.matchAll(/<link\b[^>]*>/gi)].map(match => match[0]).find(tag => /\brel="canonical"/.test(tag));
     if (canonical?.match(/\bhref="([^"]+)"/)?.[1] !== target) throw new Error(`Missing redirect canonical in ${file}`);
     const body = html.match(/<body\b[^>]*>([\s\S]*?)<\/body>/i)?.[1] || '';
     if (![...body.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g)].some(match => match[1] === target)) throw new Error(`Missing redirect fallback link in ${file}`);
-    if (/\b(?:src|href)="language\.(?:js|css)(?:\?[^"]*)?"/.test(html)) throw new Error(`Redirect should not load language controls in ${file}`);
+    if (/\b(?:src|href)="(?:\.\.\/)?language\.(?:js|css)(?:\?[^"]*)?"/.test(html)) throw new Error(`Redirect should not load language controls in ${file}`);
   } else {
-    if (!/\bsrc="language\.js(?:\?v=[A-Za-z0-9_-]+)?"/.test(html) || !html.includes('href="language.css"')) throw new Error(`Missing language control assets in ${file}`);
-    await access(resolve(root, `assets/i18n/${file.replace('.html', '')}.zh.json`));
+    const up = file.startsWith('v2/') ? '../' : '';
+    if (!new RegExp(`\\bsrc="${up.replace(/\./g, '\\.')}language\\.js(?:\\?v=[A-Za-z0-9_-]+)?"`).test(html) || !html.includes(`href="${up}language.css"`)) throw new Error(`Missing language control assets in ${file}`);
+    await access(resolve(root, `assets/i18n/${file.replace(/^v2\//, '').replace('.html', '')}.zh.json`));
   }
   documents.set(file, { html, ids });
 }
@@ -65,7 +73,7 @@ async function checkReference(ref, from) {
   if (ref === 'mailto:yichen013@e.ntu.edu.sg') return;
   if (/^(?:[a-z][a-z\d+.-]*:|\/)/i.test(ref)) throw new Error(`Unexpected public URL in ${from}: ${ref}`);
   const [target, anchor] = ref.split('#');
-  const path = resolve(root, dirname(from), decodeURIComponent(target.split('?')[0] || from));
+  const path = resolve(root, dirname(from), decodeURIComponent(target.split('?')[0] || basename(from)));
   if (!path.startsWith(`${root}/`)) throw new Error(`Asset outside website: ${ref}`);
   await access(path);
   if ((await lstat(path)).isSymbolicLink()) throw new Error(`Public symlink: ${ref}`);
@@ -86,7 +94,8 @@ for (const [file, { html }] of documents) {
 for (const file of publicFiles.filter(name => name.endsWith('.css'))) {
   const css = await readFile(resolve(root, file), 'utf8');
   for (const [, ref] of css.matchAll(/url\(["']?([^"')]+)["']?\)/g)) {
-    if (ref.startsWith('data:')) continue;
+    // data: URIs, and #fragments naming an SVG paint server in the page, are not files.
+    if (ref.startsWith('data:') || ref.startsWith('#')) continue;
     await checkReference(ref, file);
     referenceCount++;
   }
@@ -117,4 +126,4 @@ for (const file of scanned) {
   }
 }
 const anchorCount = [...documents.values()].reduce((sum, doc) => sum + doc.ids.length, 0);
-console.log(`Checked ${pages.length} content pages and ${Object.keys(redirects).length} redirect, ${anchorCount} anchors, ${referenceCount} references, ${scanned.length} text files (${assetFiles.length} assets), public asset types and private-path boundaries.`);
+console.log(`Checked ${pages.length} content pages and ${Object.keys(redirects).length} redirect (plus the same in v2/), ${anchorCount} anchors, ${referenceCount} references, ${scanned.length} text files (${assetFiles.length} assets), public asset types and private-path boundaries.`);
