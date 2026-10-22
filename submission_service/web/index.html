@@ -15,9 +15,9 @@
       crossorigin
     />
     <link rel="stylesheet" href="/shared/v2.css?v=20261022-intake" />
-    <link rel="stylesheet" href="/submit-assets/intake.css?v=20261022-intake" />
+    <link rel="stylesheet" href="/submit-assets/intake.css?v=20261023-polish" />
     <script
-      src="/submit-assets/intake.js?v=20261022-intake"
+      src="/submit-assets/intake.js?v=20261023-polish"
       type="module"
     ></script>
   </head>
@@ -81,6 +81,7 @@
     </header>
     <main id="main" class="wrap">
       <section class="hero">
+        <div class="hero-text">
         <div class="eyebrow mono">
           <span class="live-dot"></span
           ><span
@@ -100,6 +101,48 @@
             agents.</span
           >
         </div>
+        </div>
+        <ul class="hero-facts">
+          <li>
+            <span class="mono">01</span>
+            <div>
+              <strong data-en="Private by default" data-zh="默认私有"
+                >Private by default</strong
+              ><span
+                data-en="Only your account and the review team can open your files."
+                data-zh="只有你的账号和审核团队能查看你的材料。"
+                >Only your account and the review team can open your
+                files.</span
+              >
+            </div>
+          </li>
+          <li>
+            <span class="mono">02</span>
+            <div>
+              <strong data-en="Checked file by file" data-zh="逐个文件校验"
+                >Checked file by file</strong
+              ><span
+                data-en="Each file is hashed in your browser and verified again on arrival."
+                data-zh="每个文件先在浏览器计算哈希，到达服务器后再次核对。"
+                >Each file is hashed in your browser and verified again on
+                arrival.</span
+              >
+            </div>
+          </li>
+          <li>
+            <span class="mono">03</span>
+            <div>
+              <strong data-en="Nothing runs on upload" data-zh="上传不运行代码"
+                >Nothing runs on upload</strong
+              ><span
+                data-en="Submitting stores and validates. Evaluation is a separate, reviewed step."
+                data-zh="提交只做保存和格式校验，评测是单独的审核步骤。"
+                >Submitting stores and validates. Evaluation is a separate,
+                reviewed step.</span
+              >
+            </div>
+          </li>
+        </ul>
       </section>
       <nav class="track-nav" aria-label="Submission type">
         <a href="/submit/benchmark/" data-kind="benchmark"
@@ -259,12 +302,7 @@
                 webkitdirectory
                 multiple
                 hidden
-              /><small
-                data-en="Choose the folder containing benchmark.json, harness.json or case.json."
-                data-zh="请选择包含 benchmark.json、harness.json 或 case.json 的那一层目录。"
-                >Choose the folder containing benchmark.json, harness.json or
-                case.json.</small
-              >
+              /><small id="folder-hint"></small>
             </div>
             <div class="sample-row">
               <span
@@ -308,7 +346,39 @@
               verified file inventory.
             </p>
           </section>
-          <section class="submit-bar">
+          <section class="panel submit-bar">
+            <div class="section-heading">
+              <span class="section-number mono">03</span>
+              <div>
+                <h2 data-en="Confirm and submit" data-zh="确认并提交">
+                  Confirm and submit
+                </h2>
+                <p
+                  data-en="We check every file before anything is stored."
+                  data-zh="保存之前，会先逐个核对文件。"
+                >
+                  We check every file before anything is stored.
+                </p>
+              </div>
+            </div>
+            <div id="account-callout" class="account-callout" hidden>
+              <p
+                data-en="Submitting needs an account. It keeps your submissions private to you, and lets you add versions and download receipts later."
+                data-zh="提交需要账号。账号让你的提交只对你可见，之后也能用它补交新版本、下载回执。"
+              >
+                Submitting needs an account. It keeps your submissions private
+                to you, and lets you add versions and download receipts later.
+              </p>
+              <button
+                id="callout-sign-in"
+                class="btn btn-secondary"
+                type="button"
+                data-en="Sign in or create an account"
+                data-zh="登录或创建账号"
+              >
+                Sign in or create an account
+              </button>
+            </div>
             <label class="consent"
               ><input id="consent" type="checkbox" /><span
                 data-en="I have permission to submit these materials and agree that the project team may review them privately."
@@ -466,7 +536,7 @@
         <a
           class="wordmark"
           href="https://easonai-5589.github.io/inferencenet-challenge/v2/"
-          >Inference<span class="net">Net</span></a
+          ><span>Inference<span class="net">Net</span></span></a
         >
         <p
           data-en="AI Agents for Business, Finance and Social Science"

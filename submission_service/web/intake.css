@@ -64,7 +64,7 @@ button[hidden],
   display: flex;
   align-items: center;
   gap: 36px;
-  max-width: 1376px;
+  max-width: 1280px;
   margin: auto;
   padding: 0 40px;
   border-bottom: 1px solid var(--border-hairline);
@@ -118,8 +118,43 @@ button[hidden],
 }
 .hero {
   position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 56px;
+  align-items: end;
   padding: 68px 0 40px;
   isolation: isolate;
+}
+.hero-facts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-left: 1px solid var(--border-hairline);
+}
+.hero-facts li {
+  display: flex;
+  gap: 14px;
+  padding: 12px 0 12px 22px;
+}
+.hero-facts .mono {
+  font-size: 11px;
+  color: var(--track-1);
+  padding-top: 3px;
+}
+.hero-facts li:nth-child(2) .mono {
+  color: var(--track-2);
+}
+.hero-facts strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+}
+.hero-facts div > span {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-secondary);
 }
 .hero:before {
   content: "";
@@ -167,8 +202,8 @@ h1 {
   display: flex;
   gap: 10px;
   align-items: center;
-  font-size: 12px;
-  color: var(--text-tertiary);
+  font-size: 13px;
+  color: var(--text-secondary);
   margin-top: 22px;
 }
 .hero-note > span:first-child {
@@ -229,7 +264,7 @@ h1 {
   display: flex;
   align-items: center;
   gap: 16px;
-  font-size: 10px;
+  font-size: 11px;
   color: var(--text-tertiary);
   margin: 5px 0 25px;
 }
@@ -265,8 +300,8 @@ h1 {
   letter-spacing: -0.4px;
 }
 .section-heading p {
-  color: var(--text-tertiary);
-  font-size: 12px;
+  color: var(--text-secondary);
+  font-size: 13px;
   margin-top: 4px;
 }
 label {
@@ -321,14 +356,17 @@ select:focus {
   font-size: 14px;
   font-weight: 500;
 }
-.dropzone > span,
-.dropzone small {
+.dropzone > span {
   color: var(--text-tertiary);
-  font-size: 11px;
+  font-size: 12px;
+}
+.dropzone small {
+  color: var(--text-secondary);
+  font-size: 13px;
 }
 .dropzone .btn {
   height: 40px;
-  font-size: 12px;
+  font-size: 13px;
   margin: 7px 0;
 }
 .dropzone small {
@@ -341,15 +379,15 @@ select:focus {
   justify-content: space-between;
   gap: 12px;
   margin-top: 18px;
-  font-size: 11px;
-  color: var(--text-tertiary);
+  font-size: 13px;
+  color: var(--text-secondary);
 }
 .text-button {
   background: none;
   border: 0;
   padding: 3px 0;
   color: var(--track-1);
-  font-size: 12px;
+  font-size: 13px;
   text-align: left;
 }
 .text-button:hover {
@@ -369,7 +407,7 @@ select:focus {
   margin-right: 14px;
 }
 .file-summary .mono {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--text-tertiary);
 }
 .file-list {
@@ -381,7 +419,7 @@ select:focus {
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  font: 10px/1.8 var(--font-mono);
+  font: 11px/1.8 var(--font-mono);
   color: var(--text-secondary);
   padding: 5px 0;
   border-bottom: 1px solid var(--border-hairline);
@@ -396,22 +434,41 @@ select:focus {
   white-space: nowrap;
 }
 .hint {
-  font-size: 12px;
-  color: var(--text-tertiary);
+  font-size: 13px;
+  color: var(--text-secondary);
   line-height: 1.8;
 }
 .file-panel > .hint {
   margin-top: 16px;
 }
-.submit-bar {
-  padding: 2px 4px 20px;
+.account-callout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 22px;
+  padding: 16px 18px;
+  border: 1px solid var(--border-hairline);
+  border-left: 3px solid var(--track-2);
+  border-radius: 10px;
+  background: var(--surface-1);
+}
+.account-callout p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  max-width: 460px;
+}
+.account-callout .btn {
+  flex: none;
+  height: 40px;
+  font-size: 13px;
 }
 .consent {
   display: flex;
   align-items: flex-start;
   gap: 11px;
   color: var(--text-secondary);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
 }
 .consent input {
@@ -426,8 +483,8 @@ select:focus {
   margin-top: 23px;
 }
 .submit-actions .hint {
-  max-width: 300px;
-  font-size: 11px;
+  max-width: 340px;
+  font-size: 12px;
 }
 .submit-actions .btn {
   white-space: nowrap;
@@ -454,7 +511,7 @@ select:focus {
   font-weight: 550;
 }
 .guide-card > p {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-secondary);
   line-height: 1.8;
   margin-top: 10px;
@@ -467,7 +524,7 @@ select:focus {
 .guide li {
   position: relative;
   padding: 0 0 15px 21px;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-secondary);
 }
 .guide li:before {
@@ -485,7 +542,7 @@ select:focus {
   margin-bottom: 20px;
 }
 .tree-head {
-  font-size: 9px;
+  font-size: 10px;
   color: var(--text-tertiary);
   padding: 9px 13px;
   border-bottom: 1px solid var(--border-hairline);
@@ -498,7 +555,7 @@ pre {
   overflow: auto;
 }
 .text-link {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--track-1);
   text-decoration: none;
 }
@@ -506,12 +563,12 @@ pre {
   padding: 23px 18px;
 }
 .guide-foot > .mono {
-  font-size: 9px;
+  font-size: 10px;
   color: var(--text-tertiary);
 }
 .guide-foot p {
-  font-size: 11px;
-  color: var(--text-tertiary);
+  font-size: 12px;
+  color: var(--text-secondary);
   margin-top: 10px;
   line-height: 1.9;
 }
@@ -610,11 +667,11 @@ footer .wordmark {
   color: var(--text-secondary);
 }
 footer p {
-  font-size: 11px;
+  font-size: 12px;
 }
 footer > .mono {
   margin-left: auto;
-  font-size: 9px;
+  font-size: 10px;
 }
 .mine-heading {
   display: flex;
@@ -649,7 +706,7 @@ footer > .mono {
   color: var(--text-tertiary);
 }
 .submission-meta {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-tertiary);
 }
 .status-pill {
@@ -732,6 +789,22 @@ dialog .text-button {
   font-size: 28px;
   color: var(--text-tertiary);
 }
+@media (max-width: 1100px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .hero-facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-left: 0;
+    border-top: 1px solid var(--border-hairline);
+    padding-top: 6px;
+  }
+  .hero-facts li {
+    padding-left: 0;
+  }
+}
 @media (max-width: 1000px) {
   .topbar {
     padding: 0 24px;
@@ -794,8 +867,28 @@ dialog .text-button {
   .small-button {
     padding: 6px 8px;
   }
+  .topbar {
+    gap: 12px;
+    padding: 0 16px;
+  }
+  .controls {
+    gap: 6px;
+  }
+  #theme-label {
+    display: none;
+  }
   .field-row {
     grid-template-columns: 1fr;
+  }
+  .hero-facts {
+    grid-template-columns: 1fr;
+  }
+  .hero-facts li {
+    padding: 8px 0;
+  }
+  .account-callout {
+    flex-direction: column;
+    align-items: stretch;
   }
   .sample-row,
   .submit-actions {
@@ -815,5 +908,10 @@ dialog .text-button {
   }
   .submission-card {
     grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 420px) {
+  .topbar .wordmark > span {
+    display: none;
   }
 }
