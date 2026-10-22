@@ -458,3 +458,7 @@ html.js:not(.rm) .v2-content .v2-r { filter: none;
   .v2-logo-plate { width: 46%; height: 84px; padding: 14px 16px; flex: none; }
   .v2-group-top { flex-direction: column-reverse; align-items: flex-start; }
 }
+.v2-avatar.has-photo > span, .v2-mini.has-photo { overflow: hidden; background: var(--surface); }
+.v2-avatar.has-photo img, .v2-mini.has-photo img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 50% !important; filter: saturate(.92) contrast(1.02); transition: filter var(--duration-slow) var(--ease-standard), scale var(--duration-emphasized) var(--ease-emphasized); }
+.v2-card:hover .v2-avatar.has-photo img { filter: none; scale: 1.04; }
+.v2-avatar.has-photo > span { inset: 5px; box-shadow: 0 0 0 1px color-mix(in oklab, var(--tc) 30%, transparent), 0 14px 30px -14px color-mix(in oklab, var(--tc) 70%, transparent); }
