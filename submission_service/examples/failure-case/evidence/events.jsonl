@@ -1,0 +1,1 @@
+{"event_id":"fixture-event-001","kind":"synthetic_fixture_description","executed":false,"task_id":"toy-mean-001","description":"With the synthetic values [10, 0, 20], ignore_zero_count would divide the sum 30 by two nonzero values and emit mean 15. This line is not a captured execution trace."}

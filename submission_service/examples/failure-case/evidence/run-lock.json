@@ -1,0 +1,43 @@
+{
+  "schema_version": "0.1.0",
+  "version": 1,
+  "kind": "fixture_run_request",
+  "status": "synthetic_request_not_accepted_run_lock",
+  "evidence_kind": "synthetic_fixture",
+  "task_id": "toy-mean-001",
+  "split": "validation",
+  "benchmark_ref": {
+    "transport": "local_fixture",
+    "path": "benchmark"
+  },
+  "harness_ref": {
+    "transport": "local_fixture",
+    "path": "harness"
+  },
+  "kwargs": {
+    "mode": "ignore_zero_count"
+  },
+  "runtime_profile": "toy-python312-harbor024-example",
+  "runtime_requirements": {
+    "host_python": "3.12",
+    "candidate_python": "3.12.7",
+    "harbor": "0.24.0"
+  },
+  "operator_runtime_status": "unresolved_example",
+  "actual_runtime_hash": null,
+  "model": null,
+  "model_reason": "The toy solver makes no model requests.",
+  "deterministic": true,
+  "seed": null,
+  "seed_reason": "The toy solver uses no randomness.",
+  "attempts": 1,
+  "budget": {
+    "timeout_sec": 30,
+    "max_model_requests": 0
+  },
+  "scorer_path": "tasks/toy-mean-001/tests/evaluate.py",
+  "scorer_path_base": "benchmark_submission_root",
+  "scorer_sha256": "e2bdac473636e45bbf258c57eea4c4578a0153b1ee0732b12c04bdae8f80eb3a",
+  "acceptance_note": "This is a synthetic fixture request, not an accepted or executed production run lock. The operator must freeze the installed runtime inventory and actual image digest before a Harbor run is accepted.",
+  "local_verification_policy": "A local fixture check may use the available local Python, recording its actual version in a new report outside this package. Such a check does not establish that the requested Harbor runtime was installed or validated."
+}

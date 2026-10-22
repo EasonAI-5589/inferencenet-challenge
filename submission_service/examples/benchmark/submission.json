@@ -1,0 +1,98 @@
+{
+  "schema_version": "0.1.0",
+  "submission_id": "bench-toy-mean-001",
+  "type": "benchmark",
+  "version": 1,
+  "title": "Synthetic mean benchmark",
+  "submitter": "example-author",
+  "license": "CC0-1.0",
+  "created_at": "2026-10-21T00:00:00Z",
+  "spec_path": "benchmark.json",
+  "files": [
+    {
+      "path": "benchmark.json",
+      "bytes": 1810,
+      "sha256": "3d1dfe756b714d7c466a07254415fc9e10dfdf6eb51ee07c31714786b8a8cbca"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 7048,
+      "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499"
+    },
+    {
+      "path": "provenance.json",
+      "bytes": 582,
+      "sha256": "152103f779ccb91c4fa3e8834c80ecbc6b5131efb2c7b10a6777d0b406242a04"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3524,
+      "sha256": "9ee7b996311e2dd02f1e44aae40308335ccefa99198b6253282c872a5958d367"
+    },
+    {
+      "path": "smoke/expected.json",
+      "bytes": 15,
+      "sha256": "e455cacefec07cc1be03422ce76b691abc78c22f609bb786fd1907e33f414050"
+    },
+    {
+      "path": "smoke/input.json",
+      "bytes": 24,
+      "sha256": "a5562afc6120d222d5ff5dbbaf57a0091b72822f5a7c338094fc76be18cbe77e"
+    },
+    {
+      "path": "splits.json",
+      "bytes": 73,
+      "sha256": "097dd14c4a69d5bd71e7210763b799b0b7e257ae3f6104263692e1e67df7d6a6"
+    },
+    {
+      "path": "tasks/toy-mean-001/environment/data/input.json",
+      "bytes": 24,
+      "sha256": "a5562afc6120d222d5ff5dbbaf57a0091b72822f5a7c338094fc76be18cbe77e"
+    },
+    {
+      "path": "tasks/toy-mean-001/environment/Dockerfile",
+      "bytes": 292,
+      "sha256": "9d9446229e5b00f08dad665142d9899cbaec1c491c954c90705dfa3723094c5d"
+    },
+    {
+      "path": "tasks/toy-mean-001/instruction.md",
+      "bytes": 612,
+      "sha256": "931f679bbff41d452b8218c6e25616f738d9729fa1265286dfa1f898ba5662a7"
+    },
+    {
+      "path": "tasks/toy-mean-001/solution/oracle.py",
+      "bytes": 1091,
+      "sha256": "f7c17633f08d4fd73369c182d9cf227a4440e44f5b88df3922dd80c860075b33"
+    },
+    {
+      "path": "tasks/toy-mean-001/solution/solve.sh",
+      "bytes": 181,
+      "sha256": "f0a369268a3b6c33725c7cb911854c64cd1bfbf0219670f9836adf518b4c99a6"
+    },
+    {
+      "path": "tasks/toy-mean-001/task.toml",
+      "bytes": 649,
+      "sha256": "4d6a17b0266865e921ddcfced7a54ae983a1cb7a95f26a1622d2a018a347c3a8"
+    },
+    {
+      "path": "tasks/toy-mean-001/tests/Dockerfile",
+      "bytes": 119,
+      "sha256": "9d30fd9c4fbfa650a56feda8526cbbc909028f498020eba476284f5d445fbe3f"
+    },
+    {
+      "path": "tasks/toy-mean-001/tests/evaluate.py",
+      "bytes": 3173,
+      "sha256": "e2bdac473636e45bbf258c57eea4c4578a0153b1ee0732b12c04bdae8f80eb3a"
+    },
+    {
+      "path": "tasks/toy-mean-001/tests/reference.json",
+      "bytes": 15,
+      "sha256": "e455cacefec07cc1be03422ce76b691abc78c22f609bb786fd1907e33f414050"
+    },
+    {
+      "path": "tasks/toy-mean-001/tests/test.sh",
+      "bytes": 209,
+      "sha256": "1b38d795dd3c1f0b5f34aafbc1d0dfca064a332b00a548a3cb02de52be14d786"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+schema_version = "1.4"
+artifacts = ["/output/result.json", "/output/main.py"]
+
+[task]
+name = "inferencenet/toy-mean-001"
+version = "1.0.0"
+description = "Synthetic arithmetic mean with a zero-valued observation"
+
+[metadata]
+task_id = "toy-mean-001"
+license = "CC0-1.0"
+synthetic = true
+
+[agent]
+timeout_sec = 30.0
+user = "agent"
+
+[environment]
+os = "linux"
+network_mode = "no-network"
+cpus = 1
+memory_mb = 256
+storage_mb = 256
+workdir = "/workspace"
+
+[verifier]
+timeout_sec = 10.0
+user = "root"
+environment_mode = "separate"
+
+[verifier.environment]
+os = "linux"
+network_mode = "no-network"
+cpus = 1
+memory_mb = 256
+storage_mb = 256
+workdir = "/tmp"

@@ -1,0 +1,30 @@
+[Unit]
+Description=InferenceNet submission intake
+After=network.target
+
+[Service]
+User=inferencenet-submit
+Group=inferencenet-submit
+WorkingDirectory=/srv/inferencenet-submit/app/current
+Environment=SUBMIT_DATA_DIR=/srv/inferencenet-submit/data
+Environment=SUBMIT_STAGING_DIR=/srv/inferencenet-submit/staging
+Environment=SUBMIT_ORIGIN=https://submit.inferencenet.cn
+ExecStart=/srv/inferencenet-submit/app/venv/bin/gunicorn --bind 127.0.0.1:8100 --workers 2 --threads 4 --worker-class gthread --timeout 120 --graceful-timeout 120 --limit-request-line 4096 --limit-request-fields 50 --no-control-socket submission_service.app:create_app()
+Restart=on-failure
+RestartSec=3
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+# Separate writable bind mounts cause EXDEV during staging -> data publication.
+# One parent mount preserves atomic rename; root-owned app/public remain unwritable.
+ReadWritePaths=/srv/inferencenet-submit
+RestrictSUIDSGID=true
+LockPersonality=true
+CapabilityBoundingSet=
+MemoryMax=2G
+TasksMax=128
+
+[Install]
+WantedBy=multi-user.target

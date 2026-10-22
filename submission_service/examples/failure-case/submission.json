@@ -1,0 +1,58 @@
+{
+  "schema_version": "0.1.0",
+  "type": "failure_case",
+  "submission_id": "case-toy-mean-001",
+  "version": 1,
+  "title": "Zero omitted from the mean denominator",
+  "submitter": "example-author",
+  "license": "CC0-1.0",
+  "created_at": "2026-10-21T08:53:45Z",
+  "spec_path": "case.json",
+  "files": [
+    {
+      "path": "case.json",
+      "bytes": 1908,
+      "sha256": "271febc5287f46a7abf54ae8c790bdfb94f799c68e3aab407d3fe6ff3c732373"
+    },
+    {
+      "path": "evidence/events.jsonl",
+      "bytes": 296,
+      "sha256": "1094d93d5ecd16d5a137b7824980d2c057cf34bcbc7938787be3be822be9f884"
+    },
+    {
+      "path": "evidence/observed_run.json",
+      "bytes": 1344,
+      "sha256": "b80f4f0e8f49ec31f3d1583be26320ee56f468b558f00a736b3e85f5cd229c2a"
+    },
+    {
+      "path": "evidence/output/answer.json",
+      "bytes": 17,
+      "sha256": "f34f6708d9b9aca5a813c2f916cc15a939edc43b9b5ba033a0483873489eb5d8"
+    },
+    {
+      "path": "evidence/run-lock.json",
+      "bytes": 1633,
+      "sha256": "c947c53f396e20e4dd73ddb8ff94478967bafbcf8c98fb01996ff516092dbe63"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 415,
+      "sha256": "46356d0c28c9236f79f8a61a398423451a7ae4b9cdf30deed8e4a0c318527309"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4550,
+      "sha256": "72ef102f87f752862bdb6d6f3e63128a85b3fa75181ae219c059025b57146922"
+    },
+    {
+      "path": "reproduce.json",
+      "bytes": 1031,
+      "sha256": "f95c8a3907e4ca66563465fe2dbb16c74122d29db3deb3822fdeccc961d079d4"
+    },
+    {
+      "path": "reproduce.md",
+      "bytes": 4330,
+      "sha256": "efdbbb6463ef9d6475dc4a747422d9d636b29254cb33db0f813649e27420974f"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+[Unit]
+Description=Hourly InferenceNet abandoned-upload cleanup
+
+[Timer]
+OnCalendar=hourly
+RandomizedDelaySec=5m
+Persistent=true
+
+[Install]
+WantedBy=timers.target

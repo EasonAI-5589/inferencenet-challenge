@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Submission format · InferenceNet</title>
+    <script src="/submit-assets/theme.js"></script>
+    <link rel="stylesheet" href="/shared/v2.css" />
+    <link rel="stylesheet" href="/submit-assets/intake.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <section class="hero">
+        <a class="text-link" href="/submit/benchmark/"
+          >← InferenceNet submissions / 返回提交入口</a
+        >
+        <h1>Submission format<span class="accent">.</span></h1>
+        <p class="lede">提交文件格式 · Server intake v0.1</p>
+      </section>
+      <section class="panel">
+        <h2>One complete folder / 一份完整文件夹</h2>
+        <p>
+          Every package includes README.md, LICENSE and a type-specific JSON:
+          benchmark.json, harness.json or case.json. Keep the original source
+          and task layout. Upload files directly; archives are not extracted.
+        </p>
+        <p>
+          每份材料包含 README.md、LICENSE 和对应类型的
+          JSON。保留任务或源码原有的目录结构；直接上传文件夹，服务不解压压缩包。
+        </p>
+        <p>
+          The service generates submission.json from the verified account,
+          version and file inventory. Each file is verified against its byte
+          count and SHA256. Limit: 1 GiB and 2,000 files per version. JSON/TOML
+          documents: 4 MiB; JSONL lines: 1 MiB.
+        </p>
+        <p>
+          服务根据当前账号、版本及文件清单生成
+          submission.json，并核验每个文件的字节数和 SHA256。每版最多 1 GiB /
+          2,000 个文件；JSON/TOML 文档不超过 4 MiB，JSONL 单行不超过 1 MiB。
+        </p>
+      </section>
+      <section class="panel">
+        <h2>References and receipts / 引用与回执</h2>
+        <p>
+          Failure cases reference benchmark and harness versions already
+          accepted under your account. Copy the artifact object from each
+          receipt into case.json and the run lock. The service checks ownership,
+          type, version, hash and task/split membership.
+        </p>
+        <p>
+          Failure Case 引用你账号下已受理的 Benchmark 和 Harness。将回执的
+          artifact 对象填入 case.json
+          和运行锁中的对应引用字段，系统核对所有权、类型、版本、哈希和任务划分。
+        </p>
+        <pre>
+{
+  "transport": "server",
+  "submission_id": "&lt;ID from receipt&gt;",
+  "version": 1,
+  "submission_sha256": "&lt;64-character SHA256 from receipt&gt;"
+}</pre
+        >
+        <p>
+          A receipt confirms private intake and static format validation. It
+          does not approve a benchmark, execute submitted programs or establish
+          a reproduced result. Synthetic examples are explicitly marked and
+          retain unknown runtime hashes and scores as null.
+        </p>
+        <p>
+          回执只确认材料已私下受理并通过静态格式校验，不代表任务已接纳、程序已执行或失败已复现。合成示例会明确标注，未知运行环境哈希与分数仍保留为空。
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

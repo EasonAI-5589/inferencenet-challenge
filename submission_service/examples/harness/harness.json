@@ -1,0 +1,26 @@
+{
+  "interface": "harbor-base-agent-v0.24.0",
+  "import_path": "submission_agent.agent:ToyMeanAgent",
+  "source_path": "src",
+  "kwargs": {"mode": "correct"},
+  "runtime_lock_path": "runtime/runtime-lock.json",
+  "compatible_benchmark_releases": [
+    {"benchmark_id": "toy-mean", "version": "1.0.0"}
+  ],
+  "model_requirements": {
+    "kind": "none",
+    "description": "Deterministic arithmetic fixture, not a real LLM harness",
+    "model_requests": 0,
+    "credentials_required": false
+  },
+  "tool_policy": {
+    "input_path": "/data/input.json",
+    "output_path": "/output/result.json",
+    "source_deliverable": "/output/main.py",
+    "candidate_execution": "one standard-library Python process inside the task environment",
+    "execution_timeout_seconds": 20,
+    "network": "no-network",
+    "verifier_replay": false,
+    "experimental_mode": "ignore_zero_count deliberately excludes zero values from the denominator for the failure-case fixture only"
+  }
+}

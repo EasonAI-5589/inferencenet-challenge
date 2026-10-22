@@ -1,5 +1,7 @@
 # InferenceNet 提交入口与最小 API 设计
 
+> 2026-10-22：本文保留 HF-first 历史设计。当前上线服务使用用户名＋密码和自有服务器存储；现行接口、同步 complete、server 回执与运行边界以 [SELF-HOSTED.md](SELF-HOSTED.md) 为准。
+
 版本：v0.1，2026-10-21。交付状态见 [Handoff](../handoffs/2026-10-21-submission-intake.md)。本文是可用于实现的接口约定，不代表页面、登录服务或评测队列已经上线。文件包内容继续遵循 [SPEC.md](SPEC.md)。
 
 **采用三个提交页面、一套表单组件、一个受理后端。** Benchmark、Agent / Harness、Failure Case 各有明确的入口和专属字段，登录、文件上传、校验、回执与状态查询共用服务。第四个 HF 仓 `InferenceNet/evaluation-results` 只保存系统回执与运行结果，不产生第四个用户提交入口。

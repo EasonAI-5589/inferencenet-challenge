@@ -1,7 +1,7 @@
 // Static checks for the public website. Imported by build.mjs (which reuses
 // `publicFiles`) and runnable on its own: `node scripts/check.mjs`.
 import { readFile, access, readdir, lstat } from 'node:fs/promises';
-import { basename, dirname, resolve, extname, relative } from 'node:path';
+import { basename, dirname, resolve, extname, relative, isAbsolute } from 'node:path';
 import { fileURLToPath } from 'node:url';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -36,7 +36,7 @@ async function listAssets(directory, out = []) {
     if ((await lstat(path)).isSymbolicLink()) throw new Error('Asset symlinks are not allowed');
     if (item.isDirectory()) await listAssets(path, out);
     else if (!assetExtensions.has(extname(path))) throw new Error(`Unexpected public asset: ${item.name}`);
-    else out.push(relative(root, path));
+    else out.push(relative(root, path).replaceAll('\\', '/'));
   }
   return out;
 }
@@ -74,10 +74,11 @@ async function checkReference(ref, from) {
   if (/^(?:[a-z][a-z\d+.-]*:|\/)/i.test(ref)) throw new Error(`Unexpected public URL in ${from}: ${ref}`);
   const [target, anchor] = ref.split('#');
   const path = resolve(root, dirname(from), decodeURIComponent(target.split('?')[0] || basename(from)));
-  if (!path.startsWith(`${root}/`)) throw new Error(`Asset outside website: ${ref}`);
+  const inside = relative(root, path).replaceAll('\\', '/');
+  if (inside === '..' || inside.startsWith('../') || isAbsolute(inside)) throw new Error(`Asset outside website: ${ref}`);
   await access(path);
   if ((await lstat(path)).isSymbolicLink()) throw new Error(`Public symlink: ${ref}`);
-  const published = path.slice(root.length + 1);
+  const published = inside;
   if (!publicSet.has(published) && !published.startsWith('assets/')) throw new Error(`Reference to unpublished file in ${from}: ${ref}`);
   if (anchor) {
     const document = documents.get(published);

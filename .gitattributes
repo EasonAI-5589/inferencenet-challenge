@@ -1,0 +1,2 @@
+# Deployment scripts and fixtures must retain Linux line endings on Windows checkouts.
+submission_service/** text eol=lf

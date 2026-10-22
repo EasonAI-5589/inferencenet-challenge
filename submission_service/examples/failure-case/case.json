@@ -1,0 +1,58 @@
+{
+  "schema_version": "0.1.0",
+  "case_id": "case-toy-mean-001",
+  "title": "Zero omitted from the mean denominator",
+  "evidence_kind": "synthetic_fixture",
+  "verification_status": "not_run",
+  "benchmark_ref": {
+    "transport": "local_fixture",
+    "path": "benchmark"
+  },
+  "harness_ref": {
+    "transport": "local_fixture",
+    "path": "harness"
+  },
+  "task_id": "toy-mean-001",
+  "split": "validation",
+  "run_lock_path": "evidence/run-lock.json",
+  "observed": {
+    "status": "synthetic_fixture",
+    "output_path": "evidence/output/answer.json",
+    "score_available": false,
+    "reward": null,
+    "verifier_error": null,
+    "termination_reason": "not_executed"
+  },
+  "expected": {
+    "behavior": "Compute the arithmetic mean, counting zero-valued elements in the denominator.",
+    "metric": "reward",
+    "passing_value": 1,
+    "tolerance_source": "benchmark_verifier"
+  },
+  "expected_observation": {
+    "evidence_kind": "synthetic_fixture",
+    "mean": 15,
+    "reward": 0,
+    "interpretation": "An expected result for later validation, not a measured score."
+  },
+  "classification": {
+    "outcome_class": "unresolved",
+    "candidate_outcome_class": "task_failure",
+    "root_cause_hypothesis": "The ignore_zero_count mode excludes zeros from the denominator.",
+    "attribution_status": "synthetic_example_not_runtime_verified"
+  },
+  "evidence": {
+    "run": "evidence/observed_run.json",
+    "events": "evidence/events.jsonl",
+    "output": "evidence/output/answer.json",
+    "integrity_manifest": "submission.json"
+  },
+  "reproduction": "reproduce.json",
+  "visibility": {
+    "case": "public_synthetic",
+    "split_role": "example",
+    "candidate_inputs": "benchmark_task_inputs_only",
+    "hidden_reference_policy": "Verifier-only; never mount reference answers, verifier receipts, or this failure case into the candidate environment.",
+    "required_secret_env": []
+  }
+}

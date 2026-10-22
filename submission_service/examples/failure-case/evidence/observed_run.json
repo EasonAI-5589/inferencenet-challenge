@@ -1,0 +1,34 @@
+{
+  "schema_version": "0.1.0",
+  "evidence_kind": "synthetic_fixture",
+  "fixture_id": "fixture-toy-mean-001-ignore-zero",
+  "verification_status": "not_run",
+  "task_id": "toy-mean-001",
+  "harness_kwargs": {
+    "mode": "ignore_zero_count"
+  },
+  "output_path": "evidence/output/answer.json",
+  "execution_record": null,
+  "model": null,
+  "runtime_snapshot": {
+    "runtime_profile": "toy-python312-harbor024-example",
+    "operator_runtime_status": "unresolved_example",
+    "execution_status": "not_run",
+    "python_version": null,
+    "platform": null,
+    "runtime_digest": null,
+    "reason": "This profile declares host Python 3.12, candidate Python 3.12.7, and Harbor 0.24.0 requirements. The operator has not supplied a frozen installed inventory or image digest. No runtime was executed or measured for this synthetic fixture."
+  },
+  "model_snapshot": {
+    "required": false,
+    "provider": null,
+    "requested_model_id": null,
+    "resolved_model_id": null,
+    "generation_parameters": null,
+    "reason": "The offline toy solver does not use a model; this fixture records no model invocation or response."
+  },
+  "score_available": false,
+  "reward": null,
+  "verifier_error": null,
+  "provenance": "Manually authored synthetic fixture. No historical run, model response, runtime host, or execution timestamp is claimed."
+}
