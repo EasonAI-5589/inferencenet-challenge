@@ -230,6 +230,16 @@
     document.body.prepend(canvas);
     const field = window.Backdrop.mount(canvas, { mode: "field", host: document.body, velocity: () => (window.__lenis ? window.__lenis.velocity : 0) });
     field.setTone(Number(document.body.dataset.tone || 0));
+    // a fixed glow follows the section in view, cycling through the page's accent colours
+    const ambient = document.createElement("div");
+    ambient.className = "ambient"; ambient.setAttribute("aria-hidden", "true");
+    document.body.prepend(ambient);
+    const tones = ["challenges", "violet", "amber", "involve"], start = Number(document.body.dataset.tone || 0);
+    const sections = [...document.querySelectorAll("main > section:not(.page-hero)")];
+    const follow = new IntersectionObserver(entries => entries.forEach(entry => {
+      if (entry.isIntersecting) ambient.dataset.amb = tones[(start + sections.indexOf(entry.target)) % tones.length];
+    }), { rootMargin: "-45% 0px -45% 0px" });
+    sections.forEach(section => follow.observe(section));
     const past = () => root.classList.toggle("past-hero", !hero || scrollY > hero.offsetHeight * 0.6);
     addEventListener("scroll", past, { passive: true }); past();
   }
