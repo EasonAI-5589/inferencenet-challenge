@@ -23,9 +23,11 @@
   <script src="../language.js?v=20261022-v2" defer></script>
   <link rel="stylesheet" href="v2.css?v=20261022-v2">
   <link rel="stylesheet" href="skin.css?v=20261022-v2">
+  <link rel="stylesheet" href="scene.css?v=20261022-v2">
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script src="backdrop.js?v=20261022-v2" defer></script>
   <script src="v2.js?v=20261022-v2" defer></script>
+  <script src="scene.js?v=20261022-v2" defer></script>
 </head>
 <body class="v2-content v2-page-evolution" data-tone="2">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -332,6 +334,17 @@
 
 
 
+    <section class="section container ruled v2-system" id="system" aria-labelledby="system-title">
+      <div class="section-heading compact"><div><p class="kicker">Self-evolution</p><h2 id="system-title">Run, record, <em>select</em></h2></div><p class="lead">Self-evolving methods wrap the run in an outer loop: what each round records becomes proposed harness edits, and only candidates that pass the check carry forward.</p></div>
+      <div class="v2-stack" data-scene="evolution">
+        <ol class="v2-stack-layers">
+          <li data-c="t1" tabindex="0"><span class="v2-stack-tag" data-no-translate>L1</span><h3>Run</h3><p>The current harness version works through tasks and records every step.</p><ul class="v2-stack-chips"><li>Task stream</li><li>Current harness</li></ul></li>
+          <li data-c="v" tabindex="0"><span class="v2-stack-tag" data-no-translate>L2</span><h3>Record and propose</h3><p>Traces, scores and failures are collected, and a proposer writes candidate edits to the harness.</p><ul class="v2-stack-chips"><li>Traces</li><li>Scores</li><li>Candidate edits</li></ul></li>
+          <li data-c="t2" tabindex="0"><span class="v2-stack-tag" data-no-translate>L3</span><h3>Check and select</h3><p>Candidates are evaluated, and the selected version becomes the harness for the next round.</p><ul class="v2-stack-chips"><li>Evaluation</li><li>Selected version</li></ul></li>
+        </ol>
+        <div class="v2-stack-stage" aria-hidden="true"><canvas></canvas><span class="v2-stack-cap"><b></b>Interactive model</span><span class="v2-stack-hint"><svg viewBox="0 0 22 12" aria-hidden="true"><path d="M1 6h20M5 2 1 6l4 4M17 2l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Drag to rotate</span></div>
+      </div>
+    </section>
     <section class="section container ruled" id="cycle" aria-labelledby="cycle-title">
       <div class="case-heading"><p class="kicker">02 / Improvement loop</p><h2 id="cycle-title">One loop behind all three methods</h2></div>
       <p class="case-intro">The methods differ in how much of the harness they open up, who writes a change and how a candidate is judged. Each iteration still has the same five steps, and the candidates evaluated so far, with their run evidence, inform the proposals of the next round.</p>

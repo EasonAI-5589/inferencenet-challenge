@@ -13,7 +13,7 @@ const redirects = { 'data.html': 'challenge.html#replication-data', 'agent.html'
 // translation dictionaries and the root scripts, and adds its own design files.
 export const v2Pages = pages.map(page => `v2/${page}`);
 const v2Redirects = Object.fromEntries(Object.entries(redirects).map(([file, target]) => [`v2/${file}`, target]));
-const v2Files = ['v2/v2.css', 'v2/home.css', 'v2/skin.css', 'v2/theme.js', 'v2/v2.js', 'v2/home.js', 'v2/backdrop.js'];
+const v2Files = ['v2/v2.css', 'v2/home.css', 'v2/skin.css', 'v2/theme.js', 'v2/v2.js', 'v2/home.js', 'v2/backdrop.js', 'v2/scene.css', 'v2/scene.js'];
 const allRedirects = { ...redirects, ...v2Redirects };
 export const publicFiles = [
   ...pages,

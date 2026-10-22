@@ -24,9 +24,11 @@
   <script src="../language.js?v=20261022-v2" defer></script>
   <link rel="stylesheet" href="v2.css?v=20261022-v2">
   <link rel="stylesheet" href="skin.css?v=20261022-v2">
+  <link rel="stylesheet" href="scene.css?v=20261022-v2">
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script src="backdrop.js?v=20261022-v2" defer></script>
   <script src="v2.js?v=20261022-v2" defer></script>
+  <script src="scene.js?v=20261022-v2" defer></script>
 </head>
 <body class="v2-content v2-page-harness" data-tone="1">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -175,6 +177,17 @@
       </div>
     </section>
 
+    <section class="section container ruled v2-system" id="system" aria-labelledby="system-title">
+      <div class="section-heading compact"><div><p class="kicker">Anatomy</p><h2 id="system-title">Model, harness, <em>environment</em></h2></div><p class="lead">The harness is the layer between a model and the task environment. It decides what the model sees, what it can do, how errors come back and when the run stops.</p></div>
+      <div class="v2-stack" data-scene="harness">
+        <ol class="v2-stack-layers">
+          <li data-c="t1" tabindex="0"><span class="v2-stack-tag" data-no-translate>L1</span><h3>Model</h3><p>Reads the context it is given and proposes the next step or tool call.</p><ul class="v2-stack-chips"><li>Model</li><li>Next step</li></ul></li>
+          <li data-c="v" tabindex="0"><span class="v2-stack-tag" data-no-translate>L2</span><h3>Harness</h3><p>Assembles context, exposes tools, turns errors into feedback and enforces limits and output checks.</p><ul class="v2-stack-chips"><li>Context</li><li>Tools</li><li>Feedback</li><li>Run limits</li></ul></li>
+          <li data-c="t2" tabindex="0"><span class="v2-stack-tag" data-no-translate>L3</span><h3>Environment</h3><p>The sandbox, data and files the agent acts on, and the evaluator that scores the final output.</p><ul class="v2-stack-chips"><li>Sandbox</li><li>Data and files</li><li>Evaluator</li></ul></li>
+        </ol>
+        <div class="v2-stack-stage" aria-hidden="true"><canvas></canvas><span class="v2-stack-cap"><b></b>Interactive model</span><span class="v2-stack-hint"><svg viewBox="0 0 22 12" aria-hidden="true"><path d="M1 6h20M5 2 1 6l4 4M17 2l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Drag to rotate</span></div>
+      </div>
+    </section>
     <section class="section container ruled" id="definition" aria-labelledby="definition-title">
       <div class="section-heading">
         <div>

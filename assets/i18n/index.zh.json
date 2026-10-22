@@ -684,5 +684,20 @@
   "Propose a benchmark": "提出基准方案",
   "Discuss a collaboration": "讨论合作",
   "Explore Dev100 results": "查看 Dev100 结果",
-  "Explore harnesses": "了解 Harness"
+  "Explore harnesses": "了解 Harness",
+  "Drag to rotate": "拖动旋转",
+  "Interactive model": "交互模型",
+  "System map": "系统图",
+  "Three layers,": "三层结构，",
+  "one challenge platform": "一个挑战平台",
+  "Challenges supply the tasks, harnesses turn models into agents, and independent evaluation decides what counts. Hover a layer to trace it, or drag the model to turn it.": "挑战提供任务，Harness 把模型变成智能体，独立评测决定结果。悬停某一层查看其作用，或拖动模型旋转视角。",
+  "Challenges": "挑战",
+  "Econometric replication and business analysis tasks, each with its own data and files.": "计量经济学复现与业务分析任务，各自配有数据与文件。",
+  "Data files": "数据文件",
+  "Harnesses and agents": "Harness 与智能体",
+  "Models act inside harnesses that supply context, tools and feedback. Dev100 compares 14 models across 4 harnesses.": "模型在 Harness 中行动，由 Harness 提供上下文、工具与反馈。Dev100 比较了 14 个模型在 4 种 Harness 上的表现。",
+  "Models": "模型",
+  "Harnesses": "Harness",
+  "Evaluation and improvement": "评测与改进",
+  "Withheld references and rubrics score each run; results feed the leaderboard and self-evolving harness research.": "不可见的参考结果与评分细则为每次运行打分；结果进入排行榜，并支撑 Harness 自进化研究。"
 }

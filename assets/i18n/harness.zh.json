@@ -2208,5 +2208,18 @@
   "Explore capability targets and the Phase 1 / Phase 2 roadmap": "查看能力目标与第一 / 第二阶段改造路线图",
   "See the execution vs. optimization loop diagram": "查看“执行循环 vs. 优化循环”双层架构图",
   "Read InferenceNet’s ModularRSI v1 and v2 results": "阅读 InferenceNet ModularRSI v1 与 v2 实验结果",
-  "Read InferenceNet’s ModularRSI evolution results": "阅读 InferenceNet ModularRSI 自进化实验结果"
+  "Read InferenceNet’s ModularRSI evolution results": "阅读 InferenceNet ModularRSI 自进化实验结果",
+  "Drag to rotate": "拖动旋转",
+  "Interactive model": "交互模型",
+  "Anatomy": "结构剖析",
+  "Model, harness,": "模型、Harness 与",
+  "environment": "环境",
+  "The harness is the layer between a model and the task environment. It decides what the model sees, what it can do, how errors come back and when the run stops.": "Harness 位于模型与任务环境之间。它决定模型看到什么、能做什么、错误如何反馈，以及运行何时结束。",
+  "Reads the context it is given and proposes the next step or tool call.": "读取给定的上下文，提出下一步操作或工具调用。",
+  "Next step": "下一步",
+  "Assembles context, exposes tools, turns errors into feedback and enforces limits and output checks.": "组织上下文、开放工具、把错误转化为反馈，并执行限制与输出检查。",
+  "Feedback": "反馈",
+  "The sandbox, data and files the agent acts on, and the evaluator that scores the final output.": "智能体操作的沙箱、数据与文件，以及为最终输出打分的评测器。",
+  "Data and files": "数据与文件",
+  "Run limits": "运行限制"
 }

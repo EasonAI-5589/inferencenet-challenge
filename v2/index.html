@@ -18,10 +18,12 @@
   <script src="../language.js?v=20261022-v2" defer></script>
   <link rel="stylesheet" href="v2.css?v=20261022-v2">
   <link rel="stylesheet" href="home.css?v=20261022-v2">
+  <link rel="stylesheet" href="scene.css?v=20261022-v2">
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script src="backdrop.js?v=20261022-v2" defer></script>
   <script src="v2.js?v=20261022-v2" defer></script>
   <script src="home.js?v=20261022-v2" defer></script>
+  <script src="scene.js?v=20261022-v2" defer></script>
 </head>
 <body class="v2-home">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -432,6 +434,26 @@
 </section>
 
 <!-- ================= 03 AIMS ================= -->
+<section class="section" id="system" aria-labelledby="system-title">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="left">
+        <span class="kicker mono">System map</span>
+        <h2 id="system-title" data-split>Three layers, <em>one challenge platform</em></h2>
+      </div>
+      <p class="right">Challenges supply the tasks, harnesses turn models into agents, and independent evaluation decides what counts. Hover a layer to trace it, or drag the model to turn it.</p>
+    </div>
+      <div class="v2-stack" data-scene="home">
+        <ol class="v2-stack-layers">
+          <li data-c="t1" tabindex="0"><span class="v2-stack-tag" data-no-translate>L1</span><h3>Challenges</h3><p>Econometric replication and business analysis tasks, each with its own data and files.</p><ul class="v2-stack-chips"><li>Challenge 1</li><li>Challenge 2</li><li>Data files</li></ul><a class="link v2-stack-go" href="challenge.html"><span>Explore the challenges</span><span class="arrow" aria-hidden="true">→</span></a></li>
+          <li data-c="v" tabindex="0"><span class="v2-stack-tag" data-no-translate>L2</span><h3>Harnesses and agents</h3><p>Models act inside harnesses that supply context, tools and feedback. Dev100 compares 14 models across 4 harnesses.</p><ul class="v2-stack-chips"><li>Models</li><li>Harnesses</li></ul><a class="link v2-stack-go" href="harness.html"><span>Explore harnesses</span><span class="arrow" aria-hidden="true">→</span></a></li>
+          <li data-c="t2" tabindex="0"><span class="v2-stack-tag" data-no-translate>L3</span><h3>Evaluation and improvement</h3><p>Withheld references and rubrics score each run; results feed the leaderboard and self-evolving harness research.</p><ul class="v2-stack-chips"><li>Evaluation</li><li>Leaderboard</li><li>Self-evolving</li></ul><a class="link v2-stack-go" href="leaderboard.html"><span>View Dev100 results</span><span class="arrow" aria-hidden="true">→</span></a></li>
+        </ol>
+        <div class="v2-stack-stage" aria-hidden="true"><canvas></canvas><span class="v2-stack-cap"><b></b>Interactive model</span><span class="v2-stack-hint"><svg viewBox="0 0 22 12" aria-hidden="true"><path d="M1 6h20M5 2 1 6l4 4M17 2l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Drag to rotate</span></div>
+      </div>
+  </div>
+</section>
+
 <section class="section" id="aims">
   <div class="wrap">
     <div class="section-head reveal">

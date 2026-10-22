@@ -1107,5 +1107,22 @@
   "Read the evolved module functions": "查看进化后的模块函数",
   "Inspect the SDK integration": "查看 SDK 集成实现",
   "Inspect the frozen observation patch": "查看冻结的 observation 补丁",
-  "Inspect the evolved modules": "查看进化模块实现"
+  "Inspect the evolved modules": "查看进化模块实现",
+  "Drag to rotate": "拖动旋转",
+  "Interactive model": "交互模型",
+  "Self-evolution": "自进化",
+  "Run, record,": "运行、记录、",
+  "select": "选择",
+  "Self-evolving methods wrap the run in an outer loop: what each round records becomes proposed harness edits, and only candidates that pass the check carry forward.": "自进化方法在运行之外再加一层循环：每轮记录下的内容转化为对 Harness 的修改提案，只有通过检查的候选版本才会保留。",
+  "The current harness version works through tasks and records every step.": "当前版本的 Harness 逐个完成任务，并记录每一步。",
+  "Task stream": "任务流",
+  "Current harness": "当前 Harness",
+  "Record and propose": "记录与提案",
+  "Traces, scores and failures are collected, and a proposer writes candidate edits to the harness.": "收集运行轨迹、得分与失败案例，由提案器写出对 Harness 的候选修改。",
+  "Traces": "运行轨迹",
+  "Scores": "得分",
+  "Candidate edits": "候选修改",
+  "Check and select": "检查与选择",
+  "Candidates are evaluated, and the selected version becomes the harness for the next round.": "对候选版本进行评测，选出的版本成为下一轮使用的 Harness。",
+  "Selected version": "选定版本"
 }
