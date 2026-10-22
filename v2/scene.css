@@ -1,0 +1,85 @@
+/* scene.css — layered system scenes (.v2-stack) drawn by scene.js: a list of
+ * layers beside an interactive isometric stage. Shared by the homepage and the
+ * content pages; uses only v2.css tokens. */
+.v2-stack {
+  --violet: oklch(74% 0.15 292);
+  display: grid; grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+  gap: clamp(24px, 4vw, 64px); align-items: center; margin-top: var(--space-6);
+}
+[data-theme="light"] .v2-stack { --violet: oklch(50% 0.17 292); }
+.v2-stack-layers { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.v2-stack-layers > li {
+  --lc: var(--track-1);
+  position: relative; padding: 18px 20px 18px 24px; border: 1px solid var(--border-hairline); border-radius: var(--radius-card);
+  background: color-mix(in oklab, var(--surface-1) 72%, transparent); cursor: default; overflow: hidden;
+  transition: border-color var(--duration-slow) var(--ease-standard), background-color var(--duration-slow) var(--ease-standard),
+              transform var(--duration-emphasized) var(--ease-emphasized);
+}
+.v2-stack-layers > li[data-c="t2"] { --lc: var(--track-2); }
+.v2-stack-layers > li[data-c="v"] { --lc: var(--violet); }
+.v2-stack-layers > li::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(180deg, transparent, var(--lc), transparent); opacity: .25;
+  transition: opacity var(--duration-slow) var(--ease-standard);
+}
+.v2-stack-layers > li::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0;
+  background: radial-gradient(120% 90% at 0% 0%, color-mix(in oklab, var(--lc) 13%, transparent), transparent 60%);
+  transition: opacity var(--duration-slow) var(--ease-standard);
+}
+.v2-stack-layers > li.is-active { border-color: color-mix(in oklab, var(--lc) 42%, transparent); transform: translateX(6px); }
+.v2-stack-layers > li.is-active::before { opacity: 1; }
+.v2-stack-layers > li.is-active::after { opacity: 1; }
+.v2-stack-tag {
+  position: relative; z-index: 1; display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--lc);
+}
+.v2-stack-tag::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, color-mix(in oklab, var(--lc) 45%, transparent), transparent); }
+.v2-stack-layers h3 { position: relative; z-index: 1; margin: 8px 0 6px; font-size: 1.12rem; line-height: 1.3; letter-spacing: -0.01em; color: var(--text-primary); }
+.v2-stack-layers p { position: relative; z-index: 1; margin: 0; color: var(--text-secondary); font-size: .94rem; line-height: 1.55; }
+.v2-stack-chips { position: relative; z-index: 1; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 0; padding: 0; }
+.v2-stack-chips li {
+  font-family: var(--font-mono); font-size: 11px; line-height: 1; padding: 6px 9px; border-radius: var(--radius-tag);
+  border: 1px solid var(--border-hairline); color: var(--text-secondary); background: color-mix(in oklab, var(--surface-2) 60%, transparent);
+  transition: border-color var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard), background-color var(--duration-base) var(--ease-standard);
+}
+.v2-stack-layers > li.is-active .v2-stack-chips li { border-color: color-mix(in oklab, var(--lc) 26%, transparent); }
+.v2-stack-chips li.is-hot { border-color: var(--lc); color: var(--text-primary); background: color-mix(in oklab, var(--lc) 16%, transparent); }
+.v2-stack-go { position: relative; z-index: 1; display: inline-flex; margin-top: 12px; }
+
+.v2-stack-stage {
+  position: relative; aspect-ratio: 1 / 1.02; min-height: 360px; border-radius: var(--radius-stage); overflow: hidden;
+  border: 1px solid var(--border-hairline); cursor: grab; touch-action: pan-y; user-select: none; -webkit-user-select: none;
+  background:
+    radial-gradient(60% 50% at 50% 46%, color-mix(in oklab, var(--track-1) 9%, transparent), transparent 70%),
+    radial-gradient(40% 36% at 78% 80%, color-mix(in oklab, var(--track-2) 7%, transparent), transparent 70%),
+    linear-gradient(var(--blueprint) 1px, transparent 1px) 0 0 / 32px 32px,
+    linear-gradient(90deg, var(--blueprint) 1px, transparent 1px) 0 0 / 32px 32px,
+    var(--surface-1);
+  box-shadow: var(--inner-highlight), var(--shadow-card);
+}
+.v2-stack-stage.is-dragging { cursor: grabbing; }
+.v2-stack-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.v2-stack-cap, .v2-stack-hint {
+  position: absolute; z-index: 1; display: inline-flex; align-items: center; gap: 8px; pointer-events: none;
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-tertiary);
+}
+.v2-stack-cap { top: 16px; left: 18px; }
+.v2-stack-cap b { width: 6px; height: 6px; border-radius: 50%; background: var(--track-1); box-shadow: 0 0 0 3px color-mix(in oklab, var(--track-1) 20%, transparent); animation: v2-stack-blink 2.4s var(--ease-standard) infinite; }
+.v2-stack-hint { right: 18px; bottom: 16px; }
+.v2-stack-hint svg { width: 22px; height: 12px; }
+.v2-stack-stage::before, .v2-stack-stage::after {
+  content: ""; position: absolute; z-index: 1; width: 14px; height: 14px; pointer-events: none; border-color: var(--border-strong); border-style: solid;
+}
+.v2-stack-stage::before { top: 10px; right: 10px; border-width: 1px 1px 0 0; }
+.v2-stack-stage::after { bottom: 10px; left: 10px; border-width: 0 0 1px 1px; }
+@keyframes v2-stack-blink { 50% { opacity: .35; } }
+
+@media (max-width: 960px) {
+  .v2-stack { grid-template-columns: minmax(0, 1fr); }
+  .v2-stack-stage { order: -1; min-height: 0; aspect-ratio: 1 / 0.92; }
+  .v2-stack-layers > li.is-active { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .v2-stack-layers > li, .v2-stack-cap b { transition: none; animation: none; }
+}

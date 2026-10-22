@@ -46,6 +46,8 @@ made to a root page must be repeated in its `v2/` copy until v2 replaces the roo
 | Homepage sections, all scoped to `body.v2-home` | `v2/home.css`, `v2/home.js` |
 | Content pages: remaps the `styles.css` / `site.css` tokens and restyles the shared components; animated page header | `v2/skin.css`, `v2/v2.js` |
 | Header backdrops (one canvas renderer, one motif per page) | `v2/backdrop.js` |
+| Layered system scenes (`.v2-stack`, `data-scene`) on Home, Challenge, Harness and Self-evolving: an interactive isometric L1–L3 stack whose tile labels come from each layer's chips | `v2/scene.css`, `v2/scene.js` |
+| Teams: institution logo wall on white plates, profile photos (`assets/people/`, sources in its `ATTRIBUTION.txt`) with monograms for anyone without one, contributor chips | `v2/skin.css` §16 |
 | Theme restore before paint; first visits to v2 use the dark theme | `v2/theme.js` |
 
 v2 pages load the root `site.js`, `language.js`, `charts.js` and page scripts from

@@ -12,18 +12,20 @@
   <meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="../assets/favicon-v2.svg">
   <link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <script src="theme.js?v=20261022-v2"></script>
+  <script src="theme.js?v=20261022-v2-scenes"></script>
   <link rel="stylesheet" href="../styles.css?v=20261019-motion">
   <link rel="stylesheet" href="../site.css?v=20261019-motion">
   <link rel="stylesheet" href="../challenge.css?v=20261019-data-in-challenge">
   <script src="../site.js?v=20261019-motion" defer></script>
   <link rel="stylesheet" href="../language.css">
-  <script src="../language.js?v=20261022-v2" defer></script>
-  <link rel="stylesheet" href="v2.css?v=20261022-v2">
-  <link rel="stylesheet" href="skin.css?v=20261022-v2">
+  <script src="../language.js?v=20261022-v2-scenes" defer></script>
+  <link rel="stylesheet" href="v2.css?v=20261022-v2-scenes">
+  <link rel="stylesheet" href="skin.css?v=20261022-v2-scenes">
+  <link rel="stylesheet" href="scene.css?v=20261022-v2-scenes">
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
-  <script src="backdrop.js?v=20261022-v2" defer></script>
-  <script src="v2.js?v=20261022-v2" defer></script>
+  <script src="backdrop.js?v=20261022-v2-scenes" defer></script>
+  <script src="v2.js?v=20261022-v2-scenes" defer></script>
+  <script src="scene.js?v=20261022-v2-scenes" defer></script>
 </head>
 <body class="v2-content v2-page-challenge" data-tone="0">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -223,6 +225,17 @@
       </article>
     </section>
 
+    <section class="section container ruled v2-system" id="system" aria-labelledby="system-title">
+      <div class="section-heading compact"><div><p class="kicker">System view</p><h2 id="system-title">From task <em>to score</em></h2></div><p class="lead">Each challenge runs through three layers: the task and its data, the agent's workspace, and an evaluation the agent never sees. Hover a layer to trace it, or drag the model to turn it.</p></div>
+      <div class="v2-stack" data-scene="challenge">
+        <ol class="v2-stack-layers">
+          <li data-c="t1" tabindex="0"><span class="v2-stack-tag" data-no-translate>L1</span><h3>Tasks and data</h3><p>Challenge 1 asks for an empirical result from a research specification; Challenge 2 asks for business deliverables from multi-file records.</p><ul class="v2-stack-chips"><li>Replication</li><li>Deliverables</li><li>Data files</li></ul></li>
+          <li data-c="v" tabindex="0"><span class="v2-stack-tag" data-no-translate>L2</span><h3>Agent workspace</h3><p>A model works inside a harness that supplies context, tools and feedback, and runs its code in a sandbox.</p><ul class="v2-stack-chips"><li>Model</li><li>Harness</li><li>Sandbox</li></ul></li>
+          <li data-c="t2" tabindex="0"><span class="v2-stack-tag" data-no-translate>L3</span><h3>Independent evaluation</h3><p>Submissions are checked against withheld reference values or a task rubric before results are compared.</p><ul class="v2-stack-chips"><li>Withheld references</li><li>Rubric</li><li>Leaderboard</li></ul></li>
+        </ol>
+        <div class="v2-stack-stage" aria-hidden="true"><canvas></canvas><span class="v2-stack-cap"><b></b>Interactive model</span><span class="v2-stack-hint"><svg viewBox="0 0 22 12" aria-hidden="true"><path d="M1 6h20M5 2 1 6l4 4M17 2l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Drag to rotate</span></div>
+      </div>
+    </section>
     <section class="section container ruled" id="timeline" aria-labelledby="timeline-title">
       <div class="section-heading compact"><div><p class="kicker">02 / Timeline</p><h2 id="timeline-title">Proposed timeline</h2></div><p class="lead">Five stages, from release and participant access to evaluation and awards.</p></div>
       <ol class="plan-stages">

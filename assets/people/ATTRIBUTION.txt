@@ -1,0 +1,25 @@
+Profile photos
+Retrieved 2026-10-22 from each person's public profile page, cropped to a square
+around the face and resized to 240 x 240 JPEG for the v2 Teams page.
+Photos belong to their respective owners and are not covered by the website's
+code or font licenses.
+
+lin-william-cong.jpg — Lin William Cong
+Source page: https://www.linwilliamcong.com/
+Original: https://static.wixstatic.com/media/555f73_001c6bd977dc4e9693e363a39717097f~mv2.jpg
+
+ye-luo.jpg — Ye Luo
+Source page: https://www.hkubs.hku.hk/people/ye-luo/
+Original: https://www.hkubs.hku.hk/wp-content/uploads/fly-images/7997/Dr_Luo_Ye_2019-scaled-940x1000-ct.jpg
+
+liwen-zhang.jpg — Liwen Zhang
+Source page: https://ssds.sufe.edu.cn/99/eb/c715a236011/page.htm
+Original: https://ssds.sufe.edu.cn/_upload/article/images/e7/a7/d1445b2749ddb4264a085f18615e/dba2a7ad-ae4e-443c-bd29-2b530bb784cc.jpg
+
+yichen-guo.jpg — Yichen Guo
+Source page: https://easonai-5589.github.io/
+Original: https://easonai-5589.github.io/images/profile.png
+
+tianyang-han.jpg — Tianyang Han
+Source page: https://www.hkubs.hku.hk/people/tianyang-han/
+Original: https://www.hkubs.hku.hk/wp-content/uploads/fly-images/199691/HAN-Tianyang-scaled-940x1000-ct.jpg
