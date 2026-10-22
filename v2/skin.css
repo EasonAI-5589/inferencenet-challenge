@@ -231,8 +231,13 @@ html[lang="zh-CN"] .v2-content .section-heading h2 { line-height: 1.25; letter-s
 
 /* Flow field behind long pages (shown once the header scrolls away). */
 .v2-content .field { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0; transition: opacity 1.2s var(--ease-standard); }
-html.past-hero .v2-content .field { opacity: .32; }
-html[data-theme="light"].past-hero .v2-content .field { opacity: .26; }
+html.past-hero .v2-content .field { opacity: .58; }
+html[data-theme="light"].past-hero .v2-content .field { opacity: .4; }
+/* below the header, a fixed glow takes the colour of the section in view (colours animate via @property) */
+.v2-content .ambient { opacity: 0; transition: opacity 1.2s var(--ease-standard), --amb-a 1.4s var(--ease-standard), --amb-b 1.4s var(--ease-standard); }
+html.past-hero .v2-content .ambient { opacity: 1; }
+.v2-content .ambient[data-amb="violet"] { --amb-a: var(--track-3-soft); --amb-b: var(--track-1-soft); }
+.v2-content .ambient[data-amb="amber"] { --amb-a: var(--track-2-soft); --amb-b: var(--track-3-soft); }
 
 @media (prefers-reduced-motion: reduce) {
   .v2-content .page-hero > *, .v2-content .v2-backdrop { transform: none; filter: none; }
