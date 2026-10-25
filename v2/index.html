@@ -5,17 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark light">
   <meta name="referrer" content="no-referrer">
-  <title>InferenceNet Challenge · v2</title>
-  <meta name="description" content="The Global InferenceNet Initiative sets out a vision of shared infrastructure for AI agents in business, finance and social science. InferenceNet Challenge advances this vision by building an open-source community, bringing together challenging problems, and developing a standard framework for model training and evaluation.">
-  <meta property="og:title" content="InferenceNet Challenge — AI Agents for Business, Finance and Social Science">
-  <meta property="og:description" content="The Global InferenceNet Initiative sets out a vision of shared infrastructure for AI agents in business, finance and social science. InferenceNet Challenge advances this vision by building an open-source community, bringing together challenging problems, and developing a standard framework for model training and evaluation.">
+  <title>MetacaseNet Challenge · Global MetacaseNet Initiative</title>
+  <meta name="description" content="MetacaseNet Challenge benchmarks how an AI agent solves a complete case. The Global MetacaseNet Initiative aims to connect context, evidence, reasoning, actions and outcomes into reusable experience across economics, finance, statistics and social science.">
+  <meta property="og:title" content="MetacaseNet Challenge — Learn from how problems are solved">
+  <meta property="og:description" content="MetacaseNet Challenge benchmarks how an AI agent solves a complete case. The Global MetacaseNet Initiative aims to connect context, evidence, reasoning, actions and outcomes into reusable experience across economics, finance, statistics and social science.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="../assets/favicon-v2.svg">
   <link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <script src="theme.js?v=20261022-v2-ambient"></script>
   <script src="../site.js?v=20261019-motion" defer></script>
   <link rel="stylesheet" href="../language.css">
-  <script src="../language.js?v=20261023-dev-cards" defer></script>
+  <script src="../language.js?v=20261025-metacase" defer></script>
   <link rel="stylesheet" href="v2.css?v=20261022-v2-ambient">
   <link rel="stylesheet" href="home.css?v=20261023-dev-cards">
   <link rel="stylesheet" href="scene.css?v=20261022-v2-ambient">
@@ -23,7 +23,8 @@
   <script src="backdrop.js?v=20261022-v2-ambient" defer></script>
   <script src="v2.js?v=20261022-v2-ambient" defer></script>
   <script src="home.js?v=20261022-v2-ambient" defer></script>
-  <script src="scene.js?v=20261022-v2-ambient" defer></script>
+  <link rel="stylesheet" href="arena.css?v=20261025-type4">
+  <script type="module" src="arena.js?v=20261025-type4"></script>
 </head>
 <body class="v2-home">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -70,7 +71,7 @@
 
   <header class="site-header">
     <nav class="nav container" aria-label="Main navigation">
-      <a class="wordmark" href="index.html"><svg class="v2-mark lg-anim" width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><circle class="halo" cx="16" cy="9.9" r="5.4" fill="none" style="stroke:var(--logo-node)" stroke-width="1"/><path class="e-l" d="M7.6 24.5 16 9.9" fill="none" style="stroke:var(--logo-gl)" stroke-width="2" stroke-linecap="round" pathLength="1"/><path class="e-r" d="M24.4 24.5 16 9.9" fill="none" style="stroke:var(--logo-gr)" stroke-width="2" stroke-linecap="round" pathLength="1"/><circle class="d-l" cx="7.6" cy="24.5" r="3" style="fill:var(--logo-t1)"/><circle class="d-r" cx="24.4" cy="24.5" r="4.2" style="fill:var(--logo-t2)"/><circle class="d-t" cx="16" cy="9.9" r="5.4" style="fill:var(--logo-node)"/></svg><span>Inference<span class="net">Net</span></span></a>
+      <a class="wordmark" href="index.html"><svg class="v2-mark lg-anim" width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><circle class="halo" cx="16" cy="9.9" r="5.4" fill="none" style="stroke:var(--logo-node)" stroke-width="1"/><path class="e-l" d="M7.6 24.5 16 9.9" fill="none" style="stroke:var(--logo-gl)" stroke-width="2" stroke-linecap="round" pathLength="1"/><path class="e-r" d="M24.4 24.5 16 9.9" fill="none" style="stroke:var(--logo-gr)" stroke-width="2" stroke-linecap="round" pathLength="1"/><circle class="d-l" cx="7.6" cy="24.5" r="3" style="fill:var(--logo-t1)"/><circle class="d-r" cx="24.4" cy="24.5" r="4.2" style="fill:var(--logo-t2)"/><circle class="d-t" cx="16" cy="9.9" r="5.4" style="fill:var(--logo-node)"/></svg><span>Metacase<span class="net">Net</span></span></a>
       <div class="nav-links open" id="nav-links">
         <a href="index.html" aria-current="page">Home</a>
         <a href="challenge.html">Challenge</a>
@@ -100,12 +101,12 @@
   </div>
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <span class="eyebrow mono intro" style="--d:.05s">Global InferenceNet Initiative · NTU GIFTS</span>
-      <h1><span class="line"><span style="--d:.12s">InferenceNet</span></span> <span class="line"><span class="accent" style="--d:.24s" data-no-translate>Challenge</span></span></h1>
-      <p class="subtitle intro" style="--d:.42s">AI Agents for Business, Finance and Social Science</p>
-      <p class="lead intro" style="--d:.52s"><b>Global InferenceNet Initiative</b> sets out a vision of shared infrastructure for AI agents in business, finance and social science. <b>InferenceNet Challenge</b> advances this vision by building an open-source community, bringing together challenging problems, and developing a standard framework for model training and evaluation.</p>
+      <span class="eyebrow mono intro" style="--d:.05s">Global MetacaseNet Initiative · NTU GIFTS</span>
+      <h1><span class="line"><span style="--d:.12s" data-no-translate>MetacaseNet</span></span> <span class="line"><span class="accent" style="--d:.24s" data-no-translate>Challenge</span></span></h1>
+      <p class="subtitle intro" style="--d:.42s">Learn from how problems are solved.</p>
+      <p class="lead intro" style="--d:.52s"><b>A Metacase</b> connects a problem’s context and evidence to its reasoning, actions and outcomes. Our challenge benchmarks how one agent solves a complete case, building toward reusable experience for AI and people across economics, finance, statistics and social science.</p>
       <div class="cta-row intro" style="--d:.64s">
-        <a class="btn btn-primary magnetic" href="#challenges"><span>Explore Inference Challenge</span><span class="arrow" aria-hidden="true"><i>→</i><i>→</i></span></a>
+        <a class="btn btn-primary magnetic" href="#challenges"><span>Explore the tracks</span><span class="arrow" aria-hidden="true"><i>→</i><i>→</i></span></a>
         <a class="btn btn-secondary magnetic" href="#involve"><span>Get involved</span><span class="arrow" aria-hidden="true"><i>→</i><i>→</i></span></a>
       </div>
       <div class="hero-meta intro" style="--d:.78s">
@@ -229,8 +230,9 @@
 
 <nav class="subnav home-subnav" aria-label="On this page">
   <div class="wrap">
-    <a href="#challenges" data-spy="challenges"><span class="n mono">01</span><span>Inference Challenge</span></a>
+    <a href="#challenges" data-spy="challenges"><span class="n mono">01</span><span>Challenge tracks</span></a>
     <a href="#demos" data-spy="demos"><span class="n mono">02</span><span>Demonstrations</span></a>
+    <a href="#system" data-spy="system"><span class="n mono">∴</span><span>Interactive arena</span></a>
     <a href="#aims" data-spy="aims"><span class="n mono">03</span><span>Our aims</span></a>
     <a href="#involve" data-spy="involve"><span class="n mono">04</span><span>Get involved</span></a>
   </div>
@@ -242,8 +244,8 @@
 <section class="manifesto" id="manifesto" aria-labelledby="mText">
   <div class="m-sticky">
     <div class="wrap m-inner">
-      <span class="kicker mono">Inference Challenge</span>
-      <p class="m-text" id="mText" data-scrub>Both challenges test complete agent <span class="hl">workflows</span>: interpret domain requirements, plan and execute analysis, revise through tool feedback, and submit results for <span class="hl">independent evaluation</span>.</p>
+      <span class="kicker mono">What is a Metacase?</span>
+      <p class="m-text" id="mText" data-scrub>A Metacase preserves a complete <span class="hl">problem-solving episode</span>: context and raw evidence, prior human or institutional practices, reasoning and candidate strategies, actions, outcomes, interpretations, and <span class="hl">lessons learned</span>.</p>
       <div class="m-foot mono"><span>∴</span><span class="bar"></span><span>Scroll</span></div>
     </div>
   </div>
@@ -254,8 +256,8 @@
   <div class="wrap">
     <div class="section-head reveal">
       <div class="left">
-        <span class="kicker mono">01 / Inference Challenge</span>
-        <h2 data-split>Inference <em data-no-translate>Challenge</em></h2>
+        <span class="kicker mono">01 / Challenge tracks</span>
+        <h2 data-split>Two tracks. <em>Complete cases.</em></h2>
       </div>
     </div>
 
@@ -396,7 +398,7 @@
         <span class="kicker mono">02 / Demonstrations</span>
         <h2 data-split>Agent <em>demonstrations</em></h2>
       </div>
-      <p class="right">See how agents work within InferenceNet’s task and evaluation framework to tackle research and business problems: interpreting requirements, calling tools, refining their work through feedback, and undergoing independent evaluation.</p>
+      <p class="right">Follow a single agent through a complete case: interpret the evidence, choose an approach, use tools, revise with feedback, and submit work for independent evaluation. Each trajectory shows how the result was reached.</p>
     </div>
     <div class="demos">
       <article class="card t1 demo reveal">
@@ -434,23 +436,43 @@
 </section>
 
 <!-- ================= 03 AIMS ================= -->
-<section class="section" id="system" aria-labelledby="system-title">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div class="left">
-        <span class="kicker mono">System map</span>
-        <h2 id="system-title" data-split>Three layers, <em>one challenge platform</em></h2>
-      </div>
-      <p class="right">Challenges supply the tasks, harnesses turn models into agents, and independent evaluation decides what counts. Hover a layer to trace it, or drag the model to turn it.</p>
+<section class="mc-chapter" id="system" aria-labelledby="system-title" data-no-translate>
+  <div class="mc-pin">
+    <canvas class="mc-canvas" aria-hidden="true"></canvas>
+    <canvas class="mc-telemetry" aria-hidden="true"></canvas>
+    <div class="mc-vignette" aria-hidden="true"></div>
+    <div class="mc-corner" data-mc-name>METACASENET / THE PROVING GROUND</div>
+    <div class="mc-scroll-cue"><span class="mc-scroll-mouse" aria-hidden="true"></span><span data-mc-scroll-hint>SCROLL TO EXPLORE</span></div>
+    <div class="mc-copy">
+      <span class="mc-kicker" data-mc-kicker>01 / ENTER THE ARENA</span>
+      <h2 id="system-title">One agent.<br><em>Every decision.</em></h2>
+      <p data-mc-body>A single mind stands before real-world problems. Its tools may change. Every action leaves a trace.</p>
+      <span class="mc-case-code" data-mc-code>ONE AGENT · A NETWORK OF METACASES</span>
     </div>
-      <div class="v2-stack" data-scene="home">
-        <ol class="v2-stack-layers">
-          <li data-c="t1" tabindex="0"><span class="v2-stack-tag" data-no-translate>L1</span><h3>Challenges</h3><p>Econometric replication and business analysis tasks, each with its own data and files.</p><ul class="v2-stack-chips"><li>Challenge 1</li><li>Challenge 2</li><li>Data files</li></ul><a class="link v2-stack-go" href="challenge.html"><span>Explore the challenges</span><span class="arrow" aria-hidden="true">→</span></a></li>
-          <li data-c="v" tabindex="0"><span class="v2-stack-tag" data-no-translate>L2</span><h3>Harnesses and agents</h3><p>Models act inside harnesses that supply context, tools and feedback. Dev100 compares 14 models across 4 harnesses.</p><ul class="v2-stack-chips"><li>Models</li><li>Harnesses</li></ul><a class="link v2-stack-go" href="harness.html"><span>Explore harnesses</span><span class="arrow" aria-hidden="true">→</span></a></li>
-          <li data-c="t2" tabindex="0"><span class="v2-stack-tag" data-no-translate>L3</span><h3>Evaluation and improvement</h3><p>Withheld references and rubrics score each run; results feed the leaderboard and self-evolving harness research.</p><ul class="v2-stack-chips"><li>Evaluation</li><li>Leaderboard</li><li>Self-evolving</li></ul><a class="link v2-stack-go" href="leaderboard.html"><span>View Dev100 results</span><span class="arrow" aria-hidden="true">→</span></a></li>
-        </ol>
-        <div class="v2-stack-stage" aria-hidden="true"><canvas></canvas><span class="v2-stack-cap"><b></b>Interactive model</span><span class="v2-stack-hint"><svg viewBox="0 0 22 12" aria-hidden="true"><path d="M1 6h20M5 2 1 6l4 4M17 2l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Drag to rotate</span></div>
+    <div class="mc-wheel" role="group" aria-hidden="true" inert><svg viewBox="0 0 600 600"></svg><span class="mc-wheel-label" data-mc-wheel-label>SCROLL TO BROWSE · CLICK A SLOT TO EQUIP</span></div>
+    <div class="mc-loadout">
+      <span class="mc-loadout-label" data-mc-loadout-label>CARRIED / HARNESS</span>
+      <strong class="mc-equipped" data-mc-equipped>Awaiting a loadout</strong>
+      <span class="mc-loadout-type" data-mc-type>Choose a harness at the equipment wheel</span>
+      <button class="mc-confirm" type="button" hidden>EQUIP THIS HARNESS ↗</button>
+      <span class="mc-carried" data-mc-carried hidden>NOT EQUIPPED · CLICK TO CONFIRM</span>
+    </div>
+    <span class="mc-equipment-status" role="status" aria-live="polite"></span>
+    <div class="mc-phase-index"><b data-mc-index>01</b><span>/ 06</span></div>
+    <div class="mc-bottom">
+      <div class="mc-event"><span class="mc-event-label" data-mc-episode-label>METACASE / TRACE</span><p data-mc-event>The case begins with a question, source evidence and the practices that came before.</p></div>
+      <div class="mc-timeline" aria-label="Episode chapters">
+        <div class="mc-chapter-mark is-active" data-mc-chapter="0"><i>01</i><span>ENTER</span></div>
+        <div class="mc-chapter-mark" data-mc-chapter="1"><i>02</i><span>EQUIP</span></div>
+        <div class="mc-chapter-mark" data-mc-chapter="2"><i>03</i><span>REPLICATE</span></div>
+        <div class="mc-chapter-mark" data-mc-chapter="3"><i>04</i><span>RECONCILE</span></div>
+        <div class="mc-chapter-mark" data-mc-chapter="4"><i>05</i><span>DECIDE</span></div>
+        <div class="mc-chapter-mark" data-mc-chapter="5"><i>06</i><span>REMEMBER</span></div>
       </div>
+    </div>
+    <div class="mc-access"><label for="mc-progress" data-mc-slider-label>Explore the complete episode</label><input id="mc-progress" class="mc-scrub" type="range" min="0" max="1000" step="1" value="0"></div>
+    <p class="mc-endnote" data-mc-illustrative>Conceptual episode · Eight architectures, no performance ranking. Three case rooms, two tracks.</p>
+    <div class="mc-fallback"><strong>∴ METACASENET</strong><p>One agent. Many harnesses. A continuous path from evidence to experience.</p></div>
   </div>
 </section>
 
@@ -459,22 +481,22 @@
     <div class="section-head reveal">
       <div class="left">
         <span class="kicker mono">03 / Our aims</span>
-        <h2 data-split>What InferenceNet Challenge <em>builds</em></h2>
+        <h2 data-split>What MetacaseNet Challenge <em>builds</em></h2>
       </div>
-      <p class="right">Four ways InferenceNet Challenge advances the Initiative: community collaboration, challenging problems, standard evaluation, and model training and improvement.</p>
+      <p class="right">The Global MetacaseNet Initiative aims to build a reusable network of Metacases. The challenge is a starting point: capture complete problem-solving trajectories, evaluate them, and learn across cases.</p>
     </div>
     <div class="aims-x">
       <article class="ax t1 reveal active" tabindex="0">
         <div class="ax-bg" aria-hidden="true"><svg viewBox="0 0 32 32" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.2" opacity=".45"><path d="M16 5 26.5 12.6 22.5 24.9H9.5L5.5 12.6Z"/><path d="M16 16V5M16 16l10.5-3.4M16 16l6.5 8.9M16 16l-6.5 8.9M16 16 5.5 12.6"/></g><circle cx="16" cy="5" r="2.2" fill="currentColor"/><circle cx="26.5" cy="12.6" r="2.2" style="fill:var(--track-2)"/><circle cx="22.5" cy="24.9" r="2.2" fill="currentColor"/><circle cx="9.5" cy="24.9" r="2.2" fill="currentColor"/><circle cx="5.5" cy="12.6" r="2.2" fill="currentColor"/><circle class="hub" cx="16" cy="16" r="3" style="fill:var(--track-1)"/></svg></div>
         <div class="ax-top"><span class="aim-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.2" opacity=".45"><path d="M16 5 26.5 12.6 22.5 24.9H9.5L5.5 12.6Z"/><path d="M16 16V5M16 16l10.5-3.4M16 16l6.5 8.9M16 16l-6.5 8.9M16 16 5.5 12.6"/></g><circle cx="16" cy="5" r="2.2" fill="currentColor"/><circle cx="26.5" cy="12.6" r="2.2" style="fill:var(--track-2)"/><circle cx="22.5" cy="24.9" r="2.2" fill="currentColor"/><circle cx="9.5" cy="24.9" r="2.2" fill="currentColor"/><circle cx="5.5" cy="12.6" r="2.2" fill="currentColor"/><circle class="hub" cx="16" cy="16" r="3" style="fill:var(--track-1)"/></svg></span><span class="num mono">01</span></div>
         <h3>Open-source community</h3>
-        <div class="ax-more"><div><p>Connect researchers, developers and domain experts to share code, tools, methods and results. Help teams build on each other’s work, solve problems together and accelerate research and applications.</p><a class="link" href="teams.html#contact" style="--tc: var(--track-1)"><span>Collaborate with us</span><span class="arrow" aria-hidden="true">→</span></a></div></div>
+        <div class="ax-more"><div><p>Connect researchers, developers and practitioners to share cases, tools, methods and lessons. Start with economics, finance, statistics and social science, with a broader vision spanning healthcare, policy, law and business.</p><a class="link" href="teams.html#contact" style="--tc: var(--track-1)"><span>Collaborate with us</span><span class="arrow" aria-hidden="true">→</span></a></div></div>
       </article>
       <article class="ax t2 reveal" tabindex="0">
         <div class="ax-bg" aria-hidden="true"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="10.5" y="4" width="16" height="11" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".3"/><rect x="8" y="8" width="16" height="11" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".55"/><g class="stack-front"><rect x="5.5" y="12.5" width="17" height="15" rx="2.5" style="fill:var(--surface-1)" stroke="currentColor" stroke-width="1.5"/><path d="M9 17.5h8M9 21h5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" opacity=".6"/><circle cx="18.8" cy="23.6" r="2.3" style="fill:var(--track-2)"/></g></svg></div>
         <div class="ax-top"><span class="aim-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="10.5" y="4" width="16" height="11" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".3"/><rect x="8" y="8" width="16" height="11" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".55"/><g class="stack-front"><rect x="5.5" y="12.5" width="17" height="15" rx="2.5" style="fill:var(--surface-1)" stroke="currentColor" stroke-width="1.5"/><path d="M9 17.5h8M9 21h5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" opacity=".6"/><circle cx="18.8" cy="23.6" r="2.3" style="fill:var(--track-2)"/></g></svg></span><span class="num mono">02</span></div>
-        <h3>Challenging problems</h3>
-        <div class="ax-more"><div><p>Collect demanding problems from research and professional practice, with data, task materials, deliverables and evaluation criteria. Build reusable tasks that test agents’ ability to complete complex work.</p><a class="link" href="challenge.html#tracks" style="--tc: var(--track-2)"><span>Explore the challenges</span><span class="arrow" aria-hidden="true">→</span></a></div></div>
+        <h3>Reusable Metacases</h3>
+        <div class="ax-more"><div><p>Represent a problem, decision or task from beginning to end. Link original context and raw evidence to prior practice, approaches considered, reasoning, candidate strategies, actions, outcomes, interpretations and lessons learned.</p><a class="link" href="challenge.html#tracks" style="--tc: var(--track-2)"><span>Explore the challenges</span><span class="arrow" aria-hidden="true">→</span></a></div></div>
       </article>
       <article class="ax t1 reveal" tabindex="0">
         <div class="ax-bg" aria-hidden="true"><svg viewBox="0 0 32 32" aria-hidden="true"><use href="#logo-s"/></svg></div>
@@ -485,8 +507,8 @@
       <article class="ax t2 reveal" tabindex="0">
         <div class="ax-bg" aria-hidden="true"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M25.6 12.4A10.5 10.5 0 1 0 26.5 17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M26.4 7.6v5h-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="16" r="2.6" style="fill:var(--track-1)"/><g class="orbit"><circle cx="16" cy="5.5" r="2.2" style="fill:var(--track-2)"/></g></svg></div>
         <div class="ax-top"><span class="aim-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M25.6 12.4A10.5 10.5 0 1 0 26.5 17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M26.4 7.6v5h-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="16" r="2.6" style="fill:var(--track-1)"/><g class="orbit"><circle cx="16" cy="5.5" r="2.2" style="fill:var(--track-2)"/></g></svg></span><span class="num mono">04</span></div>
-        <h3>Model training and improvement</h3>
-        <div class="ax-more"><div><p>Use task data, verified trajectories and failure feedback to study model training and harness optimization. Test improvements on new tasks, turning evaluation findings into evidence for better systems.</p><a class="link" href="leaderboard.html#research" style="--tc: var(--track-2)"><span>Explore training and improvement research</span><span class="arrow" aria-hidden="true">→</span></a></div></div>
+        <h3>Learning across cases</h3>
+        <div class="ax-more"><div><p>Help AI systems and people retrieve similar problem-solving and decision structures. Learn how earlier problems were understood, solved and refined, and test whether that experience improves performance on new cases.</p><a class="link" href="leaderboard.html#research" style="--tc: var(--track-2)"><span>Explore training and improvement research</span><span class="arrow" aria-hidden="true">→</span></a></div></div>
       </article>
     </div>
   </div>
@@ -500,7 +522,7 @@
         <span class="kicker mono">04 / Get involved</span>
         <h2 data-split>Build <em>with us</em></h2>
         <p class="lede">We welcome benchmark tasks, domain partners and collaborators working on models, harnesses and evaluation.</p>
-        <p class="lead">Bring your domain expertise, a new challenge, an agent implementation or evaluation ideas. Work with the community to turn challenging problems into reusable tasks, reproducible evaluation and better agents.</p>
+        <p class="lead">Bring your domain expertise, a case, an agent implementation or evaluation ideas. Help connect evidence, decisions and outcomes into Metacases that others can inspect, reuse and learn from.</p>
         <div class="cta-row">
           <a class="btn btn-primary magnetic" href="teams.html#contact"><span>Contact us</span><span class="arrow" aria-hidden="true"><i>→</i><i>→</i></span></a>
           <a class="link" href="challenge.html"><span>Subtracks, timeline and awards</span><span class="arrow" aria-hidden="true">→</span></a>
@@ -590,8 +612,8 @@
     <div class="wrap">
       <div class="cols">
         <div class="brandcol">
-          <a class="lock" href="index.html"><svg aria-hidden="true"><use href="#logo-p"/></svg><span data-no-translate>Inference<span class="net">Net</span></span></a>
-          <p>AI Agents for Business, Finance and Social Science.</p>
+          <a class="lock" href="index.html"><svg aria-hidden="true"><use href="#logo-p"/></svg><span data-no-translate>Metacase<span class="net">Net</span></span></a>
+          <p>Complete cases. Shared experience. Better problem-solving.</p>
         </div>
         <div><h4>Pages</h4><ul>
           <li><a href="challenge.html">Challenge</a></li><li><a href="harness.html">Harness</a></li>
@@ -606,8 +628,8 @@
           <li><a href="teams.html#contact">Contact us</a></li>
           <li><a href="teams.html">Meet the team</a></li></ul></div>
       </div>
-      <div class="footer-mark" aria-hidden="true"><span data-parallax="-0.08">Inference<span>Net</span></span></div>
-      <div class="bottom"><span data-no-translate>© 2026 Global InferenceNet Initiative · NTU GIFTS</span><span class="mono" data-no-translate>∴ INFERENCE · NET</span></div>
+      <div class="footer-mark" aria-hidden="true"><span data-parallax="-0.08">Metacase<span>Net</span></span></div>
+      <div class="bottom"><span>© 2026 Global MetacaseNet Initiative · NTU GIFTS</span><span class="mono" data-no-translate>∴ METACASE · NET</span></div>
     </div>
   </footer>
 </body>

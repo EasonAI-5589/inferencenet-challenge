@@ -13,7 +13,7 @@ const redirects = { 'data.html': 'challenge.html#replication-data', 'agent.html'
 // translation dictionaries and the root scripts, and adds its own design files.
 export const v2Pages = pages.map(page => `v2/${page}`);
 const v2Redirects = Object.fromEntries(Object.entries(redirects).map(([file, target]) => [`v2/${file}`, target]));
-const v2Files = ['v2/v2.css', 'v2/home.css', 'v2/skin.css', 'v2/theme.js', 'v2/v2.js', 'v2/home.js', 'v2/backdrop.js', 'v2/scene.css', 'v2/scene.js'];
+const v2Files = ['v2/v2.css', 'v2/home.css', 'v2/skin.css', 'v2/theme.js', 'v2/v2.js', 'v2/home.js', 'v2/backdrop.js', 'v2/scene.css', 'v2/scene.js', 'v2/arena.css', 'v2/arena.js', 'v2/arena-scene.js', 'v2/arena-motion.js', 'v2/arena-models.js'];
 const allRedirects = { ...redirects, ...v2Redirects };
 export const publicFiles = [
   ...pages,
@@ -29,13 +29,15 @@ for (const file of publicFiles) {
 const publicSet = new Set(publicFiles);
 const textExtensions = new Set(['.html', '.css', '.js', '.json', '.csv', '.txt', '.svg']);
 const assetExtensions = new Set(['.svg', '.png', '.jpg', '.woff2', '.txt', '.csv', '.json', '.mp4']);
+const reviewedVendorFiles = new Set(['assets/vendor/three/three.module.js', 'assets/vendor/three/GLTFLoader.js', 'assets/vendor/three/BufferGeometryUtils.js', 'assets/vendor/three/LICENSE']);
+const reviewedWeaponAsset = file => /^assets\/models\/kenney-blasters\/blaster-[bdeflmpq]\.glb$/.test(file);
 
 async function listAssets(directory, out = []) {
   for (const item of await readdir(directory, { withFileTypes: true })) {
     const path = resolve(directory, item.name);
     if ((await lstat(path)).isSymbolicLink()) throw new Error('Asset symlinks are not allowed');
     if (item.isDirectory()) await listAssets(path, out);
-    else if (!assetExtensions.has(extname(path))) throw new Error(`Unexpected public asset: ${item.name}`);
+    else if (!assetExtensions.has(extname(path)) && !reviewedVendorFiles.has(relative(root, path).replaceAll('\\', '/')) && !reviewedWeaponAsset(relative(root, path).replaceAll('\\', '/'))) throw new Error(`Unexpected public asset: ${item.name}`);
     else out.push(relative(root, path).replaceAll('\\', '/'));
   }
   return out;
@@ -103,9 +105,9 @@ for (const file of publicFiles.filter(name => name.endsWith('.css'))) {
 }
 for (const file of publicFiles.filter(name => name.endsWith('.js'))) {
   const js = await readFile(resolve(root, file), 'utf8');
-  for (const match of js.matchAll(/\bfrom\s+'\.\/([^']+)'|import\(new URL\('([^']+)'/g)) {
-    const target = (match[1] || match[2]).split('?')[0];
-    if (target && !publicSet.has(target)) throw new Error(`Module import of unpublished file in ${file}: ${target}`);
+  for (const match of js.matchAll(/\bfrom\s+["']([^"']+)["']|import\(\s*(?:new URL\()?\s*["']([^"']+)["']/g)) {
+    const target = match[1] || match[2];
+    if (target?.startsWith('.')) { await checkReference(target, file); referenceCount++; }
   }
 }
 
@@ -113,11 +115,14 @@ for (const file of publicFiles.filter(name => name.endsWith('.js'))) {
 const scanned = [...publicFiles, ...assetFiles].filter(file => textExtensions.has(extname(file)));
 for (const file of scanned) {
   const source = await readFile(resolve(root, file), 'utf8');
+  // Three.js r170 and its loaders retain upstream MIT licensing. Loader import
+  // paths are rewritten for local use; upstream comments include development notes.
+  if (reviewedVendorFiles.has(file)) continue;
   if (/\b(?:ghp_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]+|sk-[A-Za-z0-9]{20,}|hf_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16})\b/.test(source)) throw new Error(`Possible credential in ${file}`);
   if (/\/Users\/|127\.0\.0\.1|localhost|local\/runs|sources\.lock\.json/.test(source)) throw new Error(`Private workspace reference in ${file}`);
   if (/\/mnt\/|\b(?:\d{1,3}\.){3}\d{1,3}\b|\b[A-Z]:[\\/]/.test(source)) throw new Error(`Server path or address in ${file}`);
   if (/\bTODO\b|lorem ipsum/i.test(source)) throw new Error(`Placeholder text in ${file}`);
-  const translatedAsset = file === 'language.js' || /^assets\/i18n\/(index|challenge|replication|data|agent|harness|evolution|leaderboard|teams|professional-tasks)\.zh\.json$/.test(file);
+  const translatedAsset = file === 'language.js' || file === 'v2/arena.js' || file === 'v2/arena-scene.js' || /^assets\/i18n\/(index|challenge|replication|data|agent|harness|evolution|leaderboard|teams|professional-tasks)\.zh\.json$/.test(file);
   if (/[一-鿿]/.test(source) && !translatedAsset) throw new Error(`CJK text outside the reviewed translation layer in ${file}`);
   if (file.startsWith('assets/i18n/')) {
     const dictionary = JSON.parse(source);

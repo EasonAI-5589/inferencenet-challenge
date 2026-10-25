@@ -1,0 +1,91 @@
+{
+  "title": "Kenney Blaster Kit 2.1: MetacaseNet harness props",
+  "author": "Kenney",
+  "license": "CC0-1.0",
+  "licenseFile": "LICENSE.txt",
+  "source": "https://kenney.nl/assets/blaster-kit",
+  "download": "https://kenney.nl/media/pages/assets/blaster-kit/261d80a716-1753959510/kenney_blaster-kit_2.1.zip",
+  "retrieved": "2026-10-25",
+  "originalFilesUnmodified": true,
+  "models": [
+    {
+      "index": 0,
+      "harness": "DeepSeek Harness",
+      "file": "blaster-q.glb",
+      "silhouette": "Split-prong blaster",
+      "triangles": 602,
+      "bytes": 55856,
+      "sha256": "e2062bf76cf9ea7690acbb5ae18c9d92be5f7623ec3a2f4b363eb926d1017522"
+    },
+    {
+      "index": 1,
+      "harness": "DeepAgents",
+      "file": "blaster-f.glb",
+      "silhouette": "Scoped precision blaster",
+      "triangles": 768,
+      "bytes": 72460,
+      "sha256": "ea389c88b7d90ede2763e1f2b5834b9fbaaaa56b8a51ebdf21f61ec46d716320"
+    },
+    {
+      "index": 2,
+      "harness": "Claude Code",
+      "file": "blaster-e.glb",
+      "silhouette": "Long-range blaster",
+      "triangles": 802,
+      "bytes": 75444,
+      "sha256": "df3e35c9286d7bfe8bde2ff7231ef40ff89b1e7caa52fbf80ea685cb601de3ca"
+    },
+    {
+      "index": 3,
+      "harness": "Codex CLI",
+      "file": "blaster-d.glb",
+      "silhouette": "Stocked carbine",
+      "triangles": 486,
+      "bytes": 45072,
+      "sha256": "c05bf6af6cded1bc76e32e455507f5d1a21cd58503ce66de33ca39e597b28280"
+    },
+    {
+      "index": 4,
+      "harness": "OpenCode",
+      "file": "blaster-p.glb",
+      "silhouette": "Three-barrel blaster",
+      "triangles": 882,
+      "bytes": 80460,
+      "sha256": "2ffc94c6d8f12d45410012b13169988b70929c7e6ae7d4f868a188265210e49a"
+    },
+    {
+      "index": 5,
+      "harness": "OpenHands SDK",
+      "file": "blaster-l.glb",
+      "silhouette": "Twin-barrel blaster",
+      "triangles": 450,
+      "bytes": 41848,
+      "sha256": "2739ae04bcb1e396b599cbf4af774df73b7708512bde2a054b2918d1161f16df"
+    },
+    {
+      "index": 6,
+      "harness": "Terminus-2",
+      "file": "blaster-m.glb",
+      "silhouette": "Heavy cylinder blaster",
+      "triangles": 440,
+      "bytes": 41532,
+      "sha256": "ff3f1196f2e9acabbdc44143dc3b93f79f4c5e8176e54514479bd2b788477c80"
+    },
+    {
+      "index": 7,
+      "harness": "mini-SWE-agent",
+      "file": "blaster-b.glb",
+      "silhouette": "Compact blaster",
+      "triangles": 368,
+      "bytes": 34380,
+      "sha256": "7df4457ed864bc0714fc33059ac56d198304092093b1e78dc407b6c829945a4f"
+    }
+  ],
+  "texture": {
+    "file": "Textures/colormap.png",
+    "bytes": 10223,
+    "sha256": "4d0867c3c3c8c539106f91fbc0987d0e1b7d2811362d1daed593169c7d3b0fdc"
+  },
+  "runtimeTransform": "Source -Z muzzle rotated to +Z, bounds centered, Z length normalized to 1; renderer mounts on the agent back.",
+  "selectionMeaning": "Visual loadout identity only; no performance or endorsement claim."
+}
