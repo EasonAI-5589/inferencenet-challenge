@@ -1,6 +1,6 @@
 # Metacase Challenge
 
-[Live website](https://easonai-5589.github.io/inferencenet-challenge/)
+[Live website](https://easonai-5589.github.io/metacase-challenge/)
 
 Public website for the Metacase Challenge of the Global Metacase Initiative. The site is
 served from `v2/`; every page at the root (`index.html`, `challenge.html`, `harness.html`,
@@ -20,7 +20,7 @@ implementation boundaries and acceptance criteria.
 ### v2 design (`/v2/`)
 
 The redesign is published beside the current site at
-[`/v2/`](https://easonai-5589.github.io/inferencenet-challenge/v2/); the root pages
+[`/v2/`](https://easonai-5589.github.io/metacase-challenge/v2/); the root pages
 are unchanged. `v2/index.html` is a new homepage. The other v2 pages carry the
 current pages' content with the v2 header, footer and theme layer, so content edits
 made to a root page must be repeated in its `v2/` copy until v2 replaces the root.
@@ -83,8 +83,8 @@ This repository contains the editable static files served by GitHub Pages.
 No frontend framework or package installation is required.
 
 ```sh
-git clone https://github.com/EasonAI-5589/inferencenet-challenge.git
-cd inferencenet-challenge
+git clone https://github.com/EasonAI-5589/metacase-challenge.git
+cd metacase-challenge
 ```
 
 For this shared local workspace, use the fixed preview service:
@@ -445,7 +445,7 @@ Listed alphabetically by surname.
 - Jiajie Xu
 - Wei Zhang
 
-See the [team page](https://easonai-5589.github.io/inferencenet-challenge/teams.html)
+See the [team page](https://easonai-5589.github.io/metacase-challenge/teams.html)
 for the full project roster.
 
 ## Attribution
