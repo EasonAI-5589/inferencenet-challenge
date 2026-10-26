@@ -1,5 +1,5 @@
 /* metacase.js — v2 homepage behaviours. One shared WebGL stage draws every 3D picture
- * (the archipelago, the opening case, the archive, the network and the card vignettes);
+ * (the library, the opening case, the archive wall and the card vignettes);
  * this file registers them, keeps the notes, captions, tags and signature rails in step
  * with scrolling, and handles reveals, counters and the section nav. Visible text stays
  * in the page so language.js translates it. */
@@ -9,7 +9,7 @@ const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const ease = x => { const p = clamp(x); return p * p * (3 - 2 * p); };
-const V = '?v=20261026-12';
+const V = '?v=20261027-lib6';
 
 /* ---- layout helpers ---- */
 const siteHeader = $('.site-header'), subnav = $('.mc-subnav');
@@ -74,10 +74,10 @@ import('./mc-stage.js' + V).then(({ createStage }) => {
   root.classList.add('mc-3d');
   new MutationObserver(() => stage.setTheme()).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
 
-  // hero: the archipelago, turning slowly
+  // hero: the library, in lamplight
   const hero = $('.mc-hero'), heroTags = $$('[data-tags="hero"] [data-tag]');
   stage.add({ el: hero, near: 2, postOptions: { bloom: .35, threshold: .9, vignette: 0 },
-    build: () => import('./metacase-world.js' + V).then(m => m.createWorld({ mode: 'hero', reduce, onProject: list => list.forEach((s, i) => place(heroTags[i], { ...s, opacity: s.opacity * ((hero.clientWidth <= 860 ? s.y < 420 : s.x > hero.clientWidth * .6) ? 1 : 0) })) })) });
+    build: () => import('./metacase-library.js' + V).then(m => m.createLibrary({ mode: 'hero', reduce, onProject: list => list.forEach((s, i) => place(heroTags[i], { ...s, opacity: s.opacity * ((hero.clientWidth <= 860 ? s.y < 420 : s.x > hero.clientWidth * .6) ? 1 : 0) })) })) });
 
   // 01: the Metacase opens
   const anatomy = $('#metacase'), notes = $$('[data-notes="anatomy"] li', anatomy);
@@ -92,10 +92,10 @@ import('./mc-stage.js' + V).then(({ createStage }) => {
   stage.add({ el: $('.mc-scene-pin', structure), postOptions: { bloom: .34, threshold: .9, vignette: .2 }, progress: () => pinProgress(structure),
     build: () => import('./metacase-archive.js' + V).then(m => m.createArchive({ reduce, onProject: list => list.forEach((s, i) => place(archiveTags[i], s)) })) });
 
-  // 03–04: the network, built bridge by bridge
+  // 03: the library, cross-referenced wing by wing
   const net = $('#net'), worldTags = $$('[data-tags="world"] [data-tag]', net);
   stage.add({ el: $('.mc-scene-pin', net), postOptions: { bloom: .35, threshold: .9, vignette: .22 }, progress: () => pinProgress(net),
-    build: () => import('./metacase-world.js' + V).then(m => m.createWorld({ mode: 'story', reduce, onProject: list => list.forEach((s, i) => place(worldTags[i], s)) })) });
+    build: () => import('./metacase-library.js' + V).then(m => m.createLibrary({ mode: 'story', reduce, onProject: list => list.forEach((s, i) => place(worldTags[i], s)) })) });
 
   // card vignettes
   $$('.mc-art').forEach(el => stage.add({ el, near: 1, build: () => import('./metacase-cards.js' + V).then(m => m.createCard(el.dataset.art)) }));
@@ -124,13 +124,10 @@ if (anatomySection) sceneControllers.push([anatomySection, chapter(anatomySectio
 })]);
 if (structureSection) sceneControllers.push([structureSection, chapter(structureSection, { steps: p => (p < .36 ? 0 : p < .7 ? 1 : 2) })]);
 if (netSection) {
-  const label = $('[data-swap]', netSection);
   const update = chapter(netSection, { steps: p => (p < .26 ? 0 : p < .5 ? 1 : p < .76 ? 2 : 3) });
   sceneControllers.push([netSection, p => {
     update(p);
-    const foundation = p >= .76;
-    netSection.classList.toggle('is-foundation', foundation);
-    if (label) label.textContent = foundation ? '04' : '03';
+    netSection.classList.toggle('is-foundation', p >= .76);
   }]);
 }
 

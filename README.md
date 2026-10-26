@@ -41,8 +41,13 @@ current pages' content with the v2 header, footer and theme layer, so content ed
 made to a root page must be repeated in its `v2/` copy until v2 replaces the root.
 
 The v2 homepage introduces the Global Metacase Initiative, explains a complete
-Metacase, demonstrates retrieval by problem-solving structure, and connects
-domain islands into MetacaseNet. The Metacase Challenge is the first pipeline
+Metacase, demonstrates retrieval by problem-solving structure, and presents
+MetacaseNet as a library: three wings (economics, finance, social science) with
+one bay per catalogue class, cross-references between volumes that share a
+structure, and an upper gallery for fields still to come. The catalogue section
+lists the 16 classes of the metacase-harbor v0.1 selection (285 candidate records)
+with call numbers, sources, grading and status; regenerate it from that
+repository's `metacase/summary.json` when the selection changes. The Metacase Challenge is the first pipeline
 into that network. Its scroll-driven arena shows one agent, eight selectable
 harnesses and three case rooms across the two benchmark tracks. See the
 [arena handoff](docs/metacase-arena.md) for controls, asset licenses and checks.
@@ -56,7 +61,7 @@ must not be used to overwrite this version.
 | Design system for every v2 page: fonts, tokens for both themes, logo, buttons, links, icons, header and footer | `v2/v2.css` |
 | Homepage layout, captions, navigation and translation hooks | `v2/metacase.css`, `v2/metacase.js`, `assets/i18n/index.zh.json` |
 | Shared 3D stage, materials, case tiles and domain islands | `v2/mc-stage.js`, `v2/mc-toon.js`, `v2/mc-kit.js` |
-| Metacase anatomy, retrieval archive, network and card scenes | `v2/metacase-anatomy.js`, `v2/metacase-archive.js`, `v2/metacase-world.js`, `v2/metacase-cards.js` |
+| Metacase anatomy, retrieval archive, the library (hero and chapter 03) and card scenes | `v2/metacase-anatomy.js`, `v2/metacase-archive.js`, `v2/metacase-library.js`, `v2/metacase-cards.js` (`v2/metacase-world.js` is the former archipelago, no longer loaded) |
 | Content pages: remaps the `styles.css` / `site.css` tokens and restyles the shared components; animated page header | `v2/skin.css`, `v2/v2.js` |
 | Header backdrops (one canvas renderer, one motif per page) | `v2/backdrop.js` |
 | Homepage arena: scroll camera, harness wheel, flying agent and challenge rooms | `v2/arena.css`, `v2/arena.js`, `v2/arena-scene.js`, `v2/arena-models.js`, `v2/arena-motion.js` |

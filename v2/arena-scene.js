@@ -12,15 +12,15 @@ export function createArenaScene(canvas) {
     powerPreference: "high-performance",
   });
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5));
-  renderer.setClearColor(0x0e1015);
+  renderer.setClearColor(0x05070e);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x0e1015);
-  scene.fog = new THREE.FogExp2(0x0e1015, 0.02);
+  scene.background = new THREE.Color(0x05070e);
+  scene.fog = new THREE.FogExp2(0x0b0e1c, 0.018);
   const camera = new THREE.PerspectiveCamera(53, 1, 0.1, 150);
   const stage = new THREE.Group();
   scene.add(stage);
@@ -101,6 +101,12 @@ export function createArenaScene(canvas) {
     dim = luminous(0x3a3f4b, 0.2),
     roomLights = colors.map((c) => luminous(c, 2)),
     weaponLights = harnessColors.map((c) => luminous(c, 2.4));
+  // The library's materials: warm wood, cream walls and coloured volumes (see metacase-library.js).
+  const wood = material(0x7a5a42),
+    woodDark = material(0x5a4434),
+    parquet = material(0x6e5440),
+    wall = material(0xf1ece0),
+    bookTones = [0x45b5b0, 0x2f8c88, 0xf2b545, 0xd99a2b, 0x7d6ad8, 0x6a58c4, 0xe2667a, 0x6aa8e8].map(material);
   function mesh(geo, mat, parent, x = 0, y = 0, z = 0) {
     const m = new THREE.Mesh(geo, mat);
     m.position.set(x, y, z);
@@ -264,16 +270,16 @@ export function createArenaScene(canvas) {
     );
     function write(copy) {
       ctx.clearRect(0, 0, 2048, 512);
-      ctx.fillStyle = "rgba(10, 13, 22, 0.78)";
+      ctx.fillStyle = "rgba(42, 32, 26, 0.82)";
       ctx.beginPath();
       ctx.roundRect(224, 52, 1600, 408, 48);
       ctx.fill();
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.font = '400 38px "Space Mono", ui-monospace, monospace';
+      ctx.font = '500 34px Inter, Arial, sans-serif';
       ctx.fillStyle = color;
       ctx.fillText(copy[0], 1024, 130, 1500);
-      ctx.font = "700 96px Inter, Arial, sans-serif";
+      ctx.font = "650 92px Inter, Arial, sans-serif";
       ctx.fillStyle = "#f3f8fb";
       ctx.fillText(copy[1], 1024, 255, 1500);
       ctx.font = "400 36px Inter, Arial, sans-serif";
@@ -296,7 +302,7 @@ export function createArenaScene(canvas) {
     const frame = new THREE.Group();
     frame.position.set(0, 7.52, 2.11);
     parent.add(frame);
-    box(frame, 7.0, 1.26, 0.19, black, 0, 0, 0, 0.065);
+    box(frame, 7.0, 1.26, 0.19, woodDark, 0, 0, 0, 0.065);
     box(frame, 7.13, 0.035, 0.08, accent, 0, -0.63, 0.07);
     for (const side of [-1, 1]) {
       box(frame, 0.12, 0.84, 0.09, accent, side * 3.47, 0, 0.13);
@@ -326,18 +332,18 @@ export function createArenaScene(canvas) {
       ctx.fillText(lines[0], 1024, 39, 1880);
       const cjk = /[\u3400-\u9fff]/.test(lines[1]);
       ctx.font = cjk
-        ? '600 142px "Microsoft YaHei", Arial, sans-serif'
-        : '700 150px Inter, Arial, sans-serif';
+        ? '600 120px "Microsoft YaHei", Arial, sans-serif'
+        : '650 118px Inter, Arial, sans-serif';
       ctx.textBaseline = "alphabetic";
       const metrics = ctx.measureText(lines[1]);
       const baseline =
         159 +
         (metrics.actualBoundingBoxAscent - metrics.actualBoundingBoxDescent) /
           2;
-      ctx.fillStyle = color;
+      ctx.fillStyle = "#f6efe0";
       ctx.fillText(lines[1], 1024, baseline, 1910);
       ctx.textBaseline = "middle";
-      ctx.fillStyle = "#a8c0d0";
+      ctx.fillStyle = "#c9b8a0";
       ctx.font = "500 34px Inter, Arial, sans-serif";
       ctx.fillText(lines[2], 1024, 286, 1860);
       texture.needsUpdate = true;
@@ -355,15 +361,17 @@ export function createArenaScene(canvas) {
     allTextures.add(map);
     function write() {
       ctx.clearRect(0, 0, c.width, c.height);
-      ctx.fillStyle = "#07121df0";
-      ctx.fillRect(12, 12, 1576, 206);
+      ctx.fillStyle = "#2a201af0";
+      ctx.beginPath();
+      ctx.roundRect(12, 12, 1576, 206, 103);
+      ctx.fill();
       ctx.strokeStyle = color;
-      ctx.lineWidth = 3;
-      ctx.strokeRect(12, 12, 1576, 206);
-      ctx.font = '700 130px Inter, Arial, sans-serif';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+      ctx.font = '600 104px Inter, Arial, sans-serif';
       ctx.textAlign = "center";
       ctx.textBaseline = "alphabetic";
-      const text = "Go for this challenge!";
+      const text = state.language === "zh" ? "打开这个案例" : "Open this case";
       const metrics = ctx.measureText(text);
       const baseline =
         115 +
@@ -423,10 +431,10 @@ export function createArenaScene(canvas) {
   const whiteRim = new THREE.DirectionalLight(0xffffff, 0.8);
   whiteRim.position.set(-10, 5, -8);
   scene.add(whiteRim);
-  cylinder(stage, 24, 24, 0.4, black, 0, -0.25, 0, 128);
+  cylinder(stage, 24, 24, 0.4, woodDark, 0, -0.25, 0, 128);
   const ground = mesh(
     geometry("unbroken-ground", () => new THREE.PlaneGeometry(200, 200)),
-    material(0x0e1015),
+    material(0x05070e),
     stage,
     0,
     -0.075,
@@ -439,17 +447,17 @@ export function createArenaScene(canvas) {
     18,
     18,
     0.12,
-    material(0x151820),
+    parquet,
     0,
     -0.05,
     0,
     128,
   );
-  for (const r of [3.4, 6.2, 9.5, 13.5, 17.5]) {
-    ring(stage, r, 0.045, metal, 0, 0.032, 0);
-    ring(stage, r + 0.12, 0.012, r < 10 ? dim : teal, 0, 0.04, 0);
-  }
-  for (let i = 0; i < 48; i++) {
+  for (const r of [3.4, 6.2, 9.5, 13.5, 17.5]) ring(stage, r, 0.03, woodDark, 0, 0.02, 0);
+  // a reading-room rug where the agent starts
+  cylinder(stage, 2.6, 2.6, 0.04, material(0x3a4a7a), 0, 0.01, 5.1, 64);
+  ring(stage, 2.35, 0.05, gold, 0, 0.05, 5.1);
+  for (let i = 0; i < 0; i++) {
     const a = (i * Math.PI) / 24,
       m = box(
         stage,
@@ -463,7 +471,7 @@ export function createArenaScene(canvas) {
       );
     m.rotation.y = a;
   }
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < 0; i++) {
     const a = (i * Math.PI) / 6,
       s = Math.sin(a),
       c = Math.cos(a);
@@ -493,15 +501,26 @@ export function createArenaScene(canvas) {
     if (z > 5) continue;
     const g = new THREE.Group();
     g.position.set(x, 0, z);
-    g.rotation.y = -a;
     stage.add(g);
-    box(g, 0.76, 8.5, 0.9, hull, 0, 4.2, 0, 0.12);
-    box(g, 0.18, 7.1, 0.1, dim, 0, 4.25, 0.48);
-    box(g, 1.15, 0.25, 1.2, metal, 0, 0.16, 0, 0.04);
-    box(g, 1.05, 0.3, 1.1, metal, 0, 8.4, 0, 0.05);
-    glow(g, 0x559de2, 4, 0, 7.4, 0.2, 0.12);
+    g.lookAt(0, 0, 0); // shelves face the plaza
+    // a tall bookcase, filled with volumes, facing the plaza
+    box(g, 2.6, 6.4, 0.12, woodDark, 0, 3.2, -0.42);
+    for (const side of [-1, 1]) box(g, 0.14, 6.6, 0.9, wood, side * 1.3, 3.3, 0, 0.03);
+    box(g, 2.8, 0.22, 1, colors.map(material)[i % 3], 0, 6.6, 0, 0.04);
+    for (let row = 0; row < 6; row++) {
+      const y = 0.25 + row * 1.05;
+      box(g, 2.5, 0.06, 0.8, wood, 0, y, 0);
+      let x = -1.12;
+      for (let k = 0; x < 1.05 && k < 16; k++) {
+        const w = [0.12, 0.15, 0.1, 0.14][(k + row + i) % 4], h = [0.6, 0.72, 0.66, 0.54][(k * 3 + row) % 4];
+        if ((k + row * 3 + i) % 11 === 7) { x += w; continue; }
+        box(g, w, h, 0.5, bookTones[(k * 5 + row * 3 + i) % bookTones.length], x + w / 2, y + 0.03 + h / 2, 0.06, 0.015);
+        x += w + 0.012;
+      }
+    }
+    glow(g, 0xffd9a0, 3, 0, 6.2, 0.6, 0.1);
   }
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 0; i++) {
     const x = (i - 10) * 4.2,
       h = 7 + (Math.sin(i * 2.4) + 1) * 5;
     box(stage, 2.6, h, 3.2, black, x, h / 2 - 1, -32 - Math.cos(i) * 4);
@@ -509,7 +528,6 @@ export function createArenaScene(canvas) {
       box(stage, 0.035, h * 0.65, 0.04, dim, x, h / 2, -30 - Math.cos(i) * 4);
   }
   const centerSymbol = ring(stage, 1.9, 0.025, teal, 0, 0.06, 4.8);
-  ring(stage, 2.05, 0.01, dim, 0, 0.055, 4.8);
   const centerGlow = glow(stage, 0x60efd9, 9, 0, 0.15, 4.8, 0.12);
   const roomDefs = [
     {
@@ -517,23 +535,23 @@ export function createArenaScene(canvas) {
       z: -6.3,
       turn: 0.52,
       en: [
-        "TRACK 01 / REPLICATION",
-        "ECONOMETRIC REPLICATION",
-        "ECONOMICS · STATISTICS · SOCIAL SCIENCE",
+        "TRACK 01 · ECONOMICS",
+        "Econometric replication",
+        "Economics · statistics · social science",
       ],
-      zh: ["赛道 01 / 研究复现", "计量经济学复现", "经济 · 统计 · 社会科学"],
+      zh: ["赛道 01 · 经济", "计量经济学复现", "经济 · 统计 · 社会科学"],
     },
     {
       x: 0,
       z: -12.2,
       turn: 0,
       en: [
-        "TRACK 02 / BUSINESS ANALYSIS & DELIVERABLES",
-        "FINANCE & ACCOUNTING",
-        "EVIDENCE · RECONCILIATION · JUDGMENT",
+        "TRACK 02 · FINANCE",
+        "Finance & accounting",
+        "Evidence · reconciliation · judgment",
       ],
       zh: [
-        "赛道 02 / 商业分析与交付物",
+        "赛道 02 · 金融",
         "金融与会计",
         "证据 · 对账 · 商业判断",
       ],
@@ -543,12 +561,12 @@ export function createArenaScene(canvas) {
       z: -6.3,
       turn: -0.52,
       en: [
-        "TRACK 02 / BUSINESS ANALYSIS & DELIVERABLES",
-        "HUMAN RESOURCES",
-        "PEOPLE · POLICY · DECISIONS",
+        "TRACK 02 · SOCIAL SCIENCE",
+        "Human resources",
+        "People · policy · decisions",
       ],
       zh: [
-        "赛道 02 / 商业分析与交付物",
+        "赛道 02 · 社科",
         "人力资源与社会科学",
         "个体 · 制度 · 决策",
       ],
@@ -567,6 +585,8 @@ export function createArenaScene(canvas) {
     stage.add(group);
     const accent = roomLights[index],
       color = colors[index];
+    // Reading rooms share the library's finish: wood frame, cream walls, a coloured trim.
+    const black = woodDark, metal = wood, hull = wall, panel = wall;
     box(group, 7.2, 0.35, 6.4, black, 0, 0.1, -1.4, 0.13);
     box(group, 6.5, 0.07, 5.9, metal, 0, 0.3, -1.4, 0.03);
     box(group, 5.9, 0.04, 5.5, hull, 0, 0.35, -1.4);
@@ -1191,7 +1211,7 @@ export function createArenaScene(canvas) {
       [7.1, 0.07, -1.5],
       [0, 0.07, 2.2],
     ],
-    trace = line(stage, routeNodes, 0x62bfb8, 0.36);
+    trace = line(stage, routeNodes, 0xf2b545, 0.45);
   const milestoneLights = routeNodes.map((p, i) =>
     ring(
       stage,
@@ -1259,8 +1279,8 @@ export function createArenaScene(canvas) {
   );
   geoCache.set("dust", dustGeo);
   const dustMat = new THREE.PointsMaterial({
-    color: 0xb7e9f5,
-    size: 0.026,
+    color: 0xffe2b0,
+    size: 0.03,
     transparent: true,
     opacity: 0.45,
     depthWrite: false,
@@ -1572,11 +1592,12 @@ export function createArenaScene(canvas) {
     });
     if (state.language !== language) {
       language = state.language;
-      rooms.forEach((room) =>
+      rooms.forEach((room) => {
         room.title.write(
           language === "zh" ? room.definition.zh : room.definition.en,
-        ),
-      );
+        );
+        room.prompt.userData.redrawText();
+      });
       recordTitle.write(
         language === "zh"
           ? [
