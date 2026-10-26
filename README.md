@@ -1,29 +1,14 @@
-# InferenceNet Challenge
+# Metacase Challenge
 
 [Live website](https://easonai-5589.github.io/inferencenet-challenge/)
 
-Public website for InferenceNet Challenge, part of the Global InferenceNet Initiative: AI Agents for
-Business, Finance and Social Science. All eight content pages share Chinese / English and
-light / dark controls. The former Data and Agent URLs remain as compatibility redirects.
-
-The primary navigation has six entries: Home, Challenge, Harness,
-Self-evolving, Leaderboard and Teams. Harness is a shared resource for both subtracks. The brand logo also returns to Home.
-Home’s challenge cards and demo captions link directly to the corresponding
-Challenge sections (`challenge.html#subtrack-econometric` and
-`challenge.html#subtrack-professional`). Initial deep links align after language
-and font layout; user interaction cancels this one-time correction.
-Challenge links to both subtrack pages from their descriptions in the page content:
-Econometric replication (`replication.html`) and Business Analysis & Deliverables
-(`professional-tasks.html`). These pages use the shared primary navigation without
-a second navigation row. The primary Challenge entry marks the section on either
-subtrack page. Harness and Self-evolving retain their own primary
-current-page indicators.
-The Self-evolving page keeps its original URL, `evolution.html`, and its anchors.
-Research data is introduced within the econometric replication subtrack at
-`challenge.html#replication-data`, followed by the 100-task Dev100 section and its
-recorded demonstration. `data.html` redirects to that data introduction, with a
-matching canonical URL and clickable fallback; it no longer has separate content
-or language controls. Challenge continues to Harness in the page sequence.
+Public website for the Metacase Challenge of the Global Metacase Initiative. The site is
+served from `v2/`; every page at the root (`index.html`, `challenge.html`, `harness.html`,
+`evolution.html`, `leaderboard.html`, `teams.html`, `replication.html`,
+`professional-tasks.html`, and the older `data.html` and `agent.html`) is a redirect to its
+Metacase Challenge page, keeping any `#anchor`. The former InferenceNet design is retired;
+its files remain in the git history. InferenceNet now appears only as the name of the
+research dataset on Hugging Face (`CamoAiLab/InferenceNet`), and only in links.
 
 ## Edit the website
 

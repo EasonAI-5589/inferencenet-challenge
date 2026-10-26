@@ -1077,7 +1077,6 @@
   "Research dataset source": "研究数据来源",
   "Econometrics-Agent code": "Econometrics-Agent 代码",
   "Website source": "网站源码",
-  "Previous site design": "旧版网站",
   "Contact us": "联系我们",
   "Meet the team": "了解团队",
   "Scroll": "向下滚动",
@@ -1125,5 +1124,5 @@
   "Check and select": "检查与选择",
   "Candidates are evaluated, and the selected version becomes the harness for the next round.": "对候选版本进行评测，选出的版本成为下一轮使用的 Harness。",
   "Selected version": "选定版本",
-  "Self-evolving — Metacase Challenge · v2": "自进化 — Metacase Challenge · v2"
+  "Self-evolving — Metacase Challenge": "自进化 — Metacase Challenge · v2"
 }

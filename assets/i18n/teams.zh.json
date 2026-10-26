@@ -150,7 +150,6 @@
   "Research dataset source": "研究数据来源",
   "Econometrics-Agent code": "Econometrics-Agent 代码",
   "Website source": "网站源码",
-  "Previous site design": "旧版网站",
   "Contact us": "联系我们",
   "Meet the team": "了解团队",
   "Scroll": "向下滚动",
@@ -158,8 +157,9 @@
   "Host institution": "主办机构",
   "Partner team": "合作团队",
   "Nanyang Technological University": "南洋理工大学",
-  "Teams — Metacase Challenge · v2": "团队 — Metacase Challenge · v2",
+  "Teams — Metacase Challenge": "团队 — Metacase Challenge · v2",
   "Teams · Metacase Challenge": "团队 · Metacase 挑战赛",
   "Metacase Challenge.": "Metacase 挑战赛的团队。",
-  "For questions about Metacase Challenge or collaboration, contact Yichen Guo.": "关于 Metacase 挑战赛的问题或合作事宜，请联系 Yichen Guo。"
+  "For questions about Metacase Challenge or collaboration, contact Yichen Guo.": "关于 Metacase 挑战赛的问题或合作事宜，请联系 Yichen Guo。",
+  "code and research dataset.": "代码与研究数据集链接。"
 }

@@ -2177,7 +2177,6 @@
   "Research dataset source": "研究数据来源",
   "Econometrics-Agent code": "Econometrics-Agent 代码",
   "Website source": "网站源码",
-  "Previous site design": "旧版网站",
   "Contact us": "联系我们",
   "Meet the team": "了解团队",
   "Scroll": "向下滚动",
@@ -2222,5 +2221,5 @@
   "The sandbox, data and files the agent acts on, and the evaluator that scores the final output.": "智能体操作的沙箱、数据与文件，以及为最终输出打分的评测器。",
   "Data and files": "数据与文件",
   "Run limits": "运行限制",
-  "Harness — Metacase Challenge · v2": "Harness — Metacase Challenge · v2"
+  "Harness — Metacase Challenge": "Harness — Metacase Challenge · v2"
 }

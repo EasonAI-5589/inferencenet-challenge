@@ -128,7 +128,7 @@
   "Ways to get involved": "参与挑战的六种方式",
   "Explore a challenge, build an agent, or contribute tasks, evaluation and training research.": "了解挑战、构建智能体，也可以贡献任务、完善评测，或参与训练与改进研究。",
   "Research data on Hugging Face": "Hugging Face 上的研究数据",
-  "The InferenceNet dataset collects empirical research tasks from economics, finance, accounting, management, operations research and information systems. Task packages combine research data, analysis instructions and reference replication materials.": "InferenceNet 数据集汇集经济学、金融、会计、管理、运筹学与信息系统领域的实证研究任务。每个任务包包含研究数据、分析要求与参考复现材料。",
+  "The research dataset collects empirical research tasks from economics, finance, accounting, management, operations research and information systems. Task packages combine research data, analysis instructions and reference replication materials.": "研究数据集汇集经济学、金融、会计、管理、运筹学与信息系统领域的实证研究任务。每个任务包包含研究数据、分析要求与参考复现材料。",
   "The Hugging Face repository provides the dataset card, task lists, files and citation information.": "数据集说明、任务清单、文件与引用信息集中在 Hugging Face 仓库中。",
   "Files require signing in to Hugging Face and accepting the repository’s access conditions.": "访问文件需登录 Hugging Face，并接受仓库的访问条件。",
   "Dev100: 100 econometric replication tasks": "Dev100：100 道计量经济学复现任务",
@@ -139,7 +139,6 @@
   "Resources": "资源",
   "Econometrics-Agent code": "Econometrics-Agent 代码",
   "Website source": "网站源码",
-  "Previous site design": "旧版网站",
   "Contact us": "联系我们",
   "Meet the team": "了解团队",
   "Contact": "联系",
@@ -173,6 +172,7 @@
   "Submit a failure case": "提交 Failure Case",
   "Submit a failure case →": "提交 Failure Case →",
   "In development": "开发中",
-  "Challenge — Metacase Challenge · v2": "挑战赛 — Metacase Challenge · v2",
-  "The Metacase": "Metacase"
+  "Challenge — Metacase Challenge": "挑战赛 — Metacase Challenge · v2",
+  "The Metacase": "Metacase",
+  "Open the dataset on Hugging Face": "在 Hugging Face 上打开数据集"
 }

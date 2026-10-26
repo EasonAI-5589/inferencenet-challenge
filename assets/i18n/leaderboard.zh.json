@@ -354,7 +354,6 @@
   "Research dataset source": "研究数据来源",
   "Econometrics-Agent code": "Econometrics-Agent 代码",
   "Website source": "网站源码",
-  "Previous site design": "旧版网站",
   "Contact us": "联系我们",
   "Meet the team": "了解团队",
   "Contact": "联系",
@@ -371,5 +370,5 @@
   "Explore the ModularRSI results": "查看 ModularRSI 实验结果",
   "See our ModularRSI implementation and results": "查看 ModularRSI 实现与评测结果",
   "Explore training and co-evolution directions": "探索模型训练与协同进化方向",
-  "Leaderboard — Metacase Challenge · v2": "排行榜 — Metacase Challenge · v2"
+  "Leaderboard — Metacase Challenge": "排行榜 — Metacase Challenge · v2"
 }
