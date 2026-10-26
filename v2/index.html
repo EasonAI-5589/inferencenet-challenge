@@ -18,12 +18,12 @@
   <link rel="stylesheet" href="../language.css">
   <script src="../language.js?v=20261026-initiative" defer></script>
   <link rel="stylesheet" href="v2.css?v=20261022-v2-ambient">
-  <link rel="stylesheet" href="arena.css?v=20261027-lib8">
-  <link rel="stylesheet" href="metacase.css?v=20261026-initiative">
+  <link rel="stylesheet" href="arena.css?v=20261026-library-arena">
+  <link rel="stylesheet" href="metacase.css?v=20261026-library-arena">
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script src="v2.js?v=20261022-v2-ambient" defer></script>
   <script type="module" src="metacase.js?v=20261027-lib8"></script>
-  <script type="module" src="arena.js?v=20261027-lib8"></script>
+  <script type="module" src="arena.js?v=20261026-library-arena"></script>
 </head>
 <body class="v2-home mc-home">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -528,39 +528,41 @@
 <section class="mc-chapter" id="arena" aria-labelledby="system-title" data-no-translate>
   <div class="mc-pin">
     <canvas class="mc-canvas" aria-hidden="true"></canvas>
-    <canvas class="mc-telemetry" aria-hidden="true"></canvas>
     <div class="mc-vignette" aria-hidden="true"></div>
-    <div class="mc-corner" data-mc-name>METACASE CHALLENGE / THE ARENA</div>
+    <div class="mc-corner mc-label mono"><span>05</span><b data-mc-name>THE METACASE CHALLENGE</b></div>
     <div class="mc-scroll-cue"><span class="mc-scroll-mouse" aria-hidden="true"></span><span data-mc-scroll-hint>SCROLL TO EXPLORE</span></div>
     <div class="mc-copy">
-      <span class="mc-kicker" data-mc-kicker>01 / ENTER THE ARENA</span>
-      <h2 id="system-title">Where Metacases<br><em>are made.</em></h2>
-      <p data-mc-body>The Metacase Challenge is the first pipeline into MetacaseNet. One agent takes on real, complete cases: raw evidence in, a deliverable that can be checked out.</p>
-      <span class="mc-case-code" data-mc-code>THE METACASE CHALLENGE · THE FIRST PIPELINE INTO METACASENET</span>
+      <span class="mc-kicker mc-visually-hidden" data-mc-kicker>01 / ENTER THE ARENA</span>
+      <h2 id="system-title">One agent.<br><em>Three worlds of work.</em></h2>
+      <p data-mc-body>Economics, Finance and Social Science: 16 case categories, from raw evidence to a complete, inspectable result.</p>
+      <span class="mc-case-code" data-mc-code>THREE DOMAINS · SIXTEEN CASE CATEGORIES</span>
+      <div class="mc-domain-overview" data-mc-overview><span>econ/ 5</span><span>fin/ 6</span><span>soc/ 5</span></div>
+      <aside class="mc-domain-directory" data-mc-directory hidden aria-label="Case categories"><p class="mono" data-mc-directory-title></p><small class="mc-directory-hint" data-mc-directory-hint>SWIPE →</small><ul data-mc-directory-list></ul></aside>
     </div>
     <div class="mc-wheel" role="group" aria-hidden="true" inert><svg viewBox="0 0 600 600"></svg><span class="mc-wheel-label" data-mc-wheel-label>SCROLL TO BROWSE · CLICK A SLOT TO EQUIP</span></div>
     <div class="mc-loadout">
       <span class="mc-loadout-label" data-mc-loadout-label>CARRIED / HARNESS</span>
       <strong class="mc-equipped" data-mc-equipped>Awaiting a loadout</strong>
       <span class="mc-loadout-type" data-mc-type>Choose a harness at the equipment wheel</span>
-      <button class="mc-confirm" type="button" hidden>EQUIP THIS HARNESS ↗</button>
+      <button class="mc-confirm btn btn-secondary" type="button" hidden>EQUIP THIS HARNESS ↗</button>
       <span class="mc-carried" data-mc-carried hidden>NOT EQUIPPED · CLICK TO CONFIRM</span>
     </div>
+    <div class="mc-floating-harness" data-mc-floating-harness aria-hidden="true" hidden><small data-mc-floating-status>HARNESS · READY</small><strong data-mc-floating-name></strong></div>
     <span class="mc-equipment-status" role="status" aria-live="polite"></span>
     <div class="mc-phase-index"><b data-mc-index>01</b><span>/ 06</span></div>
     <div class="mc-bottom">
       <div class="mc-event"><span class="mc-event-label" data-mc-episode-label>METACASE / TRACE</span><p data-mc-event>Every case begins as a question, its raw evidence and the practice that came before.</p></div>
-      <div class="mc-timeline" aria-label="Episode chapters">
-        <div class="mc-chapter-mark is-active" data-mc-chapter="0"><i>01</i><span>ENTER</span></div>
-        <div class="mc-chapter-mark" data-mc-chapter="1"><i>02</i><span>EQUIP</span></div>
-        <div class="mc-chapter-mark" data-mc-chapter="2"><i>03</i><span>REPLICATE</span></div>
-        <div class="mc-chapter-mark" data-mc-chapter="3"><i>04</i><span>RECONCILE</span></div>
-        <div class="mc-chapter-mark" data-mc-chapter="4"><i>05</i><span>DECIDE</span></div>
-        <div class="mc-chapter-mark" data-mc-chapter="5"><i>06</i><span>REMEMBER</span></div>
-      </div>
+      <ol class="mc-timeline mc-rail" aria-label="Episode chapters">
+        <li class="mc-chapter-mark is-active" data-mc-chapter="0"><i>01</i><span>ENTER</span></li>
+        <li class="mc-chapter-mark" data-mc-chapter="1"><i>02</i><span>EQUIP</span></li>
+        <li class="mc-chapter-mark" data-mc-chapter="2"><i>03</i><span>ECONOMICS</span></li>
+        <li class="mc-chapter-mark" data-mc-chapter="3"><i>04</i><span>FINANCE</span></li>
+        <li class="mc-chapter-mark" data-mc-chapter="4"><i>05</i><span>SOCIAL SCIENCE</span></li>
+        <li class="mc-chapter-mark" data-mc-chapter="5"><i>06</i><span>REMEMBER</span></li>
+      </ol>
     </div>
     <div class="mc-access"><label for="mc-progress" data-mc-slider-label>Explore the complete episode</label><input id="mc-progress" class="mc-scrub" type="range" min="0" max="1000" step="1" value="0"></div>
-    <p class="mc-endnote" data-mc-illustrative>Conceptual episode · Eight architectures, no performance ranking. Three case rooms, three fields.</p>
+    <p class="mc-endnote" data-mc-illustrative>Economics · Finance · Social Science / 3 domains, 16 case categories.</p>
     <div class="mc-fallback"><strong>∴ METACASE CHALLENGE</strong><p>One agent. Many harnesses. Real cases, from evidence to experience.</p></div>
   </div>
 </section>

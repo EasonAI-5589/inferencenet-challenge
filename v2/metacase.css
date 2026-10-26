@@ -264,65 +264,8 @@ html[lang="zh-CN"] .mc-title { letter-spacing: -0.02em; line-height: 1.12; max-w
 .mc-gallery-chips li.more::before { display: none; }
 .mc-catalogue-note { margin-top: 20px; max-width: 64em; color: var(--text-tertiary); font-size: 13px; }
 
-/* ---------- 05 The arena: PR41's chapter on this page's grid and type ---------- */
-.mc-home .mc-chapter { --mc-top: var(--mc-pin-top); --mc-gold: var(--track-1); --mc-mint: var(--track-1); height: 640svh; margin: 0; background: #05070e; scroll-margin-top: var(--mc-pin-top); z-index: 1; }
-.mc-home .mc-pin { top: var(--mc-pin-top); height: calc(100svh - var(--mc-pin-top)); background: #05070e; }
-.mc-home .mc-chapter, .mc-home .mc-chapter * { font-family: var(--font-sans); }
-.mc-home .mc-chapter .mc-kicker, .mc-home .mc-chapter .mc-corner, .mc-home .mc-chapter .mc-scroll-cue, .mc-home .mc-chapter .mc-case-code, .mc-home .mc-chapter .mc-loadout-label,
-.mc-home .mc-chapter .mc-loadout-type, .mc-home .mc-chapter .mc-carried, .mc-home .mc-chapter .mc-event-label, .mc-home .mc-chapter .mc-chapter-mark, .mc-home .mc-chapter .mc-phase-index,
-.mc-home .mc-chapter .mc-wheel-label, .mc-home .mc-chapter .mc-confirm, .mc-home .mc-chapter .mc-endnote { font-family: var(--font-mono); }
-.mc-home .mc-corner, .mc-home .mc-copy, .mc-home .mc-loadout { left: var(--mc-gutter); }
-.mc-home .mc-scroll-cue, .mc-home .mc-phase-index { right: var(--mc-gutter); }
-.mc-home .mc-corner, .mc-home .mc-scroll-cue { top: 20px; }
-.mc-home .mc-copy { top: 56px; width: min(30%, 380px); }
-.mc-home .mc-kicker { color: var(--track-2); font-size: 11px; letter-spacing: .12em; }
-.mc-home .mc-kicker::before { background: var(--track-2); }
-.v2-home .mc-copy h2 { font-size: clamp(30px, 3.3vw, 50px); font-weight: 650; letter-spacing: -0.04em; line-height: 1.04; color: var(--text-primary); }
-.mc-home .mc-copy h2 em { background: linear-gradient(100deg, var(--track-1), var(--mc-violet) 50%, var(--track-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.v2-home .mc-copy p { font-size: 15px; line-height: 1.6; max-width: 26em; color: var(--text-secondary); }
-.mc-home .mc-case-code { color: var(--text-tertiary); font-size: 10px; }
-.mc-home .mc-equipped { font: 650 30px/1.05 var(--font-sans); letter-spacing: -0.02em; text-shadow: none; }
-.mc-home .mc-wheel .mc-item-name { font: 600 22px var(--font-sans); letter-spacing: -0.01em; }
-.mc-home .mc-wheel .mc-sector { fill: rgb(14 16 21 / 86%); stroke: rgb(255 255 255 / 14%); }
-.mc-home .mc-wheel .is-active .mc-sector { fill: color-mix(in oklab, var(--track-1) 26%, rgb(14 16 21 / 90%)); stroke: var(--track-1); }
-.mc-home .mc-confirm { border-color: var(--track-2); color: var(--text-primary); background: color-mix(in oklab, var(--track-2) 14%, transparent); border-radius: 999px; padding: 10px 18px; }
-.mc-home .mc-loadout { border-left-color: color-mix(in oklab, var(--track-2) 60%, transparent); bottom: 140px; }
-.mc-home .mc-bottom { left: var(--mc-gutter); right: var(--mc-gutter); bottom: 22px; }
-.mc-home .mc-event-label { color: var(--track-2); }
-.v2-home .mc-event p { font-size: 15px; color: var(--text-primary); }
-.mc-home .mc-chapter-mark { color: var(--text-tertiary); font-size: 11px; }
-.mc-home .mc-chapter-mark::before { background: var(--mc-line); }
-.mc-home .mc-chapter-mark::after { background: var(--track-2); box-shadow: 0 0 8px var(--track-2); }
-.mc-home .mc-chapter-mark.is-active, .mc-home .mc-chapter-mark.is-active i { color: var(--text-primary); }
-.mc-home .mc-phase-index b { color: var(--text-primary); font-weight: 300; }
-.mc-home .mc-endnote { left: var(--mc-gutter); font-size: 10px; color: var(--text-tertiary); }
-.mc-home .mc-vignette { background: linear-gradient(90deg, rgb(14 16 21 / 90%), rgb(14 16 21 / 62%) max(22%, calc(var(--mc-gutter) + 200px)), transparent max(42%, calc(var(--mc-gutter) + 420px)), transparent 86%, rgb(14 16 21 / 30%)), linear-gradient(0deg, rgb(14 16 21 / 92%), transparent 28%, transparent 82%, rgb(14 16 21 / 50%)); }
-
-/* the arena joins the library: page colours and type, no HUD wireframe */
-.mc-home .mc-chapter, .mc-home .mc-pin { background: #05070e; }
-.mc-home .mc-telemetry, .mc-home .mc-corner::before { display: none; }
-.mc-home .mc-corner { color: var(--text-tertiary); letter-spacing: .12em; }
-.mc-home .mc-kicker, .mc-home .mc-event-label { color: var(--track-1); }
-.mc-home .mc-kicker::before { background: var(--track-1); }
-.mc-home .mc-scroll-mouse { border-color: var(--mc-line); }
-.mc-home .mc-scroll-mouse::after { background: var(--track-1); }
-.mc-home .mc-loadout { border-left-color: var(--mc-line); }
-.mc-home .mc-loadout-label, .mc-home .mc-loadout-type, .mc-home .mc-carried, .mc-home .mc-wheel-label { color: var(--text-tertiary); }
-.mc-home .mc-equipped, .mc-home .mc-wheel .mc-item-name { font-family: var(--font-sans); }
-.mc-home .mc-wheel { filter: drop-shadow(0 20px 40px rgb(0 0 0 / 45%)); }
-.mc-home .mc-wheel .mc-sector { fill: color-mix(in oklab, #0a0f1a 82%, transparent); stroke: color-mix(in oklab, #eef2f7 16%, transparent); }
-.mc-home .mc-wheel .is-active .mc-sector, .mc-home .mc-wheel [data-wheel-item]:hover .mc-sector { fill: color-mix(in oklab, var(--track-1) 24%, #0a0f1a); stroke: var(--track-1); }
-.mc-home .mc-wheel .is-active .mc-sector-inner, .mc-home .mc-wheel .is-equipped .mc-sector-inner { stroke: var(--track-1); }
-.mc-home .mc-wheel .mc-item-name { stroke: #0a0f1a; }
-.mc-home .mc-wheel .is-active .mc-item-name { fill: #fff; filter: none; }
-.mc-home .mc-wheel .mc-wheel-centerline { stroke: color-mix(in oklab, var(--track-1) 30%, transparent); }
-.mc-home .mc-confirm { font-family: var(--font-sans); font-weight: 600; letter-spacing: 0; border-color: var(--track-1); color: var(--text-primary); background: color-mix(in oklab, var(--track-1) 14%, transparent); }
-.mc-home .mc-confirm:hover { background: color-mix(in oklab, var(--track-1) 26%, transparent); box-shadow: none; }
-.mc-home .mc-chapter-mark::after { background: linear-gradient(90deg, var(--track-1), var(--mc-violet), var(--track-2)); box-shadow: none; }
-.mc-home .mc-chapter-mark.is-active i { color: var(--track-1); }
-.mc-home .mc-access:focus-within { border-color: var(--track-1); border-radius: 12px; background: var(--surface-1); }
-.mc-home .mc-scrub { accent-color: var(--track-1); }
-.mc-home .mc-vignette { background: linear-gradient(90deg, rgb(5 7 14 / 88%), rgb(5 7 14 / 55%) max(22%, calc(var(--mc-gutter) + 200px)), transparent max(42%, calc(var(--mc-gutter) + 420px)), transparent 86%, rgb(5 7 14 / 30%)), linear-gradient(0deg, rgb(5 7 14 / 92%), transparent 28%, transparent 82%, rgb(5 7 14 / 50%)); }
+/* The Challenge uses the same label, glass, typography and signature rail.
+ * Its responsive layout lives in arena.css. */
 
 /* ---------- Responsive ---------- */
 @media (max-width: 1080px) {
@@ -372,23 +315,11 @@ html[lang="zh-CN"] .mc-title { letter-spacing: -0.02em; line-height: 1.12; max-w
   .mc-shelf summary, .mc-wing-head { padding-left: 18px; padding-right: 18px; }
   .mc-index-card { margin: 0 18px 16px; }
   .mc-facts-links { grid-column: 1 / -1; justify-content: flex-start; }
-  .mc-home .mc-copy { width: auto; right: var(--mc-gutter); top: 48px; }
-  .mc-home .mc-loadout { bottom: 180px; }
-  .mc-home .mc-chapter[data-phase="1"] .mc-loadout { bottom: 180px; }
-  .mc-home .mc-chapter[data-phase="1"] .mc-wheel { width: min(76vw, 300px); top: 42%; }
-  .mc-home .mc-bottom { bottom: 52px; }
-  .mc-home .mc-chapter-mark span { display: none; }
-  .mc-home .mc-chapter-mark i { font-size: 10px; margin-bottom: 0; }
-  .mc-home .mc-access:focus-within,
-  .mc-home .mc-chapter[data-renderer="fallback"] .mc-access { bottom: 270px; }
 }
 
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   .js .mc-in, .js .mc-r { animation: none; opacity: 1; translate: none; transition: none; }
-  .mc-home .mc-chapter { height: auto; }
-  .mc-home .mc-pin { top: 0; height: max(850px, calc(100svh - var(--mc-pin-top))); }
-  .mc-home .mc-access { bottom: 270px; }
 }
 
 /* The initiative statement after the library scene: the full definition and goal, in reading size. */

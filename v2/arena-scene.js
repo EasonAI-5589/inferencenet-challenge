@@ -1,10 +1,15 @@
 /** The Metacase Challenge arena. Procedural geometry, local Three.js r170, reversible scroll choreography.
- * Toy finish: matte white-and-grey architecture on a gridded night floor, soft accents (mc-toon.js, mc-kit.js). */
+ * A Challenge reading room in the same library as the adjacent chapters.
+ * Shared toy-kit geometry, warm wood, cream walls and theme-aware lighting. */
 import * as THREE from "../assets/vendor/three/three.module.js";
 import { catmullRom } from "./arena-motion.js";
 import { toon, toonify, createPost } from "./mc-toon.js";
-import { person, tile } from "./mc-kit.js";
-export function createArenaScene(canvas) {
+import { person, robot, tile, PALETTE } from "./mc-kit.js";
+import { pageBackground } from "./mc-stage.js";
+import { ARENA_DOMAINS, HARNESS_NAMES } from "./arena-data.js";
+import { createCampusDetails } from "./arena-campus.js";
+import { createRoomSubtracks } from "./arena-subtracks.js";
+export function createArenaScene(canvas, { onWeaponProject } = {}) {
   const renderer = new THREE.WebGLRenderer({
     canvas,
     antialias: true,
@@ -12,20 +17,21 @@ export function createArenaScene(canvas) {
     powerPreference: "high-performance",
   });
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5));
-  renderer.setClearColor(0x05070e);
+  renderer.setClearColor(pageBackground());
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.05;
+  renderer.toneMappingExposure = 1;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x05070e);
-  scene.fog = new THREE.FogExp2(0x0b0e1c, 0.018);
+  scene.background = pageBackground();
+  scene.fog = new THREE.FogExp2(scene.background, 0.009);
   const camera = new THREE.PerspectiveCamera(53, 1, 0.1, 150);
   const stage = new THREE.Group();
   scene.add(stage);
   const state = {
     progress: 0,
+    arrival: 1,
     harness: 0,
     equippedHarness: null,
     room: 0,
@@ -33,7 +39,7 @@ export function createArenaScene(canvas) {
     paused: false,
     language: "en",
   };
-  const colors = [0x45b5b0, 0xf2b545, 0x7d6ad8],
+  const colors = ARENA_DOMAINS.map(domain => domain.color),
     harnessColors = [
       0x61ebd7, 0xa791ff, 0xe5bd96, 0xb7d9ec, 0xf48cbe, 0x7dcbf7, 0xf4bd61,
       0xd4f08d,
@@ -41,6 +47,31 @@ export function createArenaScene(canvas) {
   const geoCache = new Map(),
     allMaterials = new Set(),
     allTextures = new Set();
+  // The kit caches geometry and materials across the homepage's WebGL scenes.
+  // Keep private copies here so disposing this independently loaded chapter can
+  // never invalidate the islands, cards or robots in another chapter.
+  const kitGeometry = new Map(), kitMaterials = new Map();
+  function localKit(object) {
+    object.traverse(node => {
+      if (!node.isMesh) return;
+      if (!kitGeometry.has(node.geometry)) {
+        const copy = node.geometry.clone();
+        kitGeometry.set(node.geometry, copy);
+        geoCache.set(`kit:${geoCache.size}`, copy);
+      }
+      node.geometry = kitGeometry.get(node.geometry);
+      const copyMaterial = original => {
+        if (!kitMaterials.has(original)) {
+          const copy = original.clone();
+          kitMaterials.set(original, copy);
+          allMaterials.add(copy);
+        }
+        return kitMaterials.get(original);
+      };
+      node.material = Array.isArray(node.material) ? node.material.map(copyMaterial) : copyMaterial(node.material);
+    });
+    return object;
+  }
   const clamp = THREE.MathUtils.clamp,
     vec = (x = 0, y = 0, z = 0) => new THREE.Vector3(x, y, z),
     mix = THREE.MathUtils.lerp;
@@ -105,8 +136,7 @@ export function createArenaScene(canvas) {
   const wood = material(0x7a5a42),
     woodDark = material(0x5a4434),
     parquet = material(0x6e5440),
-    wall = material(0xf1ece0),
-    bookTones = [0x45b5b0, 0x2f8c88, 0xf2b545, 0xd99a2b, 0x7d6ad8, 0x6a58c4, 0xe2667a, 0x6aa8e8].map(material);
+    wall = material(0xf1ece0);
   function mesh(geo, mat, parent, x = 0, y = 0, z = 0) {
     const m = new THREE.Mesh(geo, mat);
     m.position.set(x, y, z);
@@ -120,6 +150,7 @@ export function createArenaScene(canvas) {
     return m;
   }
   function box(parent, w, h, d, mat, x = 0, y = 0, z = 0, radius = 0) {
+    radius = Math.min(radius, w / 2, h / 2, d / 2);
     const g = geometry(`b:${w}:${h}:${d}:${radius}`, () => {
       const g = new THREE.BoxGeometry(
         w,
@@ -270,16 +301,16 @@ export function createArenaScene(canvas) {
     );
     function write(copy) {
       ctx.clearRect(0, 0, 2048, 512);
-      ctx.fillStyle = "rgba(42, 32, 26, 0.82)";
+      ctx.fillStyle = "rgba(10, 13, 22, 0.78)";
       ctx.beginPath();
       ctx.roundRect(224, 52, 1600, 408, 48);
       ctx.fill();
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.font = '500 34px Inter, Arial, sans-serif';
+      ctx.font = '400 38px "Space Mono", ui-monospace, monospace';
       ctx.fillStyle = color;
       ctx.fillText(copy[0], 1024, 130, 1500);
-      ctx.font = "650 92px Inter, Arial, sans-serif";
+      ctx.font = "700 96px Inter, Arial, sans-serif";
       ctx.fillStyle = "#f3f8fb";
       ctx.fillText(copy[1], 1024, 255, 1500);
       ctx.font = "400 36px Inter, Arial, sans-serif";
@@ -303,10 +334,10 @@ export function createArenaScene(canvas) {
     frame.position.set(0, 7.52, 2.11);
     parent.add(frame);
     box(frame, 7.0, 1.26, 0.19, woodDark, 0, 0, 0, 0.065);
-    box(frame, 7.13, 0.035, 0.08, accent, 0, -0.63, 0.07);
+    box(frame, 6.78, 1.06, 0.025, wall, 0, 0, 0.105, 0.025);
+    box(frame, 6.7, 0.045, 0.08, accent, 0, -0.58, 0.07, 0.015);
     for (const side of [-1, 1]) {
-      box(frame, 0.12, 0.84, 0.09, accent, side * 3.47, 0, 0.13);
-      box(frame, 0.38, 0.035, 0.04, edge, side * 3.07, 0.45, 0.13);
+      box(frame, 0.12, 0.72, 0.09, accent, side * 3.34, 0, 0.13, 0.03);
     }
     const mat = new THREE.MeshBasicMaterial({
       map: texture,
@@ -321,31 +352,25 @@ export function createArenaScene(canvas) {
       frame,
       0,
       0,
-      0.113,
+      0.13,
     );
     function write(lines) {
       ctx.clearRect(0, 0, c.width, c.height);
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillStyle = color;
-      ctx.font = '400 36px "Space Mono", ui-monospace, monospace';
-      ctx.fillText(lines[0], 1024, 39, 1880);
       const cjk = /[\u3400-\u9fff]/.test(lines[1]);
       ctx.font = cjk
-        ? '600 120px "Microsoft YaHei", Arial, sans-serif'
-        : '650 118px Inter, Arial, sans-serif';
+        ? '600 182px "Microsoft YaHei", Arial, sans-serif'
+        : '700 184px Inter, Arial, sans-serif';
       ctx.textBaseline = "alphabetic";
       const metrics = ctx.measureText(lines[1]);
       const baseline =
         159 +
         (metrics.actualBoundingBoxAscent - metrics.actualBoundingBoxDescent) /
           2;
-      ctx.fillStyle = "#f6efe0";
+      ctx.fillStyle = color;
       ctx.fillText(lines[1], 1024, baseline, 1910);
-      ctx.textBaseline = "middle";
-      ctx.fillStyle = "#c9b8a0";
-      ctx.font = "500 34px Inter, Arial, sans-serif";
-      ctx.fillText(lines[2], 1024, 286, 1860);
       texture.needsUpdate = true;
     }
     write(copy);
@@ -361,17 +386,17 @@ export function createArenaScene(canvas) {
     allTextures.add(map);
     function write() {
       ctx.clearRect(0, 0, c.width, c.height);
-      ctx.fillStyle = "#2a201af0";
+      ctx.fillStyle = "#f7f5f0f5";
       ctx.beginPath();
-      ctx.roundRect(12, 12, 1576, 206, 103);
+      ctx.roundRect(12, 12, 1576, 206, 60);
       ctx.fill();
       ctx.strokeStyle = color;
-      ctx.lineWidth = 4;
+      ctx.lineWidth = 3;
       ctx.stroke();
-      ctx.font = '600 104px Inter, Arial, sans-serif';
+      ctx.font = '700 130px Inter, Arial, sans-serif';
       ctx.textAlign = "center";
       ctx.textBaseline = "alphabetic";
-      const text = state.language === "zh" ? "打开这个案例" : "Open this case";
+      const text = "Go for this challenge!";
       const metrics = ctx.measureText(text);
       const baseline =
         115 +
@@ -401,14 +426,15 @@ export function createArenaScene(canvas) {
       material,
       parent,
       0,
-      5.75,
+      6.65,
       2.32,
     );
+    plane.scale.setScalar(0.86);
     plane.visible = false;
     plane.userData.redrawText = write;
     return plane;
   }
-  // Full-scale circular architecture; no visible tabletop edge.
+  // Soft sky fill and warm shadows match the surrounding toy-world chapters.
   scene.add(new THREE.HemisphereLight(0xe8eeff, 0x2a2633, 2.1));
   const key = new THREE.DirectionalLight(0xfff3e2, 2.8);
   key.position.set(-8, 14, 9);
@@ -431,6 +457,7 @@ export function createArenaScene(canvas) {
   const whiteRim = new THREE.DirectionalLight(0xffffff, 0.8);
   whiteRim.position.set(-10, 5, -8);
   scene.add(whiteRim);
+  // Reuse the latest homepage's round parquet hall; campus adds the bookcases.
   cylinder(stage, 24, 24, 0.4, woodDark, 0, -0.25, 0, 128);
   const ground = mesh(
     geometry("unbroken-ground", () => new THREE.PlaneGeometry(200, 200)),
@@ -457,121 +484,15 @@ export function createArenaScene(canvas) {
   // a reading-room rug where the agent starts
   cylinder(stage, 2.6, 2.6, 0.04, material(0x3a4a7a), 0, 0.01, 5.1, 64);
   ring(stage, 2.35, 0.05, gold, 0, 0.05, 5.1);
-  for (let i = 0; i < 0; i++) {
-    const a = (i * Math.PI) / 24,
-      m = box(
-        stage,
-        0.055,
-        0.02,
-        i % 4 ? 0.32 : 0.68,
-        i % 4 ? dim : teal,
-        Math.sin(a) * 13.45,
-        0.05,
-        Math.cos(a) * 13.45,
-      );
-    m.rotation.y = a;
-  }
-  for (let i = 0; i < 0; i++) {
-    const a = (i * Math.PI) / 6,
-      s = Math.sin(a),
-      c = Math.cos(a);
-    line(
-      stage,
-      [
-        [s * 3.6, 0.04, c * 3.6],
-        [s * 9.3, 0.04, c * 9.3],
-      ],
-      0x416176,
-      0.35,
-    );
-    line(
-      stage,
-      [
-        [s * 13.8, 0.04, c * 13.8],
-        [s * 18, 0.04, c * 18],
-      ],
-      0x416176,
-      0.3,
-    );
-  }
-  for (let i = 0; i < 13; i++) {
-    const a = Math.PI * (0.36 + (i * 1.28) / 12),
-      x = Math.cos(a) * 19.5,
-      z = -Math.sin(a) * 18.5;
-    if (z > 5) continue;
-    const g = new THREE.Group();
-    g.position.set(x, 0, z);
-    stage.add(g);
-    g.lookAt(0, 0, 0); // shelves face the plaza
-    // a tall bookcase, filled with volumes, facing the plaza
-    box(g, 2.6, 6.4, 0.12, woodDark, 0, 3.2, -0.42);
-    for (const side of [-1, 1]) box(g, 0.14, 6.6, 0.9, wood, side * 1.3, 3.3, 0, 0.03);
-    box(g, 2.8, 0.22, 1, colors.map(material)[i % 3], 0, 6.6, 0, 0.04);
-    for (let row = 0; row < 6; row++) {
-      const y = 0.25 + row * 1.05;
-      box(g, 2.5, 0.06, 0.8, wood, 0, y, 0);
-      let x = -1.12;
-      for (let k = 0; x < 1.05 && k < 16; k++) {
-        const w = [0.12, 0.15, 0.1, 0.14][(k + row + i) % 4], h = [0.6, 0.72, 0.66, 0.54][(k * 3 + row) % 4];
-        if ((k + row * 3 + i) % 11 === 7) { x += w; continue; }
-        box(g, w, h, 0.5, bookTones[(k * 5 + row * 3 + i) % bookTones.length], x + w / 2, y + 0.03 + h / 2, 0.06, 0.015);
-        x += w + 0.012;
-      }
-    }
-    glow(g, 0xffd9a0, 3, 0, 6.2, 0.6, 0.1);
-  }
-  for (let i = 0; i < 0; i++) {
-    const x = (i - 10) * 4.2,
-      h = 7 + (Math.sin(i * 2.4) + 1) * 5;
-    box(stage, 2.6, h, 3.2, black, x, h / 2 - 1, -32 - Math.cos(i) * 4);
-    if (i % 3 === 0)
-      box(stage, 0.035, h * 0.65, 0.04, dim, x, h / 2, -30 - Math.cos(i) * 4);
-  }
   const centerSymbol = ring(stage, 1.9, 0.025, teal, 0, 0.06, 4.8);
+  ring(stage, 2.05, 0.01, dim, 0, 0.055, 4.8);
   const centerGlow = glow(stage, 0x60efd9, 9, 0, 0.15, 4.8, 0.12);
-  const roomDefs = [
-    {
-      x: -9.2,
-      z: -6.3,
-      turn: 0.52,
-      en: [
-        "ECONOMICS",
-        "Econometric replication",
-        "Economics · statistics · social science",
-      ],
-      zh: ["经济", "计量经济学复现", "经济 · 统计 · 社会科学"],
-    },
-    {
-      x: 0,
-      z: -12.2,
-      turn: 0,
-      en: [
-        "FINANCE",
-        "Finance & accounting",
-        "Evidence · reconciliation · judgment",
-      ],
-      zh: [
-        "金融",
-        "金融与会计",
-        "证据 · 对账 · 商业判断",
-      ],
-    },
-    {
-      x: 9.2,
-      z: -6.3,
-      turn: -0.52,
-      en: [
-        "SOCIAL SCIENCE",
-        "Human resources",
-        "People · policy · decisions",
-      ],
-      zh: [
-        "社科",
-        "人力资源与社会科学",
-        "个体 · 制度 · 决策",
-      ],
-    },
-  ];
+  const roomDefs = ARENA_DOMAINS.map((domain, index) => ({
+    x: [-9.2, 0, 9.2][index], z: [-6.3, -12.2, -6.3][index],
+    turn: [0.52, 0, -0.52][index], id: domain.id,
+    en: ['', domain.name[0].toUpperCase()],
+    zh: ['', domain.name[1]],
+  }));
   const roomTargets = roomDefs.map((d) => vec(d.x, 2.8, d.z - 1)),
     actionWindows = [
       [0.465, 0.55],
@@ -715,19 +636,6 @@ export function createArenaScene(canvas) {
           0.35,
         );
       }
-      plateText(
-        core,
-        [
-          "ESTIMATE / TEST / REPRODUCE",
-          "Y = Xβ + ε",
-          "RAW EVIDENCE → REPRODUCIBLE RESULT",
-        ],
-        3.4,
-        0,
-        -1.7,
-        1.1,
-        "#8fffe1",
-      );
     } else if (index === 1) {
       ring(interior, 2.1, 0.18, gold, 0, 3.2, -1.75, false);
       ring(interior, 1.77, 0.035, accent, 0, 3.2, -1.72, false);
@@ -773,19 +681,6 @@ export function createArenaScene(canvas) {
         ],
         color,
       );
-      plateText(
-        core,
-        [
-          "SOURCE RECORDS / FINANCIAL REVIEW",
-          "EVIDENCE → VALUE",
-          "RECONCILE · CALCULATE · EXPLAIN",
-        ],
-        4.1,
-        0,
-        2.7,
-        0.2,
-        "#ffd6a0",
-      );
     } else {
       const globe = sphere(core, 1.6, hologram);
       ring(core, 1.63, 0.018, accent, 0, 0, 0, false);
@@ -811,19 +706,6 @@ export function createArenaScene(canvas) {
           if (j + k < network.length)
             line(core, [p, network[j + k]], color, 0.3);
       });
-      plateText(
-        core,
-        [
-          "MEASURE / INTERPRET / DECIDE",
-          "PEOPLE & POLICY",
-          "OUTCOMES IN THEIR ORIGINAL CONTEXT",
-        ],
-        3.9,
-        0,
-        2.7,
-        0.2,
-        "#d7cbff",
-      );
       globe.renderOrder = -1;
     }
     const chamberLight = new THREE.PointLight(color, 28, 13, 2);
@@ -835,9 +717,11 @@ export function createArenaScene(canvas) {
         group,
         def.en,
         accent,
-        ["#8fffe1", "#ffd6a0", "#d7cbff"][index],
+        ["#246d68", "#855c1c", "#65519e"][index],
       ),
-      prompt = challengePrompt(group, ["#8fffe1", "#ffd6a0", "#d7cbff"][index]);
+      prompt = challengePrompt(group, ["#246d68", "#855c1c", "#65519e"][index]);
+    const subtracks = createRoomSubtracks({ domain: ARENA_DOMAINS[index], index });
+    group.add(subtracks.root);
     return {
       group,
       doors,
@@ -847,9 +731,12 @@ export function createArenaScene(canvas) {
       scan,
       title,
       prompt,
+      subtracks,
       definition: def,
     };
   });
+  const campus = createCampusDetails({ rooms: roomDefs, localKit });
+  stage.add(campus.root);
   // Bake the page fonts once they are available; never redraw text textures per frame.
   Promise.all([
     document.fonts.load("700 150px Inter"),
@@ -861,6 +748,7 @@ export function createArenaScene(canvas) {
         state.language === "zh" ? room.definition.zh : room.definition.en,
       );
       room.prompt.userData.redrawText();
+      room.subtracks.redraw(state.language);
     });
     wake();
   });
@@ -939,129 +827,65 @@ export function createArenaScene(canvas) {
     }
     return g;
   }
-  // Adult silhouette with a mechanical undersuit, independently moving knees, layered armor and a back-lit memory spine.
+  // The same little robot used by the preceding Metacase chapters. Its original
+  // head, visor, eyes, antenna, body and feet are retained; only the flight rig is new.
   const agent = new THREE.Group();
   agent.position.set(0, 0.06, 5.3);
   stage.add(agent);
   const body = new THREE.Group();
   agent.add(body);
-  box(body, 0.69, 0.31, 0.44, hull, 0, 1.45, 0, 0.07);
-  box(body, 0.52, 0.12, 0.49, ivory, 0, 1.57, 0.02, 0.035);
-  box(body, 0.16, 0.09, 0.04, teal, 0, 1.57, 0.29, 0.015);
-  const legs = [-1, 1].map((side) => {
-    const leg = new THREE.Group();
-    leg.position.set(side * 0.23, 1.39, 0);
-    body.add(leg);
-    sphere(leg, 0.17, rubber);
-    box(leg, 0.31, 0.57, 0.34, ivory, 0, -0.29, 0.025, 0.065);
-    box(leg, 0.035, 0.36, 0.2, metal, side * 0.17, -0.26, 0.015, 0.015);
-    box(leg, 0.18, 0.37, 0.035, white, 0, -0.27, 0.21, 0.025);
-    const knee = new THREE.Group();
-    knee.position.set(0, -0.59, 0.015);
-    leg.add(knee);
-    sphere(knee, 0.14, rubber);
-    box(knee, 0.32, 0.21, 0.14, hull, 0, -0.015, 0.18, 0.04);
-    box(knee, 0.29, 0.51, 0.32, ivory, 0, -0.31, 0.015, 0.055);
-    box(knee, 0.15, 0.31, 0.065, metal, 0, -0.3, 0.205, 0.025);
-    box(knee, 0.035, 0.22, 0.025, teal, side * 0.12, -0.3, 0.19);
-    box(knee, 0.34, 0.23, 0.6, hull, 0, -0.65, 0.13, 0.065);
-    box(knee, 0.31, 0.065, 0.56, rubber, 0, -0.78, 0.13, 0.02);
-    box(knee, 0.25, 0.07, 0.15, edge, 0, -0.65, 0.43, 0.025);
-    return { leg, knee };
+  const toyRobot = robot(PALETTE.cream, 0x8ff6ff);
+  localKit(toyRobot.root);
+  toyRobot.root.scale.setScalar(2.85);
+  body.add(toyRobot.root);
+  const head = toyRobot.head;
+  canvas.dataset.robotModel = "mc-kit";
+  const jetMounts = [-1, 1].map(side => {
+    const mount = new THREE.Group();
+    mount.position.set(side * 0.14 * 2.85, 0.015, 0);
+    body.add(mount);
+    return mount;
   });
-  box(body, 0.76, 0.88, 0.45, rubber, 0, 2.04, 0, 0.13);
-  box(body, 0.91, 0.47, 0.57, ivory, 0, 2.24, 0.015, 0.1);
-  box(body, 0.72, 0.32, 0.46, hull, 0, 1.86, 0.04, 0.07);
-  box(body, 0.65, 0.31, 0.11, white, 0, 2.24, 0.33, 0.04);
-  for (const side of [-1, 1]) {
-    box(
-      body,
-      0.28,
-      0.39,
-      0.08,
-      ivory,
-      side * 0.21,
-      1.96,
-      0.31,
-      0.03,
-    ).rotation.z = side * -0.12;
-    box(body, 0.035, 0.23, 0.023, teal, side * 0.36, 2.21, 0.33);
-  }
-  for (let j = 0; j < 3; j++)
-    box(body, 0.44, 0.07, 0.06, metal, 0, 1.68 + j * 0.11, 0.3, 0.015);
-  box(body, 0.63, 0.74, 0.27, hull, 0, 2.11, -0.35, 0.07);
-  box(body, 0.2, 0.65, 0.09, black, 0, 2.1, -0.53, 0.035);
-  for (let j = 0; j < 6; j++) {
-    box(body, 0.13, 0.055, 0.035, teal, 0, 1.86 + j * 0.1, -0.59, 0.012);
-    box(body, 0.37, 0.035, 0.07, metal, 0, 1.83 + j * 0.1, -0.54, 0.008);
-  }
-  for (const side of [-1, 1]) {
-    cylinder(body, 0.13, 0.13, 0.56, ivory, side * 0.39, 2.1, -0.34, 12);
-    cylinder(body, 0.135, 0.135, 0.1, metal, side * 0.39, 1.87, -0.34, 12);
-    cylinder(body, 0.135, 0.135, 0.07, teal, side * 0.39, 2.36, -0.34, 12);
-  }
-  cylinder(body, 0.025, 0.025, 0.48, metal, -0.32, 2.68, -0.33, 8);
-  sphere(body, 0.045, teal, -0.32, 2.94, -0.33);
-  cylinder(body, 0.17, 0.22, 0.13, rubber, 0, 2.58, 0, 16);
-  const head = new THREE.Group();
-  head.position.set(0, 2.98, 0.02);
-  body.add(head);
-  box(head, 0.62, 0.59, 0.62, ivory, 0, 0, 0, 0.15);
-  box(head, 0.55, 0.28, 0.12, hull, 0, 0.045, 0.29, 0.055);
-  box(head, 0.48, 0.2, 0.05, glass, 0, 0.06, 0.37, 0.04);
-  const eyeMat = luminous(0x8ff6ff, 4.5);
-  for (const side of [-1, 1]) {
-    const eye = sphere(head, 0.075, eyeMat, side * 0.12, 0.06, 0.39);
-    eye.scale.set(0.9, 1.25, 0.35);
-  }
-  box(head, 0.29, 0.11, 0.08, white, 0, -0.18, 0.3, 0.025);
-  box(head, 0.25, 0.21, 0.06, hull, 0, -0.04, -0.32, 0.035);
-  box(head, 0.14, 0.035, 0.025, teal, 0, 0.02, -0.36);
-  box(head, 0.11, 0.03, 0.4, metal, 0, 0.3, -0.015, 0.012);
-  for (const side of [-1, 1]) {
-    const e = cylinder(head, 0.13, 0.13, 0.08, hull, side * 0.33, 0, 0, 12);
-    e.rotation.z = Math.PI / 2;
-    const l = cylinder(head, 0.055, 0.055, 0.085, teal, side * 0.35, 0, 0, 12);
-    l.rotation.z = Math.PI / 2;
-  }
-  head.scale.setScalar(1.32);
-  head.position.y += 0.1;
-  const arms = [-1, 1].map((side) => {
-    const arm = new THREE.Group();
-    arm.position.set(side * 0.55, 2.37, 0.015);
-    body.add(arm);
-    sphere(arm, 0.2, rubber);
-    box(arm, 0.36, 0.28, 0.43, ivory, side * 0.035, -0.015, 0, 0.08);
-    box(arm, 0.25, 0.48, 0.29, ivory, 0, -0.32, 0.02, 0.055);
-    box(arm, 0.035, 0.23, 0.16, teal, side * 0.15, -0.25, 0.02);
-    sphere(arm, 0.13, rubber, 0, -0.59, 0.03);
-    box(arm, 0.27, 0.42, 0.32, hull, 0, -0.8, 0.08, 0.055);
-    box(arm, 0.18, 0.26, 0.07, ivory, 0, -0.78, 0.26, 0.03);
-    box(arm, 0.25, 0.14, 0.26, rubber, 0, -1.06, 0.1, 0.03);
-    return arm;
-  });
-  // Confirmation latches a real loadout onto the back. Carousel focus is only a preview.
-  const backRack = new THREE.Group();
-  backRack.position.set(-0.29, 2.08, -0.78);
-  backRack.rotation.z = 0.3;
-  body.add(backRack);
-  const backMount = new THREE.Group();
-  backMount.rotation.x = -Math.PI / 2;
-  backRack.add(backMount);
-  box(body, 0.48, 0.1, 0.14, metal, -0.23, 1.68, -0.68, 0.025);
-  box(body, 0.35, 0.1, 0.14, metal, -0.34, 2.4, -0.67, 0.025);
+  // One world-space mount follows a back anchor, then glides into an aiming
+  // position beside the robot. Keeping the parent stable makes reverse seeking exact.
+  const backAnchor = new THREE.Group();
+  backAnchor.position.set(-0.35, 1.5, -0.69);
+  backAnchor.rotation.set(-Math.PI / 2, 0, 0.25);
+  body.add(backAnchor);
+  box(body, 0.42, 0.13, 0.14, metal, -0.26, 0.96, -0.57, 0.035);
+  const weaponMount = new THREE.Group();
+  stage.add(weaponMount);
+  const backPosition = vec(), hoverPosition = vec(), cameraRight = vec();
+  const backRotation = new THREE.Quaternion(), aimRotation = new THREE.Quaternion();
+  const aimMatrix = new THREE.Matrix4(), muzzleAxis = vec(0, 0, 1);
+  const aimVector = vec(), actualAim = vec(), labelPosition = vec(), weaponRotation = new THREE.Quaternion();
   let weapons = harnessColors.map((_, i) => {
-    const w = weapon(i);
-    w.position.z = -0.5;
-    w.scale.setScalar(1.12);
-    w.visible = false;
-    backMount.add(w);
+    const raw = weapon(i), bounds = new THREE.Box3().setFromObject(raw);
+    const size = bounds.getSize(vec()), centre = bounds.getCenter(vec());
+    raw.position.sub(centre);
+    const normalized = new THREE.Group(); normalized.add(raw);
+    normalized.scale.setScalar(1 / Math.max(0.01, size.z));
+    const w = new THREE.Group(); w.add(normalized);
+    w.scale.setScalar(1.65); w.visible = false;
+    weaponMount.add(w);
     return w;
   });
-  const palmEmitter = glow(arms[1], 0x8deeff, 0.34, 0, -1.06, 0.23, 0.34);
-  palmEmitter.visible = false;
   const agentGround = ring(stage, 0.7, 0.014, teal, 0, 0.07, 5.3),
     agentHalo = glow(stage, 0x84dff2, 3.2, 0, 2.1, 5.3, 0.08);
+  // Ground contact is also scroll-owned: the expanding ripples disappear once
+  // the feet settle, and retrace the same shape when the visitor scrolls back.
+  const landingRipples = [0, 1].map(i => ring(stage, 0.8, 0.018,
+    basic(i ? 0xc5eee0 : 0x78d8cf, 0), 0, 0.085 + i * 0.006, 5.3));
+  const landingDustPositions = new Float32Array(32 * 3);
+  const landingDustGeometry = new THREE.BufferGeometry();
+  landingDustGeometry.setAttribute("position", new THREE.BufferAttribute(landingDustPositions, 3));
+  geoCache.set("landing-dust", landingDustGeometry);
+  const landingDustMaterial = new THREE.PointsMaterial({ color: 0xbce9db,
+    size: 0.065, transparent: true, opacity: 0, depthWrite: false });
+  allMaterials.add(landingDustMaterial);
+  const landingDust = new THREE.Points(landingDustGeometry, landingDustMaterial);
+  landingDust.frustumCulled = false;
+  stage.add(landingDust);
   const heroLight = new THREE.PointLight(0xe5f4ff, 7.5, 7, 2);
   stage.add(heroLight);
   const inventory = new THREE.Group();
@@ -1102,14 +926,14 @@ export function createArenaScene(canvas) {
         return;
       }
       modelLibrary = library;
-      weapons.forEach((w) => backMount.remove(w));
+      weapons.forEach((w) => weaponMount.remove(w));
       weapons = library.weapons;
       weapons.forEach(toonify);
       weapons.forEach((w, i) => {
-        w.scale.setScalar(1.95);
-        w.rotation.z = 0.65;
+        w.scale.setScalar(1.65);
+        w.rotation.set(0, 0, 0);
         w.visible = i === state.equippedHarness;
-        backMount.add(w);
+        weaponMount.add(w);
         const slot = inventoryGuns[i];
         slot.mount.remove(slot.model);
         const preview = w.clone(true);
@@ -1133,14 +957,15 @@ export function createArenaScene(canvas) {
   // Foot-mounted vector thrusters: bright nozzle, translucent plasma cone and escaping particles.
   const jetGeometry = geometry(
     "thruster-envelope",
-    () => new THREE.CylinderGeometry(0.14, 0.012, 1, 20, 1, true),
+    () => new THREE.CylinderGeometry(0.21, 0.018, 1, 20, 1, true),
   );
-  const thrusters = legs.map(({ knee }, index) => {
+  const thrusters = jetMounts.map((mount, index) => {
     const nozzle = new THREE.Group();
-    nozzle.position.set(0, -0.8, 0.13);
-    knee.add(nozzle);
+    nozzle.position.set(0, 0, 0);
+    mount.add(nozzle);
     cylinder(nozzle, 0.12, 0.095, 0.11, metal, 0, -0.015, 0, 16);
-    ring(nozzle, 0.095, 0.018, pale, 0, -0.079, 0);
+    const nozzleGlow = luminous(0xe3ffff, 12);
+    ring(nozzle, 0.115, 0.025, nozzleGlow, 0, -0.079, 0);
     const plumeMaterial = new THREE.ShaderMaterial({
       uniforms: { phase: { value: 0 }, strength: { value: 1 } },
       transparent: true,
@@ -1149,22 +974,25 @@ export function createArenaScene(canvas) {
       blending: THREE.AdditiveBlending,
       vertexShader:
         "varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}",
-      fragmentShader: `varying vec2 vUv;uniform float phase;uniform float strength;void main(){float axial=smoothstep(0.,.30,vUv.y);float pulse=.85+.15*sin(vUv.y*42.-phase*13.);vec3 color=mix(vec3(.035,.32,1.),vec3(.65,.94,1.),pow(vUv.y,3.));gl_FragColor=vec4(color*3.2,axial*pulse*.42*strength);}`,
+      fragmentShader: `varying vec2 vUv;uniform float phase;uniform float strength;void main(){float axial=smoothstep(0.,.30,vUv.y);float pulse=.85+.15*sin(vUv.y*42.-phase*13.);vec3 color=mix(vec3(.01,.18,1.),vec3(.06,.72,1.),pow(vUv.y,2.));gl_FragColor=vec4(color*2.4,axial*pulse*.85*strength);}`,
     });
     allMaterials.add(plumeMaterial);
     const plume = mesh(jetGeometry, plumeMaterial, nozzle, 0, -0.58, 0);
     const core = cylinder(
       nozzle,
-      0.065,
-      0.008,
-      0.49,
-      luminous(0xb8f8ff, 6, 0.9),
+      0.085,
+      0.014,
+      0.62,
+      luminous(0xe1ffff, 12, 0.98),
       0,
       -0.32,
       0,
       12,
     );
-    const halo = glow(nozzle, 0x71c9ff, 1.25, 0, -0.25, 0, 0.48);
+    const halo = glow(nozzle, 0x39cfff, 1.4, 0, -0.12, 0, 0.95);
+    const thrustLight = new THREE.PointLight(0x77e9ff, 8, 2.8, 2);
+    thrustLight.position.y = -0.16;
+    nozzle.add(thrustLight);
     const positions = new Float32Array(27 * 3),
       colors = new Float32Array(27 * 3);
     const particleGeometry = new THREE.BufferGeometry();
@@ -1200,6 +1028,9 @@ export function createArenaScene(canvas) {
       colors,
       particleGeometry,
       plumeMaterial,
+      particles,
+      nozzleGlow,
+      thrustLight,
       pool,
     };
   });
@@ -1211,7 +1042,7 @@ export function createArenaScene(canvas) {
       [7.1, 0.07, -1.5],
       [0, 0.07, 2.2],
     ],
-    trace = line(stage, routeNodes, 0xf2b545, 0.45);
+    trace = line(stage, routeNodes, 0x62bfb8, 0.36);
   const milestoneLights = routeNodes.map((p, i) =>
     ring(
       stage,
@@ -1279,17 +1110,17 @@ export function createArenaScene(canvas) {
   );
   geoCache.set("dust", dustGeo);
   const dustMat = new THREE.PointsMaterial({
-    color: 0xffe2b0,
-    size: 0.03,
+    color: 0xb7e9f5,
+    size: 0.026,
     transparent: true,
     opacity: 0.45,
     depthWrite: false,
   });
   allMaterials.add(dustMat);
-  // Little experts wait by each room; a few more stroll around the plaza.
+  // Human domain experts make the scale legible; the flying robot remains the one agent.
   const crowd = [];
   roomDefs.forEach((def, r) => {
-    for (let k = 0; k < 3; k++) {
+    for (let k = 0; k < 2; k++) {
       const p = person(r * 3 + k), group = new THREE.Group();
       group.add(p.root);
       const local = vec(-2.6 + k * 0.55 + (k === 2 ? 4.6 : 0), 0, 3.4 + (k % 2) * 0.4);
@@ -1302,15 +1133,25 @@ export function createArenaScene(canvas) {
       crowd.push({ p, walk: 0 });
     }
   });
-  for (let k = 0; k < 4; k++) {
-    const p = person(20 + k), group = new THREE.Group();
-    group.add(p.root); group.scale.setScalar(1.15); stage.add(group);
-    crowd.push({ p, walk: 1, group, radius: 10.6 + (k % 2) * 0.8, phase: k * 1.6 });
-  }
   const dust = new THREE.Points(dustGeo, dustMat);
   stage.add(dust);
   // Cartoon finish: ink outlines from depth, bloom on emissive light, vignette.
-  const post = createPost(renderer, { bloom: 0.32, threshold: 0.9, vignette: 0.3 });
+  const post = createPost(renderer, { bloom: 0.16, threshold: 0.9, vignette: 0.12 });
+  function setTheme() {
+    const background = pageBackground();
+    const light = document.documentElement.dataset.theme === "light";
+    scene.background.copy(background);
+    scene.fog.color.copy(background);
+    scene.fog.density = light ? 0.012 : 0.009;
+    renderer.setClearColor(background);
+    ground.material.color.copy(background);
+    post.set({ bloom: light ? 0.08 : 0.16, vignette: light ? 0 : 0.12 });
+    dustMat.opacity = light ? 0.12 : 0.32;
+    wake();
+  }
+  const themeObserver = new MutationObserver(setTheme);
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  setTheme();
   function render() {
     post.render(scene, camera);
   }
@@ -1318,16 +1159,16 @@ export function createArenaScene(canvas) {
   const shots = [
     {
       p: 0,
-      camera: [0, 5.8, 17.5],
-      look: [-2.2, 3, -3],
+      camera: [0, 10, 25],
+      look: [-2.7, 1.8, -4],
       hero: [0, 0.06, 5.3],
       heading: Math.PI,
-      fov: 55,
+      fov: 52,
     },
     {
       p: 0.15,
-      camera: [-0.8, 5, 15],
-      look: [-2.2, 2.7, -1.7],
+      camera: [-0.8, 8.6, 22],
+      look: [-2.7, 2.1, -3],
       hero: [0, 0.06, 5.3],
       heading: Math.PI,
       fov: 53,
@@ -1337,7 +1178,7 @@ export function createArenaScene(canvas) {
       camera: [1.1, 4.2, 12.5],
       look: [0, 2.85, 4.6],
       hero: [0, 0.06, 5.3],
-      heading: Math.PI + 0.22,
+      heading: 1.2,
       fov: 56,
     },
     {
@@ -1345,7 +1186,7 @@ export function createArenaScene(canvas) {
       camera: [-0.9, 4.25, 12.4],
       look: [0, 2.85, 4.6],
       hero: [0, 0.06, 5.3],
-      heading: Math.PI - 0.2,
+      heading: 1.05,
       fov: 56,
     },
     {
@@ -1398,8 +1239,8 @@ export function createArenaScene(canvas) {
     },
     {
       p: 1,
-      camera: [0, 8, 20],
-      look: [0, 3.3, -1.4],
+      camera: [0, 11.5, 28],
+      look: [-1.6, 2, -3],
       hero: [0, 0.06, 4.1],
       heading: Math.PI,
       fov: 56,
@@ -1479,28 +1320,60 @@ export function createArenaScene(canvas) {
             2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(shot.fov) / 2) * Math.min(1.55, 1 / camera.aspect)),
           )
         : shot.fov;
+    // Align the loadout portrait with the shared page grid's 57% wheel centre.
+    const wheelShift = smooth(0.15, 0.21, p) * (1 - smooth(0.35, 0.4, p));
+    if (!mobile && wheelShift > 0.001) camera.setViewOffset(width, height, -width * 0.07 * wheelShift, 0, width, height);
+    else camera.clearViewOffset();
     camera.updateProjectionMatrix();
     agent.position.copy(heroPos);
     agent.rotation.y = shot.heading;
-    // Flight pose depends on where the agent is along its route, not scroll direction or frame rate.
+    // The preceding chapter supplies arrival 0..1. The descent, touchdown and
+    // takeoff are functions of scroll position, so none need a timer to finish.
+    // Reduced motion opens with the robot already grounded; manual episode
+    // seeking still shows the appropriate stationary flight pose.
+    const arrival = reduced ? 1 : clamp(state.arrival, 0, 1);
+    const takeoff = smooth(0, 0.12, p);
+    const descent = 1 - smooth(0, 1, arrival);
     const travel = shot.moving ? Math.sin(Math.PI * shot.f) : 0;
-    const hover =
-      0.58 + travel * 0.58 + (ambient ? Math.sin(time * 1.65) * 0.035 : 0);
+    const descentHeight = 8.5 * descent * (1 - takeoff);
+    const hover = descentHeight + takeoff * (1.10 + travel * 0.64 +
+      (ambient ? Math.sin(time * 1.65) * 0.045 : 0));
+    const impact = smooth(0.89, 0.95, arrival) * (1 - smooth(0.95, 1, arrival)) * (1 - takeoff);
+    const airborne = smooth(0.035, 0.40, hover);
+    const braking = smooth(0.25, 0.72, arrival) * (1 - smooth(0.90, 1, arrival));
+    const enginePower = (1 - takeoff) * airborne * (0.45 + braking * 0.75) +
+      takeoff * (1.05 + travel * 0.25);
     agent.position.y += hover;
     body.position.y = 0;
-    body.rotation.x = 0.04 + travel * 0.22;
-    body.rotation.z = travel * Math.sin(p * 18) * 0.045;
-    legs.forEach(({ leg, knee }, i) => {
-      leg.rotation.x = -0.1 - travel * 0.06 + (i ? 0.025 : -0.025);
-      leg.rotation.z = i ? -0.045 : 0.045;
-      knee.rotation.x = 0.3 + travel * 0.38;
-    });
-    arms[0].rotation.x = 0.1 + travel * 0.2;
-    arms[1].rotation.x = 0.1 + travel * 0.2;
-    arms[0].rotation.z = -0.1;
-    arms[1].rotation.z = 0.1;
+    body.scale.set(1 + impact * 0.018, 1 - impact * 0.045, 1 + impact * 0.018);
+    body.rotation.x = takeoff * (0.04 + travel * 0.22) +
+      (1 - takeoff) * Math.sin(arrival * Math.PI) * -0.08;
+    body.rotation.z = takeoff * travel * Math.sin(p * 18) * 0.045;
+    toyRobot.update(takeoff > 0.001 ? (ambient ? time : p * 4) : 0, 0);
     head.rotation.x = -body.rotation.x * 0.45;
-    head.rotation.y = ambient ? Math.sin(time * 0.7) * 0.035 : 0;
+    canvas.dataset.arrivalProgress = arrival.toFixed(4);
+    canvas.dataset.agentAltitude = hover.toFixed(4);
+    canvas.dataset.landingState = arrival < 0.999 && takeoff < 0.999
+      ? "descending" : p < 0.001 ? "landed" : p < 0.12 ? "taking-off" : "hovering";
+    const contact = smooth(0.86, 1, arrival);
+    const dustOpacity = Math.sin(contact * Math.PI) * (1 - takeoff) * (reduced ? 0 : 1);
+    landingRipples.forEach((ripple, index) => {
+      ripple.position.set(heroPos.x, 0.085 + index * 0.006, heroPos.z);
+      ripple.scale.setScalar(0.45 + contact * (index ? 3.5 : 2.6));
+      ripple.material.opacity = dustOpacity * (index ? 0.27 : 0.5);
+      ripple.visible = dustOpacity > 0.002;
+    });
+    landingDust.position.set(heroPos.x, 0.08, heroPos.z);
+    landingDust.visible = dustOpacity > 0.002;
+    landingDustMaterial.opacity = dustOpacity * 0.65;
+    for (let i = 0; i < 32; i++) {
+      const angle = i * 2.39996;
+      const radius = 0.55 + contact * (1.25 + (i % 5) * 0.18);
+      landingDustPositions[i * 3] = Math.cos(angle) * radius;
+      landingDustPositions[i * 3 + 1] = Math.sin(contact * Math.PI) * (0.04 + (i % 4) * 0.04);
+      landingDustPositions[i * 3 + 2] = Math.sin(angle) * radius;
+    }
+    landingDustGeometry.attributes.position.needsUpdate = true;
     weapons.forEach((w, i) => {
       w.visible = state.equippedHarness !== null && i === state.equippedHarness;
     });
@@ -1512,14 +1385,54 @@ export function createArenaScene(canvas) {
     agentHalo.position.set(heroPos.x, 2 + hover, heroPos.z);
     heroLight.position.copy(agent.position).add(vec(-1.6, 3.3, 2));
     agent.updateMatrixWorld(true);
+    const activeRoom = p >= 0.76 ? 2 : p >= 0.57 ? 1 : 0;
+    const deployment = smooth(0.355, 0.425, p) * (1 - smooth(0.925, 0.98, p));
+    backAnchor.getWorldPosition(backPosition);
+    backAnchor.getWorldQuaternion(backRotation);
+    cameraRight.set(1, 0, 0).applyQuaternion(camera.quaternion);
+    cameraRight.y = 0; cameraRight.normalize();
+    hoverPosition.copy(agent.position).addScaledVector(cameraRight, 2.05);
+    hoverPosition.y += 1.65 + (ambient ? Math.sin(time * 1.7 + 0.7) * 0.07 : 0);
+    weaponMount.position.copy(backPosition).lerp(hoverPosition, deployment);
+    aimMatrix.lookAt(roomTargets[activeRoom], weaponMount.position, up);
+    aimRotation.setFromRotationMatrix(aimMatrix);
+    weaponMount.quaternion.copy(backRotation).slerp(aimRotation, deployment);
+    weapons.forEach(w => w.scale.setScalar(mix(1.65, 2.05, deployment)));
+    weaponMount.updateMatrixWorld(true);
+    const selectedWeapon = weapons[state.equippedHarness];
+    const selectedName = HARNESS_NAMES[state.equippedHarness] || "";
+    const mode = deployment > 0.01 ? "hover" : "back";
+    let aimDot = 0;
+    if (selectedWeapon) {
+      selectedWeapon.getWorldQuaternion(weaponRotation);
+      actualAim.copy(muzzleAxis).applyQuaternion(weaponRotation).normalize();
+      aimVector.copy(roomTargets[activeRoom]).sub(weaponMount.position).normalize();
+      aimDot = actualAim.dot(aimVector);
+    }
+    canvas.dataset.weaponMode = selectedWeapon ? mode : "none";
+    canvas.dataset.weaponHarness = selectedName;
+    canvas.dataset.weaponTarget = selectedWeapon && deployment > 0.5 ? ARENA_DOMAINS[activeRoom].id : "";
+    canvas.dataset.weaponAimDot = aimDot.toFixed(5);
+    labelPosition.copy(weaponMount.position).add(vec(0, 0.82, 0)).project(camera);
+    onWeaponProject?.({
+      x: (labelPosition.x + 1) * width / 2,
+      y: (1 - labelPosition.y) * height / 2,
+      visible: !!selectedWeapon && deployment > 0.65 && labelPosition.z > -1 && labelPosition.z < 1 && Math.abs(labelPosition.x) < 0.94 && Math.abs(labelPosition.y) < 0.94,
+      name: selectedName, mode, room: ARENA_DOMAINS[activeRoom].id, aimDot,
+    });
     thrusters.forEach((jet, index) => {
-      jet.plume.scale.y = 0.67 + travel * 0.7;
+      const running = enginePower > 0.015;
+      jet.plume.visible = jet.core.visible = jet.halo.visible = jet.particles.visible = running;
+      jet.nozzleGlow.emissiveIntensity = enginePower * 5.4;
+      jet.thrustLight.intensity = (8 + travel * 5) * enginePower;
+      jet.plume.scale.y = (0.78 + travel * 0.7) * (0.55 + 0.45 * Math.min(1, enginePower));
       jet.plume.position.y = -0.1 - jet.plume.scale.y * 0.5;
       jet.core.scale.y = 0.8 + travel * 0.7;
-      jet.core.position.y = -0.1 - 0.245 * jet.core.scale.y;
-      jet.plumeMaterial.uniforms.strength.value = 0.8 + travel * 0.25;
+      jet.core.position.y = -0.1 - 0.31 * jet.core.scale.y;
+      jet.plumeMaterial.uniforms.strength.value = enginePower;
+      jet.halo.material.opacity = 0.95 * Math.min(1, enginePower);
       jet.plumeMaterial.uniforms.phase.value = p * 33 + (ambient ? time : 0);
-      jet.halo.scale.setScalar(1.0 + travel * 0.35);
+      jet.halo.scale.setScalar(1.35 + travel * 0.35);
       const flow = p * 38 + (ambient ? time * 1.2 : 0);
       for (let j = 0; j < 27; j++) {
         const age = (j / 27 + flow + index * 0.37) % 1,
@@ -1536,7 +1449,7 @@ export function createArenaScene(canvas) {
       jet.particleGeometry.attributes.color.needsUpdate = true;
       jet.nozzle.getWorldPosition(jet.pool.position);
       jet.pool.position.y = 0.1;
-      jet.pool.material.opacity = 0.14 + travel * 0.07;
+      jet.pool.material.opacity = (0.14 + travel * 0.07) * enginePower;
       jet.pool.scale.setScalar(1.25 + travel * 0.55);
     });
     const inventoryAmount = smooth(0.16, 0.22, p) * (1 - smooth(0.34, 0.39, p));
@@ -1556,6 +1469,10 @@ export function createArenaScene(canvas) {
       const [start, reveal, end] = roomWindows[i],
         open = 0.52 + 0.48 * smooth(start, reveal, p),
         active = p >= start && p < end;
+      room.subtracks.update({
+        time, language: state.language, reduced: !ambient,
+        active: smooth(start, reveal, p) * (1 - smooth(end - 0.025, end + 0.015, p)),
+      });
       room.doors[0].position.x = -1.48 - open * 1.72;
       room.doors[1].position.x = 1.48 + open * 1.72;
       room.doors.forEach((d) => {
@@ -1592,12 +1509,11 @@ export function createArenaScene(canvas) {
     });
     if (state.language !== language) {
       language = state.language;
-      rooms.forEach((room) => {
+      rooms.forEach((room) =>
         room.title.write(
           language === "zh" ? room.definition.zh : room.definition.en,
-        );
-        room.prompt.userData.redrawText();
-      });
+        ),
+      );
       recordTitle.write(
         language === "zh"
           ? [
@@ -1612,21 +1528,17 @@ export function createArenaScene(canvas) {
             ],
       );
     }
-    const activeRoom = p >= 0.76 ? 2 : p >= 0.57 ? 1 : 0,
-      actionWindow = actionWindows[activeRoom],
+    const actionWindow = actionWindows[activeRoom],
       firing =
         state.equippedHarness !== null &&
         p > actionWindow[0] &&
         p < actionWindow[1];
     beam.visible = hit.visible = firing;
-    palmEmitter.visible = firing;
     packets.forEach((packet) => {
       packet.visible = firing;
     });
     if (firing) {
-      arms[1].rotation.x = -1.05;
-      agent.updateMatrixWorld(true);
-      arms[1].localToWorld(muzzle.set(0, -1.06, 0.23));
+      selectedWeapon.localToWorld(muzzle.set(0, 0, 0.5));
       beamTarget.copy(roomTargets[activeRoom]);
       beamDirection.copy(beamTarget).sub(muzzle);
       const length = beamDirection.length();
@@ -1688,6 +1600,7 @@ export function createArenaScene(canvas) {
         c.group.rotation.y = a + Math.PI / 2;
       }
     });
+    campus.update({ time, progress: p, paused: !ambient });
     render();
   }
   function tick(now) {
@@ -1729,6 +1642,7 @@ export function createArenaScene(canvas) {
       visible = entries.some((e) => e.isIntersecting);
       if (visible) wake();
       else {
+        onWeaponProject?.({ visible: false });
         cancelAnimationFrame(raf);
         raf = 0;
         lastTime = 0;
@@ -1756,6 +1670,8 @@ export function createArenaScene(canvas) {
       if (disposed) return;
       if (Number.isFinite(next.progress))
         state.progress = clamp(next.progress, 0, 1);
+      if (Number.isFinite(next.arrival))
+        state.arrival = clamp(next.arrival, 0, 1);
       if (Number.isFinite(next.harness))
         state.harness = clamp(Math.round(next.harness), 0, 7);
       if (Object.prototype.hasOwnProperty.call(next, "equippedHarness"))
@@ -1790,15 +1706,19 @@ export function createArenaScene(canvas) {
     },
     dispose() {
       disposed = true;
+      onWeaponProject?.({ visible: false });
       cancelAnimationFrame(raf);
       ro.disconnect();
       io.disconnect();
+      themeObserver.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
       motionQuery.removeEventListener("change", onReduced);
       geoCache.forEach((g) => g.dispose());
       allMaterials.forEach((m) => m.dispose());
       allTextures.forEach((t) => t.dispose());
       modelLibrary?.dispose();
+      campus.dispose();
+      rooms.forEach(room => room.subtracks.dispose());
       post.dispose();
       renderer.dispose();
     },
