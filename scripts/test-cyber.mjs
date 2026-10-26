@@ -30,7 +30,9 @@ try {
   for (const file of pages) {
     for (const [viewport, theme] of [[{ width: 1440, height: 900 }, 'dark'], [{ width: 390, height: 844 }, 'light']]) {
       const { page, clean } = await open(file, { viewport }, theme);
-      assert.ok(await page.evaluate(() => [...document.styleSheets].some(sheet => sheet.href?.includes('/v2/cyber.css'))), `${file}: cyber.css`);
+      // The Metacase homepage keeps its own design (PR #43); every other v2 page carries the cyber layer.
+      const hasCyber = await page.evaluate(() => [...document.styleSheets].some(sheet => sheet.href?.includes('/v2/cyber.css')));
+      assert.equal(hasCyber, file !== 'index.html', `${file}: cyber.css`);
       assert.ok((await overflow(page)) <= 1, `${file} @${viewport.width}: horizontal overflow`);
       if (shots && viewport.width === 1440) await page.screenshot({ path: `${shots}/cyber-${file.replace('.html', '')}-1440.png` });
       if (fx[file]) {
