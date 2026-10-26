@@ -535,23 +535,23 @@ export function createArenaScene(canvas) {
       z: -6.3,
       turn: 0.52,
       en: [
-        "TRACK 01 · ECONOMICS",
+        "ECONOMICS",
         "Econometric replication",
         "Economics · statistics · social science",
       ],
-      zh: ["赛道 01 · 经济", "计量经济学复现", "经济 · 统计 · 社会科学"],
+      zh: ["经济", "计量经济学复现", "经济 · 统计 · 社会科学"],
     },
     {
       x: 0,
       z: -12.2,
       turn: 0,
       en: [
-        "TRACK 02 · FINANCE",
+        "FINANCE",
         "Finance & accounting",
         "Evidence · reconciliation · judgment",
       ],
       zh: [
-        "赛道 02 · 金融",
+        "金融",
         "金融与会计",
         "证据 · 对账 · 商业判断",
       ],
@@ -561,12 +561,12 @@ export function createArenaScene(canvas) {
       z: -6.3,
       turn: -0.52,
       en: [
-        "TRACK 02 · SOCIAL SCIENCE",
+        "SOCIAL SCIENCE",
         "Human resources",
         "People · policy · decisions",
       ],
       zh: [
-        "赛道 02 · 社科",
+        "社科",
         "人力资源与社会科学",
         "个体 · 制度 · 决策",
       ],
