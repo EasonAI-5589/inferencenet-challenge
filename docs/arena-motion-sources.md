@@ -5,6 +5,11 @@ The arena includes actual adapted drawing and motion code from the project owner
 at commit `50ddc08484fefe801be5f39daf87a14f44bc88f2` on 2026-10-25. The integration
 is `v2/arena-motion.js`; it is not a runtime iframe, video, or external dependency.
 
+The library homepage no longer mounts the peripheral telemetry overlay described
+below. Its source and attribution remain available in `arena-motion.js`; the
+current camera imports its `catmullRom` helper. The reuse table records the
+historical overlay implementation, not additional visible homepage effects.
+
 ## Code reused and changed
 
 | Upstream source | Upstream implementation | Arena integration |
