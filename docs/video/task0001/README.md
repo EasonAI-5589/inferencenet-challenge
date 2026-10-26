@@ -16,7 +16,7 @@ the editable animation, rather than the main video view.
 
 The recorded example is **task 0001, GPT-5.6 Sol + DeepAgents**, run
 `sol-deepagents-full1000-20260911-chain-03`. The animation derives from
-[`video-demo/task0001` at commit `884e89e`](https://github.com/EasonAI-5589/inferencenet-challenge/tree/884e89e58f62a185cd06572979fbd1548ea67e4b/video-demo/task0001).
+[`video-demo/task0001` at commit `884e89e`](https://github.com/EasonAI-5589/metacase-challenge/tree/884e89e58f62a185cd06572979fbd1548ea67e4b/video-demo/task0001).
 The derived `replay-data.js` snapshot is unchanged. Private raw traces are not
 included, and no new model evaluation was run to make this video.
 
