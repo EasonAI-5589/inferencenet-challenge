@@ -7,10 +7,10 @@ import { PALETTE, mat, add, block, tile, robot, person, buildings, lights, signa
 import { clamp, smooth, ramp, lerp, pageBackground, fitCamera, toView, glowSprite } from './mc-stage.js';
 
 export const COLUMNS = [
-  { key: 'economics', accent: PALETTE.teal }, { key: 'finance', accent: PALETTE.amber }, { key: 'healthcare', accent: PALETTE.rose },
-  { key: 'policy', accent: PALETTE.violet }, { key: 'law', accent: PALETTE.green }, { key: 'business', accent: PALETTE.sky },
+  { key: 'economics', accent: PALETTE.teal }, { key: 'finance', accent: PALETTE.amber }, { key: 'social', accent: PALETTE.violet },
+  { key: 'healthcare', accent: PALETTE.rose }, { key: 'policy', accent: PALETTE.sky }, { key: 'law', accent: PALETTE.green },
 ];
-const QUERY = 2, ROWS = 5, SIZE = .82, Q_SIZE = 1.35;
+const QUERY = 3, ROWS = 5, SIZE = .82, Q_SIZE = 1.35;
 const FACE = new THREE.Euler(Math.PI / 2, 0, 0); // tile top (the signature) faces the viewer
 
 export function createArchive({ onProject = () => {}, reduce = false } = {}) {
@@ -21,7 +21,7 @@ export function createArchive({ onProject = () => {}, reduce = false } = {}) {
   const floor = add(scene, new THREE.CylinderGeometry(16, 16, .4, 64), mat(0x121521), 0, -.6, 0); floor.castShadow = false;
   const pool = glowSprite(0x9fb6ff, 30, .14); pool.position.set(0, 3, -2); scene.add(pool);
 
-  /* ---- the archive wall: six fields, five cases each ---- */
+  /* ---- the archive wall: the three first fields and three to come, five cases each ---- */
   const wall = new THREE.Group(); scene.add(wall);
   const cells = [];
   COLUMNS.forEach((col, c) => {

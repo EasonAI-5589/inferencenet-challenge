@@ -154,6 +154,19 @@ export const buildings = {
     [-.27, .27].forEach(x => cyl(sc, .12, .08, .04, PALETTE.amber, x, .66, 0, 14));
     return g;
   },
+  // social science: a university hall with a clock tower
+  social(accent = PALETTE.violet) {
+    const g = new THREE.Group();
+    block(g, 2.2, .14, 1.6, PALETTE.stone, 0, 0, 0, .03);
+    block(g, 2, 1.1, 1.1, PALETTE.wall, 0, .14, -.2);
+    windows(g, 1.7, .8, 2, 4, .36, .45);
+    add(g, gable(2.1, 1.25, .45), mat(accent), 0, 1.24, -.2);
+    block(g, .6, 1.9, .6, PALETTE.wall, 0, .14, .2, .05);
+    add(g, cached('spire', () => new THREE.ConeGeometry(.42, .6, 4)), mat(accent), 0, 2.34, .2).rotation.y = Math.PI / 4;
+    const face = cyl(g, .2, .2, .04, PALETTE.cream, 0, 1.6, .5, 20); face.rotation.x = Math.PI / 2;
+    block(g, .02, .14, .02, PALETTE.ink, 0, 1.62, .53, .005);
+    return g;
+  },
   // business: office towers
   business(accent = PALETTE.sky) {
     const g = new THREE.Group();
