@@ -114,7 +114,7 @@ export function createAnatomy({ onProject = () => {}, safe = () => null, held = 
   const ink = mat(0x9aa3b2), heading = new THREE.MeshStandardMaterial({ color: STAGE_COLORS[0], roughness: .7 });
   for (let k = 0; k < 9; k++) block(book, PW * (k % 3 === 2 ? .5 : .78), .004, .05, ink, PW / 2 - (k % 3 === 2 ? PW * .14 : 0), rightTop, -PD / 2 + 1.0 + k * .22, .002).castShadow = false;
   add(book, rbox(PW * .78, .006, .16, .003), heading, PW / 2, rightTop + .003, -PD / 2 + .3, false);
-  const NAMES = ['CONTEXT & RAW EVIDENCE', 'PRIOR PRACTICE', 'APPROACHES CONSIDERED', 'REASONING', 'ACTIONS TAKEN', 'OUTCOMES', 'INTERPRETATION & LESSONS'];
+  const NAMES = ['TASK & EVIDENCE', 'PRIORS', 'CANDIDATE PLANS', 'DECISION', 'TRAJECTORY', 'OUTCOME', 'REFLECTION'];
   const runTex = labelTexture('metacase-run', [{ text: 'METACASE', size: 120, weight: 750, color: '#1f2a3a', track: 14 }, { text: 'CH 1 · ' + NAMES[0], size: 52, weight: 500, color: '#6b7280', font: '"Space Mono", ui-monospace, monospace', track: 4 }], { width: 1024, height: 320 });
   const runHead = labelPlane(runTex, PW * .7, PW * .7 * 320 / 1024); runHead.position.set(-PW / 2, 0, -PD / 2 + .62); book.add(runHead);
   let runStage = 0;

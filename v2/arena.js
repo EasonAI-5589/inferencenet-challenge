@@ -230,7 +230,7 @@ if (chapter) {
   async function load() {
     if(loading)return;loading=true;
     try {
-      const {createArenaScene}=await import('./arena-scene.js?v=20261027-arena1');
+      const {createArenaScene}=await import('./arena-scene.js?v=20261027-copy2');
       scene=createArenaScene($('.mc-canvas'), { onWeaponProject: projectWeapon }); scene.update(state);
       $('.mc-fallback').hidden=true;chapter.dataset.renderer='webgl';
     } catch(error) {
