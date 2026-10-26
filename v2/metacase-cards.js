@@ -81,7 +81,7 @@ const BUILDERS = {
       g.rotation.y = -.15 + Math.sin(t * .25) * .08;
     };
   },
-  // track one: data points pulled into a fitted line on the economics island
+  // economics: data points pulled into a fitted line on the economics island
   replication(g) {
     const isl = island({ radius: 2.1, grass: 0xa9dccf, seed: 4 }); g.add(isl);
     const b = buildings.economics(PALETTE.teal); b.scale.setScalar(.7); b.position.set(-.6, 0, -.5); g.add(b);
@@ -98,7 +98,7 @@ const BUILDERS = {
       g.rotation.y = .3 + Math.sin(t * .25) * .1;
     };
   },
-  // track two: a ledger reconciled line by line
+  // finance: a ledger reconciled line by line
   business(g) {
     const isl = island({ radius: 2.1, grass: 0xe8d49a, seed: 6 }); g.add(isl);
     const b = buildings.finance(PALETTE.amber); b.scale.setScalar(.7); b.position.set(-.5, 0, -.6); g.add(b);
@@ -116,6 +116,21 @@ const BUILDERS = {
       const u = loopPhase(t, 6);
       sheets.forEach((sh, k) => { sh.check.scale.setScalar(Math.max(.001, smooth((u - .2 - k * .2) / .1) * (1 - smooth((u - .92) / .08)))); sh.s.rotation.y = -.3 + Math.sin(t * .6 + k) * .05; sh.s.position.y = 2.2 + k * .55 + Math.sin(t + k) * .05; });
       g.rotation.y = .25 + Math.sin(t * .25) * .1;
+    };
+  },
+  // social science: a survey answered by the people around the hall
+  social(g) {
+    const isl = island({ radius: 2.1, grass: 0xd6cff5, seed: 8 }); g.add(isl);
+    const b = buildings.social(PALETTE.violet); b.scale.setScalar(.7); b.position.set(-.5, 0, -.6); g.add(b);
+    const crowd = [0, 1, 2].map(k => { const p = person(60 + k); p.root.scale.setScalar(.75); p.root.position.set(.3 + k * .55, 0, 1.1 - k * .15); p.root.rotation.y = -.4; g.add(p.root); return p; });
+    const bars = new THREE.Group(); bars.position.set(.9, 2.3, -.1); g.add(bars);
+    block(bars, 1.7, 1.2, .05, 0xf7f5f0, 0, -.6, -.06, .02);
+    const cols = [.35, .7, .5, .9].map((h, k) => ({ h, m: block(bars, .22, 1, .06, [PALETTE.violet, PALETTE.sky, PALETTE.violet, PALETTE.rose][k], -.5 + k * .33, -.45, 0, .01) }));
+    return (t) => {
+      const u = loopPhase(t, 6);
+      cols.forEach((c, k) => { const s = Math.max(.02, c.h * smooth((u - k * .12) / .3) * (1 - smooth((u - .9) / .1))); c.m.scale.y = s; });
+      crowd.forEach((p, k) => p.update(t + k, 0));
+      g.rotation.y = .2 + Math.sin(t * .25) * .1;
     };
   },
   // next fields: an island under construction
@@ -179,7 +194,7 @@ const BUILDERS = {
 };
 const FRAMING = { // camera target y, distance, elevation
   complete: [1.4, 9, .42], withheld: [1, 8, .32], same: [.7, 8, .28], recorded: [.3, 7, .5],
-  replication: [1.3, 10, .3], business: [1.4, 10, .3], next: [1.2, 9.5, .32],
+  replication: [1.3, 10, .3], business: [1.4, 10, .3], social: [1.4, 10, .3], next: [1.2, 9.5, .32],
   ai: [1.4, 8.5, .22], people: [1.1, 8, .22], join: [1, 13, .3],
 };
 

@@ -1065,5 +1065,17 @@
   "The next wings are open for cases.": "下一批书翼，欢迎带来案例。",
   "The Initiative is not limited to the first three fields. Bring a case from yours.": "本倡议并不止于首批三个领域。欢迎带来你所在领域的案例。",
   "and more": "以及更多",
-  "Counts are candidate records in the metacase-harbor v0.1 selection (26 October 2026): task records curated from public benchmarks and partner material, not yet reviewed as complete Metacases. Ready classes have at least five pinned, runnable public tasks; partial classes depend on restricted material or adapters still to be generated.": "计数为 metacase-harbor v0.1 选题（2026 年 10 月 26 日）中的候选记录：整理自公开 benchmark 与合作方材料的任务记录，尚未作为完整 Metacase 审核。“就绪”表示该子类至少有 5 道固定版本、可运行的公开任务；“部分就绪”表示依赖受限材料或尚待生成的 adapter。"
+  "Counts are candidate records in the metacase-harbor v0.1 selection (26 October 2026): task records curated from public benchmarks and partner material, not yet reviewed as complete Metacases. Ready classes have at least five pinned, runnable public tasks; partial classes depend on restricted material or adapters still to be generated.": "计数为 metacase-harbor v0.1 选题（2026 年 10 月 26 日）中的候选记录：整理自公开 benchmark 与合作方材料的任务记录，尚未作为完整 Metacase 审核。“就绪”表示该子类至少有 5 道固定版本、可运行的公开任务；“部分就绪”表示依赖受限材料或尚待生成的 adapter。",
+  "Three fields,": "三个领域，",
+  "three tracks.": "三条赛道。",
+  "The Challenge follows the wings of the first collection: economics, finance and social science. Tasks, examples, timeline and awards are on the Challenge page.": "挑战赛沿用首批馆藏的三个书翼：经济、金融与社科。任务、示例、时间安排和奖项请见挑战赛页面。",
+  "Economics · Dev100 · 100 tasks": "经济 · Dev100 · 100 道题",
+  "Finance · Accounting close demo": "金融 · 月末结账示例",
+  "Social science · HR demo": "社科 · 人力资源示例",
+  "Rebuild published empirical results from research data and specifications, starting with econometric replication.": "从研究数据与模型设定出发，重建已发表的实证结果，首先是计量经济复现。",
+  "Reconcile ledgers and policy, weigh corrections and deliver workbooks and reviews that withstand checking.": "核对账本与制度，权衡更正方案，交付经得起核查的工作簿与审阅报告。",
+  "Turn people, survey and organisational evidence into a decision, with its findings and limits stated.": "把人员、调查与组织证据转化为决策，并写明发现与局限。",
+  "Explore economics": "查看经济赛道",
+  "Explore finance": "查看金融赛道",
+  "Explore social science": "查看社科赛道"
 }
