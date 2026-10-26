@@ -40,13 +40,27 @@ are unchanged. `v2/index.html` is a new homepage. The other v2 pages carry the
 current pages' content with the v2 header, footer and theme layer, so content edits
 made to a root page must be repeated in its `v2/` copy until v2 replaces the root.
 
+The v2 homepage introduces the Global Metacase Initiative, explains a complete
+Metacase, demonstrates retrieval by problem-solving structure, and connects
+domain islands into MetacaseNet. The Metacase Challenge is the first pipeline
+into that network. Its scroll-driven arena shows one agent, eight selectable
+harnesses and three case rooms across the two benchmark tracks. See the
+[arena handoff](docs/metacase-arena.md) for controls, asset licenses and checks.
+
+Edit `v2/index.html` and its modules directly; there is no homepage generation
+step. The older external `v2build/build.py` generates the previous homepage and
+must not be used to overwrite this version.
+
 | Layer | Files |
 |---|---|
 | Design system for every v2 page: fonts, tokens for both themes, logo, buttons, links, icons, header and footer | `v2/v2.css` |
-| Homepage sections, all scoped to `body.v2-home` | `v2/home.css`, `v2/home.js` |
+| Homepage layout, captions, navigation and translation hooks | `v2/metacase.css`, `v2/metacase.js`, `assets/i18n/index.zh.json` |
+| Shared 3D stage, materials, case tiles and domain islands | `v2/mc-stage.js`, `v2/mc-toon.js`, `v2/mc-kit.js` |
+| Metacase anatomy, retrieval archive, network and card scenes | `v2/metacase-anatomy.js`, `v2/metacase-archive.js`, `v2/metacase-world.js`, `v2/metacase-cards.js` |
 | Content pages: remaps the `styles.css` / `site.css` tokens and restyles the shared components; animated page header | `v2/skin.css`, `v2/v2.js` |
 | Header backdrops (one canvas renderer, one motif per page) | `v2/backdrop.js` |
-| Layered system scenes (`.v2-stack`, `data-scene`) on Home, Challenge, Harness and Self-evolving: an interactive isometric L1–L3 stack whose tile labels come from each layer's chips | `v2/scene.css`, `v2/scene.js` |
+| Homepage arena: scroll camera, harness wheel, flying agent and challenge rooms | `v2/arena.css`, `v2/arena.js`, `v2/arena-scene.js`, `v2/arena-models.js`, `v2/arena-motion.js` |
+| Layered system scenes (`.v2-stack`, `data-scene`) on Challenge, Harness and Self-evolving: an interactive isometric L1–L3 stack whose tile labels come from each layer's chips | `v2/scene.css`, `v2/scene.js` |
 | Teams: institution logo wall on white plates, profile photos (`assets/people/`, sources in its `ATTRIBUTION.txt`) with monograms for anyone without one, contributor chips | `v2/skin.css` §16 |
 | Theme restore before paint; first visits to v2 use the dark theme | `v2/theme.js` |
 

@@ -1,2 +1,7 @@
 # Deployment scripts and fixtures must retain Linux line endings on Windows checkouts.
 submission_service/** text eol=lf
+# Keep upstream libraries and license text intact and separate in code review.
+assets/vendor/three/** linguist-vendored text eol=lf -whitespace
+assets/fonts/Jersey-10-OFL.txt text eol=lf -whitespace
+assets/fonts/Orbitron-OFL.txt text eol=lf -whitespace
+assets/models/kenney-blasters/LICENSE.txt -whitespace
