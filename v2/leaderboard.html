@@ -26,6 +26,8 @@
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script src="backdrop.js?v=20261022-v2-ambient" defer></script>
   <script src="v2.js?v=20261022-v2-ambient" defer></script>
+  <link rel="stylesheet" href="cyber.css?v=20261026-cyber">
+  <script type="module" src="cyber-motion.js?v=20261026-cyber"></script>
 </head>
 <body class="v2-content v2-page-leaderboard" data-tone="3">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -71,6 +73,7 @@
         <a href="index.html">Home</a>
         <a href="challenge.html">Challenge</a>
         <a href="harness.html">Harness</a>
+        <a href="armory.html">Armory</a>
         <a href="evolution.html">Self-evolving</a>
         <a href="leaderboard.html" aria-current="page">Leaderboard</a>
         <a href="teams.html">Teams</a>
@@ -91,7 +94,8 @@
       <p class="lead">Development results on Dev100, the existing 100-task set planned for Challenge 1: Econometric replication. This page presents the v10 comparison of 14 models and four harnesses, with recorded settings and evaluation evidence. These are development results, not an official Challenge ranking.</p>
       <nav class="board-nav" aria-label="On this page"><a href="#leaderboard-dev100">Dev100 / v10 development release</a><a href="#leaderboard-dev100-report">v10 report summary</a><a href="#research">Research directions</a></nav>
     </section>
-    <section class="section container ruled board-section" id="leaderboard-dev100" aria-labelledby="dev100-title">
+    <section class="section container ruled board-section cy-host" id="leaderboard-dev100" aria-labelledby="dev100-title">
+      <canvas class="cy-fx" data-cyber="torus" aria-hidden="true"></canvas>
       <div class="section-heading board-heading">
         <div><p class="kicker">01 / Dev100 · v10</p><h2 id="dev100-title">Dev100 / v10 development release</h2></div>
         <div><p class="lead">Challenge 1: Econometric replication will open-source the existing Dev100 set of 100 tasks. Its task package, official rules, submission channel and dates have not been published. The v10 table below preserves development results for 14 models × 4 harnesses; it is not an official Challenge ranking.</p><ul class="page-meta"><li>100 tasks per combination</li><li>56 combinations</li><li><a href="#leaderboard-dev100-report">v10 final report</a></li><li>Report generated <time datetime="2026-10-11T16:35:49Z">11 Oct 2026</time></li></ul></div>

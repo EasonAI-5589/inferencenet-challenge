@@ -12,15 +12,17 @@ const redirects = { 'data.html': 'challenge.html#replication-data', 'agent.html'
 // The v2 design (/v2/) mirrors every content page and redirect. It shares assets/, the
 // translation dictionaries and the root scripts, and adds its own design files.
 export const v2Pages = pages.map(page => `v2/${page}`);
+// Pages that exist only in the v2 design.
+export const v2OnlyPages = ['v2/armory.html'];
 const v2Redirects = Object.fromEntries(Object.entries(redirects).map(([file, target]) => [`v2/${file}`, target]));
-const v2Files = ['v2/v2.css', 'v2/home.css', 'v2/skin.css', 'v2/theme.js', 'v2/v2.js', 'v2/home.js', 'v2/backdrop.js', 'v2/scene.css', 'v2/scene.js', 'v2/arena.css', 'v2/arena.js', 'v2/arena-scene.js', 'v2/arena-motion.js', 'v2/arena-models.js', 'v2/metacase.css', 'v2/metacase.js', 'v2/metacase-world.js', 'v2/metacase-anatomy.js', 'v2/metacase-archive.js', 'v2/metacase-cards.js', 'v2/mc-stage.js', 'v2/mc-toon.js', 'v2/mc-kit.js'];
+const v2Files = ['v2/v2.css', 'v2/home.css', 'v2/skin.css', 'v2/theme.js', 'v2/v2.js', 'v2/home.js', 'v2/backdrop.js', 'v2/scene.css', 'v2/scene.js', 'v2/arena.css', 'v2/arena.js', 'v2/arena-scene.js', 'v2/arena-motion.js', 'v2/arena-models.js', 'v2/metacase.css', 'v2/metacase.js', 'v2/metacase-world.js', 'v2/metacase-anatomy.js', 'v2/metacase-archive.js', 'v2/metacase-cards.js', 'v2/mc-stage.js', 'v2/mc-toon.js', 'v2/mc-kit.js', 'v2/cyber-motion.js', 'v2/cyber.css', 'v2/armory.css', 'v2/armory.js'];
 const allRedirects = { ...redirects, ...v2Redirects };
 export const publicFiles = [
   ...pages,
   ...Object.keys(redirects),
   'styles.css', 'site.css', 'language.css', 'mountain.css', 'index.css', 'challenge.css', 'data.css', 'agent.css', 'evolution.css', 'harness.css', 'leaderboard.css', 'teams.css', 'professional-tasks.css',
   'theme.js', 'site.js', 'language.js', 'charts.js', 'mountain.js', 'leaderboard.js', 'leaderboard-data.js', 'leaderboard-board.js', 'leaderboard-dev100.js', 'leaderboard-dev100-data.js', 'evolution.js',
-  ...v2Pages, ...Object.keys(v2Redirects), ...v2Files,
+  ...v2Pages, ...v2OnlyPages, ...Object.keys(v2Redirects), ...v2Files,
   '.nojekyll',
 ];
 for (const file of publicFiles) {
@@ -45,7 +47,7 @@ async function listAssets(directory, out = []) {
 const assetFiles = await listAssets(resolve(root, 'assets'));
 
 const documents = new Map();
-for (const file of [...pages, ...Object.keys(redirects), ...v2Pages, ...Object.keys(v2Redirects)]) {
+for (const file of [...pages, ...Object.keys(redirects), ...v2Pages, ...v2OnlyPages, ...Object.keys(v2Redirects)]) {
   const html = await readFile(resolve(root, file), 'utf8');
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
   if (new Set(ids).size !== ids.length) throw new Error(`Duplicate HTML IDs in ${file}`);
@@ -122,7 +124,7 @@ for (const file of scanned) {
   if (/\/Users\/|127\.0\.0\.1|localhost|local\/runs|sources\.lock\.json/.test(source)) throw new Error(`Private workspace reference in ${file}`);
   if (/\/mnt\/|\b(?:\d{1,3}\.){3}\d{1,3}\b|\b[A-Z]:[\\/]/.test(source)) throw new Error(`Server path or address in ${file}`);
   if (/\bTODO\b|lorem ipsum/i.test(source)) throw new Error(`Placeholder text in ${file}`);
-  const translatedAsset = file === 'language.js' || file === 'v2/arena.js' || file === 'v2/arena-scene.js' || /^assets\/i18n\/(index|challenge|replication|data|agent|harness|evolution|leaderboard|teams|professional-tasks)\.zh\.json$/.test(file);
+  const translatedAsset = file === 'language.js' || file === 'v2/arena.js' || file === 'v2/arena-scene.js' || /^assets\/i18n\/(index|challenge|replication|data|agent|harness|evolution|leaderboard|teams|professional-tasks|armory)\.zh\.json$/.test(file);
   if (/[一-鿿]/.test(source) && !translatedAsset) throw new Error(`CJK text outside the reviewed translation layer in ${file}`);
   if (file.startsWith('assets/i18n/')) {
     const dictionary = JSON.parse(source);

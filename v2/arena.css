@@ -28,6 +28,10 @@
 .mc-confirm:hover { background:#e2b87b30; box-shadow:0 0 22px #e2b87b15; }
 .mc-confirm:focus-visible { outline:2px solid #ecfff9; outline-offset:4px; }
 .mc-confirm:disabled { color:#99e5d5; border-color:#82c9bb66; background:#6adbba0d; cursor:default; }
+.mc-armory-link { display:inline-block; margin-top:10px; color:#8debd9; font:9px/1.6 var(--font-mono,monospace); letter-spacing:.14em; text-decoration:none; border-bottom:1px solid #8debd966; }
+.mc-armory-link:hover { color:#ecfff9; border-bottom-color:#ecfff9; }
+.mc-armory-link:focus-visible { outline:2px solid #ecfff9; outline-offset:4px; }
+.mc-armory-link[hidden] { display:none; }
 .mc-carried { display:block; max-width:250px; color:#95b8b1; font:8px/1.6 var(--font-mono,monospace); letter-spacing:.04em; }
 .mc-confirm[hidden],.mc-carried[hidden] { display:none; }
 .mc-equipment-status { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }

@@ -107,7 +107,7 @@ try {
   const menu = mobile.page.locator('.menu-toggle');
   assert.equal(await menu.isVisible(), false);
   assert.equal(await mobile.page.locator('#nav-links').isVisible(), true);
-  assert.equal(await mobile.page.locator('#nav-links a').count(), 6);
+  assert.equal(await mobile.page.locator('#nav-links a').count(), 7); // Home, Challenge, Harness, Armory, Self-evolving, Leaderboard, Teams
   await mobile.page.waitForTimeout(100);
   await seek(mobile.page, previewProgress(5)); await equipment(mobile.page, null);
   assert.equal(await mobile.page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
