@@ -1,11 +1,12 @@
-/* metacase-library.js — MetacaseNet as a library. Three wings of bookcases hold the
- * first fields (economics, finance, social science), one bay per catalogue class and
- * one volume per candidate record; glowing threads cross-reference volumes in
- * different wings that share a structure; the upper gallery, still under construction,
- * waits for healthcare, policy, law and more. Used twice: the hero (ambient) and the
- * library chapter (scroll-driven: wings → cross-references → borrowing → gallery). */
+/* metacase-library.js — the Metacase network, drawn as a library (a visual metaphor
+ * only; the page copy speaks of Metacases). Three wings of bookcases hold the first
+ * fields (economics, finance, social science), one bay per class: coloured volumes are
+ * candidate records, translucent ones the room still to fill. Glowing threads link
+ * volumes in different wings that share a structure; the upper gallery waits for
+ * healthcare, policy, law and more. Used twice: the hero (ambient) and chapter 03
+ * (scroll-driven: own cases → shared structures → reuse → next fields). */
 import * as THREE from '../assets/vendor/three/three.module.js';
-import { PALETTE, mat, add, block, cyl, person, robot, tile, scaffold, lights } from './mc-kit.js';
+import { PALETTE, mat, add, block, cyl, person, robot, tile, lights } from './mc-kit.js';
 import { clamp, smooth, ramp, lerp, pageBackground, fitCamera, toView, glowSprite } from './mc-stage.js';
 
 // Bays per wing: [catalogue class, volumes, bay width in units]. Counts follow
@@ -22,7 +23,7 @@ export const GALLERY = [
   { key: 'policy', accent: PALETTE.sky, over: 1 },
   { key: 'law', accent: PALETTE.green, over: 2 },
 ];
-const R = 10, UNIT = 1.2, GAP = .9, CASE_H = 2.6, SHELF_Y = [.22, 1.0, 1.78], GALLERY_Y = CASE_H + .32;
+const R = 10, UNIT = 1.1, GAP = .7, CASE_H = 2.6, SHELF_Y = [.22, 1.0, 1.78], GALLERY_Y = CASE_H + .32;
 // [wing a, bay a, wing b, bay b] — volumes solved the same way, in different wings
 const THREADS = [[0, 0, 1, 5], [1, 2, 2, 0], [0, 3, 2, 3], [1, 0, 0, 1], [2, 1, 1, 4]];
 const SHOTS = [ // [progress, target, radius, azimuth, elevation]
@@ -65,14 +66,31 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = fa
   const random = (() => { let s = 7; return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; })();
 
   /* ---- the reading room: a round parquet floor and a rug ---- */
-  add(scene, new THREE.CylinderGeometry(12.2, 12.5, .5, 72), mat(0x6e5440), 0, -.25, -2).castShadow = false;
-  for (let k = 0; k < 5; k++) add(scene, new THREE.TorusGeometry(4 + k * 1.6, .015, 4, 96), mat(0x5a4434), 0, .005, -2, false).rotation.x = Math.PI / 2;
-  add(scene, new THREE.CylinderGeometry(3.6, 3.6, .04, 64), mat(0x3a4a7a), 0, .02, 1.2, false);
-  add(scene, new THREE.TorusGeometry(3.3, .05, 4, 64), mat(PALETTE.amber), 0, .05, 1.2, false).rotation.x = Math.PI / 2;
+  const floorGeo = new THREE.CylinderGeometry(14, 14, .5, 96, 1);
+  floorGeo.setAttribute('color', new THREE.Float32BufferAttribute(new Float32Array(floorGeo.attributes.position.count * 3), 3));
+  const floor = add(scene, floorGeo, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .9 }), 0, -.25, -2); floor.castShadow = false;
+  const paintFloor = bg => { // warm wood in the middle, the page colour at the rim
+    const pos = floorGeo.attributes.position, col = floorGeo.attributes.color, wood = new THREE.Color(0x5e4838), c = new THREE.Color();
+    for (let i = 0; i < pos.count; i++) { const r = Math.hypot(pos.getX(i), pos.getZ(i)) / 14; c.copy(wood).lerp(bg, smooth((r - .25) / .75)); col.setXYZ(i, c.r, c.g, c.b); }
+    col.needsUpdate = true;
+  };
+  for (let k = 0; k < 3; k++) add(scene, new THREE.TorusGeometry(4 + k * 1.7, .015, 4, 96), mat(0x4a392c), 0, .005, -2, false).rotation.x = Math.PI / 2;
+  add(scene, new THREE.CylinderGeometry(2.9, 2.9, .04, 64), mat(0x34436e), 0, .02, .4, false);
+  add(scene, new THREE.TorusGeometry(2.65, .045, 4, 64), mat(PALETTE.amber), 0, .05, .4, false).rotation.x = Math.PI / 2;
   // dust motes in the lamplight
   const motes = new THREE.Points(new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(Array.from({ length: 900 }, (_, i) => (i % 3 === 1 ? random() * 9 : (random() - .5) * 26)), 3)),
     new THREE.PointsMaterial({ color: 0xffe2b0, size: .05, transparent: true, opacity: .55, depthWrite: false }));
   scene.add(motes);
+
+  const ghosts = []; // [parent, x, y, z, w, h] for translucent volumes still to come
+  function fillGhosts(parent, shelves, bw, startShelf, startX, seed) {
+    let shelf = startShelf, x = startX, k = seed;
+    while (shelf < shelves.length) {
+      const w = [.11, .13, .12, .1][k % 4], h = [.5, .58, .54, .46][(k * 3) % 4];
+      if (x + w > bw / 2 - .1) { shelf++; x = -bw / 2 + .1; continue; }
+      ghosts.push([parent, x + w / 2, shelves[shelf], .04, w, h]); x += w + .006; k++;
+    }
+  }
 
   /* ---- the wings: bays along an arc, facing the reading table ---- */
   const units = WINGS.reduce((s, w) => s + w.bays.reduce((a, b) => a + b[2], 0), 0);
@@ -94,7 +112,7 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = fa
       const books = [];
       let shelf = 0, x = -bw / 2 + .1;
       for (let k = 0; k < count && shelf < SHELF_Y.length; k++) {
-        const bwid = [.11, .13, .15, .12][(k + bi) % 4], bh = [.5, .62, .56, .46, .66][(k * 3 + wi) % 5];
+        const bwid = [.1, .12, .13, .11][(k + bi) % 4], bh = [.5, .62, .56, .46, .66][(k * 3 + wi) % 5];
         if (x + bwid > bw / 2 - .1) { shelf++; x = -bw / 2 + .1; if (shelf >= SHELF_Y.length) break; }
         const tone = [-.25, 0, .3, -.1, .15][(k + bi * 2) % 5];
         const b = block(bay, bwid, bh, .38, mat(shade(w.accent, tone)), x + bwid / 2, SHELF_Y[shelf], .04, .012);
@@ -102,6 +120,7 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = fa
         if (k % 5 === 3) block(bay, bwid * 1.02, .035, .385, PALETTE.cream, x + bwid / 2, SHELF_Y[shelf] + bh * .72, .04, .005).castShadow = false; // a band on the spine
         books.push(b); x += bwid + .006;
       }
+      fillGhosts(bay, SHELF_Y, bw, shelf, x, bi * 3 + wi);
       if (!count) { // a class still to add: an empty bay with a notice
         const easel = new THREE.Group(); easel.position.set(0, 0, .55); bay.add(easel);
         block(easel, .5, .36, .04, PALETTE.cream, 0, .7, 0, .02);
@@ -134,26 +153,31 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = fa
       [-1, 1].forEach(t => block(bay, .08, 1.9, .6, 0x7a5a42, t * (UNIT / 2 - .04), 0, 0, .02));
       block(bay, UNIT + .1, .12, .66, mat(g.accent, { emissive: g.accent, intensity: .3 }), 0, 1.9, 0, .03);
       [.2, 1.0].forEach(y => block(bay, UNIT - .1, .05, .54, 0x8a6a4a, 0, y - .05, 0, .01).castShadow = false);
+      fillGhosts(bay, [.2, 1.0], UNIT, 0, -UNIT / 2 + .1 + (3 + si) * .135, gi * 5 + si);
       for (let k = 0; k < 3 + si; k++) { // the first few volumes arriving
         const b = block(bay, .12, .56, .36, mat(shade(g.accent, [-.2, .1, .3, 0][k])), -UNIT / 2 + .17 + k * .135, .2, .04, .012);
         b.castShadow = false; books.push({ b, k });
       }
     });
-    const sc = scaffold(1.1, 2, .8); sc.position.copy(at(w.mid + UNIT * 1.35 / R * (gi === 1 ? -1 : 1), R - .3).setY(GALLERY_Y)); sc.rotation.y = -w.mid; group.add(sc);
     const l = lamp(group, ...at(w.mid, R - .9).setY(CASE_H + .23).toArray(), 0xffd9a0); lamps.push(l);
-    const worker = person(40 + gi, { hardHat: true }); worker.root.position.copy(at(w.mid + UNIT * .2 / R, R - .7).setY(GALLERY_Y)); worker.root.rotation.y = Math.PI - w.mid; group.add(worker.root);
-    return { g, group, lamps, books, worker, top: at(w.mid, R).setY(GALLERY_Y + 2.3) };
+    return { g, group, lamps, books, top: at(w.mid, R).setY(GALLERY_Y + 2.3) };
   });
 
+  scene.updateMatrixWorld(true);
+  const ghostMesh = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, .34), new THREE.MeshStandardMaterial({ color: 0xdfe6ff, transparent: true, opacity: .1, roughness: .6, depthWrite: false }), ghosts.length);
+  const m4 = new THREE.Matrix4(), local = new THREE.Matrix4();
+  ghosts.forEach(([parent, x, y, z, w, h], i) => { local.compose(new THREE.Vector3(x, y + h / 2, z), new THREE.Quaternion(), new THREE.Vector3(w, h, 1)); m4.multiplyMatrices(parent.matrixWorld, local); ghostMesh.setMatrixAt(i, m4); });
+  ghostMesh.castShadow = false; ghostMesh.receiveShadow = false; scene.add(ghostMesh);
+
   /* ---- the reading table, where a Metacase lies open ---- */
-  const table = new THREE.Group(); table.position.set(0, 0, 1.2); scene.add(table);
+  const table = new THREE.Group(); table.position.set(0, 0, .4); scene.add(table);
   block(table, 3.2, .12, 1.3, 0x7a5a42, 0, .82, 0, .04);
   [[-1.4, -.5], [1.4, -.5], [-1.4, .5], [1.4, .5]].forEach(([x, z]) => block(table, .1, .82, .1, 0x5a4434, x, 0, z, .02));
   const open = tile({ sig: 0, edge: PALETTE.teal, size: .5, glow: 1.3 }); open.position.set(-.3, .94, 0); open.rotation.y = .15; table.add(open);
   const stack = new THREE.Group(); stack.position.set(.9, .94, .1); table.add(stack);
   [PALETTE.amber, PALETTE.violet, PALETTE.teal].forEach((c, k) => { const b = block(stack, .55, .1, .38, c, 0, k * .105, 0, .02); b.rotation.y = k * .2 - .1; });
   lamp(table, -1.2, .94, -.3); lamp(table, 1.3, .94, -.35);
-  const reader = person(5); reader.root.position.set(.2, 0, 2.35); reader.root.rotation.y = Math.PI; scene.add(reader.root);
+  const reader = person(5); reader.root.position.set(.2, 0, 1.55); reader.root.rotation.y = Math.PI; scene.add(reader.root);
   const browsers = [[0, 2, -.4], [1, 3, .3], [2, 2, -.2]].map(([wi, bi, turn], k) => {
     const b = wings[wi].bays[bi], p = person(11 + k * 3, {}); p.root.position.copy(at(b.a, R - 1.15)); p.root.rotation.y = Math.PI - b.a + turn; scene.add(p.root);
     return p;
@@ -166,11 +190,11 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = fa
     const A = bookPos(wa, ba), B = bookPos(wb, bb), mid = A.clone().lerp(B, .5);
     mid.x *= .55; mid.z *= .55; mid.y = Math.max(A.y, B.y) + 3.2 + j * .45;
     const curve = new THREE.QuadraticBezierCurve3(A, mid, B), color = WINGS[wa].accent;
-    const geo = new THREE.TubeGeometry(curve, 80, .03, 6, false);
-    const tube = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color, transparent: true, opacity: .85, blending: THREE.AdditiveBlending, depthWrite: false }));
+    const geo = new THREE.TubeGeometry(curve, 80, .045, 6, false);
+    const tube = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color, transparent: true, opacity: .92, blending: THREE.AdditiveBlending, depthWrite: false }));
     scene.add(tube);
-    const sig = tile({ sig: (j + 1) % 5, edge: color, size: .3, glow: 1.4 }); scene.add(sig);
-    const ends = [glowSprite(color, .9, 0), glowSprite(WINGS[wb].accent, .9, 0)]; ends[0].position.copy(A); ends[1].position.copy(B); scene.add(...ends);
+    const sig = tile({ sig: (j + 1) % 5, edge: color, size: .38, glow: 1.6 }); scene.add(sig);
+    const ends = [glowSprite(color, 1.3, 0), glowSprite(WINGS[wb].accent, 1.3, 0)]; ends[0].position.copy(A); ends[1].position.copy(B); scene.add(...ends);
     return { curve, tube, geo, sig, ends, count: geo.index.count, wa, wb };
   });
 
@@ -180,7 +204,7 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = fa
   const courier = person(23, { carry: PALETTE.violet }); courier.root.scale.setScalar(.9); scene.add(courier.root);
   const walkR = R - 1.9;
 
-  const beacon = glowSprite(0xb5a8ff, 2.6, .3); beacon.position.set(0, 6.4, -2); scene.add(beacon);
+  const beacon = glowSprite(0xffd9a0, 9, .12); beacon.position.set(0, 4.2, -1.5); scene.add(beacon);
   const target = new THREE.Vector3(), centre = new THREE.Vector3(0, 1.6, -4), galleryTarget = new THREE.Vector3(0, 2.8, -5);
   const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
   addEventListener('pointermove', e => { pointer.tx = e.clientX / innerWidth - .5; pointer.ty = e.clientY / innerHeight - .5; }, { passive: true });
@@ -231,14 +255,13 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = fa
     fields.forEach((f, i) => {
       f.lamps.forEach(l => { l.glow.material.opacity = .15 + .5 * open; });
       f.books.forEach(({ b, k }) => { const s = story ? smooth((open - k * .12) * 2) : 1; b.visible = s > .01; b.scale.setScalar(Math.max(.001, s)); });
-      f.worker.update(t, 0);
     });
-    beacon.material.opacity = .14 + Math.sin(t * 1.4) * .05 + (story ? linked * .12 : .06);
+    beacon.material.opacity = .1 + Math.sin(t * .8) * .02 + (story ? linked * .05 : .04);
 
     // camera
     let r, az, el;
     if (story) ({ r, az, el } = shotAt(p));
-    else { target.set(0, 1.5, -4.6); r = 30 * (1 - .15 * clamp(window.scrollY / Math.max(1, rect.height))); az = Math.sin(t * .05) * .2 + pointer.x * .18; el = .27 + pointer.y * .04; }
+    else { target.set(.6, 1.3, -4.4); r = 32 * (1 - .15 * clamp(window.scrollY / Math.max(1, rect.height))); az = Math.sin(t * .05) * .2 + pointer.x * .18; el = .27 + pointer.y * .04; }
     const stacked = !story && rect.width <= 860;
     if (story) r *= narrow ? 1.4 : 1;
     else if (!stacked) r *= Math.max(1, 1.5 * rect.height / rect.width);
@@ -246,7 +269,7 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = fa
     camera.lookAt(target);
     if (stacked) fitCamera(camera, rect, { band: 440, lift: -.06, fov: 42 });
     else if (story) fitCamera(camera, rect, { fov: narrow ? 46 : 36 });
-    else fitCamera(camera, rect, { shift: rect.width < 1100 ? .24 : .2, lift: -.06, fov: 36 });
+    else fitCamera(camera, rect, { shift: rect.width < 1100 ? .27 : .25, lift: -.04, fov: 36 });
     sky.position.copy(camera.position);
 
     // tags: the three wings, then the three gallery fields
@@ -262,6 +285,7 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = fa
     sky.material.uniforms.top.value.copy(bg);
     sky.material.uniforms.horizon.value.set(lightTheme ? 0xe6e2da : 0x161a2e);
     scene.fog = new THREE.Fog(bg, 40, 120);
+    paintFloor(bg);
     light.hemi.intensity = lightTheme ? 2.3 : 1.8;
   }
   setTheme();
