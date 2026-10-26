@@ -286,8 +286,13 @@ export function mount(canvas, { effect = 'torus', hue = '#8debd9', seed = 1, max
 }
 
 export function autoMount(root = document) {
-  return [...root.querySelectorAll('canvas[data-cyber]:not([data-cyber-mounted])')].map((canvas, i) =>
-    mount(canvas, { effect: canvas.dataset.cyber, hue: canvas.dataset.cyberHue || getComputedStyle(canvas).color || '#8debd9', seed: i + 1 }));
+  const hueOf = canvas => canvas.dataset.cyberHue || getComputedStyle(canvas).color || '#8debd9';
+  const mounted = [...root.querySelectorAll('canvas[data-cyber]:not([data-cyber-mounted])')].map((canvas, i) =>
+    [canvas, mount(canvas, { effect: canvas.dataset.cyber, hue: hueOf(canvas), seed: i + 1 })]);
+  // The canvas colour comes from CSS; follow the theme toggle.
+  if (mounted.length) new MutationObserver(() => mounted.forEach(([canvas, fx]) => fx.setHue(hueOf(canvas))))
+    .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  return mounted.map(([, fx]) => fx);
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => autoMount());

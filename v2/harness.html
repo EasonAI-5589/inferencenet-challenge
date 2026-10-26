@@ -29,6 +29,8 @@
   <script src="backdrop.js?v=20261022-v2-ambient" defer></script>
   <script src="v2.js?v=20261022-v2-ambient" defer></script>
   <script src="scene.js?v=20261022-v2-ambient" defer></script>
+  <link rel="stylesheet" href="cyber.css?v=20261026-cyber">
+  <script type="module" src="cyber-motion.js?v=20261026-cyber"></script>
 </head>
 <body class="v2-content v2-page-harness" data-tone="1">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -140,7 +142,8 @@
       </div>
     </nav>
 
-    <section class="section container ruled challenge-harnesses" id="challenge-harnesses" aria-labelledby="challenge-harnesses-title">
+    <section class="section container ruled challenge-harnesses cy-host" id="challenge-harnesses" aria-labelledby="challenge-harnesses-title">
+      <canvas class="cy-fx" data-cyber="scope" aria-hidden="true"></canvas>
       <div class="section-heading">
         <div>
           <p class="kicker">Challenge harnesses</p>
@@ -189,7 +192,8 @@
         <div class="v2-stack-stage" aria-hidden="true"><canvas></canvas><span class="v2-stack-cap"><b></b>Interactive model</span><span class="v2-stack-hint"><svg viewBox="0 0 22 12" aria-hidden="true"><path d="M1 6h20M5 2 1 6l4 4M17 2l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Drag to rotate</span></div>
       </div>
     </section>
-    <section class="section container ruled" id="definition" aria-labelledby="definition-title">
+    <section class="section container ruled cy-host" id="definition" aria-labelledby="definition-title">
+      <canvas class="cy-fx" data-cyber="packets" aria-hidden="true"></canvas>
       <div class="section-heading">
         <div>
           <p class="kicker">01 / Definition</p>
@@ -1302,7 +1306,8 @@
       </div>
     </section>
 
-    <section class="section container ruled" id="compare" aria-labelledby="compare-title">
+    <section class="section container ruled cy-host" id="compare" aria-labelledby="compare-title">
+      <canvas class="cy-fx" data-cyber="rings" aria-hidden="true"></canvas>
       <span id="inferencenet" class="challenge-anchor" aria-hidden="true"></span>
       <div class="section-heading">
         <div>

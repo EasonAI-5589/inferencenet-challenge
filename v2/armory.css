@@ -137,7 +137,7 @@ html[data-theme="light"] .ar-scan { background: repeating-linear-gradient(180deg
 .ar-actions .button { min-height: 38px; font-size: 13px; padding-inline: 16px; }
 
 /* Deploy: three skewed track panels that widen on focus, after SimuWorld's track selector ----- */
-.ar-tracks { display: flex; gap: 14px; min-height: 420px; }
+.ar-tracks { display: flex; gap: 14px; min-height: 420px; padding-inline: 14px; }
 .ar-track { --track: var(--ar-model); flex: 1 1 0; min-width: 0; transform: skewX(-4deg); border: 1px solid color-mix(in oklab, var(--track) 35%, var(--line));
   background: linear-gradient(170deg, color-mix(in oklab, var(--track) 14%, var(--surface)), var(--surface) 55%); overflow: hidden;
   transition: flex-grow var(--duration-emphasized) var(--ease-emphasized), border-color var(--duration-base), box-shadow var(--duration-base); }
