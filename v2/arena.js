@@ -68,6 +68,12 @@ if (chapter) {
     $('.mc-confirm').setAttribute('aria-label', l ? `确认装备 ${h.name}` : `Equip ${h.name}`);
     $('[data-mc-carried]').textContent = equipped ? (l ? `背负装备：${equipped.name}` : `ON YOUR BACK / ${equipped.name}`) : (l ? '尚未装备 · 点击确认' : 'NOT EQUIPPED · CLICK TO CONFIRM');
     $('[data-mc-carried]').hidden = !browsing;
+    // Carry the confirmed harness into the full armory page (v2/armory.html reads ?build=model~harness~gear~track).
+    const armoryIds = ['deepseek', 'deepagents', 'claude-code', 'codex', 'opencode', 'openhands', 'terminus', 'mini-swe'];
+    const armory = $('[data-mc-armory]');
+    armory.hidden = !equipped;
+    armory.textContent = l ? '打开完整装备库，继续配装 ↗' : 'OPEN THE FULL ARMORY ↗';
+    armory.href = equipped ? `armory.html?build=~${armoryIds[state.equippedHarness]}~~` : 'armory.html';
     $('[data-mc-event]').textContent = state.phase === 1 ? h.description[l] : p.event[l];
     $('[data-mc-index]').textContent = String(state.phase + 1).padStart(2,'0');
     $('[data-mc-name]').textContent = l ? 'METACASE 挑战赛 / 竞技场' : 'METACASE CHALLENGE / THE ARENA';
