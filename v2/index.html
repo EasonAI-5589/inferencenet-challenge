@@ -18,12 +18,12 @@
   <link rel="stylesheet" href="../language.css">
   <script src="../language.js?v=20261027-site" defer></script>
   <link rel="stylesheet" href="v2.css?v=20261027-copy2">
-  <link rel="stylesheet" href="arena.css?v=20261027-copy2">
+  <link rel="stylesheet" href="arena.css?v=20261027-portal2">
   <link rel="stylesheet" href="metacase.css?v=20261027-copy2">
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script src="v2.js?v=20261022-v2-ambient" defer></script>
   <script type="module" src="metacase.js?v=20261027-copy2"></script>
-  <script type="module" src="arena.js?v=20261027-copy2"></script>
+  <script type="module" src="arena.js?v=20261027-portal2"></script>
 </head>
 <body class="v2-home mc-home">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -504,10 +504,11 @@
     <div class="mc-corner mc-label mono"><span>05</span><b data-mc-name>THE METACASE CHALLENGE</b></div>
     <div class="mc-scroll-cue"><span class="mc-scroll-mouse" aria-hidden="true"></span><span data-mc-scroll-hint>SCROLL TO EXPLORE</span></div>
     <div class="mc-copy">
-      <span class="mc-kicker mc-visually-hidden" data-mc-kicker>01 / ENTER THE ARENA</span>
-      <h2 id="system-title">One agent.<br><em>Three worlds of work.</em></h2>
-      <p data-mc-body>Economics, Finance and Social Science: 16 case categories, from raw evidence to a complete, inspectable result.</p>
-      <span class="mc-case-code" data-mc-code>THREE DOMAINS · SIXTEEN CASE CATEGORIES</span>
+      <span class="mc-kicker mc-visually-hidden" data-mc-kicker>01 / THE ENTRANCE</span>
+      <h2 id="system-title">Three portals.<br><em>Three tracks.</em></h2>
+      <p data-mc-body>Economics, Finance and Social Science. Step through a portal to reach its track: the tasks, the data and how runs are scored.</p>
+      <a class="mc-enter" data-mc-enter href="challenge.html#subtrack-econometric" hidden>Enter the Economics track →</a>
+      <span class="mc-case-code" data-mc-code>THREE TRACKS · SIXTEEN CASE CATEGORIES</span>
       <div class="mc-domain-overview" data-mc-overview><span>econ/ 5</span><span>fin/ 6</span><span>soc/ 5</span></div>
       <aside class="mc-domain-directory" data-mc-directory hidden aria-label="Case categories"><p class="mono" data-mc-directory-title></p><small class="mc-directory-hint" data-mc-directory-hint>SWIPE →</small><ul data-mc-directory-list></ul></aside>
     </div>
@@ -519,6 +520,11 @@
       <button class="mc-confirm btn btn-secondary" type="button" hidden>EQUIP THIS HARNESS ↗</button>
       <span class="mc-carried" data-mc-carried hidden>NOT EQUIPPED · CLICK TO CONFIRM</span>
     </div>
+    <nav class="mc-portals" aria-label="Enter a track">
+      <a class="mc-portal" data-portal="econ" href="challenge.html#subtrack-econometric" style="--pc: var(--track-1)"><small>Portal 1 · Economics</small><b>Enter the Economics track</b><em>Economics</em><i aria-hidden="true">→</i></a>
+      <a class="mc-portal" data-portal="fin" href="challenge.html#demo-finance-title" style="--pc: var(--track-2)"><small>Portal 2 · Finance</small><b>Enter the Finance track</b><em>Finance</em><i aria-hidden="true">→</i></a>
+      <a class="mc-portal" data-portal="soc" href="challenge.html#demo-hr-title" style="--pc: var(--mc-violet)"><small>Portal 3 · Social Science</small><b>Enter the Social Science track</b><em>Social Science</em><i aria-hidden="true">→</i></a>
+    </nav>
     <div class="mc-floating-harness" data-mc-floating-harness aria-hidden="true" hidden><small data-mc-floating-status>HARNESS · READY</small><strong data-mc-floating-name></strong></div>
     <span class="mc-equipment-status" role="status" aria-live="polite"></span>
     <div class="mc-phase-index"><b data-mc-index>01</b><span>/ 06</span></div>
@@ -530,7 +536,7 @@
         <li class="mc-chapter-mark" data-mc-chapter="2"><i>03</i><span>ECONOMICS</span></li>
         <li class="mc-chapter-mark" data-mc-chapter="3"><i>04</i><span>FINANCE</span></li>
         <li class="mc-chapter-mark" data-mc-chapter="4"><i>05</i><span>SOCIAL SCIENCE</span></li>
-        <li class="mc-chapter-mark" data-mc-chapter="5"><i>06</i><span>REMEMBER</span></li>
+        <li class="mc-chapter-mark" data-mc-chapter="5"><i>06</i><span>CHOOSE</span></li>
       </ol>
     </div>
     <div class="mc-access"><label for="mc-progress" data-mc-slider-label>Explore the complete episode</label><input id="mc-progress" class="mc-scrub" type="range" min="0" max="1000" step="1" value="0"></div>

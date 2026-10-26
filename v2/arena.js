@@ -24,6 +24,8 @@ if (chapter) {
     { name: 'Terminus-2', lines: ['Terminus', '-2'], type: ['Reference loop', '参考执行循环'], description: ['Equip a terminal-oriented loop. Tools turn proposed actions into observable results.', '装备面向终端的执行循环，让工具将行动转化为可观察结果。'] },
     { name: 'mini-SWE-agent', lines: ['mini-SWE', 'agent'], type: ['Minimal loop', '精简执行循环'], description: ['Strip the loop back to its essentials. Architecture is a variable; evidence remains the anchor.', '将循环简化到核心。架构可以改变，证据始终是依据。'] },
   ];
+  // Each room is a portal to its track on the Challenge page.
+  const TRACKS = { econ: 'challenge.html#subtrack-econometric', fin: 'challenge.html#demo-finance-title', soc: 'challenge.html#demo-hr-title' };
   const domainHeadlines = [
     ['Evidence to insight.', '从证据理解经济。'],
     ['Make it add up.', '让每一项都有依据。'],
@@ -35,7 +37,7 @@ if (chapter) {
     ['Interpret rules → understand organizations → analyze behavior → support decisions.', '理解规则 → 分析组织 → 研究行为 → 支持决策。'],
   ];
   const phases = [
-    { tag:['01 / ENTER THE ARENA','01 / 进入竞技场'], title:['One agent.<br><em>Three worlds of work.</em>','一个 Agent，<br><em>三大挑战方向。</em>'], body:['Economics, Finance and Social Science: 16 case categories, from raw evidence to a complete, inspectable result.', '经济、金融、社科，16 个二级目录。从原始证据出发，完成可检查的解题与交付。'], code:['THREE DOMAINS · SIXTEEN CASE CATEGORIES','三大主要方向 · 16 个二级目录'], label:['ENTER','进入'], event:['Choose a harness, approach a domain and follow the entire problem-solving episode.', '选择 Harness，进入挑战方向，记录完整解题过程。'] },
+    { tag:['01 / THE ENTRANCE','01 / 挑战赛入口'], title:['Three portals.<br><em>Three tracks.</em>','三扇门，<br><em>三条赛道。</em>'], body:['Economics, Finance and Social Science. Step through a portal to reach its track: the tasks, the data and how runs are scored.', '经济、金融与社科。穿过一扇门，就进入对应的赛道：题目、数据和评分方式都在那里。'], code:['THREE TRACKS · SIXTEEN CASE CATEGORIES','三条赛道 · 16 个二级目录'], label:['ENTER','入口'], event:['Pick a portal, or scroll to walk through all three with one agent.', '选一扇门直接进入，或继续滚动，跟着一个 Agent 走过三条赛道。'] },
     { tag:['02 / THE HARNESS WHEEL','02 / HARNESS 装备轮'], title:['Same mind.<br><em>Different tools.</em>','同一个 Agent，<br><em>不同的装备。</em>'], body:['Scroll to browse eight harnesses. Confirm one, then watch it unfold beside your agent as you approach a challenge.', '滚动浏览八种 Harness。确认装备后，继续靠近房间，武器会从背部展开至身侧并瞄准挑战。'], code:['SCROLL TO BROWSE · CLICK TO EQUIP','滚动浏览 · 点击装备'], label:['EQUIP','装备'], event:['', ''] },
     ...ARENA_DOMAINS.map((domain, i) => ({
       tag: [`0${i + 3} / ${domain.id.toUpperCase()}`, `0${i + 3} / ${domain.name[1]}`],
@@ -44,7 +46,7 @@ if (chapter) {
       code: [`${domain.id}/ · ${domain.entries.length} CASE CATEGORIES`, `${domain.id}/ · ${domain.entries.length} 个二级目录`],
       label: [domain.name[0].toUpperCase(), domain.name[1]], event: domainEvents[i],
     })),
-    { tag:['06 / BECOMING A METACASE','06 / 成为 METACASE'], title:['Solved. Evaluated.<br><em>Kept as experience.</em>','解决、评测，<br><em>沉淀为经验。</em>'], body:['The whole run, from evidence and choices to actions and outcome, is kept intact. Once reviewed, it can join the network as a new Metacase.', '从证据、选择到行动与结果，整次运行被完整保存；经过审核后，可以作为新的 Metacase 加入网络。'], code:['REVIEWED RUNS CAN BECOME METACASES','经过审核的运行可以成为 METACASE'], label:['REMEMBER','沉淀'], event:['Preserve the whole episode. Retrieve not only similar facts, but similar problem-solving structures.', '保留完整过程。检索相似事实，也检索相似的解题结构。'] },
+    { tag:['06 / CHOOSE YOUR TRACK','06 / 选择赛道'], title:['Step through.<br><em>Pick your track.</em>','选一扇门，<br><em>进入你的赛道。</em>'], body:['All three portals are open. Every track runs the same loop: raw evidence in, a deliverable out, the whole trajectory kept.', '三扇门都已打开。每条赛道都是同一个闭环：输入原始证据，交出可核查的成果，完整保留执行轨迹。'], code:['THREE PORTALS · ONE CHALLENGE','三扇门 · 一个挑战赛'], label:['CHOOSE','选择赛道'], event:['Click a portal to enter its track.', '点击任意一扇门，进入对应赛道。'] },
   ];
   const toolPaths = [
     'M-34-6h15l6-7H12v6h27v8H8L-2 13h-12l3-12h-23Z M-7-6H8 M24-3h17',
@@ -78,6 +80,19 @@ if (chapter) {
     chapter.dataset.domain = inDomain ? domain.id : '';
     chapter.style.setProperty('--domain-accent', ['var(--track-1)', 'var(--track-2)', 'var(--mc-violet)'][state.room]);
     $('[data-mc-directory]').hidden = !inDomain;
+    const enter = $('[data-mc-enter]');
+    enter.hidden = !inDomain;
+    enter.href = TRACKS[domain.id];
+    enter.textContent = l ? `进入${domain.name[1]}赛道 →` : `Enter the ${domain.name[0]} track →`;
+    $$('[data-portal]').forEach(link => {
+      const d = ARENA_DOMAINS.find(x => x.id === link.dataset.portal), i = ARENA_DOMAINS.indexOf(d);
+      link.href = TRACKS[d.id];
+      link.querySelector('small').textContent = l ? `传送门 ${i + 1} · ${d.name[1]}` : `Portal ${i + 1} · ${d.name[0]}`;
+      link.querySelector('b').textContent = l ? `进入${d.name[1]}赛道` : `Enter the ${d.name[0]} track`;
+      link.querySelector('em').textContent = d.name[l];
+      link.setAttribute('aria-label', l ? `进入${d.name[1]}赛道` : `Enter the ${d.name[0]} track`);
+    });
+    $('.mc-portals').setAttribute('aria-label', l ? '进入赛道' : 'Enter a track');
     $('[data-mc-directory]').setAttribute('aria-label', domain.name[l] + (l ? ' 目录' : ' case categories'));
     $('[data-mc-directory-hint]').textContent = l ? '横滑查看 →' : 'SWIPE →';
     $('[data-mc-overview]').hidden = state.phase !== 0;
@@ -227,11 +242,30 @@ if (chapter) {
     $('[data-mc-floating-name]').textContent = HARNESS_NAMES[state.equippedHarness];
     $('[data-mc-floating-status]').textContent = lang() ? 'HARNESS · 就绪' : 'HARNESS · READY';
   }
+  // Portal links ride on their doorways: all three at the entrance and at the end, the one in focus in between.
+  function projectPortals(list) {
+    const pin = $('.mc-pin'), allOpen = state.phase === 0 || state.phase === 5, roomPhase = state.phase >= 2 && state.phase <= 4;
+    (list || []).forEach((p, i) => {
+      const link = $(`[data-portal="${p.id}"]`); if (!link) return;
+      // the wide shots show all three doors close together: a compact label in each doorway;
+      // inside a room, the full link on its threshold
+      const on = allOpen ? p.midVisible : roomPhase && i === state.room && p.visible;
+      link.classList.toggle('is-on', on);
+      link.classList.toggle('is-compact', on && allOpen);
+      link.classList.toggle('is-active', on && roomPhase);
+      link.tabIndex = on ? 0 : -1;
+      if (!on) return;
+      const px = allOpen ? p.mx : p.x, py = allOpen ? p.my : p.y, edge = allOpen ? 70 : 110;
+      const x = Math.max(edge, Math.min(pin.clientWidth - edge, px)), y = Math.max(120, Math.min(pin.clientHeight - 150, py));
+      link.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -50%)`;
+    });
+    chapter.dataset.portals = 'projected';
+  }
   async function load() {
     if(loading)return;loading=true;
     try {
-      const {createArenaScene}=await import('./arena-scene.js?v=20261027-copy2');
-      scene=createArenaScene($('.mc-canvas'), { onWeaponProject: projectWeapon }); scene.update(state);
+      const {createArenaScene}=await import('./arena-scene.js?v=20261027-portal2');
+      scene=createArenaScene($('.mc-canvas'), { onWeaponProject: projectWeapon, onPortalProject: projectPortals }); scene.update(state);
       $('.mc-fallback').hidden=true;chapter.dataset.renderer='webgl';
     } catch(error) {
       $('.mc-fallback').hidden=false;chapter.dataset.renderer='fallback';
