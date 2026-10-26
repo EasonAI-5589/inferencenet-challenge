@@ -114,7 +114,16 @@ try {
     clean();
     await page.close();
   }
-  console.log('Armory acceptance passed: click, keyboard and drag equip; measured-only numbers; URL restore; Chinese; 1440/1280/390.');
+  // 4 · Hand-off from the homepage arena: only the harness is carried; no model, no number.
+  {
+    const { page, clean } = await open({ viewport: { width: 1280, height: 860 } }, '?build=~deepagents~~');
+    assert.equal(await text(page, '.ar-slot-secondary [data-slot-name]'), 'DeepAgents');
+    assert.equal(await page.locator('.ar-slot-primary.is-filled').count(), 0);
+    assert.match(await text(page, '[data-ar-measured]'), /Equip a model/);
+    clean();
+    await page.close();
+  }
+  console.log('Armory acceptance passed: click, keyboard and drag equip; measured-only numbers; URL restore; arena hand-off; Chinese; 1440/1280/390.');
 } finally {
   await browser.close();
 }
