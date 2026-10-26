@@ -1077,5 +1077,7 @@
   "Turn people, survey and organisational evidence into a decision, with its findings and limits stated.": "把人员、调查与组织证据转化为决策，并写明发现与局限。",
   "Explore economics": "查看经济赛道",
   "Explore finance": "查看金融赛道",
-  "Explore social science": "查看社科赛道"
+  "Explore social science": "查看社科赛道",
+  "The initiative is to build a reusable network of Metacases — end-to-end representations of problem-solving, decision episodes, or task completion, linking the original context and raw evidence to the approaches considered, prior human or institutional practices, reasoning, candidate strategies, actions taken, subsequent outcomes, interpretations, and lessons learned.": "这项计划旨在构建一个可复用的 Metacase 网络。Metacase 是对问题求解、决策过程或任务完成的端到端表示：它把最初的情境与原始证据，与曾经考虑过的方法、以往的人类或机构实践、推理过程、候选策略、实际采取的行动、后续结果、解读以及经验教训连接在一起。",
+  "The goal is to let AI systems, as well as humans, retrieve and reason over not just similar facts, but similar problem-solving and decision structures, so they can learn how problems were previously understood, solved, and refined. MetacaseNet, the collection of metacases, can therefore serve as a foundation for experience-based AI in economics, finance, healthcare, policy, law, and other social science and business domains.": "目标是让 AI 系统和人一样，不仅能检索并推理相似的事实，更能检索并推理相似的问题求解与决策结构，从而了解过去的问题是如何被理解、解决并不断改进的。因此，作为 Metacase 集合的 MetacaseNet，可以成为经济、金融、医疗、政策、法律以及其他社会科学与商业领域中基于经验的 AI 的基础。"
 }
