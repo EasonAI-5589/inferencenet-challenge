@@ -143,6 +143,33 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = fa
     if (k % 2 === 0) cyl(gallery, .025, .025, .6, 0xc9a36e, ...at(a, R - .85).setY(CASE_H + .32).toArray(), 6);
   }
   const balconyLamps = wings.map(w => lamp(gallery, ...at(w.mid, R - .9).setY(CASE_H + .23).toArray(), 0xffd9a0));
+  const UP_H = 2.3, UP_Y = CASE_H + .23, UP_SHELVES = [.2, 1.02];
+  wings.forEach((wg, wi) => wg.bays.forEach((b, bi) => {
+    const width = WINGS[wi].bays[bi][2] * UNIT;
+    const up = new THREE.Group(); up.position.copy(at(b.a, R + .15)).setY(UP_Y); up.rotation.y = -b.a; gallery.add(up);
+    block(up, width, UP_H, .1, PALETTE.ink, 0, 0, -.28, .02);
+    [-1, 1].forEach(sd => block(up, .08, UP_H, .6, 0x7a5a42, sd * (width / 2 - .04), 0, 0, .02));
+    UP_SHELVES.forEach(y => block(up, width - .1, .05, .54, 0x8a6a4a, 0, y - .05, 0, .01).castShadow = false);
+    // the upper shelves hold more of the field's volumes, in deeper tones
+    let shelf = 0, x = -width / 2 + .1, k = 0;
+    const filled = Math.round((width - .2) / .118 * 2 * .55);
+    for (; k < filled && shelf < UP_SHELVES.length; k++) {
+      const w = [.1, .12, .11, .13][(k + bi) % 4], h = [.52, .6, .48, .56][(k * 3 + wi) % 4];
+      if (x + w > width / 2 - .1) { shelf++; x = -width / 2 + .1; if (shelf >= UP_SHELVES.length) break; }
+      block(up, w, h, .36, mat(shade(WINGS[wi].accent, [-.45, -.3, -.15, -.38][(k + bi) % 4])), x + w / 2, UP_SHELVES[shelf], .04, .012).castShadow = false;
+      x += w + .006;
+    }
+    fillGhosts(up, UP_SHELVES, width, shelf, x, bi + wi * 7);
+  }));
+  for (let k = 0; k < slabs; k++) { // the crown moulding along the top of the upper storey
+    const a = -span / 2 - .06 + (span + .12) * (k + .5) / slabs, p = at(a, R + .15);
+    const c = block(gallery, (span + .12) * (R + .15) / slabs + .05, .22, .8, 0x6e5440, p.x, UP_Y + UP_H, p.z, .03); c.rotation.y = -a;
+    const band = block(gallery, (span + .12) * (R - .25) / slabs + .05, .05, .04, 0xc9a36e, ...at(a, R - .26).setY(UP_Y + UP_H + .08).toArray(), .01); band.rotation.y = -a;
+  }
+  // light falling from a high window onto the reading table
+  const shaftMat = new THREE.MeshBasicMaterial({ color: 0xffdcaa, transparent: true, opacity: .016, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide });
+  const shaft = add(scene, new THREE.CylinderGeometry(.5, 3.2, 18, 40, 1, true), shaftMat, 0, 9, -.4, false); shaft.receiveShadow = false;
+  const shaftCore = add(scene, new THREE.CylinderGeometry(.2, 1.8, 18, 32, 1, true), shaftMat.clone(), 0, 9, -.4, false); shaftCore.material.opacity = .011; shaftCore.receiveShadow = false;
 
   scene.updateMatrixWorld(true);
   const ghostMesh = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, .34), new THREE.MeshStandardMaterial({ color: 0xdfe6ff, transparent: true, opacity: .1, roughness: .6, depthWrite: false }), ghosts.length);
@@ -240,7 +267,7 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = fa
     // camera
     let r, az, el;
     if (story) ({ r, az, el } = shotAt(p));
-    else { target.set(.6, 1.3, -4.4); r = 32 * (1 - .15 * clamp(window.scrollY / Math.max(1, rect.height))); az = Math.sin(t * .05) * .2 + pointer.x * .18; el = .27 + pointer.y * .04; }
+    else { target.set(.9, 2.2, -5.2); r = 24 * (1 - .12 * clamp(window.scrollY / Math.max(1, rect.height))); az = .34 + Math.sin(t * .05) * .1 + pointer.x * .12; el = .14 + pointer.y * .03; }
     const stacked = !story && rect.width <= 860;
     if (story) r *= narrow ? 1.4 : 1;
     else if (!stacked) r *= Math.max(1, 1.5 * rect.height / rect.width);
@@ -248,7 +275,7 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = fa
     camera.lookAt(target);
     if (stacked) fitCamera(camera, rect, { band: 440, lift: -.06, fov: 42 });
     else if (story) fitCamera(camera, rect, { fov: narrow ? 46 : 36 });
-    else fitCamera(camera, rect, { shift: rect.width < 1100 ? .27 : .25, lift: -.04, fov: 36 });
+    else fitCamera(camera, rect, { shift: rect.width < 1100 ? .24 : .22, lift: -.02, fov: 42 });
     sky.position.copy(camera.position);
 
     // tags: the three fields

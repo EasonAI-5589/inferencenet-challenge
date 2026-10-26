@@ -1066,5 +1066,8 @@
   "The Challenge is the first pipeline into the Metacase network. Four rules keep every run comparable and every Metacase worth reusing.": "挑战赛是通往 Metacase 网络的第一条管线。四条规则让每次运行都可比较，让每个 Metacase 都值得复用。",
   "The Challenge follows the first three fields of the Metacase network: economics, finance and social science. Tasks, examples, timeline and awards are on the Challenge page.": "挑战赛沿用 Metacase 网络的首批三个领域：经济、金融与社科。任务、示例、时间安排和奖项请见挑战赛页面。",
   "A question about a credit decision finds more credit cases: the same topic, but problems solved in different ways.": "一个关于授信决策的问题，会找到更多授信案例：主题相同，但问题的解决方式各不相同。",
-  "Every reviewed case joins the network, and the next problem starts from more experience.": "每个经过审核的案例都会加入网络，下一个问题就能从更多经验出发。"
+  "Every reviewed case joins the network, and the next problem starts from more experience.": "每个经过审核的案例都会加入网络，下一个问题就能从更多经验出发。",
+  "Building a reusable network of Metacases, end-to-end records of how problems were understood, decided and solved, so AI systems and people can learn from similar problem-solving structures, not just similar facts.": "构建一个可复用的 Metacase 网络：端到端记录问题如何被理解、决策和解决，让 AI 系统和人都能从相似的解题结构中学习，而不只是从相似的事实中学习。",
+  "Join the Challenge": "参加挑战赛",
+  "Explore the fields": "浏览三个领域"
 }
