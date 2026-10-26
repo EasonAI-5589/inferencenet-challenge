@@ -72,7 +72,7 @@ must not be used to overwrite this version.
 | Teams: institution logo wall on white plates, profile photos (`assets/people/`, sources in its `ATTRIBUTION.txt`) with monograms for anyone without one, contributor chips | `v2/skin.css` §16 |
 | Theme restore before paint; first visits to v2 use the dark theme | `v2/theme.js` |
 
-v2 pages load the root `site.js`, `language.js`, `charts.js` and page scripts from
+Every v2 page speaks of the Metacase Challenge throughout; InferenceNet appears only as the name of the research dataset (`CamoAiLab/InferenceNet`, Dev100). v2 pages load the root `site.js`, `language.js`, `charts.js` and page scripts from
 `../`, share `assets/` and the translation dictionaries in `assets/i18n/`, and keep
 the same storage keys, so the theme and language carry between the two designs.
 Smooth scrolling uses Lenis from jsDelivr; without it the pages fall back to native

@@ -6,9 +6,9 @@
   <meta name="color-scheme" content="dark light">
   <meta name="referrer" content="no-referrer">
   <title>Harness — Metacase Challenge · v2</title>
-  <meta name="description" content="Agent Harness definitions, runnable systems in 2025–2026, ecosystem boundaries, and applications in InferenceNet.">
+  <meta name="description" content="Agent Harness definitions, runnable systems in 2025–2026, ecosystem boundaries, and applications in the Metacase Challenge.">
   <meta property="og:title" content="Metacase Challenge — Harness">
-  <meta property="og:description" content="Agent Harness definitions, runnable systems in 2025–2026, ecosystem boundaries, and applications in InferenceNet.">
+  <meta property="og:description" content="Agent Harness definitions, runnable systems in 2025–2026, ecosystem boundaries, and applications in the Metacase Challenge.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="../assets/favicon-v2.svg">
   <link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="../harness.css?v=20261019-harness-timeline">
   <script src="../site.js?v=20261019-motion" defer></script>
   <link rel="stylesheet" href="../language.css">
-  <script src="../language.js?v=20261026-metacase-brand" defer></script>
+  <script src="../language.js?v=20261027-rebrand" defer></script>
   <link rel="stylesheet" href="v2.css?v=20261026-metacase-brand2">
   <link rel="stylesheet" href="skin.css?v=20261022-v2-ambient">
   <link rel="stylesheet" href="scene.css?v=20261022-v2-ambient">
@@ -91,7 +91,7 @@
     <section class="page-hero container" data-backdrop="orbit" aria-labelledby="page-title">
       <p class="kicker">Harness</p>
       <h1 id="page-title">What turns a model <em>into an agent.</em></h1>
-      <p class="lead">Start with how harnesses power the two InferenceNet challenges and what a harness is, then see how runnable Agent Harness systems evolved in 2025–2026 and how Harbor integrates diverse harnesses into a unified evaluation system. Next, inspect DeepAgents in detail, compare our four evaluated configurations side by side, and connect execution to self-evolution.</p>
+      <p class="lead">Start with how harnesses power the Metacase Challenge and what a harness is, then see how runnable Agent Harness systems evolved in 2025–2026 and how Harbor integrates diverse harnesses into a unified evaluation system. Next, inspect DeepAgents in detail, compare our four evaluated configurations side by side, and connect execution to self-evolution.</p>
       <ul class="page-meta">
         <li>Challenge harnesses, unified Harbor evaluation, DeepAgents breakdown, four-harness comparison</li>
         <li>Sources and GitHub repositories verified · 19 Oct 2026</li>
@@ -145,7 +145,7 @@
           <p class="kicker">Challenge harnesses</p>
           <h2 id="challenge-harnesses-title">Designing harnesses for the two challenges</h2>
         </div>
-        <p class="lead">InferenceNet Challenge invites participants to build agents for empirical research and business analysis. A harness organizes context, tool execution, state and verification around a model. Our current multi-harness comparisons and self-evolution experiments were completed in Phase 1 on econometric replication; extending harness adaptation to the finance and HR workflow on Harbor and Claude Code is the next stage.</p>
+        <p class="lead">Metacase Challenge invites participants to build agents for empirical research and business analysis. A harness organizes context, tool execution, state and verification around a model. Our current multi-harness comparisons and self-evolution experiments were completed in Phase 1 on econometric replication; extending harness adaptation to the finance and HR workflow on Harbor and Claude Code is the next stage.</p>
       </div>
       <ul class="se-tiles harness-pillars" aria-label="Four responsibilities of a challenge harness">
         <li><span class="se-role">01 · Context and information</span><h3>What enters each step</h3><p>Arrange how task requirements, domain rules and source materials enter the context, and preserve key findings, intermediate progress and unresolved questions across long runs.</p></li>
@@ -157,7 +157,7 @@
         <article class="harness-subtrack-card">
           <p class="se-role">Subtrack 01 · Phase 1 completed</p>
           <h3>Econometric replication: four harnesses on Dev100</h3>
-          <p>Evaluated in InferenceNet’s own runner with an isolated <code>run_python</code> sandbox tool. An agent inspects research data, implements sample and estimator specifications, and submits a final Python program for private scoring. In Phase 1 we evaluated 14 models across four harness configurations—DeepAgents, DeepSeek Harness, Claude Agent SDK and an OpenAI Agents SDK runtime—on the 100-task Dev100 set, and studied modular harness self-evolution on DeepAgents.</p>
+          <p>Evaluated in our own runner with an isolated <code>run_python</code> sandbox tool. An agent inspects research data, implements sample and estimator specifications, and submits a final Python program for private scoring. In Phase 1 we evaluated 14 models across four harness configurations—DeepAgents, DeepSeek Harness, Claude Agent SDK and an OpenAI Agents SDK runtime—on the 100-task Dev100 set, and studied modular harness self-evolution on DeepAgents.</p>
           <div class="case-links">
             <a class="text-link" href="#configurations">See the four Dev100 configurations <span aria-hidden="true">↓</span></a>
             <a class="text-link" href="challenge.html#replication-demo">Watch the replication demo <span aria-hidden="true">→</span></a>
@@ -262,27 +262,27 @@
               <text x="28" y="368" class="f-s">sets the task and its limits, then grades the final answer. It stays outside the agent so it can score any Model + Harness pair the same way.</text>
             </svg>
           </div>
-          <figcaption>What a harness covers. The model only maps one context to one reply; the harness does everything else that makes it an agent. The environment the tools act on and the evaluator that grades the answer are outside the agent, which is why a benchmark such as InferenceNet can swap either the model or the harness and score the pair.</figcaption>
+          <figcaption>What a harness covers. The model only maps one context to one reply; the harness does everything else that makes it an agent. The environment the tools act on and the evaluator that grades the answer are outside the agent, which is why a benchmark such as the Metacase Challenge can swap either the model or the harness and score the pair.</figcaption>
         </figure>
       <p class="hs-jump"><a href="#development">Next: harness systems <span aria-hidden="true">→</span></a></p>
       <details class="hs-details definition-details"><summary>Definition details: terms, responsibilities and boundaries</summary>
       <div class="harness-prose">
         <p>A model takes text in and returns text. Anthropic defines an agent harness as “the system that enables a model to act as an agent” and adds that evaluating an agent means “evaluating the harness and the model working together”. LangChain puts the relationship as “Agent = Model + Harness”. The same model can score differently in a different harness, so a result belongs to the pair. Evaluation papers often call the same layer a scaffold.</p>
-        <p>The 1,000-task Selected_1000 board follows this split. A Model row is a single call with no agent loop: one code-generation call, after which InferenceNet executes the returned program. A Model + Harness row runs the model inside a named harness: the harness passes the model’s code to the run_python tool that the evaluation supplies and returns the tool’s feedback to the model before it submits a final program. The tasks, data, sandbox, budget and scorer belong to the evaluation, not to the harness. The Dev100 v10 development board has no Model rows: it runs 14 models in four harness configurations (section 06).</p>
+        <p>The 1,000-task Selected_1000 board follows this split. A Model row is a single call with no agent loop: one code-generation call, after which our runner executes the returned program. A Model + Harness row runs the model inside a named harness: the harness passes the model’s code to the run_python tool that the evaluation supplies and returns the tool’s feedback to the model before it submits a final program. The tasks, data, sandbox, budget and scorer belong to the evaluation, not to the harness. The Dev100 v10 development board has no Model rows: it runs 14 models in four harness configurations (section 06).</p>
       </div>
 
       <h3 class="harness-subtitle">Six terms and where each one ends</h3>
       <div class="table-scroll" tabindex="0">
         <table class="compare-table terms-table">
           <caption>The words this site uses, with the boundary each one draws</caption>
-          <thead><tr><th scope="col">Term</th><th scope="col">What it is</th><th scope="col">Where it ends</th><th scope="col">In InferenceNet</th></tr></thead>
+          <thead><tr><th scope="col">Term</th><th scope="col">What it is</th><th scope="col">Where it ends</th><th scope="col">In the Challenge</th></tr></thead>
           <tbody>
             <tr><th scope="row">Model</th><td>A language model behind an inference API: it reads one context and writes one reply, text and tool calls</td><td>It keeps nothing between calls and runs no tools. Request settings such as temperature or reasoning effort are set by whoever builds the request, often the harness</td><td>The model named in each leaderboard row</td></tr>
-            <tr class="is-highlight"><th scope="row">Harness</th><td>The software that runs the model as an agent: it builds the context, runs the loop, executes tool calls, keeps state, hands work to other agents, enforces limits and decides when to stop</td><td>It excludes the model’s weights, the environment its tools act on and the evaluator. An extension such as a skills plugin changes a host harness but is not a harness itself</td><td>DeepAgents, DeepSeek Harness or Claude Agent SDK; in the fourth Dev100 v10 configuration, a runtime InferenceNet assembles with the OpenAI Agents SDK</td></tr>
+            <tr class="is-highlight"><th scope="row">Harness</th><td>The software that runs the model as an agent: it builds the context, runs the loop, executes tool calls, keeps state, hands work to other agents, enforces limits and decides when to stop</td><td>It excludes the model’s weights, the environment its tools act on and the evaluator. An extension such as a skills plugin changes a host harness but is not a harness itself</td><td>DeepAgents, DeepSeek Harness or Claude Agent SDK; in the fourth Dev100 v10 configuration, a runtime we assemble with the OpenAI Agents SDK</td></tr>
             <tr><th scope="row">Agent</th><td>A model running inside a harness on a task: Agent = Model + Harness</td><td>The same model in another harness is another agent and can score differently</td><td>A Model + Harness row on Selected_1000, or any Dev100 v10 row</td></tr>
-            <tr><th scope="row">SDK</th><td>A programming interface. A model SDK sends requests to a model API; an agent framework SDK supplies building blocks; a harness SDK starts or embeds a ready harness so code can drive it</td><td>An SDK is a way in, not a layer of its own: one harness can be reached through a CLI, an SDK or a protocol</td><td>The DeepSeek Harness Python SDK starts the dsh process and the Claude Agent SDK runs its bundled Claude Code CLI; DeepAgents is imported as a library, and InferenceNet assembles its own runtime from the OpenAI Agents SDK</td></tr>
+            <tr><th scope="row">SDK</th><td>A programming interface. A model SDK sends requests to a model API; an agent framework SDK supplies building blocks; a harness SDK starts or embeds a ready harness so code can drive it</td><td>An SDK is a way in, not a layer of its own: one harness can be reached through a CLI, an SDK or a protocol</td><td>The DeepSeek Harness Python SDK starts the dsh process and the Claude Agent SDK runs its bundled Claude Code CLI; DeepAgents is imported as a library, and we assemble our own runtime from the OpenAI Agents SDK</td></tr>
             <tr><th scope="row">Environment</th><td>What the tools act on: files, a shell or container, data and outside services</td><td>The harness gives the model an interface to it; the environment itself is not part of the harness</td><td>The task’s data and a fresh container for each run_python call</td></tr>
-            <tr><th scope="row">Evaluator</th><td>The tasks, the limits, the code that runs trials and the grader; benchmarks often call it an evaluation harness</td><td>It sits outside the agent so that any model and harness can be scored the same way</td><td>InferenceNet’s budget, final replay and private scorer</td></tr>
+            <tr><th scope="row">Evaluator</th><td>The tasks, the limits, the code that runs trials and the grader; benchmarks often call it an evaluation harness</td><td>It sits outside the agent so that any model and harness can be scored the same way</td><td>Our budget, final replay and private scorer</td></tr>
           </tbody>
         </table>
       </div>
@@ -797,7 +797,7 @@
           <p class="kicker">03 / Breakdown</p>
           <h2 id="breakdowns-title">Anatomy of a harness: DeepAgents 0.7.13</h2>
         </div>
-        <p class="lead">To see how a harness works on the inside, we break down DeepAgents (LangChain’s library harness, pinned at 0.7.13 in InferenceNet Phase 1) across the eight core responsibilities: its three-layer LangGraph architecture, its middleware stack, one complete run from start to finish, and how InferenceNet wires and evolves it.</p>
+        <p class="lead">To see how a harness works on the inside, we break down DeepAgents (LangChain’s library harness, pinned at 0.7.13 in Phase 1) across the eight core responsibilities: its three-layer LangGraph architecture, its middleware stack, one complete run from start to finish, and how we wire and evolve it.</p>
       </div>
       <div id="deepagents">
           <div class="case-head">
@@ -807,15 +807,15 @@
           </div>
           <nav class="harness-jump" aria-label="DeepAgents in detail">
             <a class="text-link" href="#deepagents-architecture">Full three-layer structure <span aria-hidden="true">↓</span></a>
-            <a class="text-link" href="#deepagents-inferencenet">InferenceNet evaluation wiring <span aria-hidden="true">↓</span></a>
+            <a class="text-link" href="#deepagents-inferencenet">Our evaluation wiring <span aria-hidden="true">↓</span></a>
           </nav>
           <dl class="kv ruled-end harness-id">
             <dt>Maker</dt><dd>LangChain</dd>
             <dt>License</dt><dd>MIT</dd>
             <dt>Form</dt><dd>A Python library whose main function, create_deep_agent(), returns a compiled graph</dd>
-            <dt>Runs on</dt><dd>The caller’s Python process (3.11 or later), on LangChain’s create_agent and LangGraph. 0.7.13 accepts langchain 1.3.18 or later, below 2.0; this page reads it with langchain 1.4.0 and langgraph 1.2.11, the versions InferenceNet pins</dd>
+            <dt>Runs on</dt><dd>The caller’s Python process (3.11 or later), on LangChain’s create_agent and LangGraph. 0.7.13 accepts langchain 1.3.18 or later, below 2.0; this page reads it with langchain 1.4.0 and langgraph 1.2.11, the versions we pin</dd>
             <dt>Models</dt><dd>Any LangChain chat model that supports tool calling</dd>
-            <dt>Version</dt><dd>deepagents 0.7.13 (1aae374), 2 Sep 2026, the version InferenceNet pins; upstream reached 0.7.23 on 7 Oct 2026</dd>
+            <dt>Version</dt><dd>deepagents 0.7.13 (1aae374), 2 Sep 2026, the version we pin; upstream reached 0.7.23 on 7 Oct 2026</dd>
             <dt>Use</dt><dd>pip install deepagents==0.7.13, then create_deep_agent(model=…, tools=[…]) and invoke it with a list of messages</dd>
           </dl>
           <h4 class="harness-figure-title">The template: eight slots</h4>
@@ -878,7 +878,7 @@
                 <text x="28" y="522" class="f-s">AgentMiddleware with six hook kinds · caller middleware after the core stack · a same-named entry replaces a default · HarnessProfiles per provider or model</text>
               </svg>
             </div>
-            <figcaption>DeepAgents 0.7.13 with its defaults, in the template every breakdown uses. Blue marks context and memory, the slot that most of its own code serves: a virtual file system for notes and offloaded results, summarization that moves old history into a file, subagents that work in a fresh context, and skills and AGENTS.md memory when configured. InferenceNet configures it differently (section 06).</figcaption>
+            <figcaption>DeepAgents 0.7.13 with its defaults, in the template every breakdown uses. Blue marks context and memory, the slot that most of its own code serves: a virtual file system for notes and offloaded results, summarization that moves old history into a file, subagents that work in a fresh context, and skills and AGENTS.md memory when configured. We configure it differently (section 06).</figcaption>
           </figure>
           <h4 class="harness-figure-title">One run, module by module</h4>
           <figure class="diagram wide rsi-figure" style="--diagram-min:860px">
@@ -963,7 +963,7 @@
 
             <rect x="10" y="90" width="980" height="474" rx="6" class="f-band"/>
             <text x="26" y="116" class="f-big">DeepAgents</text>
-            <text x="130" y="116" class="f-s f-mu">harness · deepagents 0.7.13, the version InferenceNet pins</text>
+            <text x="130" y="116" class="f-s f-mu">harness · deepagents 0.7.13, the version we pin</text>
 
             <text x="26" y="142" class="f-tt">Middleware stack (outer → inner)</text>
             <text x="26" y="163" class="f-m f-s f-mu">core</text>
@@ -1084,7 +1084,7 @@
             <text x="354" y="904" class="f-s">back to the model, or END after return_direct</text>
             <text x="354" y="922" class="f-s">or a structured-output tool</text>
             <rect x="658" y="806" width="316" height="146" rx="4" class="f-box"/>
-            <text x="670" y="828" class="f-tt">InferenceNet’s agent, as compiled</text>
+            <text x="670" y="828" class="f-tt">Our agent, as compiled</text>
             <text x="670" y="850" class="f-m f-s">FilesystemMiddleware</text><text x="962" y="850" text-anchor="end" class="f-s f-mu">model + tool wrap</text>
             <text x="670" y="868" class="f-m f-s">SummarizationMiddleware</text><text x="962" y="868" text-anchor="end" class="f-s f-mu">model wrap</text>
             <text x="670" y="886" class="f-m f-s">PatchToolCallsMiddleware</text><text x="962" y="886" text-anchor="end" class="f-s f-mu">before_agent node</text>
@@ -1118,9 +1118,9 @@
             <path d="M503 1118 V1132 H89 V1120" class="f-ln" marker-end="url(#da-arrow)"/>
             <text x="296" y="1148" text-anchor="middle" class="f-s f-mu">next superstep, until no node is triggered</text>
             <text x="26" y="1170" class="f-s">recursion_limit caps supersteps: 9,999 by default in DeepAgents;</text>
-            <text x="26" y="1188" class="f-s">InferenceNet invokes with 64. A model turn plus its tools takes two steps.</text>
+            <text x="26" y="1188" class="f-s">We invoke it with 64. A model turn plus its tools takes two steps.</text>
             <text x="26" y="1212" class="f-s f-mu">DeltaChannel (beta) checkpoints store only new writes, with a full snapshot every</text>
-            <text x="26" y="1228" class="f-s f-mu">50 updates in DeepAgents; InferenceNet has no checkpointer, so no checkpoint is written.</text>
+            <text x="26" y="1228" class="f-s f-mu">50 updates in DeepAgents; our runner has no checkpointer, so no checkpoint is written.</text>
 
             <text x="600" y="1024" class="f-tt">State channels of this agent</text>
             <rect x="600" y="1032" width="374" height="122" rx="4" class="f-box"/>
@@ -1130,19 +1130,19 @@
             <text x="612" y="1106" class="f-m f-s">structured_response</text><text x="962" y="1106" text-anchor="end" class="f-s f-mu">LastValue</text>
             <text x="612" y="1124" class="f-m f-s">_summarization_event</text><text x="962" y="1124" text-anchor="end" class="f-s f-mu">LastValue</text>
             <text x="612" y="1142" class="f-m f-s">_summarization_session_id</text><text x="962" y="1142" text-anchor="end" class="f-s f-mu">LastValue</text>
-            <text x="600" y="1178" class="f-tt">Persistence and control in InferenceNet</text>
+            <text x="600" y="1178" class="f-tt">Persistence and control in our runner</text>
             <text x="612" y="1198" class="f-s">checkpointer: none · each task is one fresh run</text>
             <text x="612" y="1214" class="f-s">store: none · interrupts: unused</text>
             <text x="612" y="1230" class="f-s">invoke(): returns only the final state</text>
           </svg>
         </div>
-        <figcaption>The three layers assembled by create_deep_agent(). The left column is the middleware order; for wrap_model_call, earlier entries wrap later ones. New middleware from the caller lands between core and tail; middleware whose name matches an existing entry, core or tail, replaces it in place. Filesystem, Summarization, PatchToolCalls and Anthropic prompt caching are always added, and SubAgent too while any synchronous subagent exists, which by default is the general-purpose one. Skills, AsyncSubAgent, Memory and HumanInTheLoop depend on their arguments; profile extra_middleware and _ToolExclusionMiddleware on the model’s harness profile; Bedrock and Fireworks caching on langchain-aws or langchain-fireworks being installed. The LangChain and LangGraph layers describe langchain 1.4.0 and langgraph 1.2.11; the compiled middleware, nodes and channels come from building InferenceNet’s agent (dev-gyc-eval, 92e56c8) offline with those versions. The blue slot marks where caller middleware lands: InferenceNet’s own FilesystemMiddleware, limited to six file tools, replaces the core entry of the same name instead, so the slot stays empty until ModularRSI attaches there on the Self-evolving page.</figcaption>
+        <figcaption>The three layers assembled by create_deep_agent(). The left column is the middleware order; for wrap_model_call, earlier entries wrap later ones. New middleware from the caller lands between core and tail; middleware whose name matches an existing entry, core or tail, replaces it in place. Filesystem, Summarization, PatchToolCalls and Anthropic prompt caching are always added, and SubAgent too while any synchronous subagent exists, which by default is the general-purpose one. Skills, AsyncSubAgent, Memory and HumanInTheLoop depend on their arguments; profile extra_middleware and _ToolExclusionMiddleware on the model’s harness profile; Bedrock and Fireworks caching on langchain-aws or langchain-fireworks being installed. The LangChain and LangGraph layers describe langchain 1.4.0 and langgraph 1.2.11; the compiled middleware, nodes and channels come from building our agent (dev-gyc-eval, 92e56c8) offline with those versions. The blue slot marks where caller middleware lands: our own FilesystemMiddleware, limited to six file tools, replaces the core entry of the same name instead, so the slot stays empty until ModularRSI attaches there on the Self-evolving page.</figcaption>
       </figure>
           </div>
           <h4 class="harness-figure-title">Three layers: LangGraph, LangChain, DeepAgents</h4>
           <div class="table-scroll" tabindex="0">
             <table class="compare-table harness-detail-table">
-              <caption>What each package contributes to a DeepAgents agent at the versions InferenceNet pins. The Self-evolving page builds on this stack and links back here.</caption>
+              <caption>What each package contributes to a DeepAgents agent at the versions we pin. The Self-evolving page builds on this stack and links back here.</caption>
               <thead><tr><th scope="col">Layer</th><th scope="col">Package</th><th scope="col">What it contributes</th></tr></thead>
               <tbody>
                 <tr><th scope="row">Runtime</th><td>langgraph 1.2.11</td><td>Executes the compiled graph in supersteps, keeps state in channels, saves a checkpoint after each superstep when a checkpointer is passed, pauses for interrupts and raises an error past the recursion limit</td></tr>
@@ -1184,12 +1184,12 @@
               <li><span class="case-step-number">07</span><div class="case-step-content"><h4>End the run</h4><p class="case-step-story">When the model replies without tool calls, any after_agent hooks run and the graph ends; invoke() returns the final state, whose last AI message is the answer. Passing the recursion limit raises an error. Within a run, state passes from one superstep to the next as usual; a checkpointer, if one is passed, saves a checkpoint after each superstep so the run can be resumed later.</p><dl class="case-observed-facts"><div><dt>Answer</dt><dd>the last AI message</dd></div><div><dt>Checkpointer</dt><dd>none unless passed</dd></div></dl></div></li>
             </ol>
           </details>
-          <div class="case-improvement harness-inet"><p><strong>In InferenceNet.</strong> InferenceNet’s DeepAgents arm runs this version with run_python and six file tools for notes, no subagents, and its own budget outside DeepAgents. It is the harness of the Selected_1000 Model + Harness rows and one of the four Dev100 v10 configurations (section 06); the ModularRSI study on the Self-evolving page starts from it with its own settings.</p></div>
+          <div class="case-improvement harness-inet"><p><strong>In the Challenge.</strong> Our DeepAgents arm runs this version with run_python and six file tools for notes, no subagents, and its own budget outside DeepAgents. It is the harness of the Selected_1000 Model + Harness rows and one of the four Dev100 v10 configurations (section 06); the ModularRSI study on the Self-evolving page starts from it with its own settings.</p></div>
           <div class="harness-deep" id="deepagents-inferencenet">
-          <h4 class="harness-figure-title">How InferenceNet wires DeepAgents for evaluation</h4>
+          <h4 class="harness-figure-title">How we wire DeepAgents for evaluation</h4>
           <figure class="diagram wide rsi-figure" style="--diagram-min:900px">
             <div class="diagram-scroll" tabindex="0">
-              <svg viewBox="0 0 1000 736" role="img" aria-label="InferenceNet's DeepAgents wiring. In one Python process, the controller's build_agent registers a harness profile that turns off the general-purpose subagent and calls create_deep_agent with run_python, an empty subagent list, a StateBackend, FilesystemMiddleware limited to six file tools and fixed solver instructions; run_deepagents then invokes the graph with a recursion limit of 64. Each model call passes Filesystem, Summarization and prompt-caching middleware and reaches BudgetedChatOpenAI, which checks the budget, records the call and sends a non-streaming Responses request upstream. run_python checks the tool budget and runs the code in a fresh Docker container that returns six fields of feedback. The final program comes from the last AI message, is replayed and scored privately.">
+              <svg viewBox="0 0 1000 736" role="img" aria-label="Our DeepAgents wiring. In one Python process, the controller's build_agent registers a harness profile that turns off the general-purpose subagent and calls create_deep_agent with run_python, an empty subagent list, a StateBackend, FilesystemMiddleware limited to six file tools and fixed solver instructions; run_deepagents then invokes the graph with a recursion limit of 64. Each model call passes Filesystem, Summarization and prompt-caching middleware and reaches BudgetedChatOpenAI, which checks the budget, records the call and sends a non-streaming Responses request upstream. run_python checks the tool budget and runs the code in a fresh Docker container that returns six fields of feedback. The final program comes from the last AI message, is replayed and scored privately.">
                 <defs>
                   <marker id="aw-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="f-ah"/></marker>
                   <marker id="aw-arrow-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="f-ahr"/></marker>
@@ -1238,7 +1238,7 @@
                 <text x="350" y="270" class="f-s f-mu">tools node</text>
                 <rect x="350" y="278" width="290" height="30" rx="3" class="f-box"/><text x="362" y="298" class="f-m f-s">ls · read_file · write_file</text><text x="628" y="298" text-anchor="end" class="f-s f-mu">notes only</text>
                 <rect x="350" y="314" width="290" height="30" rx="3" class="f-box"/><text x="362" y="334" class="f-m f-s">edit_file · glob · grep</text><text x="628" y="334" text-anchor="end" class="f-s f-mu">in graph state</text>
-                <rect x="350" y="376" width="290" height="30" rx="3" class="f-rsi"/><text x="362" y="396" class="f-m f-s">run_python(code)</text><text x="628" y="396" text-anchor="end" class="f-s f-b f-bold">InferenceNet tool</text>
+                <rect x="350" y="376" width="290" height="30" rx="3" class="f-rsi"/><text x="362" y="396" class="f-m f-s">run_python(code)</text><text x="628" y="396" text-anchor="end" class="f-s f-b f-bold">Challenge tool</text>
                 <rect x="350" y="428" width="290" height="58" rx="4" class="f-box"/>
                 <text x="362" y="449" class="f-s">START → before_agent → model ⇄ tools → END</text>
                 <text x="362" y="468" class="f-s">recursion_limit 64 · no checkpointer</text>
@@ -1290,7 +1290,7 @@
                 <text x="28" y="711" class="f-s">The file tools edit notes kept in graph state. The task carries no reference values, every model call is checked and recorded, and scoring starts after the agent returns.</text>
               </svg>
             </div>
-            <figcaption>InferenceNet’s DeepAgents evaluation wiring. Blue marks what InferenceNet configures around DeepAgents 0.7.13: a budgeted model client, six virtual file tools for notes, and the isolated run_python container tool.</figcaption>
+            <figcaption>Our DeepAgents evaluation wiring. Blue marks what we configure around DeepAgents 0.7.13: a budgeted model client, six virtual file tools for notes, and the isolated run_python container tool.</figcaption>
           </figure>
           </div>
           <div class="case-links">
@@ -1308,33 +1308,33 @@
           <p class="kicker">04 / Compare</p>
           <h2 id="compare-title">Our four evaluated harnesses side by side</h2>
         </div>
-        <p class="lead">In Phase 1 (Dev100 v10), InferenceNet evaluated 14 models across four harness configurations on the same 100 econometric replication tasks: DeepAgents, DeepSeek Harness, Claude Agent SDK and an OpenAI Agents SDK runtime. Below are the four configurations and a side-by-side comparison of their architecture, loop control, context management and evaluation wiring.</p>
+        <p class="lead">In Phase 1 (Dev100 v10), we evaluated 14 models across four harness configurations on the same 100 econometric replication tasks: DeepAgents, DeepSeek Harness, Claude Agent SDK and an OpenAI Agents SDK runtime. Below are the four configurations and a side-by-side comparison of their architecture, loop control, context management and evaluation wiring.</p>
       </div>
       <h3 class="harness-subtitle" id="configurations">The four configurations in Dev100 v10</h3>
       <ul class="card-grid config-cards" style="--cols:4">
         <li class="card">
           <p class="card-label">Library harness</p>
           <h4>DeepAgents <span class="config-version">0.7.13</span></h4>
-          <p><strong>Runs the loop:</strong> LangChain’s create_deep_agent on LangGraph, inside InferenceNet’s Python process.</p>
-          <p><strong>InferenceNet sets:</strong> run_python and six file tools for notes; no subagents.</p>
+          <p><strong>Runs the loop:</strong> LangChain’s create_deep_agent on LangGraph, inside our Python process.</p>
+          <p><strong>We set:</strong> run_python and six file tools for notes; no subagents.</p>
         </li>
         <li class="card">
           <p class="card-label">Product harness</p>
           <h4>DeepSeek Harness <span class="config-version">0.1.5rc1</span></h4>
           <p><strong>Runs the loop:</strong> DeepSeek’s own dsh process, driven by the official Python SDK over JSON-RPC on stdio.</p>
-          <p><strong>InferenceNet sets:</strong> a restricted profile whose only tool is run_python.</p>
+          <p><strong>We set:</strong> a restricted profile whose only tool is run_python.</p>
         </li>
         <li class="card">
           <p class="card-label">Harness SDK</p>
           <h4>Claude Agent SDK <span class="config-version">0.2.165</span></h4>
           <p><strong>Runs the loop:</strong> the Claude Code CLI bundled with the SDK, version 2.1.294 in every recorded identity.</p>
-          <p><strong>InferenceNet sets:</strong> no built-in tools and no settings files; run_python as the one MCP tool; at most 6 turns.</p>
+          <p><strong>We set:</strong> no built-in tools and no settings files; run_python as the one MCP tool; at most 6 turns.</p>
         </li>
         <li class="card">
           <p class="card-label">Agent framework</p>
           <h4>OpenAI Agents SDK <span class="config-version">0.23.1</span></h4>
-          <p><strong>Runs the loop:</strong> the SDK’s Runner, in a runtime InferenceNet composes from the framework’s parts.</p>
-          <p><strong>InferenceNet sets:</strong> run_python as the one function tool; no built-in tools; at most 6 turns.</p>
+          <p><strong>Runs the loop:</strong> the SDK’s Runner, in a runtime we compose from the framework’s parts.</p>
+          <p><strong>We set:</strong> run_python as the one function tool; no built-in tools; at most 6 turns.</p>
         </li>
       </ul>
       <div class="table-scroll" tabindex="0">
@@ -1355,7 +1355,7 @@
               <td>Library harness on LangChain &amp; LangGraph</td>
               <td>Plugin-based product harness driven via Python SDK</td>
               <td>Harness SDK driving bundled Claude Code CLI (2.1.294)</td>
-              <td>Agent framework Runner assembled by InferenceNet</td>
+              <td>Agent framework Runner we assemble</td>
             </tr>
             <tr>
               <th scope="row">Runs on</th>
@@ -1387,8 +1387,8 @@
             </tr>
             <tr>
               <th scope="row">Delegation</th>
-              <td>Supports <code>task</code> subagents by default; turned off in InferenceNet for controlled comparison</td>
-              <td>Supports depth-3 child agents in stock profile; turned off in InferenceNet profile</td>
+              <td>Supports <code>task</code> subagents by default; turned off here for controlled comparison</td>
+              <td>Supports depth-3 child agents in stock profile; turned off in our profile</td>
               <td>Supports subagents in stock Claude Code; disabled in restricted Dev100 configuration</td>
               <td>Handoffs supported by SDK; single-agent loop used in Dev100</td>
             </tr>
@@ -1425,11 +1425,11 @@
         </div>
         <p class="lead">An execution loop runs a fixed harness configuration on a task; an optimization loop sits outside execution, inspects trajectories and failure modes across tasks, proposes targeted edits to the harness (prompts, tool descriptions, observation formatting, middleware hooks or code), and retains only non-regressive improvements under a fixed evaluator.</p>
       </div>
-      <p class="harness-evo-note">The Self-evolving page presents the two-layer execution-and-optimization diagram, compares recent offline and online self-evolution methods (<a href="evolution.html#method-modularrsi">ModularRSI</a>, <a href="evolution.html#method-self-harness">Self-Harness</a>, <a href="evolution.html#method-meta-harness">Meta-Harness</a>, <a href="evolution.html#rm-ahe">AHE</a>, <a href="evolution.html#rm-rho">RHO</a>, <a href="evolution.html#rm-harness-r1">Harness-R1</a>, <a href="evolution.html#rm-rrsi">RRSI</a> and <a href="evolution.html#rm-whale">WHALE</a>), and documents InferenceNet’s Phase 1 ModularRSI evolution study alongside our Phase 2 roadmap for Harbor and Claude Code.</p>
+      <p class="harness-evo-note">The Self-evolving page presents the two-layer execution-and-optimization diagram, compares recent offline and online self-evolution methods (<a href="evolution.html#method-modularrsi">ModularRSI</a>, <a href="evolution.html#method-self-harness">Self-Harness</a>, <a href="evolution.html#method-meta-harness">Meta-Harness</a>, <a href="evolution.html#rm-ahe">AHE</a>, <a href="evolution.html#rm-rho">RHO</a>, <a href="evolution.html#rm-harness-r1">Harness-R1</a>, <a href="evolution.html#rm-rrsi">RRSI</a> and <a href="evolution.html#rm-whale">WHALE</a>), and documents our Phase 1 ModularRSI evolution study alongside our Phase 2 roadmap for Harbor and Claude Code.</p>
       <div class="case-links">
         <a class="text-link" href="evolution.html#improvement-directions">Explore capability targets and the Phase 1 / Phase 2 roadmap <span aria-hidden="true">→</span></a>
         <a class="text-link" href="evolution.html#cycle">See the execution vs. optimization loop diagram <span aria-hidden="true">→</span></a>
-        <a class="text-link" href="evolution.html#rsi-versions">Read InferenceNet’s ModularRSI evolution results <span aria-hidden="true">→</span></a>
+        <a class="text-link" href="evolution.html#rsi-versions">Read our ModularRSI evolution results <span aria-hidden="true">→</span></a>
       </div>
     </section>
 
