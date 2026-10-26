@@ -297,3 +297,71 @@ export function lights(scene, { span = 24, shadowSize = 2048 } = {}) {
   scene.add(hemi, key, rim);
   return { hemi, key, rim };
 }
+
+/* ---- the Metacase as a book: seven chapters, marked by tabs on the fore-edge ---- */
+// How far chapter tab i of a signature sticks out of the pages. The seven tab tips
+// together trace the signature: the shape of how the problem was solved.
+export const tabDepth = (sig, i, scale = 1) => (.06 + (SIGNATURES[sig][i] + 1) * .1) * scale;
+// A standing volume on y = 0: spine towards +z, fore-edge (with its chapter tabs) towards -z.
+export function volume({ color = PALETTE.teal, sig = 0, w = .16, h = .62, d = .44 } = {}) {
+  const g = new THREE.Group(), cover = mat(color), board = w * .12;
+  [-1, 1].forEach(s => block(g, board, h, d, cover, s * (w / 2 - board / 2), 0, 0, .012));
+  block(g, w, h, d * .12, cover, 0, 0, d / 2 - d * .06, .012);
+  block(g, w * 1.02, h * .05, d * .12 + .004, PALETTE.cream, 0, h * .7, d / 2 - d * .06, .004).castShadow = false;
+  block(g, w - board * 2 + .004, h * .94, d * .9, PALETTE.cream, 0, h * .03, -d * .04, .006).castShadow = false;
+  // cloth cover details: a cream title label and two gilt bands on each board
+  const gilt = mat(0xd8b46a, { rough: .45 }), label = mat(PALETTE.cream);
+  [-1, 1].forEach(sd => {
+    const x = sd * (w / 2 + .002);
+    block(g, .006, h * .2, d * .52, label, x, h * .5, d * .04, .003).castShadow = false;
+    const title = labelPlane(METACASE_LABEL(), d * .5, h * .19); title.rotation.set(0, sd * Math.PI / 2, 0); title.position.set(x + sd * .0045, h * .6, d * .04); g.add(title);
+    [h * .14, h * .84].forEach(y => block(g, .006, h * .018, d * .9, gilt, x, y, 0, .002).castShadow = false);
+  });
+  const tabs = [], tips = [], s = h / 10;
+  for (let i = 0; i < 7; i++) {
+    const td = tabDepth(sig, i, d / .44 * .5), y = h * .12 + i * s * 1.12;
+    const tab = block(g, w * .46, s * .62, td + .02, mat(STAGE_COLORS[i]), 0, y, -d * .49 - td / 2 + .01, .008);
+    tab.castShadow = false; tabs.push(tab);
+    tips.push(new THREE.Vector3(0, y + s * .31, -d * .49 - td));
+  }
+  g.userData = { tabs, tips, w, h, d, sig };
+  return g;
+}
+
+/* ---- printed labels: canvas text on a plane, for titles on covers and pages ---- */
+const labelCache = new Map();
+// lines: [{ text, size (px at 1024 wide), weight, color, font, track }]; returns a texture.
+export function labelTexture(key, lines, { width = 1024, height = 512, bg = null } = {}) {
+  if (labelCache.has(key)) return labelCache.get(key);
+  const c = document.createElement('canvas'); c.width = width; c.height = height;
+  const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
+  const draw = items => {
+    const ctx = c.getContext('2d'); ctx.clearRect(0, 0, width, height);
+    if (bg) { ctx.fillStyle = bg; ctx.fillRect(0, 0, width, height); }
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    const total = items.reduce((s, l) => s + l.size * 1.25, 0);
+    let y = height / 2 - total / 2;
+    items.forEach(l => {
+      ctx.font = `${l.weight || 600} ${l.size}px ${l.font || 'Inter, Arial, sans-serif'}`;
+      ctx.fillStyle = l.color || '#1f2a3a';
+      if ('letterSpacing' in ctx) ctx.letterSpacing = `${l.track || 0}px`;
+      ctx.fillText(l.text, width / 2, y + l.size * .625, width * .92);
+      y += l.size * 1.25;
+    });
+    tex.needsUpdate = true;
+  };
+  draw(lines);
+  document.fonts?.ready.then(() => draw(lines));
+  tex.userData.redraw = draw;
+  labelCache.set(key, tex);
+  return tex;
+}
+// A flat label facing +y (lay it on a surface), w × d in world units.
+export function labelPlane(tex, w, d) {
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(w, d), new THREE.MeshStandardMaterial({ map: tex, transparent: true, roughness: .8 }));
+  m.rotation.x = -Math.PI / 2; return m;
+}
+export const METACASE_LABEL = () => labelTexture('metacase', [
+  { text: 'METACASE', size: 150, weight: 750, color: '#1f2a3a', track: 18 },
+  { text: 'ONE COMPLETE EPISODE', size: 46, weight: 500, color: '#6b7280', font: '"Space Mono", ui-monospace, monospace', track: 6 },
+]);

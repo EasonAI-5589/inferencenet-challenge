@@ -99,6 +99,26 @@ export function fitCamera(camera, rect, { shift = 0, lift = 0, fov, band = 0 } =
   else camera.clearViewOffset();
   camera.updateProjectionMatrix();
 }
+// Frame the picture inside a safe band of the view (between a chapter's heading and its
+// captions), so the 3D never runs under the text. safe = { top, bottom } in view pixels.
+export function fitSafe(camera, rect, safe, { fov = 34, shift = 0 } = {}) {
+  const top = clamp(safe?.top ?? 0, 0, rect.height * .6), bottom = clamp(safe?.bottom ?? rect.height, top + 140, rect.height);
+  const h = bottom - top;
+  camera.fov = fov; camera.aspect = rect.width / h;
+  camera.setViewOffset(rect.width, h, -rect.width * shift, -top, rect.width, rect.height);
+  camera.updateProjectionMatrix();
+  return { width: rect.width * (1 - 2 * Math.abs(shift)), height: h };
+}
+// Camera distance at which a sphere of `radius` fills `fill` of the smaller side of a frame.
+export function fitDistance(radius, fov, frame, fill = .9) {
+  const v = THREE.MathUtils.degToRad(fov), h = 2 * Math.atan(Math.tan(v / 2) * frame.width / Math.max(1, frame.height));
+  return radius / Math.sin(Math.min(v, h) / 2) / fill;
+}
+// Camera distance at which a box of half-width hw and half-height hh (as seen) fits a frame.
+export function fitBox(hw, hh, fov, frame, fill = .92) {
+  const v = THREE.MathUtils.degToRad(fov), h = 2 * Math.atan(Math.tan(v / 2) * frame.width / Math.max(1, frame.height));
+  return Math.max(hw / Math.tan(h / 2), hh / Math.tan(v / 2)) / fill;
+}
 const v3 = new THREE.Vector3();
 // Project a world point into a view rectangle (CSS pixels relative to the view).
 export function toView(point, camera, rect) {
