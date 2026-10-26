@@ -70,7 +70,6 @@
   "Research dataset source": "研究数据来源",
   "Econometrics-Agent code": "Econometrics-Agent 代码",
   "Website source": "网站源码",
-  "Previous site design": "旧版网站",
   "Contact us": "联系我们",
   "Meet the team": "了解团队",
   "Scroll": "向下滚动",
@@ -84,5 +83,5 @@
   "Explore Dev100 results": "查看 Dev100 结果",
   "Business analysis & deliverables": "业务分析与交付",
   "Watch the replication demo": "观看计量复现演示",
-  "Econometric Replication — Metacase Challenge · v2": "计量经济学复现 — Metacase Challenge · v2"
+  "Econometric Replication — Metacase Challenge": "计量经济学复现 — Metacase Challenge · v2"
 }

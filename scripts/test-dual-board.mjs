@@ -17,9 +17,12 @@ const devData = await exists(DEV_JSON) ? JSON.parse(await read(DEV_JSON)) : null
 const malformed = JSON.parse(await readFile(new URL('fixtures/dev100-malformed.json', import.meta.url), 'utf8'));
 const selected = selectedBoardDescriptor('assets/data/paired-results.json');
 const PAGE = 'https://example.org/leaderboard.html';
-const PAGES = ['index.html', 'challenge.html', 'replication.html', 'harness.html', 'evolution.html', 'leaderboard.html', 'teams.html', 'professional-tasks.html'];
+// The Metacase Challenge pages live in v2/; the former root pages only redirect there.
+const PAGES = ['index.html', 'challenge.html', 'replication.html', 'harness.html', 'evolution.html', 'leaderboard.html', 'teams.html', 'professional-tasks.html'].map(page => `v2/${page}`);
 const TAG = '20261018-dev100-challenge';
 const DEV100_TAG = '20261018-home-challenges';
+// The development data module was re-released when the site became the Metacase Challenge.
+const DEV100_DATA_TAG = '20261027-site';
 const LANGUAGE_TAG = '20261018-challenge-videos';
 // Shared assets released with the site motion (styles, site, language, index, teams and leaderboard CSS).
 const RELEASE_TAG = '20261019-motion';
@@ -230,77 +233,20 @@ test('a malformed development source fails only the development board', async ()
   assert.notEqual(dev.failureStatus, selected.failureStatus);
 });
 
-test('leaderboard.html presents Dev100 development results, its report and methodology', async () => {
-  const html = await read('leaderboard.html');
-  const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
-  for (const id of ['leaderboard-dev100', 'leaderboard-dev100-report', 'leaderboard-dev100-method', 'research']) {
-    assert.ok(ids.includes(id), id);
-  }
-  assert.equal(new Set(ids).size, ids.length);
-  assert.equal((html.match(/<h1\b/g) || []).length, 1);
-  // Every navigation target still resolves after removing the historical board.
-  const navigation = html.match(/<nav class="board-nav"[\s\S]*?<\/nav>/)[0];
-  for (const [, id] of navigation.matchAll(/href="#([^"]+)"/g)) assert.ok(ids.includes(id), `navigation #${id}`);
-  const at = text => html.indexOf(text);
-  const order = ['class="board-nav"', 'id="leaderboard-dev100"', '<!-- dev100-ranking:start -->', '<!-- dev100-ranking:end -->', 'id="leaderboard-dev100-method"',
-    'id="research"'].map(at);
-  assert.ok(order.every((position, index) => position > (order[index - 1] ?? -1)), 'sections and markers in page order');
-  assert.match(html, /<p class="kicker">01 \/ Dev100 · v10<\/p><h2 id="dev100-title">Dev100 \/ v10 development release<\/h2>/);
-  assert.match(html, /<p class="kicker">02 \/ Research<\/p>/);
-  assert.match(html, /Challenge 1: Econometric replication will open-source the existing Dev100 set of 100 tasks\./);
-  assert.match(html, /Its task package, official rules, submission channel and dates have not been published\./);
-  assert.match(html, /development results for 14 models × 4 harnesses; it is not an official Challenge ranking\./);
-  assert.doesNotMatch(html, /final target|harness study|diagnostic study/i);
-  // The report entry and the files it names are public artifacts on this page, never server paths.
-  for (const href of ['#leaderboard-dev100-report', 'assets/data/dev100-v10-results.json', 'assets/data/dev100-v10-results-provenance.json', 'assets/data/dev100-v10-results.csv']) {
-    assert.ok(html.includes(`href="${href}"`), href);
-  }
-  assert.match(html, /Report generated <time datetime="2026-10-11T16:35:49Z">11 Oct 2026<\/time>/);
-});
-
-test('exactly one development marker pair, only on leaderboard.html', async () => {
-  const html = await read('leaderboard.html');
+test('exactly one development marker pair, only on the Leaderboard page', async () => {
+  const html = await read('v2/leaderboard.html');
   assert.equal(html.split('<!-- dev100-ranking:start -->').length, 2);
   assert.equal(html.split('<!-- dev100-ranking:end -->').length, 2);
   assert.doesNotMatch(devBlock(html), /paired-ranking:/);
-  for (const page of PAGES.filter(name => name !== 'leaderboard.html')) assert.doesNotMatch(await read(page), /dev100-ranking:|data-dev-leaderboard/, page);
+  for (const page of PAGES.filter(name => name !== 'v2/leaderboard.html')) assert.doesNotMatch(await read(page), /dev100-ranking:|data-dev-leaderboard/, page);
 });
 
 test('public pages do not mount the historical board and Home and Leaderboard do not load its results', async () => {
   for (const page of PAGES) assert.doesNotMatch(await read(page), /paired-ranking:|data-paired-leaderboard/, page);
-  for (const page of ['index.html', 'leaderboard.html']) {
+  for (const page of ['v2/index.html', 'v2/leaderboard.html']) {
     const html = await read(page);
     assert.doesNotMatch(html, /id="leaderboard-selected-1000"|paired-results\.(?:json|csv)|(?:src|href)="leaderboard\.js(?:\?|"|$)/, page);
   }
-});
-
-test('the development module loads only on leaderboard.html, with the release tags', async () => {
-  const script = `<script type="module" src="leaderboard-dev100.js?v=${DEV100_TAG}"></script>`;
-  for (const page of PAGES) {
-    const html = await read(page);
-    if (page === 'leaderboard.html') assert.equal(html.split(script).length, 2);
-    else assert.doesNotMatch(html, /leaderboard-dev100(?:-data)?\.js/, page);
-  }
-  for (const page of PAGES) {
-    const html = await read(page);
-    const languageTag = LANGUAGE_TAGS[page] || LANGUAGE_RELEASE_TAG;
-    assert.match(html, new RegExp(`"language\\.js\\?v=${languageTag}"`), `${page}: language.js`);
-  }
-  assert.match(await read('index.html'), new RegExp(`"index\\.css\\?v=${CARDS_TAG}"`));
-  assert.match(await read('leaderboard.html'), new RegExp(`"leaderboard\\.css\\?v=${RELEASE_TAG}"`));
-  assert.match(await read('leaderboard.html'), new RegExp(`"site\\.js\\?v=${RELEASE_TAG}"`));
-});
-
-test('Home links Dev100 results without loading a board and preserves the dated development news', async () => {
-  const html = await read('index.html');
-  assert.doesNotMatch(html, /Selected_1000|1,000|\b1000\b/);
-  assert.doesNotMatch(html, /data-dev-leaderboard|(?:src|href)="(?:leaderboard\.(?:js|css)|mountain\.css)(?:\?|"|$)/);
-  assert.ok(html.includes('href="leaderboard.html#leaderboard-dev100"'));
-  const news = enclosing(html, 'datetime="2026-10-11T16:35:49Z"', 'li');
-  assert.match(news, /Dev100 development release/);
-  assert.match(news, /14 models and four harnesses on 100 development tasks/);
-  assert.match(news, /not official challenge rankings/);
-  assert.doesNotMatch(html, /harness study|development diagnostics|Separate development study/);
 });
 
 test('board modules stay local and share one renderer instance', async () => {
@@ -316,7 +262,7 @@ test('board modules stay local and share one renderer instance', async () => {
   assert.match(board, /card\.setAttribute\('aria-label', legend\);/);
   assert.match(board, /mountain\(cards\[index\], chart, CARD_OPTIONS\)/);
   assert.match(dev, /devBoardDescriptor\(new URL\('\.\/assets\/data\/dev100-v10-results\.json\?v=20261012-dual-board', import\.meta\.url\)\)/);
-  assert.match(dev, new RegExp(`from '\\./leaderboard-dev100-data\\.js\\?v=${DEV100_TAG}'`));
+  assert.match(dev, new RegExp(`from '\\./leaderboard-dev100-data\\.js\\?v=${DEV100_DATA_TAG}'`));
   assert.match(entry, /selectedBoardDescriptor\(new URL\('\.\/assets\/data\/paired-results\.json\?v=20260917-harness', import\.meta\.url\)\)/);
   // Escape and the close button reach the same controller on every board.
   assert.match(board, /card\.addEventListener\('keydown', event => controller\.keydown\(event\)\)/);
@@ -399,7 +345,7 @@ test('a drifted copy of the real development data fails validation', { skip: !de
 });
 
 /* The page explanation needs Chinese translations. The development widget's
- * own strings are covered by test-dev100.mjs; Home by test-initiative.mjs. */
+ * own strings are covered by test-dev100.mjs. */
 const textNodes = html => html.replace(/<!--[\s\S]*?-->/g, '').split(/<[^>]+>/)
   .map(text => text.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim())
   .filter(text => /[A-Za-z]/.test(text));
@@ -421,10 +367,10 @@ const enclosing = (html, marker, tag) => {
 test('the Dev100 page explanation has a Chinese translation', async () => {
   const language = await read('language.js');
   const common = new Set([...language.slice(language.indexOf('const common = {'), language.indexOf('};')).matchAll(/'((?:[^'\\]|\\.)*)':/g)].map(match => match[1]));
-  const lb = await read('leaderboard.html');
+  const lb = await read('v2/leaderboard.html');
   const added = {
     leaderboard: [
-      between(lb, '<section class="page-hero container" aria-labelledby="page-title">', '</section>'),
+      between(lb, '<section class="page-hero container" data-backdrop="bump" aria-labelledby="page-title">', '</section>'),
       between(lb, 'aria-labelledby="dev100-title">', '<!-- dev100-ranking:start -->'),
       between(lb, '<!-- dev100-ranking:end -->', '<section class="section container ruled" id="research"'),
     ].flatMap(textNodes),

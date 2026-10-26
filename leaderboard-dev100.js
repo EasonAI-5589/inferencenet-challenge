@@ -1,5 +1,5 @@
 import { mountBoard } from './leaderboard-board.js?v=20261018-dev100-challenge';
-import { devBoardDescriptor } from './leaderboard-dev100-data.js?v=20261018-home-challenges';
+import { devBoardDescriptor } from './leaderboard-dev100-data.js?v=20261027-site';
 
 // Only leaderboard.html loads this module; a missing or malformed source keeps
 // the saved development results readable on that page.

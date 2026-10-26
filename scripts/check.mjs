@@ -7,16 +7,19 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 // The explicit public-file allowlist (plus the whole reviewed `assets/` tree).
 // Private test pages (`_*.html`), DESIGN.md, README.md and scripts/ are never listed.
+// The Metacase Challenge site is served from v2/. It shares assets/, the translation
+// dictionaries and the root scripts, and adds its own design files.
 export const pages = ['index.html', 'challenge.html', 'replication.html', 'harness.html', 'evolution.html', 'leaderboard.html', 'teams.html', 'professional-tasks.html'];
-const redirects = { 'data.html': 'challenge.html#replication-data', 'agent.html': 'evolution.html#improvement-directions' };
-// The v2 design (/v2/) mirrors every content page and redirect. It shares assets/, the
-// translation dictionaries and the root scripts, and adds its own design files.
 export const v2Pages = pages.map(page => `v2/${page}`);
-const v2Redirects = Object.fromEntries(Object.entries(redirects).map(([file, target]) => [`v2/${file}`, target]));
+const v2Redirects = { 'v2/data.html': 'challenge.html#replication-data', 'v2/agent.html': 'evolution.html#improvement-directions' };
+// The former InferenceNet pages at the root now send every visitor to the Metacase Challenge.
+const redirects = {
+  ...Object.fromEntries(pages.map(page => [page, `v2/${page}`])),
+  'data.html': 'v2/challenge.html#replication-data', 'agent.html': 'v2/evolution.html#improvement-directions',
+};
 const v2Files = ['v2/v2.css', 'v2/home.css', 'v2/skin.css', 'v2/theme.js', 'v2/v2.js', 'v2/home.js', 'v2/backdrop.js', 'v2/scene.css', 'v2/scene.js', 'v2/arena.css', 'v2/arena.js', 'v2/arena-scene.js', 'v2/arena-motion.js', 'v2/arena-models.js', 'v2/metacase.css', 'v2/metacase.js', 'v2/metacase-world.js', 'v2/metacase-library.js', 'v2/metacase-courier.js', 'v2/metacase-anatomy.js', 'v2/metacase-archive.js', 'v2/metacase-cards.js', 'v2/mc-stage.js', 'v2/mc-toon.js', 'v2/mc-kit.js', 'v2/arena-data.js', 'v2/arena-campus.js', 'v2/arena-subtracks.js', 'v2/mc-rail.js'];
 const allRedirects = { ...redirects, ...v2Redirects };
 export const publicFiles = [
-  ...pages,
   ...Object.keys(redirects),
   'styles.css', 'site.css', 'language.css', 'mountain.css', 'index.css', 'challenge.css', 'data.css', 'agent.css', 'evolution.css', 'harness.css', 'leaderboard.css', 'teams.css', 'professional-tasks.css',
   'theme.js', 'site.js', 'language.js', 'charts.js', 'mountain.js', 'leaderboard.js', 'leaderboard-data.js', 'leaderboard-board.js', 'leaderboard-dev100.js', 'leaderboard-dev100-data.js', 'evolution.js',
@@ -45,7 +48,7 @@ async function listAssets(directory, out = []) {
 const assetFiles = await listAssets(resolve(root, 'assets'));
 
 const documents = new Map();
-for (const file of [...pages, ...Object.keys(redirects), ...v2Pages, ...Object.keys(v2Redirects)]) {
+for (const file of [...Object.keys(redirects), ...v2Pages, ...Object.keys(v2Redirects)]) {
   const html = await readFile(resolve(root, file), 'utf8');
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
   if (new Set(ids).size !== ids.length) throw new Error(`Duplicate HTML IDs in ${file}`);
@@ -132,4 +135,4 @@ for (const file of scanned) {
   }
 }
 const anchorCount = [...documents.values()].reduce((sum, doc) => sum + doc.ids.length, 0);
-console.log(`Checked ${pages.length} content pages and ${Object.keys(redirects).length} redirect (plus the same in v2/), ${anchorCount} anchors, ${referenceCount} references, ${scanned.length} text files (${assetFiles.length} assets), public asset types and private-path boundaries.`);
+console.log(`Checked ${v2Pages.length} content pages, ${Object.keys(redirects).length} root redirects and ${Object.keys(v2Redirects).length} v2 redirects, ${anchorCount} anchors, ${referenceCount} references, ${scanned.length} text files (${assetFiles.length} assets), public asset types and private-path boundaries.`);

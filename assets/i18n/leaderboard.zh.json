@@ -91,7 +91,7 @@
   "Gemini 3.1 Pro · Model": "Gemini 3.1 Pro · 模型",
   "Qwen3.7-Max · Model": "Qwen3.7-Max · 模型",
   "DeepSeek V4 Pro · Model": "DeepSeek V4 Pro · 模型",
-  "InferenceNet Challenge Leaderboard": "InferenceNet 挑战赛排行榜",
+  "Metacase Challenge Leaderboard": "Metacase 挑战赛排行榜",
   "All": "全部",
   "Scores (%)": "得分（%）",
   "Updated 17 Sep 2026": "更新于 2026 年 9 月 17 日",
@@ -237,7 +237,7 @@
   "How each field was established": "各字段的确立依据",
   "How the numbers were checked.": "数字如何核对。",
   "Includes scored tasks with no recorded value for this metric.": "包含该指标没有记录值的可评分题目。",
-  "InferenceNet development set (100 tasks)": "InferenceNet 开发集（100 道题）",
+  "Dev100 development set (100 tasks)": "Dev100 开发集（100 道题）",
   "Infrastructure": "基础设施",
   "Inherited SDK": "继承 SDK",
   "Inherited native SDK run": "继承的原生 SDK 运行",
@@ -313,7 +313,7 @@
   "v10 report summary": "v10 报告摘要",
   "† Includes scored tasks with no recorded value for this metric: historical DeepAgents results recorded Full replication only.": "† 包含该指标没有记录值的可评分题目：历史 DeepAgents 结果只记录了完整复现。",
   "Historical research results": "历史研究结果",
-  "InferenceNet Dev100 Leaderboard": "InferenceNet Dev100 排行榜",
+  "Dev100 Leaderboard": "Dev100 排行榜",
   "Development results on Dev100, the existing 100-task set planned for Challenge 1: Econometric replication. This page presents the v10 comparison of 14 models and four harnesses, with recorded settings and evaluation evidence. These are development results, not an official Challenge ranking.": "Dev100 是计划用于挑战 1“计量经济学复现”的现有 100 题任务集。本页展示 14 个模型与四种 Harness 的 v10 开发评测结果，以及记录的运行设置和评测证据。这些是开发评测结果，并非正式挑战赛排名。",
   "Challenge 1: Econometric replication will open-source the existing Dev100 set of 100 tasks. Its task package, official rules, submission channel and dates have not been published. The v10 table below preserves development results for 14 models × 4 harnesses; it is not an official Challenge ranking.": "挑战 1“计量经济学复现”将开源现有 Dev100 的 100 道任务。任务包、正式规则、提交渠道和日期尚未发布。下方 v10 表保留 14 个模型 × 4 种 Harness 的开发评测结果，并非正式挑战赛排名。",
   "This is a descriptive comparison on a fixed 100-task development set; it is not an official Challenge ranking.": "这是在固定的 100 题开发集上的描述性比较，并非正式挑战赛排名。",
@@ -354,7 +354,6 @@
   "Research dataset source": "研究数据来源",
   "Econometrics-Agent code": "Econometrics-Agent 代码",
   "Website source": "网站源码",
-  "Previous site design": "旧版网站",
   "Contact us": "联系我们",
   "Meet the team": "了解团队",
   "Contact": "联系",
@@ -371,5 +370,5 @@
   "Explore the ModularRSI results": "查看 ModularRSI 实验结果",
   "See our ModularRSI implementation and results": "查看 ModularRSI 实现与评测结果",
   "Explore training and co-evolution directions": "探索模型训练与协同进化方向",
-  "Leaderboard — Metacase Challenge · v2": "排行榜 — Metacase Challenge · v2"
+  "Leaderboard — Metacase Challenge": "排行榜 — Metacase Challenge · v2"
 }

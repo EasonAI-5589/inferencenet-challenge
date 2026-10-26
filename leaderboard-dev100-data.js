@@ -336,6 +336,8 @@ export const DEV_CARD_TEXT = Object.freeze([...new Set([
 
 // Prose from the data renders as its own text node, so a dictionary entry can match it whole.
 const prose = value => `<span>${escapeHTML(value)}</span>`;
+// The dataset's display name on the Metacase Challenge site; the data file itself is left as recorded (its sha256 is in the provenance).
+const datasetLabel = data => data.dataset.label.replace(/^InferenceNet development set/, 'Dev100 development set');
 const sentence = value => typeof value === 'string' && /\s/.test(value.trim());
 const recorded = value => value === null || value === undefined || value === '' ? NOT_RECORDED : value;
 const missing = `<span class="run-missing">${NOT_RECORDED}</span>`;
@@ -482,7 +484,7 @@ export function devReportHTML(data) {
   const facts = [
     fact('Report', `<code>${escapeHTML(data.report.label)}</code> · <code>sha256:${data.report.sha256.json.slice(0, 12)}</code>`),
     fact('Report generated', day(reportDate(data))),
-    fact('Dataset', `${prose(data.dataset.label)} · ${tasks(data.dataset.tasks)} · <span>Development split</span>`),
+    fact('Dataset', `${prose(datasetLabel(data))} · ${tasks(data.dataset.tasks)} · <span>Development split</span>`),
     fact('Dataset relation', data.dataset.relation === null ? missing : prose(data.dataset.relation)),
     fact('Task slots', number(data.records)),
     fact('Scored', number(t.scored)),
@@ -513,7 +515,7 @@ export function devDataText(data) {
   return [...new Set([
     ...data.runs.flatMap(run => run.settings.thinking.values.map(item => item.value)),
     ...(Object.hasOwn(EVIDENCE, data.evidence_status) ? [] : [data.evidence_status]),
-    data.dataset.label, data.dataset.relation ?? '', ...Object.values(data.field_evidence), ...data.caveats.map(displayDevCaveat),
+    datasetLabel(data), data.dataset.relation ?? '', ...Object.values(data.field_evidence), ...data.caveats.map(displayDevCaveat),
     ...Object.values(data.report_summary.acceptance ?? {}).filter(sentence), devSavedStatus(data),
   ].map(value => value.replace(/\s+/g, ' ').trim()).filter(Boolean))];
 }
