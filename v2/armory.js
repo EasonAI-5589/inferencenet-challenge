@@ -106,7 +106,7 @@ async function init() {
       }
       const button = el('button', { class: `ar-item${equipped ? ' is-equipped' : ''}`, type: 'button', draggable: 'true', 'data-key': key, 'aria-pressed': String(equipped) },
         el('span', { class: 'ar-item-kind', text: item.kind }),
-        el('strong', { class: 'ar-item-name', 'data-no-translate': true, text: item.name }),
+        el('strong', { class: 'ar-item-name', 'data-no-translate': item.type !== 'gear', text: item.name }),
         item.note ? el('span', { class: 'ar-item-note', text: item.note }) : null,
         tags);
       return el('li', {}, button);
@@ -155,7 +155,7 @@ async function init() {
       const key = slotValue(node.dataset.slot), item = key && items.get(key);
       node.classList.toggle('is-filled', Boolean(item));
       node.querySelector('[data-slot-name]').textContent = item ? item.name : 'Empty slot';
-      node.querySelector('[data-slot-name]').toggleAttribute('data-no-translate', Boolean(item));
+      node.querySelector('[data-slot-name]').toggleAttribute('data-no-translate', Boolean(item) && item.type !== 'gear');
       node.querySelector('[data-slot-sub]').textContent = item ? item.kind : '';
       node.querySelector('.ar-slot-clear').hidden = !item;
     });
@@ -238,7 +238,7 @@ async function init() {
   }
 
   function announce(verb, name) {
-    $('.ar-status').replaceChildren(el('span', { text: verb }), ' ', el('b', { 'data-no-translate': true, text: name }));
+    $('.ar-status').replaceChildren(el('span', { text: verb }), ' ', el('b', { text: name }));
   }
 
   /* Readout -------------------------------------------------------------------------------- */
