@@ -1,11 +1,11 @@
-/* metacase-archive.js — Why it matters: retrieval by structure, in the library. A finance
- * case lies on the reading table. Searching by topic pulls more finance volumes off
+/* metacase-archive.js — Why it matters: retrieval by structure, in the library. The
+ * Metacase closed at the end of chapter 01 stands on the reading table as the query. Searching by topic pulls more finance volumes off
  * their shelf, but turned to their fore-edge their chapter tabs trace other shapes, so
  * they go back. Searching by structure pulls one volume from each other field whose tabs
  * trace the same shape; they line up beside the case, and an agent and a person step up
  * to read them. Rendered by the shared stage. */
 import * as THREE from '../assets/vendor/three/three.module.js';
-import { PALETTE, mat, add, block, cyl, ball, volume, robot, person, lights } from './mc-kit.js';
+import { PALETTE, BOOK, closedBook, bookTabs, mat, add, block, cyl, ball, volume, robot, person, lights } from './mc-kit.js';
 import { clamp, smooth, ramp, lerp, pageBackground, fitSafe, fitBox, toView, glowSprite } from './mc-stage.js';
 
 // Same order as the tags in the page.
@@ -17,6 +17,7 @@ const S = 1.4;                                  // volumes on the table are show
 const TABLE = new THREE.Vector3(0, .8, 3.1);  // top centre of the reading table
 const FACT_SLOTS = [-1.38, -.46, .46, 1.38], MATCH_SLOTS = [-1.84, -.92, 0, .92, 1.84];
 const FORE = -Math.PI / 2;                    // turned so the fore-edge (and its tabs) faces +x
+const QS = .62 * S / BOOK.PD;                 // the Metacase book, as tall as the volumes beside it
 
 function shade(hex, k) { return new THREE.Color(hex).lerp(new THREE.Color(k > 0 ? 0xffffff : 0x1a1d26), Math.abs(k)).getHex(); }
 // The signature drawn through a volume's tab tips, in the volume's own space.
@@ -35,7 +36,7 @@ function stamp(color) {
   return g;
 }
 
-export function createArchive({ onProject = () => {}, safe = () => null, reduce = false } = {}) {
+export function createArchive({ onProject = () => {}, safe = () => null, held = () => false, reduce = false } = {}) {
   const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(34, 1, .1, 200);
   const light = lights(scene, { span: 12, shadowSize: 1024 });
   light.key.position.set(-5, 14, 12);
@@ -77,9 +78,14 @@ export function createArchive({ onProject = () => {}, safe = () => null, reduce 
   [-1, 1].forEach(sx => { const end = new THREE.Group(); end.position.set(sx * 2.78, TABLE.y, 0); table.add(end); block(end, .05, .5, .4, mat(0xc9a36e, { rough: .4 }), 0, 0, 0, .02); block(end, .2, .03, .4, mat(0xc9a36e, { rough: .4 }), -sx * .08, 0, 0, .01); });
   const tableGlow = glowSprite(0xffe2b0, 6, .1); tableGlow.position.set(0, TABLE.y + .2, 0); table.add(tableGlow);
 
-  const query = volume({ color: PALETTE.amber, sig: 0 });
-  query.scale.setScalar(S); query.rotation.y = FORE; query.position.set(TABLE.x + FACT_SLOTS[0], TABLE.y, TABLE.z); scene.add(query);
-  const queryLine = signatureLine(query, 0xfff1d0);
+  // the query: chapter 01's Metacase, standing with its cover to the room and its
+  // signature on the fore-edge (+x), like the volumes that will join it
+  const query = new THREE.Group(); query.scale.setScalar(QS); scene.add(query);
+  const queryBook = closedBook(); bookTabs(queryBook, 0);
+  queryBook.rotation.x = Math.PI / 2; queryBook.position.set(-BOOK.PW / 2, BOOK.PD / 2, -(BOOK.T + BOOK.BOARD * 2) / 2);
+  query.add(queryBook);
+  const querySlot = p => TABLE.x + lerp(FACT_SLOTS[0], MATCH_SLOTS[0], ramp(p, .34, .42));
+  query.position.set(querySlot(0), TABLE.y, TABLE.z);
   const queryHalo = glowSprite(PALETTE.amber, 2.6, .25); scene.add(queryHalo);
 
   // candidates: finance volumes on the same topic (other shapes), and two volumes from
@@ -127,11 +133,37 @@ export function createArchive({ onProject = () => {}, safe = () => null, reduce 
     cand.line.visible = e > .85;
   }
 
-  function update(dt, t, p, rect) {
+  // The chapter's three movements as functions of progress.
+  function phases(p) {
+    const facts = ramp(p, .04, .16) * (1 - ramp(p, .3, .37)), rise = ramp(p, .38, .66), reuse = ramp(p, .72, .86);
+    return { facts, rise, reuse, near: smooth(Math.max(facts, rise, reuse > 0 ? 1 : 0)) };
+  }
+  // camera: the shelves, then the table, then the table with its readers
+  function aimCamera(cam, rect, { rise, reuse, near }) {
     const aspect = rect.width / rect.height;
+    const frame = fitSafe(cam, rect, safe(), { fov: aspect < 1 ? 42 : 32 });
+    target.set(0, lerp(1.4, 1.25 - reuse * .2, near), lerp(-.6, TABLE.z, near));
+    const dist = fitBox(lerp(4.2, 2.6 + reuse * .9, near), lerp(1.7, lerp(.75, .95, reuse), near), cam.fov, frame, .96);
+    const az = (reduce ? 0 : pointer.x * .14) + lerp(.06, -.06, rise), el = lerp(.16, .2, near) + reuse * .06;
+    cam.position.set(target.x + Math.sin(az) * Math.cos(el) * dist, target.y + Math.sin(el) * dist, target.z + Math.cos(az) * Math.cos(el) * dist);
+    cam.lookAt(target);
+    cam.updateMatrixWorld();
+  }
+  // Where the query book stands, and how this chapter's camera sees it, at progress p:
+  // the couriers land chapter 01's book here (p = 0) and take it on to chapter 03 (p = 1).
+  const viewCamera = new THREE.PerspectiveCamera(34, 1, .1, 200), viewMatrix = new THREE.Matrix4(), slotMatrix = new THREE.Matrix4();
+  function queryView(rect, p) {
+    aimCamera(viewCamera, rect, phases(p));
+    queryBook.updateMatrix();
+    slotMatrix.compose(tmp.set(querySlot(p), TABLE.y, TABLE.z), query.quaternion, query.scale);
+    viewMatrix.multiplyMatrices(slotMatrix, queryBook.matrix);
+    return { camera: viewCamera, matrix: viewMatrix, key: light.key.position };
+  }
+
+  function update(dt, t, p, rect) {
     pointer.x += (pointer.tx - pointer.x) * .05;
+    const ph = phases(p), { facts, rise, reuse, near } = ph;
     // 1 · same topic: three finance volumes come down, show other shapes, go back
-    const facts = ramp(p, .04, .16) * (1 - ramp(p, .3, .37));
     const judged = ramp(p, .17, .24) * (1 - ramp(p, .29, .32));
     topical.forEach((cand, j) => {
       carry(cand, clamp(facts * 1.2 - j * .07), FACT_SLOTS[1 + j]);
@@ -139,29 +171,20 @@ export function createArchive({ onProject = () => {}, safe = () => null, reduce 
       if (cand.x.visible) { cand.x.position.copy(cand.vol.position).add(tmp.set(.15, .62 * S + .3, 0)); cand.x.scale.setScalar(Math.max(.001, smooth(judged * 1.6 - j * .15)) * (1 + Math.sin(t * 6) * .04)); }
     });
     // 2 · same structure: one volume from every other field joins the case on the table
-    const rise = ramp(p, .38, .66);
     structural.forEach((cand, k) => carry(cand, clamp(rise * 1.35 - k * .09), MATCH_SLOTS[1 + k]));
     const aligned = ramp(p, .62, .7);
-    query.position.x = TABLE.x + lerp(FACT_SLOTS[0], MATCH_SLOTS[0], ramp(p, .34, .42));
-    queryLine.visible = true;
+    query.position.x = querySlot(p);
+    query.visible = queryHalo.visible = !held();
     queryHalo.position.copy(query.position).add(tmp.set(0, .62 * S * .5, 0));
     queryHalo.material.opacity = .22 + facts * .15 + aligned * .25 + (reduce ? 0 : Math.sin(t * 2) * .04);
     tableGlow.material.opacity = .1 + aligned * .25;
     // 3 · for AI and people: an agent and a person come to read the aligned volumes
-    const reuse = ramp(p, .72, .86);
     agent.root.visible = reader.root.visible = reuse > .02;
     agent.root.position.set(lerp(-6.5, -3.35, reuse), 0, TABLE.z - .2); agent.root.rotation.y = lerp(Math.PI / 2, .5, reuse);
     reader.root.position.set(lerp(6.5, 3.35, reuse), 0, TABLE.z - .2); reader.root.rotation.y = lerp(-Math.PI / 2, -.5, reuse);
     agent.update(t, reuse > 0 && reuse < 1 ? 1 : 0); reader.update(t, reuse > 0 && reuse < 1 ? 1 : 0);
 
-    // camera: the shelves, then the table, then the table with its readers
-    const frame = fitSafe(camera, rect, safe(), { fov: aspect < 1 ? 42 : 32 });
-    const near = smooth(Math.max(facts, rise, reuse > 0 ? 1 : 0));
-    target.set(0, lerp(1.4, 1.25 - reuse * .2, near), lerp(-.6, TABLE.z, near));
-    const dist = fitBox(lerp(4.2, 2.6 + reuse * .9, near), lerp(1.7, lerp(.75, .95, reuse), near), camera.fov, frame, .96);
-    const az = (reduce ? 0 : pointer.x * .14) + lerp(.06, -.06, rise), el = lerp(.16, .2, near) + reuse * .06;
-    camera.position.set(target.x + Math.sin(az) * Math.cos(el) * dist, target.y + Math.sin(el) * dist, target.z + Math.cos(az) * Math.cos(el) * dist);
-    camera.lookAt(target);
+    aimCamera(camera, rect, ph);
 
     onProject(bays.map(({ bay }, c) => {
       bay.updateMatrixWorld();
@@ -173,5 +196,5 @@ export function createArchive({ onProject = () => {}, safe = () => null, reduce 
   }
   function setTheme() { const bg = pageBackground(); scene.background = bg; scene.fog = new THREE.Fog(bg, 18, 44); }
   setTheme();
-  return { scene, camera, update, setTheme };
+  return { scene, camera, update, setTheme, queryView };
 }

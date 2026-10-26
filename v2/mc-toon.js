@@ -37,8 +37,10 @@ export function toonify(object) {
 const VERTEX = 'varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}';
 
 /* Scene → HDR target with depth → bright pass and blur at a third of the size →
- * composite: base + bloom, depth-edge ink lines, vignette, tone mapping. */
-export function createPost(renderer, { bloom = 0.3, threshold = .9, ink = 0x0a0f1f, inkStrength = 0, inkWidth = 1, vignette = 0.28 } = {}) {
+ * composite: base + bloom, depth-edge ink lines, vignette, tone mapping. `feather`
+ * ([top, bottom] in CSS pixels) fades the picture out at its upper and lower edges, so a
+ * view drawn into part of a transparent canvas dissolves into the page behind it. */
+export function createPost(renderer, { bloom = 0.3, threshold = .9, ink = 0x0a0f1f, inkStrength = 0, inkWidth = 1, vignette = 0.28, feather = [0, 0] } = {}) {
   const depthTexture = new THREE.DepthTexture(1, 1);
   depthTexture.type = THREE.UnsignedIntType;
   const sceneTarget = new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType, minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter, depthTexture, samples: 4 });
@@ -61,10 +63,11 @@ export function createPost(renderer, { bloom = 0.3, threshold = .9, ink = 0x0a0f
       base: { value: sceneTarget.texture }, depth: { value: depthTexture }, glow: { value: blurB.texture },
       texel: { value: new THREE.Vector2() }, near: { value: .1 }, far: { value: 100 },
       bloom: { value: bloom }, ink: { value: new THREE.Color(ink) }, inkStrength: { value: inkStrength }, vignette: { value: vignette },
+      feather: { value: new THREE.Vector2() },
     },
     vertexShader: VERTEX,
     fragmentShader: `varying vec2 vUv;uniform sampler2D base;uniform sampler2D depth;uniform sampler2D glow;uniform vec2 texel;
-      uniform float near;uniform float far;uniform float bloom;uniform vec3 ink;uniform float inkStrength;uniform float vignette;
+      uniform float near;uniform float far;uniform float bloom;uniform vec3 ink;uniform float inkStrength;uniform float vignette;uniform vec2 feather;
       float lin(vec2 uv){float z=texture2D(depth,uv).x*2.-1.;return 2.*near*far/(far+near-z*(far-near));}
       void main(){
         vec3 c=texture2D(base,vUv).rgb;
@@ -79,6 +82,8 @@ export function createPost(renderer, { bloom = 0.3, threshold = .9, ink = 0x0a0f
         gl_FragColor=vec4(c,1.);
         #include <tonemapping_fragment>
         #include <colorspace_fragment>
+        float a=smoothstep(0.,feather.y+1e-4,vUv.y)*smoothstep(0.,feather.x+1e-4,1.-vUv.y);
+        gl_FragColor=vec4(gl_FragColor.rgb*a,a);
       }`,
     depthTest: false, depthWrite: false,
   });
@@ -94,6 +99,7 @@ export function createPost(renderer, { bloom = 0.3, threshold = .9, ink = 0x0a0f
       bw = Math.max(1, Math.round(widthPx / 3)); bh = Math.max(1, Math.round(heightPx / 3));
       blurA.setSize(bw, bh); blurB.setSize(bw, bh);
       compose.uniforms.texel.value.set(inkWidth * Math.max(1, ratio * .75) / widthPx, inkWidth * Math.max(1, ratio * .75) / heightPx);
+      compose.uniforms.feather.value.set(Math.min(.45, feather[0] / Math.max(1, height)), Math.min(.45, feather[1] / Math.max(1, height)));
     },
     set(values) { for (const [key, value] of Object.entries(values)) if (compose.uniforms[key]) compose.uniforms[key].value = value; },
     // view: optional { x, y, w, h, sx, sy, sw, sh } in CSS pixels from the bottom left,

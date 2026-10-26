@@ -390,3 +390,24 @@ export function closedBook() {
   [0, 3, 5].forEach((i, k) => add(front, rbox(.1, .012, .1, .02), mat(STAGE_COLORS[i]), -.25 + k * .25, BOARD / 2 + .008, .35, false));
   return g;
 }
+// The chapter tabs on a closedBook()'s fore-edge and the thread through their tips: the
+// Metacase's signature. Chapter 01 grows them chapter by chapter; the couriers and the
+// later chapters show the same book with all seven in place.
+export function bookTabs(book, sig = 0) {
+  const { PW, PD, T, BOARD } = BOOK, tabs = [], tips = [];
+  for (let i = 0; i < 7; i++) {
+    const td = .12 + tabDepth(sig, i, 2.6), z = -PD / 2 + PD * (.1 + .8 * (i + .5) / 7), y = BOARD + T * .5 - .09;
+    const tab = new THREE.Group(); tab.position.set(PW - .02, y, z); book.add(tab);
+    add(tab, rbox(td + .04, .18, .3, .025), mat(STAGE_COLORS[i], { emissive: STAGE_COLORS[i], intensity: .25 }), (td + .04) / 2, .09, 0);
+    tabs.push(tab); tips.push(new THREE.Vector3(PW + td, y + .2, z));
+  }
+  const thread = mat(0xfff6e0, { emissive: 0xfff1d0, intensity: .9 });
+  const nodes = tips.map((p, i) => ball(book, .06, mat(STAGE_COLORS[i], { emissive: STAGE_COLORS[i], intensity: 1.1 }), p.x, p.y + .02, p.z, 14));
+  const links = tips.slice(1).map((p, i) => {
+    const a = tips[i], m = add(book, cached('thread', () => new THREE.CylinderGeometry(.018, .018, 1, 8)), thread, 0, 0, 0, false);
+    m.position.copy(a).lerp(p, .5).setY(a.y + .02); m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), p.clone().sub(a).normalize());
+    m.userData.len = a.distanceTo(p); m.scale.y = m.userData.len;
+    return m;
+  });
+  return { tabs, tips, nodes, links };
+}

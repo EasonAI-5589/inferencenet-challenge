@@ -6,7 +6,7 @@
  * empty places. Used twice: the hero (ambient) and chapter 03 (scroll-driven:
  * own cases → shared structures → reuse → new cases arrive). */
 import * as THREE from '../assets/vendor/three/three.module.js';
-import { PALETTE, BOOK, closedBook, mat, add, block, cyl, person, robot, tile, lights } from './mc-kit.js';
+import { PALETTE, BOOK, closedBook, bookTabs, mat, add, block, cyl, person, robot, tile, lights } from './mc-kit.js';
 import { clamp, smooth, ramp, lerp, pageBackground, fitCamera, toView, glowSprite } from './mc-stage.js';
 
 // Bays per wing: [catalogue class, volumes, bay width in units]. Counts follow
@@ -21,10 +21,11 @@ const R = 10, UNIT = 1.1, GAP = .7, CASE_H = 2.6, SHELF_Y = [.22, 1.0, 1.78];
 // [wing a, bay a, wing b, bay b] — volumes solved the same way, in different wings
 const THREADS = [[0, 0, 1, 5], [1, 2, 2, 0], [0, 3, 2, 3], [1, 0, 0, 1], [2, 1, 1, 4]];
 const SHOTS = [ // [progress, target, radius, azimuth, elevation]
-  [0, 'wing0', 9, -.55, .2], [.22, 'wing0', 8.5, -.35, .18],
+  [0, 'table', 5.4, .32, .5], [.1, 'wing0', 9, -.55, .2], [.22, 'wing0', 8.5, -.35, .18],
   [.32, 'centre', 22, 0, .42], [.48, 'centre', 20, .18, .36],
   [.56, 'walker', 7, .5, .26], [.72, 'walker', 7.5, .2, .24],
   [.82, 'room', 22, -.1, .32], [1, 'room', 25, .08, .36],
+  [1.5, 'plan', 31, 0, 1.22], // past the chapter, behind the initiative: the three wings from above, as chapter 04 lists them
 ];
 
 function shade(hex, k) { return new THREE.Color(hex).lerp(new THREE.Color(k > 0 ? 0xffffff : 0x1a1d26), Math.abs(k)).getHex(); }
@@ -53,11 +54,12 @@ function lamp(parent, x, y, z, color = 0xffd9a0) {
 
 // The Metacase that chapter 01 opens stands here: finance wing, fourth bay, middle shelf.
 const FEATURED = { wing: 1, bay: 3, shelf: 1 }, FEATURED_H = .62;
+const TABLE_BOOK = .3; // the same book, lying on the reading table in chapter 03
 // Where the other materials of a case come from (wing, bay, shelf): chapter 01's courier
 // draws a web page, a data sheet, a chart and a recording out of these shelves.
 const SOURCES = [[0, 0, 2], [0, 3, 0], [2, 0, 2], [2, 3, 1]];
 
-export function createLibrary({ mode = 'hero', onProject = () => {}, extracted = () => false, reduce = false } = {}) {
+export function createLibrary({ mode = 'hero', onProject = () => {}, extracted = () => false, held = () => false, reduce = false } = {}) {
   const story = mode === 'story';
   const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(36, 1, .1, 400);
   const sky = dome(); scene.add(sky);
@@ -202,11 +204,22 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, extracted =
   const table = new THREE.Group(); table.position.set(0, 0, .4); scene.add(table);
   block(table, 3.2, .12, 1.3, 0x7a5a42, 0, .82, 0, .04);
   [[-1.4, -.5], [1.4, -.5], [-1.4, .5], [1.4, .5]].forEach(([x, z]) => block(table, .1, .82, .1, 0x5a4434, x, 0, z, .02));
-  const open = tile({ sig: 0, edge: PALETTE.teal, size: .5, glow: 1.3 }); open.position.set(-.3, .94, 0); open.rotation.y = .15; table.add(open);
+  // in the story, the Metacase carried here from chapter 02 lies closed on its signature;
+  // in the hero, an open case
+  let tableBook = null;
+  if (story) {
+    tableBook = closedBook(); bookTabs(tableBook, 0); tableBook.scale.setScalar(TABLE_BOOK); tableBook.rotation.y = .12;
+    tableBook.position.set(-.3 - BOOK.PW * TABLE_BOOK / 2, .94, 0); table.add(tableBook);
+  } else {
+    const open = tile({ sig: 0, edge: PALETTE.teal, size: .5, glow: 1.3 }); open.position.set(-.3, .94, 0); open.rotation.y = .15; table.add(open);
+  }
+  const tableGlow = glowSprite(0xffe2b0, 2.2, 0); tableGlow.material.depthTest = false; tableGlow.position.set(-.3, 1.05, 0); table.add(tableGlow);
   const stack = new THREE.Group(); stack.position.set(.9, .94, .1); table.add(stack);
   [PALETTE.amber, PALETTE.violet, PALETTE.teal].forEach((c, k) => { const b = block(stack, .55, .1, .38, c, 0, k * .105, 0, .02); b.rotation.y = k * .2 - .1; });
   lamp(table, -1.2, .94, -.3); lamp(table, 1.3, .94, -.35);
-  const reader = person(5); reader.root.position.set(.2, 0, 1.55); reader.root.rotation.y = Math.PI; scene.add(reader.root);
+  const reader = person(5); scene.add(reader.root);
+  if (story) { reader.root.position.set(1.95, 0, .95); reader.root.rotation.y = -1.82; } // at the end of the table, clear of the opening shot
+  else { reader.root.position.set(.2, 0, 1.55); reader.root.rotation.y = Math.PI; }
   const browsers = [[0, 2, -.4], [1, 3, .3], [2, 2, -.2]].map(([wi, bi, turn], k) => {
     const b = wings[wi].bays[bi], p = person(11 + k * 3, {}); p.root.position.copy(at(b.a, R - 1.15)); p.root.rotation.y = Math.PI - b.a + turn; scene.add(p.root);
     return p;
@@ -234,25 +247,36 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, extracted =
   const walkR = R - 1.9;
 
   const beacon = glowSprite(0xffd9a0, 9, .12); beacon.position.set(0, 4.2, -1.5); scene.add(beacon);
-  const target = new THREE.Vector3(), centre = new THREE.Vector3(0, 1.6, -4), roomTarget = new THREE.Vector3(0, 1.8, -4.6);
+  const target = new THREE.Vector3(), centre = new THREE.Vector3(0, 1.6, -4), roomTarget = new THREE.Vector3(0, 1.8, -4.6), tableTarget = new THREE.Vector3(-.1, 1.05, .4), planTarget = new THREE.Vector3(0, 0, -6.2);
   const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
   addEventListener('pointermove', e => { pointer.tx = e.clientX / innerWidth - .5; pointer.ty = e.clientY / innerHeight - .5; }, { passive: true });
 
   function shotAt(p) {
     let i = 0; while (i < SHOTS.length - 2 && p > SHOTS[i + 1][0]) i++;
     const A = SHOTS[i], B = SHOTS[i + 1], k = smooth((p - A[0]) / (B[0] - A[0]));
-    const pos = s => s === 'centre' ? centre : s === 'room' ? roomTarget : s === 'walker' ? agent.root.position.clone().add(new THREE.Vector3(0, 1, 0)) : at(wings[+s.slice(4)].mid, R - 1).setY(1.3);
+    const pos = s => s === 'centre' ? centre : s === 'room' ? roomTarget : s === 'plan' ? planTarget : s === 'table' ? tableTarget : s === 'walker' ? agent.root.position.clone().add(new THREE.Vector3(0, 1, 0)) : at(wings[+s.slice(4)].mid, R - 1).setY(1.3);
     target.copy(pos(A[1])).lerp(pos(B[1]), k);
     return { r: Math.exp(lerp(Math.log(A[2]), Math.log(B[2]), k)), az: lerp(A[3], B[3], k), el: lerp(A[4], B[4], k) };
   }
 
+  function orbit(cam, r, az, el) {
+    cam.position.set(target.x + Math.sin(az) * Math.cos(el) * r, target.y + Math.sin(el) * r, target.z + Math.cos(az) * Math.cos(el) * r);
+    cam.lookAt(target);
+  }
+  function aimStory(cam, rect, p) {
+    const narrow = rect.width / rect.height < 1, { r, az, el } = shotAt(p);
+    orbit(cam, r * (narrow ? 1.4 : 1), az, el);
+    fitCamera(cam, rect, { fov: narrow ? 46 : 36 });
+    cam.updateMatrixWorld();
+  }
+
   function update(dt, t, p, rect) {
-    const narrow = rect.width / rect.height < 1;
     pointer.x += (pointer.tx - pointer.x) * .04; pointer.y += (pointer.ty - pointer.y) * .04;
     motes.rotation.y = t * .01;
     reader.update(t, 0); browsers.forEach(b => b.update(t, 0));
     const out = extracted();
     featured.visible = !out;
+    if (tableBook) { tableBook.visible = !held(); tableGlow.material.opacity = tableBook.visible ? .22 * (1 - ramp(p, .04, .12)) : 0; }
     featuredGlow.material.opacity = story || out ? 0 : .28 + Math.sin(t * 1.6) * .1; // a hint of where chapter 01 begins
 
     // cross-references draw themselves; in the hero they come and go in turn
@@ -289,21 +313,21 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, extracted =
     beacon.material.opacity = .1 + Math.sin(t * .8) * .02 + (story ? linked * .05 : .04);
 
     // camera
-    let r, az, el;
-    if (story) ({ r, az, el } = shotAt(p));
-    else { target.set(.9, 2.2, -5.2); r = 24 * (1 - .12 * clamp(window.scrollY / Math.max(1, rect.height))); az = .34 + Math.sin(t * .05) * .1 + pointer.x * .12; el = .14 + pointer.y * .03; }
-    const stacked = !story && rect.width <= 860;
-    if (story) r *= narrow ? 1.4 : 1;
-    else if (!stacked) r *= Math.max(1, 1.5 * rect.height / rect.width);
-    camera.position.set(target.x + Math.sin(az) * Math.cos(el) * r, target.y + Math.sin(el) * r, target.z + Math.cos(az) * Math.cos(el) * r);
-    camera.lookAt(target);
-    if (stacked) fitCamera(camera, rect, { band: 440, lift: -.06, fov: 42 });
-    else if (story) fitCamera(camera, rect, { fov: narrow ? 46 : 36 });
-    else fitCamera(camera, rect, { shift: rect.width < 1100 ? .24 : .22, lift: -.02, fov: 42 });
+    if (story) aimStory(camera, rect, p);
+    else {
+      target.set(.9, 2.2, -5.2);
+      let r = 24 * (1 - .12 * clamp(window.scrollY / Math.max(1, rect.height)));
+      const az = .34 + Math.sin(t * .05) * .1 + pointer.x * .12, el = .14 + pointer.y * .03, stacked = rect.width <= 860;
+      if (!stacked) r *= Math.max(1, 1.5 * rect.height / rect.width);
+      orbit(camera, r, az, el);
+      if (stacked) fitCamera(camera, rect, { band: 440, lift: -.06, fov: 42 });
+      else fitCamera(camera, rect, { shift: rect.width < 1100 ? .24 : .22, lift: -.02, fov: 42 });
+    }
     sky.position.copy(camera.position);
 
-    // tags: the three fields
-    const tags = wings.map((w, i) => ({ pt: w.top, show: story ? ramp(p, .02, .08) : 1, active: story && ((p < .3 && i === 0) || (p > .3 && p < .5) || p > .8) }));
+    // tags: the three fields (only for the chapter itself, not the view behind the initiative)
+    if (p > 1) return;
+    const tags = wings.map((w, i) => ({ pt: w.top, show: story ? ramp(p, .08, .14) : 1, active: story && ((p < .3 && i === 0) || (p > .3 && p < .5) || p > .8) }));
     onProject(tags.map(({ pt, show, active }) => {
       const s = toView(tmp.copy(pt), camera, rect), o = show * (s.front && s.inside ? 1 : 0);
       return { ...s, opacity: o, visible: o > .02, active };
@@ -321,5 +345,8 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, extracted =
   // For the courier: the featured book as this view shows it, and where the other materials sit.
   function featuredView() { featured.updateMatrixWorld(true); camera.updateMatrixWorld(); return { camera, matrix: featured.matrixWorld, key: light.key.position }; }
   function sources() { return sourcePoints.map(({ bay, local }) => bay.localToWorld(local.clone())); }
-  return { scene, camera, update, setTheme, featuredView, sources };
+  // For the courier from chapter 02: the book on the reading table as the story opens.
+  const tableCamera = new THREE.PerspectiveCamera(36, 1, .1, 400);
+  function tableView(rect) { aimStory(tableCamera, rect, 0); tableBook.updateMatrixWorld(true); return { camera: tableCamera, matrix: tableBook.matrixWorld, key: light.key.position }; }
+  return { scene, camera, update, setTheme, featuredView, sources, tableView };
 }

@@ -1,12 +1,14 @@
-/* metacase-courier.js — the hand-off between the hero and chapter 01. As the page scrolls
- * from the bookcase to the reading desk, the Metacase is drawn off its shelf, turns to
- * show its cover, crosses the screen and lands exactly where chapter 01's closed book
- * rests; on the way, the other materials a case is made of (a web page, a data sheet, a
- * chart, a recording) leave their own shelves and fold into its pages. Drawn last by
- * the shared stage over a fixed, full-window element, so it can cross from one chapter
- * into the next; it matches both ends by measuring where each scene shows the book. */
+/* metacase-courier.js — the hand-offs that carry one Metacase through the homepage. From
+ * the hero to chapter 01 it is drawn off its shelf, turns to show its cover, crosses the
+ * screen and lands exactly where chapter 01's closed book rests; on the way, the other
+ * materials a case is made of (a web page, a data sheet, a chart, a recording) leave
+ * their own shelves and fold into its pages. Later couriers pick the closed book, with
+ * its signature, up from the desk and stand it on chapter 02's reading table, then lay
+ * it on chapter 03's. Each is drawn over a fixed, full-window element, so it can cross
+ * from one chapter into the next; it matches both ends by measuring where each scene
+ * shows the book. */
 import * as THREE from '../assets/vendor/three/three.module.js';
-import { BOOK, BOOK_CENTRE, closedBook, lights, rbox, PALETTE } from './mc-kit.js';
+import { BOOK, BOOK_CENTRE, closedBook, bookTabs, lights, rbox, PALETTE } from './mc-kit.js';
 import { clamp, smooth, ramp, lerp, glowSprite } from './mc-stage.js';
 
 const smoother = x => { const p = clamp(x); return p * p * p * (p * (p * 6 - 15) + 10); };
@@ -57,35 +59,50 @@ function toScreen(world, cam, rect, out = {}) {
   out.x = rect.left + (_n.x * .5 + .5) * rect.width; out.y = rect.top + (-_n.y * .5 + .5) * rect.height;
   return out;
 }
+// The turn that points a camera's axis (-z) along the line of sight to a point in its space.
+// Rotations are kept relative to the line of sight, so the book shows the same faces
+// wherever it is on screen, whichever camera draws it.
+const AXIS = new THREE.Vector3(0, 0, -1), _r = new THREE.Quaternion(), _v = new THREE.Vector3();
+const sight = (local, out) => out.setFromUnitVectors(AXIS, _v.copy(local).normalize());
 // Screen position (px) of the book's centre, pixels per unit of the book's own geometry,
-// its rotation relative to the camera, and the key light and up direction as that camera sees them.
+// its rotation relative to the line of sight, and the key light and up direction as that camera sees them.
 function screenPose(src) {
   const cam = src.camera; cam.updateMatrixWorld();
   const centre = BOOK_CENTRE.clone().applyMatrix4(src.matrix), p = toScreen(centre, cam, src.rect, {});
+  sight(centre.clone().applyMatrix4(cam.matrixWorldInverse), _r);
   const right = new THREE.Vector3().setFromMatrixColumn(cam.matrixWorld, 0).normalize();
   const p2 = toScreen(centre.addScaledVector(right, .2), cam, src.rect, {});
   src.matrix.decompose(_p, _q, _s);
   cam.getWorldQuaternion(_qc); const inv = _qc.clone().invert();
   return {
     x: p.x, y: p.y, size: Math.hypot(p2.x - p.x, p2.y - p.y) / .2 * _s.x,
-    q: inv.clone().multiply(_q),
+    q: _r.clone().invert().multiply(inv).multiply(_q),
     key: src.key ? src.key.clone().normalize().applyQuaternion(inv) : new THREE.Vector3(-.3, .8, .5).normalize(),
     up: new THREE.Vector3(0, 1, 0).applyQuaternion(inv),
   };
 }
 
-export function createCourier({ progress = () => 0, from = () => null, to = () => null } = {}) {
+// Pick-up styles: a turn off the shelf towards the viewer, or a lift off the desk.
+export const PULLS = {
+  shelf: { from: .02, flight: [.14, .9], yaw: -.7, roll: .08, dx: 26, dy: 14, grow: 1.6, mid: new THREE.Euler(Math.PI / 2 - .3, -.34, .06), arc: [.07, .1], bump: .14 },
+  desk: { from: .06, flight: [.1, .88], yaw: .22, roll: -.05, dx: 0, dy: -30, grow: .15, mid: null, arc: [.1, .06], bump: .08 },
+};
+
+// signed: the book carries its chapter tabs and signature; media: the other materials join it;
+// clip: the bottom of the page's sticky header, which the book keeps clear of.
+export function createCourier({ progress = () => 0, from = () => null, to = () => null, signed = false, media = true, pull: style = PULLS.shelf, clip = () => 0 } = {}) {
   const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(34, 1, .1, 120);
   const light = lights(scene, { span: 6, shadowSize: 256 }); light.key.castShadow = false;
 
   // the book, centred on its middle so it can be placed by its screen position
   const carrier = new THREE.Group(); scene.add(carrier);
   const book = closedBook(); book.position.copy(BOOK_CENTRE).multiplyScalar(-1); carrier.add(book);
+  if (signed) bookTabs(book, 0);
   book.traverse(o => { if (o.isMesh) { o.castShadow = false; o.receiveShadow = false; } });
   const halo = glowSprite(0xffe2b0, 1, 0); scene.add(halo);
 
   // the other materials, each a card with a cream backing
-  const cards = MEDIA.map(kind => {
+  const cards = (media ? MEDIA : []).map(kind => {
     const g = new THREE.Group(), map = mediaTexture(kind);
     const face = new THREE.Mesh(new THREE.PlaneGeometry(1, 1.25), new THREE.MeshStandardMaterial({ map, emissiveMap: map, emissive: 0xffffff, emissiveIntensity: .32, roughness: .85, transparent: true }));
     const back = new THREE.Mesh(rbox(1.04, 1.29, .03, .03), new THREE.MeshStandardMaterial({ color: PALETTE.cream, roughness: .85, transparent: true })); back.position.z = -.02;
@@ -106,22 +123,33 @@ export function createCourier({ progress = () => 0, from = () => null, to = () =
     A4.set(sx, 0, 0, tx, 0, sy, 0, ty, 0, 0, 1, 0, 0, 0, 0, 1);
     camera.projectionMatrix.multiplyMatrices(A4, cam.projectionMatrix);
     camera.projectionMatrixInverse.copy(camera.projectionMatrix).invert();
+    lens[0] = camera.projectionMatrix.elements[8]; lens[1] = camera.projectionMatrix.elements[9];
     camera.near = cam.near; camera.far = cam.far;
     camera.matrix.copy(cam.matrixWorld); camera.matrixWorld.copy(cam.matrixWorld); camera.matrixWorldInverse.copy(cam.matrixWorld).invert();
     cam.getWorldQuaternion(camQ);
   }
+  // In flight the lens is shifted so the screen point (px) lies on the camera's axis, and
+  // the book is drawn without the stretch of a lens centred far off screen; k = 1 is the
+  // destination's own lens, for the landing.
+  const lens = [0, 0];
+  function centreOn(x, y, view, k) {
+    const e = camera.projectionMatrix.elements;
+    e[8] = lerp(-(2 * (x - view.left) / view.width - 1), lens[0], k); e[9] = lerp(-(1 - 2 * (y - view.top) / view.height), lens[1], k);
+    camera.projectionMatrixInverse.copy(camera.projectionMatrix).invert();
+  }
   // Put obj where the screen point (px) is, at a size of sizePx pixels per unit of its own
-  // geometry, turned by qView relative to the camera; never farther than zMax.
+  // geometry, turned by qView relative to the line of sight; never farther than zMax.
   function placeOnScreen(obj, x, y, sizePx, qView, view, zMax = 60) {
     const e = camera.projectionMatrix.elements, f = e[5] * view.height / 2;
     const z = f / Math.max(1e-3, sizePx), zc = Math.min(z, zMax);
     const xn = 2 * (x - view.left) / view.width - 1, yn = 1 - 2 * (y - view.top) / view.height;
-    obj.position.set((xn + e[8]) * zc / e[0], (yn + e[9]) * zc / e[5], -zc).applyMatrix4(camera.matrixWorld);
-    if (qView) obj.quaternion.copy(camQ).multiply(qView);
+    obj.position.set((xn + e[8]) * zc / e[0], (yn + e[9]) * zc / e[5], -zc);
+    if (qView) obj.quaternion.copy(camQ).multiply(sight(obj.position, tmpQ)).multiply(qView);
+    obj.position.applyMatrix4(camera.matrixWorld);
     obj.scale.setScalar(zc / z);
     return zc;
   }
-  const turn = new THREE.Quaternion(), mid = new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI / 2 - .3, -.34, .06));
+  const turn = new THREE.Quaternion(), mid = style.mid && new THREE.Quaternion().setFromEuler(style.mid);
   const qStart = new THREE.Quaternion(), qNow = new THREE.Quaternion(), keyDir = new THREE.Vector3(), upDir = new THREE.Vector3(), endKey = new THREE.Vector3();
   const bez = (a, c, b, u, out) => { const v = 1 - u; out.x = v * v * a.x + 2 * v * u * c.x + u * u * b.x; out.y = v * v * a.y + 2 * v * u * c.y + u * u * b.y; return out; };
   const at = {}, ctrl = {}, start = {}, cp = {};
@@ -136,29 +164,31 @@ export function createCourier({ progress = () => 0, from = () => null, to = () =
     const a = screenPose(A), b = screenPose(B);
     useCamera(B, rect);
     // keep the book in view while its shelf scrolls away above and its desk is still below
-    const top = rect.top + Math.min(160, rect.height * .2), bottom = rect.top + rect.height * .86;
+    const top = Math.max(rect.top + Math.min(160, rect.height * .2), clip() + 72), bottom = rect.top + rect.height * .86;
     const inView = y => clamp(y, top, Math.max(top, bottom));
     a.y = inView(a.y);
     const bY = inView(b.y);
 
-    // 1 · drawn off the shelf, turning its cover towards us
-    const pull = smooth(ramp(k, .02, .2));
-    turn.setFromEuler(new THREE.Euler(0, -.7 * pull, .08 * pull));
+    // 1 · drawn off the shelf (turning its cover towards us) or lifted off the desk
+    const pull = smooth(ramp(k, style.from, .2));
+    turn.setFromEuler(new THREE.Euler(0, style.yaw * pull, style.roll * pull));
     qStart.copy(turn).multiply(a.q);
-    start.x = a.x + 26 * pull; start.y = a.y + 14 * pull;
-    const startSize = a.size * (1 + 1.6 * pull);
+    start.x = a.x + style.dx * pull; start.y = a.y + style.dy * pull;
+    const startSize = a.size * (1 + style.grow * pull);
     // 2 · across the screen in an arc, coming a little closer on the way
-    const fly = smoother(ramp(k, .14, .9));
+    const fly = smoother(ramp(k, ...style.flight));
     const end = { x: b.x, y: bY };
-    ctrl.x = lerp(start.x, end.x, .5) + rect.width * .07; ctrl.y = Math.max(top, Math.min(start.y, end.y) - rect.height * .1);
+    ctrl.x = lerp(start.x, end.x, .5) + rect.width * style.arc[0]; ctrl.y = Math.max(top, Math.min(start.y, end.y) - rect.height * style.arc[1]);
     bez(start, ctrl, end, fly, at);
-    const size = Math.exp(lerp(Math.log(startSize), Math.log(b.size), fly) + .14 * Math.sin(Math.PI * fly));
-    if (fly < .5) qNow.slerpQuaternions(qStart, mid, smooth(fly * 2)); else qNow.slerpQuaternions(mid, b.q, smooth(fly * 2 - 1));
+    const size = Math.exp(lerp(Math.log(startSize), Math.log(b.size), fly) + style.bump * Math.sin(Math.PI * fly));
+    if (!mid) qNow.slerpQuaternions(qStart, b.q, smooth(fly));
+    else if (fly < .5) qNow.slerpQuaternions(qStart, mid, smooth(fly * 2)); else qNow.slerpQuaternions(mid, b.q, smooth(fly * 2 - 1));
     carrier.visible = true;
+    const lock = smooth(ramp(fly, .72, 1)) * (1 - smooth((b.y - bY) / 120)); // only once the destination is in view
+    centreOn(at.x, at.y, rect, lock);
     const bookZ = placeOnScreen(carrier, at.x, at.y, size, qNow, rect);
-    // 3 · laid on the desk: converge on chapter 01's book exactly
+    // 3 · laid down: converge on the destination's book exactly
     endM.multiplyMatrices(B.matrix, centreM).decompose(endP, endQ, endS);
-    const lock = smooth(ramp(fly, .72, 1)) * (1 - smooth((b.y - bY) / 120)); // only once the desk is in view
     carrier.position.lerp(endP, lock); carrier.quaternion.slerp(endQ, lock); carrier.scale.lerp(endS, lock);
 
     // light the book as each scene does, from the shelf's light to the desk's (in chapter 01's world)
