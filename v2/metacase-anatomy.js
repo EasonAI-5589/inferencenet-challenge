@@ -4,10 +4,10 @@
  * fore-edge. Closed again, the seven tab tips trace the book's signature: the shape of
  * how the problem was solved. Rendered by the shared stage (mc-stage.js). */
 import * as THREE from '../assets/vendor/three/three.module.js';
-import { labelPlane, labelTexture, METACASE_LABEL, PALETTE, mat, add, block, cyl, ball, rbox, lights, person, robot, buildings, bookStack, tabDepth, STAGE_COLORS } from './mc-kit.js';
+import { BOOK, labelPlane, labelTexture, METACASE_LABEL, PALETTE, mat, add, block, cyl, ball, rbox, lights, person, robot, buildings, bookStack, tabDepth, STAGE_COLORS } from './mc-kit.js';
 import { clamp, smooth, ramp, lerp, pageBackground, fitSafe, fitBox, toView, glowSprite } from './mc-stage.js';
 
-const PW = 2.4, PD = 3.2, T = .42, BOARD = .06; // page width (x), page depth (z), page block, cover board
+const { PW, PD, T, BOARD } = BOOK;             // page width (x), page depth (z), page block, cover board (shared with closedBook)
 const CHAPTERS = [.13, .8];                        // where the book is open; one band per chapter
 const SIG = 0;
 const band = p => (p - CHAPTERS[0]) / (CHAPTERS[1] - CHAPTERS[0]) * 7;
@@ -82,7 +82,7 @@ const POPUPS = [
   },
 ];
 
-export function createAnatomy({ onProject = () => {}, safe = () => null, reduce = false } = {}) {
+export function createAnatomy({ onProject = () => {}, safe = () => null, held = () => false, reduce = false } = {}) {
   const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(34, 1, .1, 120);
   const light = lights(scene, { span: 8, shadowSize: 1024 });
   light.key.position.set(-4, 10, 7);
@@ -94,7 +94,7 @@ export function createAnatomy({ onProject = () => {}, safe = () => null, reduce 
   cyl(lampG, .3, .36, .08, PALETTE.ink, 0, 0, 0, 20); cyl(lampG, .03, .03, 1.5, PALETTE.ink, 0, .08, 0, 8);
   cyl(lampG, .22, .42, .34, mat(0x3f9d6a), .0, 1.45, 0, 20);
   const lampGlow = glowSprite(0xffd9a0, 4, .5); lampGlow.position.set(0, 1.4, 0); lampG.add(lampGlow);
-  const pool = glowSprite(0xffe2b0, 9, .14); pool.position.set(.6, .05, .2); scene.add(pool);
+  const pool = glowSprite(0xffe2b0, 9, .14); pool.position.set(.6, .05, .2); pool.material.depthTest = false; scene.add(pool); // a soft pool of light, never cut by the desk or the book
   // a closed companion volume and an ink pot, kept quiet at the edge of the light
   block(scene, 1.3, .22, 1.8, mat(0x6b3a3a), 3.4, 0, -1.6, .03).rotation.y = .25;
   block(scene, 1.24, .16, 1.74, mat(PALETTE.cream), 3.42, .03, -1.6, .02).rotation.y = .25;
@@ -102,7 +102,7 @@ export function createAnatomy({ onProject = () => {}, safe = () => null, reduce 
 
   /* ---- the book: a back board, a block of pages, a front cover on a hinge ---- */
   const book = new THREE.Group(); scene.add(book);
-  const cover = mat(0x2c5468, { rough: .9 }), edge = mat(PALETTE.cream), gilt = mat(0xd8b46a, { rough: .4 });
+  const cover = mat(BOOK.COVER, { rough: .9 }), edge = mat(PALETTE.cream), gilt = mat(0xd8b46a, { rough: .4 });
   block(book, PW + .1, BOARD, PD + .12, cover, PW / 2, 0, 0, .02);             // back board
   block(book, PW, T, PD, edge, PW / 2, BOARD, 0, .02).castShadow = true;        // right-hand pages
   block(book, .14, T + BOARD * 2, PD + .12, cover, 0, 0, 0, .04);              // spine
@@ -114,7 +114,7 @@ export function createAnatomy({ onProject = () => {}, safe = () => null, reduce 
   const ink = mat(0x9aa3b2), heading = new THREE.MeshStandardMaterial({ color: STAGE_COLORS[0], roughness: .7 });
   for (let k = 0; k < 9; k++) block(book, PW * (k % 3 === 2 ? .5 : .78), .004, .05, ink, PW / 2 - (k % 3 === 2 ? PW * .14 : 0), rightTop, -PD / 2 + 1.0 + k * .22, .002).castShadow = false;
   add(book, rbox(PW * .78, .006, .16, .003), heading, PW / 2, rightTop + .003, -PD / 2 + .3, false);
-  const NAMES = ['CONTEXT & RAW EVIDENCE', 'PRIOR PRACTICE', 'APPROACHES CONSIDERED', 'REASONING', 'ACTIONS TAKEN', 'OUTCOMES', 'INTERPRETATION & LESSONS'];
+  const NAMES = ['TASK & EVIDENCE', 'PRIORS', 'CANDIDATE PLANS', 'DECISION', 'TRAJECTORY', 'OUTCOME', 'REFLECTION'];
   const runTex = labelTexture('metacase-run', [{ text: 'METACASE', size: 120, weight: 750, color: '#1f2a3a', track: 14 }, { text: 'CH 1 · ' + NAMES[0], size: 52, weight: 500, color: '#6b7280', font: '"Space Mono", ui-monospace, monospace', track: 4 }], { width: 1024, height: 320 });
   const runHead = labelPlane(runTex, PW * .7, PW * .7 * 320 / 1024); runHead.position.set(-PW / 2, 0, -PD / 2 + .62); book.add(runHead);
   let runStage = 0;
@@ -173,6 +173,29 @@ export function createAnatomy({ onProject = () => {}, safe = () => null, reduce 
   const pointer = { x: 0, tx: 0 };
   addEventListener('pointermove', e => { pointer.tx = e.clientX / innerWidth - .5; }, { passive: true });
 
+  function aimCamera(cam, rect, openness, b, draw) {
+    const aspect = rect.width / rect.height, wide = aspect > 1.15;
+    const frame = fitSafe(cam, rect, safe(), { fov: aspect < 1 ? 42 : 32, shift: wide ? -.05 : 0 });
+    target.set(lerp(PW / 2, .1, openness), lerp(.35, .55, openness), lerp(0, .15, openness));
+    aim.set(PW + .35, .3, 0);
+    target.lerp(aim, smooth(draw * 1.3));
+    const fin = smooth(draw * 1.3);
+    const dist = fitBox(lerp(lerp(1.9, 2.75, openness), 1.25, fin), lerp(lerp(1.45, 1.5, openness), 1.75, fin), cam.fov, frame, lerp(.97, .95, fin));
+    const az = lerp(lerp(-.35, -.12, openness) + (reduce ? 0 : pointer.x * .2) + clamp(b / 7) * .2, .15, smooth(draw * 1.3));
+    const el = lerp(lerp(.58, .7, openness), 1.2, smooth(draw * 1.3));
+    cam.position.set(target.x + Math.sin(az) * Math.cos(el) * dist, target.y + Math.sin(el) * dist, target.z + Math.cos(az) * Math.cos(el) * dist);
+    cam.lookAt(target);
+    cam.updateMatrixWorld();
+  }
+  // Where the closed book rests at the start of the chapter, for a view of the given size:
+  // the courier lands the carried book exactly here.
+  const restCamera = new THREE.PerspectiveCamera(34, 1, .1, 120);
+  function restView(rect) {
+    aimCamera(restCamera, rect, 0, -1, 0);
+    book.updateMatrixWorld();
+    return { camera: restCamera, matrix: book.matrixWorld, key: light.key.position };
+  }
+
   function update(dt, t, p, rect) {
     const aspect = rect.width / rect.height, wide = aspect > 1.15;
     pointer.x += (pointer.tx - pointer.x) * .05;
@@ -215,16 +238,8 @@ export function createAnatomy({ onProject = () => {}, safe = () => null, reduce 
     reader.update(t, 0); agent.update(t, 0);
 
     // camera: the closed book, the open spread, then the fore-edge with its signature
-    const frame = fitSafe(camera, rect, safe(), { fov: aspect < 1 ? 42 : 32, shift: wide ? -.05 : 0 });
-    target.set(lerp(PW / 2, .1, openness), lerp(.35, .55, openness), lerp(0, .15, openness));
-    aim.set(PW + .35, .3, 0);
-    target.lerp(aim, smooth(draw * 1.3));
-    const fin = smooth(draw * 1.3);
-    const dist = fitBox(lerp(lerp(1.9, 2.75, openness), 1.25, fin), lerp(lerp(1.45, 1.5, openness), 1.75, fin), camera.fov, frame, lerp(.97, .95, fin));
-    const az = lerp(lerp(-.35, -.12, openness) + (reduce ? 0 : pointer.x * .2) + clamp(b / 7) * .2, .15, smooth(draw * 1.3));
-    const el = lerp(lerp(.58, .7, openness), 1.2, smooth(draw * 1.3));
-    camera.position.set(target.x + Math.sin(az) * Math.cos(el) * dist, target.y + Math.sin(el) * dist, target.z + Math.cos(az) * Math.cos(el) * dist);
-    camera.lookAt(target);
+    aimCamera(camera, rect, openness, b, draw);
+    book.visible = !held();
     book.updateMatrixWorld();
 
     onProject(pops.map((pop, i) => {
@@ -234,5 +249,5 @@ export function createAnatomy({ onProject = () => {}, safe = () => null, reduce 
   }
   function setTheme() { const bg = pageBackground(); scene.background = bg; scene.fog = new THREE.Fog(bg, 16, 40); }
   setTheme();
-  return { scene, camera, update, setTheme };
+  return { scene, camera, update, setTheme, restView };
 }

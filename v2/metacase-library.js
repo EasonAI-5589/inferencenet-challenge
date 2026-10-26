@@ -6,7 +6,7 @@
  * empty places. Used twice: the hero (ambient) and chapter 03 (scroll-driven:
  * own cases → shared structures → reuse → new cases arrive). */
 import * as THREE from '../assets/vendor/three/three.module.js';
-import { PALETTE, mat, add, block, cyl, person, robot, tile, lights } from './mc-kit.js';
+import { PALETTE, BOOK, closedBook, mat, add, block, cyl, person, robot, tile, lights } from './mc-kit.js';
 import { clamp, smooth, ramp, lerp, pageBackground, fitCamera, toView, glowSprite } from './mc-stage.js';
 
 // Bays per wing: [catalogue class, volumes, bay width in units]. Counts follow
@@ -51,7 +51,13 @@ function lamp(parent, x, y, z, color = 0xffd9a0) {
   return { shade: shadeMesh, glow };
 }
 
-export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = false } = {}) {
+// The Metacase that chapter 01 opens stands here: finance wing, fourth bay, middle shelf.
+const FEATURED = { wing: 1, bay: 3, shelf: 1 }, FEATURED_H = .62;
+// Where the other materials of a case come from (wing, bay, shelf): chapter 01's courier
+// draws a web page, a data sheet, a chart and a recording out of these shelves.
+const SOURCES = [[0, 0, 2], [0, 3, 0], [2, 0, 2], [2, 3, 1]];
+
+export function createLibrary({ mode = 'hero', onProject = () => {}, extracted = () => false, reduce = false } = {}) {
   const story = mode === 'story';
   const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(36, 1, .1, 400);
   const sky = dome(); scene.add(sky);
@@ -76,6 +82,7 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = fa
     new THREE.PointsMaterial({ color: 0xffe2b0, size: .05, transparent: true, opacity: .55, depthWrite: false }));
   scene.add(motes);
 
+  let featuredSlot = null;
   const ghosts = [], arrivals = []; // [parent, x, y, z, w, h] for translucent volumes still to come
   function fillGhosts(parent, shelves, bw, startShelf, startX, seed) {
     let shelf = startShelf, x = startX, k = seed;
@@ -108,6 +115,9 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = fa
       for (let k = 0; k < count && shelf < SHELF_Y.length; k++) {
         const bwid = [.1, .12, .13, .11][(k + bi) % 4], bh = [.5, .62, .56, .46, .66][(k * 3 + wi) % 5];
         if (x + bwid > bw / 2 - .1) { shelf++; x = -bw / 2 + .1; if (shelf >= SHELF_Y.length) break; }
+        if (!featuredSlot && wi === FEATURED.wing && bi === FEATURED.bay && shelf === FEATURED.shelf) { // leave room for the Metacase
+          featuredSlot = { bay, x: x + .06, y: SHELF_Y[shelf] }; x += .14;
+        }
         const tone = [-.25, 0, .3, -.1, .15][(k + bi * 2) % 5];
         const b = block(bay, bwid, bh, .38, mat(shade(w.accent, tone)), x + bwid / 2, SHELF_Y[shelf], .04, .012);
         b.castShadow = false;
@@ -132,6 +142,17 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = fa
     if (wi !== 1) { const l = ladder(); l.position.copy(at(end - .06, R - .62)); l.rotation.y = -(end - .06); group.add(l); }
     return { w, group, bays, mid, start, end, top: at(mid, R - 2.4).setY(.15) };
   });
+
+  /* ---- the Metacase of chapter 01, standing spine-out on its shelf ---- */
+  const featured = closedBook(), fs = FEATURED_H / BOOK.PD;
+  // pages run into the shelf (-z), the cover faces the next volume (-x), the head is up
+  featured.matrixAutoUpdate = true;
+  featured.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(new THREE.Vector3(0, 0, -1), new THREE.Vector3(-1, 0, 0), new THREE.Vector3(0, 1, 0)));
+  featured.scale.setScalar(fs);
+  featured.position.set(featuredSlot.x + (BOOK.T + BOOK.BOARD * 2) * fs / 2, featuredSlot.y + BOOK.PD * fs / 2, .23);
+  featuredSlot.bay.add(featured);
+  const featuredGlow = glowSprite(0xffe2b0, .9, 0); featuredGlow.position.set(featuredSlot.x, featuredSlot.y + .32, .3); featuredSlot.bay.add(featuredGlow);
+  const sourcePoints = SOURCES.map(([wi, bi, sh]) => ({ bay: wings[wi].bays[bi].bay, local: new THREE.Vector3(0, SHELF_Y[sh] + .3, .22) }));
 
   /* ---- a balcony along the whole arc, with a lamp above each wing ---- */
   const gallery = new THREE.Group(); scene.add(gallery);
@@ -230,6 +251,9 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = fa
     pointer.x += (pointer.tx - pointer.x) * .04; pointer.y += (pointer.ty - pointer.y) * .04;
     motes.rotation.y = t * .01;
     reader.update(t, 0); browsers.forEach(b => b.update(t, 0));
+    const out = extracted();
+    featured.visible = !out;
+    featuredGlow.material.opacity = story || out ? 0 : .28 + Math.sin(t * 1.6) * .1; // a hint of where chapter 01 begins
 
     // cross-references draw themselves; in the hero they come and go in turn
     const linked = story ? ramp(p, .24, .46) : 1;
@@ -294,5 +318,8 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = fa
     light.hemi.intensity = lightTheme ? 2.3 : 1.8;
   }
   setTheme();
-  return { scene, camera, update, setTheme };
+  // For the courier: the featured book as this view shows it, and where the other materials sit.
+  function featuredView() { featured.updateMatrixWorld(true); camera.updateMatrixWorld(); return { camera, matrix: featured.matrixWorld, key: light.key.position }; }
+  function sources() { return sourcePoints.map(({ bay, local }) => bay.localToWorld(local.clone())); }
+  return { scene, camera, update, setTheme, featuredView, sources };
 }

@@ -9,7 +9,7 @@ const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const ease = x => { const p = clamp(x); return p * p * (3 - 2 * p); };
-const V = '?v=20261027-mc6-book';
+const V = '?v=20261027-copy2';
 
 /* ---- layout helpers ---- */
 const siteHeader = $('.site-header'), subnav = $('.mc-subnav');
@@ -79,6 +79,32 @@ function safeArea(pin) {
   };
 }
 
+/* ---- hero → 01: how far the Metacase has travelled from its shelf to the desk ---- */
+// 0 with the page at the top, 1 when chapter 01 pins; the courier, the hero bookcase and
+// chapter 01 all read this same value, so the book is never shown twice or not at all.
+let heroLib = null, anatomyObj = null, courierReady = false, handoffAt = -1, handoffK = 0;
+function bookHandoff() {
+  const now = performance.now();
+  if (now - handoffAt < 4) return handoffK;
+  const section = $('#metacase'), pin = section && $('.mc-scene-pin', section);
+  if (!pin) return (handoffK = 1);
+  const pinTop = parseFloat(getComputedStyle(pin).top) || 0, top = section.getBoundingClientRect().top;
+  const total = Math.max(1, top + scrollY - pinTop);
+  handoffAt = now;
+  return (handoffK = clamp(((total - (top - pinTop)) / total - .03) / .97));
+}
+const carrying = () => courierReady && heroLib && anatomyObj && !reduce;
+const courierEl = document.createElement('div');
+courierEl.className = 'mc-courier'; courierEl.setAttribute('aria-hidden', 'true');
+document.body.append(courierEl);
+// The courier has its own canvas above the page text (below the header and section nav),
+// so the travelling book is never hidden by the hero's text backdrop. Over the last few
+// percent it fades out while chapter 01's own book, in the same place, is already shown.
+const courierCanvas = document.createElement('canvas');
+courierCanvas.className = 'mc-stage mc-stage-top'; courierCanvas.setAttribute('aria-hidden', 'true');
+document.body.append(courierCanvas);
+const HANDOVER = .94;
+
 /* ---- the stage ---- */
 let stage = null;
 const canvas = document.createElement('canvas');
@@ -94,12 +120,12 @@ import('./mc-stage.js' + V).then(({ createStage }) => {
   // hero: the library, in lamplight
   const hero = $('.mc-hero'), heroTags = $$('[data-tags="hero"] [data-tag]');
   stage.add({ el: hero, near: 2, postOptions: { bloom: .35, threshold: .9, vignette: 0 },
-    build: () => import('./metacase-library.js' + V).then(m => m.createLibrary({ mode: 'hero', reduce, onProject: list => list.forEach((s, i) => place(heroTags[i], { ...s, opacity: s.opacity * ((hero.clientWidth <= 860 ? s.y < 420 : s.x > hero.clientWidth * .47) ? 1 : 0) })) })) });
+    build: () => import('./metacase-library.js' + V).then(m => heroLib = m.createLibrary({ mode: 'hero', reduce, extracted: () => carrying() && bookHandoff() > 0, onProject: list => list.forEach((s, i) => place(heroTags[i], { ...s, opacity: s.opacity * ((hero.clientWidth <= 860 ? s.y < 420 : s.x > hero.clientWidth * .47) ? 1 : 0) })) })) });
 
   // 01: the Metacase opens
   const anatomy = $('#metacase'), notes = $$('[data-notes="anatomy"] li', anatomy);
   stage.add({ el: $('.mc-scene-pin', anatomy), near: 2.5, postOptions: { bloom: .32, threshold: .9, vignette: .2 }, progress: () => pinProgress(anatomy),
-    build: () => import('./metacase-anatomy.js' + V).then(m => m.createAnatomy({ reduce, safe: safeArea($('.mc-scene-pin', anatomy)), onProject: (list, extra) => {
+    build: () => import('./metacase-anatomy.js' + V).then(m => anatomyObj = m.createAnatomy({ reduce, safe: safeArea($('.mc-scene-pin', anatomy)), held: () => carrying() && bookHandoff() < HANDOVER, onProject: (list, extra) => {
       list.forEach((s, i) => place(notes[i], { ...s, opacity: s.active ? s.opacity : 0 }));
       place(notes[7], { ...extra.signature, opacity: extra.draw, visible: extra.draw > .05, active: true });
     } })) });
@@ -116,6 +142,21 @@ import('./mc-stage.js' + V).then(({ createStage }) => {
 
   // card vignettes
   $$('.mc-art').forEach(el => stage.add({ el, near: 1, build: () => import('./metacase-cards.js' + V).then(m => m.createCard(el.dataset.art)) }));
+
+  // the courier: on its own canvas, while the Metacase travels from shelf to desk
+  if (!reduce) {
+    const anatomyPin = $('.mc-scene-pin', anatomy);
+    const top = createStage(courierCanvas, { reduce, clipTop });
+    top.add({ el: courierEl, near: 0, build: () => import('./metacase-courier.js' + V).then(m => {
+      const courier = m.createCourier({
+        progress: bookHandoff,
+        from: () => heroLib && { ...heroLib.featuredView(), rect: hero.getBoundingClientRect(), sources: heroLib.sources() },
+        to: () => { if (!anatomyObj) return null; const rect = anatomyPin.getBoundingClientRect(); return { ...anatomyObj.restView(rect), rect }; },
+      });
+      courierReady = true; onScroll();
+      return courier;
+    }) });
+  }
 }).catch(error => {
   root.classList.add('mc-no3d');
   console.warn('3D stage unavailable; the page stays readable.', error);
@@ -195,6 +236,11 @@ function onScroll() {
   requestAnimationFrame(() => {
     ticking = false;
     sceneControllers.forEach(([section, fn]) => { if (getComputedStyle($('.mc-scene-pin', section)).position === 'sticky') fn(pinProgress(section)); });
+    if (courierReady) {
+      const k = bookHandoff();
+      courierEl.style.display = k > 0 && k < 1 ? '' : 'none';
+      courierCanvas.style.opacity = (1 - ease((k - HANDOVER) / (1 - HANDOVER))).toFixed(3);
+    }
     navUpdate();
   });
 }

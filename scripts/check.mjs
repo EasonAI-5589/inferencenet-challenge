@@ -13,7 +13,7 @@ const redirects = { 'data.html': 'challenge.html#replication-data', 'agent.html'
 // translation dictionaries and the root scripts, and adds its own design files.
 export const v2Pages = pages.map(page => `v2/${page}`);
 const v2Redirects = Object.fromEntries(Object.entries(redirects).map(([file, target]) => [`v2/${file}`, target]));
-const v2Files = ['v2/v2.css', 'v2/home.css', 'v2/skin.css', 'v2/theme.js', 'v2/v2.js', 'v2/home.js', 'v2/backdrop.js', 'v2/scene.css', 'v2/scene.js', 'v2/arena.css', 'v2/arena.js', 'v2/arena-scene.js', 'v2/arena-motion.js', 'v2/arena-models.js', 'v2/metacase.css', 'v2/metacase.js', 'v2/metacase-world.js', 'v2/metacase-library.js', 'v2/metacase-anatomy.js', 'v2/metacase-archive.js', 'v2/metacase-cards.js', 'v2/mc-stage.js', 'v2/mc-toon.js', 'v2/mc-kit.js'];
+const v2Files = ['v2/v2.css', 'v2/home.css', 'v2/skin.css', 'v2/theme.js', 'v2/v2.js', 'v2/home.js', 'v2/backdrop.js', 'v2/scene.css', 'v2/scene.js', 'v2/arena.css', 'v2/arena.js', 'v2/arena-scene.js', 'v2/arena-motion.js', 'v2/arena-models.js', 'v2/metacase.css', 'v2/metacase.js', 'v2/metacase-world.js', 'v2/metacase-library.js', 'v2/metacase-courier.js', 'v2/metacase-anatomy.js', 'v2/metacase-archive.js', 'v2/metacase-cards.js', 'v2/mc-stage.js', 'v2/mc-toon.js', 'v2/mc-kit.js', 'v2/arena-data.js', 'v2/arena-campus.js', 'v2/arena-subtracks.js', 'v2/mc-rail.js'];
 const allRedirects = { ...redirects, ...v2Redirects };
 export const publicFiles = [
   ...pages,
@@ -122,7 +122,7 @@ for (const file of scanned) {
   if (/\/Users\/|127\.0\.0\.1|localhost|local\/runs|sources\.lock\.json/.test(source)) throw new Error(`Private workspace reference in ${file}`);
   if (/\/mnt\/|\b(?:\d{1,3}\.){3}\d{1,3}\b|\b[A-Z]:[\\/]/.test(source)) throw new Error(`Server path or address in ${file}`);
   if (/\bTODO\b|lorem ipsum/i.test(source)) throw new Error(`Placeholder text in ${file}`);
-  const translatedAsset = file === 'language.js' || file === 'v2/arena.js' || file === 'v2/arena-scene.js' || /^assets\/i18n\/(index|challenge|replication|data|agent|harness|evolution|leaderboard|teams|professional-tasks)\.zh\.json$/.test(file);
+  const translatedAsset = file === 'language.js' || file === 'v2/arena.js' || file === 'v2/arena-data.js' || file === 'v2/arena-scene.js' || /^assets\/i18n\/(index|challenge|replication|data|agent|harness|evolution|leaderboard|teams|professional-tasks)\.zh\.json$/.test(file);
   if (/[一-鿿]/.test(source) && !translatedAsset) throw new Error(`CJK text outside the reviewed translation layer in ${file}`);
   if (file.startsWith('assets/i18n/')) {
     const dictionary = JSON.parse(source);

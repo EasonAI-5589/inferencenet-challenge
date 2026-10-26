@@ -1,16 +1,19 @@
 /* A single scroll-owned timeline: camera, equipment, rooms and evidence all follow it. */
-import { createTelemetry } from './arena-motion.js';
+import { createSignatureRail } from './mc-rail.js';
+import { ARENA_DOMAINS, HARNESS_NAMES } from './arena-data.js';
 
 const chapter = document.querySelector('.mc-chapter');
 if (chapter) {
   const $ = selector => chapter.querySelector(selector);
   const $$ = selector => [...chapter.querySelectorAll(selector)];
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const compact = matchMedia('(max-width: 860px) and (max-height: 720px)');
+  const manual = () => reduced.matches || compact.matches;
   const stops = [0, .16, .38, .57, .76, .93, 1];
   const clamp = x => Math.max(0, Math.min(1, x));
   const ease = x => { const p = clamp(x); return p * p * (3 - 2 * p); };
   const lang = () => document.documentElement.lang.startsWith('zh') ? 1 : 0;
-  const state = { progress: 0, phase: 0, harness: 0, equippedHarness: null, room: 0, pointer: { x: 0, y: 0 }, paused: reduced.matches, language: lang() ? 'zh' : 'en' };
+  const state = { progress: 0, arrival: manual() ? 1 : 0, phase: 0, harness: 0, equippedHarness: null, room: 0, pointer: { x: 0, y: 0 }, paused: reduced.matches, language: lang() ? 'zh' : 'en' };
   const harnesses = [
     { name: 'DeepSeek Harness', lines: ['DeepSeek', 'Harness'], type: ['Plugin runtime', '插件运行时'], description: ['Swap the runtime. Recompose the tools, context and feedback around the same agent.', '切换运行时，围绕同一个 Agent 重新组织工具、上下文与反馈。'] },
     { name: 'DeepAgents', lines: ['DeepAgents'], type: ['Library harness', '库式 Harness'], description: ['Equip a planning-oriented harness. Make the workflow and working context part of the setup.', '装备面向规划的 Harness，将工作流与工作上下文纳入配置。'] },
@@ -21,12 +24,26 @@ if (chapter) {
     { name: 'Terminus-2', lines: ['Terminus', '-2'], type: ['Reference loop', '参考执行循环'], description: ['Equip a terminal-oriented loop. Tools turn proposed actions into observable results.', '装备面向终端的执行循环，让工具将行动转化为可观察结果。'] },
     { name: 'mini-SWE-agent', lines: ['mini-SWE', 'agent'], type: ['Minimal loop', '精简执行循环'], description: ['Strip the loop back to its essentials. Architecture is a variable; evidence remains the anchor.', '将循环简化到核心。架构可以改变，证据始终是依据。'] },
   ];
+  const domainHeadlines = [
+    ['Evidence to insight.', '从证据理解经济。'],
+    ['Make it add up.', '让每一项都有依据。'],
+    ['People & decisions.', '理解人与决策。'],
+  ];
+  const domainEvents = [
+    ['Reproduce findings → interpret policy → calibrate signals → align data.', '复现实证结果 → 解读政策 → 校准市场信号 → 对齐数据口径。'],
+    ['Reconcile accounts → trace disclosures → assess risk → explain the numbers.', '核对账目 → 追踪披露 → 识别风险 → 解释数值与文本。'],
+    ['Interpret rules → understand organizations → analyze behavior → support decisions.', '理解规则 → 分析组织 → 研究行为 → 支持决策。'],
+  ];
   const phases = [
-    { tag:['01 / ENTER THE ARENA','01 / 进入竞技场'], title:['Where Metacases<br><em>are made.</em>','Metacase<br><em>在这里生成。</em>'], body:['The Metacase Challenge is the first pipeline into the Metacase network. One agent takes on real, complete cases: raw evidence in, a deliverable that can be checked out.', 'Metacase 挑战赛是通往 Metacase 网络的第一条管线。一个 Agent 承接真实而完整的案例：输入原始证据，交出可以核查的成果。'], code:['THE METACASE CHALLENGE · THE FIRST PIPELINE INTO THE METACASE NETWORK','METACASE 挑战赛 · 通往 METACASE 网络的第一条管线'], label:['ENTER','进入'], event:['Every case begins as a question, its raw evidence and the practice that came before.', '每个案例都从一个问题、原始证据和既往做法开始。'] },
-    { tag:['02 / THE HARNESS WHEEL','02 / HARNESS 装备轮'], title:['Same mind.<br><em>Different tools.</em>','同一个 Agent，<br><em>不同的装备。</em>'], body:['Scroll to browse eight harnesses. Click a slot or confirm below to carry its weapon into the arena.', '滚动浏览八种 Harness。点击轮盘区段或下方确认按钮，将武器背上，进入竞技场。'], code:['SCROLL TO BROWSE · CLICK TO EQUIP','滚动浏览 · 点击装备'], label:['EQUIP','装备'], event:['', ''] },
-    { tag:['03 / ECONOMICS','03 / 经济'], title:['Rebuild<br><em>the result.</em>','重建<br><em>研究结果。</em>'], body:['Econometric replication. Inspect the data, reconstruct the specification and test against a withheld reference.', '计量经济学复现。检查数据、重建模型设定，并对照保留参考值核验。'], code:['ECONOMICS · STATISTICS · SOCIAL SCIENCE','经济学 · 统计学 · 社会科学'], label:['REPLICATE','复现'], event:['Read the source data → compare specifications → run the estimator → verify the result.', '读取源数据 → 比较模型设定 → 执行估计 → 验证结果。'] },
-    { tag:['04 / FINANCE','04 / 金融'], title:['Follow<br><em>the evidence.</em>','追踪<br><em>每一条证据。</em>'], body:['Business Analysis & Deliverables. Reconcile the close, weigh correction options and produce a review that can be checked.', '业务分析与交付。核对关账资料、比较更正方案，生成可检查的审阅交付物。'], code:['FINANCE · ACCOUNTING · BUSINESS JUDGMENT','金融 · 会计 · 商业判断'], label:['RECONCILE','核对'], event:['Inspect ledgers and policy → reconcile discrepancies → deliver the workbook and review.', '检查账本与政策 → 核对差异 → 交付工作簿和审阅报告。'] },
-    { tag:['05 / SOCIAL SCIENCE','05 / 社科'], title:['Turn analysis<br><em>into a decision.</em>','让分析<br><em>形成决策。</em>'], body:['Evaluate training impact. Connect findings, limitations and procurement criteria to a defensible recommendation.', '评估培训效果，将发现、局限与采购标准关联起来，形成有依据的建议。'], code:['HUMAN RESOURCES · IMPACT · PROCUREMENT','人力资源 · 效果评估 · 采购'], label:['DECIDE','决策'], event:['Compare outcomes → test explanations → document limits → recommend an action.', '比较结果 → 检验解释 → 记录局限 → 提出行动建议。'] },
+    { tag:['01 / ENTER THE ARENA','01 / 进入竞技场'], title:['One agent.<br><em>Three worlds of work.</em>','一个 Agent，<br><em>三大挑战方向。</em>'], body:['Economics, Finance and Social Science: 16 case categories, from raw evidence to a complete, inspectable result.', '经济、金融、社科，16 个二级目录。从原始证据出发，完成可检查的解题与交付。'], code:['THREE DOMAINS · SIXTEEN CASE CATEGORIES','三大主要方向 · 16 个二级目录'], label:['ENTER','进入'], event:['Choose a harness, approach a domain and follow the entire problem-solving episode.', '选择 Harness，进入挑战方向，记录完整解题过程。'] },
+    { tag:['02 / THE HARNESS WHEEL','02 / HARNESS 装备轮'], title:['Same mind.<br><em>Different tools.</em>','同一个 Agent，<br><em>不同的装备。</em>'], body:['Scroll to browse eight harnesses. Confirm one, then watch it unfold beside your agent as you approach a challenge.', '滚动浏览八种 Harness。确认装备后，继续靠近房间，武器会从背部展开至身侧并瞄准挑战。'], code:['SCROLL TO BROWSE · CLICK TO EQUIP','滚动浏览 · 点击装备'], label:['EQUIP','装备'], event:['', ''] },
+    ...ARENA_DOMAINS.map((domain, i) => ({
+      tag: [`0${i + 3} / ${domain.id.toUpperCase()}`, `0${i + 3} / ${domain.name[1]}`],
+      title: [`${domain.name[0]}<br><em>${domainHeadlines[i][0]}</em>`, `${domain.name[1]}<br><em>${domainHeadlines[i][1]}</em>`],
+      body: domain.summary,
+      code: [`${domain.id}/ · ${domain.entries.length} CASE CATEGORIES`, `${domain.id}/ · ${domain.entries.length} 个二级目录`],
+      label: [domain.name[0].toUpperCase(), domain.name[1]], event: domainEvents[i],
+    })),
     { tag:['06 / BECOMING A METACASE','06 / 成为 METACASE'], title:['Solved. Evaluated.<br><em>Kept as experience.</em>','解决、评测，<br><em>沉淀为经验。</em>'], body:['The whole run, from evidence and choices to actions and outcome, is kept intact. Once reviewed, it can join the network as a new Metacase.', '从证据、选择到行动与结果，整次运行被完整保存；经过审核后，可以作为新的 Metacase 加入网络。'], code:['REVIEWED RUNS CAN BECOME METACASES','经过审核的运行可以成为 METACASE'], label:['REMEMBER','沉淀'], event:['Preserve the whole episode. Retrieve not only similar facts, but similar problem-solving structures.', '保留完整过程。检索相似事实，也检索相似的解题结构。'] },
   ];
   const toolPaths = [
@@ -50,32 +67,56 @@ if (chapter) {
       return `<g data-wheel-item="${i}"><path class="mc-sector" d="${wedge(a,b)}"/><path class="mc-sector-inner" d="M${pt(polar(181,a+.012))} A181 181 0 0 1 ${pt(polar(181,b-.012))}"/><g class="mc-item-icon" transform="translate(${c[0]},${c[1]-23}) scale(.73)"><path d="${toolPaths[i]}" fill="currentColor" fill-opacity=".13" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></g><text class="mc-item-name" x="${c[0]}" y="${c[1]+10}">${h.lines.map((line,j)=>`<tspan x="${c[0]}" dy="${j ? 24 : 0}">${line}</tspan>`).join('')}</text></g>`;
     }).join('')
     + Array.from({length:80},(_,i)=>{ const a=i*Math.PI/40;return `<path class="mc-wheel-ruler" d="M${pt(polar(287,a))}L${pt(polar(i%10===0?296:291,a))}"/>`; }).join('');
-  let scene, telemetry, loading = false, frame = 0, visible = false, anchor = null, lastKey = '';
+  const setRail = createSignatureRail($('.mc-timeline'));
+  let scene, loading = false, frame = 0, visible = false, anchor = null, lastKey = '';
   function paintCopy() {
     const l = lang(), p = phases[state.phase], h = harnesses[state.harness];
     const equipped = harnesses[state.equippedHarness], browsing = state.phase === 1;
     const shown = browsing ? h : equipped;
+    const inDomain = state.phase >= 2 && state.phase <= 4;
+    const domain = ARENA_DOMAINS[state.room];
+    chapter.dataset.domain = inDomain ? domain.id : '';
+    chapter.style.setProperty('--domain-accent', ['var(--track-1)', 'var(--track-2)', 'var(--mc-violet)'][state.room]);
+    $('[data-mc-directory]').hidden = !inDomain;
+    $('[data-mc-directory]').setAttribute('aria-label', domain.name[l] + (l ? ' 目录' : ' case categories'));
+    $('[data-mc-directory-hint]').textContent = l ? '横滑查看 →' : 'SWIPE →';
+    $('[data-mc-overview]').hidden = state.phase !== 0;
+    $('[data-mc-directory-title]').textContent = l ? `${domain.id}/ · ${domain.entries.length} 个二级目录` : `${domain.id}/ · ${domain.entries.length} case categories`;
+    $('[data-mc-directory-list]').replaceChildren(...domain.entries.map(entry => {
+      const item = document.createElement('li'), code = document.createElement('code'), name = document.createElement('span');
+      item.dataset.category = entry.id; item.title = entry.description[l];
+      code.textContent = entry.id; name.textContent = entry.name[l];
+      item.append(code, name); return item;
+    }));
+    $('[data-mc-overview]').replaceChildren(...ARENA_DOMAINS.map(d => {
+      const tag = document.createElement('span'); tag.textContent = `${d.id}/ ${d.entries.length}`;
+      tag.title = `${d.name[l]} · ${d.entries.length}`; return tag;
+    }));
     $('[data-mc-kicker]').textContent = p.tag[l];
     $('#system-title').innerHTML = p.title[l];
-    $('[data-mc-body]').textContent = p.body[l];
+    $('[data-mc-body]').textContent = browsing && manual()
+      ? (l ? '用进度条浏览八种 Harness，再点击区段或确认按钮装备。' : 'Use the slider to browse eight harnesses, then click a slot or confirm your equipment.')
+      : p.body[l];
     $('[data-mc-code]').textContent = p.code[l];
     $('[data-mc-equipped]').textContent = shown?.name || (l ? '等待选择装备' : 'Awaiting a loadout');
     $('[data-mc-equipped]').dataset.font = shown ? harnesses.indexOf(shown) : '';
     $('[data-mc-type]').textContent = shown?.type[l] || (l ? '在装备轮中确认你的 Harness' : 'Choose a harness at the equipment wheel');
     $('.mc-confirm').hidden = !browsing;
     $('.mc-confirm').disabled = state.equippedHarness === state.harness;
-    $('.mc-confirm').textContent = state.equippedHarness === state.harness ? (l ? '已背负 ✓' : 'EQUIPPED ✓') : (l ? '确认装备 ↗' : 'EQUIP THIS HARNESS ↗');
+    $('.mc-confirm').textContent = state.equippedHarness === state.harness ? (l ? '已装备 ✓' : 'Equipped ✓') : (l ? '确认装备 ↗' : 'Equip this harness ↗');
     $('.mc-confirm').setAttribute('aria-label', l ? `确认装备 ${h.name}` : `Equip ${h.name}`);
     $('[data-mc-carried]').textContent = equipped ? (l ? `背负装备：${equipped.name}` : `ON YOUR BACK / ${equipped.name}`) : (l ? '尚未装备 · 点击确认' : 'NOT EQUIPPED · CLICK TO CONFIRM');
     $('[data-mc-carried]').hidden = !browsing;
     $('[data-mc-event]').textContent = state.phase === 1 ? h.description[l] : p.event[l];
     $('[data-mc-index]').textContent = String(state.phase + 1).padStart(2,'0');
-    $('[data-mc-name]').textContent = l ? 'METACASE 挑战赛 / 竞技场' : 'METACASE CHALLENGE / THE ARENA';
-    $('[data-mc-scroll-hint]').textContent = reduced.matches ? (l?'用下方进度条探索':'EXPLORE WITH THE SLIDER') : (l?'滚动，进入下一幕':'SCROLL TO EXPLORE');
-    $('[data-mc-loadout-label]').textContent = browsing ? (l ? '预览装备 / HARNESS' : 'PREVIEW / HARNESS') : (l ? '背负装备 / HARNESS' : 'CARRIED / HARNESS');
-    $('[data-mc-wheel-label]').textContent = l ? '滚动浏览 · 点击区段确认' : 'SCROLL TO BROWSE · CLICK A SLOT TO EQUIP';
+    $('[data-mc-name]').textContent = l ? 'METACASE 挑战赛' : 'THE METACASE CHALLENGE';
+    $('[data-mc-scroll-hint]').textContent = manual() ? (l?'用下方进度条探索':'EXPLORE WITH THE SLIDER') : (l?'滚动，进入下一幕':'SCROLL TO EXPLORE');
+    $('[data-mc-loadout-label]').textContent = browsing ? (l ? '预览装备 / HARNESS' : 'PREVIEW / HARNESS') : inDomain && equipped ? (l ? '悬浮装备 / HARNESS' : 'DEPLOYED / HARNESS') : (l ? '背负装备 / HARNESS' : 'CARRIED / HARNESS');
+    $('[data-mc-wheel-label]').textContent = manual()
+      ? (l ? '拖动进度条浏览 · 点击区段确认' : 'USE THE SLIDER · CLICK A SLOT TO EQUIP')
+      : (l ? '滚动浏览 · 点击区段确认' : 'SCROLL TO BROWSE · CLICK A SLOT TO EQUIP');
     $('[data-mc-episode-label]').textContent = l ? 'METACASE / 轨迹' : 'METACASE / TRACE';
-    $('[data-mc-illustrative]').textContent = l ? '概念演示 · 八种架构不是性能排名；三个案例房对应经济、金融与社科。' : 'Conceptual episode · Eight architectures, no performance ranking. Three case rooms, three fields.';
+    $('[data-mc-illustrative]').textContent = l ? '经济 · 金融 · 社科 / 三大方向，16 个二级目录。' : 'Economics · Finance · Social Science / 3 domains, 16 case categories.';
     $('[data-mc-slider-label]').textContent = l ? '探索完整解题轨迹' : 'Explore the complete episode';
     $('.mc-timeline').setAttribute('aria-label', l ? '解题轨迹章节' : 'Episode chapters');
     $('.mc-fallback p').textContent = l ? '一个 Agent，多种 Harness。从原始证据走向可复用经验。滚动或使用进度条探索。' : 'One agent. Many harnesses. Follow the path from evidence to experience by scrolling or using the slider.';
@@ -109,18 +150,24 @@ if (chapter) {
     const enter = ease((state.progress-.12)/.055), exit = ease((state.progress-.365)/.035);
     $('.mc-wheel').style.setProperty('--wheel-opacity',(enter*(1-exit)).toFixed(3));
     $('.mc-wheel').style.setProperty('--wheel-scale',(.75+.25*enter-.14*exit).toFixed(3));
-    $$('[data-mc-chapter]').forEach((el,i)=>el.style.setProperty('--chapter-fill',clamp((state.progress-stops[i])/(stops[i+1]-stops[i])).toFixed(4)));
+    setRail(clamp((state.phase + local) / 5), state.phase);
     $('.mc-scrub').value = Math.round(state.progress*1000);
     chapter.dataset.progress = state.progress.toFixed(4);
     scene?.update(state);
-    telemetry?.update(state);
   }
   function fromScroll() {
     frame = 0;
-    if (reduced.matches) return;
+    if (manual()) {
+      state.arrival = 1;
+      scene?.update(state);
+      return;
+    }
     const rect = chapter.getBoundingClientRect(), pin = $('.mc-pin');
     const top = parseFloat(getComputedStyle(pin).top) || 112;
     const range = chapter.offsetHeight-pin.offsetHeight;
+    // The descent starts as this chapter enters the viewport, before its pinned timeline.
+    // Both arrival and the episode are spatial, so reversing the scroll reverses the flight.
+    state.arrival = clamp((innerHeight-rect.top)/Math.max(1,innerHeight-top));
     if (range>0) setProgress((top-rect.top)/range);
   }
   const schedule = () => { if (!frame && visible) frame=requestAnimationFrame(fromScroll); };
@@ -131,7 +178,6 @@ if (chapter) {
     lastKey = '';
     paintCopy();
     scene?.update(state);
-    telemetry?.update(state);
     $('.mc-equipment-status').textContent = lang() ? `${harnesses[index].name} 已装备到背部。` : `${harnesses[index].name} equipped on your back.`;
   }
   $('.mc-confirm').addEventListener('click',()=>equip(state.harness));
@@ -147,7 +193,7 @@ if (chapter) {
     else if(['ArrowLeft','ArrowUp','ArrowRight','ArrowDown'].includes(event.key)) {
       event.preventDefault();
       const next=(index+(['ArrowLeft','ArrowUp'].includes(event.key)?7:1))%8;
-      state.harness=next;lastKey='';paintCopy();scene?.update(state);telemetry?.update(state);
+      state.harness=next;lastKey='';paintCopy();scene?.update(state);
       $$('[data-wheel-item]')[next].focus({preventScroll:true});
     }
   });
@@ -155,7 +201,7 @@ if (chapter) {
   window.addEventListener('resize',schedule,{passive:true});
   $('.mc-scrub').addEventListener('input',event=>{
     const p=Number(event.target.value)/1000;
-    if(reduced.matches) { setProgress(p); return; }
+    if(manual()) { setProgress(p); return; }
     const pin=$('.mc-pin'), top=parseFloat(getComputedStyle(pin).top)||112;
     const target=scrollY+chapter.getBoundingClientRect().top-top+p*(chapter.offsetHeight-pin.offsetHeight);
     if(window.__lenis) window.__lenis.scrollTo(target,{immediate:true});
@@ -169,12 +215,23 @@ if (chapter) {
     scene?.update(state);
   },{passive:true});
   $('.mc-pin').addEventListener('pointerleave',()=>{state.pointer={x:0,y:0};scene?.update(state);});
+  const floatingLabel = $('[data-mc-floating-harness]');
+  function projectWeapon(projected) {
+    const visible = projected?.visible && state.equippedHarness !== null;
+    floatingLabel.hidden = !visible;
+    if (!visible) return;
+    const pin = $('.mc-pin');
+    const x = Math.max(100, Math.min(pin.clientWidth - 100, projected.x));
+    const y = Math.max(80, Math.min(pin.clientHeight - 100, projected.y));
+    floatingLabel.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -100%)`;
+    $('[data-mc-floating-name]').textContent = HARNESS_NAMES[state.equippedHarness];
+    $('[data-mc-floating-status]').textContent = lang() ? 'HARNESS · 就绪' : 'HARNESS · READY';
+  }
   async function load() {
     if(loading)return;loading=true;
     try {
-      const {createArenaScene}=await import('./arena-scene.js?v=20261027-mc6');
-      scene=createArenaScene($('.mc-canvas')); scene.update(state);
-      telemetry=createTelemetry($('.mc-telemetry'));telemetry.update(state);
+      const {createArenaScene}=await import('./arena-scene.js?v=20261027-copy2');
+      scene=createArenaScene($('.mc-canvas'), { onWeaponProject: projectWeapon }); scene.update(state);
       $('.mc-fallback').hidden=true;chapter.dataset.renderer='webgl';
     } catch(error) {
       $('.mc-fallback').hidden=false;chapter.dataset.renderer='fallback';
@@ -189,7 +246,7 @@ if (chapter) {
   },true);
   new MutationObserver(()=>{
     state.language=lang()?'zh':'en';lastKey='';setProgress(state.progress);
-    if(anchor===null || reduced.matches)return;
+    if(anchor===null || manual())return;
     const p=anchor;anchor=null;
     requestAnimationFrame(()=>requestAnimationFrame(()=>{
       const pin=$('.mc-pin'), top=parseFloat(getComputedStyle(pin).top)||112;
@@ -197,9 +254,10 @@ if (chapter) {
       if(window.__lenis)window.__lenis.scrollTo(y,{immediate:true});else scrollTo({top:y,behavior:'instant'});
     }));
   }).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  compact.addEventListener('change',()=>{lastKey='';setProgress(state.progress);schedule();});
   reduced.addEventListener('change',()=>{state.paused=reduced.matches;state.pointer={x:0,y:0};lastKey='';setProgress(state.progress);schedule();});
-  $('.mc-canvas').addEventListener('webglcontextlost',e=>{e.preventDefault();$('.mc-fallback').hidden=false;chapter.dataset.renderer='fallback';});
-  $('.mc-canvas').addEventListener('webglcontextrestored',()=>{scene?.dispose();telemetry?.dispose();scene=telemetry=undefined;loading=false;load();});
-  window.addEventListener('pagehide',e=>{if(!e.persisted){cancelAnimationFrame(frame);scene?.dispose();telemetry?.dispose();}});
+  $('.mc-canvas').addEventListener('webglcontextlost',e=>{e.preventDefault();floatingLabel.hidden=true;$('.mc-fallback').hidden=false;chapter.dataset.renderer='fallback';});
+  $('.mc-canvas').addEventListener('webglcontextrestored',()=>{scene?.dispose();scene=undefined;loading=false;load();});
+  window.addEventListener('pagehide',e=>{if(!e.persisted){cancelAnimationFrame(frame);scene?.dispose();setRail.dispose();}});
   setProgress(0);
 }

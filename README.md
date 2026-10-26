@@ -64,6 +64,7 @@ must not be used to overwrite this version.
 | Homepage layout, captions, navigation and translation hooks | `v2/metacase.css`, `v2/metacase.js`, `assets/i18n/index.zh.json` |
 | Shared 3D stage, materials, case tiles and domain islands | `v2/mc-stage.js`, `v2/mc-toon.js`, `v2/mc-kit.js` |
 | Metacase anatomy, retrieval archive, the library (hero and chapter 03) and card scenes | `v2/metacase-anatomy.js`, `v2/metacase-archive.js`, `v2/metacase-library.js`, `v2/metacase-cards.js` (`v2/metacase-world.js` is the former archipelago, no longer loaded) |
+| Hero → 01 hand-off: the Metacase is drawn off its shelf (with a web page, a data sheet, a chart and a recording from other shelves), crosses the screen on its own top canvas and lands exactly on chapter 01's desk; hero, chapter 01 and the courier read one scroll value so the book is never shown twice | `v2/metacase-courier.js`, `closedBook()` in `v2/mc-kit.js`, `bookHandoff()` in `v2/metacase.js` |
 | Content pages: remaps the `styles.css` / `site.css` tokens and restyles the shared components; animated page header | `v2/skin.css`, `v2/v2.js` |
 | Header backdrops (one canvas renderer, one motif per page) | `v2/backdrop.js` |
 | Homepage arena: scroll camera, harness wheel, flying agent and challenge rooms | `v2/arena.css`, `v2/arena.js`, `v2/arena-scene.js`, `v2/arena-models.js`, `v2/arena-motion.js` |
