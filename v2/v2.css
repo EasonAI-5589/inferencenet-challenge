@@ -152,7 +152,7 @@ html:not(.lenis) { scroll-behavior: smooth; scroll-padding-top: 112px; }
 .ambient [data-amb="involve"] { background: radial-gradient(70% 55% at 50% 0%, var(--track-1-soft), transparent 70%); }
 .footer-mark { overflow: hidden; margin-top: var(--space-7); height: clamp(80px, 12.6vw, 168px); }
 .footer-mark > span { display: block; white-space: nowrap; translate: 0 var(--py, 0px);
-  font: 700 clamp(90px, 16.4vw, 218px)/0.92 var(--font-sans); letter-spacing: -0.07em;
+  font: 700 clamp(28px, 9.4vw, 126px)/0.92 var(--font-sans); letter-spacing: -0.07em;
   background: linear-gradient(180deg, color-mix(in oklab, var(--text-primary) 16%, transparent), transparent 85%);
   -webkit-background-clip: text; background-clip: text; color: transparent; }
 .footer-mark > span > span { background: linear-gradient(180deg, color-mix(in oklab, var(--track-1) 34%, transparent), transparent 85%);
@@ -321,6 +321,17 @@ html.past-hero .field { opacity: .9; }
 .site-header .nav-links a::after { content: none !important; }
 .site-header .nav-links a[aria-current="page"]::before { content: ""; position: absolute; left: 12px; right: 12px; bottom: 2px; height: 1.5px; border-radius: 2px; background: var(--spectrum); }
 .site-header .nav-controls { display: flex; align-items: center; gap: 8px; }
+@media (max-width: 1040px) {
+  .site-header .nav { flex-wrap: wrap; gap: 0 12px; padding-top: 12px; }
+  .site-header .nav-controls { margin-left: auto; }
+  .site-header .nav-links { order: 3; flex: 1 0 100%; margin: 0; padding: 8px 0; overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; }
+  .site-header .nav-links a { white-space: nowrap; }
+  .site-header .menu-toggle { display: none !important; }
+}
+@media (max-width: 440px) {
+  .site-header .wordmark > span { font-size: 15px; line-height: 1.2; }
+  .site-header .wordmark .net { display: block; }
+}
 .site-header .theme-toggle, .site-header .menu-toggle { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 34px; min-width: 0; padding: 6px 12px;
   border-radius: 999px; border: 1px solid var(--border-hairline); color: var(--text-secondary); font: 500 13px/1 var(--font-sans);
   background: color-mix(in oklab, var(--surface-1) 60%, transparent); cursor: pointer; transition: color var(--duration-fast), border-color var(--duration-fast); }

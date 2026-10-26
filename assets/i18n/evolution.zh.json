@@ -1124,5 +1124,6 @@
   "Candidate edits": "候选修改",
   "Check and select": "检查与选择",
   "Candidates are evaluated, and the selected version becomes the harness for the next round.": "对候选版本进行评测，选出的版本成为下一轮使用的 Harness。",
-  "Selected version": "选定版本"
+  "Selected version": "选定版本",
+  "Self-evolving — Metacase Challenge · v2": "自进化 — Metacase Challenge · v2"
 }
