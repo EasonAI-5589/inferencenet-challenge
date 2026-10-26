@@ -55,12 +55,12 @@ html[lang="zh-CN"] .v2-content .kicker, html[lang="zh-CN"] .v2-home .kicker { fo
 
 /* 6 · Motion canvases from cyber-motion.js, behind section content. */
 .cy-host { position: relative; isolation: isolate; }
-.cy-fx { position: absolute; z-index: -1; pointer-events: none; top: clamp(8px, 2vw, 32px); right: clamp(-80px, -4vw, 0px);
-  width: min(44vw, 560px); height: min(40vw, 480px); opacity: var(--cy-fx-opacity); color: var(--cy-cyan);
+.cy-fx { position: absolute; z-index: -1; pointer-events: none; top: clamp(8px, 2vw, 32px); right: 0;
+  width: min(44vw, 560px); max-width: 100%; height: min(40vw, 480px); opacity: var(--cy-fx-opacity); color: var(--cy-cyan);
   -webkit-mask-image: radial-gradient(closest-side, #000 55%, transparent); mask-image: radial-gradient(closest-side, #000 55%, transparent); }
 .cy-fx[data-cyber="rings"] { color: var(--cy-magenta); }
 .cy-fx[data-cyber="scope"] { color: var(--cy-amber); }
-@media (max-width: 760px) { .cy-fx { width: 92vw; height: 70vw; right: -24vw; opacity: calc(var(--cy-fx-opacity) * .55); } }
+@media (max-width: 760px) { .cy-fx { width: 100%; height: 70vw; opacity: calc(var(--cy-fx-opacity) * .55); } }
 
 @media (prefers-reduced-motion: reduce) {
   .v2-content .page-hero .kicker::after { animation: none; }
