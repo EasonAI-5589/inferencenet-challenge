@@ -1030,7 +1030,6 @@
   "Deterministic + Rubric": "确定性校验 + 评分细则",
   "Deterministic + LLM judge": "确定性校验 + LLM 裁判",
   "Deterministic + Rubric + LLM judge": "确定性校验 + 评分细则 + LLM 裁判",
-  "The Initiative is not limited to the first three fields. Bring a case from yours.": "本倡议并不止于首批三个领域。欢迎带来你所在领域的案例。",
   "and more": "以及更多",
   "Counts are candidate records in the metacase-harbor v0.1 selection (26 October 2026): task records curated from public benchmarks and partner material, not yet reviewed as complete Metacases. Ready classes have at least five pinned, runnable public tasks; partial classes depend on restricted material or adapters still to be generated.": "计数为 metacase-harbor v0.1 选题（2026 年 10 月 26 日）中的候选记录：整理自公开 benchmark 与合作方材料的任务记录，尚未作为完整 Metacase 审核。“就绪”表示该子类至少有 5 道固定版本、可运行的公开任务；“部分就绪”表示依赖受限材料或尚待生成的 adapter。",
   "Three fields,": "三个领域，",
@@ -1056,12 +1055,7 @@
   "Field 01": "领域 01",
   "Field 02": "领域 02",
   "Field 03": "领域 03",
-  "Next fields · planned": "后续领域 · 规划中",
-  "The next fields are open for cases.": "后续领域，欢迎带来案例。",
-  "Solved once.": "解决一次，",
-  "Reused everywhere.": "处处复用。",
   "The Global Metacase Initiative is building a reusable network of Metacases: end-to-end records of how problems were understood, decided and solved. So AI systems, as well as people, can learn from similar problem-solving structures, not just similar facts.": "全球 Metacase 计划正在构建一个可复用的 Metacase 网络，端到端地记录问题如何被理解、决策和解决。让 AI 系统和人都能从相似的解题结构中学习，而不只是从相似的事实中学习。",
-  "Metacase Challenge — Solved once. Reused everywhere.": "Metacase 挑战赛 — 解决一次，处处复用。",
   "Every Metacase kept whole": "每个 Metacase 完整保存",
   "Organised by field": "按领域组织",
   "The network": "Metacase 网络",
@@ -1070,5 +1064,7 @@
   "Where the network": "Metacase 网络",
   "The Metacase Challenge is the first pipeline into the Metacase network. One agent takes on real, complete cases: raw evidence in, a deliverable that can be checked out.": "Metacase 挑战赛是通往 Metacase 网络的第一条管线。一个 Agent 承接真实而完整的案例：输入原始证据，交出可以核查的成果。",
   "The Challenge is the first pipeline into the Metacase network. Four rules keep every run comparable and every Metacase worth reusing.": "挑战赛是通往 Metacase 网络的第一条管线。四条规则让每次运行都可比较，让每个 Metacase 都值得复用。",
-  "The Challenge follows the first three fields of the Metacase network: economics, finance and social science. Tasks, examples, timeline and awards are on the Challenge page.": "挑战赛沿用 Metacase 网络的首批三个领域：经济、金融与社科。任务、示例、时间安排和奖项请见挑战赛页面。"
+  "The Challenge follows the first three fields of the Metacase network: economics, finance and social science. Tasks, examples, timeline and awards are on the Challenge page.": "挑战赛沿用 Metacase 网络的首批三个领域：经济、金融与社科。任务、示例、时间安排和奖项请见挑战赛页面。",
+  "A question about a credit decision finds more credit cases: the same topic, but problems solved in different ways.": "一个关于授信决策的问题，会找到更多授信案例：主题相同，但问题的解决方式各不相同。",
+  "Every reviewed case joins the network, and the next problem starts from more experience.": "每个经过审核的案例都会加入网络，下一个问题就能从更多经验出发。"
 }

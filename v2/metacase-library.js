@@ -2,9 +2,9 @@
  * only; the page copy speaks of Metacases). Three wings of bookcases hold the first
  * fields (economics, finance, social science), one bay per class: coloured volumes are
  * candidate records, translucent ones the room still to fill. Glowing threads link
- * volumes in different wings that share a structure; the upper gallery waits for
- * healthcare, policy, law and more. Used twice: the hero (ambient) and chapter 03
- * (scroll-driven: own cases → shared structures → reuse → next fields). */
+ * volumes in different wings that share a structure, and new volumes arrive in the
+ * empty places. Used twice: the hero (ambient) and chapter 03 (scroll-driven:
+ * own cases → shared structures → reuse → new cases arrive). */
 import * as THREE from '../assets/vendor/three/three.module.js';
 import { PALETTE, mat, add, block, cyl, person, robot, tile, lights } from './mc-kit.js';
 import { clamp, smooth, ramp, lerp, pageBackground, fitCamera, toView, glowSprite } from './mc-stage.js';
@@ -17,20 +17,14 @@ export const WINGS = [
   { key: 'finance', accent: PALETTE.amber, bays: [['fin.filings', 10, 1], ['fin.payments', 15, 1], ['fin.nlp', 20, 1], ['fin.numeric', 15, 1], ['fin.credit', 15, 1], ['fin.accounting', 15, 1]] },
   { key: 'social', accent: PALETTE.violet, bays: [['soc.law', 20, 1], ['soc.hr', 5, 1], ['soc.business', 6, 1], ['soc.society', 12, 1], ['soc.psychology', 0, 1]] },
 ];
-// The upper gallery: fields still to come, one above each wing.
-export const GALLERY = [
-  { key: 'healthcare', accent: PALETTE.rose, over: 0 },
-  { key: 'policy', accent: PALETTE.sky, over: 1 },
-  { key: 'law', accent: PALETTE.green, over: 2 },
-];
-const R = 10, UNIT = 1.1, GAP = .7, CASE_H = 2.6, SHELF_Y = [.22, 1.0, 1.78], GALLERY_Y = CASE_H + .32;
+const R = 10, UNIT = 1.1, GAP = .7, CASE_H = 2.6, SHELF_Y = [.22, 1.0, 1.78];
 // [wing a, bay a, wing b, bay b] — volumes solved the same way, in different wings
 const THREADS = [[0, 0, 1, 5], [1, 2, 2, 0], [0, 3, 2, 3], [1, 0, 0, 1], [2, 1, 1, 4]];
 const SHOTS = [ // [progress, target, radius, azimuth, elevation]
   [0, 'wing0', 9, -.55, .2], [.22, 'wing0', 8.5, -.35, .18],
   [.32, 'centre', 22, 0, .42], [.48, 'centre', 20, .18, .36],
   [.56, 'walker', 7, .5, .26], [.72, 'walker', 7.5, .2, .24],
-  [.82, 'gallery', 24, -.1, .3], [1, 'gallery', 27, .08, .34],
+  [.82, 'room', 22, -.1, .32], [1, 'room', 25, .08, .36],
 ];
 
 function shade(hex, k) { return new THREE.Color(hex).lerp(new THREE.Color(k > 0 ? 0xffffff : 0x1a1d26), Math.abs(k)).getHex(); }
@@ -82,7 +76,7 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = fa
     new THREE.PointsMaterial({ color: 0xffe2b0, size: .05, transparent: true, opacity: .55, depthWrite: false }));
   scene.add(motes);
 
-  const ghosts = []; // [parent, x, y, z, w, h] for translucent volumes still to come
+  const ghosts = [], arrivals = []; // [parent, x, y, z, w, h] for translucent volumes still to come
   function fillGhosts(parent, shelves, bw, startShelf, startX, seed) {
     let shelf = startShelf, x = startX, k = seed;
     while (shelf < shelves.length) {
@@ -120,7 +114,11 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = fa
         if (k % 5 === 3) block(bay, bwid * 1.02, .035, .385, PALETTE.cream, x + bwid / 2, SHELF_Y[shelf] + bh * .72, .04, .005).castShadow = false; // a band on the spine
         books.push(b); x += bwid + .006;
       }
+      const first = ghosts.length;
       fillGhosts(bay, SHELF_Y, bw, shelf, x, bi * 3 + wi);
+      ghosts.slice(first, first + 2).forEach(([parent, gx, gy, gz, gw, gh]) => { // new cases arriving
+        const b = block(parent, gw, gh, .38, mat(shade(w.accent, .35)), gx, gy, gz, .012); b.castShadow = false; arrivals.push({ b, k: arrivals.length });
+      });
       if (!count) { // a class still to add: an empty bay with a notice
         const easel = new THREE.Group(); easel.position.set(0, 0, .55); bay.add(easel);
         block(easel, .5, .36, .04, PALETTE.cream, 0, .7, 0, .02);
@@ -135,7 +133,7 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = fa
     return { w, group, bays, mid, start, end, top: at(mid, R - 2.4).setY(.15) };
   });
 
-  /* ---- the upper gallery: a balcony along the whole arc, three fields under construction ---- */
+  /* ---- a balcony along the whole arc, with a lamp above each wing ---- */
   const gallery = new THREE.Group(); scene.add(gallery);
   const slabs = 30;
   for (let k = 0; k < slabs; k++) {
@@ -144,24 +142,7 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = fa
     const rail = block(gallery, (span + .12) * R / slabs + .04, .05, .05, 0xc9a36e, ...at(a, R - .85).setY(CASE_H + .95).toArray(), .01); rail.rotation.y = -a;
     if (k % 2 === 0) cyl(gallery, .025, .025, .6, 0xc9a36e, ...at(a, R - .85).setY(CASE_H + .32).toArray(), 6);
   }
-  const fields = GALLERY.map((g, gi) => {
-    const w = wings[g.over], group = new THREE.Group(); gallery.add(group);
-    const lamps = [], books = [];
-    [-1, 1].forEach((s, si) => {
-      const a = w.mid + s * UNIT * .55 / R, bay = new THREE.Group(); bay.position.copy(at(a, R + .1).setY(GALLERY_Y)); bay.rotation.y = -a; group.add(bay);
-      block(bay, UNIT, 1.9, .1, PALETTE.ink, 0, 0, -.28, .02);
-      [-1, 1].forEach(t => block(bay, .08, 1.9, .6, 0x7a5a42, t * (UNIT / 2 - .04), 0, 0, .02));
-      block(bay, UNIT + .1, .12, .66, mat(g.accent, { emissive: g.accent, intensity: .3 }), 0, 1.9, 0, .03);
-      [.2, 1.0].forEach(y => block(bay, UNIT - .1, .05, .54, 0x8a6a4a, 0, y - .05, 0, .01).castShadow = false);
-      fillGhosts(bay, [.2, 1.0], UNIT, 0, -UNIT / 2 + .1 + (3 + si) * .135, gi * 5 + si);
-      for (let k = 0; k < 3 + si; k++) { // the first few volumes arriving
-        const b = block(bay, .12, .56, .36, mat(shade(g.accent, [-.2, .1, .3, 0][k])), -UNIT / 2 + .17 + k * .135, .2, .04, .012);
-        b.castShadow = false; books.push({ b, k });
-      }
-    });
-    const l = lamp(group, ...at(w.mid, R - .9).setY(CASE_H + .23).toArray(), 0xffd9a0); lamps.push(l);
-    return { g, group, lamps, books, top: at(w.mid, R).setY(GALLERY_Y + 2.3) };
-  });
+  const balconyLamps = wings.map(w => lamp(gallery, ...at(w.mid, R - .9).setY(CASE_H + .23).toArray(), 0xffd9a0));
 
   scene.updateMatrixWorld(true);
   const ghostMesh = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, .34), new THREE.MeshStandardMaterial({ color: 0xdfe6ff, transparent: true, opacity: .1, roughness: .6, depthWrite: false }), ghosts.length);
@@ -205,14 +186,14 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = fa
   const walkR = R - 1.9;
 
   const beacon = glowSprite(0xffd9a0, 9, .12); beacon.position.set(0, 4.2, -1.5); scene.add(beacon);
-  const target = new THREE.Vector3(), centre = new THREE.Vector3(0, 1.6, -4), galleryTarget = new THREE.Vector3(0, 2.8, -5);
+  const target = new THREE.Vector3(), centre = new THREE.Vector3(0, 1.6, -4), roomTarget = new THREE.Vector3(0, 1.8, -4.6);
   const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
   addEventListener('pointermove', e => { pointer.tx = e.clientX / innerWidth - .5; pointer.ty = e.clientY / innerHeight - .5; }, { passive: true });
 
   function shotAt(p) {
     let i = 0; while (i < SHOTS.length - 2 && p > SHOTS[i + 1][0]) i++;
     const A = SHOTS[i], B = SHOTS[i + 1], k = smooth((p - A[0]) / (B[0] - A[0]));
-    const pos = s => s === 'centre' ? centre : s === 'gallery' ? galleryTarget : s === 'walker' ? agent.root.position.clone().add(new THREE.Vector3(0, 1, 0)) : at(wings[+s.slice(4)].mid, R - 1).setY(1.3);
+    const pos = s => s === 'centre' ? centre : s === 'room' ? roomTarget : s === 'walker' ? agent.root.position.clone().add(new THREE.Vector3(0, 1, 0)) : at(wings[+s.slice(4)].mid, R - 1).setY(1.3);
     target.copy(pos(A[1])).lerp(pos(B[1]), k);
     return { r: Math.exp(lerp(Math.log(A[2]), Math.log(B[2]), k)), az: lerp(A[3], B[3], k), el: lerp(A[4], B[4], k) };
   }
@@ -250,12 +231,10 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = fa
     courier.root.position.copy(at(ac, walkR - .9)); courier.root.rotation.y = Math.atan2(at(nc, walkR - .9).x - courier.root.position.x, at(nc, walkR - .9).z - courier.root.position.z) || 0;
     courier.update(t, 1);
 
-    // the gallery: dim until the last chapter of the story, then the lamps come on and volumes arrive
-    const open = story ? ramp(p, .78, .92) : 1;
-    fields.forEach((f, i) => {
-      f.lamps.forEach(l => { l.glow.material.opacity = .15 + .5 * open; });
-      f.books.forEach(({ b, k }) => { const s = story ? smooth((open - k * .12) * 2) : 1; b.visible = s > .01; b.scale.setScalar(Math.max(.001, s)); });
-    });
+    // new cases arrive in the empty places in the last chapter of the story
+    const arrive = story ? ramp(p, .78, .95) : 1;
+    arrivals.forEach(({ b, k }) => { const s = story ? smooth(arrive * 1.6 - (k / arrivals.length) * .6) : 1; b.visible = s > .01; b.scale.set(1, Math.max(.001, s), 1); });
+    balconyLamps.forEach(l => { l.glow.material.opacity = .4 + .15 * arrive; });
     beacon.material.opacity = .1 + Math.sin(t * .8) * .02 + (story ? linked * .05 : .04);
 
     // camera
@@ -272,9 +251,8 @@ export function createLibrary({ mode = 'hero', onProject = () => {}, reduce = fa
     else fitCamera(camera, rect, { shift: rect.width < 1100 ? .27 : .25, lift: -.04, fov: 36 });
     sky.position.copy(camera.position);
 
-    // tags: the three wings, then the three gallery fields
-    const tags = [...wings.map((w, i) => ({ pt: w.top, show: story ? ramp(p, .02, .08) : 1, active: story && ((p < .3 && i === 0) || (p > .3 && p < .5)) })),
-      ...fields.map(f => ({ pt: f.top, show: story ? ramp(p, .82, .9) : 1, active: story && p > .8 }))];
+    // tags: the three fields
+    const tags = wings.map((w, i) => ({ pt: w.top, show: story ? ramp(p, .02, .08) : 1, active: story && ((p < .3 && i === 0) || (p > .3 && p < .5) || p > .8) }));
     onProject(tags.map(({ pt, show, active }) => {
       const s = toView(tmp.copy(pt), camera, rect), o = show * (s.front && s.inside ? 1 : 0);
       return { ...s, opacity: o, visible: o > .02, active };

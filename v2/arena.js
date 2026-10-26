@@ -172,7 +172,7 @@ if (chapter) {
   async function load() {
     if(loading)return;loading=true;
     try {
-      const {createArenaScene}=await import('./arena-scene.js?v=20261027-mc1');
+      const {createArenaScene}=await import('./arena-scene.js?v=20261027-mc2');
       scene=createArenaScene($('.mc-canvas')); scene.update(state);
       telemetry=createTelemetry($('.mc-telemetry'));telemetry.update(state);
       $('.mc-fallback').hidden=true;chapter.dataset.renderer='webgl';
