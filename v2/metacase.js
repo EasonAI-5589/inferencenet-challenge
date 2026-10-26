@@ -9,7 +9,7 @@ const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const ease = x => { const p = clamp(x); return p * p * (3 - 2 * p); };
-const V = '?v=20261027-lib8';
+const V = '?v=20261027-mc6';
 
 /* ---- layout helpers ---- */
 const siteHeader = $('.site-header'), subnav = $('.mc-subnav');
@@ -77,7 +77,7 @@ import('./mc-stage.js' + V).then(({ createStage }) => {
   // hero: the library, in lamplight
   const hero = $('.mc-hero'), heroTags = $$('[data-tags="hero"] [data-tag]');
   stage.add({ el: hero, near: 2, postOptions: { bloom: .35, threshold: .9, vignette: 0 },
-    build: () => import('./metacase-library.js' + V).then(m => m.createLibrary({ mode: 'hero', reduce, onProject: list => list.forEach((s, i) => place(heroTags[i], { ...s, opacity: s.opacity * ((hero.clientWidth <= 860 ? s.y < 420 : s.x > hero.clientWidth * .6) ? 1 : 0) })) })) });
+    build: () => import('./metacase-library.js' + V).then(m => m.createLibrary({ mode: 'hero', reduce, onProject: list => list.forEach((s, i) => place(heroTags[i], { ...s, opacity: s.opacity * ((hero.clientWidth <= 860 ? s.y < 420 : s.x > hero.clientWidth * .47) ? 1 : 0) })) })) });
 
   // 01: the Metacase opens
   const anatomy = $('#metacase'), notes = $$('[data-notes="anatomy"] li', anatomy);

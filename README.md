@@ -41,13 +41,15 @@ current pages' content with the v2 header, footer and theme layer, so content ed
 made to a root page must be repeated in its `v2/` copy until v2 replaces the root.
 
 The v2 homepage introduces the Global Metacase Initiative, explains a complete
-Metacase, demonstrates retrieval by problem-solving structure, and presents
-MetacaseNet as a library: three wings (economics, finance, social science) with
-one bay per catalogue class, cross-references between volumes that share a
-structure, and an upper gallery for fields still to come. The catalogue section
-lists the 16 classes of the metacase-harbor v0.1 selection (285 candidate records)
-with call numbers, sources, grading and status; regenerate it from that
-repository's `metacase/summary.json` when the selection changes. The Metacase Challenge is the first pipeline
+Metacase, demonstrates retrieval by problem-solving structure, and shows the
+reusable network of Metacases across its first three fields (economics, finance,
+social science). The brand is **Metacase** (wordmark on every v2 page). The 3D
+scenes draw the network as a library (bookcases, volumes, a reading room; the
+arena uses the same finish); that picture is visual only, and no page copy uses
+library wording. The "first fields" section lists the
+16 classes of the metacase-harbor v0.1 selection (285 candidate records) with
+sources, grading and status; regenerate it from that repository's
+`metacase/summary.json` when the selection changes. The Metacase Challenge is the first pipeline
 into that network. Its scroll-driven arena shows one agent, eight selectable
 harnesses and three case rooms across the two benchmark tracks. See the
 [arena handoff](docs/metacase-arena.md) for controls, asset licenses and checks.

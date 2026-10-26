@@ -1,4 +1,4 @@
-/* metacase-archive.js — Why it matters: retrieval by structure. A healthcare case asks
+/* metacase-archive.js — Why it matters: retrieval by structure. A finance case asks
  * the archive for help. Same-topic tiles slide out but their signatures do not fit;
  * tiles from other fields with the same signature fly out and lock in line behind it;
  * then an agent and a person step up to reuse the aligned structure. Shared stage. */
@@ -8,9 +8,8 @@ import { clamp, smooth, ramp, lerp, pageBackground, fitCamera, toView, glowSprit
 
 export const COLUMNS = [
   { key: 'economics', accent: PALETTE.teal }, { key: 'finance', accent: PALETTE.amber }, { key: 'social', accent: PALETTE.violet },
-  { key: 'healthcare', accent: PALETTE.rose }, { key: 'policy', accent: PALETTE.sky }, { key: 'law', accent: PALETTE.green },
 ];
-const QUERY = 3, ROWS = 5, SIZE = .82, Q_SIZE = 1.35;
+const QUERY = 1, ROWS = 5, SIZE = .82, Q_SIZE = 1.35;
 const FACE = new THREE.Euler(Math.PI / 2, 0, 0); // tile top (the signature) faces the viewer
 
 export function createArchive({ onProject = () => {}, reduce = false } = {}) {
@@ -21,17 +20,17 @@ export function createArchive({ onProject = () => {}, reduce = false } = {}) {
   const floor = add(scene, new THREE.CylinderGeometry(16, 16, .4, 64), mat(0x121521), 0, -.6, 0); floor.castShadow = false;
   const pool = glowSprite(0x9fb6ff, 30, .14); pool.position.set(0, 3, -2); scene.add(pool);
 
-  /* ---- the archive wall: the three first fields and three to come, five cases each ---- */
+  /* ---- the archive wall: economics, finance and social science, five cases each ---- */
   const wall = new THREE.Group(); scene.add(wall);
   const cells = [];
   COLUMNS.forEach((col, c) => {
-    const ang = (c - 2.5) * .19, x = Math.sin(ang) * 11, z = -11 + Math.cos(ang) * 11 - 3;
+    const ang = (c - (COLUMNS.length - 1) / 2) * .24, x = Math.sin(ang) * 11, z = -11 + Math.cos(ang) * 11 - 3;
     const colG = new THREE.Group(); colG.position.set(x, 0, z); colG.rotation.y = -ang; wall.add(colG);
     block(colG, 1.7, 6.6, .3, PALETTE.stone, 0, -.4, -.45, .06);
     block(colG, 1.76, .1, .34, col.accent, 0, 6.2, -.45, .03);
     const mini = buildings[col.key](col.accent); mini.scale.setScalar(.36); mini.position.set(0, 6.3, -.45); colG.add(mini);
     for (let r = 0; r < ROWS; r++) {
-      const y = .45 + r * 1.18, match = c !== QUERY && r === (c * 2 + 1) % ROWS;
+      const y = .45 + r * 1.18, match = c !== QUERY && (r === (c * 2 + 1) % ROWS || r === (c * 2 + 3) % ROWS);
       block(colG, 1.6, .06, .5, 0xffffff, 0, y - .62, -.15, .02);
       const t = tile({ sig: match ? 0 : 1 + (c + r * 2) % 4, edge: col.accent, size: SIZE, glow: .7 });
       t.position.set(0, y, 0); t.rotation.copy(FACE); colG.add(t);
@@ -46,11 +45,11 @@ export function createArchive({ onProject = () => {}, reduce = false } = {}) {
   });
   const matches = cells.filter(c => c.match);
 
-  /* ---- the query: a healthcare case, waiting for experience ---- */
-  const query = tile({ sig: 0, edge: PALETTE.rose, size: Q_SIZE, glow: 1.4 });
+  /* ---- the query: a finance case, waiting for experience ---- */
+  const query = tile({ sig: 0, edge: PALETTE.amber, size: Q_SIZE, glow: 1.4 });
   const QPOS = new THREE.Vector3(0, 3, 4.2);
   query.position.copy(QPOS); query.rotation.copy(FACE); scene.add(query);
-  const qGlow = glowSprite(PALETTE.rose, 5, .25); qGlow.position.copy(QPOS); scene.add(qGlow);
+  const qGlow = glowSprite(PALETTE.amber, 5, .25); qGlow.position.copy(QPOS); scene.add(qGlow);
   // rods through equal steps of the aligned signatures: same shape, different fields
   const qPts = signaturePoints(0, 1.6 * Q_SIZE * .78, 1.1 * Q_SIZE * .62);
   const rods = qPts.map(pt => {
@@ -61,7 +60,7 @@ export function createArchive({ onProject = () => {}, reduce = false } = {}) {
   // a small stage under the aligned stack, where people and agents reuse it
   const dais = add(scene, new THREE.CylinderGeometry(2.6, 2.8, .25, 48), mat(0xe9ebef), 0, .9, 3.2); dais.scale.setScalar(.001);
   const agent = robot(0xf7f5f0); agent.root.scale.setScalar(1.2); scene.add(agent.root);
-  const reader = person(5, { carry: PALETTE.rose }); reader.root.scale.setScalar(1.2); scene.add(reader.root);
+  const reader = person(5, { carry: PALETTE.amber }); reader.root.scale.setScalar(1.2); scene.add(reader.root);
 
   const target = new THREE.Vector3(), pointer = { x: 0, y: 0, tx: 0, ty: 0 }, tmp = new THREE.Vector3();
   addEventListener('pointermove', e => { pointer.tx = e.clientX / innerWidth - .5; pointer.ty = e.clientY / innerHeight - .5; }, { passive: true });
