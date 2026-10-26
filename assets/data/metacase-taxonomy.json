@@ -1,0 +1,198 @@
+{
+ "version": "v0.1",
+ "kind": "metacase_benchmark_summary",
+ "source": "EasonAI-5589/inferencenet-harbor metacase/summary.json (branch feat/metacase-bench-v0)",
+ "registry_snapshot": "harbor-framework/harbor registry.json @ 5fcf07f5af37 (2026-04-12)",
+ "note": "Task selection only. No model or harness has been scored on this selection.",
+ "task_count": 285,
+ "categories": [
+  {
+   "id": "fin",
+   "name_en": "Finance",
+   "task_count": 90,
+   "subcategories": [
+    {
+     "id": "fin.filings",
+     "name_en": "Financial research & filings QA",
+     "description_en": "Analyst-style questions answered from SEC filings and company disclosures.",
+     "task_count": 10,
+     "status": "ready",
+     "sources": [
+      "financeagent@public"
+     ]
+    },
+    {
+     "id": "fin.payments",
+     "name_en": "Payments & transaction data analysis",
+     "description_en": "Multi-step Python analysis over payment records, fee schedules and merchant data.",
+     "task_count": 15,
+     "status": "ready",
+     "sources": [
+      "dabstep@1.0"
+     ]
+    },
+    {
+     "id": "fin.nlp",
+     "name_en": "Financial text understanding",
+     "description_en": "Sentiment, news headlines, entity recognition and ESG issues in financial text.",
+     "task_count": 20,
+     "status": "ready",
+     "sources": [
+      "pixiu@parity"
+     ]
+    },
+    {
+     "id": "fin.numeric",
+     "name_en": "Financial numerical reasoning",
+     "description_en": "Table and text numeric reasoning over financial reports (FinQA, TAT-QA) and CFA-style questions.",
+     "task_count": 15,
+     "status": "ready",
+     "sources": [
+      "pixiu@parity"
+     ]
+    },
+    {
+     "id": "fin.credit",
+     "name_en": "Credit risk & fraud",
+     "description_en": "Credit scoring and fraud detection from tabular borrower and transaction features.",
+     "task_count": 15,
+     "status": "ready",
+     "sources": [
+      "pixiu@parity"
+     ]
+    },
+    {
+     "id": "fin.accounting",
+     "name_en": "Accounting close & finance deliverables",
+     "description_en": "Month-end close remediation and accounting data pipelines (QuickBooks, Xero, Zuora, recurring revenue).",
+     "task_count": 15,
+     "status": "ready",
+     "sources": [
+      "sufe/fin-t1-003",
+      "spider2-dbt@1.0",
+      "ade-bench@1.0"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "econ",
+   "name_en": "Economics",
+   "task_count": 152,
+   "subcategories": [
+    {
+     "id": "econ.replication",
+     "name_en": "Econometric replication",
+     "description_en": "Reproduce a published regression coefficient from the paper's own data (OLS, DID, IV, RDD).",
+     "task_count": 100,
+     "status": "ready",
+     "sources": [
+      "InferenceNet Dev100"
+     ]
+    },
+    {
+     "id": "econ.monetary",
+     "name_en": "Monetary policy communication",
+     "description_en": "Classify the hawkish / dovish stance of FOMC statements and minutes.",
+     "task_count": 15,
+     "status": "ready",
+     "sources": [
+      "pixiu@parity"
+     ]
+    },
+    {
+     "id": "econ.markets",
+     "name_en": "Market movement forecasting",
+     "description_en": "Predict stock price movement from tweets and historical prices (ACL18, BigData22, CIKM18).",
+     "task_count": 15,
+     "status": "ready",
+     "sources": [
+      "pixiu@parity"
+     ]
+    },
+    {
+     "id": "econ.data",
+     "name_en": "Economic & business data engineering",
+     "description_en": "SQL and dbt over banking, retail, e-commerce and TPC-H style economic data.",
+     "task_count": 22,
+     "status": "ready",
+     "sources": [
+      "bird-bench@parity",
+      "spider2-dbt@1.0"
+     ]
+    },
+    {
+     "id": "econ.statistics",
+     "name_en": "Official statistics synthesis",
+     "description_en": "Gather and combine figures from statistical offices and international organisations into a structured answer.",
+     "task_count": 0,
+     "status": "gap",
+     "sources": [
+      "adapter:deepsynth"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "soc",
+   "name_en": "Social Science",
+   "task_count": 43,
+   "subcategories": [
+    {
+     "id": "soc.law",
+     "name_en": "Law & regulation",
+     "description_en": "Chinese legal knowledge, statute recall and case-outcome prediction (LawBench).",
+     "task_count": 20,
+     "status": "ready",
+     "sources": [
+      "lawbench@1.0"
+     ]
+    },
+    {
+     "id": "soc.hr",
+     "name_en": "HR & organisational analytics",
+     "description_en": "Training effectiveness and procurement review, recruiting and workforce data pipelines.",
+     "task_count": 5,
+     "status": "partial",
+     "sources": [
+      "synthbench/hr-t3-114",
+      "spider2-dbt@1.0",
+      "adapter:theagentcompany"
+     ]
+    },
+    {
+     "id": "soc.business",
+     "name_en": "Business operations & CRM",
+     "description_en": "Marketing, sales and customer-support data in CRM and support tools.",
+     "task_count": 6,
+     "status": "partial",
+     "sources": [
+      "spider2-dbt@1.0",
+      "adapter:crmarena"
+     ]
+    },
+    {
+     "id": "soc.society",
+     "name_en": "Society, education & survey data",
+     "description_en": "Education, survey and social-media data analysis.",
+     "task_count": 12,
+     "status": "ready",
+     "sources": [
+      "bird-bench@parity",
+      "spider2-dbt@1.0"
+     ]
+    },
+    {
+     "id": "soc.psychology",
+     "name_en": "Psychology & cognitive science",
+     "description_en": "Data-driven analysis tasks from psychology and cognitive-science papers.",
+     "task_count": 0,
+     "status": "gap",
+     "sources": [
+      "adapter:scienceagentbench"
+     ]
+    }
+   ]
+  }
+ ]
+}

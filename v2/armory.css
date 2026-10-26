@@ -1,0 +1,180 @@
+/* armory.css — the single-agent loadout screen (v2/armory.html).
+ * Three panels: inventory, the agent rig, and the readout; then three skewed track panels.
+ * Item colours mark the item type (model / harness / gear), never a rank or power level. */
+@font-face { font-family: "Jersey 10"; font-style: normal; font-weight: 400; font-display: swap; src: url("../assets/fonts/jersey-10-latin.woff2") format("woff2"); }
+@font-face { font-family: Orbitron; font-style: normal; font-weight: 400 900; font-display: swap; src: url("../assets/fonts/orbitron-latin-variable.woff2") format("woff2"); }
+
+html[data-theme="dark"], :root {
+  --ar-model: oklch(84% 0.12 185); --ar-harness: oklch(78% 0.13 295); --ar-gear: oklch(84% 0.14 75);
+  --ar-panel: color-mix(in oklab, var(--surface) 84%, transparent); --ar-glow: 0.55;
+}
+html[data-theme="light"] {
+  --ar-model: oklch(50% 0.11 200); --ar-harness: oklch(50% 0.16 295); --ar-gear: oklch(56% 0.14 60);
+  --ar-panel: color-mix(in oklab, var(--surface) 92%, transparent); --ar-glow: 0.25;
+}
+.armory { --cut: 14px; }
+.ar-hud, .ar-inventory, .ar-stats, .ar-rig {
+  position: relative; border: 1px solid var(--line); background: var(--ar-panel);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+.ar-inventory::before, .ar-stats::before, .ar-rig::before {
+  content: ""; position: absolute; left: 0; top: 0; width: 64px; height: 2px; background: var(--spectrum, var(--brand)); }
+
+.armory-stage { display: grid; grid-template-columns: minmax(250px, 330px) minmax(0, 1fr) minmax(250px, 320px); gap: 18px; align-items: start; padding-block: 56px 88px; }
+.armory-hero h1 em { color: var(--title-dim); }
+
+/* Inventory ------------------------------------------------------------------------------ */
+.ar-inventory { padding: 16px; }
+.ar-tabs { display: flex; gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 10px; background: color-mix(in oklab, var(--tint) 70%, transparent); }
+.ar-tabs [role="tab"] { flex: 1; min-height: 34px; border: 0; border-radius: 7px; background: transparent; color: var(--muted); cursor: pointer;
+  font: 600 10.5px/1 Orbitron, var(--font-mono); letter-spacing: .1em; text-transform: uppercase; transition: color var(--duration-fast), background-color var(--duration-fast); }
+.ar-tabs [role="tab"][aria-selected="true"] { color: var(--paper); background: var(--ink); }
+.ar-tabs [role="tab"]:hover:not([aria-selected="true"]) { color: var(--ink); }
+.ar-inv-hint { margin: 12px 2px 10px; font-size: 12px; line-height: 1.5; color: var(--muted); }
+.ar-grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; max-height: 620px; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+.ar-grid[data-type="model"] { --type: var(--ar-model); }
+.ar-grid[data-type="harness"] { --type: var(--ar-harness); }
+.ar-grid[data-type="gear"] { --type: var(--ar-gear); }
+.ar-item { position: relative; display: grid; gap: 4px; width: 100%; padding: 11px 12px 11px 15px; text-align: left; cursor: grab; color: var(--ink);
+  border: 1px solid var(--line); border-radius: 0; background: linear-gradient(90deg, color-mix(in oklab, var(--type) 9%, transparent), transparent 70%);
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+  transition: border-color var(--duration-fast), background-color var(--duration-fast), translate var(--duration-fast) var(--ease-standard); }
+.ar-item::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--type); opacity: .75; }
+.ar-item::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0;
+  background: repeating-linear-gradient(180deg, transparent 0 2px, color-mix(in oklab, var(--type) 14%, transparent) 2px 3px); transition: opacity var(--duration-base); }
+.ar-item:hover { border-color: color-mix(in oklab, var(--type) 55%, transparent); translate: 2px 0; }
+.ar-item:hover::after, .ar-item:focus-visible::after { opacity: 1; }
+.ar-item:active { cursor: grabbing; }
+.ar-item.is-equipped { border-color: var(--type); background: linear-gradient(90deg, color-mix(in oklab, var(--type) 20%, transparent), transparent 80%); }
+.ar-item.is-equipped .ar-item-kind::after { content: " \2713"; color: var(--type); }
+.ar-item:focus-visible { outline: 2px solid var(--type); outline-offset: 2px; border-radius: 0; }
+.ar-item-kind { font: 400 10px/1.3 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.ar-item-name { font: 650 15px/1.25 var(--font-sans); letter-spacing: -0.01em; }
+.ar-item-note { font-size: 12px; line-height: 1.45; color: var(--soft); }
+.ar-item-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 3px; }
+.ar-tag { padding: 2px 7px; border: 1px solid var(--line); border-radius: 999px; font: 400 10px/1.5 var(--font-mono); color: var(--muted); }
+.ar-tag.is-measured { color: var(--type); border-color: color-mix(in oklab, var(--type) 45%, transparent); }
+
+/* Rig -------------------------------------------------------------------------------------- */
+.ar-rig { display: grid; grid-template-rows: auto minmax(300px, 1fr) auto auto; gap: 14px; min-height: 640px; padding: 18px; overflow: hidden;
+  background: radial-gradient(closest-side at 50% 52%, color-mix(in oklab, var(--ar-model) 10%, transparent), transparent), var(--ar-panel); }
+.ar-holo { position: absolute; inset: 70px 0 120px; width: 100%; height: calc(100% - 190px); pointer-events: none; opacity: calc(.55 + var(--ar-glow) * .5); }
+.ar-scan { position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+  background: repeating-linear-gradient(180deg, transparent 0 3px, rgb(255 255 255 / 1.6%) 3px 4px); }
+html[data-theme="light"] .ar-scan { background: repeating-linear-gradient(180deg, transparent 0 3px, rgb(14 20 32 / 2.2%) 3px 4px); }
+.ar-scan::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 90px;
+  background: linear-gradient(180deg, transparent, color-mix(in oklab, var(--ar-model) 12%, transparent) 70%, color-mix(in oklab, var(--ar-model) 40%, transparent) 72%, transparent 74%);
+  animation: ar-sweep 5.5s linear infinite; }
+@keyframes ar-sweep { from { translate: 0 -100px; } to { translate: 0 760px; } }
+.ar-core { grid-row: 2; place-self: center; position: relative; display: grid; place-items: center; width: 132px; aspect-ratio: 1; border-radius: 50%;
+  border: 1px solid color-mix(in oklab, var(--ar-model) 45%, transparent); box-shadow: 0 0 0 10px color-mix(in oklab, var(--ar-model) 5%, transparent), 0 0 60px color-mix(in oklab, var(--ar-model) calc(var(--ar-glow) * 40%), transparent);
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--paper) 70%, transparent), color-mix(in oklab, var(--paper) 25%, transparent)); }
+.ar-core span { font: 400 54px/1 var(--font-sans); color: var(--ar-model); text-shadow: 0 0 22px color-mix(in oklab, var(--ar-model) 70%, transparent); }
+.armory[data-complete="true"] .ar-core { border-color: var(--ar-gear); }
+.armory[data-complete="true"] .ar-core span { color: var(--ar-gear); }
+.ar-main-row { grid-row: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; position: relative; z-index: 1; }
+.ar-gear-row { grid-row: 3; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; position: relative; z-index: 1; }
+.ar-status { grid-row: 4; min-height: 1.4em; font: 400 12px/1.4 var(--font-mono); color: var(--soft); text-align: center; position: relative; z-index: 1; }
+.ar-status b { color: var(--ink); font-weight: 600; }
+
+.ar-slot { position: relative; --type: var(--ar-model); }
+.ar-slot-secondary { --type: var(--ar-harness); }
+.ar-slot-gear { --type: var(--ar-gear); }
+.ar-slot-open { display: grid; align-content: start; gap: 4px; width: 100%; min-height: 86px; padding: 12px 14px; text-align: left; cursor: pointer; color: var(--ink);
+  border: 1px dashed color-mix(in oklab, var(--type) 45%, var(--line)); background: color-mix(in oklab, var(--paper) 55%, transparent); border-radius: 0;
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  transition: border-color var(--duration-fast), background-color var(--duration-fast); }
+.ar-slot-gear .ar-slot-open { min-height: 74px; padding: 10px; }
+.ar-slot.is-filled .ar-slot-open { border-style: solid; border-color: var(--type); background: linear-gradient(160deg, color-mix(in oklab, var(--type) 16%, var(--paper)), color-mix(in oklab, var(--paper) 70%, transparent)); }
+.ar-slot.is-target .ar-slot-open { border-style: solid; border-color: var(--type); background: color-mix(in oklab, var(--type) 18%, transparent); }
+.armory[data-dragging="model"] .ar-slot-primary .ar-slot-open, .armory[data-dragging="harness"] .ar-slot-secondary .ar-slot-open, .armory[data-dragging="gear"] .ar-slot-gear .ar-slot-open { border-color: var(--type); }
+.ar-slot-open:focus-visible { outline: 2px solid var(--type); outline-offset: 2px; border-radius: 0; }
+.ar-slot-label { font: 600 9.5px/1.2 Orbitron, var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--type); }
+.ar-slot [data-slot-name] { font: 650 15px/1.25 var(--font-sans); letter-spacing: -0.01em; overflow-wrap: anywhere; }
+.ar-slot:not(.is-filled) [data-slot-name] { font-weight: 450; color: var(--muted); }
+.ar-slot-gear [data-slot-name] { font-size: 12.5px; }
+.ar-slot-sub { font: 400 10px/1.3 var(--font-mono); color: var(--muted); letter-spacing: .06em; }
+.ar-slot-clear { position: absolute; top: 6px; right: 8px; width: 24px; height: 24px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%;
+  background: var(--paper); color: var(--soft); font: 400 14px/1 var(--font-sans); cursor: pointer; }
+.ar-slot-clear:hover { color: var(--ink); border-color: var(--strong-line); }
+.ar-slot.is-hit .ar-slot-open { animation: ar-hit 460ms var(--ease-standard); }
+@keyframes ar-hit { 0% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--type) 70%, transparent); } 100% { box-shadow: 0 0 0 14px transparent; } }
+.ar-ghost { position: fixed; z-index: 200; margin: 0; pointer-events: none; transform-origin: center; box-shadow: 0 0 28px color-mix(in oklab, var(--ar-model) 45%, transparent); }
+.ar-ghost[data-type="harness"] { box-shadow: 0 0 28px color-mix(in oklab, var(--ar-harness) 45%, transparent); }
+.ar-ghost[data-type="gear"] { box-shadow: 0 0 28px color-mix(in oklab, var(--ar-gear) 45%, transparent); }
+
+/* Readout ---------------------------------------------------------------------------------- */
+.ar-stats { padding: 18px; display: grid; gap: 14px; }
+.ar-panel-title { margin: 0; font: 600 11px/1.3 Orbitron, var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.ar-callsign { display: grid; gap: 4px; padding: 10px 12px; border: 1px solid var(--line); background: color-mix(in oklab, var(--tint) 55%, transparent); }
+.ar-callsign > span { font: 400 9.5px/1 var(--font-mono); letter-spacing: .16em; color: var(--muted); }
+.ar-callsign strong { font: 650 16px/1.3 var(--font-sans); overflow-wrap: anywhere; }
+.ar-radar { width: 100%; max-width: 260px; justify-self: center; overflow: visible; }
+.ar-radar-ring { fill: none; stroke: var(--line); }
+.ar-radar-axis { stroke: var(--line); }
+.ar-radar-label { font: 400 9px var(--font-mono); letter-spacing: .08em; fill: var(--muted); text-transform: uppercase; }
+.ar-radar-label.is-on { fill: var(--ink); }
+.ar-radar-shape { fill: color-mix(in oklab, var(--ar-model) 22%, transparent); stroke: var(--ar-model); stroke-width: 1.5; stroke-linejoin: round; transition: all var(--duration-slow) var(--ease-standard); }
+.ar-note { margin: 0; font-size: 11.5px; line-height: 1.5; color: var(--muted); }
+.ar-measured { display: grid; gap: 10px; }
+.ar-measured h4 { margin: 0; font: 600 10.5px/1.3 Orbitron, var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ar-model); }
+.ar-m-card { display: grid; gap: 6px; padding: 12px; border: 1px solid color-mix(in oklab, var(--ar-model) 30%, var(--line)); background: color-mix(in oklab, var(--ar-model) 5%, transparent); }
+.ar-m-card.is-unmeasured { border-style: dashed; border-color: var(--strong-line); background: transparent; }
+.ar-m-card.is-unmeasured b { font: 600 13px/1.3 Orbitron, var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ar-gear); }
+.ar-m-card p { margin: 0; font-size: 12px; line-height: 1.5; color: var(--soft); }
+.ar-m-head { display: flex; justify-content: space-between; gap: 8px; font: 400 10px/1.4 var(--font-mono); color: var(--muted); }
+.ar-m-src { color: var(--ink); letter-spacing: .06em; }
+.ar-m-score { display: flex; align-items: baseline; gap: 8px; }
+.ar-m-score b { font: 700 28px/1 var(--font-sans); letter-spacing: -0.03em; color: var(--ink); font-variant-numeric: tabular-nums; }
+.ar-m-score span { font-size: 12px; color: var(--soft); }
+.ar-m-card dl { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; margin: 0; font-size: 11.5px; }
+.ar-m-card dt { color: var(--muted); }
+.ar-m-card dd { margin: 0; font-family: var(--font-mono); color: var(--ink); text-align: right; }
+.ar-m-note { font-size: 11px !important; color: var(--muted) !important; }
+.ar-m-empty { margin: 0; font-size: 12.5px; color: var(--muted); }
+.ar-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.ar-actions .button { min-height: 38px; font-size: 13px; padding-inline: 16px; }
+
+/* Deploy: three skewed track panels that widen on focus, after SimuWorld's track selector ----- */
+.ar-tracks { display: flex; gap: 14px; min-height: 420px; }
+.ar-track { --track: var(--ar-model); flex: 1 1 0; min-width: 0; transform: skewX(-4deg); border: 1px solid color-mix(in oklab, var(--track) 35%, var(--line));
+  background: linear-gradient(170deg, color-mix(in oklab, var(--track) 14%, var(--surface)), var(--surface) 55%); overflow: hidden;
+  transition: flex-grow var(--duration-emphasized) var(--ease-emphasized), border-color var(--duration-base), box-shadow var(--duration-base); }
+.ar-track:hover, .ar-track:focus-within, .ar-track.is-chosen { flex-grow: 1.45; border-color: var(--track); }
+.ar-track.is-chosen { box-shadow: 0 0 0 1px var(--track), 0 0 48px -12px var(--track); }
+.ar-track-inner { transform: skewX(4deg); display: flex; flex-direction: column; gap: 12px; height: 100%; padding: 24px 26px; }
+.ar-track-index { font: 400 34px/1 "Jersey 10", var(--font-mono); color: var(--track); }
+.ar-track h3 { margin: 0; font: 650 clamp(22px, 2.2vw, 30px)/1.1 var(--font-sans); letter-spacing: -0.03em; }
+.ar-track-count { margin: 0; font-size: 13px; color: var(--soft); }
+.ar-track-count b { font: 700 18px/1 var(--font-mono); color: var(--ink); }
+.ar-subs { list-style: none; margin: 4px 0 auto; padding: 0; display: grid; gap: 6px; }
+.ar-subs li { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: baseline; padding: 6px 0; border-bottom: 1px dashed var(--line); font-size: 13px; }
+.ar-sub-name { color: var(--ink); }
+.ar-sub-count { font-family: var(--font-mono); color: var(--soft); }
+.ar-sub-status { font: 400 9.5px/1.6 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; padding: 0 6px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); }
+.ar-subs li.is-ready .ar-sub-status { color: var(--track); border-color: color-mix(in oklab, var(--track) 50%, transparent); }
+.ar-subs li.is-gap { opacity: .7; }
+.ar-deploy { align-self: flex-start; }
+.ar-deploy-status { min-height: 1.6em; margin-top: 18px; font: 400 13px/1.6 var(--font-mono); color: var(--soft); }
+.ar-deploy-status b { color: var(--ink); }
+.ar-notes { display: grid; gap: 10px; max-width: 70ch; padding-left: 1.1em; color: var(--soft); }
+
+@media (max-width: 1180px) {
+  .armory-stage { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .ar-rig { grid-column: 1 / -1; order: -1; }
+}
+@media (max-width: 760px) {
+  .armory-stage { grid-template-columns: minmax(0, 1fr); }
+  .ar-rig { min-height: 560px; padding: 14px; }
+  .ar-main-row { grid-template-columns: 1fr; }
+  .ar-gear-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ar-tracks { flex-direction: column; min-height: 0; }
+  .ar-track, .ar-track-inner { transform: none; }
+  .ar-grid { max-height: 420px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ar-scan::after { animation: none; opacity: 0; }
+  .ar-item, .ar-track, .ar-radar-shape { transition: none; }
+  .ar-slot.is-hit .ar-slot-open { animation: none; }
+}
