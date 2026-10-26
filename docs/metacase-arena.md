@@ -1,6 +1,6 @@
 # MetacaseNet cinematic arena — handoff to haohaha
 
-The v2 homepage `#system` chapter is a full-width, scroll-directed 3D scene.
+The v2 homepage `#arena` chapter is a full-width, scroll-directed 3D scene.
 One armored agent faces three monumental challenge rooms. Native page scroll
 owns the camera, the eight-slot equipment wheel, room transitions and episode
 progress. Scrolling backwards reverses the sequence. Scrolling previews a harness;
@@ -15,7 +15,7 @@ From the repository root, start a local server on an available port:
 python -m http.server 4198 --bind 127.0.0.1
 ```
 
-Open `http://127.0.0.1:4198/v2/#system`. Keep the repository directory structure
+Open `http://127.0.0.1:4198/v2/#arena`. Keep the repository directory structure
 intact so the modules, fonts and GLB models resolve correctly.
 
 No build or frontend installation is required. The six scenes are:
@@ -70,7 +70,7 @@ navigation instead of camera motion tied to scrolling. The range is also reachab
 by keyboard and becomes visible when focused. Failed WebGL has a text fallback.
 On narrow screens the homepage navigation wraps into a compact control row and
 an independently scrollable link row. The scene follows the measured header
-height when the menu opens or closes. The mobile reduced-motion layout reserves
+height. The mobile reduced-motion layout reserves
 separate space for the progress range and equipment confirmation.
 
 ## Checks
@@ -93,14 +93,14 @@ The normal-renderer checks also wait for all eight local CC0 weapon models to lo
 
 ## Handoff to haohaha
 
-**Handoff owner: haohaha.** The entry is `v2/index.html#system`. This change
+**Handoff owner: haohaha.** The entry is `v2/index.html#arena`. This change
 contains the editable website source and its local assets; the separately
 generated single-file homepage export is not part of the repository change.
 
 Review the equipment chapter by scrolling through the eight harnesses, clicking
 a sector or the confirmation button, and continuing into the rooms. The chosen
 CC0 weapon stays on the agent's back. Foot thrusters replace walking. Doorway
-signs use the larger Jersey 10 pixel font, and `Go for this challenge!` dissolves
+signs use Inter and Space Mono to match the homepage, and `Go for this challenge!` dissolves
 in on approach and out on departure. Wheel labels use larger, distinct neon
 colors. Scrolling backwards preserves the confirmed equipment.
 

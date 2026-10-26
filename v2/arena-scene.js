@@ -1,6 +1,9 @@
-/** MetacaseNet cinematic arena. Procedural geometry, local Three.js r170, reversible scroll choreography. */
+/** The Metacase Challenge arena. Procedural geometry, local Three.js r170, reversible scroll choreography.
+ * Toy finish: matte white-and-grey architecture on a gridded night floor, soft accents (mc-toon.js, mc-kit.js). */
 import * as THREE from "../assets/vendor/three/three.module.js";
 import { catmullRom } from "./arena-motion.js";
+import { toon, toonify, createPost } from "./mc-toon.js";
+import { person, tile } from "./mc-kit.js";
 export function createArenaScene(canvas) {
   const renderer = new THREE.WebGLRenderer({
     canvas,
@@ -9,15 +12,15 @@ export function createArenaScene(canvas) {
     powerPreference: "high-performance",
   });
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5));
-  renderer.setClearColor(0x03070c);
+  renderer.setClearColor(0x0e1015);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x08121f);
-  scene.fog = new THREE.FogExp2(0x08121f, 0.018);
+  scene.background = new THREE.Color(0x0e1015);
+  scene.fog = new THREE.FogExp2(0x0e1015, 0.02);
   const camera = new THREE.PerspectiveCamera(53, 1, 0.1, 150);
   const stage = new THREE.Group();
   scene.add(stage);
@@ -30,7 +33,7 @@ export function createArenaScene(canvas) {
     paused: false,
     language: "en",
   };
-  const colors = [0x66ffe1, 0xffbd67, 0xa791ff],
+  const colors = [0x45b5b0, 0xf2b545, 0x7d6ad8],
     harnessColors = [
       0x61ebd7, 0xa791ff, 0xe5bd96, 0xb7d9ec, 0xf48cbe, 0x7dcbf7, 0xf4bd61,
       0xd4f08d,
@@ -61,22 +64,13 @@ export function createArenaScene(canvas) {
     if (!geoCache.has(key)) geoCache.set(key, factory());
     return geoCache.get(key);
   }
-  function material(color, metalness = 0.5, roughness = 0.4) {
-    const m = new THREE.MeshStandardMaterial({ color, metalness, roughness });
+  function material(color) {
+    const m = toon(color);
     allMaterials.add(m);
     return m;
   }
   function luminous(color, intensity = 2, opacity = 1) {
-    const m = new THREE.MeshStandardMaterial({
-      color,
-      emissive: color,
-      emissiveIntensity: intensity,
-      roughness: 0.4,
-      metalness: 0.1,
-      transparent: opacity < 1,
-      opacity,
-      depthWrite: opacity >= 1,
-    });
+    const m = toon(color, { emissive: color, emissiveIntensity: intensity * 0.45, opacity });
     allMaterials.add(m);
     return m;
   }
@@ -91,19 +85,20 @@ export function createArenaScene(canvas) {
     allMaterials.add(m);
     return m;
   }
-  const black = material(0x060d16, 0.6, 0.6),
-    hull = material(0x2b4055, 0.35, 0.66),
-    metal = material(0x4b647a, 0.5, 0.42),
-    panel = material(0x30465d, 0.35, 0.61),
-    edge = material(0x7892a0, 0.83, 0.27),
-    ivory = material(0xcbd5d5, 0.58, 0.3),
-    white = material(0xe1e6dc, 0.4, 0.28),
-    rubber = material(0x0b151f, 0.15, 0.8),
-    glass = material(0x071729, 0.86, 0.12),
-    gold = material(0xb5954e, 0.88, 0.26),
-    teal = luminous(0x60edce, 2),
+  // Toy palette: white and pale-grey shells, graphite joints, a few warm accents.
+  const black = material(0x2a2e38),
+    hull = material(0xd5d9e0),
+    metal = material(0x9aa3b2),
+    panel = material(0xf1f2f4),
+    edge = material(0xc5ccd6),
+    ivory = material(0xf7f5f0),
+    white = material(0xffffff),
+    rubber = material(0x3a3f4b),
+    glass = material(0x2b3550),
+    gold = material(0xf2b545),
+    teal = luminous(0x45b5b0, 2),
     pale = luminous(0xd5fff4, 2.5),
-    dim = luminous(0x456d82, 0.35),
+    dim = luminous(0x3a3f4b, 0.2),
     roomLights = colors.map((c) => luminous(c, 2)),
     weaponLights = harnessColors.map((c) => luminous(c, 2.4));
   function mesh(geo, mat, parent, x = 0, y = 0, z = 0) {
@@ -111,7 +106,7 @@ export function createArenaScene(canvas) {
     m.position.set(x, y, z);
     // StandardMaterial defaults emissiveIntensity to 1 even when emissive is black.
     m.castShadow =
-      mat.isMeshStandardMaterial &&
+      (mat.isMeshStandardMaterial || mat.isMeshToonMaterial) &&
       !mat.transparent &&
       mat.emissive.getHex() === 0;
     m.receiveShadow = true;
@@ -269,17 +264,21 @@ export function createArenaScene(canvas) {
     );
     function write(copy) {
       ctx.clearRect(0, 0, 2048, 512);
+      ctx.fillStyle = "rgba(10, 13, 22, 0.78)";
+      ctx.beginPath();
+      ctx.roundRect(224, 52, 1600, 408, 48);
+      ctx.fill();
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.font = "500 40px Arial, sans-serif";
+      ctx.font = '400 38px "Space Mono", ui-monospace, monospace';
       ctx.fillStyle = color;
-      ctx.fillText(copy[0], 1024, 115);
-      ctx.font = "600 92px Arial, sans-serif";
+      ctx.fillText(copy[0], 1024, 130, 1500);
+      ctx.font = "700 96px Inter, Arial, sans-serif";
       ctx.fillStyle = "#f3f8fb";
-      ctx.fillText(copy[1], 1024, 250);
-      ctx.font = "400 36px Arial, sans-serif";
-      ctx.fillStyle = "#8fa6b7";
-      ctx.fillText(copy[2] || "", 1024, 370);
+      ctx.fillText(copy[1], 1024, 255, 1500);
+      ctx.font = "400 36px Inter, Arial, sans-serif";
+      ctx.fillStyle = "#a9b6c4";
+      ctx.fillText(copy[2] || "", 1024, 370, 1500);
       tex.needsUpdate = true;
     }
     write(lines);
@@ -323,29 +322,23 @@ export function createArenaScene(canvas) {
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillStyle = color;
-      ctx.font = '600 40px Orbitron, "Arial Narrow", Arial, sans-serif';
+      ctx.font = '400 36px "Space Mono", ui-monospace, monospace';
       ctx.fillText(lines[0], 1024, 39, 1880);
       const cjk = /[\u3400-\u9fff]/.test(lines[1]);
       ctx.font = cjk
         ? '600 142px "Microsoft YaHei", Arial, sans-serif'
-        : '400 220px "Jersey 10", Orbitron, monospace';
+        : '700 150px Inter, Arial, sans-serif';
       ctx.textBaseline = "alphabetic";
       const metrics = ctx.measureText(lines[1]);
       const baseline =
         159 +
         (metrics.actualBoundingBoxAscent - metrics.actualBoundingBoxDescent) /
           2;
-      ctx.strokeStyle = "#04101c";
-      ctx.lineWidth = 3;
-      ctx.strokeText(lines[1], 1024, baseline, 1910);
-      ctx.shadowColor = color;
-      ctx.shadowBlur = 5;
       ctx.fillStyle = color;
       ctx.fillText(lines[1], 1024, baseline, 1910);
-      ctx.shadowBlur = 0;
       ctx.textBaseline = "middle";
       ctx.fillStyle = "#a8c0d0";
-      ctx.font = "500 34px Arial, sans-serif";
+      ctx.font = "500 34px Inter, Arial, sans-serif";
       ctx.fillText(lines[2], 1024, 286, 1860);
       texture.needsUpdate = true;
     }
@@ -367,7 +360,7 @@ export function createArenaScene(canvas) {
       ctx.strokeStyle = color;
       ctx.lineWidth = 3;
       ctx.strokeRect(12, 12, 1576, 206);
-      ctx.font = '400 200px "Jersey 10", Orbitron, monospace';
+      ctx.font = '700 130px Inter, Arial, sans-serif';
       ctx.textAlign = "center";
       ctx.textBaseline = "alphabetic";
       const text = "Go for this challenge!";
@@ -376,11 +369,6 @@ export function createArenaScene(canvas) {
         115 +
         (metrics.actualBoundingBoxAscent - metrics.actualBoundingBoxDescent) /
           2;
-      ctx.strokeStyle = "#04101c";
-      ctx.lineWidth = 3;
-      ctx.strokeText(text, 800, baseline, 1460);
-      ctx.shadowColor = color;
-      ctx.shadowBlur = 5;
       ctx.fillStyle = color;
       ctx.fillText(text, 800, baseline, 1460);
       ctx.shadowBlur = 0;
@@ -413,8 +401,8 @@ export function createArenaScene(canvas) {
     return plane;
   }
   // Full-scale circular architecture; no visible tabletop edge.
-  scene.add(new THREE.HemisphereLight(0xa6c9e5, 0x111926, 2.3));
-  const key = new THREE.DirectionalLight(0xc5e0ff, 3.1);
+  scene.add(new THREE.HemisphereLight(0xe8eeff, 0x2a2633, 2.1));
+  const key = new THREE.DirectionalLight(0xfff3e2, 2.8);
   key.position.set(-8, 14, 9);
   key.castShadow = true;
   key.shadow.mapSize.set(2048, 2048);
@@ -429,16 +417,16 @@ export function createArenaScene(canvas) {
   key.shadow.normalBias = 0.025;
   key.shadow.bias = -0.0002;
   scene.add(key);
-  const blueRim = new THREE.DirectionalLight(0x70b7fa, 3);
+  const blueRim = new THREE.DirectionalLight(0x9fb6ff, 1.1);
   blueRim.position.set(7, 8, -14);
   scene.add(blueRim);
-  const whiteRim = new THREE.DirectionalLight(0xbbf9ea, 2.1);
+  const whiteRim = new THREE.DirectionalLight(0xffffff, 0.8);
   whiteRim.position.set(-10, 5, -8);
   scene.add(whiteRim);
   cylinder(stage, 24, 24, 0.4, black, 0, -0.25, 0, 128);
   const ground = mesh(
     geometry("unbroken-ground", () => new THREE.PlaneGeometry(200, 200)),
-    material(0x0b1522, 0.25, 0.9),
+    material(0x0e1015),
     stage,
     0,
     -0.075,
@@ -451,7 +439,7 @@ export function createArenaScene(canvas) {
     18,
     18,
     0.12,
-    material(0x101e2b, 0.2, 0.85),
+    material(0x151820),
     0,
     -0.05,
     0,
@@ -566,7 +554,12 @@ export function createArenaScene(canvas) {
       ],
     },
   ];
-  const roomTargets = roomDefs.map((d) => vec(d.x, 2.8, d.z - 1));
+  const roomTargets = roomDefs.map((d) => vec(d.x, 2.8, d.z - 1)),
+    actionWindows = [
+      [0.465, 0.55],
+      [0.65, 0.735],
+      [0.84, 0.915],
+    ];
   const rooms = roomDefs.map((def, index) => {
     const group = new THREE.Group();
     group.position.set(def.x, 0, def.z);
@@ -837,10 +830,10 @@ export function createArenaScene(canvas) {
       definition: def,
     };
   });
-  // Bake the local sci-fi font once it is available; never redraw text textures per frame.
+  // Bake the page fonts once they are available; never redraw text textures per frame.
   Promise.all([
-    document.fonts.load('400 220px "Jersey 10"'),
-    document.fonts.load("600 40px Orbitron"),
+    document.fonts.load("700 150px Inter"),
+    document.fonts.load('400 36px "Space Mono"'),
   ]).then(() => {
     if (disposed) return;
     rooms.forEach((room) => {
@@ -996,7 +989,11 @@ export function createArenaScene(canvas) {
   box(head, 0.62, 0.59, 0.62, ivory, 0, 0, 0, 0.15);
   box(head, 0.55, 0.28, 0.12, hull, 0, 0.045, 0.29, 0.055);
   box(head, 0.48, 0.2, 0.05, glass, 0, 0.06, 0.37, 0.04);
-  box(head, 0.35, 0.018, 0.009, luminous(0x8eece2, 1.2), 0, 0.12, 0.4);
+  const eyeMat = luminous(0x8ff6ff, 4.5);
+  for (const side of [-1, 1]) {
+    const eye = sphere(head, 0.075, eyeMat, side * 0.12, 0.06, 0.39);
+    eye.scale.set(0.9, 1.25, 0.35);
+  }
   box(head, 0.29, 0.11, 0.08, white, 0, -0.18, 0.3, 0.025);
   box(head, 0.25, 0.21, 0.06, hull, 0, -0.04, -0.32, 0.035);
   box(head, 0.14, 0.035, 0.025, teal, 0, 0.02, -0.36);
@@ -1007,6 +1004,8 @@ export function createArenaScene(canvas) {
     const l = cylinder(head, 0.055, 0.055, 0.085, teal, side * 0.35, 0, 0, 12);
     l.rotation.z = Math.PI / 2;
   }
+  head.scale.setScalar(1.32);
+  head.position.y += 0.1;
   const arms = [-1, 1].map((side) => {
     const arm = new THREE.Group();
     arm.position.set(side * 0.55, 2.37, 0.015);
@@ -1085,6 +1084,7 @@ export function createArenaScene(canvas) {
       modelLibrary = library;
       weapons.forEach((w) => backMount.remove(w));
       weapons = library.weapons;
+      weapons.forEach(toonify);
       weapons.forEach((w, i) => {
         w.scale.setScalar(1.95);
         w.rotation.z = 0.65;
@@ -1209,20 +1209,22 @@ export function createArenaScene(canvas) {
   const record = new THREE.Group();
   stage.add(record);
   record.visible = false;
-  const crystalGeo = geometry(
-      "metacase-crystal",
-      () => new THREE.OctahedronGeometry(0.77),
-    ),
-    crystalMat = material(0x8cefd1, 0.55, 0.14);
-  crystalMat.emissive.set(0x3ae7b5);
-  crystalMat.emissiveIntensity = 0.65;
-  const crystal = mesh(crystalGeo, crystalMat, record),
-    crystalEdges = new THREE.EdgesGeometry(crystalGeo);
-  geoCache.set("metacase-edges", crystalEdges);
-  const edgeMat = new THREE.LineBasicMaterial({ color: 0xc8fff0 });
-  allMaterials.add(edgeMat);
-  const edgeMesh = new THREE.LineSegments(crystalEdges, edgeMat);
-  record.add(edgeMesh);
+  // The record is a Metacase tile: the same slab, edge and raised signature as on the homepage.
+  const recordSpin = new THREE.Group(),
+    recordTile = tile({ sig: 0, edge: 0x45b5b0, size: 1.15, glow: 1.4 });
+  recordTile.rotation.x = 1.05;
+  recordTile.position.y = -0.2;
+  recordSpin.add(recordTile);
+  record.add(recordSpin);
+  // Each finished run leaves its own Metacase, which flies back to the plaza.
+  const produced = colors.map((color, i) => {
+      const t = tile({ sig: i + 1, edge: color, size: 0.55, glow: 1.2 });
+      t.visible = false;
+      stage.add(t);
+      return t;
+    }),
+    producedHome = [-2.3, 0, 2.3].map((x) => vec(x, 4.85 - Math.abs(x) * 0.08, 3.2)),
+    producedMid = vec();
   const recordRing = ring(record, 1.25, 0.018, teal);
   recordRing.rotation.z = 0.28;
   ring(record, 1.55, 0.012, dim).rotation.x = 1.2;
@@ -1234,9 +1236,9 @@ export function createArenaScene(canvas) {
       "A REUSABLE METACASE",
       "EXPERIENCE, WITH ITS EVIDENCE INTACT",
     ],
-    6.7,
+    5.2,
     0,
-    2.1,
+    1.85,
     0,
     "#8effdc",
   );
@@ -1264,78 +1266,33 @@ export function createArenaScene(canvas) {
     depthWrite: false,
   });
   allMaterials.add(dustMat);
+  // Little experts wait by each room; a few more stroll around the plaza.
+  const crowd = [];
+  roomDefs.forEach((def, r) => {
+    for (let k = 0; k < 3; k++) {
+      const p = person(r * 3 + k), group = new THREE.Group();
+      group.add(p.root);
+      const local = vec(-2.6 + k * 0.55 + (k === 2 ? 4.6 : 0), 0, 3.4 + (k % 2) * 0.4);
+      rooms[r].group.updateMatrixWorld(true);
+      group.position.copy(rooms[r].group.localToWorld(local));
+      group.position.y = 0;
+      group.lookAt(0, 0, 5);
+      group.scale.setScalar(1.15);
+      stage.add(group);
+      crowd.push({ p, walk: 0 });
+    }
+  });
+  for (let k = 0; k < 4; k++) {
+    const p = person(20 + k), group = new THREE.Group();
+    group.add(p.root); group.scale.setScalar(1.15); stage.add(group);
+    crowd.push({ p, walk: 1, group, radius: 10.6 + (k % 2) * 0.8, phase: k * 1.6 });
+  }
   const dust = new THREE.Points(dustGeo, dustMat);
   stage.add(dust);
-  // Local HDR glow. No postprocessing add-ons or external dependencies.
-  const targetOptions = {
-      type: THREE.HalfFloatType,
-      minFilter: THREE.LinearFilter,
-      magFilter: THREE.LinearFilter,
-      depthBuffer: false,
-    },
-    sceneTarget = new THREE.WebGLRenderTarget(1, 1, {
-      ...targetOptions,
-      depthBuffer: true,
-      samples: 4,
-    }),
-    blurA = new THREE.WebGLRenderTarget(1, 1, targetOptions),
-    blurB = new THREE.WebGLRenderTarget(1, 1, targetOptions);
-  const postScene = new THREE.Scene(),
-    postCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1),
-    vertexShader =
-      "varying vec2 vUv; void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}";
-  const blurMat = new THREE.ShaderMaterial({
-    uniforms: {
-      source: { value: null },
-      texel: { value: new THREE.Vector2(1, 0) },
-      threshold: { value: 1 },
-    },
-    vertexShader,
-    fragmentShader:
-      "varying vec2 vUv;uniform sampler2D source;uniform vec2 texel;uniform float threshold;vec3 sampleLight(vec2 uv){vec3 c=texture2D(source,uv).rgb;float l=max(c.r,max(c.g,c.b));return c*max(l-threshold,0.)/max(l,.001);}void main(){vec3 c=sampleLight(vUv)*.227027;c+=(sampleLight(vUv+texel*1.384615)+sampleLight(vUv-texel*1.384615))*.316216;c+=(sampleLight(vUv+texel*3.230769)+sampleLight(vUv-texel*3.230769))*.070270;gl_FragColor=vec4(c,1.);}",
-    depthTest: false,
-    depthWrite: false,
-    toneMapped: false,
-  });
-  const composeMat = new THREE.ShaderMaterial({
-    uniforms: {
-      base: { value: sceneTarget.texture },
-      bloom: { value: blurB.texture },
-    },
-    vertexShader,
-    fragmentShader: `varying vec2 vUv;uniform sampler2D base;uniform sampler2D bloom;
- void main(){vec3 c=texture2D(base,vUv).rgb+texture2D(bloom,vUv).rgb*.23;float vignette=1.-.28*pow(length((vUv-.5)*vec2(1.05,1.)),1.4);gl_FragColor=vec4(c*vignette,1.);
- #include <tonemapping_fragment>
- #include <colorspace_fragment>
- }`,
-    depthTest: false,
-    depthWrite: false,
-  });
-  allMaterials.add(blurMat);
-  allMaterials.add(composeMat);
-  const screenGeo = new THREE.PlaneGeometry(2, 2);
-  geoCache.set("post-quad", screenGeo);
-  const quad = new THREE.Mesh(screenGeo, blurMat);
-  postScene.add(quad);
-  let bloomWidth = 1,
-    bloomHeight = 1;
+  // Cartoon finish: ink outlines from depth, bloom on emissive light, vignette.
+  const post = createPost(renderer, { bloom: 0.32, threshold: 0.9, vignette: 0.3 });
   function render() {
-    renderer.setRenderTarget(sceneTarget);
-    renderer.render(scene, camera);
-    quad.material = blurMat;
-    blurMat.uniforms.source.value = sceneTarget.texture;
-    blurMat.uniforms.threshold.value = 1.2;
-    blurMat.uniforms.texel.value.set(1.0 / bloomWidth, 0);
-    renderer.setRenderTarget(blurA);
-    renderer.render(postScene, postCamera);
-    blurMat.uniforms.source.value = blurA.texture;
-    blurMat.uniforms.threshold.value = 0;
-    blurMat.uniforms.texel.value.set(0, 1.0 / bloomHeight);
-    renderer.setRenderTarget(blurB);
-    renderer.render(postScene, postCamera);
-    quad.material = composeMat;
-    renderer.setRenderTarget(null);
-    renderer.render(postScene, postCamera);
+    post.render(scene, camera);
   }
   // Every shot and door is keyed to progress, so scrolling backward reconstructs the same episode.
   const shots = [
@@ -1495,7 +1452,13 @@ export function createArenaScene(canvas) {
     cameraPos.y += pointerY * 0.15;
     camera.position.copy(cameraPos);
     camera.lookAt(cameraLook);
-    camera.fov = shot.fov;
+    // Portrait screens keep the landscape framing's width instead of cropping the rooms.
+    camera.fov =
+      camera.aspect < 1.2
+        ? THREE.MathUtils.radToDeg(
+            2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(shot.fov) / 2) * Math.min(1.55, 1 / camera.aspect)),
+          )
+        : shot.fov;
     camera.updateProjectionMatrix();
     agent.position.copy(heroPos);
     agent.rotation.y = shot.heading;
@@ -1629,11 +1592,7 @@ export function createArenaScene(canvas) {
       );
     }
     const activeRoom = p >= 0.76 ? 2 : p >= 0.57 ? 1 : 0,
-      actionWindow = [
-        [0.465, 0.55],
-        [0.65, 0.735],
-        [0.84, 0.915],
-      ][activeRoom],
+      actionWindow = actionWindows[activeRoom],
       firing =
         state.equippedHarness !== null &&
         p > actionWindow[0] &&
@@ -1670,10 +1629,27 @@ export function createArenaScene(canvas) {
     record.scale.setScalar(Math.max(0.001, recordAmount));
     record.position.set(
       0,
-      4 + (ambient ? Math.sin(time * 1.4) * 0.08 : 0),
-      0.2,
+      6.75 + (ambient ? Math.sin(time * 1.4) * 0.08 : 0),
+      3,
     );
-    crystal.rotation.y = edgeMesh.rotation.y = p * 4 + time * 0.15;
+    recordSpin.rotation.y = Math.sin(p * 3 + time * 0.4) * 0.45;
+    produced.forEach((t, i) => {
+      const end = actionWindows[i][1],
+        k = smooth(end - 0.01, end + 0.05, p);
+      t.visible = k > 0.001;
+      if (!t.visible) return;
+      const from = roomTargets[i],
+        to = producedHome[i];
+      producedMid.copy(from).lerp(to, 0.5).y += 4.5;
+      t.position
+        .copy(from)
+        .multiplyScalar((1 - k) * (1 - k))
+        .addScaledVector(producedMid, 2 * (1 - k) * k)
+        .addScaledVector(to, k * k);
+      t.position.y += k > 0.99 && ambient ? Math.sin(time * 1.6 + i) * 0.06 : 0;
+      t.scale.setScalar(Math.max(0.001, Math.min(1, k * 4)));
+      t.rotation.set(mix(0, 1.05, k), (1 - k) * Math.PI * 2, 0);
+    });
     recordRing.rotation.y = p * 4;
     recordTitle.plane.quaternion.copy(camera.quaternion);
     trace.material.opacity = 0.12 + p * 0.22;
@@ -1683,6 +1659,14 @@ export function createArenaScene(canvas) {
     centerSymbol.rotation.z = p * 0.6;
     centerGlow.material.opacity = 0.08 + inventoryAmount * 0.08;
     dust.rotation.y = time * 0.006;
+    crowd.forEach((c) => {
+      c.p.update(time, c.walk);
+      if (c.group) {
+        const a = c.phase + time * 0.12;
+        c.group.position.set(Math.sin(a) * c.radius, 0, Math.cos(a) * c.radius * 0.85 - 1);
+        c.group.rotation.y = a + Math.PI / 2;
+      }
+    });
     render();
   }
   function tick(now) {
@@ -1714,12 +1698,7 @@ export function createArenaScene(canvas) {
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
-    const ratio = renderer.getPixelRatio();
-    sceneTarget.setSize(Math.round(width * ratio), Math.round(height * ratio));
-    bloomWidth = Math.max(1, Math.round((width * ratio) / 3));
-    bloomHeight = Math.max(1, Math.round((height * ratio) / 3));
-    blurA.setSize(bloomWidth, bloomHeight);
-    blurB.setSize(bloomWidth, bloomHeight);
+    post.setSize(width, height);
     wake();
   }
   const ro = new ResizeObserver(resize);
@@ -1799,9 +1778,7 @@ export function createArenaScene(canvas) {
       allMaterials.forEach((m) => m.dispose());
       allTextures.forEach((t) => t.dispose());
       modelLibrary?.dispose();
-      sceneTarget.dispose();
-      blurA.dispose();
-      blurB.dispose();
+      post.dispose();
       renderer.dispose();
     },
   };

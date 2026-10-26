@@ -3,21 +3,23 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
-const url = process.env.ARENA_URL || 'http://127.0.0.1:4198/v2/#system';
+const url = process.env.ARENA_URL || 'http://127.0.0.1:4198/v2/#arena';
 const browser = await chromium.launch({ ...(process.env.BROWSER_EXECUTABLE ? { executablePath: process.env.BROWSER_EXECUTABLE } : { channel: process.env.BROWSER_CHANNEL || 'chrome' }), headless: true });
 const reports = [];
 const names = ['DeepSeek Harness', 'DeepAgents', 'Claude Code', 'Codex CLI', 'OpenCode', 'OpenHands SDK', 'Terminus-2', 'mini-SWE-agent'];
 const previewProgress = index => .16 + (index + .5) / 8 * .22;
 async function seek(page, progress) {
   // Native scrolling must suffice; this never invokes a component state setter.
-  await page.evaluate(p => {
-    const section = document.querySelector('#system'), pin = section.querySelector('.mc-pin');
-    window.scrollTo({ top: scrollY + section.getBoundingClientRect().top - parseFloat(getComputedStyle(pin).top) + p * (section.offsetHeight - pin.offsetHeight), behavior: 'instant' });
+  await page.waitForFunction(p => {
+    const section = document.querySelector('.mc-chapter'), pin = section.querySelector('.mc-pin');
+    const target = scrollY + section.getBoundingClientRect().top - parseFloat(getComputedStyle(pin).top) + p * (section.offsetHeight - pin.offsetHeight);
+    // Lazy scenes and fonts can settle after a direct #arena visit.
+    if (Math.abs(scrollY - target) > 1) window.scrollTo({ top: target, behavior: 'instant' });
+    return Math.abs(Number(section.dataset.progress) - p) < .002;
   }, progress);
-  await page.waitForFunction(p => Math.abs(Number(document.querySelector('#system').dataset.progress) - p) < .002, progress);
 }
 async function equipment(page, expected) {
-  assert.equal((await page.locator('#system').getAttribute('data-equipped-harness')) || '', expected === null ? '' : String(expected));
+  assert.equal((await page.locator('.mc-chapter').getAttribute('data-equipped-harness')) || '', expected === null ? '' : String(expected));
   assert.equal(await page.locator('.mc-wheel [aria-pressed="true"]').count(), expected === null ? 0 : 1);
   if (expected !== null) assert.equal(await page.locator(`[data-wheel-item="${expected}"]`).getAttribute('aria-pressed'), 'true');
 }
@@ -28,7 +30,7 @@ async function open(options = {}, fallback = false) {
   await page.route('https://**/*', route => route.abort());
   if (fallback) await page.route('**/arena-scene.js*', route => route.abort());
   await page.goto(url);
-  await page.waitForFunction(renderer => document.querySelector('#system').dataset.renderer === renderer, fallback ? 'fallback' : 'webgl');
+  await page.waitForFunction(renderer => document.querySelector('.mc-chapter').dataset.renderer === renderer, fallback ? 'fallback' : 'webgl');
   if (!fallback) await page.waitForFunction(() => document.querySelector('.mc-canvas').dataset.weaponAssets === 'kenney-cc0');
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(200); // Font-driven layout of the earlier homepage chapters settles first.
@@ -44,7 +46,7 @@ try {
     assert.equal(await page.locator('.mc-wheel').evaluate(el => el.inert), true);
     for (let i = 0; i < 8; i++) {
       await seek(page, previewProgress(i));
-      assert.equal(await page.locator('#system').getAttribute('data-harness'), String(i));
+      assert.equal(await page.locator('.mc-chapter').getAttribute('data-harness'), String(i));
       assert.equal(await page.locator('.mc-wheel .is-active').count(), 1);
       assert.equal(await page.locator('[data-mc-equipped]').textContent(), names[i]);
       assert.equal(await page.locator('.mc-confirm').isEnabled(), true);
@@ -53,8 +55,8 @@ try {
     assert.equal(await page.locator('.mc-equipment-status').textContent(), '', 'Preview does not announce a confirmed selection');
     for (const [p, phase, room] of [[.46, 2, 0], [.66, 3, 1], [.85, 4, 2], [.98, 5, 2]]) {
       await seek(page, p);
-      assert.equal(await page.locator('#system').getAttribute('data-phase'), String(phase));
-      assert.equal(await page.locator('#system').getAttribute('data-room'), String(room));
+      assert.equal(await page.locator('.mc-chapter').getAttribute('data-phase'), String(phase));
+      assert.equal(await page.locator('.mc-chapter').getAttribute('data-room'), String(room));
       await equipment(page, null); // Skipping the wheel must not silently equip a default.
     }
     await seek(page, previewProgress(3)); await page.locator('.mc-confirm').click(); await equipment(page, 3);
@@ -74,7 +76,7 @@ try {
     assert.equal(await item.getAttribute('role'), 'button');
     assert.ok((await item.getAttribute('aria-label')).includes('OpenCode'));
     await item.focus(); await page.keyboard.press('ArrowRight');
-    assert.equal(await page.locator('#system').getAttribute('data-harness'), '5');
+    assert.equal(await page.locator('.mc-chapter').getAttribute('data-harness'), '5');
     assert.equal(await page.locator('[data-wheel-item="5"]').evaluate(el => el === document.activeElement), true);
     await equipment(page, 6); await page.keyboard.press('Enter'); await equipment(page, 5);
     await page.locator('[data-wheel-item="1"]').focus();
@@ -86,14 +88,14 @@ try {
     const geometry = await page.locator('.mc-pin').evaluate(el => ({ top: el.getBoundingClientRect().top, bottom: el.getBoundingClientRect().bottom, width: el.getBoundingClientRect().width }));
     assert.ok(geometry.top >= 110 && geometry.bottom <= viewport.height + 2, 'Scene fits below both navigation bars');
     assert.equal(geometry.width, viewport.width, 'Full-width scene');
-    const before = Number(await page.locator('#system').getAttribute('data-progress'));
+    const before = Number(await page.locator('.mc-chapter').getAttribute('data-progress'));
     await page.mouse.wheel(0, 240);
-    await page.waitForFunction(p => Number(document.querySelector('#system').dataset.progress) > p, before);
+    await page.waitForFunction(p => Number(document.querySelector('.mc-chapter').dataset.progress) > p, before);
     await equipment(page, 0);
     await page.locator('[data-language="zh"]').click(); await page.waitForFunction(() => document.documentElement.lang === 'zh-CN');
     await page.waitForTimeout(250);
     assert.match(await page.locator('[data-mc-kicker]').textContent(), /装备轮/);
-    assert.ok(await page.locator('.mc-pin').evaluate(e => Math.abs(e.getBoundingClientRect().top - 112) < 2));
+    assert.ok(await page.locator('.mc-pin').evaluate(e => Math.abs(e.getBoundingClientRect().top - parseFloat(getComputedStyle(e).top)) < 2));
     await equipment(page, 0);
     await page.locator('[data-theme-toggle]').click(); await page.waitForFunction(() => document.documentElement.dataset.theme === 'light');
     await equipment(page, 0); clean();
@@ -103,16 +105,24 @@ try {
   const mobile = await open({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 1 });
   assert.equal(await mobile.page.evaluate(() => Math.round(visualViewport.width)), 390, 'Mobile layout does not force viewport scaling');
   const menu = mobile.page.locator('.menu-toggle');
-  await menu.tap(); assert.equal(await menu.getAttribute('aria-expanded'), 'false');
-  assert.equal(await mobile.page.locator('#nav-links').isVisible(), false);
-  await menu.tap(); assert.equal(await menu.getAttribute('aria-expanded'), 'true');
+  assert.equal(await menu.isVisible(), false);
   assert.equal(await mobile.page.locator('#nav-links').isVisible(), true);
+  assert.equal(await mobile.page.locator('#nav-links a').count(), 6);
   await mobile.page.waitForTimeout(100);
   await seek(mobile.page, previewProgress(5)); await equipment(mobile.page, null);
   assert.equal(await mobile.page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
   const box = await mobile.page.locator('.mc-confirm').boundingBox();
   assert.ok(box && box.x >= 0 && box.x + box.width <= 390 && box.y >= 112 && box.y + box.height <= 844, 'Mobile confirmation is on screen');
   await mobile.page.locator('.mc-confirm').tap(); await equipment(mobile.page, 5);
+  for (const p of [.07, .24, .46, .66, .85, .98]) {
+    await seek(mobile.page, p);
+    const overlaps = await mobile.page.evaluate(() => {
+      const a = document.querySelector('.mc-loadout').getBoundingClientRect();
+      const b = document.querySelector('.mc-bottom').getBoundingClientRect();
+      return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+    });
+    assert.equal(overlaps, false, `Mobile equipment and trace do not overlap at ${p}`);
+  }
   await seek(mobile.page, .85); await equipment(mobile.page, 5);
   await seek(mobile.page, previewProgress(2)); await mobile.page.locator('[data-wheel-item="2"] .mc-item-name').tap(); await equipment(mobile.page, 2);
   mobile.clean(); reports.push('390x844 mobile: native scroll, visible confirmation, touch selection and persistence passed'); await mobile.page.close();
@@ -121,7 +131,7 @@ try {
     assert.equal(await reduced.page.locator('.mc-pin').evaluate(e => getComputedStyle(e).position), 'relative');
     const slider = reduced.page.locator('.mc-scrub');
     await slider.focus(); await reduced.page.keyboard.press('End');
-    assert.equal(await reduced.page.locator('#system').getAttribute('data-phase'), '5'); await equipment(reduced.page, null);
+    assert.equal(await reduced.page.locator('.mc-chapter').getAttribute('data-phase'), '5'); await equipment(reduced.page, null);
     await slider.evaluate(el => { el.value = '250'; el.dispatchEvent(new Event('input', { bubbles: true })); });
     const collision = await reduced.page.evaluate(() => {
       const a = document.querySelector('.mc-access').getBoundingClientRect(), b = document.querySelector('.mc-loadout').getBoundingClientRect();
