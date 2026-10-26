@@ -9,7 +9,7 @@ const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const ease = x => { const p = clamp(x); return p * p * (3 - 2 * p); };
-const V = '?v=20261027-mc6';
+const V = '?v=20261027-mc6-book';
 
 /* ---- layout helpers ---- */
 const siteHeader = $('.site-header'), subnav = $('.mc-subnav');
@@ -62,6 +62,23 @@ function rail(ol) {
 // Captions or notes: exactly one item is current.
 const stepper = list => { let last = -2; return index => { if (index === last) return; last = index; list.forEach((el, i) => el.classList.toggle('current', i === index)); }; };
 
+// The band of a pinned chapter that its picture may use: below the heading, above the
+// captions, rail and (on phones) the notes. Measured at most a few times a second.
+function safeArea(pin) {
+  let cache = null, at = 0;
+  return () => {
+    const now = performance.now();
+    if (cache && now - at < 250) return cache;
+    const r = pin.getBoundingClientRect(), head = $('.mc-scene-head', pin);
+    const top = head ? head.getBoundingClientRect().bottom - r.top + 20 : 0;
+    const below = [...$$('.mc-scene-foot, .mc-captions li', pin), ...(matchMedia('(max-width: 860px)').matches ? $$('.mc-notes li', pin) : [])];
+    let bottom = r.height;
+    below.forEach(el => { const b = el.getBoundingClientRect(); if (b.height) bottom = Math.min(bottom, b.top - r.top - 16); });
+    cache = { top, bottom }; at = now;
+    return cache;
+  };
+}
+
 /* ---- the stage ---- */
 let stage = null;
 const canvas = document.createElement('canvas');
@@ -81,16 +98,16 @@ import('./mc-stage.js' + V).then(({ createStage }) => {
 
   // 01: the Metacase opens
   const anatomy = $('#metacase'), notes = $$('[data-notes="anatomy"] li', anatomy);
-  stage.add({ el: $('.mc-scene-pin', anatomy), postOptions: { bloom: .32, threshold: .9, vignette: .2 }, progress: () => pinProgress(anatomy),
-    build: () => import('./metacase-anatomy.js' + V).then(m => m.createAnatomy({ reduce, onProject: (list, extra) => {
+  stage.add({ el: $('.mc-scene-pin', anatomy), near: 2.5, postOptions: { bloom: .32, threshold: .9, vignette: .2 }, progress: () => pinProgress(anatomy),
+    build: () => import('./metacase-anatomy.js' + V).then(m => m.createAnatomy({ reduce, safe: safeArea($('.mc-scene-pin', anatomy)), onProject: (list, extra) => {
       list.forEach((s, i) => place(notes[i], { ...s, opacity: s.active ? s.opacity : 0 }));
       place(notes[7], { ...extra.signature, opacity: extra.draw, visible: extra.draw > .05, active: true });
     } })) });
 
   // 02: the archive answers by structure
   const structure = $('#structure'), archiveTags = $$('[data-tags="archive"] [data-tag]', structure);
-  stage.add({ el: $('.mc-scene-pin', structure), postOptions: { bloom: .34, threshold: .9, vignette: .2 }, progress: () => pinProgress(structure),
-    build: () => import('./metacase-archive.js' + V).then(m => m.createArchive({ reduce, onProject: list => list.forEach((s, i) => place(archiveTags[i], s)) })) });
+  stage.add({ el: $('.mc-scene-pin', structure), near: 2.5, postOptions: { bloom: .34, threshold: .9, vignette: .2 }, progress: () => pinProgress(structure),
+    build: () => import('./metacase-archive.js' + V).then(m => m.createArchive({ reduce, safe: safeArea($('.mc-scene-pin', structure)), onProject: list => list.forEach((s, i) => place(archiveTags[i], s)) })) });
 
   // 03: the library, cross-referenced wing by wing
   const net = $('#net'), worldTags = $$('[data-tags="world"] [data-tag]', net);
