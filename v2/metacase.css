@@ -41,6 +41,9 @@ html[lang="zh-CN"] body.mc-home { line-height: 1.75; }
 .mc-home :focus-visible { outline: 2px solid var(--track-1); outline-offset: 3px; border-radius: 6px; }
 .mc-home em { font-style: normal; }
 .mc-stage { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; display: block; }
+/* the courier's frame: the whole window, invisible itself; the stage draws the travelling book into it */
+.mc-courier { position: fixed; inset: 0; pointer-events: none; visibility: hidden; }
+.mc-home .mc-stage-top { z-index: 30; } /* above the page text, below the section nav (40) and header (50) */
 .mc-home main, .mc-home .v2-footer { position: relative; z-index: 1; }
 .mc-visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 

@@ -13,7 +13,7 @@ const redirects = { 'data.html': 'challenge.html#replication-data', 'agent.html'
 // translation dictionaries and the root scripts, and adds its own design files.
 export const v2Pages = pages.map(page => `v2/${page}`);
 const v2Redirects = Object.fromEntries(Object.entries(redirects).map(([file, target]) => [`v2/${file}`, target]));
-const v2Files = ['v2/v2.css', 'v2/home.css', 'v2/skin.css', 'v2/theme.js', 'v2/v2.js', 'v2/home.js', 'v2/backdrop.js', 'v2/scene.css', 'v2/scene.js', 'v2/arena.css', 'v2/arena.js', 'v2/arena-scene.js', 'v2/arena-motion.js', 'v2/arena-models.js', 'v2/metacase.css', 'v2/metacase.js', 'v2/metacase-world.js', 'v2/metacase-library.js', 'v2/metacase-anatomy.js', 'v2/metacase-archive.js', 'v2/metacase-cards.js', 'v2/mc-stage.js', 'v2/mc-toon.js', 'v2/mc-kit.js'];
+const v2Files = ['v2/v2.css', 'v2/home.css', 'v2/skin.css', 'v2/theme.js', 'v2/v2.js', 'v2/home.js', 'v2/backdrop.js', 'v2/scene.css', 'v2/scene.js', 'v2/arena.css', 'v2/arena.js', 'v2/arena-scene.js', 'v2/arena-motion.js', 'v2/arena-models.js', 'v2/metacase.css', 'v2/metacase.js', 'v2/metacase-world.js', 'v2/metacase-library.js', 'v2/metacase-courier.js', 'v2/metacase-anatomy.js', 'v2/metacase-archive.js', 'v2/metacase-cards.js', 'v2/mc-stage.js', 'v2/mc-toon.js', 'v2/mc-kit.js'];
 const allRedirects = { ...redirects, ...v2Redirects };
 export const publicFiles = [
   ...pages,

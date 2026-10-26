@@ -365,3 +365,28 @@ export const METACASE_LABEL = () => labelTexture('metacase', [
   { text: 'METACASE', size: 150, weight: 750, color: '#1f2a3a', track: 18 },
   { text: 'ONE COMPLETE EPISODE', size: 46, weight: 500, color: '#6b7280', font: '"Space Mono", ui-monospace, monospace', track: 6 },
 ]);
+
+/* ---- the Metacase book, closed: the volume chapter 01 opens on its desk ---- */
+// Shared by chapter 01, the hero bookcase it is taken from and the courier that carries it
+// between them, so the three always show the same object. Origin: bottom of the spine,
+// the pages run towards +x, the cover faces +y.
+export const BOOK = { PW: 2.4, PD: 3.2, T: .42, BOARD: .06, COVER: 0x2c5468 };
+export const BOOK_CENTRE = new THREE.Vector3(BOOK.PW / 2, (BOOK.T + BOOK.BOARD * 2) / 2, 0);
+export function closedBook() {
+  const { PW, PD, T, BOARD } = BOOK, g = new THREE.Group();
+  const cover = mat(BOOK.COVER, { rough: .9 }), edge = mat(PALETTE.cream), gilt = mat(0xd8b46a, { rough: .4 });
+  block(g, PW + .1, BOARD, PD + .12, cover, PW / 2, 0, 0, .02);
+  block(g, PW, T, PD, edge, PW / 2, BOARD, 0, .02);
+  block(g, .14, T + BOARD * 2, PD + .12, cover, 0, 0, 0, .04);
+  for (let k = 1; k < 6; k++) block(g, .006, .004, PD - .04, mat(0xe4dccb), PW + .001, BOARD + k * T / 6, 0, .001).castShadow = false;
+  [.18, .82].forEach(f => block(g, .16, .03, PD + .14, gilt, 0, (T + BOARD * 2) * f, 0, .01).castShadow = false);
+  const front = new THREE.Group(); front.position.set(PW / 2 + .05, BOARD + T + BOARD / 2, 0); g.add(front);
+  add(front, rbox(PW + .1, BOARD, PD + .12, .02), cover);
+  add(front, rbox(PW * .62, .01, .62, .006), mat(PALETTE.cream), 0, BOARD / 2 + .004, -.35, false);
+  const title = labelPlane(METACASE_LABEL(), PW * .6, PW * .3); title.position.set(0, BOARD / 2 + .013, -.35); front.add(title);
+  [[0, -PD / 2 + .14, PW - .1, .025], [0, PD / 2 - .14, PW - .1, .025]].forEach(([x, z, w, d]) => add(front, rbox(w, .01, d, .004), gilt, x, BOARD / 2 + .004, z, false));
+  [-1, 1].forEach(sx => add(front, rbox(.025, .01, PD - .28, .004), gilt, sx * (PW / 2 - .1), BOARD / 2 + .004, 0, false));
+  [-1, 1].forEach(sx => [-1, 1].forEach(sz => add(front, rbox(.22, .016, .22, .02), gilt, sx * (PW / 2 - .04), BOARD / 2 + .002, sz * (PD / 2 - .02), false)));
+  [0, 3, 5].forEach((i, k) => add(front, rbox(.1, .012, .1, .02), mat(STAGE_COLORS[i]), -.25 + k * .25, BOARD / 2 + .008, .35, false));
+  return g;
+}
