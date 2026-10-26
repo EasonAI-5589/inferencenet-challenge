@@ -71,6 +71,8 @@ html[lang="zh-CN"] .mc-home h2 { letter-spacing: -0.01em; line-height: 1.18; }
 .mc-title { margin-top: 28px; font-size: clamp(46px, 6.2vw, 100px); line-height: .98; letter-spacing: -0.05em; font-weight: 680; max-width: 8.6em; }
 .mc-title > span, .mc-title > em { display: block; }
 html[lang="zh-CN"] .mc-title { letter-spacing: -0.02em; line-height: 1.12; max-width: 7.2em; }
+.mc-tagline { margin-top: 24px; max-width: 30em; color: var(--text-primary); font-size: clamp(20px, 1.8vw, 26px); line-height: 1.4; }
+.mc-tagline + .mc-lead { margin-top: 16px; }
 .mc-lead { margin-top: 32px; max-width: min(32em, 46vw); color: var(--text-secondary); font-size: clamp(17px, 1.35vw, 19px); }
 .mc-lead b { color: var(--text-primary); font-weight: 600; }
 .mc-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }

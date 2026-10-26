@@ -2221,5 +2221,6 @@
   "Feedback": "反馈",
   "The sandbox, data and files the agent acts on, and the evaluator that scores the final output.": "智能体操作的沙箱、数据与文件，以及为最终输出打分的评测器。",
   "Data and files": "数据与文件",
-  "Run limits": "运行限制"
+  "Run limits": "运行限制",
+  "Harness — Metacase Challenge · v2": "Harness — Metacase Challenge · v2"
 }
