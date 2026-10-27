@@ -14,14 +14,11 @@
 .mc-home .mc-copy p { font-size:16px; line-height:1.65; max-width:340px; color:var(--text-secondary); margin-top:20px; }
 .mc-case-code { display:none; }
 .mc-loadout { position:absolute; z-index:12; left:var(--mc-gutter); bottom:118px; width:292px; max-width:29%; padding:14px 16px; border:1px solid var(--mc-line); border-radius:16px; background:var(--mc-glass); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 18px 42px -18px rgb(0 0 0 / 55%), var(--inner-highlight); pointer-events:auto; }
-.mc-loadout-model { padding-bottom:10px; margin-bottom:10px; border-bottom:1px solid var(--border-hairline); }
-.mc-loadout-role-label, .mc-loadout-label { display:flex; align-items:center; gap:8px; color:var(--text-tertiary); font:500 10px/1.4 var(--font-mono); letter-spacing:.06em; margin-bottom:4px; }
-.mc-loadout-role-label::before { content:""; width:8px; height:8px; border-radius:50%; background:var(--model-accent,var(--track-1)); box-shadow:0 0 10px var(--model-accent,var(--track-1)); }
+.mc-step-label, .mc-loadout-label { display:flex; align-items:center; gap:8px; color:var(--text-tertiary); font:500 10px/1.4 var(--font-mono); letter-spacing:.06em; margin-bottom:4px; }
 .mc-loadout-label::before { content:""; width:7px; height:7px; border-radius:2px; background:var(--track-1); }
-.mc-equipped-model { display:flex; align-items:center; gap:8px; font:650 18px/1.2 var(--font-sans); letter-spacing:-.02em; color:var(--model-accent,var(--text-primary)); }
-.mc-model-chips { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:5px; margin-top:8px; pointer-events:auto; }
 .mc-model-btn { display:inline-flex; align-items:center; gap:6px; padding:5px 9px; border-radius:10px; border:1px solid color-mix(in oklab,var(--mc-mcolor,var(--track-1)) 38%,var(--mc-line)); background:color-mix(in oklab,var(--mc-mcolor,var(--track-1)) 10%,var(--surface-2)); color:var(--text-primary); font:600 10.5px/1.2 var(--font-sans); cursor:pointer; pointer-events:auto; transition:border-color .2s, background-color .2s, color .2s, transform .2s, box-shadow .2s; }
-.mc-model-btn .mc-model-logo { width:13px; height:13px; flex:none; color:var(--mc-mcolor,var(--track-1)); filter:drop-shadow(0 0 4px var(--mc-mcolor,var(--track-1))); }
+.mc-model-btn span { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.mc-model-btn .mc-model-logo { width:14px; height:14px; flex:none; color:var(--mc-mcolor,var(--track-1)); filter:drop-shadow(0 0 4px var(--mc-mcolor,var(--track-1))); }
 .mc-model-btn:hover { transform:translateY(-1px); border-color:var(--mc-mcolor,var(--track-1)); background:color-mix(in oklab,var(--mc-mcolor,var(--track-1)) 22%,var(--surface-2)); }
 .mc-model-btn.is-active { color:#fff; background:color-mix(in oklab,var(--mc-mcolor,var(--track-1)) 42%,var(--surface-1)); border-color:var(--mc-mcolor,var(--track-1)); box-shadow:0 0 0 1px var(--mc-mcolor,var(--track-1)), 0 0 16px -2px var(--mc-mcolor,var(--track-1)); }
 .mc-model-btn.is-active .mc-model-logo { color:#fff; }
@@ -32,6 +29,58 @@
 .mc-home .mc-confirm:disabled { cursor:default; color:var(--track-1); background:var(--track-1-soft); border-color:color-mix(in oklab,var(--track-1) 25%,transparent); }
 .mc-carried { display:block; margin-top:8px; color:var(--text-secondary); font:400 9px/1.6 var(--font-mono); }
 .mc-confirm[hidden],.mc-carried[hidden] { display:none; }
+/* The loadout, in four steps (provider → model → effort → harness) and one line that sums it up. */
+.mc-steps { list-style:none; margin:0; padding:0; display:grid; gap:8px; }
+.mc-step { display:grid; gap:5px; margin:0 -6px; padding:3px 6px; border-radius:9px; }
+.mc-step-label::before { content:""; width:7px; height:7px; border-radius:50%; background:var(--model-accent,var(--track-1)); box-shadow:0 0 8px var(--model-accent,var(--track-1)); }
+.mc-step[data-step="harness"] .mc-loadout-label::before { border-radius:2px; }
+.mc-model-chips { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:5px; pointer-events:auto; }
+.mc-loadout .mc-model-btn { min-width:0; padding:5px 7px; }
+.mc-variant-chips, .mc-effort-chips { display:flex; flex-wrap:wrap; gap:5px; pointer-events:auto; }
+.mc-chip { padding:4px 9px; border-radius:999px; border:1px solid var(--mc-line); background:color-mix(in oklab,var(--surface-2) 82%,transparent); color:var(--text-secondary); font:600 10.5px/1.3 var(--font-sans); white-space:nowrap; cursor:pointer; transition:border-color .2s, color .2s, background .2s, box-shadow .2s, transform .2s; }
+.mc-chip:hover { transform:translateY(-1px); color:var(--text-primary); border-color:var(--model-accent,var(--track-1)); }
+.mc-chip.is-active { color:#fff; border-color:var(--model-accent,var(--track-1)); background:color-mix(in oklab,var(--model-accent,var(--track-1)) 40%,var(--surface-1)); box-shadow:0 0 12px -3px var(--model-accent,var(--track-1)); }
+.mc-effort { display:flex; align-items:center; gap:10px; }
+.mc-effort-btn { font:600 10px/1.3 var(--font-mono); letter-spacing:.02em; }
+.mc-effort-meter { display:inline-flex; align-items:flex-end; gap:3px; height:16px; flex:none; }
+.mc-effort-meter i { width:5px; border-radius:2px; background:color-mix(in oklab,var(--text-primary) 14%,transparent); transition:background .3s, box-shadow .3s; }
+.mc-effort-meter i:nth-child(1) { height:6px; } .mc-effort-meter i:nth-child(2) { height:9px; } .mc-effort-meter i:nth-child(3) { height:12px; } .mc-effort-meter i:nth-child(4) { height:16px; }
+.mc-effort-meter i.on { background:var(--model-accent,var(--track-1)); box-shadow:0 0 8px var(--model-accent,var(--track-1)); }
+.mc-chapter[data-effort="xhigh"] .mc-effort-meter i.on { animation:mc-charge 1.6s ease-in-out infinite; }
+@keyframes mc-charge { 50% { filter:brightness(1.45); } }
+.mc-loadout-summary { display:flex; align-items:center; gap:7px; margin:10px 0 0; padding-top:9px; border-top:1px solid var(--border-hairline); color:var(--text-secondary); font:500 10.5px/1.35 var(--font-mono); }
+.mc-loadout-summary .mc-model-logo { width:15px; height:15px; flex:none; color:var(--model-accent,var(--track-1)); }
+.mc-loadout-summary span { min-width:0; }
+/* A step that changes replays the ones after it: the new models slide in, then each later step lights in turn. */
+@keyframes mc-cascade-in { from { opacity:0; transform:translateY(7px); filter:blur(3px); } }
+@keyframes mc-step-flash { 30% { background:color-mix(in oklab,var(--model-accent,var(--track-1)) 12%,transparent); box-shadow:inset 2px 0 0 var(--model-accent,var(--track-1)); } }
+.mc-loadout.is-cascading[data-cascade-from="1"] .mc-variant-chips > * { animation:mc-cascade-in .42s var(--ease-emphasized,cubic-bezier(.2,.8,.2,1)) both; animation-delay:calc(var(--i,0) * 70ms); }
+.mc-loadout.is-cascading[data-cascade-from="1"] .mc-step:nth-child(n+2),
+.mc-loadout.is-cascading[data-cascade-from="2"] .mc-step:nth-child(n+3),
+.mc-loadout.is-cascading[data-cascade-from="3"] .mc-step:nth-child(n+4) { animation:mc-step-flash .75s ease both; }
+.mc-loadout.is-cascading .mc-step:nth-child(3) { animation-delay:.12s; }
+.mc-loadout.is-cascading .mc-step:nth-child(4) { animation-delay:.24s; }
+/* Away from the equipment stop the loadout shrinks to its harness and its one-line summary. */
+.mc-chapter:not([data-phase="1"]) .mc-step:not([data-step="harness"]) { display:none; }
+@media (min-width:861px) {
+  /* At the equipment stop the cascade takes the place of the body copy, under the title. */
+  .mc-chapter[data-phase="1"] .mc-copy > p, .mc-chapter[data-phase="1"] .mc-event, .mc-chapter[data-phase="1"] .mc-carried { display:none; }
+  .mc-chapter[data-phase="1"] .mc-loadout { top:calc(76px + clamp(30px,3.3vw,50px) * 2.25 + 14px); bottom:auto; width:336px; max-width:32%; padding:11px 14px; }
+  .mc-chapter[data-phase="1"] .mc-steps { gap:5px; }
+  .mc-chapter[data-phase="1"] .mc-step { gap:4px; padding:1px 6px; }
+  .mc-chapter[data-phase="1"] .mc-step-label, .mc-chapter[data-phase="1"] .mc-loadout-label { font-size:9.5px; line-height:1.2; margin-bottom:0; }
+  .mc-chapter[data-phase="1"] .mc-loadout .mc-model-btn { padding:4px 7px; font-size:10px; }
+  .mc-chapter[data-phase="1"] .mc-variant-chips { flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; }
+  .mc-chapter[data-phase="1"] .mc-variant-chips::-webkit-scrollbar { display:none; }
+  .mc-chapter[data-phase="1"] .mc-chip { padding:3px 8px; font-size:10px; }
+  .mc-home .mc-chapter[data-phase="1"] .mc-equipped { font-size:17px; }
+  .mc-chapter[data-phase="1"] .mc-loadout-type { font-size:11px; margin-top:1px; }
+  .mc-home .mc-chapter[data-phase="1"] .mc-confirm { min-height:30px; margin-top:6px; padding:6px 12px; font-size:11px; }
+  .mc-chapter[data-phase="1"] .mc-loadout-summary { margin-top:8px; padding-top:7px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .mc-loadout.is-cascading *, .mc-loadout.is-cascading .mc-step, .mc-chapter[data-effort="xhigh"] .mc-effort-meter i.on { animation:none !important; }
+}
 .mc-equipment-status { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 /* 3D beveled armory wheel with translucent weapon bays and character hub. */
 .mc-wheel { position:absolute; z-index:9; width:min(45vw,calc((100svh - var(--mc-pin-top)) * .62),520px); aspect-ratio:1; left:58%; top:44%; transform:translate(-50%,-50%) scale(var(--wheel-scale,.75)); opacity:var(--wheel-opacity,0); pointer-events:none; will-change:transform,opacity; filter:drop-shadow(0 24px 48px rgb(0 0 0 / 55%)); }
@@ -118,7 +167,6 @@
   .mc-vignette { background:linear-gradient(180deg,var(--bg-canvas),color-mix(in oklab,var(--bg-canvas) 85%,transparent) 12%,transparent 35%,transparent 60%,color-mix(in oklab,var(--bg-canvas) 90%,transparent) 80%,var(--bg-canvas)); }
   .mc-wheel { width:clamp(260px,calc(100svh - var(--mc-pin-top) - 395px),330px); max-width:82vw; left:50%; top:40%; }
   .mc-wheel-label, .mc-model-roster, .mc-wheel-hub-badge { display:none; }
-  .mc-loadout-model .mc-model-chips { display:none; }
   .mc-wheel .mc-item-name { font-size:26px; }
   .mc-loadout { left:var(--mc-gutter); right:var(--mc-gutter); bottom:145px; width:auto; max-width:none; padding:11px 14px; }
   .mc-loadout-label { font-size:9px; margin-bottom:5px; }
@@ -126,7 +174,21 @@
   .mc-loadout-type { display:none; }
   .mc-home .mc-confirm { position:absolute; right:12px; bottom:28px; margin:0; width:auto; max-width:46%; min-height:34px; padding:7px 11px; font-size:10px; }
   .mc-carried { font-size:8px; margin-top:6px; }
-  .mc-chapter[data-phase="1"] .mc-loadout { padding-right:46%; }
+  .mc-chapter[data-phase="1"] .mc-model-chips { grid-template-columns:repeat(6,minmax(0,1fr)); }
+  .mc-chapter[data-phase="1"] .mc-loadout .mc-model-btn { justify-content:center; padding:6px 0; }
+  .mc-chapter[data-phase="1"] .mc-loadout .mc-model-btn span { display:none; }
+  .mc-variant-chips, .mc-effort-chips { flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; }
+  .mc-steps { gap:5px; }
+  .mc-chapter[data-phase="1"] .mc-loadout-summary { display:none; }
+  /* the cascade sits just above the rail, under the wheel: one row per step */
+  .mc-chapter[data-phase="1"] .mc-event, .mc-chapter[data-phase="1"] .mc-carried, .mc-chapter[data-phase="1"] .mc-loadout-type { display:none; }
+  .mc-chapter[data-phase="1"] .mc-loadout { bottom:72px; padding:9px 12px; }
+  .mc-chapter[data-phase="1"] .mc-step { gap:3px; padding:1px 6px; }
+  .mc-chapter[data-phase="1"] .mc-step-label, .mc-chapter[data-phase="1"] .mc-loadout-label { font-size:9px; line-height:1.2; margin-bottom:0; }
+  .mc-chapter[data-phase="1"] .mc-step[data-step="harness"] { grid-template-columns:minmax(0,1fr) auto; align-items:center; column-gap:10px; }
+  .mc-chapter[data-phase="1"] .mc-step[data-step="harness"] .mc-loadout-label { grid-column:1 / -1; }
+  .mc-home .mc-chapter[data-phase="1"] .mc-equipped { font-size:16px; min-height:0; }
+  .mc-home .mc-chapter[data-phase="1"] .mc-confirm { position:static; width:auto; max-width:none; margin:0; min-height:30px; padding:5px 12px; font-size:10px; }
   .mc-home .mc-chapter[data-phase="1"] .mc-equipped { font-size:19px; min-height:44px; }
   .mc-home .mc-chapter[data-phase="1"] .mc-carried { width:calc(100vw - 62px); }
   .mc-bottom { bottom:20px; }

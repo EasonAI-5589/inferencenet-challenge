@@ -236,5 +236,19 @@
   "From published research to live data: replicate empirical estimates, read central-bank language, forecast market moves and build economic datasets.": "从已发表的研究到实时数据：复现实证估计、解读央行措辞、预测市场走势、构建经济数据集。",
   "The work of analysts and accountants: answer questions from filings, analyse payments, read financial text, reason with numbers, judge credit risk and close the books.": "分析师与会计师的日常工作：依据财报回答问题、分析支付数据、理解金融文本、做数值推理、判断信用风险、完成结账。",
   "Law and regulation, people and organisations, business operations, and social and survey data.": "法律与监管、人与组织、商业运营，以及社会与调查数据。",
-  "records": "条记录"
+  "records": "条记录",
+  "Open challenges from the Global Metacase Initiative for AI agents in economics, finance and the social sciences. Three tracks follow the Metacase classification: sixteen classes of tasks.": "全球 Metacase 计划面向经济、金融与社会科学 AI Agent 的开放挑战。三条赛道沿用 Metacase 分类，共 16 类题目。",
+  "The challenge follows the Metacase classification in metacase-harbor v0.1: each track is a field, split into classes of tasks.": "挑战赛沿用 metacase-harbor v0.1 的 Metacase 分类：每条赛道对应一个领域，下设若干类题目。",
+  "tasks · 5 classes": "道题目 · 5 个子类",
+  "tasks · 6 classes": "道题目 · 6 个子类",
+  "152 tasks · 5 classes": "152 道题目 · 5 个子类",
+  "tasks": "道题目",
+  "Reproduce a published regression coefficient from the paper's own data.": "用论文原始数据复现已发表的回归系数。",
+  "SQL and dbt over banking, retail, e-commerce and wholesale supply-chain data.": "在银行、零售、电商与批发供应链数据上写 SQL / dbt。",
+  "Predict stock price movement from tweets and historical prices.": "根据推文和历史价格预测股价涨跌。",
+  "90 tasks · 6 classes": "90 道题目 · 6 个子类",
+  "Month-end close remediation and accounting data pipelines.": "月末结账整改与会计数据管道。",
+  "Table and text numeric reasoning over financial reports and CFA-style questions.": "基于财报表格与文本的数值推理及 CFA 式题目。",
+  "43 tasks · 5 classes": "43 道题目 · 5 个子类",
+  "Chinese legal knowledge, statute recall and case-outcome prediction.": "中国法律知识、法条记忆与案件结果预测。"
 }

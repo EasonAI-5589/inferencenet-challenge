@@ -3,7 +3,7 @@
  * the armed Robot Hero (the chosen Model's armour, the chosen Harness's weapon) diving through
  * it. On the Challenge page the same hero flies out of the tunnel and lands on the track's 3D
  * guardian stage beside the heading; the guardians themselves are mounted here as well. */
-import { ARENA_DOMAINS, HARNESS_NAMES, MODEL_CHARACTERS } from './arena-data.js?v=20261027-frontgun';
+import { ARENA_DOMAINS, HARNESS_NAMES, MODEL_CHARACTERS, EFFORTS, DEFAULT_EFFORT } from './arena-data.js?v=20261028-cascade';
 
 export const PORTAL_COLORS = { econ: '#4fd1c5', fin: '#f2b545', soc: '#9d8df1' };
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -12,17 +12,29 @@ const smooth = x => { const p = clamp(x); return p * p * (3 - 2 * p); };
 const mix = (a, b, t) => a + (b - a) * t;
 const SPACE = 0x04070f; // the tunnel's deep-space dark; nothing in the flight is lit white
 
+// The loadout chosen in the arena: provider (model), the provider's model (variant), the
+// reasoning effort and the harness.
 function readLoadout() {
   try {
     const raw = JSON.parse(localStorage.getItem('metacase-loadout') || '{}');
+    const model = clamp(Math.round(Number(raw.model) || 0), 0, MODEL_CHARACTERS.length - 1);
     return {
-      model: clamp(Math.round(Number(raw.model) || 0), 0, MODEL_CHARACTERS.length - 1),
+      model,
+      variant: clamp(Math.round(Number(raw.variant) || 0), 0, MODEL_CHARACTERS[model].variants.length - 1),
+      effort: clamp(Number.isInteger(raw.effort) ? raw.effort : DEFAULT_EFFORT, 0, EFFORTS.length - 1),
       harness: clamp(Math.round(Number(raw.harness) || 0), 0, HARNESS_NAMES.length - 1),
     };
   } catch {
-    return { model: 0, harness: 0 };
+    return { model: 0, variant: 0, effort: DEFAULT_EFFORT, harness: 0 };
   }
 }
+function saveLoadout(l) {
+  const m = MODEL_CHARACTERS[l.model];
+  try {
+    localStorage.setItem('metacase-loadout', JSON.stringify({ ...l, provider: m.provider, modelName: m.variants[l.variant], effortName: EFFORTS[l.effort], harnessName: HARNESS_NAMES[l.harness] }));
+  } catch {}
+}
+const loadoutLine = l => `${MODEL_CHARACTERS[l.model].provider} · ${MODEL_CHARACTERS[l.model].variants[l.variant]} · ${EFFORTS[l.effort]} × ${HARNESS_NAMES[l.harness]}`;
 
 // Three.js, the toy kit and the harness weapons, requested as soon as this module loads so a
 // flight can start the moment a portal is taken (the weapons arrive a little later).
@@ -43,31 +55,32 @@ function overlay(blocking) {
   return c;
 }
 
-// The model's brand plate, painted for the chest of every armed robot.
-function paintChest(ctx, m) {
+// The model's brand plate, painted for the chest of every armed robot: the provider's mark
+// (filled, on its 0..24 grid), its name and the chosen model.
+function paintChest(ctx, m, l = { variant: 0 }) {
   ctx.clearRect(0, 0, 256, 256);
   ctx.fillStyle = 'rgba(8, 12, 22, 0.92)';
   ctx.strokeStyle = m.color;
-  ctx.lineWidth = 10;
+  ctx.lineWidth = 8;
   ctx.beginPath();
   ctx.roundRect(14, 14, 228, 228, 40);
   ctx.fill();
   ctx.stroke();
   if (m.logo && typeof Path2D !== 'undefined') {
     ctx.save();
-    ctx.translate(56, 30);
-    ctx.scale(6.0, 6.0);
-    ctx.strokeStyle = m.color;
-    ctx.lineWidth = 2.2;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.stroke(new Path2D(m.logo));
+    ctx.translate(68, 36);
+    ctx.scale(5, 5); // 24 units → 120 px
+    ctx.fillStyle = m.color;
+    ctx.fill(new Path2D(m.logo), m.rule || 'nonzero');
     ctx.restore();
   }
-  ctx.fillStyle = '#ffffff';
-  ctx.font = '800 34px "JetBrains Mono", Inter, sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText(m.badge || m.short, 128, 214);
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '800 30px Inter, Arial, sans-serif';
+  ctx.fillText(m.badge, 128, 186, 212);
+  ctx.fillStyle = '#c9d4e6';
+  ctx.font = '600 20px Inter, Arial, sans-serif';
+  ctx.fillText(m.variants[l.variant] || m.variants[0], 128, 216, 212);
 }
 
 // The tunnel wall: dark panels with seams and a light strip in the track's colour.
@@ -160,7 +173,7 @@ function tunnel(THREE, track, accent, zh) {
  * the materials let it fade without touching the shared kit materials. The root sits at the
  * robot's waist, so it pitches and banks about its middle. */
 const HERO_H = 1.1;
-function hero(THREE, kit, m, harness) {
+function hero(THREE, kit, m, harness, l) {
   const { robot, block, add, mat, PALETTE } = kit;
   const root = new THREE.Group(), pose = new THREE.Group(); root.add(pose);
   const bot = robot(m.hull, m.eye); bot.root.position.y = -.5; pose.add(bot.root);
@@ -177,7 +190,7 @@ function hero(THREE, kit, m, harness) {
   add(bot.head, new THREE.TorusGeometry(.22, .026, 10, 32), trim, 0, .48, 0, false).rotation.x = .2;
 
   const chest = document.createElement('canvas'); chest.width = chest.height = 256;
-  paintChest(chest.getContext('2d'), m);
+  paintChest(chest.getContext('2d'), m, l);
   const plateTex = new THREE.CanvasTexture(chest); plateTex.colorSpace = THREE.SRGBColorSpace;
   const plateMat = new THREE.MeshBasicMaterial({ map: plateTex, transparent: true }); mats.push(plateMat);
   const plate = new THREE.Mesh(new THREE.PlaneGeometry(.3, .28), plateMat); plate.position.set(0, .34, .196); bot.root.add(plate);
@@ -259,13 +272,18 @@ function stage(THREE, canvas) {
   };
 }
 
-export async function warp({ x, y, track, href, model, harness, lang }) {
+export async function warp({ x, y, track, href, model, variant, effort, harness, lang }) {
   const cur = readLoadout();
-  const activeModel = Number.isFinite(model) ? model : cur.model;
-  const activeHarness = Number.isFinite(harness) ? harness : cur.harness;
-  try {
-    localStorage.setItem('metacase-loadout', JSON.stringify({ model: activeModel, harness: activeHarness }));
-  } catch {}
+  const pick = (v, fallback, hi) => Number.isFinite(v) ? clamp(Math.round(v), 0, hi) : fallback;
+  const activeModel = pick(model, cur.model, MODEL_CHARACTERS.length - 1);
+  const flight = {
+    model: activeModel,
+    variant: pick(variant, activeModel === cur.model ? cur.variant : 0, MODEL_CHARACTERS[activeModel].variants.length - 1),
+    effort: pick(effort, cur.effort, EFFORTS.length - 1),
+    harness: pick(harness, cur.harness, HARNESS_NAMES.length - 1),
+  };
+  const activeHarness = flight.harness;
+  saveLoadout(flight);
   if (reduced()) { location.href = href; return; }
   let gone = false;
   const go = () => { if (!gone) { gone = true; location.href = href; } };
@@ -281,7 +299,7 @@ export async function warp({ x, y, track, href, model, harness, lang }) {
 
   const m = MODEL_CHARACTERS[activeModel] || MODEL_CHARACTERS[0];
   const zh = typeof lang === 'number' ? lang === 1 : document.documentElement.lang.startsWith('zh');
-  const view = stage(THREE, canvas), world = tunnel(THREE, track, m.color, zh), robot = hero(THREE, kit, m, activeHarness);
+  const view = stage(THREE, canvas), world = tunnel(THREE, track, m.color, zh), robot = hero(THREE, kit, m, activeHarness, flight);
   robot.place(world.scene); weapons.then(robot.arm);
   const centre = new THREE.Vector3(0, -.35, -4.2), from = view.toWorld(x, y, 4.2, new THREE.Vector3());
   const T = 1600, start = performance.now();
@@ -325,7 +343,7 @@ export async function arrive({ track, target, flash = true }) {
   const view = stage(THREE, canvas), world = tunnel(THREE, track, m.color, zh);
   canvas.style.background = 'none';
   let robot = null;
-  if (flash) { robot = hero(THREE, kit, m, loadout.harness); robot.place(world.scene); weapons.then(robot.arm); }
+  if (flash) { robot = hero(THREE, kit, m, loadout.harness, loadout); robot.place(world.scene); weapons.then(robot.arm); }
   else world.step(0, 0, 0);
   const DEPTH = 5, from = new THREE.Vector3(0, -.3, -9), lift = new THREE.Vector3(), dest = new THREE.Vector3(), feet = new THREE.Vector3();
   const rings = [m.color, PORTAL_COLORS[track] || PORTAL_COLORS.econ].map((c, k) => {
@@ -500,7 +518,7 @@ async function mountTrackGuardians() {
       bot.root.add(chestPlane);
 
       function paintGuardianChest(m) {
-        paintChest(chestCtx, m);
+        paintChest(chestCtx, m, loadout);
         chestTex.needsUpdate = true;
       }
 
@@ -522,7 +540,6 @@ async function mountTrackGuardians() {
 
       function syncLoadout() {
         const m = MODEL_CHARACTERS[loadout.model] || MODEL_CHARACTERS[0];
-        const hName = HARNESS_NAMES[loadout.harness] || HARNESS_NAMES[0];
         hullMeshes.forEach(mesh => mesh.material.color.setHex(m.hull));
         darkMeshes.forEach(mesh => mesh.material.color.setHex(m.limb || 0x1b2230));
         eyeMeshes.forEach(mesh => {
@@ -535,14 +552,14 @@ async function mountTrackGuardians() {
         weaponClones.forEach((wc, wIdx) => { wc.visible = wIdx === loadout.harness; });
         dot.style.background = m.color;
         dot.style.boxShadow = `0 0 8px ${m.color}`;
-        text.textContent = `${m.short} × ${hName}`;
+        text.textContent = loadoutLine(loadout);
       }
       syncLoadout();
 
       badge.addEventListener('click', () => {
         loadout.harness = (loadout.harness + 1) % HARNESS_NAMES.length;
-        if (loadout.harness === 0) loadout.model = (loadout.model + 1) % MODEL_CHARACTERS.length;
-        try { localStorage.setItem('metacase-loadout', JSON.stringify(loadout)); } catch {}
+        if (loadout.harness === 0) { loadout.model = (loadout.model + 1) % MODEL_CHARACTERS.length; loadout.variant = 0; }
+        saveLoadout(loadout);
         views.forEach(v => v.syncLoadout());
       });
 

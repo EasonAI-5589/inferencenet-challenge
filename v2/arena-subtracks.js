@@ -74,12 +74,13 @@ export function createRoomSubtracks({ domain, index = 0 } = {}) {
     fragmentShader: `varying vec2 vUv;uniform float time;uniform float power;uniform vec3 tint;
       void main(){
         float ribs = pow(0.5 + 0.5 * cos(vUv.x * 6.28318 * 18.0), 12.0);
-        float rings = pow(0.5 + 0.5 * cos((vUv.y * 14.0 + time * 2.6) * 6.28318), 10.0);
+        float rings = pow(0.5 + 0.5 * cos((vUv.y * 14.0 + time * 1.3) * 6.28318), 10.0);
         float endFade = smoothstep(0.0, 0.14, vUv.y) * smoothstep(1.0, 0.84, vUv.y);
         float sideMask = 0.25 + 0.75 * pow(sin(vUv.x * 6.28318), 2.0);
         vec3 darkTube = vec3(0.025, 0.045, 0.09);
-        vec3 gridCol = tint * (ribs * 0.55 + rings * 0.75);
-        float alpha = (0.52 + (ribs * 0.22 + rings * 0.28)) * endFade * sideMask * power;
+        // quiet outlines only: the ribs and rings glow at a third of their old strength
+        vec3 gridCol = tint * (ribs * 0.55 + rings * 0.75) * 0.35;
+        float alpha = (0.52 + (ribs * 0.22 + rings * 0.28) * 0.35) * endFade * sideMask * power;
         gl_FragColor = vec4(darkTube + gridCol, alpha);
       }`,
   }));
@@ -89,14 +90,15 @@ export function createRoomSubtracks({ domain, index = 0 } = {}) {
   tunnelShell.renderOrder = 18;
   tunnelGroup.add(tunnelShell);
 
-  // 14 physical 3D glowing pipe rings + 10 longitudinal neon rails forming the 3D tunnel skeleton
-  const pipeRingGeo = trackGeom(new THREE.TorusGeometry(TUNNEL_R - .02, .038, 10, 52));
-  const pipeRings = Array.from({ length: 14 }, (_, k) => {
+  // 7 faint pipe rings + 10 longitudinal rails: a dark tunnel skeleton that never competes with the robot
+  const RINGS = 7;
+  const pipeRingGeo = trackGeom(new THREE.TorusGeometry(TUNNEL_R - .02, .03, 10, 52));
+  const pipeRings = Array.from({ length: RINGS }, (_, k) => {
     const rm = trackMat(new THREE.MeshBasicMaterial({
       color: LIGHTS[palette][k % 6], transparent: true, opacity: 0, depthWrite: false,
     }));
     const mesh = new THREE.Mesh(pipeRingGeo, rm);
-    mesh.position.set(0, TUNNEL_Y, TUNNEL_Z0 + (k / 13) * TUNNEL_LEN);
+    mesh.position.set(0, TUNNEL_Y, TUNNEL_Z0 + (k / (RINGS - 1)) * TUNNEL_LEN);
     mesh.renderOrder = 19;
     tunnelGroup.add(mesh);
     return { mesh, mat: rm, k };
@@ -162,7 +164,7 @@ export function createRoomSubtracks({ domain, index = 0 } = {}) {
       tex.needsUpdate = true;
     }
     drawDanmaku();
-    return { mesh, mat: dMat, drawDanmaku, side, lane, offset: i / danmakuList.length, speed: .22 + (i % 3) * .05 };
+    return { mesh, mat: dMat, drawDanmaku, side, lane, offset: i / danmakuList.length, speed: (.22 + (i % 3) * .05) * .7 };
   });
 
   const nodes = domain.entries.map((entry, i) => {
@@ -172,7 +174,7 @@ export function createRoomSubtracks({ domain, index = 0 } = {}) {
     const bright = LIGHTS[palette][i % 6];
 
     const orbMaterial = trackMat(new THREE.MeshStandardMaterial({
-      color: bright, emissive: bright, emissiveIntensity: .55, roughness: .18, metalness: .2,
+      color: bright, emissive: bright, emissiveIntensity: .38, roughness: .18, metalness: .2,
       transparent: true, opacity: 0, toneMapped: false, depthWrite: false,
     }));
     const ringMaterial = trackMat(new THREE.MeshStandardMaterial({
@@ -242,8 +244,8 @@ export function createRoomSubtracks({ domain, index = 0 } = {}) {
         orbit.scale.setScalar(.86 + amount * .22);
         orbMaterial.opacity = vis;
         ringMaterial.opacity = .18 + amount * .72;
-        aura.scale.setScalar((.85 + amount * .35) * pulse);
-        auraMaterial.opacity = .22 + amount * .42;
+        aura.scale.setScalar((.8 + amount * .25) * pulse);
+        auraMaterial.opacity = .12 + amount * .2;
       });
       // Update 3D cylindrical tunnel pipe & flying Danmaku stream
       const tPower = Math.max(0, Math.min(1, amount));
@@ -252,10 +254,10 @@ export function createRoomSubtracks({ domain, index = 0 } = {}) {
         const clock = reduced ? tunnelFlow * 4 : time + tunnelFlow * 3.2;
         tunnelUniforms.time.value = clock;
         tunnelUniforms.power.value = tPower * .92;
-        railMat.opacity = tPower * .42;
+        railMat.opacity = tPower * .14;
         pipeRings.forEach(({ mesh, mat, k }) => {
-          const wave = .5 + .5 * Math.sin(clock * 3.2 - k * .65);
-          mat.opacity = tPower * (.2 + wave * .55);
+          const wave = .5 + .5 * Math.sin(clock * 1.6 - k * .65);
+          mat.opacity = tPower * (.05 + wave * .1); // never above .15
           const sc = 1 + wave * .035;
           mesh.scale.set(sc, sc, 1);
         });

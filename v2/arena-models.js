@@ -13,10 +13,8 @@ export const ARENA_WEAPONS = Object.freeze([
   { harness: 'DeepAgents', file: 'blaster-f.glb', silhouette: 'Scoped precision blaster' },
   { harness: 'Claude Code', file: 'blaster-e.glb', silhouette: 'Long-range blaster' },
   { harness: 'Codex CLI', file: 'blaster-d.glb', silhouette: 'Stocked carbine' },
-  { harness: 'OpenCode', file: 'blaster-p.glb', silhouette: 'Three-barrel blaster' },
-  { harness: 'OpenHands SDK', file: 'blaster-l.glb', silhouette: 'Twin-barrel blaster' },
   { harness: 'Terminus-2', file: 'blaster-m.glb', silhouette: 'Heavy cylinder blaster' },
-  { harness: 'mini-SWE-agent', file: 'blaster-b.glb', silhouette: 'Compact blaster' },
+  { harness: 'OpenCode', file: 'blaster-p.glb', silhouette: 'Three-barrel blaster' },
 ].map(entry => Object.freeze(entry)));
 
 const assetRoot = new URL('../assets/models/kenney-blasters/', import.meta.url);

@@ -6,7 +6,7 @@ import { catmullRom } from "./arena-motion.js";
 import { toon, toonify, createPost } from "./mc-toon.js";
 import { person, robot, tile, PALETTE } from "./mc-kit.js";
 import { pageBackground } from "./mc-stage.js";
-import { ARENA_DOMAINS, HARNESS_NAMES, MODEL_CHARACTERS } from "./arena-data.js?v=20261027-frontgun";
+import { ARENA_DOMAINS, HARNESS_NAMES, MODEL_CHARACTERS, EFFORTS, DEFAULT_EFFORT } from "./arena-data.js?v=20261028-cascade";
 import { createCampusDetails } from "./arena-campus.js?v=20261027-frontgun";
 import { createRoomSubtracks } from "./arena-subtracks.js?v=20261027-frontgun";
 export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = {}) {
@@ -35,6 +35,9 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
     model: 0,
     harness: 0,
     equippedHarness: null,
+    model: 0,
+    variant: 0,
+    effort: DEFAULT_EFFORT,
     room: 0,
     pointer: { x: 0, y: 0 },
     paused: false,
@@ -44,10 +47,8 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
   };
   let frameDt = 1 / 60;
   const colors = ARENA_DOMAINS.map(domain => domain.color),
-    harnessColors = [
-      0x61ebd7, 0xa791ff, 0xe5bd96, 0xb7d9ec, 0xf48cbe, 0x7dcbf7, 0xf4bd61,
-      0xd4f08d,
-    ];
+    // one colour per harness, in HARNESS_NAMES order
+    harnessColors = [0x61ebd7, 0xa791ff, 0xe5bd96, 0xb7d9ec, 0xf4bd61, 0xf48cbe];
   const geoCache = new Map(),
     allMaterials = new Set(),
     allTextures = new Set();
@@ -854,25 +855,26 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
   // Each harness has a distinct barrel, receiver and tool geometry, not merely a different tint.
   function weapon(index) {
     const g = new THREE.Group(),
-      accent = weaponLights[index];
+      accent = weaponLights[index],
+      shape = [0, 1, 2, 3, 6, 4][index] ?? index; // Terminus-2 and OpenCode keep the shapes they had
     box(g, 0.2, 0.34, 0.23, rubber, 0, -0.21, -0.05, 0.035).rotation.x = -0.22;
     box(g, 0.31, 0.25, 0.58, ivory, 0, 0.02, 0, 0.055);
     box(g, 0.25, 0.065, 0.4, metal, 0, 0.18, -0.08, 0.02);
-    if (index === 0) {
+    if (shape === 0) {
       box(g, 0.25, 0.19, 0.8, hull, 0, 0.04, 0.58, 0.035);
       for (const x of [-0.18, 0.18]) {
         box(g, 0.085, 0.13, 1.02, ivory, x, 0.08, 0.68, 0.025);
         box(g, 0.035, 0.04, 0.75, accent, x, 0.13, 0.72);
       }
       box(g, 0.16, 0.12, 0.35, glass, 0, 0.27, 0.2, 0.02);
-    } else if (index === 1) {
+    } else if (shape === 1) {
       box(g, 0.4, 0.37, 0.65, hull, 0, 0.04, 0.36, 0.055);
       sphere(g, 0.23, accent, 0, 0.07, 0.75);
       for (const z of [0.6, 0.82, 1.04])
         ring(g, 0.3, 0.035, z === 0.82 ? accent : ivory, 0, 0.07, z, false);
       for (const x of [-0.34, 0.34])
         box(g, 0.1, 0.26, 0.45, ivory, x, 0.06, 0.63, 0.025);
-    } else if (index === 2) {
+    } else if (shape === 2) {
       box(g, 0.48, 0.34, 0.71, ivory, 0, 0.05, 0.38, 0.08);
       for (const x of [-0.13, 0.13])
         for (const y of [-0.06, 0.15]) {
@@ -880,14 +882,14 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
           c.rotation.x = Math.PI / 2;
         }
       box(g, 0.36, 0.09, 0.48, hull, 0, 0.28, 0.35, 0.025);
-    } else if (index === 3) {
+    } else if (shape === 3) {
       box(g, 0.42, 0.35, 0.6, ivory, 0, 0.04, 0.29, 0.045);
       box(g, 0.19, 0.19, 1, hull, 0, 0.08, 0.79, 0.025);
       box(g, 0.29, 0.29, 0.18, ivory, 0, 0.08, 1.27, 0.035);
       box(g, 0.17, 0.17, 0.02, accent, 0, 0.08, 1.37);
       box(g, 0.08, 0.045, 0.9, accent, 0, 0.2, 0.74);
       box(g, 0.17, 0.12, 0.3, glass, 0, 0.31, 0.24, 0.025);
-    } else if (index === 4) {
+    } else if (shape === 4) {
       box(g, 0.35, 0.28, 0.74, hull, 0, 0.04, 0.4, 0.035);
       const c = cylinder(g, 0.24, 0.24, 0.23, accent, 0, 0.06, 0.91, 6);
       c.rotation.x = Math.PI / 2;
@@ -896,7 +898,7 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
         fin.rotation.z = x;
       }
       ring(g, 0.32, 0.025, edge, 0, 0.06, 0.93, false);
-    } else if (index === 5) {
+    } else if (shape === 5) {
       sphere(g, 0.19, accent, 0, 0.06, 0.71);
       for (let j = 0; j < 3; j++) {
         const arm = new THREE.Group();
@@ -907,7 +909,7 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
           -0.25;
         box(arm, 0.035, 0.04, 0.45, accent, 0.325, 0.07, 0.51);
       }
-    } else if (index === 6) {
+    } else if (shape === 6) {
       box(g, 0.48, 0.4, 0.65, hull, 0, 0.04, 0.31, 0.05);
       const b = cylinder(g, 0.25, 0.29, 0.8, ivory, 0, 0.06, 0.82, 8);
       b.rotation.x = Math.PI / 2;
@@ -980,35 +982,40 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
     0.198,
   );
   chestPlane.castShadow = false;
-  function paintChestLogo(mp) {
+  // The chest plate: the provider's mark (filled, on its 0..24 grid), its name, and the model
+  // and reasoning effort chosen in the loadout.
+  function paintChestLogo(mp, variant, effort) {
     chestCtx.clearRect(0, 0, 512, 320);
-    chestCtx.fillStyle = "rgba(6, 10, 20, 0.9)";
+    chestCtx.fillStyle = "rgba(6, 10, 20, 0.92)";
     chestCtx.strokeStyle = mp.color;
-    chestCtx.lineWidth = 10;
+    chestCtx.lineWidth = 8;
     chestCtx.beginPath();
     chestCtx.roundRect(16, 16, 480, 288, 48);
     chestCtx.fill();
     chestCtx.stroke();
-    // Draw the vector brand logo on the left of the chest plate
     chestCtx.save();
-    chestCtx.translate(132, 160);
-    chestCtx.scale(6.2, 6.2);
-    const p2d = new Path2D(mp.logo);
+    chestCtx.translate(42, 76);
+    chestCtx.scale(7, 7); // 24 units → 168 px
     chestCtx.fillStyle = mp.color;
-    chestCtx.strokeStyle = "#ffffff";
-    chestCtx.lineWidth = 1.4;
-    chestCtx.fill(p2d);
-    chestCtx.stroke(p2d);
+    chestCtx.fill(new Path2D(mp.logo), mp.rule || "nonzero");
     chestCtx.restore();
-    // Draw the model badge & provider on the right of the chest plate
-    chestCtx.fillStyle = "#ffffff";
-    chestCtx.font = '800 68px Inter, Arial, sans-serif';
     chestCtx.textAlign = "left";
     chestCtx.textBaseline = "middle";
-    chestCtx.fillText(mp.badge || "AI", 224, 134, 250);
+    chestCtx.fillStyle = "#ffffff";
+    chestCtx.font = '800 50px Inter, Arial, sans-serif';
+    chestCtx.fillText(mp.badge, 232, 104, 248);
+    chestCtx.fillStyle = "#dbe4f3";
+    chestCtx.font = '600 32px Inter, Arial, sans-serif';
+    chestCtx.fillText(mp.variants[variant] || mp.variants[0], 234, 164, 246);
+    // the effort as four rising bars and its name
+    for (let k = 0; k < EFFORTS.length; k++) {
+      chestCtx.fillStyle = k <= effort ? mp.color : "rgba(255, 255, 255, 0.16)";
+      const h = 12 + k * 7;
+      chestCtx.fillRect(234 + k * 16, 244 - h, 10, h);
+    }
     chestCtx.fillStyle = mp.color;
-    chestCtx.font = '700 34px "Space Mono", monospace';
-    chestCtx.fillText((mp.provider || "").toUpperCase(), 226, 206, 250);
+    chestCtx.font = '700 28px "Space Mono", monospace';
+    chestCtx.fillText(EFFORTS[effort].toUpperCase(), 310, 232, 170);
     chestTex.needsUpdate = true;
   }
 
@@ -1056,11 +1063,15 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
     head.add(g);
     return g;
   });
-  let appliedModel = -1, lastModelSpin = 0, spinBoost = 0;
-  function applyCharacterModel(idx) {
-    if (idx === appliedModel) return;
-    appliedModel = idx;
+  let appliedKey = "", lastModelSpin = 0, spinBoost = 0;
+  function applyCharacterModel(idx, variant = 0, effort = DEFAULT_EFFORT) {
+    const key = `${idx}:${variant}:${effort}`;
+    if (key === appliedKey) return;
+    const sameModel = appliedKey.startsWith(`${idx}:`);
+    appliedKey = key;
     const mp = MODEL_PALETTES[idx] || MODEL_PALETTES[0];
+    paintChestLogo(mp, variant, effort);
+    if (sameModel) return;
     robotHullMeshes.forEach((m) => m.material.color.setHex(mp.hull));
     robotDarkMeshes.forEach((m) => m.material.color.setHex(mp.limb || 0x1e293b));
     robotEyeMeshes.forEach((m) => {
@@ -1071,11 +1082,17 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
     charTrimMat.emissive.setHex(mp.trim);
     charCoreMat.color.setHex(mp.eye);
     charCoreMat.emissive.setHex(mp.eye);
-    paintChestLogo(mp);
+    chestCoreGlow.material.color.setHex(mp.eye);
     modelCrests.forEach((c, i) => {
       c.visible = i === idx;
     });
   }
+  // The reasoning effort powers the robot: eyes, chest core and thruster flames grow with it.
+  const EFFORT_POWER = [0.55, 0.75, 1, 1.35];
+  let effortPower = EFFORT_POWER[DEFAULT_EFFORT];
+  const chestCore = sphere(torsoArmor, 0.032, charCoreMat, 0, 0.2, 0.2);
+  chestCore.castShadow = false;
+  const chestCoreGlow = glow(torsoArmor, 0xa7f3d0, 0.26, 0, 0.2, 0.22, 0.6);
   applyCharacterModel(0);
   const jetMounts = [-1, 1].map(side => {
     const mount = new THREE.Group();
@@ -1171,7 +1188,7 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
   });
   inventory.visible = false;
   let modelLibrary;
-  import("./arena-models.js?v=20261027-frontgun")
+  import("./arena-models.js?v=20261028-cascade")
     .then(({ loadArenaWeapons }) => loadArenaWeapons())
     .then((library) => {
       if (disposed) {
@@ -1197,14 +1214,14 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
         slot.mount.add(preview);
         slot.model = preview;
       });
-      // Also arm each track's side guardian robot with clones of the 8 3D weapons
+      // Also arm each track's side guardian robot with clones of the six 3D weapons
       rooms.forEach((rm, rIdx) => {
         rm.guardianWeaponMount.clear();
         rm.guardianWeapons = weapons.map((w, wIdx) => {
           const gw = w.clone(true);
           gw.scale.setScalar(0.78);
           gw.rotation.set(0, 0, 0);
-          gw.visible = wIdx === (state.equippedHarness ?? (rIdx * 2) % 8);
+          gw.visible = wIdx === (state.equippedHarness ?? (rIdx * 2) % HARNESS_NAMES.length);
           rm.guardianWeaponMount.add(gw);
           return gw;
         });
@@ -1318,11 +1335,6 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
       ...p,
     ),
   );
-  const beamMat = luminous(0x82ffe4, 4, 0.8),
-    beam = cylinder(stage, 0.027, 0.027, 1, beamMat),
-    hit = glow(stage, 0x82ffe4, 2.4, 0, 0, 0, 0.6);
-  beam.visible = hit.visible = false;
-  const packets = Array.from({ length: 7 }, () => sphere(stage, 0.055, pale));
   const record = new THREE.Group();
   stage.add(record);
   record.visible = false;
@@ -1515,10 +1527,6 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
   const cameraPos = vec(),
     cameraLook = vec(),
     heroPos = vec(),
-    muzzle = vec(),
-    beamTarget = vec(),
-    beamDirection = vec(),
-    beamMid = vec(),
     up = vec(0, 1, 0);
   let language = "en";
   function sampleShot(p) {
@@ -1668,7 +1676,8 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
     agentHalo.position.set(heroPos.x, 2 + hover, heroPos.z);
     const frontLightMix = Math.max(inTrackTunnel, inventoryAmount);
     heroLight.position.copy(agent.position).add(vec(mix(-1.6, 1.1, frontLightMix), 2.8, mix(2, 3.4, frontLightMix)));
-    heroLight.intensity = mix(18, 48, frontLightMix);
+    // bright enough to show off the loadout at the wheel; soft inside a track tunnel
+    heroLight.intensity = mix(mix(18, 40, inventoryAmount), 20, inTrackTunnel);
     agent.updateMatrixWorld(true);
     const activeRoom = p >= 0.76 ? 2 : p >= 0.57 ? 1 : 0;
     const deployment = smooth(0.355, 0.425, p) * (1 - smooth(0.925, 0.98, p));
@@ -1686,7 +1695,11 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
     aimMatrix.lookAt(roomTargets[activeRoom], weaponMount.position, up);
     aimRotation.setFromRotationMatrix(aimMatrix);
     weaponMount.quaternion.copy(backRotation).slerp(aimRotation, deployment);
-    weapons.forEach(w => w.scale.setScalar(mix(mix(1.55, 1.12, inventoryAmount), 2.1, deployment)));
+    // at the wheel the six bays already show every weapon, so the carried one shrinks away and
+    // leaves the chest plate and the bottom bay clear; it returns as the wheel closes
+    const carriedScale = mix(1.55 * (1 - inventoryAmount), 2.1, deployment);
+    weapons.forEach(w => w.scale.setScalar(Math.max(0.001, carriedScale)));
+    weaponMount.visible = carriedScale > 0.02;
     weaponMount.updateMatrixWorld(true);
     const selectedWeapon = weapons[activeWeaponIdx];
     const selectedName = HARNESS_NAMES[activeWeaponIdx] || "";
@@ -1713,13 +1726,13 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
       const running = enginePower > 0.015;
       jet.plume.visible = jet.core.visible = jet.halo.visible = jet.particles.visible = running;
       jet.nozzleGlow.emissiveIntensity = enginePower * 5.4;
-      jet.thrustLight.intensity = (8 + travel * 5) * enginePower;
-      jet.plume.scale.y = (0.78 + travel * 0.7) * (0.55 + 0.45 * Math.min(1, enginePower));
+      jet.thrustLight.intensity = (8 + travel * 5) * enginePower * effortPower;
+      jet.plume.scale.y = (0.78 + travel * 0.7) * (0.55 + 0.45 * Math.min(1, enginePower)) * (0.6 + 0.4 * effortPower);
       jet.plume.position.y = -0.1 - jet.plume.scale.y * 0.5;
       jet.core.scale.y = 0.8 + travel * 0.7;
       jet.core.position.y = -0.1 - 0.31 * jet.core.scale.y;
       jet.plumeMaterial.uniforms.strength.value = enginePower;
-      jet.halo.material.opacity = 0.95 * Math.min(1, enginePower);
+      jet.halo.material.opacity = Math.min(1, 0.7 * effortPower) * Math.min(1, enginePower);
       jet.plumeMaterial.uniforms.phase.value = p * 33 + (ambient ? time : 0);
       jet.halo.scale.setScalar(1.35 + travel * 0.35);
       const flow = p * 38 + (ambient ? time * 1.2 : 0);
@@ -1727,7 +1740,7 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
         const age = (j / 27 + flow + index * 0.37) % 1,
           spread = 0.015 + age * 0.105;
         jet.positions[j * 3] = Math.sin(j * 2.4 + index) * spread;
-        jet.positions[j * 3 + 1] = -0.1 - age * (0.9 + travel * 0.9);
+        jet.positions[j * 3 + 1] = -0.1 - age * (0.9 + travel * 0.9) * (0.6 + 0.4 * effortPower);
         jet.positions[j * 3 + 2] = Math.cos(j * 1.7) * spread;
         const life = (1 - age) ** 1.7;
         jet.colors[j * 3] = 0.3 * life;
@@ -1741,12 +1754,17 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
       jet.pool.material.opacity = (0.14 + travel * 0.07) * enginePower;
       jet.pool.scale.setScalar(1.25 + travel * 0.55);
     });
-    applyCharacterModel(state.model || 0);
+    applyCharacterModel(state.model || 0, state.variant || 0, state.effort ?? DEFAULT_EFFORT);
+    effortPower += (EFFORT_POWER[state.effort ?? DEFAULT_EFFORT] - effortPower) * Math.min(1, dt * 4);
+    robotEyeMeshes.forEach((m) => { m.material.emissiveIntensity = 2.2 * effortPower; });
+    chestCoreGlow.material.opacity = 0.35 + 0.4 * effortPower;
+    chestCoreGlow.scale.setScalar(0.18 + 0.12 * effortPower);
+    charCoreMat.emissiveIntensity = 1.6 * effortPower;
     inventory.visible = inventoryAmount > 0.01;
     wheelLight.visible = inventory.visible;
     wheelLight.intensity = 10 * inventoryAmount;
     wheelLight.position.copy(camera.position);
-    // Place each of the 8 3D weapons in the foreground (slotDist = 3.1, 1.65 units IN FRONT of the robot),
+    // Place each of the six 3D weapons in the foreground (slotDist = 3.1, 1.65 units IN FRONT of the robot),
     // compensating for camera.setViewOffset(-0.07 * width * wheelShift)
     const wheelDiam = mobile
       ? Math.min(width * 0.82, Math.max(260, Math.min(330, height - 395)))
@@ -1757,7 +1775,7 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
     const slotDist = 3.1;
     camera.updateMatrixWorld();
     inventoryGuns.forEach(({ mount, model, platform, orbitRing }, i) => {
-      const a = -Math.PI / 2 + (i / 8) * Math.PI * 2;
+      const a = -Math.PI / 2 + (i / inventoryGuns.length) * Math.PI * 2; // six bays of 60°
       const sx = wheelCx + Math.cos(a) * slotRadiusPx;
       const sy = wheelCy + Math.sin(a) * slotRadiusPx - wheelDiam * 0.018;
       slotRay.set((sx / width) * 2 - 1, -(sy / height) * 2 + 1, 0.5).unproject(camera);
@@ -1792,7 +1810,7 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
       });
       if (room.guardianBot) {
         room.guardianBot.update(ambient ? time + i : p * 6, 0);
-        const activeWeaponIdx = state.equippedHarness ?? state.harness ?? (i * 2) % 8;
+        const activeWeaponIdx = state.equippedHarness ?? state.harness ?? (i * 2) % HARNESS_NAMES.length;
         room.guardianWeapons.forEach((gw, wIdx) => {
           gw.visible = wIdx === activeWeaponIdx;
         });
@@ -1805,7 +1823,7 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
       room.chamberLight.intensity = active ? 16 : 11;
       // Keep the portal veil subtle when inside a track tunnel so there is zero white glare behind the robot
       const overview = 1 - smooth(0.13, 0.17, p), finale = smooth(0.92, 0.96, p);
-      const power = Math.max(active ? 0.32 : 0.18, overview * 0.75, finale * 0.75);
+      const power = Math.max(active ? 0.32 : 0.18, overview * 0.75, finale * 0.75) * (1 - 0.78 * inTrackTunnel);
       // pointed at: a surge; stepped through: a flood
       const want = state.portalFocus === ARENA_DOMAINS[i].id ? (state.portalCharge ? 2.4 : 0.7) : 0;
       room.portal.surge += (want - room.portal.surge) * Math.min(1, frameDt * (state.portalCharge ? 4 : 6));
@@ -1826,9 +1844,8 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
       };
       portalPoint.set(0, 3.7, 1.2); room.group.localToWorld(portalPoint).project(camera); // the vortex's centre, where a warp begins
       Object.assign(portalList[i], { cx: (portalPoint.x + 1) * width / 2, cy: (1 - portalPoint.y) * height / 2, centreVisible: portalPoint.z > -1 && portalPoint.z < 1 && Math.abs(portalPoint.x) < 1 && Math.abs(portalPoint.y) < 1 });
-      room.halo.material.opacity = active ? 0.2 : 0.075;
-      room.scan.visible = active;
-      room.scan.position.y = 1.2 + ((((p - start) / (end - start)) * 11) % 5.4);
+      room.halo.material.opacity = (active ? 0.2 : 0.075) * (1 - 0.75 * inTrackTunnel);
+      room.scan.visible = false;
       room.core.rotation.y =
         i === 2 ? (p - 0.755) * 4 + (ambient ? time * 0.05 : 0) : 0;
       const titleFocus = p > 0.385 && p < 0.93 ? (active ? 1 : 0.48) : 1;
@@ -1875,36 +1892,6 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
               "EXPERIENCE, WITH ITS EVIDENCE INTACT",
             ],
       );
-    }
-    const actionWindow = actionWindows[activeRoom],
-      activeWeaponSlot = state.equippedHarness ?? state.harness ?? 0,
-      firing =
-        p > actionWindow[0] &&
-        p < actionWindow[1];
-    beam.visible = hit.visible = firing;
-    packets.forEach((packet) => {
-      packet.visible = firing;
-    });
-    if (firing) {
-      if (selectedWeapon) selectedWeapon.localToWorld(muzzle.set(0, 0, 0.5));
-      else muzzle.copy(weaponMount.position);
-      beamTarget.copy(roomTargets[activeRoom]);
-      beamDirection.copy(beamTarget).sub(muzzle);
-      const length = beamDirection.length();
-      beamDirection.normalize();
-      beamMid.copy(beamTarget).add(muzzle).multiplyScalar(0.5);
-      beam.position.copy(beamMid);
-      beam.quaternion.setFromUnitVectors(up, beamDirection);
-      beam.scale.y = length;
-      beamMat.color.set(harnessColors[activeWeaponSlot]);
-      beamMat.emissive.set(harnessColors[activeWeaponSlot]);
-      hit.position.copy(beamTarget);
-      hit.material.color.set(colors[activeRoom]);
-      packets.forEach((packet, i) => {
-        packet.position
-          .copy(muzzle)
-          .lerp(beamTarget, (i / 7 + (ambient ? time * 0.45 : p * 11)) % 1);
-      });
     }
     const recordAmount = smooth(0.935, 0.985, p);
     record.visible = recordAmount > 0.001;
@@ -2027,11 +2014,15 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
         lastModelSpin = next.modelSpin;
         spinBoost = 1;
       }
+      if (Number.isFinite(next.variant))
+        state.variant = clamp(Math.round(next.variant), 0, (MODEL_CHARACTERS[state.model] || MODEL_CHARACTERS[0]).variants.length - 1);
+      if (Number.isFinite(next.effort))
+        state.effort = clamp(Math.round(next.effort), 0, EFFORTS.length - 1);
       if (Number.isFinite(next.harness))
-        state.harness = clamp(Math.round(next.harness), 0, 7);
+        state.harness = clamp(Math.round(next.harness), 0, HARNESS_NAMES.length - 1);
       if (Object.prototype.hasOwnProperty.call(next, "equippedHarness"))
         state.equippedHarness = Number.isFinite(next.equippedHarness)
-          ? clamp(Math.round(next.equippedHarness), 0, 7)
+          ? clamp(Math.round(next.equippedHarness), 0, HARNESS_NAMES.length - 1)
           : null;
       if (Number.isFinite(next.room))
         state.room = clamp(Math.round(next.room), 0, 2);

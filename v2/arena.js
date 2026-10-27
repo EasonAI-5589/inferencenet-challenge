@@ -1,6 +1,6 @@
 /* A single scroll-owned timeline: camera, equipment, rooms and evidence all follow it. */
 import { createSignatureRail } from './mc-rail.js?v=20261027-frontgun';
-import { ARENA_DOMAINS, HARNESS_NAMES, MODEL_CHARACTERS } from './arena-data.js?v=20261027-frontgun';
+import { ARENA_DOMAINS, HARNESS_NAMES, MODEL_CHARACTERS, EFFORTS, DEFAULT_EFFORT } from './arena-data.js?v=20261028-cascade';
 
 const chapter = document.querySelector('.mc-chapter');
 if (chapter) {
@@ -13,18 +13,26 @@ if (chapter) {
   const clamp = (x, lo = 0, hi = 1) => Math.max(lo, Math.min(hi, x));
   const ease = x => { const p = clamp(x); return p * p * (3 - 2 * p); };
   const lang = () => document.documentElement.lang.startsWith('zh') ? 1 : 0;
-  const state = { progress: 0, arrival: manual() ? 1 : 0, phase: 0, model: 0, modelSpin: 0, harness: 0, equippedHarness: 0, room: 0, pointer: { x: 0, y: 0 }, paused: reduced.matches, language: lang() ? 'zh' : 'en' };
+  const state = { progress: 0, arrival: manual() ? 1 : 0, phase: 0, model: 0, variant: 0, effort: DEFAULT_EFFORT, modelSpin: 0, harness: 0, equippedHarness: 0, room: 0, pointer: { x: 0, y: 0 }, paused: reduced.matches, language: lang() ? 'zh' : 'en' };
   const models = MODEL_CHARACTERS;
+  // A loadout chosen earlier (here or on the Challenge page) is where the arena starts.
+  try {
+    const saved = JSON.parse(localStorage.getItem('metacase-loadout') || '{}');
+    const whole = (v, hi, fallback) => Number.isInteger(v) && v >= 0 && v <= hi ? v : fallback;
+    state.model = whole(saved.model, models.length - 1, 0);
+    state.variant = whole(saved.variant, models[state.model].variants.length - 1, 0);
+    state.effort = whole(saved.effort, EFFORTS.length - 1, DEFAULT_EFFORT);
+    state.harness = state.equippedHarness = whole(saved.harness, HARNESS_NAMES.length - 1, 0);
+  } catch {}
   const harnesses = [
-    { name: 'DeepSeek Harness', lines: ['DeepSeek', 'Harness'], code: 'W-01', type: ['Plugin runtime', '插件运行时'], description: ['Swap the runtime weapon. Recompose the tools, context and feedback around your chosen model character.', '切换运行时武器，围绕当前模型角色重新组织工具、上下文与反馈。'] },
-    { name: 'DeepAgents', lines: ['DeepAgents'], code: 'W-02', type: ['Library harness', '库式 Harness'], description: ['Equip a planning-oriented harness weapon. Make the workflow and working context part of the setup.', '装备面向规划的 Harness 武器，将工作流与上下文纳入配置。'] },
-    { name: 'Claude Code', lines: ['Claude', 'Code'], code: 'W-03', type: ['CLI harness', '命令行 Harness'], description: ['Load a different execution loop weapon. The challenge still begins with the same evidence.', '装载不同的执行循环武器，挑战仍从同一份证据出发。'] },
-    { name: 'Codex CLI', lines: ['Codex', 'CLI'], code: 'W-04', type: ['CLI harness', '命令行 Harness'], description: ['Exchange the tool interface and execution environment weapon around the model character.', '为模型角色更换周围的工具接口与执行环境武器。'] },
-    { name: 'OpenCode', lines: ['OpenCode'], code: 'W-05', type: ['Server runtime', '服务式运行时'], description: ['Another weapon slot, another way to organize the model character’s work.', '另一套武器槽位，用另一种方式组织模型角色的工作。'] },
-    { name: 'OpenHands SDK', lines: ['OpenHands', 'SDK'], code: 'W-06', type: ['Agent runtime', 'Agent 运行时'], description: ['Connect the character, conversation and workspace through a different runtime weapon.', '通过不同的运行时武器连接角色、会话与工作空间。'] },
-    { name: 'Terminus-2', lines: ['Terminus', '-2'], code: 'W-07', type: ['Reference loop', '参考执行循环'], description: ['Equip a terminal-oriented loop weapon. Tools turn proposed actions into observable results.', '装备面向终端的执行循环武器，让工具将行动转化为可观察结果。'] },
-    { name: 'mini-SWE-agent', lines: ['mini-SWE', 'agent'], code: 'W-08', type: ['Minimal loop', '精简执行循环'], description: ['Strip the loop back to its essentials. Both character and weapon are variables; evidence remains the anchor.', '将循环简化到核心。模型角色与 Harness 武器皆可切换，证据始终是依据。'] },
+    { name: 'DeepSeek Harness', lines: ['DeepSeek', 'Harness'], code: 'W-01', type: ['Plugin runtime', '插件运行时'], description: ['Swap the runtime weapon. Recompose the tools, context and feedback around the chosen model.', '切换运行时武器，围绕所选模型重新组织工具、上下文与反馈。'] },
+    { name: 'DeepAgents', lines: ['DeepAgents'], code: 'W-02', type: ['Library harness', '库式 Harness'], description: ['Equip a planning-oriented harness. Make the workflow and working context part of the setup.', '装备面向规划的 Harness，将工作流与上下文纳入配置。'] },
+    { name: 'Claude Code', lines: ['Claude', 'Code'], code: 'W-03', type: ['CLI harness · Claude Agent SDK', '命令行 Harness · Claude Agent SDK'], description: ['Load a different execution loop. The challenge still begins with the same evidence.', '装载不同的执行循环，挑战仍从同一份证据出发。'] },
+    { name: 'Codex CLI', lines: ['Codex', 'CLI'], code: 'W-04', type: ['CLI harness · OpenAI Agents SDK', '命令行 Harness · OpenAI Agents SDK'], description: ['Exchange the tool interface and execution environment around the model.', '为模型更换周围的工具接口与执行环境。'] },
+    { name: 'Terminus-2', lines: ['Terminus', '-2'], code: 'W-05', type: ['Harbor reference harness', 'Harbor 官方参考 Harness'], description: ['Harbor’s terminal reference loop: tools turn proposed actions into observable results.', 'Harbor 官方终端参考循环：工具把提出的行动变成可观察的结果。'] },
+    { name: 'OpenCode', lines: ['OpenCode'], code: 'W-06', type: ['Server runtime', '服务式运行时'], description: ['Another weapon slot, another way to organize the model’s work. Evidence remains the anchor.', '另一套武器槽位，用另一种方式组织模型的工作，证据始终是依据。'] },
   ];
+  const STEP_LABELS = [['1 · PROVIDER', '1 · 厂商 / PROVIDER'], ['2 · MODEL', '2 · 模型 / MODEL'], ['3 · EFFORT', '3 · 推理强度 / EFFORT'], ['4 · HARNESS', '4 · 武器 / HARNESS']];
   // Each room is a portal to its track on the Challenge page.
   const TRACKS = { econ: 'challenge.html?via=portal#track-econ', fin: 'challenge.html?via=portal#track-fin', soc: 'challenge.html?via=portal#track-soc' };
   const domainHeadlines = [
@@ -39,7 +47,7 @@ if (chapter) {
   ];
   const phases = [
     { tag:['01 / THE ENTRANCE','01 / 挑战赛入口'], title:['Three portals.<br><em>Three tracks.</em>','三扇门，<br><em>三条赛道。</em>'], body:['Economics, Finance and Social Science. Step through a portal to reach its track: the tasks, the data and how runs are scored.', '经济、金融与社科。穿过一扇门，就进入对应的赛道：题目、数据和评分方式都在那里。'], code:['THREE TRACKS · SIXTEEN CASE CATEGORIES','三条赛道 · 16 个二级目录'], label:['ENTER','入口'], event:['Pick a portal, or scroll to walk through all three with one agent.', '选一扇门直接进入，或继续滚动，跟着一个 Agent 走过三条赛道。'] },
-    { tag:['02 / CHARACTER & HARNESS WHEEL','02 / 角色与 HARNESS 装备轮'], title:['Model is the character.<br><em>Harness is the weapon.</em>','模型是角色，<br><em>Harness 是武器。</em>'], body:['Switch between six 3D model characters at the center, then spin the 3D armory wheel to equip one of eight harness weapons.', '在中心切换六款 3D 模型角色（Model），再转动立体武器轮盘，为它装载趁手的 Harness 武器。'], code:['PICK A MODEL CHARACTER · EQUIP A HARNESS WEAPON','切换模型角色 · 装备 HARNESS 武器'], label:['EQUIP','装备'], event:['', ''] },
+    { tag:['02 / CHARACTER & HARNESS WHEEL','02 / 角色与 HARNESS 装备轮'], title:['Model is the character.<br><em>Harness is the weapon.</em>','模型是角色，<br><em>Harness 是武器。</em>'], body:['Pick a provider, then its model and reasoning effort, and spin the armory wheel to equip one of six harness weapons.', '先选厂商，再选具体模型与推理强度，最后转动武器轮盘，为它装备六款 Harness 之一。'], code:['PROVIDER · MODEL · EFFORT · HARNESS','厂商 · 模型 · 推理强度 · HARNESS'], label:['EQUIP','装备'], event:['', ''] },
     ...ARENA_DOMAINS.map((domain, i) => ({
       tag: [`0${i + 3} / ${domain.id.toUpperCase()}`, `0${i + 3} / ${domain.name[1]}`],
       title: [`${domain.name[0]}<br><em>${domainHeadlines[i][0]}</em>`, `${domain.name[1]}<br><em>${domainHeadlines[i][1]}</em>`],
@@ -55,10 +63,8 @@ if (chapter) {
     { body: 'M-36-9h14v-6h32v6h26v11H5l-9 14h-13l4-14h-23Z', top: 'M-22-15h32v5h24v3H-22Z', core: 'M-10-8h22v5H-10Z M22-7h16v4H22Z' },
     { body: 'M-35-8h23l5-8h18l7 8h20V4H8L0 15h-14l4-13h-25Z', top: 'M-12-16h18l6 7h19v3H-14Z', core: 'M-6-6h20v5H-6Z M18-4h18v3H18Z' },
     { body: 'M-35-10h52v6h22v9H9l-8 12h-14l4-13h-26Z', top: 'M-35-10h52v4h20v3H-35Z', core: 'M-18-5h28v4H-18Z M20-5h17v4H20Z' },
-    { body: 'M-34-7h20l6-8h24v6h22v12H8L0 15h-13l3-13h-24Z', top: 'M-14-15h24v5h21v3H-18Z', core: 'M-8-6h22v6H-8Z M20-4h16v4H20Z' },
-    { body: 'M-34-9h15l8-7H8l9 8h23V5H8L0 15h-13l4-12h-25Z', top: 'M-19-9l8-7H8l8 7h22v3H-19Z', core: 'M-6-7h16v6H-6Z M20-5h18v4H20Z' },
     { body: 'M-38-7h29l6-8h21v6h26v9H5L-2 15h-13l5-13h-28Z', top: 'M-9-15h21v5h25v3H-13Z', core: 'M-8-5h24v5H-8Z M22-4h19v3H22Z' },
-    { body: 'M-29-9h46v6h18v8H4L-3 15h-13l6-12h-19Z', top: 'M-29-9h46v4h17v3H-29Z', core: 'M-16-4h22v4H-16Z M12-4h20v3H12Z' },
+    { body: 'M-34-7h20l6-8h24v6h22v12H8L0 15h-13l3-13h-24Z', top: 'M-14-15h24v5h21v3H-18Z', core: 'M-8-6h22v6H-8Z M20-4h16v4H20Z' },
   ];
   const polar = (r, a) => [300 + Math.cos(a) * r, 300 + Math.sin(a) * r];
   const pt = p => p.map(x => x.toFixed(2)).join(' ');
@@ -79,7 +85,7 @@ if (chapter) {
     <circle class="mc-wheel-hub-ring" cx="300" cy="300" r="144"/>`
     + Array.from({length:72},(_,i)=>{ const a=i*Math.PI/36;return `<path class="mc-wheel-tick" d="M${pt(polar(284,a))}L${pt(polar(i%9===0?294:288,a))}"/>`; }).join('')
     + harnesses.map((h, i) => {
-      const mid = -Math.PI / 2 + i * Math.PI / 4, a = mid - Math.PI / 8 + .018, b = mid + Math.PI / 8 - .018;
+      const mid = -Math.PI / 2 + i * Math.PI / 3, a = mid - Math.PI / 6 + .018, b = mid + Math.PI / 6 - .018; // six bays of 60°
       const c = polar(208, mid), textPos = polar(252, mid), sp = weapon3DSprites[i];
       return `<g data-wheel-item="${i}">
         <path class="mc-sector-depth" d="${ringSlice(282, 160, a, b)}" transform="translate(0, 4)"/>
@@ -107,50 +113,102 @@ if (chapter) {
     },
   });
   let scene, loading = false, frame = 0, visible = false, anchor = null, lastKey = '';
-  function selectModel(index) {
-    state.model = clamp(index, 0, models.length - 1);
-    state.modelSpin = (state.modelSpin || 0) + 1;
-    try { localStorage.setItem('metacase-loadout', JSON.stringify({ model: state.model, harness: state.equippedHarness ?? state.harness ?? 0 })); } catch {}
-    lastKey = '';
-    paintCopy();
-    scene?.update(state);
-    const m = models[state.model];
-    $('.mc-equipment-status').textContent = lang() ? `已切换角色：${m.name}` : `${m.name} character selected.`;
+  // The loadout is chosen in four steps: provider → model → effort → harness. The whole of it
+  // is kept for the portal flight and the Challenge page.
+  const loadoutText = () => {
+    const m = models[state.model], harness = state.equippedHarness ?? state.harness ?? 0;
+    return `${m.provider} · ${m.variants[state.variant]} · ${EFFORTS[state.effort]} × ${HARNESS_NAMES[harness]}`;
+  };
+  function saveLoadout() {
+    const m = models[state.model], harness = state.equippedHarness ?? state.harness ?? 0;
+    try {
+      localStorage.setItem('metacase-loadout', JSON.stringify({
+        model: state.model, variant: state.variant, effort: state.effort, harness,
+        provider: m.provider, modelName: m.variants[state.variant], effortName: EFFORTS[state.effort], harnessName: HARNESS_NAMES[harness],
+      }));
+    } catch {}
   }
-  function buildModelSelectors() {
-    const NS = 'http://www.w3.org/2000/svg';
+  function announce(en, zh) { $('.mc-equipment-status').textContent = lang() ? zh : en; }
+  // A step that changes replays the steps after it, so the cascade reads as one motion.
+  function cascade(fromStep) {
+    const panel = $('.mc-loadout');
+    panel.dataset.cascadeFrom = String(fromStep);
+    panel.classList.remove('is-cascading'); void panel.offsetWidth; panel.classList.add('is-cascading');
+    clearTimeout(cascade.timer); cascade.timer = setTimeout(() => panel.classList.remove('is-cascading'), 900);
+  }
+  function selectProvider(index) {
+    const next = clamp(index, 0, models.length - 1);
+    if (next !== state.model) { state.model = next; state.variant = 0; }
+    state.modelSpin = (state.modelSpin || 0) + 1; // the robot turns a full circle into the new armour
+    renderVariants(); cascade(1); saveLoadout();
+    lastKey = ''; paintCopy(); scene?.update(state);
+    const m = models[state.model];
+    announce(`${m.provider} selected: ${m.variants[state.variant]}.`, `已选择厂商：${m.provider}，模型 ${m.variants[state.variant]}。`);
+  }
+  function selectVariant(index) {
+    state.variant = clamp(index, 0, models[state.model].variants.length - 1);
+    cascade(2); saveLoadout();
+    lastKey = ''; paintCopy(); scene?.update(state);
+    const name = models[state.model].variants[state.variant];
+    announce(`${name} selected.`, `已选择模型：${name}。`);
+  }
+  function selectEffort(index) {
+    state.effort = clamp(index, 0, EFFORTS.length - 1);
+    cascade(3); saveLoadout();
+    lastKey = ''; paintCopy(); scene?.update(state);
+    announce(`Reasoning effort: ${EFFORTS[state.effort]}.`, `推理强度：${EFFORTS[state.effort]}。`);
+  }
+  const NS = 'http://www.w3.org/2000/svg';
+  // A provider's mark on its 0..24 grid, filled with the current colour (no stroke).
+  function logoSvg(m) {
+    const svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('class', 'mc-model-logo');
+    const path = document.createElementNS(NS, 'path');
+    path.setAttribute('d', m.logo);
+    path.setAttribute('fill', 'currentColor');
+    path.setAttribute('fill-rule', m.rule || 'nonzero');
+    svg.append(path);
+    return svg;
+  }
+  function chip(className, label, onClick, data) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = className;
+    Object.assign(btn.dataset, data);
+    if (label) btn.append(label);
+    btn.addEventListener('click', event => { event.stopPropagation(); onClick(); });
+    return btn;
+  }
+  function buildProviderButtons() {
     for (const container of [$('[data-mc-model-roster]'), $('[data-mc-model-chips]')]) {
       if (!container) continue;
       container.replaceChildren(...models.map((m, i) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'mc-model-btn';
-        btn.dataset.modelIndex = String(i);
-        btn.dataset.mcModel = String(i);
-        btn.style.setProperty('--mc-mcolor', m.color);
-        const svg = document.createElementNS(NS, 'svg');
-        svg.setAttribute('viewBox', '-14 -14 28 28');
-        svg.setAttribute('aria-hidden', 'true');
-        svg.setAttribute('class', 'mc-model-logo');
-        const path = document.createElementNS(NS, 'path');
-        path.setAttribute('d', m.logo);
-        path.setAttribute('fill', 'currentColor');
-        path.setAttribute('stroke', 'currentColor');
-        path.setAttribute('stroke-width', '1.4');
-        path.setAttribute('stroke-linejoin', 'round');
-        svg.append(path);
         const label = document.createElement('span');
-        label.textContent = m.short;
-        btn.append(svg, label);
-        btn.addEventListener('click', event => {
-          event.stopPropagation();
-          selectModel(i);
-        });
+        label.textContent = m.provider;
+        const btn = chip('mc-model-btn', label, () => selectProvider(i), { modelIndex: String(i) });
+        btn.prepend(logoSvg(m));
+        btn.style.setProperty('--mc-mcolor', m.color);
         return btn;
       }));
     }
   }
-  buildModelSelectors();
+  function renderVariants() {
+    const box = $('[data-mc-variant-chips]');
+    if (!box) return;
+    box.replaceChildren(...models[state.model].variants.map((name, j) => {
+      const btn = chip('mc-chip mc-variant-btn', name, () => selectVariant(j), { variantIndex: String(j) });
+      btn.style.setProperty('--i', String(j));
+      return btn;
+    }));
+  }
+  function buildEfforts() {
+    const box = $('[data-mc-effort-chips]');
+    if (!box) return;
+    box.replaceChildren(...EFFORTS.map((name, k) => chip('mc-chip mc-effort-btn', name, () => selectEffort(k), { effortIndex: String(k) })));
+  }
+  buildProviderButtons(); renderVariants(); buildEfforts();
   function paintCopy() {
     const l = lang(), p = phases[state.phase], h = harnesses[state.harness], m = models[state.model] || models[0];
     const equipped = harnesses[state.equippedHarness], browsing = state.phase === 1;
@@ -161,16 +219,28 @@ if (chapter) {
     chapter.dataset.model = m.id;
     chapter.style.setProperty('--domain-accent', ['var(--track-1)', 'var(--track-2)', 'var(--mc-violet)'][state.room]);
     chapter.style.setProperty('--model-accent', m.color);
-    if ($('[data-mc-model-label]')) $('[data-mc-model-label]').textContent = l ? '模型角色 / MODEL' : 'CHARACTER / MODEL';
-    if ($('[data-mc-equipped-model]')) $('[data-mc-equipped-model]').textContent = m.name;
+    const variant = m.variants[state.variant] || m.variants[0];
+    chapter.dataset.effort = EFFORTS[state.effort].toLowerCase();
     if ($('[data-mc-hub-role]')) $('[data-mc-hub-role]').textContent = m.role[l];
-    if ($('[data-mc-hub-model]')) $('[data-mc-hub-model]').textContent = m.name;
+    if ($('[data-mc-hub-model]')) $('[data-mc-hub-model]').textContent = `${m.provider} · ${variant}`;
+    const press = (btn, active) => { btn.classList.toggle('is-active', active); btn.setAttribute('aria-pressed', String(active)); };
     $$('[data-model-index]').forEach(btn => {
-      const idx = Number(btn.dataset.modelIndex), active = idx === state.model;
-      btn.classList.toggle('is-active', active);
-      btn.setAttribute('aria-pressed', String(active));
-      btn.title = `${models[idx].name} · ${models[idx].role[l]}`;
+      const idx = Number(btn.dataset.modelIndex);
+      press(btn, idx === state.model);
+      btn.title = `${models[idx].provider} · ${models[idx].role[l]}`;
     });
+    $$('[data-variant-index]').forEach(btn => press(btn, Number(btn.dataset.variantIndex) === state.variant));
+    $$('[data-effort-index]').forEach(btn => press(btn, Number(btn.dataset.effortIndex) === state.effort));
+    $$('[data-mc-effort-meter] i').forEach((cell, k) => cell.classList.toggle('on', k <= state.effort));
+    $$('[data-mc-step-label]').forEach(el => { el.textContent = STEP_LABELS[Number(el.dataset.mcStepLabel)][l]; });
+    $('[data-mc-model-chips]')?.setAttribute('aria-label', l ? '模型厂商' : 'Model provider');
+    $('[data-mc-variant-chips]')?.setAttribute('aria-label', l ? `${m.provider} 的模型` : `${m.provider} models`);
+    $('[data-mc-effort-chips]')?.setAttribute('aria-label', l ? '推理强度' : 'Reasoning effort');
+    const summary = $('[data-mc-loadout-summary]');
+    if (summary) {
+      summary.replaceChildren(logoSvg(m), Object.assign(document.createElement('span'), { textContent: loadoutText() }));
+      summary.title = loadoutText();
+    }
     $('[data-mc-directory]').hidden = !inDomain;
     const enter = $('[data-mc-enter]');
     enter.hidden = !inDomain;
@@ -207,7 +277,7 @@ if (chapter) {
     $('[data-mc-kicker]').textContent = p.tag[l];
     $('#system-title').innerHTML = p.title[l];
     $('[data-mc-body]').textContent = browsing && manual()
-      ? (l ? '用进度条浏览八种 Harness，再点击区段或确认按钮装备。' : 'Use the slider to browse eight harnesses, then click a slot or confirm your equipment.')
+      ? (l ? '用进度条浏览六种 Harness，再点击区段或确认按钮装备。' : 'Use the slider to browse six harnesses, then click a slot or confirm your equipment.')
       : p.body[l];
     $('[data-mc-code]').textContent = p.code[l];
     $('[data-mc-equipped]').textContent = shown?.name || (l ? '等待选择装备' : 'Awaiting a loadout');
@@ -223,10 +293,10 @@ if (chapter) {
     $('[data-mc-index]').textContent = String(state.phase + 1).padStart(2,'0');
     $('[data-mc-name]').textContent = l ? 'METACASE 挑战赛' : 'THE METACASE CHALLENGE';
     $('[data-mc-scroll-hint]').textContent = manual() ? (l?'用下方进度条探索':'EXPLORE WITH THE SLIDER') : (l?'滚动，进入下一幕':'SCROLL TO EXPLORE');
-    $('[data-mc-loadout-label]').textContent = browsing ? (l ? '预览武器 / HARNESS' : 'WEAPON / HARNESS') : inDomain && equipped ? (l ? '悬浮武器 / HARNESS' : 'DEPLOYED / HARNESS') : (l ? '背负武器 / HARNESS' : 'WEAPON / HARNESS');
+    $('[data-mc-loadout-label]').textContent = browsing ? STEP_LABELS[3][l] : inDomain && equipped ? (l ? '悬浮武器 / HARNESS' : 'DEPLOYED / HARNESS') : (l ? '背负武器 / HARNESS' : 'WEAPON / HARNESS');
     $('[data-mc-wheel-label]').textContent = manual()
-      ? (l ? '切换中心角色 · 点击外圈槽位装备武器' : 'PICK A MODEL · CLICK A SLOT TO EQUIP WEAPON')
-      : (l ? '切换中心角色 · 滚动或点击外圈装备武器' : 'SWITCH MODEL · SCROLL OR CLICK TO EQUIP WEAPON');
+      ? (l ? '选择厂商 · 点击外圈槽位装备武器' : 'PICK A PROVIDER · CLICK A SLOT TO EQUIP')
+      : (l ? '选择厂商 · 滚动或点击外圈装备武器' : 'PICK A PROVIDER · SCROLL OR CLICK TO EQUIP');
     $('[data-mc-episode-label]').textContent = l ? 'METACASE / 轨迹' : 'METACASE / TRACE';
     $('[data-mc-illustrative]').textContent = l ? '经济 · 金融 · 社科 / 三大方向，16 个二级目录。' : 'Economics · Finance · Social Science / 3 domains, 16 case categories.';
     $('[data-mc-slider-label]').textContent = l ? '探索完整解题轨迹' : 'Explore the complete episode';
@@ -256,8 +326,8 @@ if (chapter) {
     if(state.phase<0) state.phase=5;
     const local = clamp((state.progress-stops[state.phase])/(stops[state.phase+1]-stops[state.phase]));
     state.room = state.phase < 3 ? 0 : state.phase === 3 ? 1 : 2;
-    if (state.phase === 1) state.harness = Math.min(7,Math.floor(local*8));
-    const key = `${state.phase}:${state.model}:${state.harness}:${state.equippedHarness}:${lang()}`;
+    if (state.phase === 1) state.harness = Math.min(harnesses.length - 1, Math.floor(local * harnesses.length));
+    const key = `${state.phase}:${state.model}:${state.variant}:${state.effort}:${state.harness}:${state.equippedHarness}:${lang()}`;
     if (lastKey !== key) { lastKey = key; paintCopy(); }
     const enter = ease((state.progress-.12)/.055), exit = ease((state.progress-.365)/.035);
     $('.mc-wheel').style.setProperty('--wheel-opacity',(enter*(1-exit)).toFixed(3));
@@ -287,6 +357,7 @@ if (chapter) {
     if (state.phase !== 1) return;
     state.harness = index;
     state.equippedHarness = index;
+    saveLoadout();
     lastKey = '';
     paintCopy();
     scene?.update(state);
@@ -304,7 +375,7 @@ if (chapter) {
     if(event.key==='Enter'||event.key===' ') { event.preventDefault();equip(index); }
     else if(['ArrowLeft','ArrowUp','ArrowRight','ArrowDown'].includes(event.key)) {
       event.preventDefault();
-      const next=(index+(['ArrowLeft','ArrowUp'].includes(event.key)?7:1))%8;
+      const next=(index+(['ArrowLeft','ArrowUp'].includes(event.key)?harnesses.length-1:1))%harnesses.length;
       state.harness=next;lastKey='';paintCopy();scene?.update(state);
       $$('[data-wheel-item]')[next].focus({preventScroll:true});
     }
@@ -378,17 +449,17 @@ if (chapter) {
       state.portalFocus = id; state.portalCharge = true; scene?.update(state);
       const href = link.href;
       const chosenHarness = state.equippedHarness ?? state.harness ?? 0;
-      try { localStorage.setItem('metacase-loadout', JSON.stringify({ model: state.model || 0, harness: chosenHarness })); } catch {}
-      setTimeout(() => import('./portal-warp.js?v=20261027-warp3d2').then(m => m.warp({ x, y, track: id, href, model: state.model || 0, harness: chosenHarness, lang: lang() })).catch(() => { location.href = href; }), scene ? 260 : 0);
+      saveLoadout();
+      setTimeout(() => import('./portal-warp.js?v=20261028-cascade').then(m => m.warp({ x, y, track: id, href, model: state.model, variant: state.variant, effort: state.effort, harness: chosenHarness, lang: lang() })).catch(() => { location.href = href; }), scene ? 260 : 0);
     });
   });
   addEventListener('pageshow', event => { if (event.persisted) { state.portalCharge = false; state.portalFocus = ''; scene?.update(state); } });
   async function load() {
     if(loading)return;loading=true;
     try {
-      const {createArenaScene}=await import('./arena-scene.js?v=20261027-frontgun');
+      const {createArenaScene}=await import('./arena-scene.js?v=20261028-cascade');
       scene=createArenaScene($('.mc-canvas'), { onWeaponProject: projectWeapon, onPortalProject: projectPortals }); scene.update(state);
-      import('./portal-warp.js?v=20261027-warp3d2').catch(() => {}); // the portal flight's 3D kit, warmed before any portal is taken
+      import('./portal-warp.js?v=20261028-cascade').catch(() => {}); // the portal flight's 3D kit, warmed before any portal is taken
       $('.mc-fallback').hidden=true;chapter.dataset.renderer='webgl';
     } catch(error) {
       $('.mc-fallback').hidden=false;chapter.dataset.renderer='fallback';
