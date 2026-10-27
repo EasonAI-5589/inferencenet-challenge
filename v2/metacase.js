@@ -9,7 +9,7 @@ const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const ease = x => { const p = clamp(x); return p * p * (3 - 2 * p); };
-const V = '?v=20261027-run';
+const V = '?v=20261027-workroom';
 
 /* ---- layout helpers ---- */
 const siteHeader = $('.site-header'), subnav = $('.mc-subnav');

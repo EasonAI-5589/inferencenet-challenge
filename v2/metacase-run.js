@@ -1,20 +1,24 @@
-/* metacase-run.js — 05 · The Metacase Challenge: one run under the four rules, in the
- * library's reading room. A case folder opens on a desk and its raw evidence is worked
+/* metacase-run.js — 05 · The Metacase Challenge: one run under the four rules, in a
+ * workroom off the library. A case folder opens on a desk and its raw evidence is worked
  * into a finished deliverable (end-to-end tasks); the reference waits sealed in a locked
  * case behind a rope (hidden references); the same folder lies on every desk, each with a
  * different agent (same tasks for everyone); then each run's five stages rise and are
- * bound into a Metacase as the tabs on its fore-edge, the reference is opened for scoring,
- * and the three books go to the shelves (full trajectories). Rendered by the shared stage. */
+ * bound into a Metacase as the tabs on its fore-edge. Three agents take three ways through
+ * the same case, so the three books carry three signatures. The reference is opened for
+ * scoring, the doors to the library open, and the books go to its shelves (full
+ * trajectories). Rendered by the shared stage. */
 import * as THREE from '../assets/vendor/three/three.module.js';
 import { PALETTE, BOOK, STAGE_COLORS, closedBook, bookTabs, mat, add, block, cyl, ball, rbox, robot, lights } from './mc-kit.js';
 import { clamp, smooth, ramp, lerp, pageBackground, fitSafe, fitBox, toView, glowSprite } from './mc-stage.js';
 
 const DESKS = [-2.7, 0, 2.7], DESK_Z = 1, DESK_Y = .72;
 const HARNESS = [0xf7f5f0, PALETTE.amber, PALETTE.teal];    // three agents, three harnesses
+const SIGS = [1, 3, 4];                                      // ...and three ways through the same case
 const CASE = new THREE.Vector3(0, 0, -1.7);                  // the sealed reference, behind the rope
+const WALL_Z = -2.6, WALL_H = 3.4, DOOR_W = 3;               // the workroom's back wall and its double doors
 const SHELF_Z = -3.9, CASE_H = 2.6, BAY_W = 2.4, SHELF_Y = [.22, 1.0, 1.78];
-const FIELDS = [PALETTE.teal, PALETTE.amber, PALETTE.violet];
-const BOOK_S = .3, SHELVED_S = .2;                           // a run's Metacase, above its desk and on the shelf
+const SPINES = [PALETTE.teal, PALETTE.amber, PALETTE.violet]; // the library behind the doors holds every field
+const BOOK_S = .3, SHELVED_S = .22;                           // a run's Metacase, above its desk and on the shelf
 const SHEET_W = .4, SHEET_H = .5, SHEET_GEO = new THREE.PlaneGeometry(SHEET_W, SHEET_H);
 
 const springy = x => { const q = clamp(x) - 1; return 1 + 2.6 * q * q * q + 1.6 * q * q; }; // eases past 1 and settles
@@ -47,31 +51,55 @@ export function createRun({ onProject = () => {}, safe = () => null, reduce = fa
   const light = lights(scene, { span: 12, shadowSize: 1024 });
   light.key.position.set(-5, 14, 12);
 
-  /* ---- the reading room ---- */
-  add(scene, new THREE.CylinderGeometry(7.4, 7.6, .4, 72), mat(0x6e5440), 0, -.2, -.4).castShadow = false;
-  for (let k = 0; k < 3; k++) add(scene, new THREE.TorusGeometry(2.8 + k * 1.7, .015, 4, 96), mat(0x5a4434), 0, .005, -.4, false).rotation.x = Math.PI / 2;
-  add(scene, new THREE.CylinderGeometry(4.6, 4.6, .03, 64), mat(0x3a4a7a), 0, .015, 1.1, false).scale.z = .42;
-
-  // the shelves at the back, one bay per field; the middle bay keeps three gaps for the new books
-  const slots = [];
-  FIELDS.forEach((accent, c) => {
-    const bay = new THREE.Group(); bay.position.set((c - 1) * (BAY_W + .1), 0, SHELF_Z); scene.add(bay);
-    block(bay, BAY_W, CASE_H, .1, PALETTE.ink, 0, 0, -.28, .02);
-    [-1, 1].forEach(s => block(bay, .08, CASE_H, .62, 0x7a5a42, s * (BAY_W / 2 - .04), 0, 0, .02));
-    block(bay, BAY_W + .1, .14, .7, mat(accent, { emissive: accent, intensity: .2 }), 0, CASE_H, 0, .03);
-    SHELF_Y.forEach((y, row) => {
-      block(bay, BAY_W - .1, .05, .56, 0x8a6a4a, 0, y - .05, 0, .01).castShadow = false;
-      let x = -BAY_W / 2 + .1, k = 0;
-      while (x < BAY_W / 2 - .22) {
-        const w = [.1, .12, .14, .11][(k + row + c) % 4], h = [.5, .6, .56, .46, .64][(k * 3 + c + row) % 5];
-        if (c === 1 && row === 1 && k >= 5 && k <= 7) { slots.push(new THREE.Vector3(bay.position.x + x + .12, y, SHELF_Z + .06)); x += .26; k++; continue; }
-        block(bay, w, h, .4, mat(shade(accent, [-.3, 0, .28, -.12, .14][(k + c * 2 + row) % 5])), x + w / 2, y, .04, .012).castShadow = false;
-        x += w + .006; k++;
-      }
-    });
+  /* ---- the workroom: a plank floor, a panelled wall with the case briefs pinned up ---- */
+  for (let i = 0; i < 15; i++) block(scene, 13, .04, .47, [0x7a5a42, 0x6e5440, 0x735644][i % 3], (i % 2) * .4 - .2, -.04, WALL_Z + .26 + i * .48, .01).castShadow = false;
+  const wall = mat(0x4f3c2f), panel = mat(0x5f4838), trim = mat(0x7a5a42), side = 6.5 - DOOR_W / 2 - .1;
+  [-1, 1].forEach(sx => {
+    const cx = sx * (DOOR_W / 2 + .1 + side / 2);
+    block(scene, side, WALL_H, .2, wall, cx, 0, WALL_Z, .02);
+    block(scene, side, .9, .06, panel, cx, 0, WALL_Z + .12, .02);
+    block(scene, side, .05, .08, trim, cx, .9, WALL_Z + .14, .01).castShadow = false;
+    const board = new THREE.Group(); board.position.set(sx * 3.5, 1.2, WALL_Z + .12); scene.add(board);
+    block(board, 2.1, 1.2, .05, mat(0xb98a5a), 0, 0, 0, .02);
+    for (let i = 0; i < 6; i++) {
+      const brief = block(board, .42, .5, .012, mat(PALETTE.cream), -.68 + (i % 3) * .68, .08 + Math.floor(i / 3) * .56, .03, .006);
+      brief.rotation.z = ((i * 7 + (sx > 0 ? 3 : 0)) % 5 - 2) * .04; brief.castShadow = false;
+      ball(board, .03, mat(STAGE_COLORS[(i + (sx > 0 ? 2 : 0)) % 5]), -.68 + (i % 3) * .68, .52 + Math.floor(i / 3) * .56, .05, 8);
+    }
+  });
+  block(scene, DOOR_W + .2, WALL_H - 3, .2, wall, 0, 3, WALL_Z, .02);
+  [-1, 1].forEach(sx => block(scene, .1, 3, .26, trim, sx * (DOOR_W / 2 + .05), 0, WALL_Z, .02));
+  block(scene, DOOR_W + .3, .1, .26, trim, 0, 2.95, WALL_Z, .02);
+  // the doors to the library, closed until the runs are done
+  const doors = [-1, 1].map(sx => {
+    const hinge = new THREE.Group(); hinge.position.set(sx * DOOR_W / 2, 0, WALL_Z + .02); scene.add(hinge);
+    const leaf = -sx * DOOR_W / 4;
+    block(hinge, DOOR_W / 2 - .02, 2.92, .08, mat(0x6b4a33), leaf, .02, 0, .02);
+    [.5, 1.7].forEach(y => block(hinge, DOOR_W / 2 - .36, .9, .1, trim, leaf, y, 0, .02).castShadow = false);
+    ball(hinge, .05, mat(0xd8b46a, { rough: .35 }), -sx * (DOOR_W / 2 - .18), 1.45, .07, 10);
+    return { hinge, sx };
   });
 
-  const shelfGlow = glowSprite(0xffe2b0, 3.2, 0); shelfGlow.position.set(0, SHELF_Y[1] + .35, SHELF_Z + .35); scene.add(shelfGlow);
+  // behind them, the library: one bay of every field, with three gaps for the new books
+  const library = new THREE.Group(); library.visible = false; scene.add(library);
+  block(library, 6, .04, 2, 0x6e5440, 0, -.04, SHELF_Z + .9, .01).castShadow = false;
+  const slots = [];
+  const bay = new THREE.Group(); bay.position.set(0, 0, SHELF_Z); library.add(bay);
+  block(bay, BAY_W, CASE_H, .1, PALETTE.ink, 0, 0, -.28, .02);
+  [-1, 1].forEach(sx => block(bay, .08, CASE_H, .62, 0x7a5a42, sx * (BAY_W / 2 - .04), 0, 0, .02));
+  block(bay, BAY_W + .1, .14, .7, mat(0xd8b46a, { emissive: 0xd8b46a, intensity: .2 }), 0, CASE_H, 0, .03);
+  SHELF_Y.forEach((y, row) => {
+    block(bay, BAY_W - .1, .05, .56, 0x8a6a4a, 0, y - .05, 0, .01).castShadow = false;
+    let x = -BAY_W / 2 + .1, k = 0;
+    while (x < BAY_W / 2 - .22) {
+      const w = [.1, .12, .14, .11][(k + row) % 4], h = [.5, .6, .56, .46, .64][(k * 3 + row) % 5];
+      if (row === 2 && k >= 5 && k <= 7) { slots.push(new THREE.Vector3(x + .12, y, SHELF_Z + .06)); x += .3; k++; continue; } // the top shelf, in sight over the glass case
+      block(bay, w, h, .4, mat(shade(SPINES[(k + row) % 3], [-.3, 0, .28, -.12, .14][(k * 2 + row) % 5])), x + w / 2, y, .04, .012).castShadow = false;
+      x += w + .006; k++;
+    }
+  });
+  const shelfGlow = glowSprite(0xffe2b0, 2.6, 0); shelfGlow.position.set(0, SHELF_Y[2] + .35, SHELF_Z + .35); library.add(shelfGlow);
+  const doorway = glowSprite(0xffd9a0, 4.6, 0); doorway.position.set(0, 1.5, WALL_Z - .3); scene.add(doorway);
 
   // the reference: sealed in a locked glass case on a plinth, behind a rope
   const vitrine = new THREE.Group(); vitrine.position.copy(CASE); scene.add(vitrine);
@@ -123,10 +151,15 @@ export function createRun({ onProject = () => {}, safe = () => null, reduce = fa
     report.rotation.y = -.12;
     const done = glowSprite(PALETTE.green, 1.4, 0); done.position.set(.42, DESK_Y + .2, .06); g.add(done);
     const agent = robot(HARNESS[k]); agent.root.scale.setScalar(.82); agent.root.position.set(0, 0, -.78); g.add(agent.root);
-    const lamp = glowSprite(0xffe2b0, 3.4, .12); lamp.position.set(0, DESK_Y + .4, 0); g.add(lamp);
+    const banker = new THREE.Group(); banker.position.set(-.78, DESK_Y, -.3); g.add(banker);
+    cyl(banker, .1, .12, .03, mat(0xd8b46a, { rough: .35 }), 0, 0, 0, 16);
+    cyl(banker, .012, .012, .34, mat(0xd8b46a, { rough: .35 }), 0, .03, 0, 6);
+    const hood = cyl(banker, .09, .09, .36, mat(0x2f7a55, { rough: .45 }), 0, .22, 0, 16); hood.rotation.z = Math.PI / 2; hood.scale.set(1, 1, .7);
+    ball(banker, .045, mat(0xffe2b0, { emissive: 0xffd9a0, intensity: 1.6 }), 0, .34, 0, 10);
+    const lamp = glowSprite(0xffe2b0, 3.4, .12); lamp.position.set(-.3, DESK_Y + .3, 0); g.add(lamp);
     // the Metacase this run is bound into: standing, its cover to the room, its tabs on the right
     const holder = new THREE.Group(); scene.add(holder); holder.visible = false;
-    const book = closedBook(); const sig = bookTabs(book, 0);
+    const book = closedBook(); const sig = bookTabs(book, SIGS[k]);
     book.rotation.x = Math.PI / 2; book.position.set(-BOOK.PW / 2, BOOK.PD / 2, -(BOOK.T + BOOK.BOARD * 2) / 2);
     holder.add(book);
     sig.tabs.forEach(t => { t.scale.set(.001, 1, 1); t.visible = false; });
@@ -200,7 +233,7 @@ export function createRun({ onProject = () => {}, safe = () => null, reduce = fa
     [.32, 0, 1.25, -.25, 1.6, .72, .3], [.47, 0, 1.25, -.25, 1.6, .72, .3],
     [.54, 0, 1, .8, 3.9, .92, .26], [.69, 0, 1, .8, 3.9, .92, .26],
     [.76, 0, 1.45, .5, 3.95, 1, .24], [.91, 0, 1.45, .5, 3.95, 1, .24],
-    [.98, 0, 1.45, -1.4, 4.4, 1.3, .2], [1, 0, 1.45, -1.4, 4.4, 1.3, .2],
+    [.98, 0, 1.45, -1.9, 4, 1.35, .17], [1, 0, 1.45, -1.9, 4, 1.35, .17],
   ];
   const shot = new Array(6);
   function shotAt(p) {
@@ -235,7 +268,7 @@ export function createRun({ onProject = () => {}, safe = () => null, reduce = fa
     const scoring = ramp(p, .86, .9);
     lid.rotation.x = -scoring * 1.15;
     shackle.position.y = .12 + scoring * .1;
-    refGlow.material.opacity = .2 + ramp(p, .3, .36) * (1 - ramp(p, .48, .52)) * .25 + scoring * .5 + (reduce ? 0 : Math.sin(t * 2) * .04);
+    refGlow.material.opacity = (.2 + ramp(p, .3, .36) * (1 - ramp(p, .48, .52)) * .25 + scoring * .5 + (reduce ? 0 : Math.sin(t * 2) * .04)) * (1 - .8 * ramp(p, .93, .97));
     // 4 · full trajectories: each run is bound into a Metacase, checked, and shelved
     desks.forEach(d => {
       const v = ramp(p, .72 + d.k * .015, .86 + d.k * .015), s = ramp(p, .93 + d.k * .012, .985 + d.k * .005);
@@ -254,7 +287,11 @@ export function createRun({ onProject = () => {}, safe = () => null, reduce = fa
       d.lamp.material.opacity = .12 + (d.k === 1 ? .08 : ramp(p, .5, .56) * .08);
     });
 
-    shelfGlow.material.opacity = .5 * ramp(p, .96, 1); // the new Metacases join the shelves
+    const open = ramp(p, .88, .94);
+    doors.forEach(d => { d.hinge.rotation.y = d.sx * open * 1.9; });
+    library.visible = open > .001;
+    doorway.material.opacity = .1 * open;
+    shelfGlow.material.opacity = .08 * open + .3 * ramp(p, .96, 1); // the new Metacases join the shelves
     aimCamera(camera, rect, p);
     const centre = desks[1];
     onProject([
