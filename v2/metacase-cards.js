@@ -3,7 +3,7 @@
  * the first fields and the benchmark snapshot. Each is a looping vignette drawn by the shared
  * stage. */
 import * as THREE from '../assets/vendor/three/three.module.js';
-import { PALETTE, BOOK, mat, add, block, cyl, ball, tile, volume, robot, person, buildings, tree, island, crane, scaffold, bookStack, lights, STAGE_COLORS, rbox, labelPlane, wrench, lens, terminal, toolbox } from './mc-kit.js';
+import { PALETTE, BOOK, mat, add, block, cyl, ball, tile, volume, robot, person, buildings, tree, island, crane, scaffold, bookStack, lights, STAGE_COLORS, rbox, labelPlane, blaster, terminal } from './mc-kit.js';
 import { clamp, smooth, ramp, lerp, fitCamera, glowSprite } from './mc-stage.js';
 
 const loopPhase = (t, period, offset = 0) => ((t + offset) % period) / period;
@@ -84,12 +84,22 @@ const BUILDERS = {
     const bots = [0xf7f5f0, PALETTE.amber, PALETTE.teal, PALETTE.violet].map((c, k) => { const b = robot(c); b.root.position.set(-1.35 + k * .9, 0, (k % 2) * .25); b.root.scale.setScalar(.9); g.add(b.root); return b; });
     return t => { bots.forEach((b, k) => { b.update(t + k, 0); b.root.position.y = Math.abs(Math.sin(t * 2 + k)) * .04; }); };
   },
-  // the harnesses: an open toolbox, a terminal and the tools they lend
+  // the harnesses: as in the arena, each is a weapon for a model to carry. Three blasters, each in
+  // its own colour, hover over their stands in front of the terminal they run in
   harnesses(g) {
-    const box = toolbox(PALETTE.rose); box.root.position.set(-.55, 0, 0); box.root.rotation.y = .35; box.lid.rotation.x = -1.2; g.add(box.root);
-    const term = terminal(); term.root.position.set(.8, 0, -.1); term.root.scale.setScalar(1.6); term.root.rotation.y = -.35; g.add(term.root);
-    const w = wrench(), l = lens(); w.scale.setScalar(1.6); l.scale.setScalar(1.6); g.add(w, l);
-    return t => { w.position.set(-.75, 1.1 + Math.sin(t * 1.5) * .06, .2); w.rotation.z = .5; l.position.set(-.25, 1.15 + Math.sin(t * 1.5 + 1.2) * .06, .25); l.rotation.z = -.4; term.screen.material.emissiveIntensity = .5 + Math.sin(t * 4) * .15; };
+    const term = terminal(); term.root.position.set(0, 0, -.8); term.root.scale.setScalar(1.9); g.add(term.root);
+    const guns = [PALETTE.teal, PALETTE.violet, PALETTE.amber].map((c, k) => {
+      const x = (k - 1) * 1.02, z = k === 1 ? .3 : 0;
+      cyl(g, .3, .34, .1, PALETTE.ink, x, 0, z, 28);
+      add(g, new THREE.TorusGeometry(.3, .02, 8, 40), mat(c, { emissive: c, intensity: .9 }), x, .1, z, false).rotation.x = Math.PI / 2;
+      const glow = glowSprite(c, 1.1, .22); glow.position.set(x, .4, z); g.add(glow);
+      const gun = blaster(c); gun.position.set(x, .55, z); gun.rotation.y = Math.PI / 2 - .5; g.add(gun);
+      return { gun, glow };
+    });
+    return t => {
+      guns.forEach(({ gun, glow }, k) => { gun.position.y = .55 + Math.sin(t * 1.5 + k * 1.3) * .05; gun.rotation.y = Math.PI / 2 - .5 + Math.sin(t * .6 + k) * .25; glow.material.opacity = .22 + Math.sin(t * 2 + k) * .06; });
+      term.screen.material.emissiveIntensity = .5 + Math.sin(t * 4) * .15;
+    };
   },
   // economics: data points pulled into a fitted line on the economics island
   replication(g) {
