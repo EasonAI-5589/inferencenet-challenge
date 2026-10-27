@@ -1,13 +1,64 @@
 /* metacase-cards.js — small 3D pictures for the homepage cards, in the same toy kit
- * and light as the chapters: the tracks, the two kinds of reader and the invitation.
- * Each is a looping vignette drawn by the shared stage. */
+ * and light as the chapters: the tracks, the two kinds of reader, the invitation, the three
+ * kinds of contribution and the benchmark snapshot. Each is a looping vignette drawn by the
+ * shared stage. */
 import * as THREE from '../assets/vendor/three/three.module.js';
-import { PALETTE, mat, add, block, tile, volume, robot, person, buildings, tree, island, crane, scaffold, bookStack, lights, STAGE_COLORS, rbox } from './mc-kit.js';
+import { PALETTE, BOOK, mat, add, block, cyl, ball, tile, volume, robot, person, buildings, tree, island, crane, scaffold, bookStack, lights, STAGE_COLORS, rbox, closedBook, bookTabs, modelCore, wrench, lens, terminal, toolbox, dossier } from './mc-kit.js';
 import { clamp, smooth, ramp, lerp, fitCamera, glowSprite } from './mc-stage.js';
 
 const loopPhase = (t, period, offset = 0) => ((t + offset) % period) / period;
 
+// A standing Metacase: the closed book with its tabs, cover to the viewer.
+function standingBook(g, sig, scale) {
+  const holder = new THREE.Group(); holder.scale.setScalar(scale); g.add(holder);
+  const book = closedBook(); bookTabs(book, sig);
+  book.rotation.x = Math.PI / 2; book.position.set(-BOOK.PW / 2, BOOK.PD / 2, -(BOOK.T + BOOK.BOARD * 2) / 2); holder.add(book);
+  return holder;
+}
+const plinth = (g, x = 0, r = .9) => { cyl(g, r, r * 1.08, .3, PALETTE.stone, x, 0, 0, 32); add(g, new THREE.TorusGeometry(r * 1.02, .03, 6, 48), mat(0xd8b46a, { rough: .35 }), x, .3, 0, false).rotation.x = Math.PI / 2; };
+
 const BUILDERS = {
+  // A · a Metacase: the record of a case, its five stages on the fore-edge
+  metacase(g) {
+    plinth(g);
+    const book = standingBook(g, 2, .62); book.position.y = .3;
+    const halo = glowSprite(0xffe7b8, 2.4, .2); halo.position.set(.8, 1.3, .2); g.add(halo);
+    return t => { book.rotation.y = -.45 + Math.sin(t * .5) * .25; halo.material.opacity = .18 + Math.sin(t * 2) * .05; };
+  },
+  // B · a Model & Harness: the agent, the model's core above it, the harness's tools and toolbox
+  harness(g) {
+    plinth(g, 0, 1.2);
+    const bot = robot(0xf7f5f0); bot.root.scale.setScalar(1.15); bot.root.position.set(-.35, .3, 0); g.add(bot.root);
+    const core = modelCore(PALETTE.violet); core.root.position.set(-.35, 1.95, 0); g.add(core.root);
+    const box = toolbox(PALETTE.rose); box.root.scale.setScalar(.8); box.root.position.set(.75, .3, .25); box.root.rotation.y = -.5; box.lid.rotation.x = -1.1; g.add(box.root);
+    const w = wrench(), l = lens(); w.position.set(-1.05, 1.2, .1); l.position.set(.25, 1.25, .1); g.add(w, l);
+    return t => { bot.update(t, 0); core.ring.rotation.z = t * 1.2; core.root.position.y = 1.95 + Math.sin(t * 1.6) * .05; w.rotation.z = .4 + Math.sin(t * 1.3) * .15; l.rotation.z = -.3 + Math.sin(t * 1.1 + 1) * .15; g.rotation.y = -.25 + Math.sin(t * .3) * .12; };
+  },
+  // C · a Failure Case: the dossier, the failing step marked, a lens over it
+  failure(g) {
+    plinth(g, 0, 1.1);
+    const d = dossier(); d.root.scale.setScalar(1.9); d.root.position.y = .32; d.root.rotation.set(-.12, -.2, 0); g.add(d.root);
+    const l = lens(PALETTE.amber); l.scale.setScalar(2.2); g.add(l);
+    return t => { l.position.set(.1 + Math.sin(t * .7) * .18, 1.15 + Math.sin(t * 1.4) * .05, .45); l.rotation.set(-.9, 0, -.4); d.pin.position.y = .02 + Math.abs(Math.sin(t * 2)) * .04; };
+  },
+  // the hundred tasks: a long row of volumes and a stack beside it
+  tasks(g) {
+    for (let k = 0; k < 14; k++) { const v = volume({ color: [PALETTE.teal, 0x3c9d98, 0x57c2bd][k % 3], sig: k % 5 }); v.scale.setScalar(1.4); v.position.set(-1.25 + k * .2, 0, 0); v.rotation.y = -Math.PI / 2; g.add(v); }
+    const stack = bookStack(4, 1); stack.position.set(1.95, 0, .2); stack.scale.setScalar(1.3); g.add(stack);
+    return t => { g.rotation.y = -.2 + Math.sin(t * .3) * .08; };
+  },
+  // the models: a row of agents, each a different model
+  models(g) {
+    const bots = [0xf7f5f0, PALETTE.amber, PALETTE.teal, PALETTE.violet].map((c, k) => { const b = robot(c); b.root.position.set(-1.35 + k * .9, 0, (k % 2) * .25); b.root.scale.setScalar(.9); g.add(b.root); return b; });
+    return t => { bots.forEach((b, k) => { b.update(t + k, 0); b.root.position.y = Math.abs(Math.sin(t * 2 + k)) * .04; }); };
+  },
+  // the harnesses: an open toolbox, a terminal and the tools they lend
+  harnesses(g) {
+    const box = toolbox(PALETTE.rose); box.root.position.set(-.55, 0, 0); box.root.rotation.y = .35; box.lid.rotation.x = -1.2; g.add(box.root);
+    const term = terminal(); term.root.position.set(.8, 0, -.1); term.root.scale.setScalar(1.6); term.root.rotation.y = -.35; g.add(term.root);
+    const w = wrench(), l = lens(); w.scale.setScalar(1.6); l.scale.setScalar(1.6); g.add(w, l);
+    return t => { w.position.set(-.75, 1.1 + Math.sin(t * 1.5) * .06, .2); w.rotation.z = .5; l.position.set(-.25, 1.15 + Math.sin(t * 1.5 + 1.2) * .06, .25); l.rotation.z = -.4; term.screen.material.emissiveIntensity = .5 + Math.sin(t * 4) * .15; };
+  },
   // economics: data points pulled into a fitted line on the economics island
   replication(g) {
     const isl = island({ radius: 2.1, grass: 0xa9dccf, seed: 4 }); g.add(isl);
@@ -161,6 +212,8 @@ const BUILDERS = {
 const FRAMING = { // camera target y, distance, elevation[, always show the full width]
   replication: [1.3, 10, .3], business: [1.4, 10, .3], social: [1.4, 10, .3], next: [1.2, 9.5, .32],
   ai: [1.4, 8.5, .22], people: [1.1, 8, .22], join: [1.1, 10, .34, true],
+  metacase: [1.0, 7.4, .2], harness: [1.0, 8, .2], failure: [.7, 6.6, .45],
+  tasks: [.4, 6.2, .3, true], models: [.6, 6.4, .25, true], harnesses: [.6, 6.2, .3, true],
 };
 
 export function createCard(kind) {

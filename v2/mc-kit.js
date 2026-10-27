@@ -415,3 +415,61 @@ export function bookTabs(book, sig = 0) {
   });
   return { tabs, tips, nodes, links };
 }
+
+/* ---- the Challenge's pieces, shared by its chapter and its cards: a model's core, the tools a
+ * harness lends it, the toolbox a Model & Harness is packed in, and a failure case's dossier ---- */
+// The model: the part that reasons and decides, drawn as a glowing core with its orbit.
+export function modelCore(color = PALETTE.violet) {
+  const root = new THREE.Group();
+  const core = ball(root, .15, mat(color, { emissive: color, intensity: 1.3 }), 0, 0, 0, 20);
+  const ring = add(root, new THREE.TorusGeometry(.23, .013, 6, 40), mat(0xffffff, { emissive: 0xffffff, intensity: .9 }), 0, 0, 0, false);
+  ring.rotation.x = 1.2;
+  return { root, core, ring };
+}
+// The harness's tools: a wrench (tool calls), a lens (reading and search) and a terminal (the run).
+export function wrench(color = PALETTE.amber) {
+  const g = new THREE.Group(), m = mat(color, { rough: .4 });
+  block(g, .05, .3, .05, m, 0, -.15, 0, .02);
+  const head = add(g, new THREE.TorusGeometry(.07, .025, 8, 18, Math.PI * 1.5), m, 0, .19, 0); head.rotation.z = Math.PI * .75;
+  return g;
+}
+export function lens(color = PALETTE.amber) {
+  const g = new THREE.Group();
+  add(g, new THREE.TorusGeometry(.1, .022, 8, 24), mat(color, { rough: .4 }), 0, .08, 0);
+  add(g, new THREE.CircleGeometry(.085, 24), mat(0xbfe9ff, { opacity: .5 }), 0, .08, 0, false);
+  const handle = block(g, .04, .18, .04, PALETTE.ink, .09, -.13, 0, .015); handle.rotation.z = .6;
+  return g;
+}
+export function terminal(color = PALETTE.amber) {
+  const g = new THREE.Group();
+  block(g, .46, .3, .05, PALETTE.ink, 0, .08, 0, .03);
+  const screen = add(g, rbox(.4, .24, .01, .01), mat(0x1c3b37, { emissive: PALETTE.teal, intensity: .55 }), 0, .23, .028, false);
+  [.27, .23, .19].forEach((y, k) => block(g, [.24, .16, .2][k], .016, .012, mat(0xd9fff7, { emissive: 0xd9fff7, intensity: .9 }), -.06 + (k === 1 ? -.04 : 0), y, .033, .004).castShadow = false);
+  block(g, .06, .08, .04, mat(color, { rough: .4 }), 0, 0, -.01, .01);
+  block(g, .26, .02, .14, PALETTE.ink, 0, -.02, 0, .01);
+  return { root: g, screen };
+}
+// A Model & Harness, packed: a toolbox with a hinged lid.
+export function toolbox(color = PALETTE.rose) {
+  const root = new THREE.Group();
+  block(root, .9, .4, .46, mat(color, { rough: .5 }), 0, 0, 0, .05);
+  block(root, .92, .06, .48, PALETTE.ink, 0, .38, 0, .02);
+  const lid = new THREE.Group(); lid.position.set(0, .44, -.23); root.add(lid);
+  block(lid, .9, .08, .46, mat(color, { rough: .5 }), 0, 0, .23, .04);
+  const handle = add(lid, new THREE.TorusGeometry(.13, .025, 8, 20, Math.PI), mat(PALETTE.ink), 0, .08, .23); handle.rotation.y = 0;
+  [-1, 1].forEach(s => block(root, .08, .1, .02, mat(0xd8b46a, { rough: .35 }), s * .3, .26, .235, .01));
+  return { root, lid };
+}
+// A failure case: a dossier with its red tab, a page with the failing step marked, a pin.
+export function dossier() {
+  const root = new THREE.Group();
+  block(root, .78, .03, .58, mat(0xd9c9a6), 0, 0, 0, .015);
+  block(root, .2, .035, .08, mat(PALETTE.rose), -.22, 0, -.31, .01);
+  const page = new THREE.Group(); page.position.set(.02, .034, 0); root.add(page);
+  block(page, .66, .012, .5, mat(PALETTE.cream), 0, 0, 0, .006);
+  for (let k = 0; k < 5; k++) block(page, k === 3 ? .5 : .44, .006, .045, mat(k === 3 ? PALETTE.rose : 0xc9cdd6, k === 3 ? { emissive: PALETTE.rose, intensity: .4 } : {}), -.04, .012, -.17 + k * .085, .004).castShadow = false;
+  const pin = new THREE.Group(); pin.position.set(.24, .02, .085); root.add(pin);
+  cyl(pin, .006, .006, .16, PALETTE.ink, 0, 0, 0, 6);
+  ball(pin, .045, mat(PALETTE.rose, { emissive: PALETTE.rose, intensity: .8 }), 0, .18, 0, 12);
+  return { root, page, pin };
+}

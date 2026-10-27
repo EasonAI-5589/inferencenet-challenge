@@ -1,30 +1,32 @@
-/* metacase-run.js — 05 · The Metacase Challenge: one run under the four rules, in a
- * workroom off the library. A case folder opens on a desk and its raw evidence is worked
- * into a finished deliverable (end-to-end tasks); the reference waits sealed in a locked
- * case behind a rope (hidden references); the same folder lies on every desk, each with a
- * different agent (same tasks for everyone); then each run's five stages rise and are
- * bound into a Metacase as the tabs on its fore-edge. Three agents take three ways through
- * the same case, so the three books carry three signatures. The reference is opened for
- * scoring, the doors to the library open, and the books go to its shelves (full
- * trajectories). Rendered by the shared stage. */
+/* metacase-run.js — 05 · The Metacase Challenge: what a participant does, in a workroom.
+ * (1) Choose: a participant takes a case from a track's shelf and opens it on the desk: its
+ *     goal, its evidence and its constraints.
+ * (2) Configure: they give the agent a model, which reasons and decides, and a harness, which
+ *     lends it tools, a workflow and its run settings.
+ * (3) Execute: the agent reads, plans, calls tools and writes until it delivers; every step
+ *     adds a page to the trajectory on the stand beside the desk.
+ * (4) Verify: the deliverable goes into the verifier, the only place the sealed reference is
+ *     piped to; the checks come back mixed, and the failing step is pinned in the trajectory.
+ * (5) Contribute: what the run yields is set out as three kinds of contribution: a Metacase, the
+ *     Model & Harness, and a Failure Case.
+ * Rendered by the shared stage; the page's labels follow the objects through onProject. */
 import * as THREE from '../assets/vendor/three/three.module.js';
-import { PALETTE, BOOK, STAGE_COLORS, closedBook, bookTabs, mat, add, block, cyl, ball, rbox, robot, lights } from './mc-kit.js';
+import { PALETTE, BOOK, closedBook, bookTabs, mat, add, block, cyl, ball, rbox, robot, person, lights, modelCore, wrench, lens, terminal, toolbox, dossier } from './mc-kit.js';
 import { clamp, smooth, ramp, lerp, pageBackground, fitSafe, fitBox, toView, glowSprite } from './mc-stage.js';
 
-const DESKS = [-2.7, 0, 2.7], DESK_Z = 1, DESK_Y = .72;
-const HARNESS = [0xf7f5f0, PALETTE.amber, PALETTE.teal];    // three agents, three harnesses
-const SIGS = [1, 3, 4];                                      // ...and three ways through the same case
-const CASE = new THREE.Vector3(0, 0, -1.7);                  // the sealed reference, behind the rope
-const WALL_Z = -2.6, WALL_H = 3.4, DOOR_W = 3;               // the workroom's back wall and its double doors
-const SHELF_Z = -3.9, CASE_H = 2.6, BAY_W = 2.4, SHELF_Y = [.22, 1.0, 1.78];
-const SPINES = [PALETTE.teal, PALETTE.amber, PALETTE.violet]; // the library behind the doors holds every field
-const BOOK_S = .3, SHELVED_S = .22;                           // a run's Metacase, above its desk and on the shelf
-const SHEET_W = .4, SHEET_H = .5, SHEET_GEO = new THREE.PlaneGeometry(SHEET_W, SHEET_H);
+const DESK_Z = .8, DESK_Y = .72, WALL_Z = -2.6, WALL_H = 3.4;
+const TRACKS = [PALETTE.teal, PALETTE.amber, PALETTE.violet];  // Economics, Finance, Social science
+const CABINET = new THREE.Vector3(-3.35, 0, -1.25);
+const STAND = new THREE.Vector3(1.42, 0, .95);                   // the trajectory stand
+const VERIFIER = new THREE.Vector3(2.75, 0, .05), SAFE = new THREE.Vector3(3.55, 0, -1.45);
+const PLINTHS = [-1.55, 0, 1.55], PLINTH_Z = 2.05, PLINTH_H = .42;
+const PAGES = 12, FAILED = 8;                                     // trajectory pages; the step the check pins
+const SHEET_GEO = new THREE.PlaneGeometry(.4, .5);
 
 const springy = x => { const q = clamp(x) - 1; return 1 + 2.6 * q * q * q + 1.6 * q * q; }; // eases past 1 and settles
-function shade(hex, k) { return new THREE.Color(hex).lerp(new THREE.Color(k > 0 ? 0xffffff : 0x1a1d26), Math.abs(k)).getHex(); }
+const arc = (out, a, b, k, lift) => out.copy(a).lerp(b, k).setY(lerp(a.y, b.y, k) + Math.sin(Math.PI * k) * lift);
 
-/* ---- the case's raw evidence and the deliverable, drawn once on canvas ---- */
+/* ---- what the case holds, drawn once on canvas: its goal, two pieces of evidence, its constraints ---- */
 function canvasTexture(w, h, paint) {
   const c = document.createElement('canvas'); c.width = w; c.height = h;
   const g = c.getContext('2d'), r = (x, y, ww, hh, rad, fill) => { g.beginPath(); g.roundRect(x, y, ww, hh, rad); g.fillStyle = fill; g.fill(); };
@@ -32,13 +34,14 @@ function canvasTexture(w, h, paint) {
   const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
   return tex;
 }
-const EVIDENCE = [ // a paper, a data sheet, a figure, a filing with its stamp
-  (g, r, W) => { r(0, 0, W, 320, 18, '#fbfaf6'); r(24, 26, 150, 14, 5, '#1f2a3a'); for (let i = 0; i < 12; i++) r(24, 58 + i * 19, (W - 48) * (i % 3 === 2 ? .6 : 1), 7, 3, '#c9cdd6'); },
-  (g, r, W) => { r(0, 0, W, 320, 18, '#fbfaf6'); r(24, 24, W - 48, 26, 6, '#f2b545'); for (let i = 0; i < 8; i++) for (let j = 0; j < 3; j++) r(28 + j * 70, 64 + i * 30, 30 + ((i * 5 + j * 3) % 4) * 9, 9, 4, '#9aa3b2'); },
-  (g, r, W) => { r(0, 0, W, 320, 18, '#fbfaf6'); r(24, 24, 120, 12, 5, '#1f2a3a'); [90, 150, 120, 200, 230].forEach((h, i) => r(36 + i * 40, 296 - h, 26, h, 5, i === 4 ? '#7d6ad8' : '#cfc7f1')); },
-  (g, r, W) => { r(0, 0, W, 320, 18, '#fbfaf6'); r(24, 24, W - 48, 34, 6, '#45b5b0'); for (let i = 0; i < 9; i++) r(24, 76 + i * 19, (W - 48) * (i % 3 === 2 ? .55 : 1), 7, 3, '#c9cdd6'); g.strokeStyle = '#e2667a'; g.lineWidth = 6; g.beginPath(); g.arc(186, 262, 28, 0, Math.PI * 2); g.stroke(); },
+const lines = (r, y, n, W, w = W - 48) => { for (let i = 0; i < n; i++) r(24, y + i * 19, w * (i % 3 === 2 ? .6 : 1), 7, 3, '#c9cdd6'); };
+const CASE_PAGES = [
+  (g, r, W) => { r(0, 0, W, 320, 18, '#fbfaf6'); g.strokeStyle = '#45b5b0'; g.lineWidth = 10; [70, 46, 22].forEach(rad => { g.beginPath(); g.arc(W / 2, 112, rad, 0, Math.PI * 2); g.stroke(); }); r(W / 2 - 8, 104, 16, 16, 8, '#e2667a'); lines(r, 214, 4, W); }, // the goal
+  (g, r, W) => { r(0, 0, W, 320, 18, '#fbfaf6'); r(24, 26, 150, 14, 5, '#1f2a3a'); lines(r, 58, 12, W); },                                                                 // a paper
+  (g, r, W) => { r(0, 0, W, 320, 18, '#fbfaf6'); r(24, 24, W - 48, 26, 6, '#f2b545'); for (let i = 0; i < 8; i++) for (let j = 0; j < 3; j++) r(28 + j * 70, 64 + i * 30, 30 + ((i * 5 + j * 3) % 4) * 9, 9, 4, '#9aa3b2'); }, // a data sheet
+  (g, r, W) => { r(0, 0, W, 320, 18, '#fbfaf6'); r(24, 24, W - 48, 30, 6, '#7d6ad8'); for (let i = 0; i < 5; i++) { r(30, 80 + i * 44, 18, 18, 4, '#7d6ad8'); r(62, 84 + i * 44, (W - 100) * (i % 2 ? .7 : 1), 9, 4, '#c9cdd6'); } }, // the constraints
 ];
-const REPORT = (g, r, W, H) => { // a finished deliverable: a titled report with its figure and a table
+const REPORT = (g, r, W, H) => { // the deliverable: a titled report with a figure and a table
   r(0, 0, W, H, 16, '#fbfaf6'); r(0, 0, W, 54, 0, '#2c5468');
   r(22, 74, 150, 16, 5, '#1f2a3a'); r(22, 98, 96, 10, 4, '#8a93a5');
   r(22, 124, W - 44, 104, 10, '#e9f3f2');
@@ -50,190 +53,144 @@ export function createRun({ onProject = () => {}, safe = () => null, reduce = fa
   const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(32, 1, .1, 200);
   const light = lights(scene, { span: 12, shadowSize: 1024 });
   light.key.position.set(-5, 14, 12);
+  const tmp = new THREE.Vector3(), from = new THREE.Vector3(), to = new THREE.Vector3(), at = new THREE.Vector3();
 
-  /* ---- the workroom: a plank floor, a panelled wall with the case briefs pinned up ---- */
-  for (let i = 0; i < 15; i++) block(scene, 13, .04, .47, [0x7a5a42, 0x6e5440, 0x735644][i % 3], (i % 2) * .4 - .2, -.04, WALL_Z + .26 + i * .48, .01).castShadow = false;
-  const wall = mat(0x4f3c2f), panel = mat(0x5f4838), trim = mat(0x7a5a42), side = 6.5 - DOOR_W / 2 - .1;
-  [-1, 1].forEach(sx => {
-    const cx = sx * (DOOR_W / 2 + .1 + side / 2);
-    block(scene, side, WALL_H, .2, wall, cx, 0, WALL_Z, .02);
-    block(scene, side, .9, .06, panel, cx, 0, WALL_Z + .12, .02);
-    block(scene, side, .05, .08, trim, cx, .9, WALL_Z + .14, .01).castShadow = false;
-    const board = new THREE.Group(); board.position.set(sx * 3.5, 1.2, WALL_Z + .12); scene.add(board);
-    block(board, 2.1, 1.2, .05, mat(0xb98a5a), 0, 0, 0, .02);
-    for (let i = 0; i < 6; i++) {
-      const brief = block(board, .42, .5, .012, mat(PALETTE.cream), -.68 + (i % 3) * .68, .08 + Math.floor(i / 3) * .56, .03, .006);
-      brief.rotation.z = ((i * 7 + (sx > 0 ? 3 : 0)) % 5 - 2) * .04; brief.castShadow = false;
-      ball(board, .03, mat(STAGE_COLORS[(i + (sx > 0 ? 2 : 0)) % 5]), -.68 + (i % 3) * .68, .52 + Math.floor(i / 3) * .56, .05, 8);
+  /* ---- the workroom: a plank floor, a panelled wall and, on it, the board of the three tracks ---- */
+  for (let i = 0; i < 22; i++) block(scene, 24, .04, .47, [0x7a5a42, 0x6e5440, 0x735644][i % 3], (i % 2) * .4 - .2, -.04, WALL_Z + .26 + i * .48, .01).castShadow = false;
+  block(scene, 24, WALL_H + 2, .2, mat(0x4f3c2f), 0, 0, WALL_Z, .02);
+  block(scene, 24, .9, .06, mat(0x5f4838), 0, 0, WALL_Z + .12, .02);
+  block(scene, 24, .05, .08, mat(0x7a5a42), 0, .9, WALL_Z + .14, .01).castShadow = false;
+  const board = new THREE.Group(); board.position.set(0, 1.35, WALL_Z + .12); scene.add(board);
+  block(board, 3.6, 1.5, .05, mat(0xb98a5a), 0, 0, 0, .02);
+  TRACKS.forEach((c, t) => {
+    block(board, 1.02, .1, .02, mat(c, { emissive: c, intensity: .3 }), -1.15 + t * 1.15, 1.28, .03, .01).castShadow = false;
+    for (let i = 0; i < 4; i++) {
+      const x = -1.15 + t * 1.15 + (i % 2 ? .23 : -.23), y = .14 + Math.floor(i / 2) * .56;
+      const brief = block(board, .42, .5, .012, mat(PALETTE.cream), x, y, .03, .006);
+      brief.rotation.z = ((i * 7 + t * 3) % 5 - 2) * .035; brief.castShadow = false;
+      ball(board, .03, mat(c), x, y + .44, .05, 8);
     }
   });
-  block(scene, DOOR_W + .2, WALL_H - 3, .2, wall, 0, 3, WALL_Z, .02);
-  [-1, 1].forEach(sx => block(scene, .1, 3, .26, trim, sx * (DOOR_W / 2 + .05), 0, WALL_Z, .02));
-  block(scene, DOOR_W + .3, .1, .26, trim, 0, 2.95, WALL_Z, .02);
-  // the doors to the library, closed until the runs are done
-  const doors = [-1, 1].map(sx => {
-    const hinge = new THREE.Group(); hinge.position.set(sx * DOOR_W / 2, 0, WALL_Z + .02); scene.add(hinge);
-    const leaf = -sx * DOOR_W / 4;
-    block(hinge, DOOR_W / 2 - .02, 2.92, .08, mat(0x6b4a33), leaf, .02, 0, .02);
-    [.5, 1.7].forEach(y => block(hinge, DOOR_W / 2 - .36, .9, .1, trim, leaf, y, 0, .02).castShadow = false);
-    ball(hinge, .05, mat(0xd8b46a, { rough: .35 }), -sx * (DOOR_W / 2 - .18), 1.45, .07, 10);
-    return { hinge, sx };
-  });
 
-  // behind them, the library: one bay of every field, with three gaps for the new books
-  const library = new THREE.Group(); library.visible = false; scene.add(library);
-  block(library, 6, .04, 2, 0x6e5440, 0, -.04, SHELF_Z + .9, .01).castShadow = false;
-  const slots = [];
-  const bay = new THREE.Group(); bay.position.set(0, 0, SHELF_Z); library.add(bay);
-  block(bay, BAY_W, CASE_H, .1, PALETTE.ink, 0, 0, -.28, .02);
-  [-1, 1].forEach(sx => block(bay, .08, CASE_H, .62, 0x7a5a42, sx * (BAY_W / 2 - .04), 0, 0, .02));
-  block(bay, BAY_W + .1, .14, .7, mat(0xd8b46a, { emissive: 0xd8b46a, intensity: .2 }), 0, CASE_H, 0, .03);
-  SHELF_Y.forEach((y, row) => {
-    block(bay, BAY_W - .1, .05, .56, 0x8a6a4a, 0, y - .05, 0, .01).castShadow = false;
-    let x = -BAY_W / 2 + .1, k = 0;
-    while (x < BAY_W / 2 - .22) {
-      const w = [.1, .12, .14, .11][(k + row) % 4], h = [.5, .6, .56, .46, .64][(k * 3 + row) % 5];
-      if (row === 2 && k >= 5 && k <= 7) { slots.push(new THREE.Vector3(x + .12, y, SHELF_Z + .06)); x += .3; k++; continue; } // the top shelf, in sight over the glass case
-      block(bay, w, h, .4, mat(shade(SPINES[(k + row) % 3], [-.3, 0, .28, -.12, .14][(k * 2 + row) % 5])), x + w / 2, y, .04, .012).castShadow = false;
-      x += w + .006; k++;
+  // the case cabinet: one shelf per track, each a row of case folders; the participant takes one
+  const cabinet = new THREE.Group(); cabinet.position.copy(CABINET); cabinet.rotation.y = .55; scene.add(cabinet);
+  block(cabinet, 1.7, 1.62, .1, PALETTE.ink, 0, 0, -.28, .02);
+  [-1, 1].forEach(s => block(cabinet, .07, 1.62, .6, 0x7a5a42, s * .82, 0, 0, .02));
+  block(cabinet, 1.76, .08, .62, 0x7a5a42, 0, 1.62, 0, .02);
+  const CASE_SLOT = new THREE.Vector3(.08, 1.3, .02);
+  TRACKS.forEach((c, t) => {
+    const y = 1.12 - t * .5;
+    block(cabinet, 1.62, .05, .56, 0x8a6a4a, 0, y - .05, 0, .01).castShadow = false;
+    block(cabinet, 1.62, .04, .02, mat(c, { emissive: c, intensity: .35 }), 0, y - .05, .29, .01).castShadow = false;
+    for (let k = 0; k < 11; k++) {
+      if (t === 0 && k === 6) continue; // the case taken from the Economics shelf
+      const tone = new THREE.Color(c).lerp(new THREE.Color(k % 3 ? 0xffffff : 0x1a1d26), .18 + (k % 4) * .06).getHex();
+      block(cabinet, .1, .36 + (k * 7 % 4) * .025, .42, mat(tone), -.7 + k * .13, y, .02, .012).castShadow = false;
     }
   });
-  const shelfGlow = glowSprite(0xffe2b0, 2.6, 0); shelfGlow.position.set(0, SHELF_Y[2] + .35, SHELF_Z + .35); library.add(shelfGlow);
-  const doorway = glowSprite(0xffd9a0, 4.6, 0); doorway.position.set(0, 1.5, WALL_Z - .3); scene.add(doorway);
 
-  // the reference: sealed in a locked glass case on a plinth, behind a rope
-  const vitrine = new THREE.Group(); vitrine.position.copy(CASE); scene.add(vitrine);
-  block(vitrine, 1.3, .78, 1, PALETTE.stone, 0, 0, 0, .05);
-  const reference = new THREE.Group(); reference.position.set(0, .8, 0); vitrine.add(reference);
-  block(reference, .72, .12, .9, mat(0xd8b46a, { rough: .4 }), 0, 0, 0, .03);
-  block(reference, .66, .1, .84, mat(PALETTE.cream), .02, .01, 0, .02);
-  add(reference, new THREE.CylinderGeometry(.1, .1, .03, 20), mat(0xb8323f, { emissive: 0xb8323f, intensity: .3 }), 0, .14, .12);
-  const glassMat = mat(0xcfe0ff, { opacity: .16, rough: .1 });
-  add(vitrine, rbox(1.16, .86, .86, .04), glassMat, 0, 1.21, 0, false);
-  const edges = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1.16, .86, .86)), new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: .5 }));
-  edges.position.y = 1.21; vitrine.add(edges);
-  const lid = new THREE.Group(); lid.position.set(0, 1.64, -.43); vitrine.add(lid);
-  add(lid, rbox(1.2, .04, .9, .02), mat(0xdfe9ff, { opacity: .35, rough: .1 }), 0, .02, .45, false);
-  const lock = new THREE.Group(); lock.position.set(0, 1.0, .47); vitrine.add(lock);
-  block(lock, .28, .24, .1, PALETTE.amber, 0, -.12, 0, .05);
-  ball(lock, .03, PALETTE.ink, 0, -.02, .055, 8);
-  const shackle = add(lock, new THREE.TorusGeometry(.09, .025, 8, 20, Math.PI), mat(PALETTE.slate), 0, .12, 0);
-  const refGlow = glowSprite(PALETTE.amber, 2.2, .2); refGlow.position.set(0, 1.0, 0); vitrine.add(refGlow);
-  const rope = new THREE.Group(); scene.add(rope);
-  const posts = [-1.15, 0, 1.15].map(x => { cyl(rope, .05, .08, .82, mat(0xc9a36e, { rough: .35 }), x, 0, -.75, 12); ball(rope, .07, mat(0xd8b46a, { rough: .35 }), x, .86, -.75, 12); return new THREE.Vector3(x, .78, -.75); });
-  posts.slice(1).forEach((b, i) => {
-    const a = posts[i], m = a.clone().lerp(b, .5).setY(.56);
-    add(rope, new THREE.TubeGeometry(new THREE.QuadraticBezierCurve3(a, m, b), 16, .03, 6), mat(0x8e2a35), 0, 0, 0, false);
+  // the case itself: a folder in the Economics colour, carried to the desk and opened
+  const folder = new THREE.Group(); scene.add(folder);
+  block(folder, .62, .02, .46, mat(0xe8dcc0), 0, 0, 0, .01);
+  block(folder, .16, .025, .07, mat(TRACKS[0]), -.18, 0, -.255, .01);
+  const flap = new THREE.Group(); flap.position.set(-.31, .022, 0); folder.add(flap);
+  block(flap, .62, .015, .46, mat(new THREE.Color(TRACKS[0]).lerp(new THREE.Color(0xffffff), .35).getHex()), .31, 0, 0, .01);
+  const sheets = CASE_PAGES.map(paint => {
+    const tex = canvasTexture(256, 320, paint);
+    const m = new THREE.Mesh(SHEET_GEO, new THREE.MeshStandardMaterial({ map: tex, emissiveMap: tex, emissive: 0xffffff, emissiveIntensity: .25, roughness: .85, side: THREE.DoubleSide }));
+    m.visible = false; scene.add(m); return m;
   });
 
-  /* ---- three desks, the same case on each, three different agents ---- */
-  const evidence = EVIDENCE.map(paint => canvasTexture(256, 320, paint)), reportTex = canvasTexture(256, 340, REPORT);
-  const desks = DESKS.map((x, k) => {
-    const g = new THREE.Group(); g.position.set(x, 0, DESK_Z); scene.add(g);
-    block(g, 2, .08, 1, 0x7a5a42, 0, DESK_Y - .08, 0, .03);
-    [[-.92, -.42], [.92, -.42], [-.92, .42], [.92, .42]].forEach(([lx, lz]) => block(g, .07, DESK_Y - .08, .07, 0x5a4434, lx, 0, lz, .02));
-    block(g, 1.76, .01, .76, mat(0x2f4a3e), 0, DESK_Y, 0, .004).castShadow = false;
-    // the case folder, its cover hinged on the left
-    const folder = new THREE.Group(); folder.position.set(-.42, DESK_Y + .012, .08); g.add(folder);
-    block(folder, .62, .02, .46, mat(0xe8dcc0), 0, 0, 0, .01);
-    block(folder, .16, .025, .07, mat(PALETTE.rose), -.18, 0, -.255, .01);
-    const cover = new THREE.Group(); cover.position.set(-.31, .022, 0); folder.add(cover);
-    block(cover, .62, .015, .46, mat(0xd9c9a6), .31, 0, 0, .01);
-    const sheets = evidence.map(tex => {
-      const m = new THREE.Mesh(SHEET_GEO, new THREE.MeshStandardMaterial({ map: tex, emissiveMap: tex, emissive: 0xffffff, emissiveIntensity: .25, roughness: .85, side: THREE.DoubleSide }));
-      m.visible = false; g.add(m); return m;
-    });
-    // the deliverable, a bound report
-    const report = new THREE.Group(); report.position.set(.42, DESK_Y + .01, .06); g.add(report);
-    add(report, rbox(.5, .05, .66, .02), mat(0xf7f5f0), 0, .025, 0);
-    const face = new THREE.Mesh(new THREE.PlaneGeometry(.46, .62), new THREE.MeshStandardMaterial({ map: reportTex, roughness: .8 }));
-    face.rotation.x = -Math.PI / 2; face.position.y = .052; report.add(face);
-    report.rotation.y = -.12;
-    const done = glowSprite(PALETTE.green, 1.4, 0); done.position.set(.42, DESK_Y + .2, .06); g.add(done);
-    const agent = robot(HARNESS[k]); agent.root.scale.setScalar(.82); agent.root.position.set(0, 0, -.78); g.add(agent.root);
-    const banker = new THREE.Group(); banker.position.set(-.78, DESK_Y, -.3); g.add(banker);
-    cyl(banker, .1, .12, .03, mat(0xd8b46a, { rough: .35 }), 0, 0, 0, 16);
-    cyl(banker, .012, .012, .34, mat(0xd8b46a, { rough: .35 }), 0, .03, 0, 6);
-    const hood = cyl(banker, .09, .09, .36, mat(0x2f7a55, { rough: .45 }), 0, .22, 0, 16); hood.rotation.z = Math.PI / 2; hood.scale.set(1, 1, .7);
-    ball(banker, .045, mat(0xffe2b0, { emissive: 0xffd9a0, intensity: 1.6 }), 0, .34, 0, 10);
-    const lamp = glowSprite(0xffe2b0, 3.4, .12); lamp.position.set(-.3, DESK_Y + .3, 0); g.add(lamp);
-    // the Metacase this run is bound into: standing, its cover to the room, its tabs on the right
-    const holder = new THREE.Group(); scene.add(holder); holder.visible = false;
-    const book = closedBook(); const sig = bookTabs(book, SIGS[k]);
-    book.rotation.x = Math.PI / 2; book.position.set(-BOOK.PW / 2, BOOK.PD / 2, -(BOOK.T + BOOK.BOARD * 2) / 2);
-    holder.add(book);
-    sig.tabs.forEach(t => { t.scale.set(.001, 1, 1); t.visible = false; });
-    const steps = STAGE_COLORS.map(c => { const s = add(scene, rbox(.24, .05, .16, .02), mat(c, { emissive: c, intensity: .5 }), 0, 0, 0, false); s.visible = false; return s; });
-    const passed = glowSprite(PALETTE.green, 1.6, 0); scene.add(passed);
-    return { g, x, k, cover, sheets, report, done, agent, lamp, holder, book, sig, steps, passed };
-  });
-  // the scoring: the reference, opened, checks each run
-  const beams = desks.map(() => { const m = add(scene, new THREE.CylinderGeometry(.012, .012, 1, 6), mat(PALETTE.amber, { emissive: PALETTE.amber, intensity: 1.6, opacity: 0 }), 0, 0, 0, false); m.material = m.material.clone(); m.material.transparent = true; return m; });
+  /* ---- the desk, the participant and the agent ---- */
+  const desk = new THREE.Group(); desk.position.set(0, 0, DESK_Z); scene.add(desk);
+  block(desk, 2, .08, 1, 0x7a5a42, 0, DESK_Y - .08, 0, .03);
+  [[-.92, -.42], [.92, -.42], [-.92, .42], [.92, .42]].forEach(([x, z]) => block(desk, .07, DESK_Y - .08, .07, 0x5a4434, x, 0, z, .02));
+  block(desk, 1.76, .01, .76, mat(0x2f4a3e), 0, DESK_Y, 0, .004).castShadow = false;
+  const deskLamp = glowSprite(0xffe2b0, 3.2, .12); deskLamp.position.set(0, DESK_Y + .3, 0); desk.add(deskLamp);
+  const reportTex = canvasTexture(256, 340, REPORT);
+  const report = new THREE.Group(); scene.add(report);
+  add(report, rbox(.5, .05, .66, .02), mat(0xf7f5f0), 0, .025, 0);
+  const reportFace = new THREE.Mesh(new THREE.PlaneGeometry(.46, .62), new THREE.MeshStandardMaterial({ map: reportTex, roughness: .8 }));
+  reportFace.rotation.x = -Math.PI / 2; reportFace.position.y = .052; report.add(reportFace);
+  const REPORT_AT = new THREE.Vector3(.4, DESK_Y + .01, DESK_Z + .14);
 
-  const target = new THREE.Vector3(), tmp = new THREE.Vector3(), from = new THREE.Vector3(), to = new THREE.Vector3(), mid = new THREE.Vector3(), up = new THREE.Vector3(0, 1, 0);
-  const lift = new THREE.Vector3(), restAt = new THREE.Vector3();
+  const participant = person(3); participant.root.scale.setScalar(.92); scene.add(participant.root);
+  const agent = robot(0xf7f5f0); agent.root.scale.setScalar(.82); agent.root.position.set(0, 0, DESK_Z - .76); scene.add(agent.root);
+
+  /* ---- the model and the harness ---- */
+  const model = modelCore(PALETTE.violet); model.root.visible = false; scene.add(model.root);
+  const CORE_AT = new THREE.Vector3(0, 1.2, DESK_Z - .66);
+  const rig = new THREE.Group(); rig.position.set(0, 0, DESK_Z - .92); rig.visible = false; scene.add(rig);
+  const brass = mat(0xd8b46a, { rough: .35 });
+  [-1, 1].forEach(s => block(rig, .05, .62, .05, brass, s * .46, .56, 0, .02));
+  [.9, 1.16].forEach(y => block(rig, .97, .045, .05, brass, 0, y, 0, .02));
+  const box = toolbox(PALETTE.rose); box.root.scale.setScalar(.5); scene.add(box.root);
+  const BOX_AT = new THREE.Vector3(.66, DESK_Y, DESK_Z - .2);
+  const tools = [wrench(), lens()];
+  const SLOTS = [new THREE.Vector3(-.58, 1.0, DESK_Z - .84), new THREE.Vector3(.58, 1.0, DESK_Z - .84)];
+  tools.forEach(tool => { tool.visible = false; scene.add(tool); });
+  const term = terminal(); term.root.position.set(-.6, DESK_Y, DESK_Z - .22); term.root.rotation.y = .35; term.root.scale.setScalar(.9); scene.add(term.root);
+  add(scene, new THREE.TubeGeometry(new THREE.QuadraticBezierCurve3(new THREE.Vector3(-.46, .95, DESK_Z - .92), new THREE.Vector3(-.78, 1.0, DESK_Z - .55), new THREE.Vector3(-.6, DESK_Y + .1, DESK_Z - .25)), 16, .012, 6), brass, 0, 0, 0, false);
+
+  /* ---- the trajectory: one page per step, stacked on its stand ---- */
+  const stand = new THREE.Group(); stand.position.copy(STAND); scene.add(stand);
+  cyl(stand, .16, .22, .06, PALETTE.ink, 0, 0, 0, 16); cyl(stand, .04, .05, .78, 0x7a5a42, 0, .06, 0, 10);
+  block(stand, .5, .04, .38, 0x7a5a42, 0, .84, 0, .02);
+  const STEP_COLORS = [PALETTE.teal, PALETTE.violet, PALETTE.sky, PALETTE.amber];   // read, plan, tool call, write
+  const failMat = new THREE.MeshStandardMaterial({ color: PALETTE.cream, emissive: PALETTE.rose, emissiveIntensity: 0, roughness: .8 });
+  const pages = Array.from({ length: PAGES }, (_, k) => {
+    const m = block(stand, .4, .016, .3, k === FAILED ? failMat : mat(PALETTE.cream), ((k * 37) % 5 - 2) * .008, .89 + k * .02, ((k * 13) % 5 - 2) * .006, .005);
+    const tab = block(stand, .06, .018, .06, mat(STEP_COLORS[k % 4], { emissive: STEP_COLORS[k % 4], intensity: .3 }), .2, .89 + k * .02, -.1 + (k % 4) * .06, .005);
+    m.visible = tab.visible = false; m.castShadow = tab.castShadow = false;
+    return { m, tab };
+  });
+  const spark = ball(scene, .04, mat(0xffffff, { emissive: 0xfff1d0, intensity: 2 }), 0, 0, 0, 10); spark.visible = false;
+
+  /* ---- the verifier, and the sealed reference piped only to it ---- */
+  const verifier = new THREE.Group(); verifier.position.copy(VERIFIER); verifier.rotation.y = -.35; scene.add(verifier);
+  block(verifier, 1.0, 1.0, .7, mat(0xdfe3ea), 0, 0, 0, .08);
+  block(verifier, 1.04, .08, .74, mat(PALETTE.teal, { emissive: PALETTE.teal, intensity: .25 }), 0, 1.0, 0, .03);
+  block(verifier, .6, .03, .12, PALETTE.ink, 0, 1.08, 0, .01);                                    // the slot
+  block(verifier, .76, .36, .02, PALETTE.ink, 0, .5, .36, .03);                                   // the panel
+  const lamps = [0, 1, 2, 3].map(k => { const m = new THREE.MeshStandardMaterial({ color: 0x4b5160, emissive: 0x000000, roughness: .5 }); ball(verifier, .055, m, -.27 + k * .18, .7, .38, 12); return m; });
+  [0, 1, 2].forEach(k => block(verifier, [.5, .36, .44][k], .02, .01, mat(0x9aa3b2), -.06, .58 - k * .06, .375, .005).castShadow = false);
+  const VERDICT = [PALETTE.green, PALETTE.green, PALETTE.amber, PALETTE.rose];          // pass, pass, partial, fail
+  const vault = new THREE.Group(); vault.position.copy(SAFE); scene.add(vault);
+  block(vault, 1.0, .7, .8, PALETTE.stone, 0, 0, 0, .05);
+  block(vault, .6, .1, .74, mat(0xd8b46a, { rough: .4 }), 0, .72, 0, .03);
+  block(vault, .54, .08, .68, mat(PALETTE.cream), .02, .73, 0, .02);
+  add(vault, new THREE.CylinderGeometry(.08, .08, .03, 20), mat(0xb8323f, { emissive: 0xb8323f, intensity: .3 }), 0, .84, .1);
+  add(vault, rbox(.92, .7, .74, .04), mat(0xcfe0ff, { opacity: .16, rough: .1 }), 0, 1.06, 0, false);
+  const lock = new THREE.Group(); lock.position.set(0, .92, .4); vault.add(lock);
+  block(lock, .26, .22, .1, PALETTE.amber, 0, -.11, 0, .05);
+  add(lock, new THREE.TorusGeometry(.085, .024, 8, 20, Math.PI), mat(PALETTE.slate), 0, .11, 0);
+  const pipeCurve = new THREE.CatmullRomCurve3([new THREE.Vector3(SAFE.x - .2, 1.42, SAFE.z), new THREE.Vector3(SAFE.x - .35, 1.75, SAFE.z + .6), new THREE.Vector3(VERIFIER.x + .25, 1.55, VERIFIER.z - .35), new THREE.Vector3(VERIFIER.x + .1, 1.06, VERIFIER.z - .15)]);
+  add(scene, new THREE.TubeGeometry(pipeCurve, 40, .035, 8), mat(0xb87333, { rough: .4 }), 0, 0, 0, false);
+  const pulse = glowSprite(0xffd36b, .7, 0); scene.add(pulse);
+  const verdictGlow = glowSprite(PALETTE.amber, 2, 0); verdictGlow.position.set(VERIFIER.x, .7, VERIFIER.z + .4); scene.add(verdictGlow);
+  const marker = new THREE.Group(); marker.visible = false; scene.add(marker);
+  cyl(marker, .006, .006, .14, PALETTE.ink, 0, 0, 0, 6); ball(marker, .04, mat(PALETTE.rose, { emissive: PALETTE.rose, intensity: .8 }), 0, .16, 0, 12);
+
+  /* ---- what a participant can contribute: three plinths, three kinds of contribution ---- */
+  const plinths = PLINTHS.map(x => { const g = new THREE.Group(); g.position.set(x, 0, PLINTH_Z); scene.add(g); cyl(g, .36, .4, PLINTH_H, PALETTE.stone, 0, 0, 0, 28); add(g, new THREE.TorusGeometry(.38, .02, 6, 40), brass, 0, PLINTH_H, 0, false).rotation.x = Math.PI / 2; return g; });
+  const metacase = new THREE.Group(); metacase.visible = false; scene.add(metacase);
+  const book = closedBook(); bookTabs(book, 2);
+  book.rotation.x = Math.PI / 2; book.position.set(-BOOK.PW / 2, BOOK.PD / 2, -(BOOK.T + BOOK.BOARD * 2) / 2); metacase.add(book);
+  const failure = dossier(); failure.root.visible = false; scene.add(failure.root);
+  const flashes = PLINTHS.map(x => { const f = glowSprite(0xfff1d0, 1.6, 0); f.position.set(x, PLINTH_H + .4, PLINTH_Z); scene.add(f); return f; });
+
+  const target = new THREE.Vector3();
   const pointer = { x: 0, tx: 0 };
   addEventListener('pointermove', e => { pointer.tx = e.clientX / innerWidth - .5; }, { passive: true });
 
-  // One desk's run, u = 0–1: the folder opens, the evidence fans out above the desk, and is
-  // worked, sheet by sheet, into the finished report.
-  function work(d, u, t) {
-    const open = smooth(ramp(u, 0, .16));
-    d.cover.rotation.z = open * Math.PI * .96;
-    d.sheets.forEach((s, i) => {
-      const fan = smooth(ramp(u, .1 + i * .04, .34 + i * .04)), fold = smooth(ramp(u, .48 + i * .06, .66 + i * .06));
-      s.visible = fan > .001 && fold < .999;
-      if (!s.visible) return;
-      from.set(-.42, DESK_Y + .04, .08);
-      mid.set((i - 1.5) * .44, DESK_Y + .62 + (i % 2) * .07 + (reduce ? 0 : Math.sin(t * 1.4 + i) * .02), .02);
-      to.set(.42, DESK_Y + .08, .06);
-      s.position.copy(from).lerp(mid, fan).lerp(to, fold);
-      s.rotation.set(lerp(-Math.PI / 2, -.08, fan) + fold * -1.3, (1.5 - i) * .12 * (1 - fold), 0);
-      s.scale.setScalar(lerp(.35, 1, fan) * lerp(1, .3, fold));
-    });
-    const made = ramp(u, .62, .9);
-    d.report.scale.setScalar(Math.max(.001, springy(made)));
-    d.report.visible = made > 0;
-    d.done.material.opacity = .5 * Math.sin(Math.PI * ramp(u, .82, 1));
-    d.agent.head.rotation.x = u > 0 && u < 1 ? -.25 : 0;
-  }
-  // The run bound into its Metacase, v = 0–1: the book appears above the desk and each of
-  // the five stages rises from the report into its tab; s = 0–1 takes it to the shelf.
-  function bind(d, v, s, t) {
-    d.holder.visible = v > 0;
-    if (!d.holder.visible) { d.steps.forEach(st => { st.visible = false; }); return; }
-    restAt.set(d.x, DESK_Y + .5, DESK_Z - .25);
-    const slot = slots[d.k];
-    const e = smooth(s);
-    from.copy(restAt); to.copy(slot); mid.copy(from).lerp(to, .5).setY(Math.max(from.y, to.y) + 1.4);
-    d.holder.position.copy(from).multiplyScalar((1 - e) * (1 - e)).addScaledVector(mid, 2 * (1 - e) * e).addScaledVector(to, e * e);
-    d.holder.position.y += reduce || s > 0 ? 0 : Math.sin(t * 1.3 + d.k) * .02;
-    d.holder.rotation.set(0, lerp(0, Math.PI / 2, e), 0);
-    d.holder.scale.setScalar(Math.max(.001, springy(ramp(v, 0, .2))) * lerp(BOOK_S, SHELVED_S, e));
-    d.holder.updateMatrixWorld(true);
-    d.report.getWorldPosition(from);
-    d.sig.tabs.forEach((tab, i) => {
-      const c = ramp(v, .14 + i * .13, .34 + i * .13), st = d.steps[i];
-      st.visible = c > 0 && c < 1;
-      d.book.localToWorld(to.copy(d.sig.tips[i]));
-      mid.copy(from).lerp(to, .5).add(tmp.set((i - 2) * .12, .5, .3));
-      st.position.copy(from).multiplyScalar((1 - c) * (1 - c)).addScaledVector(mid, 2 * (1 - c) * c).addScaledVector(to, c * c);
-      st.rotation.set(c * 4, c * 2, 0); st.scale.setScalar(lerp(1, .5, c));
-      const k = ramp(c, .85, 1); tab.scale.set(Math.max(.001, k), 1, 1); tab.visible = k > .002;
-    });
-    const reveal = ramp(v, .84, 1) * (STAGE_COLORS.length + .4);
-    d.sig.nodes.forEach((n, i) => { const k = clamp(reveal - i); n.scale.setScalar(Math.max(.001, k)); n.visible = k > .01; });
-    d.sig.links.forEach((l, i) => { const k = clamp(reveal - i - .6); l.scale.set(1, Math.max(.001, k * l.userData.len), 1); l.visible = k > .01; });
-  }
-
-  // camera: the centre desk, the sealed reference behind it, all three desks, the books
-  // above them, then the shelves. [progress, target x, y, z, half-width, half-height, elevation]
+  // camera: the cabinet and the desk, the agent, the desk and its stand, the verifier, the plinths.
+  // [progress, target x, y, z, half-width, half-height, elevation]
   const SHOTS = [
-    [0, 0, 1.12, 1, 1.25, .5, .36], [.25, 0, 1.12, 1, 1.25, .5, .36],
-    [.32, 0, 1.25, -.25, 1.6, .72, .3], [.47, 0, 1.25, -.25, 1.6, .72, .3],
-    [.54, 0, 1, .8, 3.9, .92, .26], [.69, 0, 1, .8, 3.9, .92, .26],
-    [.76, 0, 1.45, .5, 3.95, 1, .24], [.91, 0, 1.45, .5, 3.95, 1, .24],
-    [.98, 0, 1.45, -1.9, 4, 1.35, .17], [1, 0, 1.45, -1.9, 4, 1.35, .17],
+    [0, -1.55, .9, .35, 2.3, .8, .3], [.15, -.9, .92, .55, 1.9, .7, .3],
+    [.21, -.1, .98, .45, 1.25, .5, .3], [.38, -.1, .98, .45, 1.25, .5, .3],
+    [.44, .55, .98, .65, 1.45, .52, .3], [.6, .55, .98, .65, 1.45, .52, .3],
+    [.66, 1.85, .98, .1, 1.9, .66, .28], [.8, 1.85, .98, .1, 1.9, .66, .28],
+    [.86, 0, .82, 1.75, 2.2, .62, .3], [1, 0, .82, 1.75, 2.2, .62, .3],
   ];
   const shot = new Array(6);
   function shotAt(p) {
@@ -248,57 +205,147 @@ export function createRun({ onProject = () => {}, safe = () => null, reduce = fa
     const frame = fitSafe(cam, rect, room, { fov: aspect < 1 ? 42 : 32 });
     const [tx, ty, tz, hw, hh, el] = shotAt(p);
     target.set(tx, ty, tz);
-    const dist = fitBox(hw, hh, cam.fov, frame, .95);
-    const az = (reduce ? 0 : pointer.x * .12) + .05;
+    // on portrait screens the plinths' labels need more room at the sides than the plinths do
+    const dist = fitBox(hw * (aspect < .8 ? lerp(1, 1.3, ramp(p, .8, .86)) : 1), hh, cam.fov, frame, .95);
+    const az = (reduce ? 0 : pointer.x * .1) + .04;
     cam.position.set(target.x + Math.sin(az) * Math.cos(el) * dist, target.y + Math.sin(el) * dist, target.z + Math.cos(az) * Math.cos(el) * dist);
     cam.lookAt(target);
     cam.updateMatrixWorld();
   }
-
   function label(point, opacity, rect) {
     const s = toView(point, camera, rect), clear = s.y > (safe()?.top ?? 0) + 34;
     return { ...s, opacity, visible: opacity > .05 && clear && s.front && s.inside, active: true };
   }
+  const shown = (p, a, b, c, d) => ramp(p, a, b) * (1 - ramp(p, c, d));
 
   function update(dt, t, p, rect) {
     pointer.x += (pointer.tx - pointer.x) * .05;
-    // 1 · end to end: the centre desk's run; 3 · the same task: the other two desks
-    desks.forEach(d => work(d, d.k === 1 ? ramp(p, .03, .24) : ramp(p, .5, .68), t));
-    // 2 · the reference stays locked; it is opened only for scoring, after the runs
-    const scoring = ramp(p, .86, .9);
-    lid.rotation.x = -scoring * 1.15;
-    shackle.position.y = .12 + scoring * .1;
-    refGlow.material.opacity = (.2 + ramp(p, .3, .36) * (1 - ramp(p, .48, .52)) * .25 + scoring * .5 + (reduce ? 0 : Math.sin(t * 2) * .04)) * (1 - .8 * ramp(p, .93, .97));
-    // 4 · full trajectories: each run is bound into a Metacase, checked, and shelved
-    desks.forEach(d => {
-      const v = ramp(p, .72 + d.k * .015, .86 + d.k * .015), s = ramp(p, .93 + d.k * .012, .985 + d.k * .005);
-      bind(d, v, s, t);
-      const check = ramp(p, .885, .9) * (1 - ramp(p, .93, .95));
-      d.passed.material.opacity = .55 * check;
-      d.passed.position.copy(d.holder.position).add(tmp.set(0, BOOK.PD * BOOK_S * .5, .1));
-      const beam = beams[d.k], k = ramp(p, .87, .885) * (1 - ramp(p, .91, .93));
-      beam.visible = k > .01;
-      if (beam.visible) {
-        vitrine.localToWorld(from.set(0, 1.2, 0)); to.copy(d.holder.position).add(tmp.set(0, BOOK.PD * BOOK_S * .5, 0));
-        beam.position.copy(from).lerp(to, .5); beam.quaternion.setFromUnitVectors(up, tmp.copy(to).sub(from).normalize());
-        beam.scale.set(1, from.distanceTo(to) * k, 1); beam.material.opacity = .8 * k;
-      }
-      d.agent.update(t, 0);
-      d.lamp.material.opacity = .12 + (d.k === 1 ? .08 : ramp(p, .5, .56) * .08);
+
+    // 1 · choose: the participant takes the Economics case from the cabinet and opens it on the desk
+    const walk = ramp(p, .02, .11), lay = ramp(p, .105, .13), open = ramp(p, .125, .15);
+    from.set(-2.75, 0, -.45); to.set(-1.55, 0, DESK_Z - .15);
+    const heading = Math.atan2(to.x - from.x, to.z - from.z);
+    participant.root.position.copy(from).lerp(to, smooth(walk));
+    participant.root.rotation.y = lerp(heading, Math.PI * .55, smooth(ramp(p, .11, .14)));
+    participant.update(t, walk > 0 && walk < 1 ? 1 : 0);
+    cabinet.updateMatrixWorld();
+    const slot = cabinet.localToWorld(tmp.copy(CASE_SLOT));
+    at.copy(participant.root.position).add(from.set(Math.sin(heading) * .3, .6, Math.cos(heading) * .3));
+    folder.position.copy(slot).lerp(at, smooth(ramp(walk, 0, .2)));
+    folder.position.lerp(to.set(-.32, DESK_Y + .012, DESK_Z + .14), smooth(lay));
+    folder.rotation.set(lerp(-1.2, 0, smooth(Math.max(lay, ramp(walk, .1, .3) * .6))), lerp(.55, 0, smooth(lay)), 0);
+    flap.rotation.z = smooth(open) * Math.PI * .96;
+    const work = ramp(p, .41, .58);
+    // the case's pages fan up to be read, then settle flat on the desk while the agent is set
+    // up, and are worked into the report while it runs
+    const settle = smooth(ramp(p, .2, .235));
+    sheets.forEach((s, i) => {
+      const fan = smooth(ramp(p, .13 + i * .012, .19 + i * .012)), fold = smooth(ramp(work, .1 + i * .1, .38 + i * .1));
+      s.visible = fan > .001 && fold < .999;
+      if (!s.visible) return;
+      from.set(-.32, DESK_Y + .04, DESK_Z + .14);
+      at.set(-.1 + (i - 1.5) * .44, DESK_Y + .64 + (i % 2) * .07 + (reduce ? 0 : Math.sin(t * 1.4 + i) * .015), DESK_Z + .05);
+      s.position.copy(from).lerp(at, fan).lerp(tmp.set(-.62 + i * .14, DESK_Y + .02 + i * .004, DESK_Z + .22), settle).lerp(REPORT_AT, fold);
+      s.rotation.set(lerp(lerp(-Math.PI / 2, -.08, fan), -Math.PI / 2 + .05, settle) - fold * 1.3, lerp((1.5 - i) * .12, .1 - i * .06, settle) * (1 - fold), 0);
+      s.scale.setScalar(lerp(.35, 1, fan) * lerp(1, .6, settle) * lerp(1, .3, fold));
     });
 
-    const open = ramp(p, .88, .94);
-    doors.forEach(d => { d.hinge.rotation.y = d.sx * open * 1.9; });
-    library.visible = open > .001;
-    doorway.material.opacity = .1 * open;
-    shelfGlow.material.opacity = .08 * open + .3 * ramp(p, .96, 1); // the new Metacases join the shelves
+    // 2 · configure: the model goes to the agent, the harness frame goes on, its tools clip in
+    const coreK = ramp(p, .21, .28);
+    from.copy(participant.root.position).add(to.set(.25, .95, .1));
+    arc(model.root.position, from, CORE_AT, smooth(coreK), .5);
+    model.root.position.y += coreK >= 1 && !reduce ? Math.sin(t * 2) * .02 : 0;
+    model.ring.rotation.z = t * 1.2;
+    model.core.material.emissiveIntensity = 1.1 + Math.sin(t * 3) * .25;
+    const frameK = ramp(p, .26, .31);
+    rig.visible = frameK > 0; rig.scale.set(1, Math.max(.001, springy(frameK)), 1);
+    tools.forEach((tool, k) => {
+      const c = ramp(p, .29 + k * .03, .34 + k * .03);
+      tool.visible = c > 0;
+      arc(tool.position, from.copy(BOX_AT).setY(BOX_AT.y + .25), SLOTS[k], smooth(c), .45);
+      tool.rotation.set(0, 0, (1 - c) * 3 + (k ? -.3 : .3));
+      tool.scale.setScalar(.9);
+    });
+    box.lid.rotation.x = -smooth(ramp(p, .27, .3)) * (1 - smooth(ramp(p, .37, .4))) * 1.4;
+    term.screen.material.emissiveIntensity = .2 + ramp(p, .33, .37) * .6 + (work > 0 && work < 1 && !reduce ? Math.sin(t * 9) * .12 : 0);
+
+    // 3 · execute: the agent works the case into a report, and every step adds a page
+    const made = ramp(work, .62, .9);
+    report.visible = made > 0;
+    report.position.copy(REPORT_AT);
+    report.rotation.set(0, -.12, 0);
+    report.scale.setScalar(Math.max(.001, springy(made)));
+    const count = Math.floor(work * PAGES + .001);
+    pages.forEach((pg, k) => { pg.m.visible = pg.tab.visible = k < count; });
+    agent.head.rotation.x = work > 0 && work < 1 ? -.2 : 0;
+    agent.update(t, 0);
+    spark.visible = work > 0 && work < 1;
+    if (spark.visible) {
+      const u = (work * PAGES) % 1;
+      stand.localToWorld(to.set(0, .92 + count * .02, 0));
+      arc(spark.position, SLOTS[Math.floor(work * PAGES) % 2], to, u, .35);
+    }
+
+    // 4 · verify: the report goes into the verifier; the reference is piped to it, and only to it;
+    //     the checks come back mixed, and the failing step is pinned in the trajectory
+    const send = ramp(p, .62, .665), flow = ramp(p, .66, .7);
+    if (send > 0) {
+      verifier.updateMatrixWorld(); verifier.localToWorld(to.set(0, 1.15, 0));
+      arc(report.position, REPORT_AT, to, smooth(send), .7);
+      report.rotation.set(-send * 1.4, -.12 - send, 0); report.scale.setScalar(lerp(1, .6, send)); report.visible = send < .98;
+    }
+    pulse.visible = flow > 0 && flow < 1;
+    if (pulse.visible) pipeCurve.getPoint(flow, pulse.position);
+    pulse.material.opacity = .9 * Math.sin(Math.PI * flow);
+    lamps.forEach((m, k) => {
+      const on = ramp(p, .685 + k * .015, .7 + k * .015);
+      m.color.setHex(on > 0 ? VERDICT[k] : 0x4b5160); m.emissive.setHex(VERDICT[k]); m.emissiveIntensity = on * 1.4;
+    });
+    verdictGlow.material.opacity = .35 * shown(p, .7, .74, .82, .86);
+    const pin = ramp(p, .74, .78);
+    marker.visible = pin > 0 && p < .9;
+    if (marker.visible) { verifier.localToWorld(from.set(0, .9, .4)); stand.localToWorld(to.set(.18, .92 + FAILED * .02, .1)); arc(marker.position, from, to, smooth(pin), .5); }
+    failMat.emissiveIntensity = .8 * ramp(p, .77, .79) * (reduce ? 1 : .8 + Math.sin(t * 4) * .2);
+
+    // 5 · contribute: a Metacase from the record, the Model & Harness packed, the Failure Case filed
+    const rise = ramp(p, .8, .85);
+    plinths.forEach(g => { g.visible = rise > 0; g.scale.set(1, Math.max(.001, springy(rise)), 1); });
+    const packs = [0, 1, 2].map(k => ramp(p, .83 + k * .025, .91 + k * .025));
+    stand.localToWorld(from.set(0, 1.2, 0)); to.set(PLINTHS[0], PLINTH_H, PLINTH_Z);
+    metacase.visible = packs[0] > 0;
+    arc(metacase.position, from, to, smooth(packs[0]), .9);
+    metacase.scale.setScalar(Math.max(.001, lerp(.08, .27, smooth(packs[0]))));
+    metacase.rotation.y = (1 - packs[0]) * 2 - .25;
+    arc(box.root.position, BOX_AT, to.set(PLINTHS[1], PLINTH_H, PLINTH_Z), smooth(packs[1]), .8);
+    box.root.scale.setScalar(lerp(.5, .62, smooth(packs[1])));
+    box.root.rotation.y = -packs[1] * .3;
+    model.root.visible = coreK > 0;
+    if (packs[1] > 0) {
+      const k1 = smooth(packs[1]);
+      model.root.position.lerp(to.set(PLINTHS[1], PLINTH_H + .62, PLINTH_Z), k1);
+      tools.forEach((tool, k) => { tool.position.lerp(to.set(PLINTHS[1] + (k ? .2 : -.2), PLINTH_H + .62, PLINTH_Z + .05), k1); tool.rotation.z = lerp(tool.rotation.z, k ? -.6 : .6, k1); });
+      rig.scale.y = Math.max(.001, 1 - k1);
+    }
+    failure.root.visible = packs[2] > 0;
+    verifier.localToWorld(from.set(0, 1.1, .2));
+    arc(failure.root.position, from, to.set(PLINTHS[2], PLINTH_H + .02, PLINTH_Z), smooth(packs[2]), .8);
+    failure.root.rotation.set(lerp(-1.2, -.35, smooth(packs[2])), -.15, 0);
+    failure.root.scale.setScalar(Math.max(.001, lerp(.3, .82, smooth(packs[2]))));
+    flashes.forEach((f, k) => { f.material.opacity = .55 * Math.max(0, 1 - Math.abs(packs[k] - .95) / .1); });
+
     aimCamera(camera, rect, p);
-    const centre = desks[1];
+    const above = (obj, y) => obj.getWorldPosition(tmp).add(at.set(0, y, 0));
+    const lift = rect.width / rect.height < .8 ? .55 : 0; // on portrait screens B's label stands above A's and C's
     onProject([
-      label(tmp.copy(centre.report.position).add(centre.g.position).add(lift.set(0, .42, 0)), ramp(p, .19, .23) * (1 - ramp(p, .27, .3)), rect),
-      label(vitrine.localToWorld(tmp.set(0, 1.95, 0)), ramp(p, .33, .37) * (1 - ramp(p, .47, .5)), rect),
-      label(tmp.set(0, DESK_Y + 1.15, DESK_Z), ramp(p, .58, .62) * (1 - ramp(p, .69, .72)), rect),
-      label(tmp.copy(centre.holder.position).add(lift.set(0, BOOK.PD * BOOK_S + .14, 0)), ramp(p, .84, .87) * (1 - ramp(p, .92, .94)), rect),
+      label(tmp.set(-.1, DESK_Y + 1.12, DESK_Z + .05), shown(p, .14, .17, .2, .22), rect),                        // the case
+      label(above(model.root, .32), shown(p, .24, .27, .31, .33), rect),                                         // the model
+      label(above(tools[1], .3), shown(p, .33, .35, .39, .41), rect),                                            // the harness
+      label(stand.localToWorld(tmp.set(0, 1.25, 0)), shown(p, .46, .5, .6, .62), rect),                          // the trajectory
+      label(verifier.localToWorld(tmp.set(0, 1.45, 0)), shown(p, .64, .67, .8, .82), rect),                      // the verifier
+      label(verifier.localToWorld(tmp.set(0, .95, .4)), shown(p, .72, .75, .8, .82), rect),                      // the result
+      label(tmp.set(PLINTHS[0], PLINTH_H + 1.05, PLINTH_Z), ramp(p, .9, .93), rect),                              // A · Metacase
+      label(tmp.set(PLINTHS[1], PLINTH_H + 1.05 + lift, PLINTH_Z), ramp(p, .92, .95), rect),                      // B · Model & Harness
+      label(tmp.set(PLINTHS[2], PLINTH_H + 1.05, PLINTH_Z), ramp(p, .94, .97), rect),                             // C · Failure Case
     ]);
   }
   function setTheme() { const bg = pageBackground(); scene.background = bg; scene.fog = new THREE.Fog(bg, 18, 44); }

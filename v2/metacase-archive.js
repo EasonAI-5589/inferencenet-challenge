@@ -282,7 +282,7 @@ export function createArchive({ onProject = () => {}, safe = () => null, held = 
       const clear = s.y > (safe()?.top ?? 0) + 6;
       return { ...s, opacity: o, visible: clear && s.front && s.inside && o > .05, active: (c === QUERY && facts > .3) || (c !== QUERY && rise > .1 && rise < .9) };
     }), { facts, rise, reuse, labels: [
-      labelAt([querySlip], qShown * (1 - ramp(p, .76, .8)), rect),
+      labelAt([querySlip], qShown * (1 - ramp(p, .38, .42)), rect), // until the other fields' labels take over
       labelAt([topical[1].slip], ramp(p, .15, .21) * (1 - ramp(p, .32, .35)), rect),
       labelAt([structural[0].slip, structural[1].slip], ramp(p, .6, .66) * (1 - ramp(p, .76, .8)), rect),
       labelAt([structural[2].slip, structural[3].slip], ramp(p, .62, .68) * (1 - ramp(p, .76, .8)), rect),

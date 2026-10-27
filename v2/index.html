@@ -16,14 +16,14 @@
   <script>document.documentElement.classList.add("js")</script>
   <script src="../site.js?v=20261019-motion" defer></script>
   <link rel="stylesheet" href="../language.css">
-  <script src="../language.js?v=20261027-armory3d" defer></script>
+  <script src="../language.js?v=20261027-seven6" defer></script>
   <link rel="stylesheet" href="v2.css?v=20261027-copy2">
   <link rel="stylesheet" href="arena.css?v=20261027-robotwarp">
-  <link rel="stylesheet" href="metacase.css?v=20261027-emblems">
+  <link rel="stylesheet" href="metacase.css?v=20261027-seven6">
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script src="v2.js?v=20261022-v2-ambient" defer></script>
-  <script type="module" src="metacase.js?v=20261027-stepfix"></script>
-  <script type="module" src="arena.js?v=20261027-robotwarp"></script>
+  <script type="module" src="metacase.js?v=20261027-seven6"></script>
+  <script type="module" src="arena.js?v=20261027-robotwarp-rail"></script>
 </head>
 <body class="v2-home mc-home">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -94,7 +94,8 @@
   <div class="wrap mc-hero-inner">
     <p class="mc-eyebrow mono mc-in" style="--d:.05s">Global Metacase Initiative</p>
     <h1 class="mc-title"><span class="mc-in" style="--d:.12s">Metacase</span> <em class="mc-in" style="--d:.26s">Challenge</em></h1>
-    <p class="mc-lead mc-in" style="--d:.42s">Building a reusable network of Metacases, end-to-end records of how problems were understood, decided and solved, so AI systems and people can learn from similar problem-solving structures, not just similar facts.</p>
+    <p class="mc-lead mc-in" style="--d:.42s">We are building <b>MetacaseNet</b>, a reusable network of Metacases: end-to-end records of how problems were understood, decisions made and tasks completed. Each Metacase connects context and evidence with prior practice, reasoning, alternative strategies, actions, outcomes and lessons.</p>
+    <p class="mc-lead-more mc-in" style="--d:.5s">The aim is for people and AI to retrieve and reason over shared problem-solving structures across domains, so accumulated experience becomes a foundation for future decisions. The Metacase Challenge is one way to build and test it.</p>
     <div class="mc-cta mc-in" style="--d:.56s">
       <a class="btn btn-primary" href="challenge.html"><span>Join the Challenge</span><span class="arrow" aria-hidden="true"><i>→</i><i>→</i></span></a>
       <a class="btn btn-secondary" href="#fields"><span>Explore the fields</span><span class="arrow" aria-hidden="true" style="--icon: var(--i-arrow-s)"><i>↓</i><i>↓</i></span></a>
@@ -127,19 +128,19 @@
   <div class="mc-scene-pin" data-view="anatomy">
     <div class="wrap mc-scene-head">
       <p class="mc-label mono"><span>01</span>The Metacase</p>
-      <h2 id="metacase-title"><span>From flat text to a</span> <em>living episode.</em></h2>
-      <p class="mc-sub">Standard benchmarks keep only the prompt and the final score, discarding how a problem was framed, what failed, and why a strategy worked. A Metacase records the full episode across Economics, Finance, and Social Science — and slices it at a strict cutoff into an executable Metacase Challenge task where Models and Harnesses run, get verified, and leave reusable experience.</p>
+      <h2 id="metacase-title"><span>A Metacase is one episode,</span> <em>recorded end to end.</em></h2>
+      <p class="mc-sub">It links the situation and its evidence to the practice and strategies considered, the actions taken, the outcome and the lessons drawn, so others can see why something worked and when it would work again. A Challenge task is cut from a Metacase at the point of decision: the agent sees only what was known then, and the references used for scoring stay hidden from it.</p>
     </div>
     <ol class="mc-notes" data-notes="anatomy">
-      <li data-note="0" style="--tc: var(--track-1)"><b class="mono">Ch 1</b><strong>Raw evidence &amp; cutoff</strong><span>Freeze a real episode at the decision cutoff — raw papers, filings, ledgers, and tables, with hindsight stripped out — to form a leak-free Challenge task.</span></li>
-      <li data-note="1" style="--tc: var(--mc-violet)"><b class="mono">Ch 2</b><strong>Priors &amp; strategy trade-offs</strong><span>Ground the problem in institutional rules and prior practice, weigh competing candidate routes, set aside flawed paths, and commit to a strategy.</span></li>
-      <li data-note="2" style="--tc: var(--mc-blue)"><b class="mono">Ch 3</b><strong>Model × Harness trajectory</strong><span>Inside a reproducible Harbor container, a Model + Harness executes step-by-step tool calls — writing code, querying data, and building auditable deliverables.</span></li>
-      <li data-note="3" style="--tc: var(--track-2)"><b class="mono">Ch 4</b><strong>Verified outcome &amp; rubric</strong><span>Code verifiers and multi-dimensional rubrics grade the deliverable against ground truth, separating reasoning errors from environment faults.</span></li>
-      <li data-note="4" style="--tc: var(--mc-green)"><b class="mono">Ch 5</b><strong>Reflection &amp; experience reuse</strong><span>Distill why the trajectory succeeded or broke — turning one graded trial into reusable experience for human researchers and self-evolving harnesses.</span></li>
-      <li data-note="5" class="mc-note-signature"><b class="mono">Signature</b><strong>Solution signature</strong><span>Closed again, the Metacase carries its five-stage solution signature on the fore-edge — the key for retrieving episodes solved the same way across fields.</span></li>
+      <li data-note="0" style="--tc: var(--track-1)"><b class="mono">01</b><strong>Context &amp; Evidence</strong><em class="mono" data-page="key">Goal · Evidence · Constraints</em><span>The situation and its goal, the raw evidence and the constraints, as they stood when the decision was made. A Challenge task is cut here: the agent sees only what was known at that point.</span><small hidden data-page="line">What was known, and when</small><small hidden data-page="line">Challenge tasks are cut at this point</small></li>
+      <li data-note="1" style="--tc: var(--mc-violet)"><b class="mono">02</b><strong>Prior Practice &amp; Strategy</strong><em class="mono" data-page="key">Practice · Options · Trade-offs</em><span>Relevant knowledge and the earlier practice of people or institutions, the candidate approaches, the trade-offs between them, and why one was chosen and others set aside.</span><small hidden data-page="line">Candidate approaches, weighed</small><small hidden data-page="line">Why one was chosen, others set aside</small></li>
+      <li data-note="2" style="--tc: var(--mc-blue)"><b class="mono">03</b><strong>Actions &amp; Execution</strong><em class="mono" data-page="key">Steps · Tools · Intermediate work</em><span>What was actually done: the steps, the tools used and the intermediate work produced. For an agent this is a Model + Harness run: the model decides, the harness carries out the tool calls and keeps the log.</span><small hidden data-page="line">Every step and tool call, in order</small><small hidden data-page="line">The model decides, the harness executes</small><small hidden data-page="steps">Read · Plan · Execute · Deliver</small></li>
+      <li data-note="3" style="--tc: var(--track-2)"><b class="mono">04</b><strong>Outcomes &amp; Verification</strong><em class="mono" data-page="key">Deliverable · Result · Checks · Limits</em><span>The final deliverable, what came of it, how it was checked and where the check falls short. An outcome may be a success, a partial success or a failure; all three are kept.</span><small hidden data-page="line">Checked against a reference or rubric</small><small hidden data-page="line">Pass, partial or fail: all are kept</small></li>
+      <li data-note="4" style="--tc: var(--mc-green)"><b class="mono">05</b><strong>Reflection &amp; Reuse</strong><em class="mono" data-page="key">What held · What failed · When it applies</em><span>Which judgements held and which did not, the conditions under which the experience applies, and what the next attempt should borrow or change.</span><small hidden data-page="line">The conditions under which it held</small><small hidden data-page="line">What the next attempt should change</small></li>
+      <li data-note="5" class="mc-note-signature"><b class="mono">Signature</b><strong>Solution signature</strong><em class="mono">A schematic, for comparison</em><span>Closed, the book shows one tab per stage. Together they sketch how the case was solved, a structure that can be compared with other cases (see 02). The signature drawn here illustrates the idea; it is not a computed index.</span></li>
     </ol>
     <div class="wrap mc-scene-foot">
-      <ol class="mc-rail" aria-hidden="true"><li>Cutoff</li><li>Strategy</li><li>Trajectory</li><li>Verification</li><li>Reflection</li></ol>
+      <ol class="mc-rail" aria-label="Stages of a Metacase"><li>Context</li><li>Strategy</li><li>Actions</li><li>Outcomes</li><li>Reflection</li></ol>
     </div>
   </div>
 </section>
@@ -160,15 +161,16 @@
     </div>
     <div class="wrap mc-scene-head">
       <p class="mc-label mono"><span>02</span>Retrieval</p>
-      <h2 id="structure-title"><span>Find past cases by</span> <em>how they were solved.</em></h2>
+      <h2 id="structure-title"><span>Retrieve experience by</span> <em>how a problem was solved.</em></h2>
+      <p class="mc-sub">Every Metacase carries a solution signature: how its evidence was organised, which options were compared, in what order it acted and how the result was checked. Searching on that structure finds cases worked through the same way, even in another field, which a search on the topic alone would miss.</p>
     </div>
     <ol class="wrap mc-captions">
-      <li data-caption="0"><b class="mono">Topic match</b><span>Search by topic and a credit decision brings back more credit cases. Laid over its signature, their paths split at almost every stage.</span></li>
-      <li data-caption="1"><b class="mono">Solution match</b><span>Search by signature instead: cases from economics and social science that followed the same path, stage for stage.</span></li>
-      <li data-caption="2"><b class="mono">Reuse · For agents &amp; people</b><span>Agents condition on matched episodes to test whether prior structure improves new runs; researchers inspect the evidence, options considered and outcome instead of a bare answer.</span></li>
+      <li data-caption="0"><b class="mono">Topic match</b><span>A topic search for this credit decision returns more credit cases. Laid over its signature, their paths split at most stages: they weighed evidence, acted and checked in other ways. A shared topic does not mean the experience applies.</span></li>
+      <li data-caption="1"><b class="mono">Solution match</b><span>A signature search returns cases from economics and social science whose stages correspond: evidence organised alike, options compared, the same order of action, a similar check. Each ringed stage is a step that lines up; the slips are a schematic of that comparison.</span></li>
+      <li data-caption="2"><b class="mono">Reuse</b><span>A person or an agent reads the matched cases for their evidence, trade-offs, outcomes and limits, decides what is worth carrying over, and tests it on the new task. A match informs the next attempt; it does not supply the answer.</span></li>
     </ol>
     <div class="wrap mc-scene-foot">
-      <ol class="mc-rail" aria-hidden="true"><li>Topic match</li><li>Solution match</li><li>Reuse</li></ol>
+      <ol class="mc-rail" aria-label="Steps of retrieval"><li>Topic match</li><li>Solution match</li><li>Reuse</li></ol>
     </div>
   </div>
 </section>
@@ -185,15 +187,16 @@
     <div class="wrap mc-scene-head">
       <p class="mc-label mono"><span>03</span><b>The network</b></p>
       <h2 id="net-title"><span>A reusable network</span> <em>of Metacases.</em></h2>
+      <p class="mc-sub">MetacaseNet links Metacases wherever their solution structures correspond, within a field and across fields. Each reviewed case adds a record and its links, so a new problem can start from related experience instead of from scratch.</p>
     </div>
     <ol class="wrap mc-captions">
-      <li data-caption="0"><b class="mono">Field by field</b><span>Economics, finance and social science each hold their own Metacases, with their own data, people and institutions.</span></li>
-      <li data-caption="1"><b class="mono">Linked by solution path</b><span>When cases in different fields were solved the same way, the network links them.</span></li>
-      <li data-caption="2"><b class="mono">Transfer</b><span>Agents and people follow those links to reuse what worked in another field; every reviewed case joins the network.</span></li>
-      <li data-caption="3" class="mc-caption-statement"><b class="mono">The foundation</b><span>A foundation for experience-based AI.</span><small>Every reviewed case joins the network, and the next problem starts from more experience.</small></li>
+      <li data-caption="0"><b class="mono">Field by field</b><span>Each field grows from its own cases: economics, finance and social science, each with its own data, institutions and practice.</span></li>
+      <li data-caption="1"><b class="mono">Linked by solution path</b><span>Where cases in different fields were worked through the same way, their signatures correspond and the network links them.</span></li>
+      <li data-caption="2"><b class="mono">Transfer</b><span>People and agents follow those links to see how a comparable problem was handled elsewhere, then test whether the approach carries over.</span></li>
+      <li data-caption="3" class="mc-caption-statement"><b class="mono">The foundation</b><span>A foundation for experience-based AI.</span><small>That is the aim: as reviewed cases accumulate, new problems start from more recorded experience. The first fields are economics, finance and social science; healthcare, policy and law belong to the longer-term vision.</small></li>
     </ol>
     <div class="wrap mc-scene-foot">
-      <ol class="mc-rail" aria-hidden="true"><li>Fields</li><li>Links</li><li>Transfer</li><li>Foundation</li></ol>
+      <ol class="mc-rail" aria-label="Steps of the network"><li>Fields</li><li>Links</li><li>Transfer</li><li>Foundation</li></ol>
     </div>
   </div>
 </section>
@@ -202,10 +205,15 @@
 <section class="mc-section mc-initiative" id="initiative" aria-labelledby="initiative-title">
   <div class="wrap">
     <div class="mc-initiative-card mc-r">
-      <p class="mc-label mono"><span>∴</span><b>Global Metacase Initiative</b></p>
-      <h2 id="initiative-title">Metacase Challenge</h2>
+      <p class="mc-label mono"><span>∴</span><b>The initiative</b></p>
+      <h2 id="initiative-title">Global Metacase Initiative</h2>
       <p class="mc-initiative-text">The initiative is to build a reusable network of Metacases — end-to-end representations of problem-solving, decision episodes, or task completion, linking the original context and raw evidence to the approaches considered, prior human or institutional practices, reasoning, candidate strategies, actions taken, subsequent outcomes, interpretations, and lessons learned.</p>
       <p class="mc-initiative-text">The goal is to let AI systems, as well as humans, retrieve and reason over not just similar facts, but similar problem-solving and decision structures, so they can learn how problems were previously understood, solved, and refined. MetacaseNet, the collection of metacases, can therefore serve as a foundation for experience-based AI in economics, finance, healthcare, policy, law, and other social science and business domains.</p>
+      <dl class="mc-glossary">
+        <div><dt>Global Metacase Initiative</dt><dd>The programme that builds MetacaseNet.</dd></div>
+        <div><dt>MetacaseNet</dt><dd>The reusable network of Metacases.</dd></div>
+        <div><dt>Metacase Challenge</dt><dd>One way to gather and test that experience: agents work on real cases in three tracks.</dd></div>
+      </dl>
     </div>
   </div>
 </section>
@@ -215,8 +223,8 @@
   <div class="wrap">
     <div class="mc-head mc-r">
       <p class="mc-label mono"><span>04</span>The first fields</p>
-      <h2 id="fields-title"><span>Where the network</span> <em>starts.</em></h2>
-      <p class="mc-sub">The first Metacases come from economics, finance and social science, in sixteen classes. Open a class to see what it covers, where its cases come from and how the executable part is graded.</p>
+      <h2 id="fields-title"><span>Three fields to start,</span> <em>sixteen classes of cases.</em></h2>
+      <p class="mc-sub">Economics, finance and social science come first: each offers public evidence, documented decisions and outputs that can be checked. Open a field's book to see its classes, how many candidate tasks each holds, where they come from and how they are graded.</p>
     </div>
     <div class="mc-catalogue-meta mc-r">
       <div><b class="tnum" data-count="285">285</b><span>candidate records</span></div>
@@ -224,276 +232,343 @@
       <div><b class="tnum" data-count="16">16</b><span>classes</span></div>
       <p class="mc-legend" aria-label="Status"><span data-status="ready">Ready</span><span data-status="partial">Partial</span><span data-status="gap">To add</span></p>
     </div>
-    <div class="mc-wings">
-    <article class="mc-wing mc-r" style="--tc: var(--track-1)">
-      <header class="mc-wing-head">
-        <p class="mono">Field 01</p>
-        <h3>Economics</h3>
-        <p class="mc-wing-count"><b class="tnum" data-count="152">152</b> <span>candidate records · 5 classes</span></p>
-      </header>
-      <ol class="mc-shelves">
-        <li class="mc-shelf" data-status="partial">
-          <details>
-            <summary>
-              <span class="mc-call mono" data-no-translate>econ.replication</span>
-              <span class="mc-shelf-name">Econometric replication</span>
-              <span class="mc-spines" style="--n:100" aria-hidden="true"></span>
-              <b class="mc-shelf-n tnum">100</b>
-              <span class="mc-status">Partial</span>
-            </summary>
-            <div class="mc-index-card">
-              <p>Reproduce a published regression coefficient from the paper&#x27;s own data (OLS, DID, IV, RDD).</p>
-              <dl><div><dt>Sources</dt><dd data-no-translate>Dev100</dd></div><div><dt>Grading</dt><dd>Deterministic</dd></div></dl>
-            </div>
-          </details>
-        </li>
-        <li class="mc-shelf" data-status="ready">
-          <details>
-            <summary>
-              <span class="mc-call mono" data-no-translate>econ.data</span>
-              <span class="mc-shelf-name">Economic &amp; business data engineering</span>
-              <span class="mc-spines" style="--n:22" aria-hidden="true"></span>
-              <b class="mc-shelf-n tnum">22</b>
-              <span class="mc-status">Ready</span>
-            </summary>
-            <div class="mc-index-card">
-              <p>SQL and dbt over banking, retail, e-commerce and TPC-H style economic data.</p>
-              <dl><div><dt>Sources</dt><dd data-no-translate>bird-bench@parity · spider2-dbt@1.0</dd></div><div><dt>Grading</dt><dd>Deterministic</dd></div></dl>
-            </div>
-          </details>
-        </li>
-        <li class="mc-shelf" data-status="ready">
-          <details>
-            <summary>
-              <span class="mc-call mono" data-no-translate>econ.markets</span>
-              <span class="mc-shelf-name">Market movement forecasting</span>
-              <span class="mc-spines" style="--n:15" aria-hidden="true"></span>
-              <b class="mc-shelf-n tnum">15</b>
-              <span class="mc-status">Ready</span>
-            </summary>
-            <div class="mc-index-card">
-              <p>Predict stock price movement from tweets and historical prices (ACL18, BigData22, CIKM18).</p>
-              <dl><div><dt>Sources</dt><dd data-no-translate>pixiu@parity</dd></div><div><dt>Grading</dt><dd>Deterministic</dd></div></dl>
-            </div>
-          </details>
-        </li>
-        <li class="mc-shelf" data-status="ready">
-          <details>
-            <summary>
-              <span class="mc-call mono" data-no-translate>econ.monetary</span>
-              <span class="mc-shelf-name">Monetary policy communication</span>
-              <span class="mc-spines" style="--n:15" aria-hidden="true"></span>
-              <b class="mc-shelf-n tnum">15</b>
-              <span class="mc-status">Ready</span>
-            </summary>
-            <div class="mc-index-card">
-              <p>Classify the hawkish / dovish stance of FOMC statements and minutes.</p>
-              <dl><div><dt>Sources</dt><dd data-no-translate>pixiu@parity</dd></div><div><dt>Grading</dt><dd>Deterministic</dd></div></dl>
-            </div>
-          </details>
-        </li>
-        <li class="mc-shelf" data-status="gap">
-          <details>
-            <summary>
-              <span class="mc-call mono" data-no-translate>econ.statistics</span>
-              <span class="mc-shelf-name">Official statistics synthesis</span>
-              <span class="mc-spines" style="--n:0" aria-hidden="true"></span>
-              <b class="mc-shelf-n tnum">0</b>
-              <span class="mc-status">To add</span>
-            </summary>
-            <div class="mc-index-card">
-              <p>Gather and combine figures from statistical offices and international organisations into a structured answer.</p>
-              <dl><div><dt>Sources</dt><dd data-no-translate>deepsynth adapter (to generate)</dd></div><div><dt>Grading</dt><dd>Deterministic + LLM judge</dd></div></dl>
-            </div>
-          </details>
-        </li>
+<!-- fields:books:start (written by scripts/build-fields.mjs from metacase-harbor metacase/summary.json, v0.1) -->
+<div class="mc-fieldbooks" data-fieldbooks>
+  <div class="mc-bookrow" role="tablist" aria-label="Fields">
+    <button class="mc-fbook" type="button" role="tab" id="fb-tab-econ" aria-controls="fb-econ" aria-selected="true" style="--tc: var(--track-1)">
+      <span class="mc-fbook-edge" aria-hidden="true"></span>
+      <span class="mc-fbook-cover">
+        <small class="mono">Field 01</small>
+        <b class="mc-fbook-title">Economics</b>
+        <span class="mc-fbook-n"><b class="tnum">152</b> <span>candidate records</span></span>
+        <span class="mc-fbook-k"><b class="tnum">5</b> <span>classes</span></span>
+      </span>
+    </button>
+    <button class="mc-fbook" type="button" role="tab" id="fb-tab-fin" aria-controls="fb-fin" aria-selected="false" style="--tc: var(--track-2)">
+      <span class="mc-fbook-edge" aria-hidden="true"></span>
+      <span class="mc-fbook-cover">
+        <small class="mono">Field 02</small>
+        <b class="mc-fbook-title">Finance</b>
+        <span class="mc-fbook-n"><b class="tnum">90</b> <span>candidate records</span></span>
+        <span class="mc-fbook-k"><b class="tnum">6</b> <span>classes</span></span>
+      </span>
+    </button>
+    <button class="mc-fbook" type="button" role="tab" id="fb-tab-soc" aria-controls="fb-soc" aria-selected="false" style="--tc: var(--mc-violet)">
+      <span class="mc-fbook-edge" aria-hidden="true"></span>
+      <span class="mc-fbook-cover">
+        <small class="mono">Field 03</small>
+        <b class="mc-fbook-title">Social science</b>
+        <span class="mc-fbook-n"><b class="tnum">43</b> <span>candidate records</span></span>
+        <span class="mc-fbook-k"><b class="tnum">5</b> <span>classes</span></span>
+      </span>
+    </button>
+  </div>
+  <section class="mc-spread" id="fb-econ" role="tabpanel" aria-labelledby="fb-tab-econ" style="--tc: var(--track-1)">
+    <div class="mc-page mc-page-l">
+      <header class="mc-page-head"><small class="mono">Field 01 · Contents</small><h3>Economics</h3><p><b class="tnum">152</b> <span>candidate records in</span> <b class="tnum">5</b> <span>classes</span></p></header>
+      <ol class="mc-toc" role="tablist" aria-label="Economics: classes">
+          <li><button type="button" role="tab" id="fb-econ-replication-tab" aria-controls="fb-econ-replication" aria-selected="true" data-status="partial">
+            <span class="mc-toc-name">Econometric replication</span>
+            <span class="mc-toc-bar" style="--share: 0.658" aria-hidden="true"></span>
+            <b class="mc-toc-n tnum">100</b>
+            <span class="mc-status">Partial</span>
+          </button></li>
+          <li><button type="button" role="tab" id="fb-econ-data-tab" aria-controls="fb-econ-data" aria-selected="false" data-status="ready">
+            <span class="mc-toc-name">Economic &amp; business data engineering</span>
+            <span class="mc-toc-bar" style="--share: 0.145" aria-hidden="true"></span>
+            <b class="mc-toc-n tnum">22</b>
+            <span class="mc-status">Ready</span>
+          </button></li>
+          <li><button type="button" role="tab" id="fb-econ-markets-tab" aria-controls="fb-econ-markets" aria-selected="false" data-status="ready">
+            <span class="mc-toc-name">Market movement forecasting</span>
+            <span class="mc-toc-bar" style="--share: 0.099" aria-hidden="true"></span>
+            <b class="mc-toc-n tnum">15</b>
+            <span class="mc-status">Ready</span>
+          </button></li>
+          <li><button type="button" role="tab" id="fb-econ-monetary-tab" aria-controls="fb-econ-monetary" aria-selected="false" data-status="ready">
+            <span class="mc-toc-name">Monetary policy communication</span>
+            <span class="mc-toc-bar" style="--share: 0.099" aria-hidden="true"></span>
+            <b class="mc-toc-n tnum">15</b>
+            <span class="mc-status">Ready</span>
+          </button></li>
+          <li><button type="button" role="tab" id="fb-econ-statistics-tab" aria-controls="fb-econ-statistics" aria-selected="false" data-status="gap">
+            <span class="mc-toc-name">Official statistics synthesis</span>
+            <span class="mc-toc-bar" style="--share: 0.000" aria-hidden="true"></span>
+            <b class="mc-toc-n tnum">0</b>
+            <span class="mc-status">To add</span>
+          </button></li>
       </ol>
-    </article>
-    <article class="mc-wing mc-r" style="--tc: var(--track-2)">
-      <header class="mc-wing-head">
-        <p class="mono">Field 02</p>
-        <h3>Finance</h3>
-        <p class="mc-wing-count"><b class="tnum" data-count="90">90</b> <span>candidate records · 6 classes</span></p>
-      </header>
-      <ol class="mc-shelves">
-        <li class="mc-shelf" data-status="ready">
-          <details>
-            <summary>
-              <span class="mc-call mono" data-no-translate>fin.nlp</span>
-              <span class="mc-shelf-name">Financial text understanding</span>
-              <span class="mc-spines" style="--n:20" aria-hidden="true"></span>
-              <b class="mc-shelf-n tnum">20</b>
-              <span class="mc-status">Ready</span>
-            </summary>
-            <div class="mc-index-card">
-              <p>Sentiment, news headlines, entity recognition and ESG issues in financial text.</p>
-              <dl><div><dt>Sources</dt><dd data-no-translate>pixiu@parity</dd></div><div><dt>Grading</dt><dd>Deterministic</dd></div></dl>
-            </div>
-          </details>
-        </li>
-        <li class="mc-shelf" data-status="partial">
-          <details>
-            <summary>
-              <span class="mc-call mono" data-no-translate>fin.accounting</span>
-              <span class="mc-shelf-name">Accounting close &amp; finance deliverables</span>
-              <span class="mc-spines" style="--n:15" aria-hidden="true"></span>
-              <b class="mc-shelf-n tnum">15</b>
-              <span class="mc-status">Partial</span>
-            </summary>
-            <div class="mc-index-card">
-              <p>Month-end close remediation and accounting data pipelines (QuickBooks, Xero, Zuora, recurring revenue).</p>
-              <dl><div><dt>Sources</dt><dd data-no-translate>sufe/fin-t1-003 · spider2-dbt@1.0 · ade-bench@1.0</dd></div><div><dt>Grading</dt><dd>Deterministic + Rubric</dd></div></dl>
-            </div>
-          </details>
-        </li>
-        <li class="mc-shelf" data-status="ready">
-          <details>
-            <summary>
-              <span class="mc-call mono" data-no-translate>fin.credit</span>
-              <span class="mc-shelf-name">Credit risk &amp; fraud</span>
-              <span class="mc-spines" style="--n:15" aria-hidden="true"></span>
-              <b class="mc-shelf-n tnum">15</b>
-              <span class="mc-status">Ready</span>
-            </summary>
-            <div class="mc-index-card">
-              <p>Credit scoring and fraud detection from tabular borrower and transaction features.</p>
-              <dl><div><dt>Sources</dt><dd data-no-translate>pixiu@parity</dd></div><div><dt>Grading</dt><dd>Deterministic</dd></div></dl>
-            </div>
-          </details>
-        </li>
-        <li class="mc-shelf" data-status="ready">
-          <details>
-            <summary>
-              <span class="mc-call mono" data-no-translate>fin.numeric</span>
-              <span class="mc-shelf-name">Financial numerical reasoning</span>
-              <span class="mc-spines" style="--n:15" aria-hidden="true"></span>
-              <b class="mc-shelf-n tnum">15</b>
-              <span class="mc-status">Ready</span>
-            </summary>
-            <div class="mc-index-card">
-              <p>Table and text numeric reasoning over financial reports (FinQA, TAT-QA) and CFA-style questions.</p>
-              <dl><div><dt>Sources</dt><dd data-no-translate>pixiu@parity</dd></div><div><dt>Grading</dt><dd>Deterministic</dd></div></dl>
-            </div>
-          </details>
-        </li>
-        <li class="mc-shelf" data-status="ready">
-          <details>
-            <summary>
-              <span class="mc-call mono" data-no-translate>fin.payments</span>
-              <span class="mc-shelf-name">Payments &amp; transaction data analysis</span>
-              <span class="mc-spines" style="--n:15" aria-hidden="true"></span>
-              <b class="mc-shelf-n tnum">15</b>
-              <span class="mc-status">Ready</span>
-            </summary>
-            <div class="mc-index-card">
-              <p>Multi-step Python analysis over payment records, fee schedules and merchant data.</p>
-              <dl><div><dt>Sources</dt><dd data-no-translate>dabstep@1.0</dd></div><div><dt>Grading</dt><dd>Deterministic</dd></div></dl>
-            </div>
-          </details>
-        </li>
-        <li class="mc-shelf" data-status="ready">
-          <details>
-            <summary>
-              <span class="mc-call mono" data-no-translate>fin.filings</span>
-              <span class="mc-shelf-name">Financial research &amp; filings QA</span>
-              <span class="mc-spines" style="--n:10" aria-hidden="true"></span>
-              <b class="mc-shelf-n tnum">10</b>
-              <span class="mc-status">Ready</span>
-            </summary>
-            <div class="mc-index-card">
-              <p>Analyst-style questions answered from SEC filings and company disclosures.</p>
-              <dl><div><dt>Sources</dt><dd data-no-translate>financeagent@public</dd></div><div><dt>Grading</dt><dd>LLM judge</dd></div></dl>
-            </div>
-          </details>
-        </li>
-      </ol>
-    </article>
-    <article class="mc-wing mc-r" style="--tc: var(--mc-violet)">
-      <header class="mc-wing-head">
-        <p class="mono">Field 03</p>
-        <h3>Social science</h3>
-        <p class="mc-wing-count"><b class="tnum" data-count="43">43</b> <span>candidate records · 5 classes</span></p>
-      </header>
-      <ol class="mc-shelves">
-        <li class="mc-shelf" data-status="ready">
-          <details>
-            <summary>
-              <span class="mc-call mono" data-no-translate>soc.law</span>
-              <span class="mc-shelf-name">Law &amp; regulation</span>
-              <span class="mc-spines" style="--n:20" aria-hidden="true"></span>
-              <b class="mc-shelf-n tnum">20</b>
-              <span class="mc-status">Ready</span>
-            </summary>
-            <div class="mc-index-card">
-              <p>Chinese legal knowledge, statute recall and case-outcome prediction (LawBench).</p>
-              <dl><div><dt>Sources</dt><dd data-no-translate>lawbench@1.0</dd></div><div><dt>Grading</dt><dd>Deterministic</dd></div></dl>
-            </div>
-          </details>
-        </li>
-        <li class="mc-shelf" data-status="ready">
-          <details>
-            <summary>
-              <span class="mc-call mono" data-no-translate>soc.society</span>
-              <span class="mc-shelf-name">Society, education &amp; survey data</span>
-              <span class="mc-spines" style="--n:12" aria-hidden="true"></span>
-              <b class="mc-shelf-n tnum">12</b>
-              <span class="mc-status">Ready</span>
-            </summary>
-            <div class="mc-index-card">
-              <p>Education, survey and social-media data analysis.</p>
-              <dl><div><dt>Sources</dt><dd data-no-translate>bird-bench@parity · spider2-dbt@1.0</dd></div><div><dt>Grading</dt><dd>Deterministic</dd></div></dl>
-            </div>
-          </details>
-        </li>
-        <li class="mc-shelf" data-status="partial">
-          <details>
-            <summary>
-              <span class="mc-call mono" data-no-translate>soc.business</span>
-              <span class="mc-shelf-name">Business operations &amp; CRM</span>
-              <span class="mc-spines" style="--n:6" aria-hidden="true"></span>
-              <b class="mc-shelf-n tnum">6</b>
-              <span class="mc-status">Partial</span>
-            </summary>
-            <div class="mc-index-card">
-              <p>Marketing, sales and customer-support data in CRM and support tools.</p>
-              <dl><div><dt>Sources</dt><dd data-no-translate>spider2-dbt@1.0 · crmarena adapter (to generate)</dd></div><div><dt>Grading</dt><dd>Deterministic + LLM judge</dd></div></dl>
-            </div>
-          </details>
-        </li>
-        <li class="mc-shelf" data-status="partial">
-          <details>
-            <summary>
-              <span class="mc-call mono" data-no-translate>soc.hr</span>
-              <span class="mc-shelf-name">HR &amp; organisational analytics</span>
-              <span class="mc-spines" style="--n:5" aria-hidden="true"></span>
-              <b class="mc-shelf-n tnum">5</b>
-              <span class="mc-status">Partial</span>
-            </summary>
-            <div class="mc-index-card">
-              <p>Training effectiveness and procurement review, recruiting and workforce data pipelines.</p>
-              <dl><div><dt>Sources</dt><dd data-no-translate>synthbench/hr-t3-114 · spider2-dbt@1.0 · theagentcompany adapter (to generate)</dd></div><div><dt>Grading</dt><dd>Deterministic + Rubric</dd></div></dl>
-            </div>
-          </details>
-        </li>
-        <li class="mc-shelf" data-status="gap">
-          <details>
-            <summary>
-              <span class="mc-call mono" data-no-translate>soc.psychology</span>
-              <span class="mc-shelf-name">Psychology &amp; cognitive science</span>
-              <span class="mc-spines" style="--n:0" aria-hidden="true"></span>
-              <b class="mc-shelf-n tnum">0</b>
-              <span class="mc-status">To add</span>
-            </summary>
-            <div class="mc-index-card">
-              <p>Data-driven analysis tasks from psychology and cognitive-science papers.</p>
-              <dl><div><dt>Sources</dt><dd data-no-translate>scienceagentbench adapter (to generate)</dd></div><div><dt>Grading</dt><dd>Mixed</dd></div></dl>
-            </div>
-          </details>
-        </li>
-      </ol>
-    </article>
     </div>
-    <p class="mc-catalogue-note mc-r">Counts are candidate records in the metacase-harbor v0.1 selection (26 October 2026): task records curated from public benchmarks and partner material, not yet reviewed as complete Metacases. Ready classes have at least five pinned, runnable public tasks; partial classes depend on restricted material or adapters still to be generated.</p>
+    <div class="mc-page mc-page-r">
+        <article class="mc-entry" id="fb-econ-replication" role="tabpanel" aria-labelledby="fb-econ-replication-tab" data-status="partial">
+          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>econ.replication</span><h4>Econometric replication</h4><span class="mc-status">Partial</span></header>
+          <p class="mc-entry-desc">Reproduce a published regression coefficient from the paper's own data (OLS, DID, IV, RDD).</p>
+          <dl class="mc-entry-facts">
+            <div><dt>Candidate tasks</dt><dd><b class="tnum">100</b></dd></div>
+            <div><dt>What it tests</dt><dd>Reading a paper, data cleaning, specification fidelity, Stata/Python estimation</dd></div>
+            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>InferenceNet Dev100</span><span class="mc-src-meta"><b class="tnum">100</b> <span>tasks</span> · <span>Deterministic</span> · <span>private materials</span></span></li></ul></dd></div>
+            <div><dt>Evaluation</dt><dd>Deterministic</dd></div>
+            <div><dt>Status</dt><dd><span>Partial</span>: <span>Depends on restricted material or on adapters still to be generated.</span></dd></div>
+          </dl>
+        </article>
+        <article class="mc-entry" id="fb-econ-data" role="tabpanel" aria-labelledby="fb-econ-data-tab" data-status="ready">
+          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>econ.data</span><h4>Economic &amp; business data engineering</h4><span class="mc-status">Ready</span></header>
+          <p class="mc-entry-desc">SQL and dbt over banking, retail, e-commerce and TPC-H style economic data.</p>
+          <dl class="mc-entry-facts">
+            <div><dt>Candidate tasks</dt><dd><b class="tnum">22</b></dd></div>
+            <div><dt>What it tests</dt><dd>Schema understanding, joins, execution-checked transformations</dd></div>
+            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>bird-bench@parity</span><span class="mc-src-meta"><b class="tnum">16</b> <span>tasks</span> · <span>Deterministic</span></span></li><li><span class="mc-src-name" data-no-translate>spider2-dbt@1.0</span><span class="mc-src-meta"><b class="tnum">6</b> <span>tasks</span> · <span>Deterministic</span></span></li></ul></dd></div>
+            <div><dt>Evaluation</dt><dd>Deterministic</dd></div>
+            <div><dt>Status</dt><dd><span>Ready</span>: <span>At least five pinned, runnable public tasks.</span></dd></div>
+          </dl>
+        </article>
+        <article class="mc-entry" id="fb-econ-markets" role="tabpanel" aria-labelledby="fb-econ-markets-tab" data-status="ready">
+          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>econ.markets</span><h4>Market movement forecasting</h4><span class="mc-status">Ready</span></header>
+          <p class="mc-entry-desc">Predict stock price movement from tweets and historical prices (ACL18, BigData22, CIKM18).</p>
+          <dl class="mc-entry-facts">
+            <div><dt>Candidate tasks</dt><dd><b class="tnum">15</b></dd></div>
+            <div><dt>What it tests</dt><dd>Forecasting under noise, calibration against base rates</dd></div>
+            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>pixiu@parity</span><span class="mc-src-meta"><b class="tnum">15</b> <span>tasks</span> · <span>Deterministic</span></span></li></ul></dd></div>
+            <div><dt>Evaluation</dt><dd>Deterministic</dd></div>
+            <div><dt>Status</dt><dd><span>Ready</span>: <span>At least five pinned, runnable public tasks.</span></dd></div>
+          </dl>
+        </article>
+        <article class="mc-entry" id="fb-econ-monetary" role="tabpanel" aria-labelledby="fb-econ-monetary-tab" data-status="ready">
+          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>econ.monetary</span><h4>Monetary policy communication</h4><span class="mc-status">Ready</span></header>
+          <p class="mc-entry-desc">Classify the hawkish / dovish stance of FOMC statements and minutes.</p>
+          <dl class="mc-entry-facts">
+            <div><dt>Candidate tasks</dt><dd><b class="tnum">15</b></dd></div>
+            <div><dt>What it tests</dt><dd>Macro reasoning from central-bank language</dd></div>
+            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>pixiu@parity</span><span class="mc-src-meta"><b class="tnum">15</b> <span>tasks</span> · <span>Deterministic</span></span></li></ul></dd></div>
+            <div><dt>Evaluation</dt><dd>Deterministic</dd></div>
+            <div><dt>Status</dt><dd><span>Ready</span>: <span>At least five pinned, runnable public tasks.</span></dd></div>
+          </dl>
+        </article>
+        <article class="mc-entry" id="fb-econ-statistics" role="tabpanel" aria-labelledby="fb-econ-statistics-tab" data-status="gap">
+          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>econ.statistics</span><h4>Official statistics synthesis</h4><span class="mc-status">To add</span></header>
+          <p class="mc-entry-desc">Gather and combine figures from statistical offices and international organisations into a structured answer.</p>
+          <dl class="mc-entry-facts">
+            <div><dt>Candidate tasks</dt><dd><b class="tnum">0</b></dd></div>
+            <div><dt>What it tests</dt><dd>Web research, source triangulation, structured output</dd></div>
+            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>deepsynth adapter</span><span class="mc-src-meta"><span>to generate</span> · <span>Deterministic (key-value F1; optional LLM-judge fallback)</span></span></li></ul></dd></div>
+            <div><dt>Evaluation</dt><dd>Deterministic</dd></div>
+            <div><dt>Status</dt><dd><span>To add</span>: <span>No runnable tasks yet: an adapter still has to be generated.</span></dd></div>
+            <div><dt>Waiting on</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>deepsynth</span><span class="mc-src-meta"><b class="tnum">40</b> <span>upstream tasks</span></span><span class="mc-src-note">Adapter exists upstream but the dataset is not in the registry snapshot; generate locally before use. Needs web access.</span></li></ul></dd></div>
+          </dl>
+        </article>
+    </div>
+  </section>
+  <section class="mc-spread" id="fb-fin" role="tabpanel" aria-labelledby="fb-tab-fin" style="--tc: var(--track-2)" data-closed>
+    <div class="mc-page mc-page-l">
+      <header class="mc-page-head"><small class="mono">Field 02 · Contents</small><h3>Finance</h3><p><b class="tnum">90</b> <span>candidate records in</span> <b class="tnum">6</b> <span>classes</span></p></header>
+      <ol class="mc-toc" role="tablist" aria-label="Finance: classes">
+          <li><button type="button" role="tab" id="fb-fin-nlp-tab" aria-controls="fb-fin-nlp" aria-selected="true" data-status="ready">
+            <span class="mc-toc-name">Financial text understanding</span>
+            <span class="mc-toc-bar" style="--share: 0.222" aria-hidden="true"></span>
+            <b class="mc-toc-n tnum">20</b>
+            <span class="mc-status">Ready</span>
+          </button></li>
+          <li><button type="button" role="tab" id="fb-fin-accounting-tab" aria-controls="fb-fin-accounting" aria-selected="false" data-status="partial">
+            <span class="mc-toc-name">Accounting close &amp; finance deliverables</span>
+            <span class="mc-toc-bar" style="--share: 0.167" aria-hidden="true"></span>
+            <b class="mc-toc-n tnum">15</b>
+            <span class="mc-status">Partial</span>
+          </button></li>
+          <li><button type="button" role="tab" id="fb-fin-credit-tab" aria-controls="fb-fin-credit" aria-selected="false" data-status="ready">
+            <span class="mc-toc-name">Credit risk &amp; fraud</span>
+            <span class="mc-toc-bar" style="--share: 0.167" aria-hidden="true"></span>
+            <b class="mc-toc-n tnum">15</b>
+            <span class="mc-status">Ready</span>
+          </button></li>
+          <li><button type="button" role="tab" id="fb-fin-numeric-tab" aria-controls="fb-fin-numeric" aria-selected="false" data-status="ready">
+            <span class="mc-toc-name">Financial numerical reasoning</span>
+            <span class="mc-toc-bar" style="--share: 0.167" aria-hidden="true"></span>
+            <b class="mc-toc-n tnum">15</b>
+            <span class="mc-status">Ready</span>
+          </button></li>
+          <li><button type="button" role="tab" id="fb-fin-payments-tab" aria-controls="fb-fin-payments" aria-selected="false" data-status="ready">
+            <span class="mc-toc-name">Payments &amp; transaction data analysis</span>
+            <span class="mc-toc-bar" style="--share: 0.167" aria-hidden="true"></span>
+            <b class="mc-toc-n tnum">15</b>
+            <span class="mc-status">Ready</span>
+          </button></li>
+          <li><button type="button" role="tab" id="fb-fin-filings-tab" aria-controls="fb-fin-filings" aria-selected="false" data-status="ready">
+            <span class="mc-toc-name">Financial research &amp; filings QA</span>
+            <span class="mc-toc-bar" style="--share: 0.111" aria-hidden="true"></span>
+            <b class="mc-toc-n tnum">10</b>
+            <span class="mc-status">Ready</span>
+          </button></li>
+      </ol>
+    </div>
+    <div class="mc-page mc-page-r">
+        <article class="mc-entry" id="fb-fin-nlp" role="tabpanel" aria-labelledby="fb-fin-nlp-tab" data-status="ready">
+          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>fin.nlp</span><h4>Financial text understanding</h4><span class="mc-status">Ready</span></header>
+          <p class="mc-entry-desc">Sentiment, news headlines, entity recognition and ESG issues in financial text.</p>
+          <dl class="mc-entry-facts">
+            <div><dt>Candidate tasks</dt><dd><b class="tnum">20</b></dd></div>
+            <div><dt>What it tests</dt><dd>Domain language understanding, label calibration</dd></div>
+            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>pixiu@parity</span><span class="mc-src-meta"><b class="tnum">20</b> <span>tasks</span> · <span>Deterministic</span></span></li></ul></dd></div>
+            <div><dt>Evaluation</dt><dd>Deterministic</dd></div>
+            <div><dt>Status</dt><dd><span>Ready</span>: <span>At least five pinned, runnable public tasks.</span></dd></div>
+          </dl>
+        </article>
+        <article class="mc-entry" id="fb-fin-accounting" role="tabpanel" aria-labelledby="fb-fin-accounting-tab" data-status="partial">
+          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>fin.accounting</span><h4>Accounting close &amp; finance deliverables</h4><span class="mc-status">Partial</span></header>
+          <p class="mc-entry-desc">Month-end close remediation and accounting data pipelines (QuickBooks, Xero, Zuora, recurring revenue).</p>
+          <dl class="mc-entry-facts">
+            <div><dt>Candidate tasks</dt><dd><b class="tnum">15</b></dd></div>
+            <div><dt>What it tests</dt><dd>Ledger reconciliation, policy compliance, document + spreadsheet deliverables</dd></div>
+            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>sufe/fin-t1-003</span><span class="mc-src-meta"><b class="tnum">1</b> <span>task</span> · <span>Rubric (LLM judge)</span> · <span>private materials</span></span></li><li><span class="mc-src-name" data-no-translate>spider2-dbt@1.0</span><span class="mc-src-meta"><b class="tnum">10</b> <span>tasks</span> · <span>Deterministic</span></span></li><li><span class="mc-src-name" data-no-translate>ade-bench@1.0</span><span class="mc-src-meta"><b class="tnum">4</b> <span>tasks</span> · <span>Deterministic</span></span></li></ul></dd></div>
+            <div><dt>Evaluation</dt><dd>Deterministic + Rubric</dd></div>
+            <div><dt>Status</dt><dd><span>Partial</span>: <span>Depends on restricted material or on adapters still to be generated.</span></dd></div>
+          </dl>
+        </article>
+        <article class="mc-entry" id="fb-fin-credit" role="tabpanel" aria-labelledby="fb-fin-credit-tab" data-status="ready">
+          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>fin.credit</span><h4>Credit risk &amp; fraud</h4><span class="mc-status">Ready</span></header>
+          <p class="mc-entry-desc">Credit scoring and fraud detection from tabular borrower and transaction features.</p>
+          <dl class="mc-entry-facts">
+            <div><dt>Candidate tasks</dt><dd><b class="tnum">15</b></dd></div>
+            <div><dt>What it tests</dt><dd>Tabular judgement, class imbalance, risk reasoning</dd></div>
+            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>pixiu@parity</span><span class="mc-src-meta"><b class="tnum">15</b> <span>tasks</span> · <span>Deterministic</span></span></li></ul></dd></div>
+            <div><dt>Evaluation</dt><dd>Deterministic</dd></div>
+            <div><dt>Status</dt><dd><span>Ready</span>: <span>At least five pinned, runnable public tasks.</span></dd></div>
+          </dl>
+        </article>
+        <article class="mc-entry" id="fb-fin-numeric" role="tabpanel" aria-labelledby="fb-fin-numeric-tab" data-status="ready">
+          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>fin.numeric</span><h4>Financial numerical reasoning</h4><span class="mc-status">Ready</span></header>
+          <p class="mc-entry-desc">Table and text numeric reasoning over financial reports (FinQA, TAT-QA) and CFA-style questions.</p>
+          <dl class="mc-entry-facts">
+            <div><dt>Candidate tasks</dt><dd><b class="tnum">15</b></dd></div>
+            <div><dt>What it tests</dt><dd>Multi-step arithmetic on tables, financial concepts</dd></div>
+            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>pixiu@parity</span><span class="mc-src-meta"><b class="tnum">15</b> <span>tasks</span> · <span>Deterministic</span></span></li></ul></dd></div>
+            <div><dt>Evaluation</dt><dd>Deterministic</dd></div>
+            <div><dt>Status</dt><dd><span>Ready</span>: <span>At least five pinned, runnable public tasks.</span></dd></div>
+          </dl>
+        </article>
+        <article class="mc-entry" id="fb-fin-payments" role="tabpanel" aria-labelledby="fb-fin-payments-tab" data-status="ready">
+          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>fin.payments</span><h4>Payments &amp; transaction data analysis</h4><span class="mc-status">Ready</span></header>
+          <p class="mc-entry-desc">Multi-step Python analysis over payment records, fee schedules and merchant data.</p>
+          <dl class="mc-entry-facts">
+            <div><dt>Candidate tasks</dt><dd><b class="tnum">15</b></dd></div>
+            <div><dt>What it tests</dt><dd>Joining sources, applying business rules, aggregation</dd></div>
+            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>dabstep@1.0</span><span class="mc-src-meta"><b class="tnum">15</b> <span>tasks</span> · <span>Deterministic</span></span></li></ul></dd></div>
+            <div><dt>Evaluation</dt><dd>Deterministic</dd></div>
+            <div><dt>Status</dt><dd><span>Ready</span>: <span>At least five pinned, runnable public tasks.</span></dd></div>
+          </dl>
+        </article>
+        <article class="mc-entry" id="fb-fin-filings" role="tabpanel" aria-labelledby="fb-fin-filings-tab" data-status="ready">
+          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>fin.filings</span><h4>Financial research &amp; filings QA</h4><span class="mc-status">Ready</span></header>
+          <p class="mc-entry-desc">Analyst-style questions answered from SEC filings and company disclosures.</p>
+          <dl class="mc-entry-facts">
+            <div><dt>Candidate tasks</dt><dd><b class="tnum">10</b></dd></div>
+            <div><dt>What it tests</dt><dd>Retrieval over long filings, numeric reasoning, citation</dd></div>
+            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>financeagent@public</span><span class="mc-src-meta"><b class="tnum">10</b> <span>tasks</span> · <span>LLM judge</span></span></li></ul></dd></div>
+            <div><dt>Evaluation</dt><dd>LLM judge</dd></div>
+            <div><dt>Status</dt><dd><span>Ready</span>: <span>At least five pinned, runnable public tasks.</span></dd></div>
+          </dl>
+        </article>
+    </div>
+  </section>
+  <section class="mc-spread" id="fb-soc" role="tabpanel" aria-labelledby="fb-tab-soc" style="--tc: var(--mc-violet)" data-closed>
+    <div class="mc-page mc-page-l">
+      <header class="mc-page-head"><small class="mono">Field 03 · Contents</small><h3>Social science</h3><p><b class="tnum">43</b> <span>candidate records in</span> <b class="tnum">5</b> <span>classes</span></p></header>
+      <ol class="mc-toc" role="tablist" aria-label="Social science: classes">
+          <li><button type="button" role="tab" id="fb-soc-law-tab" aria-controls="fb-soc-law" aria-selected="true" data-status="ready">
+            <span class="mc-toc-name">Law &amp; regulation</span>
+            <span class="mc-toc-bar" style="--share: 0.465" aria-hidden="true"></span>
+            <b class="mc-toc-n tnum">20</b>
+            <span class="mc-status">Ready</span>
+          </button></li>
+          <li><button type="button" role="tab" id="fb-soc-society-tab" aria-controls="fb-soc-society" aria-selected="false" data-status="ready">
+            <span class="mc-toc-name">Society, education &amp; survey data</span>
+            <span class="mc-toc-bar" style="--share: 0.279" aria-hidden="true"></span>
+            <b class="mc-toc-n tnum">12</b>
+            <span class="mc-status">Ready</span>
+          </button></li>
+          <li><button type="button" role="tab" id="fb-soc-business-tab" aria-controls="fb-soc-business" aria-selected="false" data-status="partial">
+            <span class="mc-toc-name">Business operations &amp; CRM</span>
+            <span class="mc-toc-bar" style="--share: 0.140" aria-hidden="true"></span>
+            <b class="mc-toc-n tnum">6</b>
+            <span class="mc-status">Partial</span>
+          </button></li>
+          <li><button type="button" role="tab" id="fb-soc-hr-tab" aria-controls="fb-soc-hr" aria-selected="false" data-status="partial">
+            <span class="mc-toc-name">HR &amp; organisational analytics</span>
+            <span class="mc-toc-bar" style="--share: 0.116" aria-hidden="true"></span>
+            <b class="mc-toc-n tnum">5</b>
+            <span class="mc-status">Partial</span>
+          </button></li>
+          <li><button type="button" role="tab" id="fb-soc-psychology-tab" aria-controls="fb-soc-psychology" aria-selected="false" data-status="gap">
+            <span class="mc-toc-name">Psychology &amp; cognitive science</span>
+            <span class="mc-toc-bar" style="--share: 0.000" aria-hidden="true"></span>
+            <b class="mc-toc-n tnum">0</b>
+            <span class="mc-status">To add</span>
+          </button></li>
+      </ol>
+    </div>
+    <div class="mc-page mc-page-r">
+        <article class="mc-entry" id="fb-soc-law" role="tabpanel" aria-labelledby="fb-soc-law-tab" data-status="ready">
+          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>soc.law</span><h4>Law &amp; regulation</h4><span class="mc-status">Ready</span></header>
+          <p class="mc-entry-desc">Chinese legal knowledge, statute recall and case-outcome prediction (LawBench).</p>
+          <dl class="mc-entry-facts">
+            <div><dt>Candidate tasks</dt><dd><b class="tnum">20</b></dd></div>
+            <div><dt>What it tests</dt><dd>Legal reasoning, statute grounding</dd></div>
+            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>lawbench@1.0</span><span class="mc-src-meta"><b class="tnum">20</b> <span>tasks</span> · <span>Deterministic</span></span></li></ul></dd></div>
+            <div><dt>Evaluation</dt><dd>Deterministic</dd></div>
+            <div><dt>Status</dt><dd><span>Ready</span>: <span>At least five pinned, runnable public tasks.</span></dd></div>
+          </dl>
+        </article>
+        <article class="mc-entry" id="fb-soc-society" role="tabpanel" aria-labelledby="fb-soc-society-tab" data-status="ready">
+          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>soc.society</span><h4>Society, education &amp; survey data</h4><span class="mc-status">Ready</span></header>
+          <p class="mc-entry-desc">Education, survey and social-media data analysis.</p>
+          <dl class="mc-entry-facts">
+            <div><dt>Candidate tasks</dt><dd><b class="tnum">12</b></dd></div>
+            <div><dt>What it tests</dt><dd>Social data semantics, aggregation over heterogeneous tables</dd></div>
+            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>bird-bench@parity</span><span class="mc-src-meta"><b class="tnum">9</b> <span>tasks</span> · <span>Deterministic</span></span></li><li><span class="mc-src-name" data-no-translate>spider2-dbt@1.0</span><span class="mc-src-meta"><b class="tnum">3</b> <span>tasks</span> · <span>Deterministic</span></span></li></ul></dd></div>
+            <div><dt>Evaluation</dt><dd>Deterministic</dd></div>
+            <div><dt>Status</dt><dd><span>Ready</span>: <span>At least five pinned, runnable public tasks.</span></dd></div>
+          </dl>
+        </article>
+        <article class="mc-entry" id="fb-soc-business" role="tabpanel" aria-labelledby="fb-soc-business-tab" data-status="partial">
+          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>soc.business</span><h4>Business operations &amp; CRM</h4><span class="mc-status">Partial</span></header>
+          <p class="mc-entry-desc">Marketing, sales and customer-support data in CRM and support tools.</p>
+          <dl class="mc-entry-facts">
+            <div><dt>Candidate tasks</dt><dd><b class="tnum">6</b></dd></div>
+            <div><dt>What it tests</dt><dd>Business process understanding, metric definitions</dd></div>
+            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>spider2-dbt@1.0</span><span class="mc-src-meta"><b class="tnum">6</b> <span>tasks</span> · <span>Deterministic</span></span></li><li><span class="mc-src-name" data-no-translate>crmarena adapter</span><span class="mc-src-meta"><span>to generate</span> · <span>Deterministic (exact match / fuzzy F1, LLM extraction step)</span></span></li></ul></dd></div>
+            <div><dt>Evaluation</dt><dd>Deterministic</dd></div>
+            <div><dt>Status</dt><dd><span>Partial</span>: <span>Depends on restricted material or on adapters still to be generated.</span></dd></div>
+            <div><dt>Waiting on</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>crmarena</span><span class="mc-src-meta"><b class="tnum">1170</b> <span>upstream tasks</span></span><span class="mc-src-note">Requires a live Salesforce org.</span></li></ul></dd></div>
+          </dl>
+        </article>
+        <article class="mc-entry" id="fb-soc-hr" role="tabpanel" aria-labelledby="fb-soc-hr-tab" data-status="partial">
+          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>soc.hr</span><h4>HR &amp; organisational analytics</h4><span class="mc-status">Partial</span></header>
+          <p class="mc-entry-desc">Training effectiveness and procurement review, recruiting and workforce data pipelines.</p>
+          <dl class="mc-entry-facts">
+            <div><dt>Candidate tasks</dt><dd><b class="tnum">5</b></dd></div>
+            <div><dt>What it tests</dt><dd>People analytics, policy-consistent recommendations</dd></div>
+            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>synthbench/hr-t3-114</span><span class="mc-src-meta"><b class="tnum">1</b> <span>task</span> · <span>Rubric (LLM judge)</span> · <span>private materials</span></span></li><li><span class="mc-src-name" data-no-translate>spider2-dbt@1.0</span><span class="mc-src-meta"><b class="tnum">4</b> <span>tasks</span> · <span>Deterministic</span></span></li><li><span class="mc-src-name" data-no-translate>theagentcompany adapter</span><span class="mc-src-meta"><span>to generate</span> · <span>Deterministic (checkpoint evaluators)</span></span></li></ul></dd></div>
+            <div><dt>Evaluation</dt><dd>Deterministic + Rubric</dd></div>
+            <div><dt>Status</dt><dd><span>Partial</span>: <span>Depends on restricted material or on adapters still to be generated.</span></dd></div>
+            <div><dt>Waiting on</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>theagentcompany</span><span class="mc-src-meta"><b class="tnum">29</b> <span>upstream tasks</span></span><span class="mc-src-note">29 HR tasks per the adapter README; needs TheAgentCompany intranet services.</span></li></ul></dd></div>
+          </dl>
+        </article>
+        <article class="mc-entry" id="fb-soc-psychology" role="tabpanel" aria-labelledby="fb-soc-psychology-tab" data-status="gap">
+          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>soc.psychology</span><h4>Psychology &amp; cognitive science</h4><span class="mc-status">To add</span></header>
+          <p class="mc-entry-desc">Data-driven analysis tasks from psychology and cognitive-science papers.</p>
+          <dl class="mc-entry-facts">
+            <div><dt>Candidate tasks</dt><dd><b class="tnum">0</b></dd></div>
+            <div><dt>What it tests</dt><dd>Experimental data analysis, scientific programming</dd></div>
+            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>scienceagentbench adapter</span><span class="mc-src-meta"><span>to generate</span> · <span>Mixed (deterministic + visual LLM judge)</span></span></li></ul></dd></div>
+            <div><dt>Evaluation</dt><dd>Mixed</dd></div>
+            <div><dt>Status</dt><dd><span>To add</span>: <span>No runnable tasks yet: an adapter still has to be generated.</span></dd></div>
+            <div><dt>Waiting on</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>scienceagentbench</span><span class="mc-src-meta"><b class="tnum">28</b> <span>upstream tasks</span></span><span class="mc-src-note">28 Psychology &amp; Cognitive Science tasks per adapter README; not in the registry snapshot.</span></li></ul></dd></div>
+          </dl>
+        </article>
+    </div>
+  </section>
+</div>
+<!-- fields:books:end -->
+    <p class="mc-catalogue-note mc-r">Counts are candidate records in the metacase-harbor v0.1 selection (26 October 2026): task records curated from public benchmarks and partner material, not yet reviewed as complete Metacases. No model or harness has been scored on this selection yet. Ready: at least five pinned, runnable public tasks. Partial: depends on restricted material or on adapters still to be generated. To add: no runnable tasks yet.</p>
   </div>
 </section>
 
@@ -551,42 +626,99 @@
   </div>
 </section>
 
-<!-- ================= 05 THE RULES: one run, from evidence to a Metacase ================= -->
-<section class="mc-scene" id="rules" aria-labelledby="rules-title" style="--len: 400vh">
+<!-- ================= 05 WHAT A PARTICIPANT DOES: from a case to a contribution ================= -->
+<section class="mc-scene" id="rules" aria-labelledby="rules-title" style="--len: 460vh">
   <div class="mc-scene-pin" data-view="run">
     <div class="mc-tags" data-tags="run" aria-hidden="true">
-      <span data-tag="0" style="--tc: var(--track-1)"><b>Deliverable</b><i>Not a single answer</i></span>
-      <span data-tag="1" style="--tc: var(--track-2)"><b>Reference</b><i>Sealed until scoring</i></span>
-      <span data-tag="2" style="--tc: var(--mc-blue)"><b>Same case</b><i>Three harnesses</i></span>
-      <span data-tag="3" style="--tc: var(--mc-violet)"><b>Metacase</b><i>The whole run, kept</i></span>
+      <span data-tag="0" style="--tc: var(--track-1)"><b>Case</b><i>Goal · evidence · constraints</i></span>
+      <span data-tag="1" style="--tc: var(--mc-violet)"><b>Model</b><i>Reasons and decides</i></span>
+      <span data-tag="2" style="--tc: var(--track-2)"><b>Harness</b><i>Tools · workflow · settings</i></span>
+      <span data-tag="3" style="--tc: var(--mc-blue)"><b>Trajectory</b><i>Every step logged</i></span>
+      <span data-tag="4" style="--tc: var(--track-1)"><b>Verifier</b><i>The only place the reference is used</i></span>
+      <span data-tag="5" style="--tc: var(--track-2)"><b>Result</b><i>Pass · partial · fail</i></span>
+      <span data-tag="6" style="--tc: var(--mc-blue)"><b>A · Metacase</b></span>
+      <span data-tag="7" style="--tc: var(--mc-rose)"><b>B · Model &amp; Harness</b></span>
+      <span data-tag="8" style="--tc: var(--mc-violet)"><b>C · Failure Case</b></span>
     </div>
     <div class="wrap mc-scene-head">
       <p class="mc-label mono"><span>05</span>The Metacase Challenge</p>
-      <h2 id="rules-title"><span>Fair runs,</span> <em>full trajectories.</em></h2>
-      <p class="mc-sub">The Challenge is the first pipeline into the Metacase network. Four rules keep every run comparable and every trajectory worth reviewing.</p>
+      <h2 id="rules-title"><span>From a case</span> <em>to a contribution.</em></h2>
+      <div class="mc-sub">
+        <p>What a participant does: take a case from one of the three tracks, run a model and its harness on it end to end, have the deliverable checked against references the agent never sees, and turn what happened into something others can inspect and reuse.</p>
+        <ul class="mc-principles" aria-label="Rules of the Challenge"><li>End-to-end tasks</li><li>Same tasks for everyone</li><li>Hidden references</li><li>Full trajectories</li></ul>
+      </div>
     </div>
     <ol class="wrap mc-captions">
-      <li data-caption="0"><b class="mono">End-to-end tasks</b><span>Agents work from the original evidence to a finished deliverable, not a single answer.</span></li>
-      <li data-caption="1"><b class="mono">Hidden references</b><span>Reference results and rubrics stay hidden from agents until evaluation.</span></li>
-      <li data-caption="2"><b class="mono">Same tasks for everyone</b><span>Every entry in a track faces the same data, materials and evaluation.</span></li>
-      <li data-caption="3"><b class="mono">Full trajectories</b><span>Each run keeps its reasoning, actions and outcome, so the result can be inspected.</span></li>
+      <li data-caption="0"><b class="mono">1 · Choose a case</b><span>The participant takes a case from a track and opens it: the task goal, the evidence available at the decision point and its constraints. Every entry in a track works from the same materials and is scored the same way.</span></li>
+      <li data-caption="1"><b class="mono">2 · Configure Model + Harness</b><span>They pick a model and the harness that runs it. The model reasons and decides; the harness supplies the tools, the workflow and the run settings, so the same model can behave differently in a different harness.</span></li>
+      <li data-caption="2"><b class="mono">3 · Execute and record</b><span>The agent reads the materials, plans, calls tools and writes files until it delivers end to end. Every step goes into the trajectory, so the whole run can be traced afterwards.</span></li>
+      <li data-caption="3"><b class="mono">4 · Verify and diagnose</b><span>The deliverable goes to an independent check against reference results and rubrics the agent never saw during the run. A result can be a pass, a partial pass or a failure, and the trajectory shows where it went wrong.</span></li>
+      <li data-caption="4"><b class="mono">5 · Contribute</b><span>What the run yields can be contributed in three forms: a Metacase, the Model &amp; Harness behind it, or a documented Failure Case. Contribute one or more; they are separate from the choice of track.</span></li>
     </ol>
     <div class="wrap mc-scene-foot">
-      <ol class="mc-rail" aria-hidden="true"><li>End-to-end</li><li>Hidden references</li><li>Same tasks</li><li>Full trajectories</li></ol>
+      <ol class="mc-rail" aria-label="What a participant does"><li>Choose</li><li>Configure</li><li>Execute</li><li>Verify</li><li>Contribute</li></ol>
     </div>
   </div>
 </section>
 
-<!-- ================= BENCHMARK SNAPSHOT: compact bridge into the team ================= -->
-<section class="mc-section mc-facts-strip" id="tracks" aria-label="Benchmark snapshot">
+<!-- ================= 05 · WHAT YOU CAN CONTRIBUTE: three kinds, separate from the three tracks ================= -->
+<section class="mc-section mc-contribute" id="contribute" aria-labelledby="contribute-title">
   <div class="wrap">
-    <div class="mc-facts-row mc-r">
-      <div><b class="tnum" data-count="100">100</b><span>Dev100 tasks</span></div>
-      <div><b class="tnum" data-count="14">14</b><span>Models evaluated</span></div>
-      <div><b class="tnum" data-count="4">4</b><span>Agent harnesses</span></div>
-      <div class="mc-facts-links">
-        <a class="link" href="leaderboard.html" style="--tc: var(--track-1)"><span>See the leaderboard</span><span class="arrow" aria-hidden="true">→</span></a>
-        <a class="link" href="challenge.html#replication-demo" style="--tc: var(--track-2)"><span>Watch an agent run</span><span class="arrow" aria-hidden="true">→</span></a>
+    <div class="mc-head mc-r">
+      <p class="mc-label mono"><span>05</span>Contributions</p>
+      <h2 id="contribute-title"><span>Three kinds of</span> <em>contribution.</em></h2>
+      <p class="mc-sub">A run can leave more than a score. These are the forms in which a participant's work becomes reusable; they cut across the three tracks, and any one of them is a contribution on its own.</p>
+    </div>
+    <div class="mc-grid mc-grid-3">
+      <article class="mc-card mc-deliverable mc-r" style="--tc: var(--mc-blue)">
+        <div class="mc-art" data-art="metacase"></div>
+        <div class="mc-card-body">
+          <p class="mono"><b>A</b> · Structured record</p>
+          <h3>Metacase</h3>
+          <p>A reusable, structured record of the case, written so that others can compare it and learn from it.</p>
+          <ul><li>The problem and the evidence it rested on</li><li>The decisions and the actions taken, as a trajectory</li><li>The outcome and how it was checked</li><li>How it was interpreted, and the lessons drawn</li></ul>
+        </div>
+      </article>
+      <article class="mc-card mc-deliverable mc-r" style="--tc: var(--mc-rose)">
+        <div class="mc-art" data-art="harness"></div>
+        <div class="mc-card-body">
+          <p class="mono"><b>B</b> · Reproducible agent</p>
+          <h3>Model &amp; Harness</h3>
+          <p>The model together with the harness that runs it, packaged so the run can be repeated by someone else.</p>
+          <ul><li>Model and run configuration</li><li>Tools and workflow</li><li>The code involved</li><li>Evaluation records; scores come from independent evaluation, not from self-reports</li></ul>
+        </div>
+      </article>
+      <article class="mc-card mc-deliverable mc-r" style="--tc: var(--mc-violet)">
+        <div class="mc-art" data-art="failure"></div>
+        <div class="mc-card-body">
+          <p class="mono"><b>C</b> · Diagnosed failure</p>
+          <h3>Failure Case</h3>
+          <p>A failure worth diagnosing, documented so that it can be reproduced and learned from.</p>
+          <ul><li>What was expected and what actually happened</li><li>The conditions and the step at which it failed</li><li>Evidence that reproduces it</li><li>Hypotheses about the cause and how to improve, kept apart from the observed facts</li></ul>
+          <p class="mc-fine">A low score on its own, or a run without records, is not a failure case.</p>
+        </div>
+      </article>
+    </div>
+    <p class="mc-contribute-note mc-r">File formats and routes follow the Challenge's submission rules; registration and the submission process for the Challenge itself are still being finalised. <a class="link" href="challenge.html#take-part"><span>Ways to get involved</span><span class="arrow" aria-hidden="true">→</span></a></p>
+  </div>
+</section>
+
+<section class="mc-section mc-results" id="tracks" aria-labelledby="results-title">
+  <div class="wrap">
+    <div class="mc-results-card mc-r">
+      <div class="mc-results-head">
+        <p class="mc-label mono"><span>05</span>Results so far</p>
+        <h2 id="results-title"><span>See how runs</span> <em>have been scored.</em></h2>
+        <p class="mc-results-scope">The Dev100 development board (v10, 11 October 2026) compares 14 models run in 4 agent harnesses on the same 100 econometric-replication tasks. It is a descriptive comparison, not the Challenge leaderboard; runs that failed or could not be scored stay in the denominator.</p>
+      </div>
+      <ul class="mc-results-stats" aria-label="Benchmark snapshot">
+        <li style="--tc: var(--track-1)"><div class="mc-art" data-art="tasks"></div><b class="tnum" data-count="100">100</b><span>Dev100 tasks</span><small>Econometric replication, development split</small></li>
+        <li style="--tc: var(--mc-violet)"><div class="mc-art" data-art="models"></div><b class="tnum" data-count="14">14</b><span>Models evaluated</span><small>Each run through an agent harness</small></li>
+        <li style="--tc: var(--track-2)"><div class="mc-art" data-art="harnesses"></div><b class="tnum" data-count="4">4</b><span>Agent harnesses</span><small data-no-translate>DeepAgents · DeepSeek Harness · Claude Agent SDK · OpenAI Agents SDK</small></li>
+      </ul>
+      <div class="mc-results-actions">
+        <a class="btn btn-primary" href="leaderboard.html"><span>See the leaderboard</span><span class="arrow" aria-hidden="true"><i>→</i><i>→</i></span></a>
+        <a class="btn btn-secondary" href="challenge.html#replication-demo"><span>Watch an agent run</span><span class="arrow" aria-hidden="true"><i>→</i><i>→</i></span></a>
       </div>
     </div>
   </div>

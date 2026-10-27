@@ -16,21 +16,17 @@ const SIG = 0, N = STAGE_COLORS.length;
 const band = p => (p - CHAPTERS[0]) / (CHAPTERS[1] - CHAPTERS[0]) * N;
 const springy = x => { const p = clamp(x) - 1; return 1 + 2.6 * p * p * p + 1.6 * p * p; }; // eases past 1 and settles
 const hex = n => '#' + n.toString(16).padStart(6, '0');
+// a stage colour deepened towards the page's ink, for small print on the cream stock
+const ink = n => hex([16, 8, 0].reduce((v, k) => v | Math.round(((n >> k) & 255) * .6 + ((0x1f2a3a >> k) & 255) * .4) << k, 0));
 
-// What each stage prints on its page: a headline, then a phrase and two key lines.
-const STAGES = [
-  { name: 'EVIDENCE & CUTOFF', phrase: 'RAW PAPERS · FILINGS · LEDGERS', lines: ['t ≤ cutoff: the evidence as it was known', 'no future information leaks into the task'] },
-  { name: 'PRIORS & STRATEGY', phrase: 'DOMAIN RULES · CANDIDATE ROUTES', lines: ['identification · accounting rules · compliance', 'flawed routes set aside, one strategy chosen'] },
-  { name: 'HARNESS TRAJECTORY', phrase: 'READ → PLAN → EXECUTE → DELIVER', lines: ['model + harness in a reproducible container', 'every tool call and file stays on the record'] },
-  { name: 'VERIFIED OUTCOME', phrase: 'DETERMINISTIC CHECK · RUBRIC', lines: ['score = verify(deliverable, reference)', 'reasoning errors ≠ environment faults'] },
-  { name: 'REFLECTION & REUSE', phrase: 'DISTILL LESSONS · EVOLVE HARNESS', lines: ['why the strategy worked, or where it broke', 'experience the next run starts from'] },
-];
-const NAMES = STAGES.map(s => s.name);
+// What each stage prints on its page (a title, its keywords and two lines) comes from the
+// page's own stage notes, through pages(); the book, the notes and the rail share one text.
+const blank = i => ({ title: `${i + 1}`, key: '', lines: [], steps: [] });
 // The page layout (book space, z from the head −PD/2 to the tail +PD/2): the headline card
 // stands at the back, the phrase card in front of it, the figure in front of both; flat,
 // the cards lie towards the head and the figure lies towards the reader, so nothing overlaps.
-const HEAD = { w: 2.2, h: .94, z: -.66 }, NOTE = { w: 1.9, h: .7, z: -.46 };
-const FIG = { hinge: .66, z: .2, scale: .92 };
+const HEAD = { w: 2.2, h: .94, z: -.8 }, NOTE = { w: 2.15, h: .6, z: -.44 };
+const FIG = { hinge: .66, z: .5, scale: .86 };
 
 /* ---- printed cards ---- */
 function printed(w, h, paint) {
@@ -38,6 +34,7 @@ function printed(w, h, paint) {
   const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 8;
   const draw = () => { const g = c.getContext('2d'); g.clearRect(0, 0, W, H); paint(g, W, H); tex.needsUpdate = true; };
   draw(); document.fonts?.ready.then(draw);
+  tex.userData.redraw = draw;
   return tex;
 }
 function paper(g, W, H) { // cream stock with a warm gilt edge
@@ -46,27 +43,26 @@ function paper(g, W, H) { // cream stock with a warm gilt edge
 }
 function fit(g, text, font, size, maxW) { let s = size; g.font = font(s); while (g.measureText(text).width > maxW && s > 12) { s -= 2; g.font = font(s); } }
 const sans = s => `750 ${s}px Inter, Arial, sans-serif`, mono = s => `700 ${s}px "Space Mono", ui-monospace, monospace`;
-const headline = i => (g, W, H) => {
-  const col = hex(STAGE_COLORS[i]);
+const headline = (i, text) => (g, W, H) => {
+  const col = hex(STAGE_COLORS[i]), { title } = text(i);
   paper(g, W, H);
   g.fillStyle = col; g.beginPath(); g.roundRect(56, 52, 132, 98, 18); g.fill();
   g.fillStyle = '#ffffff'; g.font = mono(62); g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(String(i + 1).padStart(2, '0'), 122, 103);
-  g.textAlign = 'left'; g.fillStyle = '#1f2a3a'; fit(g, STAGES[i].name, sans, 74, W - 280); g.fillText(STAGES[i].name, 214, 104);
+  g.textAlign = 'left'; g.fillStyle = '#1f2a3a'; fit(g, title, sans, 74, W - 280); g.fillText(title, 214, 104);
   g.fillStyle = '#d8b46a'; g.fillRect(56, 182, W - 112, 4);
   g.fillStyle = '#e4dccb'; for (let k = 0; k < 6; k++) g.fillRect(56, 222 + k * 28, (W - 112) * (k % 3 === 2 ? .55 : 1), 8);
   g.fillStyle = col; g.fillRect(12, H - 36, W - 24, 22);
 };
-const phrase = i => (g, W, H) => {
-  const col = hex(STAGE_COLORS[i]);
+const phrase = (i, text) => (g, W, H) => {
+  const col = hex(STAGE_COLORS[i]), { key, lines } = text(i), label = key.toUpperCase();
   paper(g, W, H);
-  g.textBaseline = 'middle'; g.textAlign = 'center'; g.fillStyle = col; fit(g, STAGES[i].phrase, mono, 46, W - 120); g.fillText(STAGES[i].phrase, W / 2, 66);
-  g.fillStyle = '#d8b46a'; g.fillRect(80, 112, W - 160, 3);
+  g.textBaseline = 'middle'; g.textAlign = 'center'; g.fillStyle = ink(STAGE_COLORS[i]); fit(g, label, mono, 44, W - 110); g.fillText(label, W / 2, 54);
+  g.fillStyle = '#d8b46a'; g.fillRect(70, 90, W - 140, 3);
   g.textAlign = 'left';
-  STAGES[i].lines.forEach((line, k) => {
-    g.fillStyle = col; g.fillRect(84, 150 + k * 56, 16, 16);
-    g.fillStyle = '#374151'; fit(g, line, s => `500 ${s}px Inter, Arial, sans-serif`, 36, W - 210); g.fillText(line, 120, 159 + k * 56);
+  lines.forEach((line, k) => {
+    g.fillStyle = col; g.fillRect(74, 128 + k * 74, 20, 20);
+    g.fillStyle = '#1f2a3a'; fit(g, line, s => `600 ${s}px Inter, Arial, sans-serif`, 54, W - 170); g.fillText(line, 114, 139 + k * 74);
   });
-  g.fillStyle = '#e4dccb'; for (let k = 0; k < 3; k++) g.fillRect(84, 284 + k * 26, (W - 168) * (k === 2 ? .5 : 1), 7);
 };
 // A card hinged along its edge nearest the reader. Flat, it lies on the page towards the
 // head with its print facing up; folded up, it stands on the crease facing the reader.
@@ -118,17 +114,20 @@ const FIGURES = [
     });
     return t => { beam.rotation.z = -.1 + Math.sin(t * 1.4) * .04; pans.forEach(p => { p.rotation.z = -beam.rotation.z; }); chosen.emissiveIntensity = .45 + Math.sin(t * 2.6) * .25; };
   },
-  g => { // a model and its harness work step by step inside a reproducible container
-    ['READ', 'PLAN', 'EXECUTE', 'DELIVER'].forEach((label, k) => {
+  (g, words) => { // a model decides and its harness carries out the steps, inside a reproducible container
+    const word = k => (words()[k] || '').toUpperCase(), lines = k => [{ text: word(k), size: 150, weight: 700, color: '#1f2a3a', font: '"Space Mono", ui-monospace, monospace', track: 4 }];
+    const tags = [0, 1, 2, 3].map(k => {
       const h = .12 + k * .13, x = -.54 + k * .36;
       block(g, .34, h, .5, k === 3 ? STAGE_COLORS[2] : 0xdde8f6, x, 0, 0, .03);
-      const tag = new THREE.Mesh(new THREE.PlaneGeometry(.3, .075), new THREE.MeshStandardMaterial({ roughness: .8, transparent: true,
-        map: labelTexture('step-' + label, [{ text: label, size: 150, weight: 700, color: '#1f2a3a', font: '"Space Mono", ui-monospace, monospace', track: 4 }], { width: 1024, height: 256 }) }));
+      const tex = labelTexture('step-' + k, lines(k), { width: 1024, height: 256 });
+      const tag = new THREE.Mesh(new THREE.PlaneGeometry(.3, .075), new THREE.MeshStandardMaterial({ roughness: .8, transparent: true, map: tex }));
       tag.position.set(x, h - .05, .252); g.add(tag);
+      return () => tex.userData.redraw(lines(k));
     });
+    g.userData.relabel = () => tags.forEach(redraw => redraw());
     const box = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1.62, .78, .74)), new THREE.LineBasicMaterial({ color: STAGE_COLORS[2], transparent: true, opacity: .6 }));
     box.position.set(0, .39, 0); g.add(box);
-    const bot = robot(0xf7f5f0); bot.root.scale.setScalar(.42); g.add(bot.root);
+    const bot = robot(0xf7f5f0); bot.root.scale.setScalar(.36); g.add(bot.root);
     const stepX = [-.54, -.18, .18, .54], stepY = [.12, .25, .38, .51];
     return t => {
       const cycle = (t * .55) % 4, k = Math.min(3, Math.floor(cycle)), f = cycle - k;
@@ -149,18 +148,21 @@ const FIGURES = [
       }
     };
   },
-  g => { // the deliverable checked against its references: scores, a target, a pass
-    const bars = [.22, .34, .46, .6].map((h, k) => block(g, .13, h, .13, k === 3 ? STAGE_COLORS[3] : 0xf6e2b0, -.64 + k * .19, 0, -.15, .02));
-    for (let k = 0; k < 3; k++) block(g, .74, .012, .03, 0xb8bfcc, -.36, .2 + k * .2, -.24, .004); // the scale behind the bars
+  g => { // the deliverable checked against its reference: a rubric with a pass, a partial and a miss
+    const verdicts = [PALETTE.green, PALETTE.green, PALETTE.amber, PALETTE.rose];
+    const bars = [.56, .5, .3, .12].map((h, k) => block(g, .13, h, .13, mat(verdicts[k]), -.64 + k * .19, 0, -.15, .02));
+    block(g, .78, .012, .03, 0x2a2f3b, -.36, .44, -.24, .004);                        // the pass mark behind the bars
+    block(g, .74, .012, .03, 0xb8bfcc, -.36, .2, -.24, .004);                          // nothing above the bars, clear of the card's print
     const target = new THREE.Group(); target.position.set(.48, .36, 0); g.add(target);
     [.26, .18, .1].forEach((r, k) => add(target, new THREE.TorusGeometry(r, .026, 8, 32), mat(k % 2 ? 0xffffff : PALETTE.rose)));
-    ball(target, .04, PALETTE.rose, 0, 0, 0, 12);
+    ball(target, .045, PALETTE.ink, .13, .09, .03, 12);                                   // close, but off the centre
     cyl(g, .018, .018, .24, PALETTE.ink, .48, 0, 0, 6);
-    const check = new THREE.Group(); check.position.set(-.3, .76, -.05); g.add(check);
-    const green = mat(PALETTE.green, { emissive: PALETTE.green, intensity: .7 });
-    block(check, .16, .05, .05, green, -.07, -.06, 0, .02).rotation.z = -.8;
-    block(check, .32, .05, .05, green, .06, -.02, 0, .02).rotation.z = .9;
-    return t => { bars.forEach((b, k) => { b.scale.y = .95 + Math.sin(t * 2 + k) * .05; }); check.position.y = .76 + Math.sin(t * 2.4) * .03; check.rotation.y = Math.sin(t) * .3; };
+    const marks = new THREE.Group(); marks.position.set(-.3, .03, .36); marks.rotation.x = -Math.PI / 2 + .35; g.add(marks); // laid on the page, in front of the bars
+    const tick = (x, c) => { const m = mat(c, { emissive: c, intensity: .7 }); block(marks, .1, .04, .04, m, x - .045, -.04, 0, .015).rotation.z = -.8; block(marks, .19, .04, .04, m, x + .035, -.015, 0, .015).rotation.z = .9; };
+    tick(-.26, PALETTE.green);
+    block(marks, .18, .045, .04, mat(PALETTE.amber, { emissive: PALETTE.amber, intensity: .7 }), 0, -.02, 0, .015);       // partial
+    [1, -1].forEach(sd => { block(marks, .2, .045, .04, mat(PALETTE.rose, { emissive: PALETTE.rose, intensity: .7 }), .27, -.02, 0, .015).rotation.z = sd * .785; }); // missed
+    return t => { bars.forEach((b, k) => { b.scale.y = .96 + Math.sin(t * 2 + k) * .04; }); marks.position.y = .03 + Math.abs(Math.sin(t * 2.4)) * .02; };
   },
   g => { // what was learned, distilled, and carried into the next run
     cyl(g, .26, .3, .05, PALETTE.ink, 0, 0, -.05, 24);
@@ -180,7 +182,8 @@ const FIGURES = [
   },
 ];
 
-export function createAnatomy({ onProject = () => {}, safe = () => null, held = () => false, reduce = false } = {}) {
+export function createAnatomy({ onProject = () => {}, safe = () => null, held = () => false, reduce = false, stageText = () => [] } = {}) {
+  const text = i => stageText()[i] || blank(i);
   const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(34, 1, .1, 120);
   const light = lights(scene, { span: 8, shadowSize: 1024 });
   light.key.position.set(-4, 10, 7);
@@ -209,7 +212,7 @@ export function createAnatomy({ onProject = () => {}, safe = () => null, held = 
   [.18, .82].forEach(f => block(book, .16, .03, PD + .14, gilt, 0, (T + BOARD * 2) * f, 0, .01).castShadow = false);
   const ribbon = block(book, .05, .004, .7, mat(0xb8323f), PW * .62, rightTop, PD / 2 - .05, .002); ribbon.castShadow = false;
   const ink = mat(0x9aa3b2);
-  const runLines = n => [{ text: 'METACASE', size: 120, weight: 750, color: '#1f2a3a', track: 14 }, { text: `STAGE ${n + 1} · ${NAMES[n]}`, size: 52, weight: 500, color: '#6b7280', font: '"Space Mono", ui-monospace, monospace', track: 4 }];
+  const runLines = n => [{ text: 'METACASE', size: 120, weight: 750, color: '#1f2a3a', track: 14 }, { text: `${String(n + 1).padStart(2, '0')} · ${text(n).title.toUpperCase()}`, size: 52, weight: 500, color: '#6b7280', font: '"Space Mono", ui-monospace, monospace', track: 4 }];
   const runTex = labelTexture('metacase-run', runLines(0), { width: 1024, height: 320 });
   const runHead = labelPlane(runTex, PW * .7, PW * .7 * 320 / 1024); runHead.position.set(-PW / 2, 0, -PD / 2 + .62); book.add(runHead);
   let runStage = 0;
@@ -242,16 +245,20 @@ export function createAnatomy({ onProject = () => {}, safe = () => null, held = 
 
   // the five printed pages. Each is pivoted at the spine like the leaf, so the turning leaf
   // can carry the page it has finished with over to the left.
+  const reprint = []; // redraws every printed text, when the page's stage text changes (e.g. its language)
   const pages = FIGURES.map((build, i) => {
     const sheet = new THREE.Group(); book.add(sheet);
-    const head = card(sheet, printed(HEAD.w, HEAD.h, headline(i)), HEAD, .006);
-    const note = card(sheet, printed(NOTE.w, NOTE.h, phrase(i)), NOTE, .011);
+    const headTex = printed(HEAD.w, HEAD.h, headline(i, text)), noteTex = printed(NOTE.w, NOTE.h, phrase(i, text));
+    const head = card(sheet, headTex, HEAD, .006);
+    const note = card(sheet, noteTex, NOTE, .011);
+    reprint.push(headTex.userData.redraw, noteTex.userData.redraw);
     // the figure is hinged on its front edge: flat, it lies towards the reader as a print
     // of itself; unfolding, it swings up and gains its depth
     const pivot = new THREE.Group(); pivot.position.set(PW / 2, .006, FIG.hinge); sheet.add(pivot);
     const squash = new THREE.Group(); pivot.add(squash);
     const body = new THREE.Group(); body.position.z = FIG.z - FIG.hinge; body.scale.setScalar(FIG.scale); squash.add(body);
-    const tick = build(body);
+    const tick = build(body, () => text(i).steps);
+    if (body.userData.relabel) reprint.push(body.userData.relabel);
     return { sheet, head, note, pivot, squash, tick, rise: 0, anchor: new THREE.Vector3(PW + .2, rightTop + .55, -.2) };
   });
   // The pose of a page u of the way through its stage: the cards fold up (0–.24), the figure
@@ -285,9 +292,9 @@ export function createAnatomy({ onProject = () => {}, safe = () => null, held = 
     aim.set(PW + .35, .3, 0);
     target.lerp(aim, smooth(draw * 1.3));
     const fin = smooth(draw * 1.3);
-    const dist = fitBox(lerp(lerp(1.9, 2.7, openness), 1.25, fin), lerp(lerp(1.45, 1.32, openness), 1.75, fin), cam.fov, frame, lerp(.97, .95, fin));
+    const dist = fitBox(lerp(lerp(1.9, 2.45, openness), 1.25, fin), lerp(lerp(1.45, 1.22, openness), 1.75, fin), cam.fov, frame, lerp(.97, .95, fin));
     const az = lerp(lerp(-.35, -.14, openness) + (reduce ? 0 : pointer.x * .2) + clamp(b / N) * .2, .15, smooth(draw * 1.3));
-    const el = lerp(lerp(.58, .42, openness), 1.2, smooth(draw * 1.3));
+    const el = lerp(lerp(.58, .5, openness), 1.2, smooth(draw * 1.3));
     cam.position.set(target.x + Math.sin(az) * Math.cos(el) * dist, target.y + Math.sin(el) * dist, target.z + Math.cos(az) * Math.cos(el) * dist);
     cam.lookAt(target);
     cam.updateMatrixWorld();
@@ -376,5 +383,6 @@ export function createAnatomy({ onProject = () => {}, safe = () => null, held = 
   }
   function setTheme() { const bg = pageBackground(); scene.background = bg; scene.fog = new THREE.Fog(bg, 16, 40); }
   setTheme();
-  return { scene, camera, update, setTheme, restView, endView };
+  function relabel() { reprint.forEach(redraw => redraw()); runTex.userData.redraw(runLines(Math.max(0, runStage))); }
+  return { scene, camera, update, setTheme, restView, endView, relabel };
 }

@@ -3,13 +3,15 @@
  * this file registers them, keeps the notes, captions, tags and signature rails in step
  * with scrolling, and handles reveals, counters and the section nav. Visible text stays
  * in the page so language.js translates it. */
+import { createSignatureRail } from './mc-rail.js?v=20261027-seven6';
+
 const root = document.documentElement;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const ease = x => { const p = clamp(x); return p * p * (3 - 2 * p); };
-const V = '?v=20261027-stepfix';
+const V = '?v=20261027-seven6';
 
 /* ---- layout helpers ---- */
 const siteHeader = $('.site-header'), subnav = $('.mc-subnav');
@@ -24,39 +26,26 @@ function pinProgress(section) {
   const range = section.offsetHeight - pin.offsetHeight;
   return clamp((parseFloat(getComputedStyle(pin).top) - r.top) / Math.max(1, range));
 }
+const contentMax = parseFloat(getComputedStyle(root).getPropertyValue('--content-max')) || 1248;
 const place = (el, s) => {
   if (!el) return;
   if (!s || !s.visible) { el.style.opacity = 0; el.classList.remove('on'); return; }
   let x = s.x;
-  if (el.parentElement?.classList.contains('mc-notes')) {
-    const pw = el.parentElement.clientWidth, w = el.offsetWidth || 300;
+  const notes = el.parentElement?.classList.contains('mc-notes') && el.parentElement;
+  if (notes) {
+    // on wide screens chapter 01's notes stand in one column on the right gutter, clear of the
+    // open book, each with a leader line back to its page; elsewhere they sit beside that point,
+    // kept inside the chapter
+    const W = notes.clientWidth, w = el.offsetWidth || 300, wide = W > 1080;
+    x = wide ? W - Math.max(24, (W - contentMax) / 2 + 24) - w - 18 : Math.min(W - w - 20, Math.max(16, x));
     el.classList.remove('flip');
-    x = Math.min(pw - w - 20, Math.max(16, x));
+    el.style.setProperty('--lead', `${Math.max(0, x - s.x).toFixed(1)}px`);
   }
   el.style.transform = `translate(${x.toFixed(1)}px, ${s.y.toFixed(1)}px)`;
   el.style.opacity = s.opacity.toFixed(3);
   el.classList.toggle('on', !!s.active);
 };
 
-/* ---- the segmented pill rail: chapter progress as a compact interactive dock ---- */
-function rail(ol, onSelect) {
-  if (!ol) return () => {};
-  const items = $$('li', ol), n = items.length;
-  items.forEach((li, i) => {
-    li.addEventListener('click', () => onSelect?.(i));
-  });
-  return (fraction, active) => { // fraction 0–1 along the rail, active item index
-    const f = clamp(fraction);
-    ol.style.setProperty('--rail-p', f.toFixed(4));
-    items.forEach((li, i) => {
-      const isOn = i === active, isDone = i < active;
-      li.classList.toggle('on', isOn);
-      li.classList.toggle('done', isDone);
-      const stepP = active < 0 ? 0 : isDone ? 1 : i > active ? 0 : clamp(f * n - i);
-      li.style.setProperty('--step-p', stepP.toFixed(3));
-    });
-  };
-}
 // Captions or notes: exactly one item is current.
 const stepper = list => { let last = -2; return index => { if (index === last) return; last = index; list.forEach((el, i) => el.classList.toggle('current', i === index)); }; };
 
@@ -137,11 +126,21 @@ import('./mc-stage.js' + V).then(({ createStage }) => {
   stage.add({ el: hero, near: 2, postOptions: { bloom: .35, threshold: .9, vignette: 0 },
     build: () => import('./metacase-library.js' + V).then(m => heroLib = m.createLibrary({ mode: 'hero', reduce, extracted: () => carrying() && bookHandoff() > 0, onProject: list => list.forEach((s, i) => place(heroTags[i], { ...s, opacity: s.opacity * ((hero.clientWidth <= 860 ? s.y < 420 : s.x > hero.clientWidth * .47) ? 1 : 0) })) })) });
 
-  // 01: the Metacase opens
+  // 01: the Metacase opens. Its pages print the five stage notes (title, keywords, page lines,
+  // the step words of stage 03), and are reprinted when that text changes, e.g. its language.
   const anatomy = $('#metacase'), notes = $$('[data-notes="anatomy"] li', anatomy);
+  const read = (li, sel) => (li.querySelector(sel)?.textContent || '').trim();
+  const stageText = () => notes.slice(0, STAGES).map(li => ({
+    title: read(li, 'strong'), key: read(li, '[data-page="key"]'),
+    lines: $$('[data-page="line"]', li).map(el => el.textContent.trim()),
+    steps: read(li, '[data-page="steps"]').split('·').map(w => w.trim()).filter(Boolean),
+  }));
+  let reprint = 0;
+  new MutationObserver(() => { cancelAnimationFrame(reprint); reprint = requestAnimationFrame(() => anatomyObj?.relabel()); })
+    .observe($('[data-notes="anatomy"]', anatomy), { characterData: true, childList: true, subtree: true });
   const FEATHER = [72, 150]; // the chapters fade into the page at their upper and lower edges
   stage.add({ el: $('.mc-scene-pin', anatomy), near: 2.5, postOptions: { bloom: .32, threshold: .9, vignette: .2, feather: FEATHER }, progress: () => pinProgress(anatomy),
-    build: () => import('./metacase-anatomy.js' + V).then(m => anatomyObj = m.createAnatomy({ reduce, safe: safeArea($('.mc-scene-pin', anatomy)), held: () => (carrying() && bookHandoff() < HANDOVER) || (carried12() && k12() > RELEASE), onProject: (list, extra) => {
+    build: () => import('./metacase-anatomy.js' + V).then(m => anatomyObj = m.createAnatomy({ reduce, stageText, safe: safeArea($('.mc-scene-pin', anatomy)), held: () => (carrying() && bookHandoff() < HANDOVER) || (carried12() && k12() > RELEASE), onProject: (list, extra) => {
       list.forEach((s, i) => place(notes[i], { ...s, opacity: s.active ? s.opacity : 0 }));
       place(notes[STAGES], { ...extra.signature, opacity: extra.draw, visible: extra.draw > .05, active: true });
     } })) });
@@ -164,7 +163,7 @@ import('./mc-stage.js' + V).then(({ createStage }) => {
   if (initiative) stage.add({ el: initiative, near: 1, postOptions: { bloom: .3, threshold: .9, vignette: .3, feather: [240, 280] }, build: story,
     progress: r => 1 + .5 * clamp((innerHeight - r.top) / (innerHeight + r.height)) });
 
-  // 05: one run under the four rules, from evidence to a shelved Metacase
+  // 05: what a participant does, from a case to a contribution
   const rules = $('#rules'), runTags = $$('[data-tags="run"] [data-tag]', rules);
   if (rules) stage.add({ el: $('.mc-scene-pin', rules), near: 1.5, postOptions: { bloom: .32, threshold: .9, vignette: .2, feather: FEATHER }, progress: () => pinProgress(rules),
     build: () => import('./metacase-run.js' + V).then(m => m.createRun({ reduce, safe: safeArea($('.mc-scene-pin', rules)), onProject: list => list.forEach((s, i) => place(runTags[i], s)) })) });
@@ -220,7 +219,7 @@ function scrollToProgress(section, p) {
 function chapter(section, { steps, rail: railSteps = steps, notes = false, targets = null }) {
   const captions = $$('.mc-captions [data-caption]', section), noteItems = $$('.mc-notes li', section);
   const railEl = $('.mc-rail', section), n = railEl ? $$('li', railEl).length : 1;
-  const setRail = rail(railEl, i => scrollToProgress(section, targets ? targets[i] : (i + .5) / n));
+  const setRail = createSignatureRail(railEl, { onSelect: i => scrollToProgress(section, targets ? targets[i] : (i + .5) / n) });
   const setCaption = stepper(captions), setNote = stepper(noteItems);
   return p => {
     const index = steps(p);
@@ -245,9 +244,10 @@ if (structureSection) sceneControllers.push([structureSection, chapter(structure
   targets: [.2, .57, .88],
 })]);
 const rulesSection = $('#rules');
+// 05: choose, configure, execute, verify, contribute (the phases of metacase-run.js)
 if (rulesSection) sceneControllers.push([rulesSection, chapter(rulesSection, {
-  steps: p => (p < .28 ? 0 : p < .5 ? 1 : p < .71 ? 2 : 3),
-  targets: [.14, .39, .6, .85],
+  steps: p => (p < .2 ? 0 : p < .4 ? 1 : p < .61 ? 2 : p < .81 ? 3 : 4),
+  targets: [.16, .35, .53, .74, .95],
 })]);
 if (netSection) {
   const update = chapter(netSection, {
@@ -274,6 +274,46 @@ function countUp(node) {
   const start = performance.now();
   const step = now => { const k = ease((now - start) / 1400); node.textContent = Math.round(target * k); if (k < 1) requestAnimationFrame(step); };
   requestAnimationFrame(step);
+}
+
+/* ---- 04: the field books. Choosing a field opens its book on two pages: the contents (its
+ * classes, with each one's share of the field's candidate records) and the entry for the class
+ * chosen. Tabs follow the usual keys: arrows (Home, End) move between them. Without this script
+ * every book's pages are simply shown, one after the other. ---- */
+const fieldbooks = $('[data-fieldbooks]');
+if (fieldbooks) {
+  fieldbooks.classList.add('is-books');
+  const replay = (el, name) => { if (reduce) return; el.classList.remove(name); void el.offsetWidth; el.classList.add(name); };
+  const tablist = (list, show) => {
+    const tabs = $$('[role="tab"]', list);
+    const select = (i, animate = true) => tabs.forEach((tab, k) => {
+      tab.setAttribute('aria-selected', String(k === i)); tab.tabIndex = k === i ? 0 : -1;
+      show(tab, k === i, animate);
+    });
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(i));
+      tab.addEventListener('keydown', event => {
+        const to = { ArrowRight: i + 1, ArrowDown: i + 1, ArrowLeft: i - 1, ArrowUp: i - 1, Home: 0, End: tabs.length - 1 }[event.key];
+        if (to === undefined) return;
+        event.preventDefault();
+        const k = (to + tabs.length) % tabs.length;
+        tabs[k].focus(); select(k);
+      });
+    });
+    select(Math.max(0, tabs.findIndex(tab => tab.getAttribute('aria-selected') === 'true')), false);
+  };
+  tablist($('.mc-bookrow', fieldbooks), (tab, on, animate) => {
+    const spread = $('#' + tab.getAttribute('aria-controls'));
+    spread.hidden = !on;
+    if (on && animate) replay(spread, 'is-opening');
+  });
+  $$('.mc-spread', fieldbooks).forEach(spread => {
+    const page = $('.mc-page-r', spread);
+    tablist($('.mc-toc', spread), (tab, on, animate) => {
+      $('#' + tab.getAttribute('aria-controls')).hidden = !on;
+      if (on && animate) replay(page, 'is-turning');
+    });
+  });
 }
 
 // cards catch a light where the pointer is
