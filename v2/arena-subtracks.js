@@ -53,6 +53,117 @@ export function createRoomSubtracks({ domain, index = 0 } = {}) {
   arcMesh.renderOrder = 21;
   root.add(arcMesh);
 
+  /* ---- 3D Cylindrical Tunnel Pipe & Wall Danmaku Stream ---- */
+  const tunnelGroup = new THREE.Group();
+  tunnelGroup.name = `track-tunnel-${domain.id}`;
+  root.add(tunnelGroup);
+  const TUNNEL_R = 3.55, TUNNEL_LEN = 9.6, TUNNEL_Y = 3.35, TUNNEL_Z0 = 1.65;
+  const tunnelUniforms = {
+    time: { value: 0 },
+    power: { value: 0 },
+    tint: { value: new THREE.Color(arcColor) },
+  };
+  const tunnelShellGeo = trackGeom(new THREE.CylinderGeometry(TUNNEL_R, TUNNEL_R, TUNNEL_LEN, 44, 1, true));
+  const tunnelShellMat = trackMat(new THREE.ShaderMaterial({
+    uniforms: tunnelUniforms,
+    transparent: true,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+    blending: THREE.AdditiveBlending,
+    vertexShader: `varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
+    fragmentShader: `varying vec2 vUv;uniform float time;uniform float power;uniform vec3 tint;
+      void main(){
+        float ribs = pow(0.5 + 0.5 * cos(vUv.x * 6.28318 * 18.0), 10.0);
+        float rings = pow(0.5 + 0.5 * cos((vUv.y * 14.0 + time * 2.6) * 6.28318), 8.0);
+        float endFade = smoothstep(0.0, 0.12, vUv.y) * smoothstep(1.0, 0.85, vUv.y);
+        float sideMask = 0.4 + 0.6 * pow(sin(vUv.x * 6.28318), 2.0);
+        float alpha = (ribs * 0.28 + rings * 0.4 + 0.08) * endFade * sideMask * power;
+        vec3 col = mix(tint, vec3(1.0), rings * 0.45);
+        gl_FragColor = vec4(col, alpha);
+      }`,
+  }));
+  const tunnelShell = new THREE.Mesh(tunnelShellGeo, tunnelShellMat);
+  tunnelShell.rotation.x = Math.PI / 2;
+  tunnelShell.position.set(0, TUNNEL_Y, TUNNEL_Z0 + TUNNEL_LEN / 2);
+  tunnelShell.renderOrder = 18;
+  tunnelGroup.add(tunnelShell);
+
+  // 14 physical 3D glowing pipe rings + 10 longitudinal neon rails forming the 3D tunnel skeleton
+  const pipeRingGeo = trackGeom(new THREE.TorusGeometry(TUNNEL_R - .02, .042, 10, 52));
+  const pipeRings = Array.from({ length: 14 }, (_, k) => {
+    const rm = trackMat(new THREE.MeshBasicMaterial({
+      color: LIGHTS[palette][k % 6], transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending,
+    }));
+    const mesh = new THREE.Mesh(pipeRingGeo, rm);
+    mesh.position.set(0, TUNNEL_Y, TUNNEL_Z0 + (k / 13) * TUNNEL_LEN);
+    mesh.renderOrder = 19;
+    tunnelGroup.add(mesh);
+    return { mesh, mat: rm, k };
+  });
+  const railGeo = trackGeom(new THREE.BoxGeometry(.036, .036, TUNNEL_LEN));
+  const railMat = trackMat(new THREE.MeshBasicMaterial({
+    color: arcColor, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending,
+  }));
+  for (let k = 0; k < 10; k++) {
+    const a = (k / 10) * Math.PI * 2;
+    const rail = new THREE.Mesh(railGeo, railMat);
+    rail.position.set(Math.cos(a) * (TUNNEL_R - .03), TUNNEL_Y + Math.sin(a) * (TUNNEL_R - .03), TUNNEL_Z0 + TUNNEL_LEN / 2);
+    rail.renderOrder = 19;
+    tunnelGroup.add(rail);
+  }
+
+  // 8 flying 3D Danmaku banners shooting along the left and right walls of the tunnel pipe
+  const danmakuList = domain.danmaku || [];
+  const danmakuGeo = trackGeom(new THREE.PlaneGeometry(2.6, .44));
+  const danmakuNodes = danmakuList.map((pair, i) => {
+    const side = i % 2 === 0 ? -1 : 1;
+    const lane = Math.floor(i / 2); // 0..3
+    const y = 2.15 + (lane % 4) * .76;
+    const x = side * (2.25 + (lane % 2) * .2);
+    const canvas = document.createElement('canvas');
+    canvas.width = 960; canvas.height = 164;
+    const ctx = canvas.getContext('2d');
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
+    textures.add(tex);
+    const cHex = '#' + LIGHTS[palette][i % 6].toString(16).padStart(6, '0');
+    const dMat = trackMat(new THREE.MeshBasicMaterial({
+      map: tex, transparent: true, opacity: 0, depthWrite: false, depthTest: false, toneMapped: false, side: THREE.DoubleSide,
+    }));
+    const mesh = new THREE.Mesh(danmakuGeo, dMat);
+    mesh.position.set(x, y, TUNNEL_Z0 + ((i * .13) % 1) * TUNNEL_LEN);
+    mesh.rotation.y = side * -0.52;
+    mesh.renderOrder = 26;
+    tunnelGroup.add(mesh);
+
+    function drawDanmaku() {
+      const zh = language === 'zh';
+      const text = pair[zh ? 1 : 0] || pair[0];
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Sleek dark holographic pill with glowing leading bullet & neon border
+      ctx.fillStyle = 'rgba(7, 12, 24, 0.86)';
+      ctx.strokeStyle = cHex;
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.roundRect(8, 14, 944, 136, 68);
+      ctx.fill();
+      ctx.stroke();
+      // Leading glowing orb + speed tail
+      ctx.fillStyle = cHex;
+      ctx.beginPath();
+      ctx.arc(58, 82, 14, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.font = zh ? '700 44px "PingFang SC", "Microsoft YaHei", sans-serif' : '700 42px Inter, Arial, sans-serif';
+      ctx.fillStyle = '#f4f8ff';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(text, 94, 84, 830);
+      tex.needsUpdate = true;
+    }
+    drawDanmaku();
+    return { mesh, mat: dMat, drawDanmaku, side, lane, offset: i / danmakuList.length, speed: .22 + (i % 3) * .05 };
+  });
+
   const nodes = domain.entries.map((entry, i) => {
     const pos = positions[i];
     const anchor = new THREE.Group(); anchor.position.copy(pos); root.add(anchor);
@@ -105,11 +216,12 @@ export function createRoomSubtracks({ domain, index = 0 } = {}) {
   function redraw(nextLanguage = language) {
     if (disposed) return;
     language = nextLanguage === 'zh' ? 'zh' : 'en';
+    danmakuNodes.forEach(d => d.drawDanmaku());
   }
 
   return {
     root, redraw,
-    update({ time = 0, active = 0, language: nextLanguage = language, reduced = false } = {}) {
+    update({ time = 0, active = 0, tunnelFlow = 0, language: nextLanguage = language, reduced = false } = {}) {
       if (disposed) return;
       if (nextLanguage !== language) redraw(nextLanguage);
       const amount = Math.max(0, Math.min(1, Number(active) || 0));
@@ -132,6 +244,31 @@ export function createRoomSubtracks({ domain, index = 0 } = {}) {
         aura.scale.setScalar((.85 + amount * .35) * pulse);
         auraMaterial.opacity = .22 + amount * .42;
       });
+      // Update 3D cylindrical tunnel pipe & flying Danmaku stream
+      const tPower = Math.max(0, Math.min(1, amount));
+      tunnelGroup.visible = tPower > .01;
+      if (tunnelGroup.visible) {
+        const clock = reduced ? tunnelFlow * 4 : time + tunnelFlow * 3.2;
+        tunnelUniforms.time.value = clock;
+        tunnelUniforms.power.value = tPower * .92;
+        railMat.opacity = tPower * .42;
+        pipeRings.forEach(({ mesh, mat, k }) => {
+          const wave = .5 + .5 * Math.sin(clock * 3.2 - k * .65);
+          mat.opacity = tPower * (.2 + wave * .55);
+          const sc = 1 + wave * .035;
+          mesh.scale.set(sc, sc, 1);
+        });
+        danmakuNodes.forEach(({ mesh, mat, offset, speed, side }, i) => {
+          // Stream from the portal mouth (+1.85) toward the approaching viewer (+8.45)
+          const u = ((clock * speed + offset) % 1 + 1) % 1;
+          mesh.position.z = TUNNEL_Z0 + u * TUNNEL_LEN;
+          const env = Math.sin(u * Math.PI);
+          mat.opacity = tPower * Math.min(1, env * 1.45);
+          mesh.visible = mat.opacity > .02;
+          const s = .78 + u * .34;
+          mesh.scale.setScalar(s);
+        });
+      }
       root.userData.active = amount;
     },
     dispose() {

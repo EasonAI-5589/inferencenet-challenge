@@ -487,9 +487,9 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
   }));
   const roomTargets = roomDefs.map((d) => vec(d.x, 2.8, d.z - 1)),
     actionWindows = [
-      [0.465, 0.55],
-      [0.65, 0.735],
-      [0.84, 0.915],
+      [0.39, 0.555],
+      [0.58, 0.745],
+      [0.77, 0.92],
     ];
   // Each doorway is a portal to its track: a vortex in the field's colour fills the opening
   // (spiral arms falling inward, a flickering rim, arcs of light), sparks are drawn into it
@@ -791,6 +791,32 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
     const subtracks = createRoomSubtracks({ domain: ARENA_DOMAINS[index], index });
     group.add(subtracks.root);
     const portal = portalVeil(group, color, index);
+    // Armed Track Guardian Robot standing on a glowing pedestal right beside the track inside the chamber
+    const guardianSpot = new THREE.Group();
+    guardianSpot.position.set(-1.92, 0.36, 0.58);
+    guardianSpot.rotation.y = 0.46;
+    group.add(guardianSpot);
+    cylinder(guardianSpot, 0.56, 0.64, 0.1, hull, 0, 0.05, 0, 28);
+    ring(guardianSpot, 0.58, 0.026, accent, 0, 0.11, 0);
+    const guardianBot = robot(PALETTE.cream, [0x67f5ff, 0xffd666, 0xc4a7ff][index]);
+    localKit(guardianBot.root);
+    guardianBot.root.scale.setScalar(1.85);
+    guardianBot.root.position.y = 0.1;
+    guardianSpot.add(guardianBot.root);
+    // Give the track-side robot shoulder pauldrons, a crest, and an equipped 3D weapon mount in hand
+    for (const s of [-1, 1]) {
+      const pld = box(guardianBot.root, 0.13, 0.15, 0.22, accent, s * 0.28, 0.45, 0, 0.035);
+      pld.rotation.z = -s * 0.2;
+    }
+    ring(guardianBot.head, 0.22, 0.022, gold, 0, 0.5, 0, false).rotation.x = 0.2;
+    const guardianWeaponMount = new THREE.Group();
+    guardianWeaponMount.position.set(0.34, 0.42, 0.26);
+    guardianWeaponMount.rotation.set(-0.18, -0.25, 0.1);
+    guardianBot.root.add(guardianWeaponMount);
+    const guardianWeaponFallback = weapon(index * 2);
+    guardianWeaponFallback.scale.setScalar(0.52);
+    guardianWeaponMount.add(guardianWeaponFallback);
+
     return {
       group,
       portal,
@@ -802,6 +828,9 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
       title,
       prompt,
       subtracks,
+      guardianBot,
+      guardianWeaponMount,
+      guardianWeapons: [],
       definition: def,
     };
   });
@@ -1116,6 +1145,18 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
         slot.mount.add(preview);
         slot.model = preview;
       });
+      // Also arm each track's side guardian robot with clones of the 8 3D weapons
+      rooms.forEach((rm, rIdx) => {
+        rm.guardianWeaponMount.clear();
+        rm.guardianWeapons = weapons.map((w, wIdx) => {
+          const gw = w.clone(true);
+          gw.scale.setScalar(0.78);
+          gw.rotation.set(0, 0, 0);
+          gw.visible = wIdx === (state.equippedHarness ?? (rIdx * 2) % 8);
+          rm.guardianWeaponMount.add(gw);
+          return gw;
+        });
+      });
       canvas.dataset.weaponAssets = "kenney-cc0";
       wake();
     })
@@ -1363,52 +1404,52 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
       fov: 56,
     },
     {
-      p: 0.43,
-      camera: [-1.2, 5.4, 8.4],
-      look: [-8.1, 3.25, -5.3],
-      hero: [-6.8, 0.06, -1],
-      heading: Math.PI + 0.42,
-      fov: 57,
+      p: 0.41,
+      camera: [-4.13, 3.65, 2.55],
+      look: [-9.2, 3.05, -6.3],
+      hero: [-6.5, -0.35, -1.6],
+      heading: Math.PI + 0.52,
+      fov: 62,
     },
     {
       p: 0.54,
-      camera: [-2.5, 4.8, 6.6],
-      look: [-9.2, 3.25, -6.4],
-      hero: [-6.8, 0.06, -1.1],
-      heading: Math.PI + 0.42,
-      fov: 59,
+      camera: [-7.11, 3.05, -2.65],
+      look: [-9.6, 2.55, -7.2],
+      hero: [-9.85, -0.45, -4.4],
+      heading: Math.PI + 0.52,
+      fov: 60,
     },
     {
-      p: 0.62,
-      camera: [-6.5, 5.5, 4.1],
-      look: [0, 3.25, -10.1],
-      hero: [-0.75, 0.06, -6.7],
-      heading: Math.PI - 0.1,
-      fov: 58,
+      p: 0.60,
+      camera: [0, 3.65, -2.0],
+      look: [0, 3.05, -12.2],
+      hero: [-0.45, -0.35, -6.8],
+      heading: Math.PI,
+      fov: 62,
     },
     {
-      p: 0.72,
-      camera: [-5.5, 4.8, 3.1],
-      look: [0, 3.25, -11.2],
-      hero: [-0.75, 0.06, -6.8],
-      heading: Math.PI - 0.1,
-      fov: 59,
+      p: 0.73,
+      camera: [0, 3.05, -8.0],
+      look: [-0.35, 2.55, -13.2],
+      hero: [-1.45, -0.45, -10.4],
+      heading: Math.PI,
+      fov: 60,
     },
     {
-      p: 0.81,
-      camera: [1.2, 5.4, 8.4],
-      look: [8.8, 3.25, -5.7],
-      hero: [6.8, 0.06, -1.2],
-      heading: Math.PI - 0.42,
-      fov: 57,
+      p: 0.79,
+      camera: [4.13, 3.65, 2.55],
+      look: [9.2, 3.05, -6.3],
+      hero: [6.5, -0.35, -1.6],
+      heading: Math.PI - 0.52,
+      fov: 62,
     },
     {
-      p: 0.9,
-      camera: [2.5, 4.8, 6.6],
-      look: [9.2, 3.25, -6.2],
-      hero: [6.8, 0.06, -1.3],
-      heading: Math.PI - 0.42,
-      fov: 59,
+      p: 0.91,
+      camera: [7.11, 3.05, -2.65],
+      look: [8.8, 2.55, -7.2],
+      hero: [7.55, -0.45, -5.2],
+      heading: Math.PI - 0.52,
+      fov: 60,
     },
     {
       p: 1,
@@ -1521,6 +1562,8 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
     const braking = smooth(0.25, 0.72, arrival) * (1 - smooth(0.90, 1, arrival));
     const enginePower = (1 - takeoff) * airborne * (0.45 + braking * 0.75) +
       takeoff * (1.05 + travel * 0.25);
+    const inTrackTunnel = smooth(0.37, 0.41, p) * (1 - smooth(0.92, 0.96, p));
+    toyRobot.root.scale.setScalar(mix(2.85, 1.48, inTrackTunnel));
     agent.position.y += hover;
     body.position.y = 0;
     body.scale.set(1 + impact * 0.018, 1 - impact * 0.045, 1 + impact * 0.018);
@@ -1673,10 +1716,19 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
       const [start, reveal, end] = roomWindows[i],
         open = 0.52 + 0.48 * smooth(start, reveal, p),
         active = p >= start && p < end;
+      const localTunnelFlow = clamp((p - start) / Math.max(0.01, end - start), 0, 1);
       room.subtracks.update({
         time, language: state.language, reduced: !ambient,
+        tunnelFlow: localTunnelFlow,
         active: smooth(start, reveal, p) * (1 - smooth(end - 0.025, end + 0.015, p)),
       });
+      if (room.guardianBot) {
+        room.guardianBot.update(ambient ? time + i : p * 6, 0);
+        const activeWeaponIdx = state.equippedHarness ?? state.harness ?? (i * 2) % 8;
+        room.guardianWeapons.forEach((gw, wIdx) => {
+          gw.visible = wIdx === activeWeaponIdx;
+        });
+      }
       room.doors[0].position.x = -1.48 - open * 1.72;
       room.doors[1].position.x = 1.48 + open * 1.72;
       room.doors.forEach((d) => {
@@ -1757,8 +1809,8 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
       );
     }
     const actionWindow = actionWindows[activeRoom],
+      activeWeaponSlot = state.equippedHarness ?? state.harness ?? 0,
       firing =
-        state.equippedHarness !== null &&
         p > actionWindow[0] &&
         p < actionWindow[1];
     beam.visible = hit.visible = firing;
@@ -1766,7 +1818,8 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
       packet.visible = firing;
     });
     if (firing) {
-      selectedWeapon.localToWorld(muzzle.set(0, 0, 0.5));
+      if (selectedWeapon) selectedWeapon.localToWorld(muzzle.set(0, 0, 0.5));
+      else muzzle.copy(weaponMount.position);
       beamTarget.copy(roomTargets[activeRoom]);
       beamDirection.copy(beamTarget).sub(muzzle);
       const length = beamDirection.length();
@@ -1775,14 +1828,14 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
       beam.position.copy(beamMid);
       beam.quaternion.setFromUnitVectors(up, beamDirection);
       beam.scale.y = length;
-      beamMat.color.set(harnessColors[state.equippedHarness]);
-      beamMat.emissive.set(harnessColors[state.equippedHarness]);
+      beamMat.color.set(harnessColors[activeWeaponSlot]);
+      beamMat.emissive.set(harnessColors[activeWeaponSlot]);
       hit.position.copy(beamTarget);
       hit.material.color.set(colors[activeRoom]);
       packets.forEach((packet, i) => {
         packet.position
           .copy(muzzle)
-          .lerp(beamTarget, (i / 7 + (ambient ? time * 0.4 : p * 9)) % 1);
+          .lerp(beamTarget, (i / 7 + (ambient ? time * 0.45 : p * 11)) % 1);
       });
     }
     const recordAmount = smooth(0.935, 0.985, p);

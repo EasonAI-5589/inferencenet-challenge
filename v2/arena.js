@@ -360,14 +360,16 @@ if (chapter) {
       const at = p && p.centreVisible, x = at ? pin.left + p.cx : r.left + r.width / 2, y = at ? pin.top + p.cy : r.top + r.height / 2;
       state.portalFocus = id; state.portalCharge = true; scene?.update(state);
       const href = link.href;
-      setTimeout(() => import('./portal-warp.js?v=20261027-warp').then(m => m.warp({ x, y, track: id, href })).catch(() => { location.href = href; }), scene ? 260 : 0);
+      const chosenHarness = state.equippedHarness ?? state.harness ?? 0;
+      try { localStorage.setItem('metacase-loadout', JSON.stringify({ model: state.model || 0, harness: chosenHarness })); } catch {}
+      setTimeout(() => import('./portal-warp.js?v=20261027-tunnel3d').then(m => m.warp({ x, y, track: id, href, model: state.model || 0, harness: chosenHarness, lang: lang() })).catch(() => { location.href = href; }), scene ? 260 : 0);
     });
   });
   addEventListener('pageshow', event => { if (event.persisted) { state.portalCharge = false; state.portalFocus = ''; scene?.update(state); } });
   async function load() {
     if(loading)return;loading=true;
     try {
-      const {createArenaScene}=await import('./arena-scene.js?v=20261027-armory3d');
+      const {createArenaScene}=await import('./arena-scene.js?v=20261027-tunnel3d');
       scene=createArenaScene($('.mc-canvas'), { onWeaponProject: projectWeapon, onPortalProject: projectPortals }); scene.update(state);
       $('.mc-fallback').hidden=true;chapter.dataset.renderer='webgl';
     } catch(error) {
