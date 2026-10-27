@@ -69,7 +69,16 @@ if (chapter) {
       return `<g data-wheel-item="${i}"><path class="mc-sector" d="${wedge(a,b)}"/><path class="mc-sector-inner" d="M${pt(polar(181,a+.012))} A181 181 0 0 1 ${pt(polar(181,b-.012))}"/><g class="mc-item-icon" transform="translate(${c[0]},${c[1]-23}) scale(.73)"><path d="${toolPaths[i]}" fill="currentColor" fill-opacity=".13" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></g><text class="mc-item-name" x="${c[0]}" y="${c[1]+10}">${h.lines.map((line,j)=>`<tspan x="${c[0]}" dy="${j ? 24 : 0}">${line}</tspan>`).join('')}</text></g>`;
     }).join('')
     + Array.from({length:80},(_,i)=>{ const a=i*Math.PI/40;return `<path class="mc-wheel-ruler" d="M${pt(polar(287,a))}L${pt(polar(i%10===0?296:291,a))}"/>`; }).join('');
-  const setRail = createSignatureRail($('.mc-timeline'));
+  const setRail = createSignatureRail($('.mc-timeline'), {
+    onSelect(i) {
+      const p = clamp(stops[i] + (stops[i + 1] - stops[i]) * .25);
+      if (manual()) { setProgress(p); return; }
+      const pin = $('.mc-pin'), top = parseFloat(getComputedStyle(pin).top) || 112;
+      const target = scrollY + chapter.getBoundingClientRect().top - top + p * (chapter.offsetHeight - pin.offsetHeight);
+      if (window.__lenis) window.__lenis.scrollTo(target);
+      else window.scrollTo({ top: target, behavior: 'smooth' });
+    },
+  });
   let scene, loading = false, frame = 0, visible = false, anchor = null, lastKey = '';
   function paintCopy() {
     const l = lang(), p = phases[state.phase], h = harnesses[state.harness];

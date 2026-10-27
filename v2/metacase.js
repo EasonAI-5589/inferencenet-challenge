@@ -9,7 +9,7 @@ const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const ease = x => { const p = clamp(x); return p * p * (3 - 2 * p); };
-const V = '?v=20261027-workroom';
+const V = '?v=20261027-pillrail';
 
 /* ---- layout helpers ---- */
 const siteHeader = $('.site-header'), subnav = $('.mc-subnav');
@@ -33,30 +33,23 @@ const place = (el, s) => {
   el.classList.toggle('on', !!s.active);
 };
 
-/* ---- the signature rail: chapter progress drawn as the Metacase's five-stage signature ---- */
-const SIG = [0, -.7, .4, -.9, .6]; // SIGNATURES[0] in mc-kit.js: the signature of chapter 01's book
-function rail(ol) {
+/* ---- the segmented pill rail: chapter progress as a compact interactive dock ---- */
+function rail(ol, onSelect) {
   if (!ol) return () => {};
-  const items = $$('li', ol), n = items.length, NS = 'http://www.w3.org/2000/svg';
-  const svg = document.createElementNS(NS, 'svg'); svg.setAttribute('class', 'mc-rail-line'); svg.setAttribute('preserveAspectRatio', 'none');
-  ol.prepend(svg);
-  const base = document.createElementNS(NS, 'polyline'), ink = document.createElementNS(NS, 'polyline');
-  base.setAttribute('class', 'base'); ink.setAttribute('class', 'ink'); svg.append(base, ink);
-  const dots = items.map(() => { const c = document.createElementNS(NS, 'circle'); c.setAttribute('r', 4); svg.append(c); return c; });
-  let length = 0;
-  const layout = () => {
-    const w = ol.clientWidth, h = 26; svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
-    const pts = items.map((_, i) => [(i + .5) / n * w, h / 2 + SIG[Math.round(i / Math.max(1, n - 1) * (SIG.length - 1))] * (h / 2 - 5)]);
-    const str = pts.map(p => p.join(',')).join(' ');
-    base.setAttribute('points', str); ink.setAttribute('points', str);
-    dots.forEach((d, i) => { d.setAttribute('cx', pts[i][0]); d.setAttribute('cy', pts[i][1]); });
-    length = pts.reduce((s, p, i) => (i ? s + Math.hypot(p[0] - pts[i - 1][0], p[1] - pts[i - 1][1]) : 0), 0);
-    ink.style.strokeDasharray = length;
-  };
-  new ResizeObserver(layout).observe(ol); layout();
+  const items = $$('li', ol), n = items.length;
+  items.forEach((li, i) => {
+    li.addEventListener('click', () => onSelect?.(i));
+  });
   return (fraction, active) => { // fraction 0–1 along the rail, active item index
-    ink.style.strokeDashoffset = length * (1 - clamp(fraction));
-    items.forEach((li, i) => { li.classList.toggle('on', i === active); li.classList.toggle('done', i < active); dots[i].classList.toggle('on', i <= active); });
+    const f = clamp(fraction);
+    ol.style.setProperty('--rail-p', f.toFixed(4));
+    items.forEach((li, i) => {
+      const isOn = i === active, isDone = i < active;
+      li.classList.toggle('on', isOn);
+      li.classList.toggle('done', isDone);
+      const stepP = active < 0 ? 0 : isDone ? 1 : i > active ? 0 : clamp(f * n - i);
+      li.style.setProperty('--step-p', stepP.toFixed(3));
+    });
   };
 }
 // Captions or notes: exactly one item is current.
@@ -211,9 +204,19 @@ import('./mc-stage.js' + V).then(({ createStage }) => {
 });
 
 /* ---- chapter text in step with scrolling ---- */
-function chapter(section, { steps, rail: railSteps = steps, notes = false }) {
+function scrollToProgress(section, p) {
+  const pin = $('.mc-scene-pin', section);
+  if (!pin) return;
+  const pinTop = parseFloat(getComputedStyle(pin).top) || 0;
+  const top = scrollY + section.getBoundingClientRect().top - pinTop + clamp(p) * (section.offsetHeight - pin.offsetHeight);
+  if (window.__lenis) window.__lenis.scrollTo(top);
+  else window.scrollTo({ top, behavior: 'smooth' });
+}
+function chapter(section, { steps, rail: railSteps = steps, notes = false, targets = null }) {
   const captions = $$('.mc-captions [data-caption]', section), noteItems = $$('.mc-notes li', section);
-  const setRail = rail($('.mc-rail', section)), setCaption = stepper(captions), setNote = stepper(noteItems);
+  const railEl = $('.mc-rail', section), n = railEl ? $$('li', railEl).length : 1;
+  const setRail = rail(railEl, i => scrollToProgress(section, targets ? targets[i] : (i + .5) / n));
+  const setCaption = stepper(captions), setNote = stepper(noteItems);
   return p => {
     const index = steps(p);
     setRail(p, railSteps(p));
@@ -229,13 +232,23 @@ const STAGES = 5, stageAt = p => clamp(Math.floor((p - .13) / .67 * STAGES), 0, 
 if (anatomySection) sceneControllers.push([anatomySection, chapter(anatomySection, {
   steps: p => (p > .88 ? STAGES : p < .06 ? -1 : stageAt(p)),
   rail: p => (p < .06 ? -1 : stageAt(p)),
+  targets: [0, 1, 2, 3, 4].map(i => .13 + (i + .45) / STAGES * .67),
   notes: true,
 })]);
-if (structureSection) sceneControllers.push([structureSection, chapter(structureSection, { steps: p => (p < .4 ? 0 : p < .75 ? 1 : 2) })]);
+if (structureSection) sceneControllers.push([structureSection, chapter(structureSection, {
+  steps: p => (p < .4 ? 0 : p < .75 ? 1 : 2),
+  targets: [.2, .57, .88],
+})]);
 const rulesSection = $('#rules');
-if (rulesSection) sceneControllers.push([rulesSection, chapter(rulesSection, { steps: p => (p < .28 ? 0 : p < .5 ? 1 : p < .71 ? 2 : 3) })]);
+if (rulesSection) sceneControllers.push([rulesSection, chapter(rulesSection, {
+  steps: p => (p < .28 ? 0 : p < .5 ? 1 : p < .71 ? 2 : 3),
+  targets: [.14, .39, .6, .85],
+})]);
 if (netSection) {
-  const update = chapter(netSection, { steps: p => (p < .26 ? 0 : p < .5 ? 1 : p < .76 ? 2 : 3) });
+  const update = chapter(netSection, {
+    steps: p => (p < .26 ? 0 : p < .5 ? 1 : p < .76 ? 2 : 3),
+    targets: [.13, .38, .63, .88],
+  });
   sceneControllers.push([netSection, p => {
     update(p);
     netSection.classList.toggle('is-foundation', p >= .76);

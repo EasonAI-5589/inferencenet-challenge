@@ -167,18 +167,27 @@ html[lang="zh-CN"] .mc-title { letter-spacing: -0.02em; line-height: 1.12; max-w
 .mc-notes li.flip::before { right: auto; left: 100%; }
 .mc-notes li.flip::after { right: auto; left: calc(100% + 15px); }
 
-/* the signature rail */
-.mc-rail { position: relative; list-style: none; padding: 30px 0 0; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; }
-.mc-rail-line { position: absolute; left: 0; top: 0; width: 100%; height: 26px; overflow: visible; }
-.mc-rail-line polyline { fill: none; stroke-width: 1.5; stroke-linejoin: round; }
-.mc-rail-line .base { stroke: var(--mc-line); }
-.mc-rail-line .ink { stroke: var(--track-1); stroke-width: 2; filter: drop-shadow(0 0 6px var(--track-1)); }
-.mc-rail-line circle { fill: var(--bg-canvas); stroke: var(--mc-line); stroke-width: 1.5; transition: fill .3s, stroke .3s; }
-.mc-rail-line circle.on { fill: var(--track-1); stroke: var(--track-1); }
-.mc-rail li { text-align: center; font: 400 11px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-tertiary); transition: color .3s; }
-.mc-rail li.on { color: var(--text-primary); }
+/* the segmented glass pill stepper */
+.mc-rail { position: relative; list-style: none; counter-reset: mc-rail-step; width: fit-content; max-width: 100%; margin: 0 auto; padding: 5px; border-radius: 999px;
+  background: color-mix(in oklab, var(--surface-1) 82%, transparent); border: 1px solid var(--mc-line); backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: 0 14px 36px -14px rgb(0 0 0 / 48%); display: flex; align-items: center; gap: 4px; overflow-x: auto; scrollbar-width: none; pointer-events: auto; }
+.mc-rail::-webkit-scrollbar { display: none; }
+.mc-rail li { position: relative; counter-increment: mc-rail-step; display: inline-flex; align-items: center; gap: 7px; padding: 7px 14px; border-radius: 999px;
+  font: 500 11px/1.2 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; color: var(--text-tertiary); white-space: nowrap; cursor: pointer; user-select: none; overflow: hidden;
+  transition: color .25s var(--ease-standard), background-color .25s var(--ease-standard), box-shadow .25s var(--ease-standard); }
+.mc-rail li:hover { color: var(--text-secondary); background: color-mix(in oklab, var(--text-primary) 5%, transparent); }
+.mc-rail:not(.mc-timeline) li::before, .mc-rail.mc-timeline li > i { display: inline-block; font: 600 10px/1 var(--font-mono); font-style: normal; color: var(--text-tertiary); opacity: .72; transition: color .25s, opacity .25s; }
+.mc-rail:not(.mc-timeline) li::before { content: counter(mc-rail-step, decimal-leading-zero); }
 .mc-rail li.done { color: var(--text-secondary); }
-.mc-scene.is-foundation .mc-rail-line .ink { stroke: var(--track-2); filter: drop-shadow(0 0 6px var(--track-2)); }
+.mc-rail li.done::before, .mc-rail.mc-timeline li.done > i { color: var(--track-1); opacity: .9; }
+.mc-rail li.on, .mc-rail li.is-active { color: var(--text-primary); background: color-mix(in oklab, var(--track-1) 15%, var(--surface-2)); box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--track-1) 48%, transparent); }
+.mc-rail li.on::before, .mc-rail.mc-timeline li.on > i, .mc-rail.mc-timeline li.is-active > i { color: var(--track-1); opacity: 1; }
+.mc-rail li::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: 2px; height: 2px; border-radius: 2px; background: linear-gradient(90deg, var(--track-1), var(--mc-violet));
+  transform-origin: left; transform: scaleX(var(--step-p, 0)); opacity: 0; transition: opacity .2s; }
+.mc-rail li.on::after, .mc-rail li.is-active::after { opacity: .9; }
+.mc-scene.is-foundation .mc-rail li.on { background: color-mix(in oklab, var(--track-2) 16%, var(--surface-2)); box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--track-2) 52%, transparent); }
+.mc-scene.is-foundation .mc-rail li.on::before { color: var(--track-2); }
+.mc-scene.is-foundation .mc-rail li.on::after { background: linear-gradient(90deg, var(--track-2), var(--mc-violet)); }
 
 /* without 3D the chapters read as plain text */
 .mc-no3d .mc-scene { height: auto; }
@@ -218,6 +227,8 @@ html[lang="zh-CN"] .mc-title { letter-spacing: -0.02em; line-height: 1.12; max-w
 .mc-card-link:hover .mc-go > span:last-child { translate: 4px 0; }
 .mc-card-open { border-style: dashed; }
 .mc-facts-row { display: grid; grid-template-columns: repeat(3, auto) 1fr; gap: 56px; align-items: end; margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--border-hairline); }
+.mc-facts-strip { padding: clamp(24px, 3.5vh, 44px) 0 0; }
+.mc-facts-strip .mc-facts-row { margin-top: 0; padding: 28px 32px; border-radius: 20px; border: 1px solid var(--border-hairline); background: color-mix(in oklab, var(--surface-1) 76%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
 .mc-facts-row b { display: block; font-size: clamp(44px, 5vw, 72px); font-weight: 650; letter-spacing: -0.045em; line-height: 1; }
 .mc-facts-row span { color: var(--text-tertiary); font-size: 14px; }
 .mc-facts-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 24px; }
@@ -344,8 +355,8 @@ html[lang="zh-CN"] .mc-title { letter-spacing: -0.02em; line-height: 1.12; max-w
   .mc-notes li:not(.current) { opacity: 0 !important; }
   .mc-notes li.current { opacity: 1 !important; }
   .mc-notes li.flip { translate: none; } /* on phones a note sits under the picture, wherever its anchor is */
-  .mc-rail li { font-size: 0; }
-  .mc-rail li.on { font-size: 10px; }
+  .mc-rail li { padding: 6px 9px; gap: 5px; font-size: 0; }
+  .mc-rail li.on, .mc-rail li.is-active { font-size: 10px; padding: 6px 11px; }
   .mc-tags span { font-size: 11px; padding: 4px 8px; }
   .mc-tags i { display: none; }
   .mc-grid-2, .mc-grid-3, .mc-grid-4 { grid-template-columns: 1fr; }
