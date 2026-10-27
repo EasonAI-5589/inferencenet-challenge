@@ -1,4 +1,4 @@
-# MetacaseNet cinematic arena — handoff to haohaha
+# Metacase Challenge cinematic arena — handoff to haohaha
 
 The v2 homepage `#arena` chapter is a full-width, scroll-directed 3D scene.
 The shared homepage toy robot faces three domain challenge rooms. Native page scroll
@@ -172,7 +172,7 @@ the wheel and responsive layout, `v2/arena-scene.js` for the camera, character,
 rooms and text textures, and `v2/arena-models.js` for weapon mappings. Preserve
 the local model/font/vendor licenses and the source records linked above.
 
-The new MetacaseNet identity and initiative explanation are applied to the v2
+The Metacase Challenge identity and initiative explanation are applied to the v2
 homepage. Other existing content pages retain their current identity and can be
 aligned in a subsequent site-wide content pass. The Challenge arena uses the
 new three-direction taxonomy; existing task-detail pages retain their published

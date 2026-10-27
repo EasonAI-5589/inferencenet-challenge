@@ -82,6 +82,10 @@ html[lang="zh-CN"] .mc-title { letter-spacing: -0.02em; line-height: 1.12; max-w
 .mc-lead { margin-top: 36px; max-width: min(30em, 44vw); color: var(--text-secondary); font-size: clamp(17px, 1.35vw, 19px); }
 .mc-lead b { color: var(--text-primary); font-weight: 600; }
 .mc-lead-more { margin-top: 14px; max-width: min(33em, 44vw); color: var(--text-tertiary); font-size: clamp(15px, 1.1vw, 16.5px); line-height: 1.6; }
+/* the hero names the Challenge in both languages in Chinese; the English space after it is not wanted there */
+.mc-zh-only { display: none; }
+html[lang^="zh"] .mc-zh-only { display: inline; }
+html[lang^="zh"] .mc-en-only { display: none; }
 .mc-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
 .mc-cta .btn { height: 52px; padding: 0 10px 0 22px; border-radius: 999px; }
 .mc-home .btn-primary { box-shadow: 0 10px 40px -10px var(--track-1); }
@@ -228,11 +232,10 @@ html[lang="zh-CN"] .mc-title { letter-spacing: -0.02em; line-height: 1.12; max-w
 .mc-card h3 { font-size: 20px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.25; }
 .mc-card-body > p:not(.mono) { color: var(--text-secondary); font-size: 15px; }
 
-/* ---------- 05 · the rules as small chips, and the results bench ---------- */
-.mc-principles { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 0; padding: 0; }
-.mc-principles li { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--mc-line); font: 500 11px/1.3 var(--font-mono); letter-spacing: .04em; color: var(--text-secondary); background: color-mix(in oklab, var(--surface-1) 70%, transparent); }
-.mc-principles li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--track-1); }
+/* ---------- 05 · the participation workflow's head, and the results bench ---------- */
 .mc-scene-head div.mc-sub p { margin: 0; }
+/* the workroom's wall board can stand behind 05's intro; a soft backing keeps the text readable */
+#rules .mc-scene-head .mc-sub { padding: 10px 14px; border-radius: 12px; background: color-mix(in oklab, var(--bg-canvas) 70%, transparent); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 .mc-results { padding-top: clamp(40px, 6vh, 72px); padding-bottom: clamp(24px, 4vh, 48px); }
 .mc-results-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); grid-template-areas: "head stats" "actions stats"; gap: 20px clamp(28px, 4vw, 56px); padding: clamp(24px, 3vw, 40px);
   border-radius: 24px; border: 1px solid var(--border-hairline); background: radial-gradient(70% 120% at 0% 0%, color-mix(in oklab, var(--track-1) 10%, transparent), transparent 60%); } /* no fill: the 3D stage draws behind the exhibits */
@@ -442,7 +445,6 @@ html[lang="zh-CN"] .mc-title { letter-spacing: -0.02em; line-height: 1.12; max-w
   .mc-results-stats b { font-size: 30px; }
   .mc-results-stats small { display: none; }
   .mc-results-actions .btn { flex: 1 1 100%; justify-content: space-between; }
-  .mc-principles { display: none; }
   .mc-bookrow { gap: 8px; margin-bottom: 22px; }
   .mc-fbook { border-radius: 14px; }
   .mc-fbook .mc-art { aspect-ratio: 1 / 1; }
@@ -467,17 +469,6 @@ html[lang="zh-CN"] .mc-title { letter-spacing: -0.02em; line-height: 1.12; max-w
   .mc-fbook, .mc-fbook:hover { transition: none; translate: none; }
   .mc-spread.is-opening, .mc-page-r.is-turning { animation: none; }
 }
-
-/* The initiative statement after the library scene: the full definition and goal, in reading size. */
-.mc-initiative { padding-top: clamp(72px, 9vh, 112px); padding-bottom: clamp(56px, 7vh, 88px); }
-.mc-initiative-card { position: relative; max-width: 960px; margin: 0 auto; padding: clamp(28px, 4vw, 56px) clamp(24px, 4.5vw, 64px);
-  border: 1px solid var(--mc-line); border-radius: 20px; background: color-mix(in oklab, var(--bg-canvas) 82%, transparent); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-.mc-initiative-card::before { content: ""; position: absolute; left: 0; top: 28px; bottom: 28px; width: 3px; border-radius: 3px; background: linear-gradient(180deg, var(--track-1), var(--mc-violet) 50%, var(--track-2)); }
-.mc-initiative-card h2 { margin: 14px 0 26px; font-size: clamp(34px, 4vw, 56px); line-height: 1.04; letter-spacing: -0.035em; font-weight: 650;
-  background: linear-gradient(100deg, var(--track-1), var(--mc-violet) 50%, var(--track-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.mc-initiative-text { margin: 0; max-width: 70ch; font-size: clamp(17px, 1.35vw, 20.5px); line-height: 1.72; color: var(--text-primary); text-wrap: pretty; }
-.mc-initiative-text + .mc-initiative-text { margin-top: 18px; color: var(--text-secondary); }
-html[lang="zh-CN"] .mc-initiative-text { line-height: 1.85; }
 
 
 /* the pinned chapters: on wide screens the subhead sits beside the title, so the picture keeps its height */

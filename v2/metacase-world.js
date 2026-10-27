@@ -1,7 +1,7 @@
-/* metacase-world.js — MetacaseNet as an archipelago. Each field is a floating island
+/* metacase-world.js — the Metacase network as an archipelago. Each field is a floating island
  * holding its own Metacases; where cases share a structure, their tiles form a bridge
  * between islands; people and agents carry experience across; fields still to come
- * are islands under construction. Used twice: the hero (ambient) and the MetacaseNet
+ * are islands under construction. Used twice: the hero (ambient) and the network
  * chapter (scroll-driven: own cases → bridges → crossing → new fields). */
 import * as THREE from '../assets/vendor/three/three.module.js';
 import { PALETTE, mat, add, block, cyl, person, robot, buildings, tree, island, cloud, tile, crane, scaffold, lights, STAGE_COLORS } from './mc-kit.js';

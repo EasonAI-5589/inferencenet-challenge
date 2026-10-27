@@ -3,7 +3,7 @@
  * this file registers them, keeps the notes, captions, tags and signature rails in step
  * with scrolling, and handles reveals, counters and the section nav. Visible text stays
  * in the page so language.js translates it. */
-import { createSignatureRail } from './mc-rail.js?v=20261027-books4';
+import { createSignatureRail } from './mc-rail.js?v=20261027-eason8c';
 
 const root = document.documentElement;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -11,7 +11,7 @@ const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const ease = x => { const p = clamp(x); return p * p * (3 - 2 * p); };
-const V = '?v=20261027-books4';
+const V = '?v=20261027-eason8c';
 
 /* ---- layout helpers ---- */
 const siteHeader = $('.site-header'), subnav = $('.mc-subnav');
@@ -157,13 +157,8 @@ import('./mc-stage.js' + V).then(({ createStage }) => {
   let storyBuild = null;
   const story = () => storyBuild ||= import('./metacase-library.js' + V).then(m => storyLib = m.createLibrary({ mode: 'story', reduce, held: () => carried23() && k23() < HANDOVER, onProject: list => list.forEach((s, i) => place(worldTags[i], s)) }));
   stage.add({ el: $('.mc-scene-pin', net), near: 2, postOptions: { bloom: .35, threshold: .9, vignette: .22, feather: FEATHER }, progress: () => pinProgress(net), build: story });
-  // 03 → 04: the same library goes on behind the initiative statement, rising to a plan of
-  // its three wings, which chapter 04 then lists in the same order
-  const initiative = $('#initiative');
-  if (initiative) stage.add({ el: initiative, near: 1, postOptions: { bloom: .3, threshold: .9, vignette: .3, feather: [240, 280] }, build: story,
-    progress: r => 1 + .5 * clamp((innerHeight - r.top) / (innerHeight + r.height)) });
 
-  // 05: what a participant does, from a case to a contribution
+  // 05: the participation workflow, from a case to a contribution
   const rules = $('#rules'), runTags = $$('[data-tags="run"] [data-tag]', rules);
   if (rules) stage.add({ el: $('.mc-scene-pin', rules), near: 1.5, postOptions: { bloom: .32, threshold: .9, vignette: .2, feather: FEATHER }, progress: () => pinProgress(rules),
     build: () => import('./metacase-run.js' + V).then(m => m.createRun({ reduce, safe: safeArea($('.mc-scene-pin', rules)), onProject: list => list.forEach((s, i) => place(runTags[i], s)) })) });

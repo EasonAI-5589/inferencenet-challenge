@@ -16,14 +16,14 @@
   <script>document.documentElement.classList.add("js")</script>
   <script src="../site.js?v=20261019-motion" defer></script>
   <link rel="stylesheet" href="../language.css">
-  <script src="../language.js?v=20261027-books4" defer></script>
+  <script src="../language.js?v=20261027-eason8c" defer></script>
   <link rel="stylesheet" href="v2.css?v=20261027-copy2">
   <link rel="stylesheet" href="arena.css?v=20261027-frontgun">
-  <link rel="stylesheet" href="metacase.css?v=20261027-books4">
+  <link rel="stylesheet" href="metacase.css?v=20261027-eason8c">
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script src="v2.js?v=20261022-v2-ambient" defer></script>
-  <script type="module" src="metacase.js?v=20261027-books4"></script>
-  <script type="module" src="arena.js?v=20261027-frontgun"></script>
+  <script type="module" src="metacase.js?v=20261027-eason8c"></script>
+  <script type="module" src="arena.js?v=20261027-warp3d-d"></script>
 </head>
 <body class="v2-home mc-home">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -94,8 +94,8 @@
   <div class="wrap mc-hero-inner">
     <p class="mc-eyebrow mono mc-in" style="--d:.05s">Global Metacase Initiative</p>
     <h1 class="mc-title"><span class="mc-in" style="--d:.12s">Metacase</span> <em class="mc-in" style="--d:.26s">Challenge</em></h1>
-    <p class="mc-lead mc-in" style="--d:.42s">We are building <b>MetacaseNet</b>, a reusable network of Metacases: end-to-end records of how problems were understood, decisions made and tasks completed. Each Metacase connects context and evidence with prior practice, reasoning, alternative strategies, actions, outcomes and lessons.</p>
-    <p class="mc-lead-more mc-in" style="--d:.5s">The aim is for people and AI to retrieve and reason over shared problem-solving structures across domains, so accumulated experience becomes a foundation for future decisions. The Metacase Challenge is one way to build and test it.</p>
+    <p class="mc-lead mc-in" style="--d:.42s">We present the <b>Metacase Challenge<span class="mc-zh-only" data-no-translate>（Metacase Challenge）</span><span class="mc-en-only"> </span></b>— an open benchmark and research arena built around reusable <b>Metacases</b> across Economics, Finance, and Social Science. Each Metacase records an end-to-end problem-solving episode: from original context and raw evidence to prior domain practice, candidate strategies, Model × Harness trajectories, verified outcomes, and reusable lessons.</p>
+    <p class="mc-lead-more mc-in" style="--d:.5s">The goal is for both AI systems and researchers to retrieve and reason over similar problem-solving and decision structures across fields, turning validated episodes into a foundation for experience-based AI.</p>
     <div class="mc-cta mc-in" style="--d:.56s">
       <a class="btn btn-primary" href="challenge.html"><span>Join the Challenge</span><span class="arrow" aria-hidden="true"><i>→</i><i>→</i></span></a>
       <a class="btn btn-secondary" href="#fields"><span>Explore the fields</span><span class="arrow" aria-hidden="true" style="--icon: var(--i-arrow-s)"><i>↓</i><i>↓</i></span></a>
@@ -129,15 +129,15 @@
     <div class="wrap mc-scene-head">
       <p class="mc-label mono"><span>01</span>The Metacase</p>
       <h2 id="metacase-title"><span>A Metacase is one episode,</span> <em>recorded end to end.</em></h2>
-      <p class="mc-sub">It links the situation and its evidence to the practice and strategies considered, the actions taken, the outcome and the lessons drawn, so others can see why something worked and when it would work again. A Challenge task is cut from a Metacase at the point of decision: the agent sees only what was known then, and the references used for scoring stay hidden from it.</p>
+      <p class="mc-sub">A Metacase is the full record of one episode of problem-solving, decision-making, or task completion — from the raw evidence to the reusable lesson. Each Challenge task is drawn from a curated, representative long-horizon complex problem at the point of decision: the agent sees only what was known then, and the references used for scoring stay hidden from it.</p>
     </div>
     <ol class="mc-notes" data-notes="anatomy">
-      <li data-note="0" style="--tc: var(--track-1)"><b class="mono">01</b><strong>Context &amp; Evidence</strong><em class="mono" data-page="key">Goal · Evidence · Constraints</em><span>The situation and its goal, the raw evidence and the constraints, as they stood when the decision was made. A Challenge task is cut here: the agent sees only what was known at that point.</span><small hidden data-page="line">What was known, and when</small><small hidden data-page="line">Challenge tasks are cut at this point</small></li>
+      <li data-note="0" style="--tc: var(--track-1)"><b class="mono">01</b><strong>Context &amp; Evidence</strong><em class="mono" data-page="key">Goal · Evidence · Constraints</em><span>We collect highly representative, challenging long-horizon complex problems from real-world practice — preserving the goal, raw evidence, and constraints as they stood at the decision cutoff, with zero hindsight leakage.</span><small hidden data-page="line">What was known, and when</small><small hidden data-page="line">Representative long-horizon complex problems</small></li>
       <li data-note="1" style="--tc: var(--mc-violet)"><b class="mono">02</b><strong>Prior Practice &amp; Strategy</strong><em class="mono" data-page="key">Practice · Options · Trade-offs</em><span>Relevant knowledge and the earlier practice of people or institutions, the candidate approaches, the trade-offs between them, and why one was chosen and others set aside.</span><small hidden data-page="line">Candidate approaches, weighed</small><small hidden data-page="line">Why one was chosen, others set aside</small></li>
       <li data-note="2" style="--tc: var(--mc-blue)"><b class="mono">03</b><strong>Actions &amp; Execution</strong><em class="mono" data-page="key">Steps · Tools · Intermediate work</em><span>What was actually done: the steps, the tools used and the intermediate work produced. For an agent this is a Model + Harness run: the model decides, the harness carries out the tool calls and keeps the log.</span><small hidden data-page="line">Every step and tool call, in order</small><small hidden data-page="line">The model decides, the harness executes</small><small hidden data-page="steps">Read · Plan · Execute · Deliver</small></li>
       <li data-note="3" style="--tc: var(--track-2)"><b class="mono">04</b><strong>Outcomes &amp; Verification</strong><em class="mono" data-page="key">Deliverable · Result · Checks · Limits</em><span>The final deliverable, what came of it, how it was checked and where the check falls short. An outcome may be a success, a partial success or a failure; all three are kept.</span><small hidden data-page="line">Checked against a reference or rubric</small><small hidden data-page="line">Pass, partial or fail: all are kept</small></li>
       <li data-note="4" style="--tc: var(--mc-green)"><b class="mono">05</b><strong>Reflection &amp; Reuse</strong><em class="mono" data-page="key">What held · What failed · When it applies</em><span>Which judgements held and which did not, the conditions under which the experience applies, and what the next attempt should borrow or change.</span><small hidden data-page="line">The conditions under which it held</small><small hidden data-page="line">What the next attempt should change</small></li>
-      <li data-note="5" class="mc-note-signature"><b class="mono">Signature</b><strong>Solution signature</strong><em class="mono">A schematic, for comparison</em><span>Closed, the book shows one tab per stage. Together they sketch how the case was solved, a structure that can be compared with other cases (see 02). The signature drawn here illustrates the idea; it is not a computed index.</span></li>
+      <li data-note="5" class="mc-note-signature"><b class="mono">Signature</b><strong>Solution signature</strong><em class="mono">Cross-case structure · retrieval</em><span>Closed again, each stage leaves a tab on the fore-edge; together they trace the problem-solving structure of this case so similar solution paths can be retrieved and compared across fields.</span></li>
     </ol>
     <div class="wrap mc-scene-foot">
       <ol class="mc-rail" aria-label="Stages of a Metacase"><li>Context</li><li>Strategy</li><li>Actions</li><li>Outcomes</li><li>Reflection</li></ol>
@@ -162,7 +162,7 @@
     <div class="wrap mc-scene-head">
       <p class="mc-label mono"><span>02</span>Retrieval</p>
       <h2 id="structure-title"><span>Retrieve experience by</span> <em>how a problem was solved.</em></h2>
-      <p class="mc-sub">Every Metacase carries a solution signature: how its evidence was organised, which options were compared, in what order it acted and how the result was checked. Searching on that structure finds cases worked through the same way, even in another field, which a search on the topic alone would miss.</p>
+      <p class="mc-sub">Every Metacase carries a solution signature: how the evidence was framed, which options were weighed, the order of actions, and how the outcome was checked. Searching by that structure finds cases worked the same way across fields — providing a better way to aggregate and organize agent trajectories into reusable experience.</p>
     </div>
     <ol class="wrap mc-captions">
       <li data-caption="0"><b class="mono">Topic match</b><span>A topic search for this credit decision returns more credit cases. Laid over its signature, their paths split at most stages: they weighed evidence, acted and checked in other ways. A shared topic does not mean the experience applies.</span></li>
@@ -187,7 +187,7 @@
     <div class="wrap mc-scene-head">
       <p class="mc-label mono"><span>03</span><b>The network</b></p>
       <h2 id="net-title"><span>A reusable network</span> <em>of Metacases.</em></h2>
-      <p class="mc-sub">MetacaseNet links Metacases wherever their solution structures correspond, within a field and across fields. Each reviewed case adds a record and its links, so a new problem can start from related experience instead of from scratch.</p>
+      <p class="mc-sub">Metacases are linked wherever their solution structures correspond, within a field and across fields. Each reviewed case adds a record and its links, so a new problem can start from related experience instead of from scratch.</p>
     </div>
     <ol class="wrap mc-captions">
       <li data-caption="0"><b class="mono">Field by field</b><span>Each field grows from its own cases: economics, finance and social science, each with its own data, institutions and practice.</span></li>
@@ -197,18 +197,6 @@
     </ol>
     <div class="wrap mc-scene-foot">
       <ol class="mc-rail" aria-label="Steps of the network"><li>Fields</li><li>Links</li><li>Transfer</li><li>Foundation</li></ol>
-    </div>
-  </div>
-</section>
-
-<!-- ================= THE INITIATIVE: the full statement, after the network ================= -->
-<section class="mc-section mc-initiative" id="initiative" aria-labelledby="initiative-title">
-  <div class="wrap">
-    <div class="mc-initiative-card mc-r">
-      <p class="mc-label mono"><span>∴</span><b>The initiative</b></p>
-      <h2 id="initiative-title">Global Metacase Initiative</h2>
-      <p class="mc-initiative-text">The initiative is to build a reusable network of Metacases — end-to-end representations of problem-solving, decision episodes, or task completion, linking the original context and raw evidence to the approaches considered, prior human or institutional practices, reasoning, candidate strategies, actions taken, subsequent outcomes, interpretations, and lessons learned.</p>
-      <p class="mc-initiative-text">The goal is to let AI systems, as well as humans, retrieve and reason over not just similar facts, but similar problem-solving and decision structures, so they can learn how problems were previously understood, solved, and refined. MetacaseNet, the collection of metacases, can therefore serve as a foundation for experience-based AI in economics, finance, healthcare, policy, law, and other social science and business domains.</p>
     </div>
   </div>
 </section>
@@ -636,11 +624,10 @@
       <span class="mc-tag-stack" data-tag="8" style="--tc: var(--mc-violet)"><b>C · Failure Case</b><i>Reproducible, diagnosed</i></span>
     </div>
     <div class="wrap mc-scene-head">
-      <p class="mc-label mono"><span>05</span>The Metacase Challenge</p>
-      <h2 id="rules-title"><span>From a case</span> <em>to a contribution.</em></h2>
+      <p class="mc-label mono"><span>05</span>Participation workflow</p>
+      <h2 id="rules-title"><span>How to participate</span> <em>in the challenge.</em></h2>
       <div class="mc-sub">
         <p>What a participant does: take a case from one of the three tracks, run a model and its harness on it end to end, have the deliverable checked against references the agent never sees, and turn what happened into something others can inspect and reuse.</p>
-        <ul class="mc-principles" aria-label="Rules of the Challenge"><li>End-to-end tasks</li><li>Same tasks for everyone</li><li>Hidden references</li><li>Full trajectories</li></ul>
       </div>
     </div>
     <ol class="wrap mc-captions">
@@ -662,12 +649,12 @@
       <div class="mc-results-head">
         <p class="mc-label mono"><span>05</span>Results so far</p>
         <h2 id="results-title"><span>See how runs</span> <em>have been scored.</em></h2>
-        <p class="mc-results-scope">The Dev100 development board (v10, 11 October 2026) compares 14 models run in 4 agent harnesses on the same 100 econometric-replication tasks. It is a descriptive comparison, not the Challenge leaderboard; runs that failed or could not be scored stay in the denominator.</p>
+        <p class="mc-results-scope">Harbor's selection holds 285 candidate tasks. Its Dev100 subset of 100 tasks has been run by 8 models in 5 agent harnesses, with 3,999 of 4,000 trials scored as of 22 October 2026, and by GPT-5.6 Sol in 9 harnesses, 900 of 900 scored. A scored trial includes zero scores, so this is coverage, not accuracy; the other 185 candidates have not been scored yet, and none of this is the Challenge leaderboard.</p>
       </div>
       <ul class="mc-results-stats" aria-label="Benchmark snapshot">
-        <li style="--tc: var(--track-1)"><div class="mc-art" data-art="tasks"></div><b class="tnum" data-count="100">100</b><span>Dev100 tasks</span><small>Econometric replication, development split</small></li>
-        <li style="--tc: var(--mc-violet)"><div class="mc-art" data-art="models"></div><b class="tnum" data-count="14">14</b><span>Models evaluated</span><small>Each run through an agent harness</small></li>
-        <li style="--tc: var(--track-2)"><div class="mc-art" data-art="harnesses"></div><b class="tnum" data-count="4">4</b><span>Agent harnesses</span><small data-no-translate>DeepAgents · DeepSeek Harness · Claude Agent SDK · OpenAI Agents SDK</small></li>
+        <li style="--tc: var(--track-1)"><div class="mc-art" data-art="tasks"></div><b class="tnum" data-count="285">285</b><span>Candidate tasks</span><small>3 fields · 16 classes: 100 Dev100 replications, 183 Harbor registry tasks pinned at one commit, 2 local tasks</small></li>
+        <li style="--tc: var(--mc-violet)"><div class="mc-art" data-art="models"></div><b class="tnum">8 × 5</b><span>Models × harnesses on Dev100</span><small>3,999 / 4,000 trials scored</small><small data-no-translate>DeepAgents · Terminus-2 · Claude Agent SDK · OpenAI Agents SDK · DeepSeek Harness</small></li>
+        <li style="--tc: var(--track-2)"><div class="mc-art" data-art="harnesses"></div><b class="tnum" data-count="9">9</b><span>Harnesses on GPT-5.6 Sol</span><small>900 / 900 Dev100 trials scored</small></li>
       </ul>
       <div class="mc-results-actions">
         <a class="btn btn-primary" href="leaderboard.html"><span>See the leaderboard</span><span class="arrow" aria-hidden="true"><i>→</i><i>→</i></span></a>
@@ -682,8 +669,8 @@
   <div class="wrap">
     <div class="mc-join-card mc-r">
       <div class="mc-join-copy">
-        <p class="mc-label mono"><span>06</span>The team</p>
-        <h2 id="team-title"><span>The people behind</span> <em>the challenge.</em></h2>
+        <p class="mc-label mono"><span>06</span>Team &amp; collaboration</p>
+        <h2 id="team-title"><span>Meet our team &amp;</span> <em>collaborations.</em></h2>
         <p class="mc-sub">The Global Metacase Initiative is hosted by the Global Institute of Finance, Technology, and Society (GIFTS) at Nanyang Technological University. Two partner labs work with the Initiative on subtracks and research: HKU AI-Agents Lab (led by Ye Luo) and SUFE AIFLM Lab (led by Liwen Zhang).</p>
         <div class="mc-cta">
           <a class="btn btn-primary" href="teams.html"><span>Meet the team</span><span class="arrow" aria-hidden="true"><i>→</i><i>→</i></span></a>

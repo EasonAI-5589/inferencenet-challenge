@@ -379,7 +379,7 @@ if (chapter) {
       const href = link.href;
       const chosenHarness = state.equippedHarness ?? state.harness ?? 0;
       try { localStorage.setItem('metacase-loadout', JSON.stringify({ model: state.model || 0, harness: chosenHarness })); } catch {}
-      setTimeout(() => import('./portal-warp.js?v=20261027-frontgun').then(m => m.warp({ x, y, track: id, href, model: state.model || 0, harness: chosenHarness, lang: lang() })).catch(() => { location.href = href; }), scene ? 260 : 0);
+      setTimeout(() => import('./portal-warp.js?v=20261027-warp3d2').then(m => m.warp({ x, y, track: id, href, model: state.model || 0, harness: chosenHarness, lang: lang() })).catch(() => { location.href = href; }), scene ? 260 : 0);
     });
   });
   addEventListener('pageshow', event => { if (event.persisted) { state.portalCharge = false; state.portalFocus = ''; scene?.update(state); } });
@@ -388,6 +388,7 @@ if (chapter) {
     try {
       const {createArenaScene}=await import('./arena-scene.js?v=20261027-frontgun');
       scene=createArenaScene($('.mc-canvas'), { onWeaponProject: projectWeapon, onPortalProject: projectPortals }); scene.update(state);
+      import('./portal-warp.js?v=20261027-warp3d2').catch(() => {}); // the portal flight's 3D kit, warmed before any portal is taken
       $('.mc-fallback').hidden=true;chapter.dataset.renderer='webgl';
     } catch(error) {
       $('.mc-fallback').hidden=false;chapter.dataset.renderer='fallback';

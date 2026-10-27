@@ -1,5 +1,5 @@
 /**
- * MetacaseNet arena motion / deterministic Canvas 2D atmosphere.
+ * Metacase Challenge arena motion / deterministic Canvas 2D atmosphere.
  * Adapted from EasonAI-5589/demonstration, commit
  * 50ddc08484fefe801be5f39daf87a14f44bc88f2:
  * - app/spider/motion.js: cubicPoint(), flightGeometry()
