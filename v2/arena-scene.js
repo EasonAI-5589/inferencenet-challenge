@@ -324,15 +324,7 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
     write(lines);
     return { plane, write };
   }
-  function entrancePlaque(parent, copy, accent, color) {
-    const c = document.createElement("canvas");
-    c.width = 2048;
-    c.height = 320;
-    const ctx = c.getContext("2d");
-    const texture = new THREE.CanvasTexture(c);
-    texture.colorSpace = THREE.SRGBColorSpace;
-    texture.anisotropy = 8;
-    allTextures.add(texture);
+  function entrancePlaque(parent, copy, accent, color, index = 0) {
     const frame = new THREE.Group();
     frame.position.set(0, 7.52, 2.11);
     parent.add(frame);
@@ -341,100 +333,96 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
     box(frame, 6.7, 0.045, 0.08, accent, 0, -0.58, 0.07, 0.015);
     for (const side of [-1, 1]) {
       box(frame, 0.12, 0.72, 0.09, accent, side * 3.34, 0, 0.13, 0.03);
+      // Architectural wing ribs flanking the central crest (no text on the lintel)
+      box(frame, 1.55, 0.055, 0.05, accent, side * 1.95, 0.12, 0.13, 0.02);
+      box(frame, 1.05, 0.04, 0.045, gold, side * 1.7, -0.12, 0.13, 0.015);
+      sphere(frame, 0.065, accent, side * 0.92, 0, 0.15);
+    }
+    // Central 3D domain crest medallion on the lintel
+    const crest = new THREE.Group();
+    crest.position.set(0, 0, 0.14);
+    frame.add(crest);
+    const ringMesh = mesh(
+      geometry("crest-ring", () => new THREE.TorusGeometry(0.42, 0.04, 12, 36)),
+      accent,
+      crest,
+      0,
+      0,
+      0.02,
+    );
+    ringMesh.castShadow = false;
+    cylinder(crest, 0.39, 0.39, 0.04, woodDark, 0, 0, 0, 32).rotation.x = Math.PI / 2;
+    if (index === 0) {
+      // Economics crest: rising empirical bars + trend line
+      [-0.18, -0.06, 0.06, 0.18].forEach((x, k) => {
+        const h = [0.2, 0.32, 0.26, 0.44][k];
+        box(crest, 0.07, h, 0.06, k === 3 ? accent : gold, x, -0.2 + h / 2, 0.04, 0.015);
+      });
+      const trend = box(crest, 0.48, 0.035, 0.05, accent, 0, 0.05, 0.06, 0.01);
+      trend.rotation.z = 0.42;
+    } else if (index === 1) {
+      // Finance crest: balance scale & ledger coin
+      box(crest, 0.05, 0.46, 0.05, gold, 0, -0.02, 0.04, 0.015);
+      box(crest, 0.48, 0.04, 0.05, accent, 0, 0.16, 0.05, 0.015);
+      for (const s of [-1, 1]) {
+        sphere(crest, 0.075, accent, s * 0.2, -0.02, 0.05);
+      }
+      cylinder(crest, 0.14, 0.16, 0.05, gold, 0, -0.22, 0.04, 18);
+    } else {
+      // Social science crest: interconnected triad network
+      const pts = [
+        [0, 0.2],
+        [-0.2, -0.14],
+        [0.2, -0.14],
+      ];
+      pts.forEach(([x, y], k) => {
+        sphere(crest, 0.085, k === 0 ? accent : gold, x, y, 0.05);
+      });
+      box(crest, 0.4, 0.03, 0.04, accent, 0, -0.14, 0.04, 0.01);
+      [-1, 1].forEach((s) => {
+        const leg = box(crest, 0.36, 0.03, 0.04, accent, s * 0.1, 0.03, 0.04, 0.01);
+        leg.rotation.z = -s * 1.02;
+      });
     }
     const mat = new THREE.MeshBasicMaterial({
-      map: texture,
       transparent: true,
+      opacity: 1,
       depthWrite: false,
-      toneMapped: false,
     });
     allMaterials.add(mat);
-    const plane = mesh(
-      geometry("entrance-plaque", () => new THREE.PlaneGeometry(6.8, 1.2)),
-      mat,
-      frame,
-      0,
-      0,
-      0.13,
-    );
-    function write(lines) {
-      ctx.clearRect(0, 0, c.width, c.height);
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillStyle = color;
-      const cjk = /[\u3400-\u9fff]/.test(lines[1]);
-      ctx.font = cjk
-        ? '600 182px "Microsoft YaHei", Arial, sans-serif'
-        : '700 184px Inter, Arial, sans-serif';
-      ctx.textBaseline = "alphabetic";
-      const metrics = ctx.measureText(lines[1]);
-      const baseline =
-        159 +
-        (metrics.actualBoundingBoxAscent - metrics.actualBoundingBoxDescent) /
-          2;
-      ctx.fillStyle = color;
-      ctx.fillText(lines[1], 1024, baseline, 1910);
-      texture.needsUpdate = true;
-    }
-    write(copy);
+    const plane = new THREE.Group();
+    plane.material = mat;
+    frame.add(plane);
+    function write() {}
     return { plane, write, frame };
   }
   function challengePrompt(parent, color) {
-    const c = document.createElement("canvas");
-    c.width = 1600;
-    c.height = 230;
-    const ctx = c.getContext("2d");
-    const map = new THREE.CanvasTexture(c);
-    map.colorSpace = THREE.SRGBColorSpace;
-    allTextures.add(map);
-    function write() {
-      ctx.clearRect(0, 0, c.width, c.height);
-      ctx.fillStyle = "#f7f5f0f5";
-      ctx.beginPath();
-      ctx.roundRect(12, 12, 1576, 206, 60);
-      ctx.fill();
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 3;
-      ctx.stroke();
-      ctx.font = '700 130px Inter, Arial, sans-serif';
-      ctx.textAlign = "center";
-      ctx.textBaseline = "alphabetic";
-      const text = "Go for this challenge!";
-      const metrics = ctx.measureText(text);
-      const baseline =
-        115 +
-        (metrics.actualBoundingBoxAscent - metrics.actualBoundingBoxDescent) /
-          2;
-      ctx.fillStyle = color;
-      ctx.fillText(text, 800, baseline, 1460);
-      ctx.shadowBlur = 0;
-      map.needsUpdate = true;
-    }
-    write();
     const material = new THREE.ShaderMaterial({
-      uniforms: { map: { value: map }, reveal: { value: 0 } },
+      uniforms: { reveal: { value: 0 }, tint: { value: new THREE.Color(color) } },
       transparent: true,
       depthWrite: false,
       vertexShader:
         "varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}",
-      fragmentShader: `varying vec2 vUv;uniform sampler2D map;uniform float reveal;
-      void main(){vec4 ink=texture2D(map,vUv);vec2 cell=floor(vUv*vec2(110.,18.));float noise=fract(sin(dot(cell,vec2(12.9898,78.233)))*43758.5453);float visibility=smoothstep(noise-.13,noise+.13,reveal*1.26-.13);gl_FragColor=vec4(ink.rgb*1.3,ink.a*visibility);
-      #include <tonemapping_fragment>
-      #include <colorspace_fragment>
+      fragmentShader: `varying vec2 vUv;uniform float reveal;uniform vec3 tint;
+      void main(){
+        vec2 p = (vUv - 0.5) * vec2(6.0, 2.0);
+        float d = abs(p.x) * 0.35 + abs(p.y);
+        float gem = smoothstep(0.55, 0.18, d) * reveal;
+        gl_FragColor = vec4(mix(tint, vec3(1.0), 0.45), gem * 0.85);
       }`,
     });
     allMaterials.add(material);
     const plane = mesh(
-      geometry("challenge-prompt", () => new THREE.PlaneGeometry(4.65, 0.668)),
+      geometry("challenge-prompt", () => new THREE.PlaneGeometry(1.8, 0.36)),
       material,
       parent,
       0,
-      6.65,
-      2.32,
+      6.52,
+      2.26,
     );
     plane.scale.setScalar(0.86);
     plane.visible = false;
-    plane.userData.redrawText = write;
+    plane.userData.redrawText = () => {};
     return plane;
   }
   // Soft sky fill and warm shadows match the surrounding toy-world chapters.
@@ -796,6 +784,7 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
         def.en,
         accent,
         ["#246d68", "#855c1c", "#65519e"][index],
+        index,
       ),
       prompt = challengePrompt(group, ["#246d68", "#855c1c", "#65519e"][index]);
     const subtracks = createRoomSubtracks({ domain: ARENA_DOMAINS[index], index });

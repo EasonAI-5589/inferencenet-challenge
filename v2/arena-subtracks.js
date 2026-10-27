@@ -1,25 +1,8 @@
-/* Named case categories live inside the portal, as small luminous study nodes.
- * Text uses unlit saturated inks so room lighting cannot wash it out to white. */
+/* Case categories crown each portal doorway as a pure 3D constellation of
+ * luminous emblems and orbital rings — no text signboards blocking the doorway. */
 import * as THREE from '../assets/vendor/three/three.module.js';
 import { ARENA_DOMAINS } from './arena-data.js';
 
-const SHORT_EN = {
-  replication: ['Econometric', 'replication'], monetary: ['Monetary', 'policy'],
-  markets: ['Market', 'forecasting'], data: ['Data', 'engineering'],
-  statistics: ['Official', 'statistics'], accounting: ['Accounting', '& close'],
-  filings: ['Filings &', 'research'], payments: ['Payments &', 'transactions'],
-  credit: ['Credit &', 'fraud'], numeric: ['Numerical', 'reasoning'],
-  nlp: ['Financial', 'language'], law: ['Law &', 'regulation'],
-  hr: ['People &', 'organizations'], business: ['Business', 'operations'],
-  society: ['Society &', 'education'], psychology: ['Psychology &', 'cognition'],
-};
-// Different inks within each field keep every category distinguishable while
-// retaining the teal / amber / violet vocabulary of the homepage.
-const INKS = [
-  ['#05545d', '#155a38', '#125481', '#095359', '#225b34', '#05545d'],
-  ['#773a03', '#724603', '#853714', '#674709', '#802b16', '#734006'],
-  ['#4b238c', '#642575', '#48328e', '#742655', '#29468d', '#4b238c'],
-];
 const LIGHTS = [
   [0x3de5d5, 0x6fe09c, 0x59c6ff, 0x69d9cf, 0xa2df87, 0x3de5d5],
   [0xffcc65, 0xf5dc70, 0xffa16a, 0xf9d97c, 0xffac95, 0xf3cd65],
@@ -32,81 +15,96 @@ export function createRoomSubtracks({ domain, index = 0 } = {}) {
   const root = new THREE.Group(); root.name = `room-subtracks-${domain.id}`;
   root.userData.directoryIds = domain.entries.map(entry => entry.id);
   const materials = new Set(), textures = new Set(), geometries = new Set();
-  const sphereGeometry = new THREE.SphereGeometry(.18, 24, 16);
-  const cardGeometry = new THREE.PlaneGeometry(2.12, .72);
-  geometries.add(sphereGeometry); geometries.add(cardGeometry);
+  const trackGeom = g => { geometries.add(g); return g; };
+  const trackMat = m => { materials.add(m); return m; };
+
+  const coreGeometry = trackGeom(new THREE.OctahedronGeometry(.19, 0));
+  const ringGeometry = trackGeom(new THREE.TorusGeometry(.31, .022, 10, 36));
+  const pipGeometry = trackGeom(new THREE.SphereGeometry(.045, 12, 10));
+  const barGeometry = trackGeom(new THREE.BoxGeometry(.06, 1, .06));
+
   const glowCanvas = document.createElement('canvas'); glowCanvas.width = glowCanvas.height = 96;
   const glowContext = glowCanvas.getContext('2d');
   const gradient = glowContext.createRadialGradient(48, 48, 2, 48, 48, 48);
-  gradient.addColorStop(0, '#ffffff'); gradient.addColorStop(.2, '#ffffffd0'); gradient.addColorStop(.5, '#ffffff35'); gradient.addColorStop(1, '#ffffff00');
+  gradient.addColorStop(0, '#ffffff'); gradient.addColorStop(.22, '#ffffffd8'); gradient.addColorStop(.52, '#ffffff38'); gradient.addColorStop(1, '#ffffff00');
   glowContext.fillStyle = gradient; glowContext.fillRect(0, 0, 96, 96);
   const glowTexture = new THREE.CanvasTexture(glowCanvas); glowTexture.colorSpace = THREE.SRGBColorSpace; textures.add(glowTexture);
+
   const palette = Math.max(0, Math.min(2, index));
+  const n = domain.entries.length;
   let language = 'en', disposed = false;
 
-  const nodes = domain.entries.map((entry, i) => {
-    // Keep the nodes inside the door frame, below the prompt and above the robot.
-    const lastSingle = domain.entries.length % 2 === 1 && i === domain.entries.length - 1;
-    const x = lastSingle ? 0 : (i % 2 ? 1.4 : -1.4);
-    // With five entries the singleton sits above the pairs, away from the
-    // protagonist's head in the lower middle of the opening.
-    const y = domain.entries.length === 5
-      ? (lastSingle ? 5.95 : 5.08 - Math.floor(i / 2) * .84)
-      : 5.92 - Math.floor(i / 2) * .84;
-    const anchor = new THREE.Group(); anchor.position.set(x, y, 1.86); root.add(anchor);
-    anchor.name = `subtrack-${entry.id}`; anchor.userData.entry = entry;
-    const bright = LIGHTS[palette][i % 6], ink = INKS[palette][i % 6];
-    const orbMaterial = new THREE.MeshStandardMaterial({ color: bright, emissive: bright, emissiveIntensity: .25, roughness: .23, metalness: .12, transparent: true, toneMapped: false, depthWrite: false });
-    materials.add(orbMaterial);
-    const orb = new THREE.Mesh(sphereGeometry, orbMaterial);
-    orb.position.set(-1.08, 0, .15); orb.renderOrder = 24; anchor.add(orb);
-    const auraMaterial = new THREE.SpriteMaterial({ map: glowTexture, color: bright, transparent: true, opacity: .48, depthWrite: false, toneMapped: false });
-    materials.add(auraMaterial);
-    const aura = new THREE.Sprite(auraMaterial); aura.position.copy(orb.position); aura.position.z -= .02; aura.scale.set(.7, .7, 1); aura.renderOrder = 22; anchor.add(aura);
-    const canvas = document.createElement('canvas'); canvas.width = 768; canvas.height = 260;
-    const context = canvas.getContext('2d');
-    const texture = new THREE.CanvasTexture(canvas); texture.colorSpace = THREE.SRGBColorSpace;
-    texture.anisotropy = 4; textures.add(texture);
-    // These anchored annotations remain readable when the thin antenna crosses them;
-    // the luminous 3D nodes still obey the room's depth and occlusion.
-    const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true, opacity: 0, depthTest: false, depthWrite: false, toneMapped: false, side: THREE.DoubleSide });
-    materials.add(material);
-    const label = new THREE.Mesh(cardGeometry, material); label.position.x = .38; label.renderOrder = 23; label.visible = false; anchor.add(label);
-    label.name = `subtrack-label-${entry.id}`; label.userData.ink = ink;
+  // Arrange the category emblems along an arch crowning the upper portal opening,
+  // keeping the central vortex and the chamber sculpture unobstructed.
+  const positions = domain.entries.map((_, i) => {
+    const u = n === 1 ? 0 : (i / (n - 1)) * 2 - 1; // -1 .. +1
+    const angle = u * .92;
+    const x = Math.sin(angle) * 2.22;
+    const y = 4.25 + Math.cos(angle) * 1.68;
+    return new THREE.Vector3(x, y, 1.88);
+  });
 
-    function write() {
-      const chinese = language === 'zh', full = entry.name[chinese ? 1 : 0];
-      const glyphs = Array.from(full);
-      const lines = chinese
-        ? (glyphs.length > 7 ? [glyphs.slice(0, Math.ceil(glyphs.length / 2)).join(''), glyphs.slice(Math.ceil(glyphs.length / 2)).join('')] : [full])
-        : (SHORT_EN[entry.id.split('.')[1]] || [full]);
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      context.fillStyle = '#fffdf7f5'; context.strokeStyle = ink; context.lineWidth = 3;
-      context.beginPath(); context.roundRect(4, 6, 760, 248, 35); context.fill(); context.stroke();
-      context.fillStyle = ink; context.textAlign = 'center'; context.textBaseline = 'alphabetic';
-      const font = chinese ? '700 94px "Microsoft YaHei", "PingFang SC", sans-serif' : '700 94px Inter, Arial, sans-serif';
-      context.font = font;
-      const centerX = 384, lineGap = 100;
-      const middle = 130;
-      lines.forEach((line, j) => {
-        const metrics = context.measureText(line);
-        const baseline = middle + (j - (lines.length - 1) / 2) * lineGap + (metrics.actualBoundingBoxAscent - metrics.actualBoundingBoxDescent) / 2;
-        context.fillText(line, centerX, baseline, 700);
-      });
-      label.userData.text = full; label.userData.lines = lines;
-      texture.needsUpdate = true;
+  // Delicate constellation arc linking the category emblems around the portal arch.
+  const curve = new THREE.CatmullRomCurve3(positions);
+  const arcGeometry = trackGeom(new THREE.TubeGeometry(curve, 48, .016, 6, false));
+  const arcColor = LIGHTS[palette][0];
+  const arcMaterial = trackMat(new THREE.MeshBasicMaterial({ color: arcColor, transparent: true, opacity: 0, depthWrite: false, toneMapped: false }));
+  const arcMesh = new THREE.Mesh(arcGeometry, arcMaterial);
+  arcMesh.renderOrder = 21;
+  root.add(arcMesh);
+
+  const nodes = domain.entries.map((entry, i) => {
+    const pos = positions[i];
+    const anchor = new THREE.Group(); anchor.position.copy(pos); root.add(anchor);
+    anchor.name = `subtrack-${entry.id}`; anchor.userData.entry = entry;
+    const bright = LIGHTS[palette][i % 6];
+
+    const orbMaterial = trackMat(new THREE.MeshStandardMaterial({
+      color: bright, emissive: bright, emissiveIntensity: .55, roughness: .18, metalness: .2,
+      transparent: true, opacity: 0, toneMapped: false, depthWrite: false,
+    }));
+    const ringMaterial = trackMat(new THREE.MeshStandardMaterial({
+      color: 0xf7f5f0, emissive: bright, emissiveIntensity: .38, roughness: .28, metalness: .35,
+      transparent: true, opacity: 0, toneMapped: false, depthWrite: false,
+    }));
+
+    const orb = new THREE.Mesh(coreGeometry, orbMaterial);
+    orb.renderOrder = 24; anchor.add(orb);
+
+    const orbit = new THREE.Mesh(ringGeometry, ringMaterial);
+    orbit.rotation.set(.55 + (i % 2) * .3, i * .4, .25);
+    orbit.renderOrder = 24; anchor.add(orbit);
+
+    // Miniature 3D motif inside the orbit (bars, triad pips, or twin satellites)
+    const motif = new THREE.Group(); anchor.add(motif);
+    for (let k = 0; k < 3; k++) {
+      const a = (k / 3) * Math.PI * 2 + i * .5;
+      const pip = new THREE.Mesh(pipGeometry, orbMaterial);
+      pip.position.set(Math.cos(a) * .31, Math.sin(a) * .31, 0);
+      pip.renderOrder = 25;
+      orbit.add(pip);
     }
-    return { anchor, orb, aura, label, material, write, phase: i * .8 + palette };
+    if (i % 2 === 0) {
+      [-1, 1].forEach(s => {
+        const bar = new THREE.Mesh(barGeometry, ringMaterial);
+        bar.scale.y = .14 + (k => k * .04)((i + s + 2) % 3);
+        bar.position.set(s * .11, 0, .08);
+        motif.add(bar);
+      });
+    }
+
+    const auraMaterial = trackMat(new THREE.SpriteMaterial({
+      map: glowTexture, color: bright, transparent: true, opacity: 0, depthWrite: false, toneMapped: false,
+    }));
+    const aura = new THREE.Sprite(auraMaterial);
+    aura.position.set(0, 0, -.04); aura.scale.set(.95, .95, 1); aura.renderOrder = 22; anchor.add(aura);
+
+    return { anchor, orb, orbit, motif, orbMaterial, ringMaterial, aura, auraMaterial, baseY: pos.y, phase: i * .85 + palette };
   });
 
   function redraw(nextLanguage = language) {
     if (disposed) return;
     language = nextLanguage === 'zh' ? 'zh' : 'en';
-    nodes.forEach(node => node.write());
-  }
-  redraw();
-  if (document.fonts) {
-    Promise.all([document.fonts.ready, document.fonts.load('700 94px Inter')]).then(() => redraw());
   }
 
   return {
@@ -115,13 +113,24 @@ export function createRoomSubtracks({ domain, index = 0 } = {}) {
       if (disposed) return;
       if (nextLanguage !== language) redraw(nextLanguage);
       const amount = Math.max(0, Math.min(1, Number(active) || 0));
-      const opacity = THREE.MathUtils.smoothstep(amount, .15, .72);
-      nodes.forEach(({ orb, aura, label, material, phase }) => {
-        const pulse = reduced ? 1 : 1 + Math.sin(time * 1.4 + phase) * .055;
-        orb.scale.setScalar(pulse * (.92 + amount * .14));
-        aura.scale.setScalar((.62 + amount * .13) * pulse);
-        aura.material.opacity = .28 + amount * .24;
-        label.visible = opacity > .005; material.opacity = opacity;
+      const vis = .22 + amount * .78;
+      arcMaterial.opacity = .12 + amount * .38;
+      nodes.forEach(({ anchor, orb, orbit, orbMaterial, ringMaterial, aura, auraMaterial, baseY, phase }, i) => {
+        const pulse = reduced ? 1 : 1 + Math.sin(time * 1.6 + phase) * .07;
+        const bob = reduced ? 0 : Math.sin(time * 1.2 + phase) * .045;
+        anchor.position.y = baseY + bob;
+        if (!reduced) {
+          orb.rotation.y = time * .9 + i;
+          orb.rotation.x = Math.sin(time * .7 + i) * .35;
+          orbit.rotation.z = time * .55 * (i % 2 ? 1 : -1) + phase;
+        }
+        const s = (.82 + amount * .26) * pulse;
+        orb.scale.setScalar(s);
+        orbit.scale.setScalar(.86 + amount * .22);
+        orbMaterial.opacity = vis;
+        ringMaterial.opacity = .18 + amount * .72;
+        aura.scale.setScalar((.85 + amount * .35) * pulse);
+        auraMaterial.opacity = .22 + amount * .42;
       });
       root.userData.active = amount;
     },

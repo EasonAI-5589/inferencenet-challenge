@@ -52,7 +52,8 @@
 .mc-event-label { color:var(--track-1); font:400 11px/1.5 var(--font-mono); letter-spacing:.08em; }
 .mc-home .mc-event p { font-size:17px; line-height:1.5; color:var(--text-primary); }
 .mc-home .mc-timeline { margin:0 auto; }
-.mc-endnote { position:absolute; z-index:5; right:var(--mc-gutter); bottom:104px; max-width:230px; text-align:right; color:var(--text-tertiary); font:400 10px/1.65 var(--font-sans); }
+.mc-chapter:not([data-renderer="fallback"]):not([data-phase="1"]) .mc-event { opacity:0; pointer-events:none; height:0; margin:0; overflow:hidden; }
+.mc-endnote { display:none; }
 .mc-access { position:absolute; z-index:6; width:1px; height:1px; overflow:hidden; bottom:0; opacity:0; }
 .mc-access:focus-within,.mc-chapter[data-renderer="fallback"] .mc-access { width:280px; height:auto; opacity:1; left:57%; bottom:190px; transform:translateX(-50%); padding:12px 16px; border-radius:12px; border:1px solid var(--mc-line); background:var(--mc-glass); backdrop-filter:blur(12px); }
 .mc-access label { display:block; font-size:12px; color:var(--text-secondary); margin-bottom:8px; }
@@ -151,20 +152,21 @@
 @media (max-width:860px) and (prefers-reduced-motion:reduce) {
   .mc-wheel { width:min(82vw,330px); top:36%; }
 }
-/* The room directory follows the active domain, with the full user-supplied taxonomy. */
+/* The room directory follows the active domain as compact category chips. */
 .mc-domain-overview { display:flex; gap:8px; margin-top:18px; }
 .mc-domain-overview span { padding:5px 10px; border:1px solid var(--mc-line); border-radius:8px; background:var(--mc-glass); color:var(--text-secondary); font:400 11px/1.5 var(--font-mono); }
 .mc-domain-overview span:nth-child(1) { color:var(--track-1); }
 .mc-domain-overview span:nth-child(2) { color:var(--track-2); }
 .mc-domain-overview span:nth-child(3) { color:var(--mc-violet); }
-.mc-domain-directory { width:350px; max-width:100%; margin-top:16px; padding:12px 14px; border:1px solid var(--mc-line); border-radius:14px; background:var(--mc-glass); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); pointer-events:auto; }
-.mc-home .mc-copy .mc-domain-directory p { margin:0 0 7px; font:400 10px/1.5 var(--font-mono); letter-spacing:.03em; color:var(--domain-accent); }
-.mc-domain-directory ul { list-style:none; margin:0; padding:0; display:grid; }
-.mc-domain-directory li { display:grid; grid-template-columns:104px 1fr; align-items:center; gap:10px; padding:7px 0; border-top:1px solid var(--border-hairline); }
-.mc-domain-directory code { color:var(--text-tertiary); font:400 9px/1.45 var(--font-mono); white-space:nowrap; }
-.mc-domain-directory li span { color:var(--text-primary); font:500 12px/1.4 var(--font-sans); }
-.mc-domain-directory li:hover code { color:var(--domain-accent); }
+.mc-domain-directory { width:320px; max-width:100%; margin-top:16px; padding:0; border:0; background:none; pointer-events:auto; }
+.mc-home .mc-copy .mc-domain-directory p { display:none; }
+.mc-domain-directory ul { list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:6px; }
+.mc-domain-directory li { display:inline-flex; align-items:center; gap:6px; padding:5px 11px; border-radius:999px; border:1px solid var(--mc-line); background:var(--mc-glass); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); }
+.mc-domain-directory code { display:none; }
+.mc-domain-directory li span { color:var(--text-secondary); font:500 11px/1.3 var(--font-sans); }
+.mc-domain-directory li::before { content:""; width:5px; height:5px; border-radius:50%; background:var(--domain-accent,var(--track-1)); opacity:.85; }
 .mc-chapter[data-domain]:not([data-domain=""]) .mc-loadout-type { display:none; }
+.mc-chapter[data-portals] .mc-enter { display:none !important; }
 .mc-floating-harness { position:absolute; z-index:4; top:0; left:0; display:grid; gap:3px; width:max-content; max-width:200px; padding:8px 12px; border:1px solid color-mix(in oklab,var(--domain-accent) 45%,var(--mc-line)); border-radius:10px; background:var(--mc-glass); color:var(--text-primary); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); pointer-events:none; will-change:transform; }
 .mc-floating-harness::after { content:""; position:absolute; width:1px; height:16px; top:100%; left:50%; background:var(--domain-accent); }
 .mc-floating-harness small { font:400 8px/1.3 var(--font-mono); letter-spacing:.07em; color:var(--domain-accent); }

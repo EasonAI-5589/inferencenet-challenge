@@ -296,7 +296,7 @@ if (chapter) {
   async function load() {
     if(loading)return;loading=true;
     try {
-      const {createArenaScene}=await import('./arena-scene.js?v=20261027-warp');
+      const {createArenaScene}=await import('./arena-scene.js?v=20261027-emblems');
       scene=createArenaScene($('.mc-canvas'), { onWeaponProject: projectWeapon, onPortalProject: projectPortals }); scene.update(state);
       $('.mc-fallback').hidden=true;chapter.dataset.renderer='webgl';
     } catch(error) {
