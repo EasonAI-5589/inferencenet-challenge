@@ -16,13 +16,13 @@
   <script>document.documentElement.classList.add("js")</script>
   <script src="../site.js?v=20261019-motion" defer></script>
   <link rel="stylesheet" href="../language.css">
-  <script src="../language.js?v=20261027-popup" defer></script>
+  <script src="../language.js?v=20261027-retrieval" defer></script>
   <link rel="stylesheet" href="v2.css?v=20261027-copy2">
   <link rel="stylesheet" href="arena.css?v=20261027-portal2">
   <link rel="stylesheet" href="metacase.css?v=20261027-popup2">
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script src="v2.js?v=20261022-v2-ambient" defer></script>
-  <script type="module" src="metacase.js?v=20261027-popup"></script>
+  <script type="module" src="metacase.js?v=20261027-retrieval"></script>
   <script type="module" src="arena.js?v=20261027-warp"></script>
 </head>
 <body class="v2-home mc-home">
@@ -145,20 +145,26 @@
 </section>
 
 <!-- ================= 02 STRUCTURE: retrieval by how problems were solved ================= -->
-<section class="mc-scene" id="structure" aria-labelledby="structure-title" style="--len: 300vh">
+<section class="mc-scene" id="structure" aria-labelledby="structure-title" style="--len: 360vh">
   <div class="mc-scene-pin" data-view="archive">
     <div class="mc-tags" data-tags="archive" aria-hidden="true">
       <span data-tag="0" style="--tc: var(--track-1)"><b>Economics</b></span>
       <span data-tag="1" style="--tc: var(--track-2)"><b>Finance</b></span>
       <span data-tag="2" style="--tc: var(--mc-violet)"><b>Social science</b></span>
     </div>
+    <div class="mc-tags mc-verdicts" data-tags="verdict" aria-hidden="true">
+      <span data-tag="0" style="--tc: var(--mc-blue)"><b>This case</b><i>Credit decision</i></span>
+      <span data-tag="1" style="--tc: var(--mc-rose)"><b>Different path</b><i>Same topic</i></span>
+      <span data-tag="2" style="--tc: var(--track-1)"><b>Same path</b><i>Economics</i></span>
+      <span data-tag="3" style="--tc: var(--mc-violet)"><b>Same path</b><i>Social science</i></span>
+    </div>
     <div class="wrap mc-scene-head">
       <p class="mc-label mono"><span>02</span>Retrieval</p>
       <h2 id="structure-title"><span>Find past cases by</span> <em>how they were solved.</em></h2>
     </div>
     <ol class="wrap mc-captions">
-      <li data-caption="0"><b class="mono">Topic match</b><span>Search for a credit decision and you get more credit cases: same topic, solved in different ways.</span></li>
-      <li data-caption="1"><b class="mono">Solution match</b><span>The Metacase network returns cases from other fields that followed the same solution path, and lines them up.</span></li>
+      <li data-caption="0"><b class="mono">Topic match</b><span>Search by topic and a credit decision brings back more credit cases. Laid over its signature, their paths split at almost every stage.</span></li>
+      <li data-caption="1"><b class="mono">Solution match</b><span>Search by signature instead: cases from economics and social science that followed the same path, stage for stage.</span></li>
       <li data-caption="2"><b class="mono">Reuse</b><span>An agent conditions on the matched episodes; a researcher reads how each was framed, solved and checked.</span></li>
     </ol>
     <div class="wrap mc-scene-foot">

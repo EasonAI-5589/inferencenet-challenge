@@ -9,7 +9,7 @@ const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const ease = x => { const p = clamp(x); return p * p * (3 - 2 * p); };
-const V = '?v=20261027-popup';
+const V = '?v=20261027-retrieval';
 
 /* ---- layout helpers ---- */
 const siteHeader = $('.site-header'), subnav = $('.mc-subnav');
@@ -149,10 +149,11 @@ import('./mc-stage.js' + V).then(({ createStage }) => {
     } })) });
 
   // 02: the archive answers by structure
-  const structure = $('#structure'), archiveTags = $$('[data-tags="archive"] [data-tag]', structure);
+  const structure = $('#structure'), archiveTags = $$('[data-tags="archive"] [data-tag]', structure), verdictTags = $$('[data-tags="verdict"] [data-tag]', structure);
   stage.add({ el: $('.mc-scene-pin', structure), near: 2.5, postOptions: { bloom: .34, threshold: .9, vignette: .2, feather: FEATHER }, progress: () => pinProgress(structure),
     build: () => import('./metacase-archive.js' + V).then(m => archiveObj = m.createArchive({ reduce, safe: safeArea($('.mc-scene-pin', structure)),
-      held: () => (carried12() && k12() < HANDOVER) || (carried23() && k23() > RELEASE), onProject: list => list.forEach((s, i) => place(archiveTags[i], s)) })) });
+      held: () => (carried12() && k12() < HANDOVER) || (carried23() && k23() > RELEASE),
+      onProject: (list, extra) => { list.forEach((s, i) => place(archiveTags[i], s)); extra.labels.forEach((s, i) => place(verdictTags[i], s)); } })) });
 
   // 03: the library, cross-referenced wing by wing
   const net = $('#net'), worldTags = $$('[data-tags="world"] [data-tag]', net);
@@ -225,7 +226,7 @@ if (anatomySection) sceneControllers.push([anatomySection, chapter(anatomySectio
   rail: p => (p < .06 ? -1 : stageAt(p)),
   notes: true,
 })]);
-if (structureSection) sceneControllers.push([structureSection, chapter(structureSection, { steps: p => (p < .36 ? 0 : p < .7 ? 1 : 2) })]);
+if (structureSection) sceneControllers.push([structureSection, chapter(structureSection, { steps: p => (p < .4 ? 0 : p < .75 ? 1 : 2) })]);
 if (netSection) {
   const update = chapter(netSection, { steps: p => (p < .26 ? 0 : p < .5 ? 1 : p < .76 ? 2 : 3) });
   sceneControllers.push([netSection, p => {
