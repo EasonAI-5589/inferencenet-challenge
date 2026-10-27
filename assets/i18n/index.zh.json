@@ -1297,7 +1297,6 @@
   "4 · Verify and diagnose": "4 · 验证与诊断",
   "The deliverable goes to an independent check against reference results and rubrics the agent never saw during the run. A result can be a pass, a partial pass or a failure, and the trajectory shows where it went wrong.": "交付物接受独立校验，对照的参考结果和评分细则在运行中从不对 Agent 公开。结果可能是通过、部分通过或失败，执行轨迹会显示问题出在哪里。",
   "5 · Contribute": "5 · 提交贡献",
-  "What the run yields can be contributed in three forms: a Metacase, the Model & Harness behind it, or a documented Failure Case. Contribute one or more; they are separate from the choice of track.": "一次运行的成果可以以三种形式贡献：一个 Metacase、背后的 Model & Harness，或一份有记录的失败案例。可以贡献其中一种或多种；这与选择哪个赛道是两回事。",
   "What a participant does": "参赛者要做什么",
   "Choose": "选择",
   "Configure": "配置",
@@ -1335,5 +1334,9 @@
   "have been scored.": "是怎样评分的。",
   "The Dev100 development board (v10, 11 October 2026) compares 14 models run in 4 agent harnesses on the same 100 econometric-replication tasks. It is a descriptive comparison, not the Challenge leaderboard; runs that failed or could not be scored stay in the denominator.": "Dev100 开发榜（v10，2026 年 10 月 11 日）在同一组 100 个计量经济复现任务上，比较了 14 个模型在 4 种 Agent Harness 中的运行。这是描述性的比较，不是挑战赛排行榜；失败或无法评分的运行仍计入分母。",
   "Econometric replication, development split": "计量经济复现，开发集",
-  "Each run through an agent harness": "每次都通过某个 Agent Harness 运行"
+  "Each run through an agent harness": "每次都通过某个 Agent Harness 运行",
+  "Structured case record": "结构化的案例记录",
+  "Packaged to rerun": "打包好，可复跑",
+  "Reproducible, diagnosed": "可复现，有诊断",
+  "What the run yields can be contributed in three forms: a Metacase, the structured record of the case; the Model & Harness, packaged so the run can be repeated; or a Failure Case, a reproducible failure with its diagnosis (a low score alone is not one). Contribute one or more, separately from the choice of track.": "一次运行的产出可以通过三种形式贡献：Metacase，即这个案例的结构化记录；Model & Harness，打包好以便他人复跑；或失败案例，一个可复现、附带诊断的失败（单纯的低分不算）。可以贡献其中一种或多种，与赛道选择相互独立。"
 }

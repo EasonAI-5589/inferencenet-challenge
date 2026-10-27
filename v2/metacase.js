@@ -3,7 +3,7 @@
  * this file registers them, keeps the notes, captions, tags and signature rails in step
  * with scrolling, and handles reveals, counters and the section nav. Visible text stays
  * in the page so language.js translates it. */
-import { createSignatureRail } from './mc-rail.js?v=20261027-seven6';
+import { createSignatureRail } from './mc-rail.js?v=20261027-books3';
 
 const root = document.documentElement;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -11,7 +11,7 @@ const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const ease = x => { const p = clamp(x); return p * p * (3 - 2 * p); };
-const V = '?v=20261027-seven6';
+const V = '?v=20261027-books3';
 
 /* ---- layout helpers ---- */
 const siteHeader = $('.site-header'), subnav = $('.mc-subnav');
@@ -169,7 +169,7 @@ import('./mc-stage.js' + V).then(({ createStage }) => {
     build: () => import('./metacase-run.js' + V).then(m => m.createRun({ reduce, safe: safeArea($('.mc-scene-pin', rules)), onProject: list => list.forEach((s, i) => place(runTags[i], s)) })) });
 
   // card vignettes
-  $$('.mc-art').forEach(el => stage.add({ el, near: 1, build: () => import('./metacase-cards.js' + V).then(m => m.createCard(el.dataset.art)) }));
+  $$('.mc-art').forEach(el => stage.add({ el, near: 1, build: () => import('./metacase-cards.js' + V).then(m => m.createCard(el.dataset.art, el)) }));
 
   // the courier: on its own canvas, while the Metacase travels from shelf to desk
   if (!reduce) {

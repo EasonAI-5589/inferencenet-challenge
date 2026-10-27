@@ -16,14 +16,14 @@
   <script>document.documentElement.classList.add("js")</script>
   <script src="../site.js?v=20261019-motion" defer></script>
   <link rel="stylesheet" href="../language.css">
-  <script src="../language.js?v=20261027-seven6" defer></script>
+  <script src="../language.js?v=20261027-books3" defer></script>
   <link rel="stylesheet" href="v2.css?v=20261027-copy2">
   <link rel="stylesheet" href="arena.css?v=20261027-robotwarp">
-  <link rel="stylesheet" href="metacase.css?v=20261027-seven6">
+  <link rel="stylesheet" href="metacase.css?v=20261027-books3">
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script src="v2.js?v=20261022-v2-ambient" defer></script>
-  <script type="module" src="metacase.js?v=20261027-seven6"></script>
-  <script type="module" src="arena.js?v=20261027-robotwarp-rail"></script>
+  <script type="module" src="metacase.js?v=20261027-books3"></script>
+  <script type="module" src="arena.js?v=20261027-robotwarp-books3"></script>
 </head>
 <body class="v2-home mc-home">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -236,8 +236,8 @@
 <div class="mc-fieldbooks" data-fieldbooks>
   <div class="mc-bookrow" role="tablist" aria-label="Fields">
     <button class="mc-fbook" type="button" role="tab" id="fb-tab-econ" aria-controls="fb-econ" aria-selected="true" style="--tc: var(--track-1)">
-      <span class="mc-fbook-edge" aria-hidden="true"></span>
-      <span class="mc-fbook-cover">
+      <span class="mc-art" data-art="field" data-field="econ" aria-hidden="true"></span>
+      <span class="mc-fbook-label">
         <small class="mono">Field 01</small>
         <b class="mc-fbook-title">Economics</b>
         <span class="mc-fbook-n"><b class="tnum">152</b> <span>candidate records</span></span>
@@ -245,8 +245,8 @@
       </span>
     </button>
     <button class="mc-fbook" type="button" role="tab" id="fb-tab-fin" aria-controls="fb-fin" aria-selected="false" style="--tc: var(--track-2)">
-      <span class="mc-fbook-edge" aria-hidden="true"></span>
-      <span class="mc-fbook-cover">
+      <span class="mc-art" data-art="field" data-field="fin" aria-hidden="true"></span>
+      <span class="mc-fbook-label">
         <small class="mono">Field 02</small>
         <b class="mc-fbook-title">Finance</b>
         <span class="mc-fbook-n"><b class="tnum">90</b> <span>candidate records</span></span>
@@ -254,8 +254,8 @@
       </span>
     </button>
     <button class="mc-fbook" type="button" role="tab" id="fb-tab-soc" aria-controls="fb-soc" aria-selected="false" style="--tc: var(--mc-violet)">
-      <span class="mc-fbook-edge" aria-hidden="true"></span>
-      <span class="mc-fbook-cover">
+      <span class="mc-art" data-art="field" data-field="soc" aria-hidden="true"></span>
+      <span class="mc-fbook-label">
         <small class="mono">Field 03</small>
         <b class="mc-fbook-title">Social science</b>
         <span class="mc-fbook-n"><b class="tnum">43</b> <span>candidate records</span></span>
@@ -636,9 +636,9 @@
       <span data-tag="3" style="--tc: var(--mc-blue)"><b>Trajectory</b><i>Every step logged</i></span>
       <span data-tag="4" style="--tc: var(--track-1)"><b>Verifier</b><i>The only place the reference is used</i></span>
       <span data-tag="5" style="--tc: var(--track-2)"><b>Result</b><i>Pass · partial · fail</i></span>
-      <span data-tag="6" style="--tc: var(--mc-blue)"><b>A · Metacase</b></span>
-      <span data-tag="7" style="--tc: var(--mc-rose)"><b>B · Model &amp; Harness</b></span>
-      <span data-tag="8" style="--tc: var(--mc-violet)"><b>C · Failure Case</b></span>
+      <span class="mc-tag-stack" data-tag="6" style="--tc: var(--mc-blue)"><b>A · Metacase</b><i>Structured case record</i></span>
+      <span class="mc-tag-stack" data-tag="7" style="--tc: var(--mc-rose)"><b>B · Model &amp; Harness</b><i>Packaged to rerun</i></span>
+      <span class="mc-tag-stack" data-tag="8" style="--tc: var(--mc-violet)"><b>C · Failure Case</b><i>Reproducible, diagnosed</i></span>
     </div>
     <div class="wrap mc-scene-head">
       <p class="mc-label mono"><span>05</span>The Metacase Challenge</p>
@@ -653,53 +653,11 @@
       <li data-caption="1"><b class="mono">2 · Configure Model + Harness</b><span>They pick a model and the harness that runs it. The model reasons and decides; the harness supplies the tools, the workflow and the run settings, so the same model can behave differently in a different harness.</span></li>
       <li data-caption="2"><b class="mono">3 · Execute and record</b><span>The agent reads the materials, plans, calls tools and writes files until it delivers end to end. Every step goes into the trajectory, so the whole run can be traced afterwards.</span></li>
       <li data-caption="3"><b class="mono">4 · Verify and diagnose</b><span>The deliverable goes to an independent check against reference results and rubrics the agent never saw during the run. A result can be a pass, a partial pass or a failure, and the trajectory shows where it went wrong.</span></li>
-      <li data-caption="4"><b class="mono">5 · Contribute</b><span>What the run yields can be contributed in three forms: a Metacase, the Model &amp; Harness behind it, or a documented Failure Case. Contribute one or more; they are separate from the choice of track.</span></li>
+      <li data-caption="4"><b class="mono">5 · Contribute</b><span>What the run yields can be contributed in three forms: a Metacase, the structured record of the case; the Model &amp; Harness, packaged so the run can be repeated; or a Failure Case, a reproducible failure with its diagnosis (a low score alone is not one). Contribute one or more, separately from the choice of track.</span></li>
     </ol>
     <div class="wrap mc-scene-foot">
       <ol class="mc-rail" aria-label="What a participant does"><li>Choose</li><li>Configure</li><li>Execute</li><li>Verify</li><li>Contribute</li></ol>
     </div>
-  </div>
-</section>
-
-<!-- ================= 05 · WHAT YOU CAN CONTRIBUTE: three kinds, separate from the three tracks ================= -->
-<section class="mc-section mc-contribute" id="contribute" aria-labelledby="contribute-title">
-  <div class="wrap">
-    <div class="mc-head mc-r">
-      <p class="mc-label mono"><span>05</span>Contributions</p>
-      <h2 id="contribute-title"><span>Three kinds of</span> <em>contribution.</em></h2>
-      <p class="mc-sub">A run can leave more than a score. These are the forms in which a participant's work becomes reusable; they cut across the three tracks, and any one of them is a contribution on its own.</p>
-    </div>
-    <div class="mc-grid mc-grid-3">
-      <article class="mc-card mc-deliverable mc-r" style="--tc: var(--mc-blue)">
-        <div class="mc-art" data-art="metacase"></div>
-        <div class="mc-card-body">
-          <p class="mono"><b>A</b> · Structured record</p>
-          <h3>Metacase</h3>
-          <p>A reusable, structured record of the case, written so that others can compare it and learn from it.</p>
-          <ul><li>The problem and the evidence it rested on</li><li>The decisions and the actions taken, as a trajectory</li><li>The outcome and how it was checked</li><li>How it was interpreted, and the lessons drawn</li></ul>
-        </div>
-      </article>
-      <article class="mc-card mc-deliverable mc-r" style="--tc: var(--mc-rose)">
-        <div class="mc-art" data-art="harness"></div>
-        <div class="mc-card-body">
-          <p class="mono"><b>B</b> · Reproducible agent</p>
-          <h3>Model &amp; Harness</h3>
-          <p>The model together with the harness that runs it, packaged so the run can be repeated by someone else.</p>
-          <ul><li>Model and run configuration</li><li>Tools and workflow</li><li>The code involved</li><li>Evaluation records; scores come from independent evaluation, not from self-reports</li></ul>
-        </div>
-      </article>
-      <article class="mc-card mc-deliverable mc-r" style="--tc: var(--mc-violet)">
-        <div class="mc-art" data-art="failure"></div>
-        <div class="mc-card-body">
-          <p class="mono"><b>C</b> · Diagnosed failure</p>
-          <h3>Failure Case</h3>
-          <p>A failure worth diagnosing, documented so that it can be reproduced and learned from.</p>
-          <ul><li>What was expected and what actually happened</li><li>The conditions and the step at which it failed</li><li>Evidence that reproduces it</li><li>Hypotheses about the cause and how to improve, kept apart from the observed facts</li></ul>
-          <p class="mc-fine">A low score on its own, or a run without records, is not a failure case.</p>
-        </div>
-      </article>
-    </div>
-    <p class="mc-contribute-note mc-r">File formats and routes follow the Challenge's submission rules; registration and the submission process for the Challenge itself are still being finalised. <a class="link" href="challenge.html#take-part"><span>Ways to get involved</span><span class="arrow" aria-hidden="true">→</span></a></p>
   </div>
 </section>
 

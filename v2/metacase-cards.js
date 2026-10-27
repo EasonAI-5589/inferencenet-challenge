@@ -1,45 +1,77 @@
 /* metacase-cards.js — small 3D pictures for the homepage cards, in the same toy kit
- * and light as the chapters: the tracks, the two kinds of reader, the invitation, the three
- * kinds of contribution and the benchmark snapshot. Each is a looping vignette drawn by the
- * shared stage. */
+ * and light as the chapters: the tracks, the two kinds of reader, the invitation, the books of
+ * the first fields and the benchmark snapshot. Each is a looping vignette drawn by the shared
+ * stage. */
 import * as THREE from '../assets/vendor/three/three.module.js';
-import { PALETTE, BOOK, mat, add, block, cyl, ball, tile, volume, robot, person, buildings, tree, island, crane, scaffold, bookStack, lights, STAGE_COLORS, rbox, closedBook, bookTabs, modelCore, wrench, lens, terminal, toolbox, dossier } from './mc-kit.js';
+import { PALETTE, BOOK, mat, add, block, cyl, ball, tile, volume, robot, person, buildings, tree, island, crane, scaffold, bookStack, lights, STAGE_COLORS, rbox, labelPlane, wrench, lens, terminal, toolbox } from './mc-kit.js';
 import { clamp, smooth, ramp, lerp, fitCamera, glowSprite } from './mc-stage.js';
 
 const loopPhase = (t, period, offset = 0) => ((t + offset) % period) / period;
 
-// A standing Metacase: the closed book with its tabs, cover to the viewer.
-function standingBook(g, sig, scale) {
-  const holder = new THREE.Group(); holder.scale.setScalar(scale); g.add(holder);
-  const book = closedBook(); bookTabs(book, sig);
-  book.rotation.x = Math.PI / 2; book.position.set(-BOOK.PW / 2, BOOK.PD / 2, -(BOOK.T + BOOK.BOARD * 2) / 2); holder.add(book);
-  return holder;
-}
 const plinth = (g, x = 0, r = .9) => { cyl(g, r, r * 1.08, .3, PALETTE.stone, x, 0, 0, 32); add(g, new THREE.TorusGeometry(r * 1.02, .03, 6, 48), mat(0xd8b46a, { rough: .35 }), x, .3, 0, false).rotation.x = Math.PI / 2; };
 
+// A field's book: the kit's Metacase volume in the field's colour, an emblem on its cover label
+// in place of a title (so it reads in any language), and the front board on a hinge at the spine.
+const FIELD_COLORS = { econ: PALETTE.teal, fin: PALETTE.amber, soc: PALETTE.violet };
+function emblem(field, color) {
+  const c = document.createElement('canvas'); c.width = 512; c.height = 256;
+  const x = c.getContext('2d'), ink = '#' + new THREE.Color(color).lerp(new THREE.Color(PALETTE.ink), .35).getHexString();
+  x.fillStyle = '#f6efe0'; x.fillRect(0, 0, 512, 256);
+  x.strokeStyle = '#d8b46a'; x.lineWidth = 8; x.strokeRect(14, 14, 484, 228);
+  x.fillStyle = ink; x.strokeStyle = ink; x.lineCap = 'round'; x.lineWidth = 12;
+  if (field === 'fin') { // a run of candlesticks, one of them down
+    [[136, 132, 64], [196, 112, 72], [256, 128, 52], [316, 92, 76], [376, 72, 70]].forEach(([px, py, h], k) => {
+      x.fillStyle = k === 2 ? '#c2566a' : ink; x.fillRect(px - 17, py, 34, h); x.fillRect(px - 3, py - 20, 6, h + 40);
+    });
+  } else if (field === 'soc') { // three respondents
+    [170, 256, 342].forEach(px => { x.beginPath(); x.arc(px, 104, 27, 0, Math.PI * 2); x.fill(); x.beginPath(); x.arc(px, 206, 52, Math.PI, 0); x.fill(); });
+  } else { // observations and the line fitted through them
+    [[118, 176], [158, 150], [196, 164], [236, 128], [272, 138], [312, 106], [352, 114], [390, 84]].forEach(([px, py]) => { x.beginPath(); x.arc(px, py, 11, 0, Math.PI * 2); x.fill(); });
+    x.beginPath(); x.moveTo(100, 184); x.lineTo(412, 74); x.stroke();
+  }
+  const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
+  return tex;
+}
+// Origin and axes as closedBook(): bottom of the spine, pages towards +x, cover facing +y.
+function fieldBook(field) {
+  const { PW, PD, T, BOARD } = BOOK, color = FIELD_COLORS[field] ?? PALETTE.teal, g = new THREE.Group();
+  const cover = mat(color, { rough: .85 }), gilt = mat(0xd8b46a, { rough: .4 });
+  block(g, PW + .1, BOARD, PD + .12, cover, PW / 2, 0, 0, .02);
+  block(g, PW, T, PD, mat(PALETTE.cream), PW / 2, BOARD, 0, .02);
+  block(g, .14, T + BOARD * 2, PD + .12, cover, 0, 0, 0, .04);
+  for (let k = 1; k < 6; k++) block(g, .006, .004, PD - .04, mat(0xe4dccb), PW + .001, BOARD + k * T / 6, 0, .001).castShadow = false;
+  [.18, .82].forEach(f => block(g, .16, .03, PD + .14, gilt, 0, (T + BOARD * 2) * f, 0, .01).castShadow = false);
+  // the first page, shown when the cover opens: a heading in the field's colour and printed lines
+  add(g, rbox(PW * .5, .006, .14, .003), mat(color), PW * .45, BOARD + T + .004, -PD * .36, false);
+  for (let k = 0; k < 7; k++) add(g, rbox(PW * (k % 3 === 2 ? .42 : .7), .005, .05, .002), mat(0xcfc4ae), PW * .5, BOARD + T + .004, -PD * .2 + k * .22, false);
+  const hinge = new THREE.Group(); hinge.position.set(0, BOARD + T + BOARD / 2, 0); g.add(hinge);
+  const front = new THREE.Group(); front.position.x = PW / 2 + .05; hinge.add(front);
+  add(front, rbox(PW + .1, BOARD, PD + .12, .02), cover);
+  const label = labelPlane(emblem(field, color), PW * .64, PW * .32); label.position.set(0, BOARD / 2 + .006, -.35); front.add(label);
+  [-1, 1].forEach(sz => add(front, rbox(PW - .1, .01, .025, .004), gilt, 0, BOARD / 2 + .004, sz * (PD / 2 - .14), false));
+  [-1, 1].forEach(sx => add(front, rbox(.025, .01, PD - .28, .004), gilt, sx * (PW / 2 - .1), BOARD / 2 + .004, 0, false));
+  [-1, 1].forEach(sx => [-1, 1].forEach(sz => add(front, rbox(.22, .016, .22, .02), gilt, sx * (PW / 2 - .04), BOARD / 2 + .002, sz * (PD / 2 - .02), false)));
+  return { root: g, hinge };
+}
+
 const BUILDERS = {
-  // A · a Metacase: the record of a case, its five stages on the fore-edge
-  metacase(g) {
-    plinth(g);
-    const book = standingBook(g, 2, .62); book.position.y = .3;
-    const halo = glowSprite(0xffe7b8, 2.4, .2); halo.position.set(.8, 1.3, .2); g.add(halo);
-    return t => { book.rotation.y = -.45 + Math.sin(t * .5) * .25; halo.material.opacity = .18 + Math.sin(t * 2) * .05; };
-  },
-  // B · a Model & Harness: the agent, the model's core above it, the harness's tools and toolbox
-  harness(g) {
-    plinth(g, 0, 1.2);
-    const bot = robot(0xf7f5f0); bot.root.scale.setScalar(1.15); bot.root.position.set(-.35, .3, 0); g.add(bot.root);
-    const core = modelCore(PALETTE.violet); core.root.position.set(-.35, 1.95, 0); g.add(core.root);
-    const box = toolbox(PALETTE.rose); box.root.scale.setScalar(.8); box.root.position.set(.75, .3, .25); box.root.rotation.y = -.5; box.lid.rotation.x = -1.1; g.add(box.root);
-    const w = wrench(), l = lens(); w.position.set(-1.05, 1.2, .1); l.position.set(.25, 1.25, .1); g.add(w, l);
-    return t => { bot.update(t, 0); core.ring.rotation.z = t * 1.2; core.root.position.y = 1.95 + Math.sin(t * 1.6) * .05; w.rotation.z = .4 + Math.sin(t * 1.3) * .15; l.rotation.z = -.3 + Math.sin(t * 1.1 + 1) * .15; g.rotation.y = -.25 + Math.sin(t * .3) * .12; };
-  },
-  // C · a Failure Case: the dossier, the failing step marked, a lens over it
-  failure(g) {
-    plinth(g, 0, 1.1);
-    const d = dossier(); d.root.scale.setScalar(1.9); d.root.position.y = .32; d.root.rotation.set(-.12, -.2, 0); g.add(d.root);
-    const l = lens(PALETTE.amber); l.scale.setScalar(2.2); g.add(l);
-    return t => { l.position.set(.1 + Math.sin(t * .7) * .18, 1.15 + Math.sin(t * 1.4) * .05, .45); l.rotation.set(-.9, 0, -.4); d.pin.position.y = .02 + Math.abs(Math.sin(t * 2)) * .04; };
+  // a field's book on its plinth: chosen, it rises, turns to the reader and opens its cover
+  field(g, el) {
+    plinth(g, 0, 1);
+    const tab = el?.closest('[role="tab"]'), book = fieldBook(el?.dataset.field);
+    const holder = new THREE.Group(); holder.scale.setScalar(.62); g.add(holder);
+    book.root.rotation.x = Math.PI / 2; book.root.position.set(-BOOK.PW / 2, BOOK.PD / 2, -(BOOK.T + BOOK.BOARD * 2) / 2); holder.add(book.root);
+    const halo = glowSprite(0xffe7b8, 2.8, 0); halo.position.set(.1, 1.4, -.5); g.add(halo);
+    let open = 0, lift = 0;
+    return t => {
+      const on = tab?.getAttribute('aria-selected') === 'true', hover = !!tab?.matches(':hover');
+      open = lerp(open, on ? 1 : 0, .07); lift = lerp(lift, on ? 1 : hover ? .45 : 0, .1);
+      const o = smooth(open);
+      book.hinge.rotation.z = o * 1.95;                                   // the cover swings round to the left
+      holder.position.set(o * .35, .3 + lift * .12 + Math.sin(t * 1.4) * .02 * lift, 0);
+      holder.rotation.y = lerp(lerp(-.55, -.3, lift), .55, o) + Math.sin(t * .5) * .05; // and the first page turns to the reader
+      halo.material.opacity = .04 + open * .24;
+    };
   },
   // the hundred tasks: a long row of volumes and a stack beside it
   tasks(g) {
@@ -212,16 +244,16 @@ const BUILDERS = {
 const FRAMING = { // camera target y, distance, elevation[, always show the full width]
   replication: [1.3, 10, .3], business: [1.4, 10, .3], social: [1.4, 10, .3], next: [1.2, 9.5, .32],
   ai: [1.4, 8.5, .22], people: [1.1, 8, .22], join: [1.1, 10, .34, true],
-  metacase: [1.0, 7.4, .2], harness: [1.0, 8, .2], failure: [.7, 6.6, .45],
+  field: [1.15, 6.4, .2],
   tasks: [.4, 6.2, .3, true], models: [.6, 6.4, .25, true], harnesses: [.6, 6.2, .3, true],
 };
 
-export function createCard(kind) {
+export function createCard(kind, node) {
   const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(30, 1, .1, 100);
   const l = lights(scene, { span: 7, shadowSize: 512 });
   l.key.position.set(-4, 9, 7);
   const g = new THREE.Group(); scene.add(g);
-  const step = BUILDERS[kind](g);
+  const step = BUILDERS[kind](g, node);
   const [ty, dist, el, whole = false] = FRAMING[kind];
   const target = new THREE.Vector3(0, ty, 0);
   // the picture's half-width: a tall, narrow card (and the invitation, always) shows all of

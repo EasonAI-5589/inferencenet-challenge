@@ -50,8 +50,8 @@ FIELDS.forEach((field, f) => {
   const classes = [...cat.subcategories].sort((a, b) => b.task_count - a.task_count || a.name_en.localeCompare(b.name_en));
   const n = String(f + 1).padStart(2, '0'), open = f === 0;
   books.push(`    <button class="mc-fbook" type="button" role="tab" id="fb-tab-${field.id}" aria-controls="fb-${field.id}" aria-selected="${open}" style="--tc: ${field.color}">
-      <span class="mc-fbook-edge" aria-hidden="true"></span>
-      <span class="mc-fbook-cover">
+      <span class="mc-art" data-art="field" data-field="${field.id}" aria-hidden="true"></span>
+      <span class="mc-fbook-label">
         <small class="mono">Field ${n}</small>
         <b class="mc-fbook-title">${esc(field.name)}</b>
         <span class="mc-fbook-n"><b class="tnum">${cat.task_count}</b> <span>candidate records</span></span>
