@@ -129,9 +129,24 @@ const FIGURES = [
     const box = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1.62, .78, .74)), new THREE.LineBasicMaterial({ color: STAGE_COLORS[2], transparent: true, opacity: .6 }));
     box.position.set(0, .39, 0); g.add(box);
     const bot = robot(0xf7f5f0); bot.root.scale.setScalar(.42); g.add(bot.root);
+    const stepX = [-.54, -.18, .18, .54], stepY = [.12, .25, .38, .51];
     return t => {
-      const u = (t * .3) % 1, k = Math.min(3, Math.floor(u * 4));
-      bot.root.position.set(-.54 + u * 1.44, .12 + k * .13 + Math.abs(Math.sin(u * 4 * Math.PI)) * .06, .02); bot.root.rotation.y = Math.PI / 2; bot.update(t, 1);
+      const cycle = (t * .55) % 4, k = Math.min(3, Math.floor(cycle)), f = cycle - k;
+      if (k < 3) {
+        const jump = ramp(f, .42, .92);
+        const x = lerp(stepX[k], stepX[k + 1], jump);
+        const y = lerp(stepY[k], stepY[k + 1], jump) + Math.sin(jump * Math.PI) * .15 + .006;
+        bot.root.position.set(x, y, .02);
+        bot.root.rotation.y = Math.PI / 2;
+        bot.update(t, jump > .01 && jump < .99 ? 1 : 0);
+      } else {
+        const back = ramp(f, .58, .96);
+        const x = lerp(stepX[3], stepX[0], back);
+        const y = lerp(stepY[3], stepY[0], back) + Math.sin(back * Math.PI) * .22 + .006;
+        bot.root.position.set(x, y, .02);
+        bot.root.rotation.y = back > .05 ? -Math.PI / 2 : Math.PI / 2;
+        bot.update(t, back > .01 && back < .99 ? 1 : 0);
+      }
     };
   },
   g => { // the deliverable checked against its references: scores, a target, a pass

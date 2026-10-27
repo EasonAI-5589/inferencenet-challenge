@@ -9,7 +9,7 @@ const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const ease = x => { const p = clamp(x); return p * p * (3 - 2 * p); };
-const V = '?v=20261027-pillrail';
+const V = '?v=20261027-stepfix';
 
 /* ---- layout helpers ---- */
 const siteHeader = $('.site-header'), subnav = $('.mc-subnav');
@@ -27,8 +27,13 @@ function pinProgress(section) {
 const place = (el, s) => {
   if (!el) return;
   if (!s || !s.visible) { el.style.opacity = 0; el.classList.remove('on'); return; }
-  if (el.parentElement?.classList.contains('mc-notes')) el.classList.toggle('flip', s.x + el.offsetWidth + 40 > el.parentElement.clientWidth);
-  el.style.transform = `translate(${s.x.toFixed(1)}px, ${s.y.toFixed(1)}px)`;
+  let x = s.x;
+  if (el.parentElement?.classList.contains('mc-notes')) {
+    const pw = el.parentElement.clientWidth, w = el.offsetWidth || 300;
+    el.classList.remove('flip');
+    x = Math.min(pw - w - 20, Math.max(16, x));
+  }
+  el.style.transform = `translate(${x.toFixed(1)}px, ${s.y.toFixed(1)}px)`;
   el.style.opacity = s.opacity.toFixed(3);
   el.classList.toggle('on', !!s.active);
 };

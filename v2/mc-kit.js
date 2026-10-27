@@ -262,7 +262,7 @@ export function robot(color = 0xf7f5f0, eye = 0x8ff6ff) {
   cyl(head, .015, .015, .2, PALETTE.ink, 0, .4, 0, 6); ball(head, .05, mat(PALETTE.amber, { emissive: PALETTE.amber, intensity: 1.6 }), 0, .62, 0, 10);
   return {
     root, head,
-    update(t, walking = 0) { body.position.y = Math.abs(Math.sin(t * 7)) * .04 * walking + Math.sin(t * 2) * .01; head.rotation.y = Math.sin(t * .8) * .3 * (1 - walking); },
+    update(t, walking = 0) { body.position.y = Math.abs(Math.sin(t * 7)) * .035 * walking + (Math.sin(t * 2) + 1) * .005; head.rotation.y = Math.sin(t * .8) * .3 * (1 - walking); },
   };
 }
 export function crane(color = PALETTE.amber) {
