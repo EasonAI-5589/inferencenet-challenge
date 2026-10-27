@@ -291,13 +291,7 @@ html[lang^="zh"] .mc-en-only { display: none; }
 .mc-catalogue-meta { display: grid; grid-template-columns: repeat(3, auto) 1fr; gap: 56px; align-items: end; margin: -16px 0 40px; padding-bottom: 28px; border-bottom: 1px solid var(--border-hairline); }
 .mc-catalogue-meta b { display: block; font-size: clamp(40px, 4.4vw, 64px); font-weight: 650; letter-spacing: -0.045em; line-height: 1; }
 .mc-catalogue-meta span { color: var(--text-tertiary); font-size: 14px; }
-.mc-legend { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
 .mc-call { font-size: 11px; color: var(--text-tertiary); letter-spacing: .04em; }
-.mc-status, .mc-legend span { justify-self: end; display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border-radius: 999px; font: 500 10px var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--st); border: 1px solid color-mix(in oklab, var(--st) 45%, transparent); background: color-mix(in oklab, var(--st) 10%, transparent); white-space: nowrap; }
-[data-status="ready"] { --st: var(--mc-green); }
-[data-status="partial"] { --st: var(--track-2); }
-[data-status="gap"] { --st: var(--text-tertiary); }
-[data-status="gap"] .mc-status, .mc-legend [data-status="gap"] { border-style: dashed; background: none; }
 .mc-gallery-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 32px; align-items: center; margin-top: var(--mc-gap); padding: 26px 28px; border-radius: 20px; border: 1px dashed var(--border-strong);
   background: radial-gradient(60% 140% at 100% 50%, color-mix(in oklab, var(--mc-rose) 9%, transparent), transparent 70%); }
 .mc-gallery-copy { display: grid; gap: 6px; }
@@ -309,14 +303,12 @@ html[lang^="zh"] .mc-en-only { display: none; }
 .mc-gallery-chips li::before { content: ""; width: 7px; height: 7px; border-radius: 2px; background: var(--tc); }
 .mc-gallery-chips li.more { border-style: dashed; border-color: var(--border-strong); color: var(--text-tertiary); }
 .mc-gallery-chips li.more::before { display: none; }
-.mc-catalogue-note { margin-top: 24px; max-width: 70em; color: var(--text-tertiary); font-size: 13px; line-height: 1.6; }
 
 /* ---------- 04 · the field books (scripts/build-fields.mjs writes them; metacase.js opens them) ----------
    Each field is a toy book on a plinth, drawn by the shared stage in its colour like every other
-   book on the page. Chosen, it opens, and below it the same book lies open on a spread: the
-   contents (classes, with each one's share of the field's candidate records) and the entry for
-   the class chosen, printed on the cream, gilt-edged stock of the 3D pages. Without the script
-   every page simply shows. */
+   book on the page. Chosen, it opens, and below it the same book lies open on a spread listing
+   all of its classes, each with its number of tasks and its share of the field, printed on the
+   cream, gilt-edged stock of the 3D pages. Without the script every book's pages simply show. */
 .mc-bookrow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 24px); margin: 0 0 30px; }
 .mc-fbook { position: relative; display: grid; grid-template-rows: auto 1fr; padding: 0; border-radius: 18px; border: 1px solid var(--border-hairline); background: none; overflow: hidden;
   color: var(--text-primary); font: inherit; text-align: left; cursor: pointer; transition: border-color .3s, box-shadow .3s, translate .35s var(--ease-emphasized); }
@@ -324,8 +316,10 @@ html[lang^="zh"] .mc-en-only { display: none; }
 .mc-fbook-label { display: grid; align-content: start; gap: 4px; padding: 14px 18px 16px; }
 .mc-fbook small { color: var(--tc); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; }
 .mc-fbook-title { font-size: clamp(20px, 1.8vw, 24px); font-weight: 650; letter-spacing: -.02em; line-height: 1.15; }
-.mc-fbook-n, .mc-fbook-k { display: inline-flex; align-items: baseline; gap: 6px; font-size: 13px; color: var(--text-secondary); }
-.mc-fbook-n b, .mc-fbook-k b { font-size: 16px; font-weight: 650; color: var(--text-primary); }
+.mc-fbook-n { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 2px 6px; font-size: 13px; color: var(--text-secondary); }
+.mc-fbook-n b { font-size: 16px; font-weight: 650; color: var(--text-primary); }
+.mc-fbook-n > span { white-space: nowrap; }
+.mc-fbook-n i { font-style: normal; color: var(--text-tertiary); }
 .mc-fbook:hover { border-color: color-mix(in oklab, var(--tc) 45%, var(--border-hairline)); translate: 0 -2px; }
 .mc-fbook[aria-selected="true"] { border-color: color-mix(in oklab, var(--tc) 85%, transparent); box-shadow: 0 0 0 1px color-mix(in oklab, var(--tc) 55%, transparent), 0 26px 48px -30px var(--tc); }
 .mc-fbook[aria-selected="true"] .mc-art { background: radial-gradient(70% 80% at 50% 80%, color-mix(in oklab, var(--tc) 26%, transparent), transparent 72%); }
@@ -334,7 +328,7 @@ html[lang^="zh"] .mc-en-only { display: none; }
 
 /* the open book: the field's cloth cover with its gilt rule, and two cream pages, each with a gilt
    border like the printed cards in chapter 01 */
-.mc-spread { position: relative; display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); padding: 16px 16px 20px; border-radius: 22px; color: #1f2a3a;
+.mc-spread { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding: 16px 16px 20px; border-radius: 22px; color: #1f2a3a;
   background: linear-gradient(160deg, color-mix(in oklab, var(--tc) 94%, #fff), color-mix(in oklab, var(--tc) 72%, #1f2a3a));
   box-shadow: inset 0 2px 0 rgb(255 255 255 / 24%), inset 0 -5px 0 rgb(0 0 0 / 20%), 0 34px 60px -34px rgb(0 0 0 / 70%); }
 .mc-spread::before { content: ""; position: absolute; inset: 6px 6px 9px; border: 2px solid rgb(216 180 106 / 85%); border-radius: 17px; pointer-events: none; }
@@ -353,40 +347,20 @@ html[lang^="zh"] .mc-en-only { display: none; }
 .mc-page-head h3 { font-size: clamp(24px, 2.2vw, 30px); font-weight: 700; letter-spacing: -.02em; color: #1f2a3a; }
 .mc-page-head p { color: #4b5563; font-size: 14px; }
 .mc-page-head p b { color: #1f2a3a; }
-.mc-toc { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 2px; }
-.mc-toc button { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: "name n status" "bar bar bar"; align-items: center; gap: 6px 12px;
-  padding: 10px 12px; border: 0; border-radius: 8px; background: none; color: #1f2a3a; font: inherit; text-align: left; cursor: pointer; transition: background-color .2s, box-shadow .2s; }
-.mc-toc button:hover { background: rgb(31 42 58 / 6%); }
-.mc-toc button[aria-selected="true"] { background: color-mix(in oklab, var(--tc) 18%, #f6efe0); box-shadow: inset 4px 0 0 var(--tc); }
-.mc-toc button:focus-visible { outline: 2px solid #1f2a3a; outline-offset: -2px; }
-.mc-toc-name { grid-area: name; font-size: 15px; font-weight: 600; line-height: 1.3; }
-.mc-toc-n { grid-area: n; font-size: 16px; font-weight: 650; }
-.mc-toc .mc-status { grid-area: status; }
-.mc-toc-bar { grid-area: bar; position: relative; height: 6px; border-radius: 3px; background: rgb(31 42 58 / 9%); overflow: hidden; }
+.mc-toc-n { font-size: clamp(24px, 2.2vw, 30px); font-weight: 700; letter-spacing: -.03em; line-height: 1; color: #1f2a3a; }
+.mc-toc-bar { position: relative; display: block; height: 6px; margin-top: 12px; border-radius: 3px; background: rgb(31 42 58 / 9%); overflow: hidden; }
 .mc-toc-bar::after { content: ""; position: absolute; inset: 0 auto 0 0; width: calc(var(--share) * 100%); border-radius: 3px; background: var(--tc); }
-.mc-page [data-status="ready"] { --st: #2f8a5b; }
-.mc-page [data-status="partial"] { --st: #a86f12; }
-.mc-page [data-status="gap"] { --st: #6b7280; }
-.mc-page .mc-status { color: var(--st); border-color: color-mix(in oklab, var(--st) 60%, transparent); background: color-mix(in oklab, var(--st) 10%, transparent); font-size: 10px; }
-.mc-entry + .mc-entry { margin-top: 28px; padding-top: 28px; border-top: 2px dashed rgb(31 42 58 / 14%); }
-.is-books .mc-entry + .mc-entry { margin-top: 0; padding-top: 0; border-top: 0; }
-.mc-entry[hidden] { display: none; }
-.mc-entry-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 4px 12px; padding-bottom: 14px; border-bottom: 2px solid var(--tc); }
-.mc-entry-head .mc-call { grid-column: 1 / -1; color: #6b7280; font-size: 11px; }
-.mc-entry-head h4 { font-size: clamp(20px, 1.8vw, 24px); font-weight: 700; letter-spacing: -.015em; line-height: 1.2; color: #1f2a3a; }
-.mc-entry-desc { margin-top: 14px; font-size: 16px; line-height: 1.6; color: #2b3445; }
-.mc-entry-facts { display: grid; gap: 10px; margin: 16px 0 0; }
-.mc-entry-facts > div { display: grid; grid-template-columns: 116px minmax(0, 1fr); gap: 12px; padding-top: 10px; border-top: 1px dashed rgb(31 42 58 / 18%); }
-.mc-entry-facts dt { font: 400 10.5px/1.6 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: #6b7280; }
-.mc-entry-facts dd { margin: 0; font-size: 14px; line-height: 1.55; color: #1f2a3a; }
-.mc-sources { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-.mc-src-name { display: block; font: 500 12.5px/1.4 var(--font-mono); color: #1f2a3a; overflow-wrap: anywhere; }
-.mc-src-meta, .mc-src-note { display: block; font-size: 13px; line-height: 1.45; color: #4b5563; }
-.mc-src-note { color: #6b7280; }
+/* every class is a short section of the page: its call number, name and count, the bar of its
+   share of the field, and one line on what it asks of an agent */
+.mc-page-head + .mc-entry { margin-top: 22px; }
+.mc-entry + .mc-entry { margin-top: 20px; padding-top: 20px; border-top: 2px dashed rgb(31 42 58 / 14%); }
+.mc-entry-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "call call" "name n"; align-items: baseline; gap: 4px 16px; }
+.mc-entry-head .mc-call { grid-area: call; color: color-mix(in oklab, var(--tc) 55%, #1f2a3a); font-size: 11px; letter-spacing: .02em; text-transform: none; }
+.mc-entry-head h4 { grid-area: name; margin: 0; font-size: clamp(17px, 1.5vw, 20px); font-weight: 700; letter-spacing: -.015em; line-height: 1.25; color: #1f2a3a; }
+.mc-entry-n { grid-area: n; display: inline-flex; align-items: baseline; gap: 6px; color: #4b5563; font-size: 13px; white-space: nowrap; }
+.mc-entry-desc { margin-top: 10px; font-size: 14.5px; line-height: 1.6; color: #2b3445; }
 .mc-spread.is-opening { animation: mc-book-open .55s var(--ease-emphasized); transform-origin: 50% 0; }
-.mc-page-r.is-turning { animation: mc-page-turn .45s var(--ease-emphasized); transform-origin: 0 50%; }
 @keyframes mc-book-open { from { opacity: 0; transform: perspective(1400px) rotateX(-10deg) scale(.97); } }
-@keyframes mc-page-turn { from { transform: perspective(1400px) rotateY(-24deg); filter: brightness(.9); } }
 
 /* The Challenge uses the same label, glass, typography and signature rail.
  * Its responsive layout lives in arena.css. */
@@ -437,7 +411,6 @@ html[lang^="zh"] .mc-en-only { display: none; }
   .mc-people, .mc-people-mini { grid-template-columns: 1fr; }
   .mc-grid-3 .mc-card:last-child .mc-art { aspect-ratio: 16 / 11; }
   .mc-catalogue-meta { grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  .mc-legend { grid-column: 1 / -1; justify-content: flex-start; }
   .mc-results-card { grid-template-columns: 1fr; grid-template-areas: "head" "stats" "actions"; }
   .mc-results-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
   .mc-results-stats li { padding: 0 10px 12px; }
@@ -451,15 +424,16 @@ html[lang^="zh"] .mc-en-only { display: none; }
   .mc-fbook-label { gap: 2px; padding: 8px 10px 10px; }
   .mc-fbook small { font-size: 9px; letter-spacing: .06em; }
   .mc-fbook-title { font-size: 15px; }
-  .mc-fbook-n, .mc-fbook-k { display: grid; gap: 0; font-size: 11px; }
-  .mc-fbook-n b, .mc-fbook-k b { font-size: 14px; }
+  .mc-fbook-n { display: grid; gap: 0; font-size: 11px; }
+  .mc-fbook-n i { display: none; }
+  .mc-fbook-n b { font-size: 14px; }
   .mc-spread { grid-template-columns: 1fr; padding: 12px 12px 18px; border-radius: 18px; }
   .mc-spread::before { inset: 4px 4px 7px; border-radius: 14px; }
   .mc-page { min-height: 0; padding: 22px 20px; }
   .mc-page-l { border-radius: 10px 10px 3px 3px; background: linear-gradient(180deg, #f6efe0 80%, #ebe1cc); }
   .mc-page-r { border-radius: 3px 3px 10px 10px; background: linear-gradient(180deg, #e9dfc9, #f6efe0 14%); }
   .mc-page-r::before { top: auto; bottom: -10px; right: 24px; height: 40px; }
-  .mc-entry-facts > div { grid-template-columns: 1fr; gap: 4px; }
+  .mc-toc-n { font-size: 24px; }
 }
 
 /* ---------- Reduced motion ---------- */
@@ -467,7 +441,7 @@ html[lang^="zh"] .mc-en-only { display: none; }
   .js .mc-in, .js .mc-r { animation: none; opacity: 1; translate: none; transition: none; }
   .mc-rail li, .mc-rail li.on, .mc-rail li.is-active { transition: none; translate: none; }
   .mc-fbook, .mc-fbook:hover { transition: none; translate: none; }
-  .mc-spread.is-opening, .mc-page-r.is-turning { animation: none; }
+  .mc-spread.is-opening { animation: none; }
 }
 
 

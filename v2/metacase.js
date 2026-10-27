@@ -11,7 +11,7 @@ const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const ease = x => { const p = clamp(x); return p * p * (3 - 2 * p); };
-const V = '?v=20261027-eason8c';
+const V = '?v=20261027-fields';
 
 /* ---- layout helpers ---- */
 const siteHeader = $('.site-header'), subnav = $('.mc-subnav');
@@ -271,10 +271,10 @@ function countUp(node) {
   requestAnimationFrame(step);
 }
 
-/* ---- 04: the field books. Choosing a field opens its book on two pages: the contents (its
- * classes, with each one's share of the field's candidate records) and the entry for the class
- * chosen. Tabs follow the usual keys: arrows (Home, End) move between them. Without this script
- * every book's pages are simply shown, one after the other. ---- */
+/* ---- 04: the field books. Choosing a field opens its book on two pages that list all of its
+ * classes, each with its number of tasks. The books are tabs with the usual keys: arrows (Home,
+ * End) move between them. Without this script every book's pages are simply shown, one after
+ * the other. ---- */
 const fieldbooks = $('[data-fieldbooks]');
 if (fieldbooks) {
   fieldbooks.classList.add('is-books');
@@ -301,13 +301,6 @@ if (fieldbooks) {
     const spread = $('#' + tab.getAttribute('aria-controls'));
     spread.hidden = !on;
     if (on && animate) replay(spread, 'is-opening');
-  });
-  $$('.mc-spread', fieldbooks).forEach(spread => {
-    const page = $('.mc-page-r', spread);
-    tablist($('.mc-toc', spread), (tab, on, animate) => {
-      $('#' + tab.getAttribute('aria-controls')).hidden = !on;
-      if (on && animate) replay(page, 'is-turning');
-    });
   });
 }
 

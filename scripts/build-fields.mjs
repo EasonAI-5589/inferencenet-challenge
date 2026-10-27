@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 // Writes the "first fields" books of the v2 homepage (section 04) from metacase-harbor's
-// metacase/summary.json: one book per field, its classes as the contents, and each class's
-// task description, what it tests, sources, grading, status and pending adapters.
+// metacase/summary.json: one book per field and, open on two pages, every class in it with its
+// number of tasks, its share of the field and a one-line description of what it is about.
 //   node scripts/build-fields.mjs path/to/metacase/summary.json
 // The block between the fields:books markers in v2/index.html is replaced, and each class's
 // Chinese name and description from the summary are written to assets/i18n/index.zh.json.
-// Other translations (grading labels, what a class tests, adapter notes) live in that file.
+// The descriptions leave out the benchmarks a class draws on: the page says what a class asks
+// of an agent, not where its tasks come from.
 import { readFileSync, writeFileSync } from 'node:fs';
 
 const [summaryPath] = process.argv.slice(2);
@@ -20,26 +21,12 @@ const FIELDS = [
   { id: 'fin', name: 'Finance', color: 'var(--track-2)' },
   { id: 'soc', name: 'Social science', color: 'var(--mc-violet)' },
 ];
-const STATUS = {
-  ready: ['Ready', 'At least five pinned, runnable public tasks.'],
-  partial: ['Partial', 'Depends on restricted material or on adapters still to be generated.'],
-  gap: ['To add', 'No runnable tasks yet: an adapter still has to be generated.'],
-};
+const RIGHT = 3; // classes on the right-hand page; the rest go under the field's heading on the left
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
 const slug = id => id.replace(/\./g, '-');
-const gradingLabel = g => ({ deterministic: 'Deterministic', llm_judge: 'LLM judge', rubric_llm_judge: 'Rubric (LLM judge)' }[g] || cap(g));
-// One line for a class: deterministic, LLM-judged, rubric-graded, or a mix of these.
-function evaluation(sources) {
-  const kinds = new Set();
-  sources.forEach(({ grading: g }) => {
-    if (g.startsWith('mixed')) kinds.add('mixed');
-    else { if (g.includes('deterministic')) kinds.add('det'); if (g.includes('rubric')) kinds.add('rubric'); else if (g.includes('llm')) kinds.add('llm'); }
-  });
-  if (kinds.has('mixed')) return 'Mixed';
-  const key = ['det', 'rubric', 'llm'].filter(k => kinds.has(k)).join('+');
-  return { det: 'Deterministic', llm: 'LLM judge', rubric: 'Rubric', 'det+rubric': 'Deterministic + Rubric', 'det+llm': 'Deterministic + LLM judge' }[key] || 'Mixed';
-}
+// Benchmark names: in parentheses (both languages), and the one that appears in a sentence.
+const NAMED = [['TPC-H style economic data', 'wholesale supply-chain data'], [' TPC-H 类经济数据', '批发供应链数据']];
+const describe = s => NAMED.reduce((t, [a, b]) => t.replace(a, b), s.replace(/\s*\([^)]*\)/g, '').replace(/（[^）]*）/g, '').trim());
 
 const categories = new Map(summary.categories.map(c => [c.id, c]));
 const zh = {};
@@ -54,44 +41,26 @@ FIELDS.forEach((field, f) => {
       <span class="mc-fbook-label">
         <small class="mono">Field ${n}</small>
         <b class="mc-fbook-title">${esc(field.name)}</b>
-        <span class="mc-fbook-n"><b class="tnum">${cat.task_count}</b> <span>candidate records</span></span>
-        <span class="mc-fbook-k"><b class="tnum">${classes.length}</b> <span>classes</span></span>
+        <span class="mc-fbook-n"><span><b class="tnum">${cat.task_count}</b> <span>tasks</span></span> <i aria-hidden="true">·</i> <span><b class="tnum">${classes.length}</b> <span>classes</span></span></span>
       </span>
     </button>`);
-  const toc = [], entries = [];
-  classes.forEach((c, k) => {
-    const id = `fb-${slug(c.id)}`, on = k === 0, [statusName, statusNote] = STATUS[c.status] || [cap(c.status), ''];
-    zh[c.name_en] = c.name_zh; zh[c.description_en] = c.description_zh;
-    toc.push(`          <li><button type="button" role="tab" id="${id}-tab" aria-controls="${id}" aria-selected="${on}" data-status="${c.status}">
-            <span class="mc-toc-name">${esc(c.name_en)}</span>
-            <span class="mc-toc-bar" style="--share: ${(c.task_count / cat.task_count).toFixed(3)}" aria-hidden="true"></span>
-            <b class="mc-toc-n tnum">${c.task_count}</b>
-            <span class="mc-status">${statusName}</span>
-          </button></li>`);
-    const sources = c.sources.map(s => `<li><span class="mc-src-name" data-no-translate>${esc(s.kind === 'adapter' ? s.label.replace(/^adapter:/, '') + ' adapter' : s.label)}</span><span class="mc-src-meta">${s.kind === 'adapter' ? '<span>to generate</span>' : `<b class="tnum">${s.tasks}</b> <span>${s.tasks === 1 ? 'task' : 'tasks'}</span>`} · <span>${esc(gradingLabel(s.grading))}</span>${s.availability === 'requires_private_materials' ? ' · <span>private materials</span>' : ''}</span></li>`).join('');
-    const pending = c.pending_adapters.map(a => `<li><span class="mc-src-name" data-no-translate>${esc(a.adapter)}</span><span class="mc-src-meta"><b class="tnum">${a.upstream_tasks}</b> <span>upstream tasks</span></span><span class="mc-src-note">${esc(a.note)}</span></li>`).join('');
-    entries.push(`        <article class="mc-entry" id="${id}" role="tabpanel" aria-labelledby="${id}-tab" data-status="${c.status}">
-          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>${esc(c.id)}</span><h4>${esc(c.name_en)}</h4><span class="mc-status">${statusName}</span></header>
-          <p class="mc-entry-desc">${esc(c.description_en)}</p>
-          <dl class="mc-entry-facts">
-            <div><dt>Candidate tasks</dt><dd><b class="tnum">${c.task_count}</b></dd></div>
-            <div><dt>What it tests</dt><dd>${esc(cap(c.capability))}</dd></div>
-            <div><dt>Sources</dt><dd><ul class="mc-sources">${sources}</ul></dd></div>
-            <div><dt>Evaluation</dt><dd>${evaluation(c.sources)}</dd></div>
-            <div><dt>Status</dt><dd><span>${statusName}</span>: <span>${statusNote}</span></dd></div>${pending ? `
-            <div><dt>Waiting on</dt><dd><ul class="mc-sources">${pending}</ul></dd></div>` : ''}
-          </dl>
-        </article>`);
+  const entries = classes.map(c => {
+    const desc = describe(c.description_en);
+    zh[c.name_en] = c.name_zh; zh[desc] = describe(c.description_zh);
+    return `      <article class="mc-entry" id="fb-${slug(c.id)}">
+        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>${esc(c.id)}</span><h4>${esc(c.name_en)}</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">${c.task_count}</b> <span>tasks</span></span></header>
+        <span class="mc-toc-bar" style="--share: ${(c.task_count / cat.task_count).toFixed(3)}" aria-hidden="true"></span>
+        <p class="mc-entry-desc">${esc(desc)}</p>
+      </article>`;
   });
-  spreads.push(`  <section class="mc-spread" id="fb-${field.id}" role="tabpanel" aria-labelledby="fb-tab-${field.id}" style="--tc: ${field.color}"${open ? '' : ' data-closed'}>
+  const split = Math.max(1, entries.length - RIGHT);
+  spreads.push(`  <section class="mc-spread" id="fb-${field.id}" role="tabpanel" aria-labelledby="fb-tab-${field.id}" style="--tc: ${field.color}">
     <div class="mc-page mc-page-l">
-      <header class="mc-page-head"><small class="mono">Field ${n} · Contents</small><h3>${esc(field.name)}</h3><p><b class="tnum">${cat.task_count}</b> <span>candidate records in</span> <b class="tnum">${classes.length}</b> <span>classes</span></p></header>
-      <ol class="mc-toc" role="tablist" aria-label="${esc(field.name)}: classes">
-${toc.join('\n')}
-      </ol>
+      <header class="mc-page-head"><small class="mono">Field ${n}</small><h3>${esc(field.name)}</h3><p><b class="tnum">${cat.task_count}</b> <span>tasks in</span> <b class="tnum">${classes.length}</b> <span>classes</span></p></header>
+${entries.slice(0, split).join('\n')}
     </div>
     <div class="mc-page mc-page-r">
-${entries.join('\n')}
+${entries.slice(split).join('\n')}
     </div>
   </section>`);
 });
@@ -110,4 +79,4 @@ writeFileSync(HTML, html.slice(0, a) + block + html.slice(b + END.length));
 const dict = JSON.parse(readFileSync(ZH, 'utf8'));
 Object.assign(dict, zh);
 writeFileSync(ZH, JSON.stringify(dict, null, 2) + '\n');
-console.log(`${HTML}: ${summary.task_count} candidate records, ${summary.categories.reduce((s, c) => s + c.subcategories.length, 0)} classes; ${Object.keys(zh).length} translations`);
+console.log(`${HTML}: ${summary.task_count} tasks, ${summary.categories.reduce((s, c) => s + c.subcategories.length, 0)} classes; ${Object.keys(zh).length} translations`);

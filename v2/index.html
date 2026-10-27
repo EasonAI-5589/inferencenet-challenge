@@ -16,13 +16,13 @@
   <script>document.documentElement.classList.add("js")</script>
   <script src="../site.js?v=20261019-motion" defer></script>
   <link rel="stylesheet" href="../language.css">
-  <script src="../language.js?v=20261027-eason8c" defer></script>
+  <script src="../language.js?v=20261027-fields" defer></script>
   <link rel="stylesheet" href="v2.css?v=20261027-copy2">
   <link rel="stylesheet" href="arena.css?v=20261027-frontgun">
-  <link rel="stylesheet" href="metacase.css?v=20261027-eason8c">
+  <link rel="stylesheet" href="metacase.css?v=20261027-fields3">
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script src="v2.js?v=20261022-v2-ambient" defer></script>
-  <script type="module" src="metacase.js?v=20261027-eason8c"></script>
+  <script type="module" src="metacase.js?v=20261027-fields"></script>
   <script type="module" src="arena.js?v=20261027-warp3d-d"></script>
 </head>
 <body class="v2-home mc-home">
@@ -207,13 +207,12 @@
     <div class="mc-head mc-r">
       <p class="mc-label mono"><span>04</span>The first fields</p>
       <h2 id="fields-title"><span>Three fields to start,</span> <em>sixteen classes of cases.</em></h2>
-      <p class="mc-sub">Economics, finance and social science come first: each offers public evidence, documented decisions and outputs that can be checked. Open a field's book to see its classes, how many candidate tasks each holds, where they come from and how they are graded.</p>
+      <p class="mc-sub">Economics, finance and social science come first: each offers public evidence, documented decisions and outputs that can be checked. Open a field's book to see its classes and how many tasks each holds.</p>
     </div>
     <div class="mc-catalogue-meta mc-r">
-      <div><b class="tnum" data-count="285">285</b><span>candidate records</span></div>
+      <div><b class="tnum" data-count="285">285</b><span>tasks</span></div>
       <div><b class="tnum" data-count="3">3</b><span>fields</span></div>
       <div><b class="tnum" data-count="16">16</b><span>classes</span></div>
-      <p class="mc-legend" aria-label="Status"><span data-status="ready">Ready</span><span data-status="partial">Partial</span><span data-status="gap">To add</span></p>
     </div>
 <!-- fields:books:start (written by scripts/build-fields.mjs from metacase-harbor metacase/summary.json, v0.1) -->
 <div class="mc-fieldbooks" data-fieldbooks>
@@ -223,8 +222,7 @@
       <span class="mc-fbook-label">
         <small class="mono">Field 01</small>
         <b class="mc-fbook-title">Economics</b>
-        <span class="mc-fbook-n"><b class="tnum">152</b> <span>candidate records</span></span>
-        <span class="mc-fbook-k"><b class="tnum">5</b> <span>classes</span></span>
+        <span class="mc-fbook-n"><span><b class="tnum">152</b> <span>tasks</span></span> <i aria-hidden="true">·</i> <span><b class="tnum">5</b> <span>classes</span></span></span>
       </span>
     </button>
     <button class="mc-fbook" type="button" role="tab" id="fb-tab-fin" aria-controls="fb-fin" aria-selected="false" style="--tc: var(--track-2)">
@@ -232,8 +230,7 @@
       <span class="mc-fbook-label">
         <small class="mono">Field 02</small>
         <b class="mc-fbook-title">Finance</b>
-        <span class="mc-fbook-n"><b class="tnum">90</b> <span>candidate records</span></span>
-        <span class="mc-fbook-k"><b class="tnum">6</b> <span>classes</span></span>
+        <span class="mc-fbook-n"><span><b class="tnum">90</b> <span>tasks</span></span> <i aria-hidden="true">·</i> <span><b class="tnum">6</b> <span>classes</span></span></span>
       </span>
     </button>
     <button class="mc-fbook" type="button" role="tab" id="fb-tab-soc" aria-controls="fb-soc" aria-selected="false" style="--tc: var(--mc-violet)">
@@ -241,317 +238,113 @@
       <span class="mc-fbook-label">
         <small class="mono">Field 03</small>
         <b class="mc-fbook-title">Social science</b>
-        <span class="mc-fbook-n"><b class="tnum">43</b> <span>candidate records</span></span>
-        <span class="mc-fbook-k"><b class="tnum">5</b> <span>classes</span></span>
+        <span class="mc-fbook-n"><span><b class="tnum">43</b> <span>tasks</span></span> <i aria-hidden="true">·</i> <span><b class="tnum">5</b> <span>classes</span></span></span>
       </span>
     </button>
   </div>
   <section class="mc-spread" id="fb-econ" role="tabpanel" aria-labelledby="fb-tab-econ" style="--tc: var(--track-1)">
     <div class="mc-page mc-page-l">
-      <header class="mc-page-head"><small class="mono">Field 01 · Contents</small><h3>Economics</h3><p><b class="tnum">152</b> <span>candidate records in</span> <b class="tnum">5</b> <span>classes</span></p></header>
-      <ol class="mc-toc" role="tablist" aria-label="Economics: classes">
-          <li><button type="button" role="tab" id="fb-econ-replication-tab" aria-controls="fb-econ-replication" aria-selected="true" data-status="partial">
-            <span class="mc-toc-name">Econometric replication</span>
-            <span class="mc-toc-bar" style="--share: 0.658" aria-hidden="true"></span>
-            <b class="mc-toc-n tnum">100</b>
-            <span class="mc-status">Partial</span>
-          </button></li>
-          <li><button type="button" role="tab" id="fb-econ-data-tab" aria-controls="fb-econ-data" aria-selected="false" data-status="ready">
-            <span class="mc-toc-name">Economic &amp; business data engineering</span>
-            <span class="mc-toc-bar" style="--share: 0.145" aria-hidden="true"></span>
-            <b class="mc-toc-n tnum">22</b>
-            <span class="mc-status">Ready</span>
-          </button></li>
-          <li><button type="button" role="tab" id="fb-econ-markets-tab" aria-controls="fb-econ-markets" aria-selected="false" data-status="ready">
-            <span class="mc-toc-name">Market movement forecasting</span>
-            <span class="mc-toc-bar" style="--share: 0.099" aria-hidden="true"></span>
-            <b class="mc-toc-n tnum">15</b>
-            <span class="mc-status">Ready</span>
-          </button></li>
-          <li><button type="button" role="tab" id="fb-econ-monetary-tab" aria-controls="fb-econ-monetary" aria-selected="false" data-status="ready">
-            <span class="mc-toc-name">Monetary policy communication</span>
-            <span class="mc-toc-bar" style="--share: 0.099" aria-hidden="true"></span>
-            <b class="mc-toc-n tnum">15</b>
-            <span class="mc-status">Ready</span>
-          </button></li>
-          <li><button type="button" role="tab" id="fb-econ-statistics-tab" aria-controls="fb-econ-statistics" aria-selected="false" data-status="gap">
-            <span class="mc-toc-name">Official statistics synthesis</span>
-            <span class="mc-toc-bar" style="--share: 0.000" aria-hidden="true"></span>
-            <b class="mc-toc-n tnum">0</b>
-            <span class="mc-status">To add</span>
-          </button></li>
-      </ol>
+      <header class="mc-page-head"><small class="mono">Field 01</small><h3>Economics</h3><p><b class="tnum">152</b> <span>tasks in</span> <b class="tnum">5</b> <span>classes</span></p></header>
+      <article class="mc-entry" id="fb-econ-replication">
+        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>econ.replication</span><h4>Econometric replication</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">100</b> <span>tasks</span></span></header>
+        <span class="mc-toc-bar" style="--share: 0.658" aria-hidden="true"></span>
+        <p class="mc-entry-desc">Reproduce a published regression coefficient from the paper's own data.</p>
+      </article>
+      <article class="mc-entry" id="fb-econ-data">
+        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>econ.data</span><h4>Economic &amp; business data engineering</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">22</b> <span>tasks</span></span></header>
+        <span class="mc-toc-bar" style="--share: 0.145" aria-hidden="true"></span>
+        <p class="mc-entry-desc">SQL and dbt over banking, retail, e-commerce and wholesale supply-chain data.</p>
+      </article>
     </div>
     <div class="mc-page mc-page-r">
-        <article class="mc-entry" id="fb-econ-replication" role="tabpanel" aria-labelledby="fb-econ-replication-tab" data-status="partial">
-          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>econ.replication</span><h4>Econometric replication</h4><span class="mc-status">Partial</span></header>
-          <p class="mc-entry-desc">Reproduce a published regression coefficient from the paper's own data (OLS, DID, IV, RDD).</p>
-          <dl class="mc-entry-facts">
-            <div><dt>Candidate tasks</dt><dd><b class="tnum">100</b></dd></div>
-            <div><dt>What it tests</dt><dd>Reading a paper, data cleaning, specification fidelity, Stata/Python estimation</dd></div>
-            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>InferenceNet Dev100</span><span class="mc-src-meta"><b class="tnum">100</b> <span>tasks</span> · <span>Deterministic</span> · <span>private materials</span></span></li></ul></dd></div>
-            <div><dt>Evaluation</dt><dd>Deterministic</dd></div>
-            <div><dt>Status</dt><dd><span>Partial</span>: <span>Depends on restricted material or on adapters still to be generated.</span></dd></div>
-          </dl>
-        </article>
-        <article class="mc-entry" id="fb-econ-data" role="tabpanel" aria-labelledby="fb-econ-data-tab" data-status="ready">
-          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>econ.data</span><h4>Economic &amp; business data engineering</h4><span class="mc-status">Ready</span></header>
-          <p class="mc-entry-desc">SQL and dbt over banking, retail, e-commerce and TPC-H style economic data.</p>
-          <dl class="mc-entry-facts">
-            <div><dt>Candidate tasks</dt><dd><b class="tnum">22</b></dd></div>
-            <div><dt>What it tests</dt><dd>Schema understanding, joins, execution-checked transformations</dd></div>
-            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>bird-bench@parity</span><span class="mc-src-meta"><b class="tnum">16</b> <span>tasks</span> · <span>Deterministic</span></span></li><li><span class="mc-src-name" data-no-translate>spider2-dbt@1.0</span><span class="mc-src-meta"><b class="tnum">6</b> <span>tasks</span> · <span>Deterministic</span></span></li></ul></dd></div>
-            <div><dt>Evaluation</dt><dd>Deterministic</dd></div>
-            <div><dt>Status</dt><dd><span>Ready</span>: <span>At least five pinned, runnable public tasks.</span></dd></div>
-          </dl>
-        </article>
-        <article class="mc-entry" id="fb-econ-markets" role="tabpanel" aria-labelledby="fb-econ-markets-tab" data-status="ready">
-          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>econ.markets</span><h4>Market movement forecasting</h4><span class="mc-status">Ready</span></header>
-          <p class="mc-entry-desc">Predict stock price movement from tweets and historical prices (ACL18, BigData22, CIKM18).</p>
-          <dl class="mc-entry-facts">
-            <div><dt>Candidate tasks</dt><dd><b class="tnum">15</b></dd></div>
-            <div><dt>What it tests</dt><dd>Forecasting under noise, calibration against base rates</dd></div>
-            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>pixiu@parity</span><span class="mc-src-meta"><b class="tnum">15</b> <span>tasks</span> · <span>Deterministic</span></span></li></ul></dd></div>
-            <div><dt>Evaluation</dt><dd>Deterministic</dd></div>
-            <div><dt>Status</dt><dd><span>Ready</span>: <span>At least five pinned, runnable public tasks.</span></dd></div>
-          </dl>
-        </article>
-        <article class="mc-entry" id="fb-econ-monetary" role="tabpanel" aria-labelledby="fb-econ-monetary-tab" data-status="ready">
-          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>econ.monetary</span><h4>Monetary policy communication</h4><span class="mc-status">Ready</span></header>
-          <p class="mc-entry-desc">Classify the hawkish / dovish stance of FOMC statements and minutes.</p>
-          <dl class="mc-entry-facts">
-            <div><dt>Candidate tasks</dt><dd><b class="tnum">15</b></dd></div>
-            <div><dt>What it tests</dt><dd>Macro reasoning from central-bank language</dd></div>
-            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>pixiu@parity</span><span class="mc-src-meta"><b class="tnum">15</b> <span>tasks</span> · <span>Deterministic</span></span></li></ul></dd></div>
-            <div><dt>Evaluation</dt><dd>Deterministic</dd></div>
-            <div><dt>Status</dt><dd><span>Ready</span>: <span>At least five pinned, runnable public tasks.</span></dd></div>
-          </dl>
-        </article>
-        <article class="mc-entry" id="fb-econ-statistics" role="tabpanel" aria-labelledby="fb-econ-statistics-tab" data-status="gap">
-          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>econ.statistics</span><h4>Official statistics synthesis</h4><span class="mc-status">To add</span></header>
-          <p class="mc-entry-desc">Gather and combine figures from statistical offices and international organisations into a structured answer.</p>
-          <dl class="mc-entry-facts">
-            <div><dt>Candidate tasks</dt><dd><b class="tnum">0</b></dd></div>
-            <div><dt>What it tests</dt><dd>Web research, source triangulation, structured output</dd></div>
-            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>deepsynth adapter</span><span class="mc-src-meta"><span>to generate</span> · <span>Deterministic (key-value F1; optional LLM-judge fallback)</span></span></li></ul></dd></div>
-            <div><dt>Evaluation</dt><dd>Deterministic</dd></div>
-            <div><dt>Status</dt><dd><span>To add</span>: <span>No runnable tasks yet: an adapter still has to be generated.</span></dd></div>
-            <div><dt>Waiting on</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>deepsynth</span><span class="mc-src-meta"><b class="tnum">40</b> <span>upstream tasks</span></span><span class="mc-src-note">Adapter exists upstream but the dataset is not in the registry snapshot; generate locally before use. Needs web access.</span></li></ul></dd></div>
-          </dl>
-        </article>
+      <article class="mc-entry" id="fb-econ-markets">
+        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>econ.markets</span><h4>Market movement forecasting</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">15</b> <span>tasks</span></span></header>
+        <span class="mc-toc-bar" style="--share: 0.099" aria-hidden="true"></span>
+        <p class="mc-entry-desc">Predict stock price movement from tweets and historical prices.</p>
+      </article>
+      <article class="mc-entry" id="fb-econ-monetary">
+        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>econ.monetary</span><h4>Monetary policy communication</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">15</b> <span>tasks</span></span></header>
+        <span class="mc-toc-bar" style="--share: 0.099" aria-hidden="true"></span>
+        <p class="mc-entry-desc">Classify the hawkish / dovish stance of FOMC statements and minutes.</p>
+      </article>
+      <article class="mc-entry" id="fb-econ-statistics">
+        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>econ.statistics</span><h4>Official statistics synthesis</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">0</b> <span>tasks</span></span></header>
+        <span class="mc-toc-bar" style="--share: 0.000" aria-hidden="true"></span>
+        <p class="mc-entry-desc">Gather and combine figures from statistical offices and international organisations into a structured answer.</p>
+      </article>
     </div>
   </section>
-  <section class="mc-spread" id="fb-fin" role="tabpanel" aria-labelledby="fb-tab-fin" style="--tc: var(--track-2)" data-closed>
+  <section class="mc-spread" id="fb-fin" role="tabpanel" aria-labelledby="fb-tab-fin" style="--tc: var(--track-2)">
     <div class="mc-page mc-page-l">
-      <header class="mc-page-head"><small class="mono">Field 02 · Contents</small><h3>Finance</h3><p><b class="tnum">90</b> <span>candidate records in</span> <b class="tnum">6</b> <span>classes</span></p></header>
-      <ol class="mc-toc" role="tablist" aria-label="Finance: classes">
-          <li><button type="button" role="tab" id="fb-fin-nlp-tab" aria-controls="fb-fin-nlp" aria-selected="true" data-status="ready">
-            <span class="mc-toc-name">Financial text understanding</span>
-            <span class="mc-toc-bar" style="--share: 0.222" aria-hidden="true"></span>
-            <b class="mc-toc-n tnum">20</b>
-            <span class="mc-status">Ready</span>
-          </button></li>
-          <li><button type="button" role="tab" id="fb-fin-accounting-tab" aria-controls="fb-fin-accounting" aria-selected="false" data-status="partial">
-            <span class="mc-toc-name">Accounting close &amp; finance deliverables</span>
-            <span class="mc-toc-bar" style="--share: 0.167" aria-hidden="true"></span>
-            <b class="mc-toc-n tnum">15</b>
-            <span class="mc-status">Partial</span>
-          </button></li>
-          <li><button type="button" role="tab" id="fb-fin-credit-tab" aria-controls="fb-fin-credit" aria-selected="false" data-status="ready">
-            <span class="mc-toc-name">Credit risk &amp; fraud</span>
-            <span class="mc-toc-bar" style="--share: 0.167" aria-hidden="true"></span>
-            <b class="mc-toc-n tnum">15</b>
-            <span class="mc-status">Ready</span>
-          </button></li>
-          <li><button type="button" role="tab" id="fb-fin-numeric-tab" aria-controls="fb-fin-numeric" aria-selected="false" data-status="ready">
-            <span class="mc-toc-name">Financial numerical reasoning</span>
-            <span class="mc-toc-bar" style="--share: 0.167" aria-hidden="true"></span>
-            <b class="mc-toc-n tnum">15</b>
-            <span class="mc-status">Ready</span>
-          </button></li>
-          <li><button type="button" role="tab" id="fb-fin-payments-tab" aria-controls="fb-fin-payments" aria-selected="false" data-status="ready">
-            <span class="mc-toc-name">Payments &amp; transaction data analysis</span>
-            <span class="mc-toc-bar" style="--share: 0.167" aria-hidden="true"></span>
-            <b class="mc-toc-n tnum">15</b>
-            <span class="mc-status">Ready</span>
-          </button></li>
-          <li><button type="button" role="tab" id="fb-fin-filings-tab" aria-controls="fb-fin-filings" aria-selected="false" data-status="ready">
-            <span class="mc-toc-name">Financial research &amp; filings QA</span>
-            <span class="mc-toc-bar" style="--share: 0.111" aria-hidden="true"></span>
-            <b class="mc-toc-n tnum">10</b>
-            <span class="mc-status">Ready</span>
-          </button></li>
-      </ol>
+      <header class="mc-page-head"><small class="mono">Field 02</small><h3>Finance</h3><p><b class="tnum">90</b> <span>tasks in</span> <b class="tnum">6</b> <span>classes</span></p></header>
+      <article class="mc-entry" id="fb-fin-nlp">
+        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>fin.nlp</span><h4>Financial text understanding</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">20</b> <span>tasks</span></span></header>
+        <span class="mc-toc-bar" style="--share: 0.222" aria-hidden="true"></span>
+        <p class="mc-entry-desc">Sentiment, news headlines, entity recognition and ESG issues in financial text.</p>
+      </article>
+      <article class="mc-entry" id="fb-fin-accounting">
+        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>fin.accounting</span><h4>Accounting close &amp; finance deliverables</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">15</b> <span>tasks</span></span></header>
+        <span class="mc-toc-bar" style="--share: 0.167" aria-hidden="true"></span>
+        <p class="mc-entry-desc">Month-end close remediation and accounting data pipelines.</p>
+      </article>
+      <article class="mc-entry" id="fb-fin-credit">
+        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>fin.credit</span><h4>Credit risk &amp; fraud</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">15</b> <span>tasks</span></span></header>
+        <span class="mc-toc-bar" style="--share: 0.167" aria-hidden="true"></span>
+        <p class="mc-entry-desc">Credit scoring and fraud detection from tabular borrower and transaction features.</p>
+      </article>
     </div>
     <div class="mc-page mc-page-r">
-        <article class="mc-entry" id="fb-fin-nlp" role="tabpanel" aria-labelledby="fb-fin-nlp-tab" data-status="ready">
-          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>fin.nlp</span><h4>Financial text understanding</h4><span class="mc-status">Ready</span></header>
-          <p class="mc-entry-desc">Sentiment, news headlines, entity recognition and ESG issues in financial text.</p>
-          <dl class="mc-entry-facts">
-            <div><dt>Candidate tasks</dt><dd><b class="tnum">20</b></dd></div>
-            <div><dt>What it tests</dt><dd>Domain language understanding, label calibration</dd></div>
-            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>pixiu@parity</span><span class="mc-src-meta"><b class="tnum">20</b> <span>tasks</span> · <span>Deterministic</span></span></li></ul></dd></div>
-            <div><dt>Evaluation</dt><dd>Deterministic</dd></div>
-            <div><dt>Status</dt><dd><span>Ready</span>: <span>At least five pinned, runnable public tasks.</span></dd></div>
-          </dl>
-        </article>
-        <article class="mc-entry" id="fb-fin-accounting" role="tabpanel" aria-labelledby="fb-fin-accounting-tab" data-status="partial">
-          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>fin.accounting</span><h4>Accounting close &amp; finance deliverables</h4><span class="mc-status">Partial</span></header>
-          <p class="mc-entry-desc">Month-end close remediation and accounting data pipelines (QuickBooks, Xero, Zuora, recurring revenue).</p>
-          <dl class="mc-entry-facts">
-            <div><dt>Candidate tasks</dt><dd><b class="tnum">15</b></dd></div>
-            <div><dt>What it tests</dt><dd>Ledger reconciliation, policy compliance, document + spreadsheet deliverables</dd></div>
-            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>sufe/fin-t1-003</span><span class="mc-src-meta"><b class="tnum">1</b> <span>task</span> · <span>Rubric (LLM judge)</span> · <span>private materials</span></span></li><li><span class="mc-src-name" data-no-translate>spider2-dbt@1.0</span><span class="mc-src-meta"><b class="tnum">10</b> <span>tasks</span> · <span>Deterministic</span></span></li><li><span class="mc-src-name" data-no-translate>ade-bench@1.0</span><span class="mc-src-meta"><b class="tnum">4</b> <span>tasks</span> · <span>Deterministic</span></span></li></ul></dd></div>
-            <div><dt>Evaluation</dt><dd>Deterministic + Rubric</dd></div>
-            <div><dt>Status</dt><dd><span>Partial</span>: <span>Depends on restricted material or on adapters still to be generated.</span></dd></div>
-          </dl>
-        </article>
-        <article class="mc-entry" id="fb-fin-credit" role="tabpanel" aria-labelledby="fb-fin-credit-tab" data-status="ready">
-          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>fin.credit</span><h4>Credit risk &amp; fraud</h4><span class="mc-status">Ready</span></header>
-          <p class="mc-entry-desc">Credit scoring and fraud detection from tabular borrower and transaction features.</p>
-          <dl class="mc-entry-facts">
-            <div><dt>Candidate tasks</dt><dd><b class="tnum">15</b></dd></div>
-            <div><dt>What it tests</dt><dd>Tabular judgement, class imbalance, risk reasoning</dd></div>
-            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>pixiu@parity</span><span class="mc-src-meta"><b class="tnum">15</b> <span>tasks</span> · <span>Deterministic</span></span></li></ul></dd></div>
-            <div><dt>Evaluation</dt><dd>Deterministic</dd></div>
-            <div><dt>Status</dt><dd><span>Ready</span>: <span>At least five pinned, runnable public tasks.</span></dd></div>
-          </dl>
-        </article>
-        <article class="mc-entry" id="fb-fin-numeric" role="tabpanel" aria-labelledby="fb-fin-numeric-tab" data-status="ready">
-          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>fin.numeric</span><h4>Financial numerical reasoning</h4><span class="mc-status">Ready</span></header>
-          <p class="mc-entry-desc">Table and text numeric reasoning over financial reports (FinQA, TAT-QA) and CFA-style questions.</p>
-          <dl class="mc-entry-facts">
-            <div><dt>Candidate tasks</dt><dd><b class="tnum">15</b></dd></div>
-            <div><dt>What it tests</dt><dd>Multi-step arithmetic on tables, financial concepts</dd></div>
-            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>pixiu@parity</span><span class="mc-src-meta"><b class="tnum">15</b> <span>tasks</span> · <span>Deterministic</span></span></li></ul></dd></div>
-            <div><dt>Evaluation</dt><dd>Deterministic</dd></div>
-            <div><dt>Status</dt><dd><span>Ready</span>: <span>At least five pinned, runnable public tasks.</span></dd></div>
-          </dl>
-        </article>
-        <article class="mc-entry" id="fb-fin-payments" role="tabpanel" aria-labelledby="fb-fin-payments-tab" data-status="ready">
-          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>fin.payments</span><h4>Payments &amp; transaction data analysis</h4><span class="mc-status">Ready</span></header>
-          <p class="mc-entry-desc">Multi-step Python analysis over payment records, fee schedules and merchant data.</p>
-          <dl class="mc-entry-facts">
-            <div><dt>Candidate tasks</dt><dd><b class="tnum">15</b></dd></div>
-            <div><dt>What it tests</dt><dd>Joining sources, applying business rules, aggregation</dd></div>
-            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>dabstep@1.0</span><span class="mc-src-meta"><b class="tnum">15</b> <span>tasks</span> · <span>Deterministic</span></span></li></ul></dd></div>
-            <div><dt>Evaluation</dt><dd>Deterministic</dd></div>
-            <div><dt>Status</dt><dd><span>Ready</span>: <span>At least five pinned, runnable public tasks.</span></dd></div>
-          </dl>
-        </article>
-        <article class="mc-entry" id="fb-fin-filings" role="tabpanel" aria-labelledby="fb-fin-filings-tab" data-status="ready">
-          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>fin.filings</span><h4>Financial research &amp; filings QA</h4><span class="mc-status">Ready</span></header>
-          <p class="mc-entry-desc">Analyst-style questions answered from SEC filings and company disclosures.</p>
-          <dl class="mc-entry-facts">
-            <div><dt>Candidate tasks</dt><dd><b class="tnum">10</b></dd></div>
-            <div><dt>What it tests</dt><dd>Retrieval over long filings, numeric reasoning, citation</dd></div>
-            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>financeagent@public</span><span class="mc-src-meta"><b class="tnum">10</b> <span>tasks</span> · <span>LLM judge</span></span></li></ul></dd></div>
-            <div><dt>Evaluation</dt><dd>LLM judge</dd></div>
-            <div><dt>Status</dt><dd><span>Ready</span>: <span>At least five pinned, runnable public tasks.</span></dd></div>
-          </dl>
-        </article>
+      <article class="mc-entry" id="fb-fin-numeric">
+        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>fin.numeric</span><h4>Financial numerical reasoning</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">15</b> <span>tasks</span></span></header>
+        <span class="mc-toc-bar" style="--share: 0.167" aria-hidden="true"></span>
+        <p class="mc-entry-desc">Table and text numeric reasoning over financial reports and CFA-style questions.</p>
+      </article>
+      <article class="mc-entry" id="fb-fin-payments">
+        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>fin.payments</span><h4>Payments &amp; transaction data analysis</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">15</b> <span>tasks</span></span></header>
+        <span class="mc-toc-bar" style="--share: 0.167" aria-hidden="true"></span>
+        <p class="mc-entry-desc">Multi-step Python analysis over payment records, fee schedules and merchant data.</p>
+      </article>
+      <article class="mc-entry" id="fb-fin-filings">
+        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>fin.filings</span><h4>Financial research &amp; filings QA</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">10</b> <span>tasks</span></span></header>
+        <span class="mc-toc-bar" style="--share: 0.111" aria-hidden="true"></span>
+        <p class="mc-entry-desc">Analyst-style questions answered from SEC filings and company disclosures.</p>
+      </article>
     </div>
   </section>
-  <section class="mc-spread" id="fb-soc" role="tabpanel" aria-labelledby="fb-tab-soc" style="--tc: var(--mc-violet)" data-closed>
+  <section class="mc-spread" id="fb-soc" role="tabpanel" aria-labelledby="fb-tab-soc" style="--tc: var(--mc-violet)">
     <div class="mc-page mc-page-l">
-      <header class="mc-page-head"><small class="mono">Field 03 · Contents</small><h3>Social science</h3><p><b class="tnum">43</b> <span>candidate records in</span> <b class="tnum">5</b> <span>classes</span></p></header>
-      <ol class="mc-toc" role="tablist" aria-label="Social science: classes">
-          <li><button type="button" role="tab" id="fb-soc-law-tab" aria-controls="fb-soc-law" aria-selected="true" data-status="ready">
-            <span class="mc-toc-name">Law &amp; regulation</span>
-            <span class="mc-toc-bar" style="--share: 0.465" aria-hidden="true"></span>
-            <b class="mc-toc-n tnum">20</b>
-            <span class="mc-status">Ready</span>
-          </button></li>
-          <li><button type="button" role="tab" id="fb-soc-society-tab" aria-controls="fb-soc-society" aria-selected="false" data-status="ready">
-            <span class="mc-toc-name">Society, education &amp; survey data</span>
-            <span class="mc-toc-bar" style="--share: 0.279" aria-hidden="true"></span>
-            <b class="mc-toc-n tnum">12</b>
-            <span class="mc-status">Ready</span>
-          </button></li>
-          <li><button type="button" role="tab" id="fb-soc-business-tab" aria-controls="fb-soc-business" aria-selected="false" data-status="partial">
-            <span class="mc-toc-name">Business operations &amp; CRM</span>
-            <span class="mc-toc-bar" style="--share: 0.140" aria-hidden="true"></span>
-            <b class="mc-toc-n tnum">6</b>
-            <span class="mc-status">Partial</span>
-          </button></li>
-          <li><button type="button" role="tab" id="fb-soc-hr-tab" aria-controls="fb-soc-hr" aria-selected="false" data-status="partial">
-            <span class="mc-toc-name">HR &amp; organisational analytics</span>
-            <span class="mc-toc-bar" style="--share: 0.116" aria-hidden="true"></span>
-            <b class="mc-toc-n tnum">5</b>
-            <span class="mc-status">Partial</span>
-          </button></li>
-          <li><button type="button" role="tab" id="fb-soc-psychology-tab" aria-controls="fb-soc-psychology" aria-selected="false" data-status="gap">
-            <span class="mc-toc-name">Psychology &amp; cognitive science</span>
-            <span class="mc-toc-bar" style="--share: 0.000" aria-hidden="true"></span>
-            <b class="mc-toc-n tnum">0</b>
-            <span class="mc-status">To add</span>
-          </button></li>
-      </ol>
+      <header class="mc-page-head"><small class="mono">Field 03</small><h3>Social science</h3><p><b class="tnum">43</b> <span>tasks in</span> <b class="tnum">5</b> <span>classes</span></p></header>
+      <article class="mc-entry" id="fb-soc-law">
+        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>soc.law</span><h4>Law &amp; regulation</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">20</b> <span>tasks</span></span></header>
+        <span class="mc-toc-bar" style="--share: 0.465" aria-hidden="true"></span>
+        <p class="mc-entry-desc">Chinese legal knowledge, statute recall and case-outcome prediction.</p>
+      </article>
+      <article class="mc-entry" id="fb-soc-society">
+        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>soc.society</span><h4>Society, education &amp; survey data</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">12</b> <span>tasks</span></span></header>
+        <span class="mc-toc-bar" style="--share: 0.279" aria-hidden="true"></span>
+        <p class="mc-entry-desc">Education, survey and social-media data analysis.</p>
+      </article>
     </div>
     <div class="mc-page mc-page-r">
-        <article class="mc-entry" id="fb-soc-law" role="tabpanel" aria-labelledby="fb-soc-law-tab" data-status="ready">
-          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>soc.law</span><h4>Law &amp; regulation</h4><span class="mc-status">Ready</span></header>
-          <p class="mc-entry-desc">Chinese legal knowledge, statute recall and case-outcome prediction (LawBench).</p>
-          <dl class="mc-entry-facts">
-            <div><dt>Candidate tasks</dt><dd><b class="tnum">20</b></dd></div>
-            <div><dt>What it tests</dt><dd>Legal reasoning, statute grounding</dd></div>
-            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>lawbench@1.0</span><span class="mc-src-meta"><b class="tnum">20</b> <span>tasks</span> · <span>Deterministic</span></span></li></ul></dd></div>
-            <div><dt>Evaluation</dt><dd>Deterministic</dd></div>
-            <div><dt>Status</dt><dd><span>Ready</span>: <span>At least five pinned, runnable public tasks.</span></dd></div>
-          </dl>
-        </article>
-        <article class="mc-entry" id="fb-soc-society" role="tabpanel" aria-labelledby="fb-soc-society-tab" data-status="ready">
-          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>soc.society</span><h4>Society, education &amp; survey data</h4><span class="mc-status">Ready</span></header>
-          <p class="mc-entry-desc">Education, survey and social-media data analysis.</p>
-          <dl class="mc-entry-facts">
-            <div><dt>Candidate tasks</dt><dd><b class="tnum">12</b></dd></div>
-            <div><dt>What it tests</dt><dd>Social data semantics, aggregation over heterogeneous tables</dd></div>
-            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>bird-bench@parity</span><span class="mc-src-meta"><b class="tnum">9</b> <span>tasks</span> · <span>Deterministic</span></span></li><li><span class="mc-src-name" data-no-translate>spider2-dbt@1.0</span><span class="mc-src-meta"><b class="tnum">3</b> <span>tasks</span> · <span>Deterministic</span></span></li></ul></dd></div>
-            <div><dt>Evaluation</dt><dd>Deterministic</dd></div>
-            <div><dt>Status</dt><dd><span>Ready</span>: <span>At least five pinned, runnable public tasks.</span></dd></div>
-          </dl>
-        </article>
-        <article class="mc-entry" id="fb-soc-business" role="tabpanel" aria-labelledby="fb-soc-business-tab" data-status="partial">
-          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>soc.business</span><h4>Business operations &amp; CRM</h4><span class="mc-status">Partial</span></header>
-          <p class="mc-entry-desc">Marketing, sales and customer-support data in CRM and support tools.</p>
-          <dl class="mc-entry-facts">
-            <div><dt>Candidate tasks</dt><dd><b class="tnum">6</b></dd></div>
-            <div><dt>What it tests</dt><dd>Business process understanding, metric definitions</dd></div>
-            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>spider2-dbt@1.0</span><span class="mc-src-meta"><b class="tnum">6</b> <span>tasks</span> · <span>Deterministic</span></span></li><li><span class="mc-src-name" data-no-translate>crmarena adapter</span><span class="mc-src-meta"><span>to generate</span> · <span>Deterministic (exact match / fuzzy F1, LLM extraction step)</span></span></li></ul></dd></div>
-            <div><dt>Evaluation</dt><dd>Deterministic</dd></div>
-            <div><dt>Status</dt><dd><span>Partial</span>: <span>Depends on restricted material or on adapters still to be generated.</span></dd></div>
-            <div><dt>Waiting on</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>crmarena</span><span class="mc-src-meta"><b class="tnum">1170</b> <span>upstream tasks</span></span><span class="mc-src-note">Requires a live Salesforce org.</span></li></ul></dd></div>
-          </dl>
-        </article>
-        <article class="mc-entry" id="fb-soc-hr" role="tabpanel" aria-labelledby="fb-soc-hr-tab" data-status="partial">
-          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>soc.hr</span><h4>HR &amp; organisational analytics</h4><span class="mc-status">Partial</span></header>
-          <p class="mc-entry-desc">Training effectiveness and procurement review, recruiting and workforce data pipelines.</p>
-          <dl class="mc-entry-facts">
-            <div><dt>Candidate tasks</dt><dd><b class="tnum">5</b></dd></div>
-            <div><dt>What it tests</dt><dd>People analytics, policy-consistent recommendations</dd></div>
-            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>synthbench/hr-t3-114</span><span class="mc-src-meta"><b class="tnum">1</b> <span>task</span> · <span>Rubric (LLM judge)</span> · <span>private materials</span></span></li><li><span class="mc-src-name" data-no-translate>spider2-dbt@1.0</span><span class="mc-src-meta"><b class="tnum">4</b> <span>tasks</span> · <span>Deterministic</span></span></li><li><span class="mc-src-name" data-no-translate>theagentcompany adapter</span><span class="mc-src-meta"><span>to generate</span> · <span>Deterministic (checkpoint evaluators)</span></span></li></ul></dd></div>
-            <div><dt>Evaluation</dt><dd>Deterministic + Rubric</dd></div>
-            <div><dt>Status</dt><dd><span>Partial</span>: <span>Depends on restricted material or on adapters still to be generated.</span></dd></div>
-            <div><dt>Waiting on</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>theagentcompany</span><span class="mc-src-meta"><b class="tnum">29</b> <span>upstream tasks</span></span><span class="mc-src-note">29 HR tasks per the adapter README; needs TheAgentCompany intranet services.</span></li></ul></dd></div>
-          </dl>
-        </article>
-        <article class="mc-entry" id="fb-soc-psychology" role="tabpanel" aria-labelledby="fb-soc-psychology-tab" data-status="gap">
-          <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>soc.psychology</span><h4>Psychology &amp; cognitive science</h4><span class="mc-status">To add</span></header>
-          <p class="mc-entry-desc">Data-driven analysis tasks from psychology and cognitive-science papers.</p>
-          <dl class="mc-entry-facts">
-            <div><dt>Candidate tasks</dt><dd><b class="tnum">0</b></dd></div>
-            <div><dt>What it tests</dt><dd>Experimental data analysis, scientific programming</dd></div>
-            <div><dt>Sources</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>scienceagentbench adapter</span><span class="mc-src-meta"><span>to generate</span> · <span>Mixed (deterministic + visual LLM judge)</span></span></li></ul></dd></div>
-            <div><dt>Evaluation</dt><dd>Mixed</dd></div>
-            <div><dt>Status</dt><dd><span>To add</span>: <span>No runnable tasks yet: an adapter still has to be generated.</span></dd></div>
-            <div><dt>Waiting on</dt><dd><ul class="mc-sources"><li><span class="mc-src-name" data-no-translate>scienceagentbench</span><span class="mc-src-meta"><b class="tnum">28</b> <span>upstream tasks</span></span><span class="mc-src-note">28 Psychology &amp; Cognitive Science tasks per adapter README; not in the registry snapshot.</span></li></ul></dd></div>
-          </dl>
-        </article>
+      <article class="mc-entry" id="fb-soc-business">
+        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>soc.business</span><h4>Business operations &amp; CRM</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">6</b> <span>tasks</span></span></header>
+        <span class="mc-toc-bar" style="--share: 0.140" aria-hidden="true"></span>
+        <p class="mc-entry-desc">Marketing, sales and customer-support data in CRM and support tools.</p>
+      </article>
+      <article class="mc-entry" id="fb-soc-hr">
+        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>soc.hr</span><h4>HR &amp; organisational analytics</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">5</b> <span>tasks</span></span></header>
+        <span class="mc-toc-bar" style="--share: 0.116" aria-hidden="true"></span>
+        <p class="mc-entry-desc">Training effectiveness and procurement review, recruiting and workforce data pipelines.</p>
+      </article>
+      <article class="mc-entry" id="fb-soc-psychology">
+        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>soc.psychology</span><h4>Psychology &amp; cognitive science</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">0</b> <span>tasks</span></span></header>
+        <span class="mc-toc-bar" style="--share: 0.000" aria-hidden="true"></span>
+        <p class="mc-entry-desc">Data-driven analysis tasks from psychology and cognitive-science papers.</p>
+      </article>
     </div>
   </section>
 </div>
 <!-- fields:books:end -->
-    <p class="mc-catalogue-note mc-r">Counts reflect the metacase-harbor v0.1 selection across Economics (152), Finance (90), and Social Science (43). Ready: at least five pinned public tasks. Partial: includes partner or restricted material, or upstream adapters in preparation. To add: new domain classes open for contribution.</p>
   </div>
 </section>
 
