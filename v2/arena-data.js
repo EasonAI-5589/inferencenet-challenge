@@ -5,12 +5,48 @@ export const HARNESS_NAMES = Object.freeze([
   'OpenHands SDK', 'Terminus-2', 'mini-SWE-agent',
 ]);
 export const MODEL_CHARACTERS = Object.freeze([
-  { id: 'sol', name: 'GPT-5.6 Sol', short: 'GPT-5.6 Sol', role: ['Tactician · Model', '战术统帅 · 模型角色'], color: '#45b5b0', hull: 0xf7f8fb, eye: 0x67f5ff, trim: 0x45b5b0 },
-  { id: 'opus', name: 'Claude Opus 4.8', short: 'Opus 4.8', role: ['Scholar · Model', '深思学者 · 模型角色'], color: '#f2b545', hull: 0xfaf0dc, eye: 0xffd666, trim: 0xf2b545 },
-  { id: 'gemini', name: 'Gemini 3.1 Pro', short: 'Gemini 3.1', role: ['Twin-Core · Model', '双核感知 · 模型角色'], color: '#7d6ad8', hull: 0xe6edff, eye: 0xc4a7ff, trim: 0x7d6ad8 },
-  { id: 'kimi', name: 'Kimi K3', short: 'Kimi K3', role: ['Explorer · Model', '长程探索 · 模型角色'], color: '#6aa8e8', hull: 0xdce8fa, eye: 0x8be9fd, trim: 0x6aa8e8 },
-  { id: 'deepseek', name: 'DeepSeek V4 Pro', short: 'DeepSeek V4', role: ['Reasoner · Model', '深度推演 · 模型角色'], color: '#2dd4bf', hull: 0xe2f5f2, eye: 0x5eead4, trim: 0x2dd4bf },
-  { id: 'qwen', name: 'Qwen3.7-Max', short: 'Qwen3.7-Max', role: ['Vanguard · Model', '全能先锋 · 模型角色'], color: '#e2667a', hull: 0xf9ebf0, eye: 0xff9eb5, trim: 0xe2667a },
+  {
+    id: 'sol', name: 'GPT-5.6 Sol', short: 'GPT-5.6 Sol', provider: 'OpenAI', badge: 'SOL',
+    role: ['Emerald Tactician · OpenAI', '翡翠统帅 · OpenAI'],
+    color: '#10a37f', hull: 0x10a37f, limb: 0x0b4f3c, eye: 0xa7f3d0, trim: 0x34d399,
+    // 6-petal interwoven OpenAI knot
+    logo: 'M0-11 C5-11 9-7 9-2 C9 3 5 7 0 7 C-5 7 -9 3 -9-2 C-9-7 -5-11 0-11 Z M-8-5 C-4-11 4-11 8-5 C11 1 8 8 2 10 C-4 12 -10 8 -10 1 Z M-5 6 L5-6 M-6-1 L6 1 M0-7 L0 7',
+  },
+  {
+    id: 'opus', name: 'Claude Opus 4.8', short: 'Opus 4.8', provider: 'Anthropic', badge: 'OPUS',
+    role: ['Terracotta Scholar · Anthropic', '赤金学者 · Anthropic'],
+    color: '#e07a5f', hull: 0xd97757, limb: 0x6e321f, eye: 0xfde68a, trim: 0xfbbf24,
+    // Claude starburst spark
+    logo: 'M0-12 L2.2-3.2 L10.4-6 L4 0 L10.4 6 L2.2 3.2 L0 12 L-2.2 3.2 L-10.4 6 L-4 0 L-10.4-6 L-2.2-3.2 Z',
+  },
+  {
+    id: 'gemini', name: 'Gemini 3.1 Pro', short: 'Gemini 3.1', provider: 'Google', badge: 'GEMINI',
+    role: ['Cosmic Twin-Core · Google', '星河双核 · Google'],
+    color: '#6366f1', hull: 0x4f46e5, limb: 0x2e1065, eye: 0xe0e7ff, trim: 0xc084fc,
+    // Gemini 4-point curved star
+    logo: 'M0-12 Q1.5-1.5 12 0 Q1.5 1.5 0 12 Q-1.5 1.5 -12 0 Q-1.5-1.5 0-12 Z',
+  },
+  {
+    id: 'kimi', name: 'Kimi K3', short: 'Kimi K3', provider: 'Moonshot', badge: 'KIMI',
+    role: ['Moonlit Explorer · Moonshot', '月影探索 · Moonshot'],
+    color: '#38bdf8', hull: 0x1e3a5f, limb: 0x0f172a, eye: 0x7dd3fc, trim: 0x38bdf8,
+    // Crescent moon + star
+    logo: 'M3-11 A11 11 0 1 0 11 5 A8.5 8.5 0 1 1 3-11 Z M6-5 L7.5-1.5 L11 0 L7.5 1.5 L6 5 L4.5 1.5 L1 0 L4.5-1.5 Z',
+  },
+  {
+    id: 'deepseek', name: 'DeepSeek V4 Pro', short: 'DeepSeek V4', provider: 'DeepSeek', badge: 'DEEPSEEK',
+    role: ['Cobalt Reasoner · DeepSeek', '深海推演 · DeepSeek'],
+    color: '#2563eb', hull: 0x1d4ed8, limb: 0x172554, eye: 0x67e8f9, trim: 0x06b6d4,
+    // Whale / wave crest
+    logo: 'M-11 2 C-11-6 -3-10 4-7 C8-5 10-1 11-6 L12 1 C9 7 2 10 -5 8 C-9 7 -11 5 -11 2 Z M-3-2 A1.8 1.8 0 1 0 0.6-2 A1.8 1.8 0 1 0 -3-2 Z',
+  },
+  {
+    id: 'qwen', name: 'Qwen3.7-Max', short: 'Qwen3.7-Max', provider: 'Alibaba', badge: 'QWEN',
+    role: ['Violet Vanguard · Qwen', '紫晶先锋 · Qwen'],
+    color: '#d946ef', hull: 0x9333ea, limb: 0x4a044e, eye: 0xfbcfe8, trim: 0xf43f5e,
+    // Hexagonal star-crest
+    logo: 'M0-12 L10.4-6 L10.4 6 L0 12 L-10.4 6 L-10.4-6 Z M0-6 L5.2-3 L5.2 3 L0 6 L-5.2 3 L-5.2-3 Z',
+  },
 ]);
 export const ARENA_DOMAINS = Object.freeze([
   {

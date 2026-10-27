@@ -6,7 +6,7 @@ import { catmullRom } from "./arena-motion.js";
 import { toon, toonify, createPost } from "./mc-toon.js";
 import { person, robot, tile, PALETTE } from "./mc-kit.js";
 import { pageBackground } from "./mc-stage.js";
-import { ARENA_DOMAINS, HARNESS_NAMES } from "./arena-data.js";
+import { ARENA_DOMAINS, HARNESS_NAMES, MODEL_CHARACTERS } from "./arena-data.js";
 import { createCampusDetails } from "./arena-campus.js";
 import { createRoomSubtracks } from "./arena-subtracks.js";
 export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = {}) {
@@ -509,14 +509,12 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
         float inside=smoothstep(1.03,.93,r);
         float arms=pow(.5+.5*sin(a*3.-z*7.+t*2.4),3.);
         float flow=n21(vec2(a*1.6+t*.5,z*4.-t*2.));
-        float swirl=(arms*.75+flow*.45)*smoothstep(.2,.92,r)*inside;
-        float rings=pow(.5+.5*sin(z*11.-t*5.),6.)*inside*smoothstep(.05,.6,r);
-        float rim=exp(-pow((r-.97)*16.,2.))*(1.+.45*sin(a*11.-t*6.)+.5*flow);
-        float arcs=smoothstep(.72,1.,n21(vec2(a*5.,t*2.6)))*exp(-pow((r-1.04)*10.,2.));
-        float core=exp(-r*r*5.)*surge;
-        vec3 hot=mix(tint,vec3(1.),.6);
-        vec3 col=tint*(swirl*.85+rings*.42+surge*.4*inside)+hot*(rim*1.25+arcs*1.9)+vec3(core*1.3);
-        gl_FragColor=vec4(col*power*(1.+surge*.6),1.);
+        float swirl=(arms*.55+flow*.35)*smoothstep(.62,.95,r)*inside;
+        float rings=pow(.5+.5*sin(z*11.-t*5.),6.)*inside*smoothstep(.65,.92,r);
+        float rim=exp(-pow((r-.97)*18.,2.))*(.85+.35*sin(a*11.-t*6.)+.35*flow);
+        float arcs=smoothstep(.76,1.,n21(vec2(a*5.,t*2.6)))*exp(-pow((r-1.03)*12.,2.));
+        vec3 col=tint*(swirl*.65+rings*.35+rim*.95+arcs*1.1);
+        gl_FragColor=vec4(col*power*(.55+surge*.35),1.);
         #include <colorspace_fragment>
         }`,
     });
@@ -573,8 +571,10 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
     stage.add(group);
     const accent = roomLights[index],
       color = colors[index];
-    // Reading rooms share the library's finish: wood frame, cream walls, a coloured trim.
-    const black = woodDark, metal = wood, hull = wall, panel = wall;
+    // Deep obsidian-navy chamber walls so the 3D monuments and armed robot pop with high contrast (no white glare)
+    const darkChamberWall = material(0x0c1324, 0.85, 0.08);
+    const darkChamberSide = material(0x111a2e, 0.82, 0.08);
+    const black = woodDark, metal = wood, hull = darkChamberSide, panel = darkChamberWall;
     box(group, 7.2, 0.35, 6.4, black, 0, 0.1, -1.4, 0.13);
     box(group, 6.5, 0.07, 5.9, metal, 0, 0.3, -1.4, 0.03);
     box(group, 5.9, 0.04, 5.5, hull, 0, 0.35, -1.4);
@@ -938,47 +938,91 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
   toyRobot.root.scale.setScalar(2.85);
   body.add(toyRobot.root);
   const head = toyRobot.head;
+  if (head.children[4]) head.children[4].visible = false;
+  if (head.children[5]) head.children[5].visible = false;
   canvas.dataset.robotModel = "mc-kit";
 
-  // Six distinct 3D Model Character loadouts (armor tint, visor glow, chest core, shoulder pauldrons & head crest)
-  const MODEL_PALETTES = [
-    { hull: 0xf7f8fb, eye: 0x67f5ff, trim: 0x45b5b0 }, // 0: GPT-5.6 Sol (Tactician)
-    { hull: 0xfaf0dc, eye: 0xffd666, trim: 0xf2b545 }, // 1: Claude Opus 4.8 (Scholar)
-    { hull: 0xe6edff, eye: 0xc4a7ff, trim: 0x7d6ad8 }, // 2: Gemini 3.1 Pro (Twin-Core)
-    { hull: 0xdce8fa, eye: 0x8be9fd, trim: 0x6aa8e8 }, // 3: Kimi K3 (Explorer)
-    { hull: 0xe2f5f2, eye: 0x5eead4, trim: 0x2dd4bf }, // 4: DeepSeek V4 Pro (Reasoner)
-    { hull: 0xf9ebf0, eye: 0xff9eb5, trim: 0xe2667a }, // 5: Qwen3.7-Max (Vanguard)
-  ];
-  const robotHullMeshes = [], robotEyeMeshes = [];
+  // Six distinct 3D Model Character loadouts (bold armor colors, brand logo chest shield, shoulder pauldrons & head crest)
+  const MODEL_PALETTES = MODEL_CHARACTERS;
+  const robotHullMeshes = [], robotDarkMeshes = [], robotEyeMeshes = [];
   toyRobot.root.traverse((node) => {
     if (!node.isMesh || !node.material) return;
     const hex = node.material.color?.getHex?.();
     if (hex === PALETTE.cream) robotHullMeshes.push(node);
+    else if (hex === PALETTE.ink) robotDarkMeshes.push(node);
     else if (hex === 0x8ff6ff) robotEyeMeshes.push(node);
   });
-  const charTrimMat = luminous(0x45b5b0, 1.3, 0.25);
-  const charCoreMat = luminous(0x67f5ff, 2.6, 0.15);
-  // Shoulder pauldrons & chest core on the robot torso
+  const charTrimMat = luminous(0x34d399, 1.3, 0.25);
+  const charCoreMat = luminous(0xa7f3d0, 2.4, 0.15);
+  // Shoulder pauldrons & 3D Brand Logo Chest Shield on the robot torso
   const torsoArmor = new THREE.Group();
   toyRobot.root.add(torsoArmor);
   for (const s of [-1, 1]) {
-    const pauldron = box(torsoArmor, 0.14, 0.16, 0.24, charTrimMat, s * 0.29, 0.46, 0, 0.04);
-    pauldron.rotation.z = -s * 0.22;
+    const pauldron = box(torsoArmor, 0.16, 0.18, 0.26, charTrimMat, s * 0.3, 0.45, 0, 0.045);
+    pauldron.rotation.z = -s * 0.24;
   }
-  sphere(torsoArmor, 0.075, charCoreMat, 0, 0.36, 0.19);
-  ring(torsoArmor, 0.11, 0.015, charTrimMat, 0, 0.36, 0.195, false).rotation.x = Math.PI / 2;
+  // High-contrast 3D Chest Brand Logo Shield + Forehead Badge
+  const chestCanvas = document.createElement("canvas");
+  chestCanvas.width = 512;
+  chestCanvas.height = 320;
+  const chestCtx = chestCanvas.getContext("2d");
+  const chestTex = new THREE.CanvasTexture(chestCanvas);
+  chestTex.colorSpace = THREE.SRGBColorSpace;
+  allTextures.add(chestTex);
+  const chestMat = new THREE.MeshBasicMaterial({ map: chestTex, transparent: true, toneMapped: false });
+  allMaterials.add(chestMat);
+  const chestPlane = mesh(
+    geometry("robot-chest-logo", () => new THREE.PlaneGeometry(0.4, 0.25)),
+    chestMat,
+    torsoArmor,
+    0,
+    0.36,
+    0.198,
+  );
+  chestPlane.castShadow = false;
+  function paintChestLogo(mp) {
+    chestCtx.clearRect(0, 0, 512, 320);
+    chestCtx.fillStyle = "rgba(6, 10, 20, 0.9)";
+    chestCtx.strokeStyle = mp.color;
+    chestCtx.lineWidth = 10;
+    chestCtx.beginPath();
+    chestCtx.roundRect(16, 16, 480, 288, 48);
+    chestCtx.fill();
+    chestCtx.stroke();
+    // Draw the vector brand logo on the left of the chest plate
+    chestCtx.save();
+    chestCtx.translate(132, 160);
+    chestCtx.scale(6.2, 6.2);
+    const p2d = new Path2D(mp.logo);
+    chestCtx.fillStyle = mp.color;
+    chestCtx.strokeStyle = "#ffffff";
+    chestCtx.lineWidth = 1.4;
+    chestCtx.fill(p2d);
+    chestCtx.stroke(p2d);
+    chestCtx.restore();
+    // Draw the model badge & provider on the right of the chest plate
+    chestCtx.fillStyle = "#ffffff";
+    chestCtx.font = '800 68px Inter, Arial, sans-serif';
+    chestCtx.textAlign = "left";
+    chestCtx.textBaseline = "middle";
+    chestCtx.fillText(mp.badge || "AI", 224, 134, 250);
+    chestCtx.fillStyle = mp.color;
+    chestCtx.font = '700 34px "Space Mono", monospace';
+    chestCtx.fillText((mp.provider || "").toUpperCase(), 226, 206, 250);
+    chestTex.needsUpdate = true;
+  }
 
   // Six distinct 3D head crests mounted on `head`
   const modelCrests = MODEL_PALETTES.map((mp, idx) => {
     const g = new THREE.Group();
     const mTrim = luminous(mp.trim, 1.4, 0.25), mGlow = luminous(mp.eye, 2.4, 0.15);
     if (idx === 0) {
-      // Sol: golden sun-crown crest with 3 prongs
-      box(g, 0.26, 0.08, 0.06, gold, 0, 0.41, 0.18, 0.02);
-      [-0.09, 0, 0.09].forEach((x, k) => box(g, 0.05, k === 1 ? 0.16 : 0.11, 0.05, k === 1 ? mGlow : gold, x, 0.47 + (k === 1 ? 0.02 : 0), 0.18, 0.015));
+      // Sol: emerald sun-crown crest with 3 prongs
+      box(g, 0.26, 0.08, 0.06, mTrim, 0, 0.41, 0.18, 0.02);
+      [-0.09, 0, 0.09].forEach((x, k) => box(g, 0.05, k === 1 ? 0.16 : 0.11, 0.05, k === 1 ? mGlow : mTrim, x, 0.47 + (k === 1 ? 0.02 : 0), 0.18, 0.015));
     } else if (idx === 1) {
-      // Opus: floating scholar halo ring above the head
-      const haloRing = ring(g, 0.26, 0.025, gold, 0, 0.56, 0, false);
+      // Opus: floating terracotta scholar halo ring above the head
+      const haloRing = ring(g, 0.26, 0.025, mTrim, 0, 0.56, 0, false);
       haloRing.rotation.x = 0.18;
       sphere(g, 0.055, mGlow, 0, 0.38, 0.2);
     } else if (idx === 2) {
@@ -1006,18 +1050,19 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
         const horn = box(g, 0.24, 0.06, 0.05, mTrim, s * 0.11, 0.43, 0.19, 0.015);
         horn.rotation.z = s * 0.42;
       }
-      sphere(g, 0.065, gold, 0, 0.4, 0.21);
+      sphere(g, 0.06, mGlow, 0, 0.41, 0.21);
     }
     g.visible = idx === 0;
     head.add(g);
     return g;
   });
-  let appliedModel = -1;
+  let appliedModel = -1, lastModelSpin = 0, spinBoost = 0;
   function applyCharacterModel(idx) {
     if (idx === appliedModel) return;
     appliedModel = idx;
     const mp = MODEL_PALETTES[idx] || MODEL_PALETTES[0];
     robotHullMeshes.forEach((m) => m.material.color.setHex(mp.hull));
+    robotDarkMeshes.forEach((m) => m.material.color.setHex(mp.limb || 0x1e293b));
     robotEyeMeshes.forEach((m) => {
       m.material.color.setHex(mp.eye);
       if (m.material.emissive) m.material.emissive.setHex(mp.eye);
@@ -1026,6 +1071,7 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
     charTrimMat.emissive.setHex(mp.trim);
     charCoreMat.color.setHex(mp.eye);
     charCoreMat.emissive.setHex(mp.eye);
+    paintChestLogo(mp);
     modelCrests.forEach((c, i) => {
       c.visible = i === idx;
     });
@@ -1405,51 +1451,51 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
     },
     {
       p: 0.41,
-      camera: [-4.13, 3.65, 2.55],
-      look: [-9.2, 3.05, -6.3],
-      hero: [-6.5, -0.35, -1.6],
-      heading: Math.PI + 0.52,
-      fov: 62,
+      camera: [-3.95, 3.45, 2.85],
+      look: [-9.2, 2.95, -6.3],
+      hero: [-6.15, -0.15, -0.95],
+      heading: Math.PI + 0.52 + 0.58,
+      fov: 58,
     },
     {
       p: 0.54,
-      camera: [-7.11, 3.05, -2.65],
-      look: [-9.6, 2.55, -7.2],
-      hero: [-9.85, -0.45, -4.4],
-      heading: Math.PI + 0.52,
-      fov: 60,
+      camera: [-6.45, 3.15, -1.5],
+      look: [-9.4, 2.65, -6.6],
+      hero: [-8.15, -0.22, -3.55],
+      heading: Math.PI + 0.52 + 0.42,
+      fov: 58,
     },
     {
       p: 0.60,
-      camera: [0, 3.65, -2.0],
-      look: [0, 3.05, -12.2],
-      hero: [-0.45, -0.35, -6.8],
-      heading: Math.PI,
-      fov: 62,
+      camera: [0, 3.45, -1.6],
+      look: [0, 2.95, -12.2],
+      hero: [-0.25, -0.15, -5.9],
+      heading: Math.PI + 0.58,
+      fov: 58,
     },
     {
       p: 0.73,
-      camera: [0, 3.05, -8.0],
-      look: [-0.35, 2.55, -13.2],
-      hero: [-1.45, -0.45, -10.4],
-      heading: Math.PI,
-      fov: 60,
+      camera: [0, 3.15, -6.7],
+      look: [-0.25, 2.65, -12.6],
+      hero: [-0.65, -0.22, -9.2],
+      heading: Math.PI + 0.42,
+      fov: 58,
     },
     {
       p: 0.79,
-      camera: [4.13, 3.65, 2.55],
-      look: [9.2, 3.05, -6.3],
-      hero: [6.5, -0.35, -1.6],
-      heading: Math.PI - 0.52,
-      fov: 62,
+      camera: [3.95, 3.45, 2.85],
+      look: [9.2, 2.95, -6.3],
+      hero: [6.15, -0.15, -0.95],
+      heading: Math.PI - 0.52 + 0.58,
+      fov: 58,
     },
     {
       p: 0.91,
-      camera: [7.11, 3.05, -2.65],
-      look: [8.8, 2.55, -7.2],
-      hero: [7.55, -0.45, -5.2],
-      heading: Math.PI - 0.52,
-      fov: 60,
+      camera: [6.45, 3.15, -1.5],
+      look: [9.0, 2.65, -6.6],
+      hero: [7.65, -0.22, -3.85],
+      heading: Math.PI - 0.52 + 0.42,
+      fov: 58,
     },
     {
       p: 1,
@@ -1543,9 +1589,21 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
     camera.updateProjectionMatrix();
     agent.position.copy(heroPos);
     const inventoryAmount = smooth(0.14, 0.21, p) * (1 - smooth(0.35, 0.395, p));
-    // During the Equip wheel phase, turn the character toward the viewer so its
-    // 3D face, visor, chest core, shoulder pauldrons and model crest are in full view.
-    agent.rotation.y = mix(shot.heading, 0.22 + (ambient ? Math.sin(time * 0.8) * 0.14 : 0), inventoryAmount);
+    const tunnelHeroPose = smooth(0.37, 0.42, p) * (1 - smooth(0.92, 0.96, p));
+    if (spinBoost > 0) spinBoost = Math.max(0, spinBoost - dt * 1.8);
+    const spinTurn = spinBoost > 0.001 ? (1 - Math.cos((1 - spinBoost) * Math.PI)) * Math.PI : 0;
+    // During Equip and Tunnel stages, turn the character to a heroic 3/4 front view so its
+    // 3D face, visor, chest brand logo, model armor, and weapon are the visual centerpiece.
+    const baseHeading = mix(
+      shot.heading,
+      -0.34 + (ambient ? Math.sin(time * 1.1) * 0.12 : 0),
+      tunnelHeroPose,
+    );
+    agent.rotation.y = mix(
+      baseHeading,
+      0.22 + (ambient ? Math.sin(time * 0.8) * 0.14 : 0),
+      inventoryAmount,
+    ) + spinTurn;
     // The preceding chapter supplies arrival 0..1. The descent, touchdown and
     // takeoff are functions of scroll position, so none need a timer to finish.
     // Reduced motion opens with the robot already grounded; manual episode
@@ -1563,7 +1621,7 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
     const enginePower = (1 - takeoff) * airborne * (0.45 + braking * 0.75) +
       takeoff * (1.05 + travel * 0.25);
     const inTrackTunnel = smooth(0.37, 0.41, p) * (1 - smooth(0.92, 0.96, p));
-    toyRobot.root.scale.setScalar(mix(2.85, 1.48, inTrackTunnel));
+    toyRobot.root.scale.setScalar(mix(2.85, 2.15, inTrackTunnel));
     agent.position.y += hover;
     body.position.y = 0;
     body.scale.set(1 + impact * 0.018, 1 - impact * 0.045, 1 + impact * 0.018);
@@ -1604,7 +1662,8 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
         ? dim
         : weaponLights[state.equippedHarness];
     agentHalo.position.set(heroPos.x, 2 + hover, heroPos.z);
-    heroLight.position.copy(agent.position).add(vec(-1.6, 3.3, 2));
+    heroLight.position.copy(agent.position).add(vec(mix(-1.6, 1.2, inTrackTunnel), 2.8, mix(2, 3.4, inTrackTunnel)));
+    heroLight.intensity = mix(16, 48, inTrackTunnel);
     agent.updateMatrixWorld(true);
     const activeRoom = p >= 0.76 ? 2 : p >= 0.57 ? 1 : 0;
     const deployment = smooth(0.355, 0.425, p) * (1 - smooth(0.925, 0.98, p));
@@ -1734,10 +1793,10 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
       room.doors.forEach((d) => {
         d.scale.x = 1 - open * 0.94;
       });
-      room.chamberLight.intensity = active ? 40 : 17;
-      // the portal: lit for the room in focus, and for all three at the entrance and at the end
+      room.chamberLight.intensity = active ? 16 : 11;
+      // Keep the portal veil subtle when inside a track tunnel so there is zero white glare behind the robot
       const overview = 1 - smooth(0.13, 0.17, p), finale = smooth(0.92, 0.96, p);
-      const power = Math.max(active ? 1 : 0.25, overview * 0.95, finale);
+      const power = Math.max(active ? 0.32 : 0.18, overview * 0.75, finale * 0.75);
       // pointed at: a surge; stepped through: a flood
       const want = state.portalFocus === ARENA_DOMAINS[i].id ? (state.portalCharge ? 2.4 : 0.7) : 0;
       room.portal.surge += (want - room.portal.surge) * Math.min(1, frameDt * (state.portalCharge ? 4 : 6));
@@ -1747,7 +1806,7 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
       room.group.updateMatrixWorld();
       // two anchors: the threshold (for the full link) and the foot of the doorway (for a compact one,
       // below the vortex so the portal itself stays in view)
-      portalPoint.set(0, 0.95, 2.75); room.group.localToWorld(portalPoint).project(camera);
+      portalPoint.set(1.85, 0.22, 3.25); room.group.localToWorld(portalPoint).project(camera);
       const low = { x: (portalPoint.x + 1) * width / 2, y: (1 - portalPoint.y) * height / 2, ok: portalPoint.z > -1 && portalPoint.z < 1 && Math.abs(portalPoint.x) < 0.96 && Math.abs(portalPoint.y) < 0.96 };
       portalPoint.set(0, 1.25, 2.1); room.group.localToWorld(portalPoint).project(camera);
       portalList[i] = {
@@ -1955,6 +2014,10 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
         state.arrival = clamp(next.arrival, 0, 1);
       if (Number.isFinite(next.model))
         state.model = clamp(Math.round(next.model), 0, 5);
+      if (Number.isFinite(next.modelSpin) && next.modelSpin !== lastModelSpin) {
+        lastModelSpin = next.modelSpin;
+        spinBoost = 1;
+      }
       if (Number.isFinite(next.harness))
         state.harness = clamp(Math.round(next.harness), 0, 7);
       if (Object.prototype.hasOwnProperty.call(next, "equippedHarness"))

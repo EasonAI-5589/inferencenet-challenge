@@ -1,6 +1,6 @@
 /* A single scroll-owned timeline: camera, equipment, rooms and evidence all follow it. */
 import { createSignatureRail } from './mc-rail.js';
-import { ARENA_DOMAINS, HARNESS_NAMES } from './arena-data.js';
+import { ARENA_DOMAINS, HARNESS_NAMES, MODEL_CHARACTERS } from './arena-data.js';
 
 const chapter = document.querySelector('.mc-chapter');
 if (chapter) {
@@ -10,18 +10,11 @@ if (chapter) {
   const compact = matchMedia('(max-width: 860px) and (max-height: 720px)');
   const manual = () => reduced.matches || compact.matches;
   const stops = [0, .16, .38, .57, .76, .93, 1];
-  const clamp = x => Math.max(0, Math.min(1, x));
+  const clamp = (x, lo = 0, hi = 1) => Math.max(lo, Math.min(hi, x));
   const ease = x => { const p = clamp(x); return p * p * (3 - 2 * p); };
   const lang = () => document.documentElement.lang.startsWith('zh') ? 1 : 0;
-  const state = { progress: 0, arrival: manual() ? 1 : 0, phase: 0, model: 0, harness: 0, equippedHarness: null, room: 0, pointer: { x: 0, y: 0 }, paused: reduced.matches, language: lang() ? 'zh' : 'en' };
-  const models = [
-    { id: 'sol', name: 'GPT-5.6 Sol', short: 'GPT-5.6 Sol', role: ['Tactician · Model', '战术统帅 · 模型角色'], color: '#45b5b0' },
-    { id: 'opus', name: 'Claude Opus 4.8', short: 'Opus 4.8', role: ['Scholar · Model', '深思学者 · 模型角色'], color: '#f2b545' },
-    { id: 'gemini', name: 'Gemini 3.1 Pro', short: 'Gemini 3.1', role: ['Twin-Core · Model', '双核感知 · 模型角色'], color: '#7d6ad8' },
-    { id: 'kimi', name: 'Kimi K3', short: 'Kimi K3', role: ['Explorer · Model', '长程探索 · 模型角色'], color: '#6aa8e8' },
-    { id: 'deepseek', name: 'DeepSeek V4 Pro', short: 'DeepSeek V4', role: ['Reasoner · Model', '深度推演 · 模型角色'], color: '#2dd4bf' },
-    { id: 'qwen', name: 'Qwen3.7-Max', short: 'Qwen3.7-Max', role: ['Vanguard · Model', '全能先锋 · 模型角色'], color: '#e2667a' },
-  ];
+  const state = { progress: 0, arrival: manual() ? 1 : 0, phase: 0, model: 0, modelSpin: 0, harness: 0, equippedHarness: null, room: 0, pointer: { x: 0, y: 0 }, paused: reduced.matches, language: lang() ? 'zh' : 'en' };
+  const models = MODEL_CHARACTERS;
   const harnesses = [
     { name: 'DeepSeek Harness', lines: ['DeepSeek', 'Harness'], code: 'W-01', type: ['Plugin runtime', '插件运行时'], description: ['Swap the runtime weapon. Recompose the tools, context and feedback around your chosen model character.', '切换运行时武器，围绕当前模型角色重新组织工具、上下文与反馈。'] },
     { name: 'DeepAgents', lines: ['DeepAgents'], code: 'W-02', type: ['Library harness', '库式 Harness'], description: ['Equip a planning-oriented harness weapon. Make the workflow and working context part of the setup.', '装备面向规划的 Harness 武器，将工作流与上下文纳入配置。'] },
@@ -116,11 +109,16 @@ if (chapter) {
   let scene, loading = false, frame = 0, visible = false, anchor = null, lastKey = '';
   function selectModel(index) {
     state.model = clamp(index, 0, models.length - 1);
+    state.modelSpin = (state.modelSpin || 0) + 1;
+    try { localStorage.setItem('metacase-loadout', JSON.stringify({ model: state.model, harness: state.equippedHarness ?? state.harness ?? 0 })); } catch {}
     lastKey = '';
     paintCopy();
     scene?.update(state);
+    const m = models[state.model];
+    $('.mc-equipment-status').textContent = lang() ? `已切换角色：${m.name}` : `${m.name} character selected.`;
   }
   function buildModelSelectors() {
+    const NS = 'http://www.w3.org/2000/svg';
     for (const container of [$('[data-mc-model-roster]'), $('[data-mc-model-chips]')]) {
       if (!container) continue;
       container.replaceChildren(...models.map((m, i) => {
@@ -128,12 +126,26 @@ if (chapter) {
         btn.type = 'button';
         btn.className = 'mc-model-btn';
         btn.dataset.modelIndex = String(i);
+        btn.dataset.mcModel = String(i);
         btn.style.setProperty('--mc-mcolor', m.color);
-        const dot = document.createElement('i'), label = document.createElement('span');
-        dot.setAttribute('aria-hidden', 'true');
+        const svg = document.createElementNS(NS, 'svg');
+        svg.setAttribute('viewBox', '-14 -14 28 28');
+        svg.setAttribute('aria-hidden', 'true');
+        svg.setAttribute('class', 'mc-model-logo');
+        const path = document.createElementNS(NS, 'path');
+        path.setAttribute('d', m.logo);
+        path.setAttribute('fill', 'currentColor');
+        path.setAttribute('stroke', 'currentColor');
+        path.setAttribute('stroke-width', '1.4');
+        path.setAttribute('stroke-linejoin', 'round');
+        svg.append(path);
+        const label = document.createElement('span');
         label.textContent = m.short;
-        btn.append(dot, label);
-        btn.addEventListener('click', () => selectModel(i));
+        btn.append(svg, label);
+        btn.addEventListener('click', event => {
+          event.stopPropagation();
+          selectModel(i);
+        });
         return btn;
       }));
     }
@@ -181,7 +193,12 @@ if (chapter) {
       const item = document.createElement('li'), code = document.createElement('code'), name = document.createElement('span');
       item.dataset.category = entry.id; item.title = entry.description[l];
       code.textContent = entry.id; name.textContent = entry.name[l];
-      item.append(code, name); return item;
+      item.append(code, name);
+      item.addEventListener('click', () => {
+        const portalLink = $(`[data-portal="${domain.id}"]`);
+        if (portalLink) portalLink.click();
+      });
+      return item;
     }));
     $('[data-mc-overview]').replaceChildren(...ARENA_DOMAINS.map(d => {
       const tag = document.createElement('span'); tag.textContent = `${d.id}/ ${d.entries.length}`;
@@ -362,14 +379,14 @@ if (chapter) {
       const href = link.href;
       const chosenHarness = state.equippedHarness ?? state.harness ?? 0;
       try { localStorage.setItem('metacase-loadout', JSON.stringify({ model: state.model || 0, harness: chosenHarness })); } catch {}
-      setTimeout(() => import('./portal-warp.js?v=20261027-tunnel3d').then(m => m.warp({ x, y, track: id, href, model: state.model || 0, harness: chosenHarness, lang: lang() })).catch(() => { location.href = href; }), scene ? 260 : 0);
+      setTimeout(() => import('./portal-warp.js?v=20261027-robotwarp').then(m => m.warp({ x, y, track: id, href, model: state.model || 0, harness: chosenHarness, lang: lang() })).catch(() => { location.href = href; }), scene ? 260 : 0);
     });
   });
   addEventListener('pageshow', event => { if (event.persisted) { state.portalCharge = false; state.portalFocus = ''; scene?.update(state); } });
   async function load() {
     if(loading)return;loading=true;
     try {
-      const {createArenaScene}=await import('./arena-scene.js?v=20261027-tunnel3d');
+      const {createArenaScene}=await import('./arena-scene.js?v=20261027-robotwarp');
       scene=createArenaScene($('.mc-canvas'), { onWeaponProject: projectWeapon, onPortalProject: projectPortals }); scene.update(state);
       $('.mc-fallback').hidden=true;chapter.dataset.renderer='webgl';
     } catch(error) {

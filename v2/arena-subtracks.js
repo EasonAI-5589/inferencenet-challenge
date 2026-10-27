@@ -69,17 +69,18 @@ export function createRoomSubtracks({ domain, index = 0 } = {}) {
     transparent: true,
     depthWrite: false,
     side: THREE.DoubleSide,
-    blending: THREE.AdditiveBlending,
+    blending: THREE.NormalBlending,
     vertexShader: `varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
     fragmentShader: `varying vec2 vUv;uniform float time;uniform float power;uniform vec3 tint;
       void main(){
-        float ribs = pow(0.5 + 0.5 * cos(vUv.x * 6.28318 * 18.0), 10.0);
-        float rings = pow(0.5 + 0.5 * cos((vUv.y * 14.0 + time * 2.6) * 6.28318), 8.0);
-        float endFade = smoothstep(0.0, 0.12, vUv.y) * smoothstep(1.0, 0.85, vUv.y);
-        float sideMask = 0.4 + 0.6 * pow(sin(vUv.x * 6.28318), 2.0);
-        float alpha = (ribs * 0.28 + rings * 0.4 + 0.08) * endFade * sideMask * power;
-        vec3 col = mix(tint, vec3(1.0), rings * 0.45);
-        gl_FragColor = vec4(col, alpha);
+        float ribs = pow(0.5 + 0.5 * cos(vUv.x * 6.28318 * 18.0), 12.0);
+        float rings = pow(0.5 + 0.5 * cos((vUv.y * 14.0 + time * 2.6) * 6.28318), 10.0);
+        float endFade = smoothstep(0.0, 0.14, vUv.y) * smoothstep(1.0, 0.84, vUv.y);
+        float sideMask = 0.25 + 0.75 * pow(sin(vUv.x * 6.28318), 2.0);
+        vec3 darkTube = vec3(0.025, 0.045, 0.09);
+        vec3 gridCol = tint * (ribs * 0.55 + rings * 0.75);
+        float alpha = (0.52 + (ribs * 0.22 + rings * 0.28)) * endFade * sideMask * power;
+        gl_FragColor = vec4(darkTube + gridCol, alpha);
       }`,
   }));
   const tunnelShell = new THREE.Mesh(tunnelShellGeo, tunnelShellMat);
@@ -89,10 +90,10 @@ export function createRoomSubtracks({ domain, index = 0 } = {}) {
   tunnelGroup.add(tunnelShell);
 
   // 14 physical 3D glowing pipe rings + 10 longitudinal neon rails forming the 3D tunnel skeleton
-  const pipeRingGeo = trackGeom(new THREE.TorusGeometry(TUNNEL_R - .02, .042, 10, 52));
+  const pipeRingGeo = trackGeom(new THREE.TorusGeometry(TUNNEL_R - .02, .038, 10, 52));
   const pipeRings = Array.from({ length: 14 }, (_, k) => {
     const rm = trackMat(new THREE.MeshBasicMaterial({
-      color: LIGHTS[palette][k % 6], transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending,
+      color: LIGHTS[palette][k % 6], transparent: true, opacity: 0, depthWrite: false,
     }));
     const mesh = new THREE.Mesh(pipeRingGeo, rm);
     mesh.position.set(0, TUNNEL_Y, TUNNEL_Z0 + (k / 13) * TUNNEL_LEN);
@@ -100,9 +101,9 @@ export function createRoomSubtracks({ domain, index = 0 } = {}) {
     tunnelGroup.add(mesh);
     return { mesh, mat: rm, k };
   });
-  const railGeo = trackGeom(new THREE.BoxGeometry(.036, .036, TUNNEL_LEN));
+  const railGeo = trackGeom(new THREE.BoxGeometry(.032, .032, TUNNEL_LEN));
   const railMat = trackMat(new THREE.MeshBasicMaterial({
-    color: arcColor, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending,
+    color: arcColor, transparent: true, opacity: 0, depthWrite: false,
   }));
   for (let k = 0; k < 10; k++) {
     const a = (k / 10) * Math.PI * 2;
