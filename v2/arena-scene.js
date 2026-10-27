@@ -32,6 +32,7 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
   const state = {
     progress: 0,
     arrival: 1,
+    model: 0,
     harness: 0,
     equippedHarness: null,
     room: 0,
@@ -909,6 +910,98 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
   body.add(toyRobot.root);
   const head = toyRobot.head;
   canvas.dataset.robotModel = "mc-kit";
+
+  // Six distinct 3D Model Character loadouts (armor tint, visor glow, chest core, shoulder pauldrons & head crest)
+  const MODEL_PALETTES = [
+    { hull: 0xf7f8fb, eye: 0x67f5ff, trim: 0x45b5b0 }, // 0: GPT-5.6 Sol (Tactician)
+    { hull: 0xfaf0dc, eye: 0xffd666, trim: 0xf2b545 }, // 1: Claude Opus 4.8 (Scholar)
+    { hull: 0xe6edff, eye: 0xc4a7ff, trim: 0x7d6ad8 }, // 2: Gemini 3.1 Pro (Twin-Core)
+    { hull: 0xdce8fa, eye: 0x8be9fd, trim: 0x6aa8e8 }, // 3: Kimi K3 (Explorer)
+    { hull: 0xe2f5f2, eye: 0x5eead4, trim: 0x2dd4bf }, // 4: DeepSeek V4 Pro (Reasoner)
+    { hull: 0xf9ebf0, eye: 0xff9eb5, trim: 0xe2667a }, // 5: Qwen3.7-Max (Vanguard)
+  ];
+  const robotHullMeshes = [], robotEyeMeshes = [];
+  toyRobot.root.traverse((node) => {
+    if (!node.isMesh || !node.material) return;
+    const hex = node.material.color?.getHex?.();
+    if (hex === PALETTE.cream) robotHullMeshes.push(node);
+    else if (hex === 0x8ff6ff) robotEyeMeshes.push(node);
+  });
+  const charTrimMat = luminous(0x45b5b0, 1.3, 0.25);
+  const charCoreMat = luminous(0x67f5ff, 2.6, 0.15);
+  // Shoulder pauldrons & chest core on the robot torso
+  const torsoArmor = new THREE.Group();
+  toyRobot.root.add(torsoArmor);
+  for (const s of [-1, 1]) {
+    const pauldron = box(torsoArmor, 0.14, 0.16, 0.24, charTrimMat, s * 0.29, 0.46, 0, 0.04);
+    pauldron.rotation.z = -s * 0.22;
+  }
+  sphere(torsoArmor, 0.075, charCoreMat, 0, 0.36, 0.19);
+  ring(torsoArmor, 0.11, 0.015, charTrimMat, 0, 0.36, 0.195, false).rotation.x = Math.PI / 2;
+
+  // Six distinct 3D head crests mounted on `head`
+  const modelCrests = MODEL_PALETTES.map((mp, idx) => {
+    const g = new THREE.Group();
+    const mTrim = luminous(mp.trim, 1.4, 0.25), mGlow = luminous(mp.eye, 2.4, 0.15);
+    if (idx === 0) {
+      // Sol: golden sun-crown crest with 3 prongs
+      box(g, 0.26, 0.08, 0.06, gold, 0, 0.41, 0.18, 0.02);
+      [-0.09, 0, 0.09].forEach((x, k) => box(g, 0.05, k === 1 ? 0.16 : 0.11, 0.05, k === 1 ? mGlow : gold, x, 0.47 + (k === 1 ? 0.02 : 0), 0.18, 0.015));
+    } else if (idx === 1) {
+      // Opus: floating scholar halo ring above the head
+      const haloRing = ring(g, 0.26, 0.025, gold, 0, 0.56, 0, false);
+      haloRing.rotation.x = 0.18;
+      sphere(g, 0.055, mGlow, 0, 0.38, 0.2);
+    } else if (idx === 2) {
+      // Gemini: twin V-wing antennae + prism brow
+      for (const s of [-1, 1]) {
+        const wing = box(g, 0.05, 0.28, 0.08, s < 0 ? mTrim : mGlow, s * 0.18, 0.48, 0.06, 0.02);
+        wing.rotation.z = -s * 0.38;
+      }
+      box(g, 0.22, 0.06, 0.06, mGlow, 0, 0.36, 0.2, 0.02);
+    } else if (idx === 3) {
+      // Kimi: crescent moon fin + side ear pods
+      const fin = ring(g, 0.18, 0.028, mGlow, 0, 0.5, 0.12, false);
+      fin.rotation.y = Math.PI / 2;
+      for (const s of [-1, 1]) cylinder(g, 0.06, 0.06, 0.08, mTrim, s * 0.28, 0.2, 0, 12).rotation.z = Math.PI / 2;
+    } else if (idx === 4) {
+      // DeepSeek: neural matrix visor fin + dual dorsal blades
+      box(g, 0.46, 0.06, 0.12, mTrim, 0, 0.28, 0.18, 0.02);
+      for (const s of [-1, 1]) {
+        const blade = box(g, 0.05, 0.24, 0.18, mGlow, s * 0.22, 0.44, -0.05, 0.015);
+        blade.rotation.x = -0.35;
+      }
+    } else {
+      // Qwen: star-wing V-crest on forehead
+      for (const s of [-1, 1]) {
+        const horn = box(g, 0.24, 0.06, 0.05, mTrim, s * 0.11, 0.43, 0.19, 0.015);
+        horn.rotation.z = s * 0.42;
+      }
+      sphere(g, 0.065, gold, 0, 0.4, 0.21);
+    }
+    g.visible = idx === 0;
+    head.add(g);
+    return g;
+  });
+  let appliedModel = -1;
+  function applyCharacterModel(idx) {
+    if (idx === appliedModel) return;
+    appliedModel = idx;
+    const mp = MODEL_PALETTES[idx] || MODEL_PALETTES[0];
+    robotHullMeshes.forEach((m) => m.material.color.setHex(mp.hull));
+    robotEyeMeshes.forEach((m) => {
+      m.material.color.setHex(mp.eye);
+      if (m.material.emissive) m.material.emissive.setHex(mp.eye);
+    });
+    charTrimMat.color.setHex(mp.trim);
+    charTrimMat.emissive.setHex(mp.trim);
+    charCoreMat.color.setHex(mp.eye);
+    charCoreMat.emissive.setHex(mp.eye);
+    modelCrests.forEach((c, i) => {
+      c.visible = i === idx;
+    });
+  }
+  applyCharacterModel(0);
   const jetMounts = [-1, 1].map(side => {
     const mount = new THREE.Group();
     mount.position.set(side * 0.14 * 2.85, 0.015, 0);
@@ -958,32 +1051,43 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
   const heroLight = new THREE.PointLight(0xe5f4ff, 7.5, 7, 2);
   stage.add(heroLight);
   const inventory = new THREE.Group();
-  inventory.position.set(0, 1.7, 5.3);
   stage.add(inventory);
+  const wheelLight = new THREE.PointLight(0xffffff, 18, 12, 1.5);
+  stage.add(wheelLight);
+  const slotRay = vec();
   const inventoryGuns = harnessColors.map((c, i) => {
-    const mount = new THREE.Group(),
-      a = (i / 8) * Math.PI * 2;
-    mount.position.set(
-      Math.sin(a) * 2.35 + (i === 0 ? 0.8 : i === 4 ? -0.8 : 0),
-      Math.cos(a) * 1.7 + 0.65,
-      -0.35,
-    );
+    const mount = new THREE.Group();
     inventory.add(mount);
-    const model = weapon(i);
-    model.rotation.set(-0.15, Math.PI / 2, -0.08);
-    model.scale.setScalar(0.45);
-    mount.add(model);
+    // 3D beveled metallic weapon pedestal + glowing holo-rings
+    const baseDisc = cylinder(mount, 0.3, 0.36, 0.07, hull, 0, -0.2, 0, 24);
+    baseDisc.rotation.x = 0.32;
     const platform = ring(
       mount,
-      0.39,
+      0.34,
+      0.022,
+      weaponLights[i],
+      0,
+      -0.16,
+      0.02,
+      false,
+    );
+    platform.rotation.x = 0.32;
+    const orbitRing = ring(
+      mount,
+      0.4,
       0.012,
       weaponLights[i],
-      0.1,
-      -0.24,
+      0,
+      0.02,
       0,
       false,
     );
-    return { mount, model, platform };
+    orbitRing.rotation.set(0.85, 0.3, 0);
+    const model = weapon(i);
+    model.rotation.set(0.24, Math.PI * 0.68, -0.14);
+    model.scale.setScalar(0.58);
+    mount.add(model);
+    return { mount, model, platform, orbitRing, baseDisc };
   });
   inventory.visible = false;
   let modelLibrary;
@@ -1007,8 +1111,8 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
         slot.mount.remove(slot.model);
         const preview = w.clone(true);
         preview.visible = true;
-        preview.scale.setScalar(0.8);
-        preview.rotation.set(-0.15, Math.PI / 2, -0.08);
+        preview.scale.setScalar(1.02);
+        preview.rotation.set(0.22, Math.PI * 0.68, -0.14);
         slot.mount.add(preview);
         slot.model = preview;
       });
@@ -1397,7 +1501,10 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
     else camera.clearViewOffset();
     camera.updateProjectionMatrix();
     agent.position.copy(heroPos);
-    agent.rotation.y = shot.heading;
+    const inventoryAmount = smooth(0.14, 0.21, p) * (1 - smooth(0.35, 0.395, p));
+    // During the Equip wheel phase, turn the character toward the viewer so its
+    // 3D face, visor, chest core, shoulder pauldrons and model crest are in full view.
+    agent.rotation.y = mix(shot.heading, 0.22 + (ambient ? Math.sin(time * 0.8) * 0.14 : 0), inventoryAmount);
     // The preceding chapter supplies arrival 0..1. The descent, touchdown and
     // takeoff are functions of scroll position, so none need a timer to finish.
     // Reduced motion opens with the robot already grounded; manual episode
@@ -1523,13 +1630,39 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
       jet.pool.material.opacity = (0.14 + travel * 0.07) * enginePower;
       jet.pool.scale.setScalar(1.25 + travel * 0.55);
     });
-    const inventoryAmount = smooth(0.16, 0.22, p) * (1 - smooth(0.34, 0.39, p));
+    applyCharacterModel(state.model || 0);
     inventory.visible = inventoryAmount > 0.01;
-    inventory.scale.setScalar(Math.max(0.01, inventoryAmount));
-    inventoryGuns.forEach(({ model, platform }, i) => {
+    wheelLight.visible = inventory.visible;
+    wheelLight.intensity = 22 * inventoryAmount;
+    wheelLight.position.copy(camera.position);
+    // Place each of the 8 3D weapons at the exact unprojected screen ray of its wheel sector,
+    // compensating for camera.setViewOffset(-0.07 * width * wheelShift)
+    const wheelDiam = mobile
+      ? Math.min(width * 0.82, Math.max(260, Math.min(330, height - 395)))
+      : Math.min(width * 0.46, height * 0.64, 540);
+    const wheelCx = width * (mobile ? 0.5 : 0.58);
+    const wheelCy = height * (mobile ? 0.4 : 0.46);
+    const slotRadiusPx = (198 / 600) * wheelDiam;
+    const slotDist = 5.8;
+    camera.updateMatrixWorld();
+    inventoryGuns.forEach(({ mount, model, platform, orbitRing }, i) => {
+      const a = -Math.PI / 2 + (i / 8) * Math.PI * 2;
+      const sx = wheelCx + Math.cos(a) * slotRadiusPx;
+      const sy = wheelCy + Math.sin(a) * slotRadiusPx - wheelDiam * 0.018;
+      slotRay.set((sx / width) * 2 - 1, -(sy / height) * 2 + 1, 0.5).unproject(camera);
+      slotRay.sub(camera.position).normalize();
+      mount.position.copy(camera.position).addScaledVector(slotRay, slotDist);
+      mount.quaternion.copy(camera.quaternion);
+      const selected = i === state.harness || i === state.equippedHarness;
+      const scalePop = inventoryAmount * (selected ? 1.15 : 0.9);
+      mount.scale.setScalar(Math.max(0.001, scalePop));
       model.rotation.y =
-        Math.PI / 2 + (ambient ? Math.sin(time * 0.7 + i) * 0.12 : 0);
-      platform.scale.setScalar(i === state.harness ? 1.2 : 0.85);
+        Math.PI * 0.68 + (ambient ? Math.sin(time * 1.1 + i * 0.8) * 0.32 : 0);
+      model.rotation.x = 0.24 + (selected ? 0.08 : 0);
+      const baseScale = canvas.dataset.weaponAssets === "kenney-cc0" ? 0.86 : 0.55;
+      model.scale.setScalar(baseScale);
+      platform.scale.setScalar(selected ? 1.14 : 0.88);
+      if (orbitRing && ambient) orbitRing.rotation.z = time * (selected ? 1.6 : 0.6) + i;
     });
     const roomWindows = [
       [0.375, 0.45, 0.57],
@@ -1767,6 +1900,8 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
         state.progress = clamp(next.progress, 0, 1);
       if (Number.isFinite(next.arrival))
         state.arrival = clamp(next.arrival, 0, 1);
+      if (Number.isFinite(next.model))
+        state.model = clamp(Math.round(next.model), 0, 5);
       if (Number.isFinite(next.harness))
         state.harness = clamp(Math.round(next.harness), 0, 7);
       if (Object.prototype.hasOwnProperty.call(next, "equippedHarness"))

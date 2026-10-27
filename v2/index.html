@@ -16,14 +16,14 @@
   <script>document.documentElement.classList.add("js")</script>
   <script src="../site.js?v=20261019-motion" defer></script>
   <link rel="stylesheet" href="../language.css">
-  <script src="../language.js?v=20261027-emblems" defer></script>
+  <script src="../language.js?v=20261027-armory3d" defer></script>
   <link rel="stylesheet" href="v2.css?v=20261027-copy2">
-  <link rel="stylesheet" href="arena.css?v=20261027-emblems">
+  <link rel="stylesheet" href="arena.css?v=20261027-armory3d">
   <link rel="stylesheet" href="metacase.css?v=20261027-emblems">
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script src="v2.js?v=20261022-v2-ambient" defer></script>
   <script type="module" src="metacase.js?v=20261027-emblems"></script>
-  <script type="module" src="arena.js?v=20261027-emblems"></script>
+  <script type="module" src="arena.js?v=20261027-armory3d"></script>
 </head>
 <body class="v2-home mc-home">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -513,8 +513,13 @@
       <div class="mc-domain-overview" data-mc-overview><span>econ/ 5</span><span>fin/ 6</span><span>soc/ 5</span></div>
       <aside class="mc-domain-directory" data-mc-directory hidden aria-label="Case categories"><p class="mono" data-mc-directory-title></p><small class="mc-directory-hint" data-mc-directory-hint>SWIPE →</small><ul data-mc-directory-list></ul></aside>
     </div>
-    <div class="mc-wheel" role="group" aria-hidden="true" inert><svg viewBox="0 0 600 600"></svg><span class="mc-wheel-label" data-mc-wheel-label>SCROLL TO BROWSE · CLICK A SLOT TO EQUIP</span></div>
+    <div class="mc-wheel" role="group" aria-hidden="true" inert><svg viewBox="0 0 600 600"></svg><div class="mc-wheel-hub-badge" data-mc-hub-badge><small data-mc-hub-role>CHARACTER · MODEL</small><strong data-mc-hub-model>GPT-5.6 Sol</strong></div><div class="mc-model-roster" data-mc-model-roster role="group" aria-label="Select model character"></div><span class="mc-wheel-label" data-mc-wheel-label>SCROLL TO BROWSE · CLICK A SLOT TO EQUIP</span></div>
     <div class="mc-loadout">
+      <div class="mc-loadout-model">
+        <span class="mc-loadout-role-label" data-mc-model-label>CHARACTER / MODEL</span>
+        <strong class="mc-equipped-model" data-mc-equipped-model>GPT-5.6 Sol</strong>
+        <div class="mc-model-chips" data-mc-model-chips role="group" aria-label="Model character"></div>
+      </div>
       <span class="mc-loadout-label" data-mc-loadout-label>CARRIED / HARNESS</span>
       <strong class="mc-equipped" data-mc-equipped>Awaiting a loadout</strong>
       <span class="mc-loadout-type" data-mc-type>Choose a harness at the equipment wheel</span>

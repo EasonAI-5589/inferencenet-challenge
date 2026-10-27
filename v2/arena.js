@@ -13,16 +13,24 @@ if (chapter) {
   const clamp = x => Math.max(0, Math.min(1, x));
   const ease = x => { const p = clamp(x); return p * p * (3 - 2 * p); };
   const lang = () => document.documentElement.lang.startsWith('zh') ? 1 : 0;
-  const state = { progress: 0, arrival: manual() ? 1 : 0, phase: 0, harness: 0, equippedHarness: null, room: 0, pointer: { x: 0, y: 0 }, paused: reduced.matches, language: lang() ? 'zh' : 'en' };
+  const state = { progress: 0, arrival: manual() ? 1 : 0, phase: 0, model: 0, harness: 0, equippedHarness: null, room: 0, pointer: { x: 0, y: 0 }, paused: reduced.matches, language: lang() ? 'zh' : 'en' };
+  const models = [
+    { id: 'sol', name: 'GPT-5.6 Sol', short: 'GPT-5.6 Sol', role: ['Tactician · Model', '战术统帅 · 模型角色'], color: '#45b5b0' },
+    { id: 'opus', name: 'Claude Opus 4.8', short: 'Opus 4.8', role: ['Scholar · Model', '深思学者 · 模型角色'], color: '#f2b545' },
+    { id: 'gemini', name: 'Gemini 3.1 Pro', short: 'Gemini 3.1', role: ['Twin-Core · Model', '双核感知 · 模型角色'], color: '#7d6ad8' },
+    { id: 'kimi', name: 'Kimi K3', short: 'Kimi K3', role: ['Explorer · Model', '长程探索 · 模型角色'], color: '#6aa8e8' },
+    { id: 'deepseek', name: 'DeepSeek V4 Pro', short: 'DeepSeek V4', role: ['Reasoner · Model', '深度推演 · 模型角色'], color: '#2dd4bf' },
+    { id: 'qwen', name: 'Qwen3.7-Max', short: 'Qwen3.7-Max', role: ['Vanguard · Model', '全能先锋 · 模型角色'], color: '#e2667a' },
+  ];
   const harnesses = [
-    { name: 'DeepSeek Harness', lines: ['DeepSeek', 'Harness'], type: ['Plugin runtime', '插件运行时'], description: ['Swap the runtime. Recompose the tools, context and feedback around the same agent.', '切换运行时，围绕同一个 Agent 重新组织工具、上下文与反馈。'] },
-    { name: 'DeepAgents', lines: ['DeepAgents'], type: ['Library harness', '库式 Harness'], description: ['Equip a planning-oriented harness. Make the workflow and working context part of the setup.', '装备面向规划的 Harness，将工作流与工作上下文纳入配置。'] },
-    { name: 'Claude Code', lines: ['Claude', 'Code'], type: ['CLI harness', '命令行 Harness'], description: ['Load a different execution loop. The challenge still begins with the same evidence.', '装载不同的执行循环，挑战仍从同一份证据出发。'] },
-    { name: 'Codex CLI', lines: ['Codex', 'CLI'], type: ['CLI harness', '命令行 Harness'], description: ['Exchange the tool interface and execution environment around the model.', '更换模型周围的工具接口与执行环境。'] },
-    { name: 'OpenCode', lines: ['OpenCode'], type: ['Server runtime', '服务式运行时'], description: ['Another equipment slot, another way to organize the agent’s work.', '另一套装备，用另一种方式组织 Agent 的工作。'] },
-    { name: 'OpenHands SDK', lines: ['OpenHands', 'SDK'], type: ['Agent runtime', 'Agent 运行时'], description: ['Connect the agent, conversation and workspace through a different runtime.', '通过不同的运行时连接 Agent、会话与工作空间。'] },
-    { name: 'Terminus-2', lines: ['Terminus', '-2'], type: ['Reference loop', '参考执行循环'], description: ['Equip a terminal-oriented loop. Tools turn proposed actions into observable results.', '装备面向终端的执行循环，让工具将行动转化为可观察结果。'] },
-    { name: 'mini-SWE-agent', lines: ['mini-SWE', 'agent'], type: ['Minimal loop', '精简执行循环'], description: ['Strip the loop back to its essentials. Architecture is a variable; evidence remains the anchor.', '将循环简化到核心。架构可以改变，证据始终是依据。'] },
+    { name: 'DeepSeek Harness', lines: ['DeepSeek', 'Harness'], code: 'W-01', type: ['Plugin runtime', '插件运行时'], description: ['Swap the runtime weapon. Recompose the tools, context and feedback around your chosen model character.', '切换运行时武器，围绕当前模型角色重新组织工具、上下文与反馈。'] },
+    { name: 'DeepAgents', lines: ['DeepAgents'], code: 'W-02', type: ['Library harness', '库式 Harness'], description: ['Equip a planning-oriented harness weapon. Make the workflow and working context part of the setup.', '装备面向规划的 Harness 武器，将工作流与上下文纳入配置。'] },
+    { name: 'Claude Code', lines: ['Claude', 'Code'], code: 'W-03', type: ['CLI harness', '命令行 Harness'], description: ['Load a different execution loop weapon. The challenge still begins with the same evidence.', '装载不同的执行循环武器，挑战仍从同一份证据出发。'] },
+    { name: 'Codex CLI', lines: ['Codex', 'CLI'], code: 'W-04', type: ['CLI harness', '命令行 Harness'], description: ['Exchange the tool interface and execution environment weapon around the model character.', '为模型角色更换周围的工具接口与执行环境武器。'] },
+    { name: 'OpenCode', lines: ['OpenCode'], code: 'W-05', type: ['Server runtime', '服务式运行时'], description: ['Another weapon slot, another way to organize the model character’s work.', '另一套武器槽位，用另一种方式组织模型角色的工作。'] },
+    { name: 'OpenHands SDK', lines: ['OpenHands', 'SDK'], code: 'W-06', type: ['Agent runtime', 'Agent 运行时'], description: ['Connect the character, conversation and workspace through a different runtime weapon.', '通过不同的运行时武器连接角色、会话与工作空间。'] },
+    { name: 'Terminus-2', lines: ['Terminus', '-2'], code: 'W-07', type: ['Reference loop', '参考执行循环'], description: ['Equip a terminal-oriented loop weapon. Tools turn proposed actions into observable results.', '装备面向终端的执行循环武器，让工具将行动转化为可观察结果。'] },
+    { name: 'mini-SWE-agent', lines: ['mini-SWE', 'agent'], code: 'W-08', type: ['Minimal loop', '精简执行循环'], description: ['Strip the loop back to its essentials. Both character and weapon are variables; evidence remains the anchor.', '将循环简化到核心。模型角色与 Harness 武器皆可切换，证据始终是依据。'] },
   ];
   // Each room is a portal to its track on the Challenge page.
   const TRACKS = { econ: 'challenge.html?via=portal#track-econ', fin: 'challenge.html?via=portal#track-fin', soc: 'challenge.html?via=portal#track-soc' };
@@ -38,7 +46,7 @@ if (chapter) {
   ];
   const phases = [
     { tag:['01 / THE ENTRANCE','01 / 挑战赛入口'], title:['Three portals.<br><em>Three tracks.</em>','三扇门，<br><em>三条赛道。</em>'], body:['Economics, Finance and Social Science. Step through a portal to reach its track: the tasks, the data and how runs are scored.', '经济、金融与社科。穿过一扇门，就进入对应的赛道：题目、数据和评分方式都在那里。'], code:['THREE TRACKS · SIXTEEN CASE CATEGORIES','三条赛道 · 16 个二级目录'], label:['ENTER','入口'], event:['Pick a portal, or scroll to walk through all three with one agent.', '选一扇门直接进入，或继续滚动，跟着一个 Agent 走过三条赛道。'] },
-    { tag:['02 / THE HARNESS WHEEL','02 / HARNESS 装备轮'], title:['Same mind.<br><em>Different tools.</em>','同一个 Agent，<br><em>不同的装备。</em>'], body:['Scroll to browse eight harnesses. Confirm one, then watch it unfold beside your agent as you approach a challenge.', '滚动浏览八种 Harness。确认装备后，继续靠近房间，武器会从背部展开至身侧并瞄准挑战。'], code:['SCROLL TO BROWSE · CLICK TO EQUIP','滚动浏览 · 点击装备'], label:['EQUIP','装备'], event:['', ''] },
+    { tag:['02 / CHARACTER & HARNESS WHEEL','02 / 角色与 HARNESS 装备轮'], title:['Model is the character.<br><em>Harness is the weapon.</em>','模型是角色，<br><em>Harness 是武器。</em>'], body:['Switch between six 3D model characters at the center, then spin the 3D armory wheel to equip one of eight harness weapons.', '在中心切换六款 3D 模型角色（Model），再转动立体武器轮盘，为它装载趁手的 Harness 武器。'], code:['PICK A MODEL CHARACTER · EQUIP A HARNESS WEAPON','切换模型角色 · 装备 HARNESS 武器'], label:['EQUIP','装备'], event:['', ''] },
     ...ARENA_DOMAINS.map((domain, i) => ({
       tag: [`0${i + 3} / ${domain.id.toUpperCase()}`, `0${i + 3} / ${domain.name[1]}`],
       title: [`${domain.name[0]}<br><em>${domainHeadlines[i][0]}</em>`, `${domain.name[1]}<br><em>${domainHeadlines[i][1]}</em>`],
@@ -48,27 +56,53 @@ if (chapter) {
     })),
     { tag:['06 / CHOOSE YOUR TRACK','06 / 选择赛道'], title:['Step through.<br><em>Pick your track.</em>','选一扇门，<br><em>进入你的赛道。</em>'], body:['All three portals are open. Every track runs the same loop: raw evidence in, a deliverable out, the whole trajectory kept.', '三扇门都已打开。每条赛道都是同一个闭环：输入原始证据，交出可核查的成果，完整保留执行轨迹。'], code:['THREE PORTALS · ONE CHALLENGE','三扇门 · 一个挑战赛'], label:['CHOOSE','选择赛道'], event:['Click a portal to enter its track.', '点击任意一扇门，进入对应赛道。'] },
   ];
-  const toolPaths = [
-    'M-34-6h15l6-7H12v6h27v8H8L-2 13h-12l3-12h-23Z M-7-6H8 M24-3h17',
-    'M-34-8h13v-5h30v5h25v10H5l-9 13h-12l4-13h-22Z M-9-9v8 M0-9v8 M9-9v8 M25-10v15',
-    'M-33-7h22l5-7h17l7 7h19V3H8L0 14h-13l4-12h-24Z M-5-7l6 4-6 4 M10 1h9',
-    'M-33-9h51v5h20v8H9l-8 11h-13l4-12h-25Z M-3-11v-5H9v5 M24-8v15 M-21-4h9',
-    'M-32-6h19l6-7h23v6h21v11H8L0 14h-12l3-12h-23Z M-3-7l-5 4 5 4 M8-7l5 4-5 4',
-    'M-32-8h14l8-6H7l9 7h22V4H8L0 14h-12l4-11h-24Z M-4-9V0 M3-9V0 M24-12v20 M30-9v14',
-    'M-37-6h28l6-7h20v6h25v8H5L-2 14h-12l5-12h-28Z M-2-7l6 4-6 4 M10 1h10 M28-3h16',
-    'M-27-8h45v5h17v7H4L-3 14h-12l6-11h-18Z M-16-4h21 M-8-14H8 M-1-14v6',
+  // 3D-shaded multi-layer weapon silhouettes (hull shadow, bevel body, specular top rail, glowing plasma core)
+  const weapon3DSprites = [
+    { body: 'M-36-7h16l6-8H14v6h28v9H8L-2 14h-13l3-13h-24Z', top: 'M-34-7h14l6-7h26v4H-10Z', core: 'M-6-4h18v4H-6Z M22-3h18v3H22Z' },
+    { body: 'M-36-9h14v-6h32v6h26v11H5l-9 14h-13l4-14h-23Z', top: 'M-22-15h32v5h24v3H-22Z', core: 'M-10-8h22v5H-10Z M22-7h16v4H22Z' },
+    { body: 'M-35-8h23l5-8h18l7 8h20V4H8L0 15h-14l4-13h-25Z', top: 'M-12-16h18l6 7h19v3H-14Z', core: 'M-6-6h20v5H-6Z M18-4h18v3H18Z' },
+    { body: 'M-35-10h52v6h22v9H9l-8 12h-14l4-13h-26Z', top: 'M-35-10h52v4h20v3H-35Z', core: 'M-18-5h28v4H-18Z M20-5h17v4H20Z' },
+    { body: 'M-34-7h20l6-8h24v6h22v12H8L0 15h-13l3-13h-24Z', top: 'M-14-15h24v5h21v3H-18Z', core: 'M-8-6h22v6H-8Z M20-4h16v4H20Z' },
+    { body: 'M-34-9h15l8-7H8l9 8h23V5H8L0 15h-13l4-12h-25Z', top: 'M-19-9l8-7H8l8 7h22v3H-19Z', core: 'M-6-7h16v6H-6Z M20-5h18v4H20Z' },
+    { body: 'M-38-7h29l6-8h21v6h26v9H5L-2 15h-13l5-13h-28Z', top: 'M-9-15h21v5h25v3H-13Z', core: 'M-8-5h24v5H-8Z M22-4h19v3H22Z' },
+    { body: 'M-29-9h46v6h18v8H4L-3 15h-13l6-12h-19Z', top: 'M-29-9h46v4h17v3H-29Z', core: 'M-16-4h22v4H-16Z M12-4h20v3H12Z' },
   ];
   const polar = (r, a) => [300 + Math.cos(a) * r, 300 + Math.sin(a) * r];
   const pt = p => p.map(x => x.toFixed(2)).join(' ');
-  const wedge = (a, b) => `M${pt(polar(272,a))} A272 272 0 0 1 ${pt(polar(272,b))} L${pt(polar(175,b))} A175 175 0 0 0 ${pt(polar(175,a))}Z`;
+  const ringSlice = (rOut, rIn, a, b) => `M${pt(polar(rOut,a))} A${rOut} ${rOut} 0 0 1 ${pt(polar(rOut,b))} L${pt(polar(rIn,b))} A${rIn} ${rIn} 0 0 0 ${pt(polar(rIn,a))}Z`;
   const wheel = $('.mc-wheel svg');
-  wheel.innerHTML = `<circle class="mc-wheel-centerline" cx="300" cy="300" r="157"/><circle class="mc-wheel-ruler" cx="300" cy="300" r="283" stroke-width="1"/>`
+  wheel.innerHTML = `<defs>
+      <radialGradient id="mc-wheel-depth" cx="50%" cy="50%" r="50%">
+        <stop offset="52%" stop-color="#0a101d" stop-opacity="0.18"/>
+        <stop offset="82%" stop-color="#111a2e" stop-opacity="0.62"/>
+        <stop offset="100%" stop-color="#1c2942" stop-opacity="0.88"/>
+      </radialGradient>
+      <filter id="mc-gun-shadow" x="-30%" y="-30%" width="160%" height="160%">
+        <feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#000" flood-opacity="0.65"/>
+      </filter>
+    </defs>
+    <circle class="mc-wheel-bezel-outer" cx="300" cy="300" r="290"/>
+    <circle class="mc-wheel-bezel-inner" cx="300" cy="300" r="154"/>
+    <circle class="mc-wheel-hub-ring" cx="300" cy="300" r="144"/>`
+    + Array.from({length:72},(_,i)=>{ const a=i*Math.PI/36;return `<path class="mc-wheel-tick" d="M${pt(polar(284,a))}L${pt(polar(i%9===0?294:288,a))}"/>`; }).join('')
     + harnesses.map((h, i) => {
-      const mid = -Math.PI / 2 + i * Math.PI / 4, a = mid - Math.PI / 8 + .017, b = mid + Math.PI / 8 - .017;
-      const c = polar(225,mid);
-      return `<g data-wheel-item="${i}"><path class="mc-sector" d="${wedge(a,b)}"/><path class="mc-sector-inner" d="M${pt(polar(181,a+.012))} A181 181 0 0 1 ${pt(polar(181,b-.012))}"/><g class="mc-item-icon" transform="translate(${c[0]},${c[1]-23}) scale(.73)"><path d="${toolPaths[i]}" fill="currentColor" fill-opacity=".13" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></g><text class="mc-item-name" x="${c[0]}" y="${c[1]+10}">${h.lines.map((line,j)=>`<tspan x="${c[0]}" dy="${j ? 24 : 0}">${line}</tspan>`).join('')}</text></g>`;
-    }).join('')
-    + Array.from({length:80},(_,i)=>{ const a=i*Math.PI/40;return `<path class="mc-wheel-ruler" d="M${pt(polar(287,a))}L${pt(polar(i%10===0?296:291,a))}"/>`; }).join('');
+      const mid = -Math.PI / 2 + i * Math.PI / 4, a = mid - Math.PI / 8 + .018, b = mid + Math.PI / 8 - .018;
+      const c = polar(208, mid), textPos = polar(252, mid), sp = weapon3DSprites[i];
+      return `<g data-wheel-item="${i}">
+        <path class="mc-sector-depth" d="${ringSlice(282, 160, a, b)}" transform="translate(0, 4)"/>
+        <path class="mc-sector" d="${ringSlice(280, 162, a, b)}"/>
+        <path class="mc-sector-window" d="${ringSlice(236, 168, a + .014, b - .014)}"/>
+        <path class="mc-sector-outer-arc" d="M${pt(polar(278,a+.01))} A278 278 0 0 1 ${pt(polar(278,b-.01))}"/>
+        <path class="mc-sector-inner" d="M${pt(polar(166,a+.012))} A166 166 0 0 1 ${pt(polar(166,b-.012))}"/>
+        <g class="mc-item-icon" transform="translate(${c[0]},${c[1]}) scale(.76)" filter="url(#mc-gun-shadow)">
+          <path class="mc-gun-shadow-layer" d="${sp.body}" transform="translate(0, 4)"/>
+          <path class="mc-gun-body-layer" d="${sp.body}"/>
+          <path class="mc-gun-top-layer" d="${sp.top}"/>
+          <path class="mc-gun-core-layer" d="${sp.core}"/>
+        </g>
+        <text class="mc-item-name" x="${textPos[0]}" y="${textPos[1] - (h.lines.length > 1 ? 4 : -4)}">${h.lines.map((line,j)=>`<tspan x="${textPos[0]}" dy="${j ? 16 : 0}">${line}</tspan>`).join('')}</text>
+      </g>`;
+    }).join('');
   const setRail = createSignatureRail($('.mc-timeline'), {
     onSelect(i) {
       const p = clamp(stops[i] + (stops[i + 1] - stops[i]) * .25);
@@ -80,14 +114,51 @@ if (chapter) {
     },
   });
   let scene, loading = false, frame = 0, visible = false, anchor = null, lastKey = '';
+  function selectModel(index) {
+    state.model = clamp(index, 0, models.length - 1);
+    lastKey = '';
+    paintCopy();
+    scene?.update(state);
+  }
+  function buildModelSelectors() {
+    for (const container of [$('[data-mc-model-roster]'), $('[data-mc-model-chips]')]) {
+      if (!container) continue;
+      container.replaceChildren(...models.map((m, i) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'mc-model-btn';
+        btn.dataset.modelIndex = String(i);
+        btn.style.setProperty('--mc-mcolor', m.color);
+        const dot = document.createElement('i'), label = document.createElement('span');
+        dot.setAttribute('aria-hidden', 'true');
+        label.textContent = m.short;
+        btn.append(dot, label);
+        btn.addEventListener('click', () => selectModel(i));
+        return btn;
+      }));
+    }
+  }
+  buildModelSelectors();
   function paintCopy() {
-    const l = lang(), p = phases[state.phase], h = harnesses[state.harness];
+    const l = lang(), p = phases[state.phase], h = harnesses[state.harness], m = models[state.model] || models[0];
     const equipped = harnesses[state.equippedHarness], browsing = state.phase === 1;
     const shown = browsing ? h : equipped;
     const inDomain = state.phase >= 2 && state.phase <= 4;
     const domain = ARENA_DOMAINS[state.room];
     chapter.dataset.domain = inDomain ? domain.id : '';
+    chapter.dataset.model = m.id;
     chapter.style.setProperty('--domain-accent', ['var(--track-1)', 'var(--track-2)', 'var(--mc-violet)'][state.room]);
+    chapter.style.setProperty('--model-accent', m.color);
+    if ($('[data-mc-model-label]')) $('[data-mc-model-label]').textContent = l ? '模型角色 / MODEL' : 'CHARACTER / MODEL';
+    if ($('[data-mc-equipped-model]')) $('[data-mc-equipped-model]').textContent = m.name;
+    if ($('[data-mc-hub-role]')) $('[data-mc-hub-role]').textContent = m.role[l];
+    if ($('[data-mc-hub-model]')) $('[data-mc-hub-model]').textContent = m.name;
+    $$('[data-model-index]').forEach(btn => {
+      const idx = Number(btn.dataset.modelIndex), active = idx === state.model;
+      btn.classList.toggle('is-active', active);
+      btn.setAttribute('aria-pressed', String(active));
+      btn.title = `${models[idx].name} · ${models[idx].role[l]}`;
+    });
     $('[data-mc-directory]').hidden = !inDomain;
     const enter = $('[data-mc-enter]');
     enter.hidden = !inDomain;
@@ -135,10 +206,10 @@ if (chapter) {
     $('[data-mc-index]').textContent = String(state.phase + 1).padStart(2,'0');
     $('[data-mc-name]').textContent = l ? 'METACASE 挑战赛' : 'THE METACASE CHALLENGE';
     $('[data-mc-scroll-hint]').textContent = manual() ? (l?'用下方进度条探索':'EXPLORE WITH THE SLIDER') : (l?'滚动，进入下一幕':'SCROLL TO EXPLORE');
-    $('[data-mc-loadout-label]').textContent = browsing ? (l ? '预览装备 / HARNESS' : 'PREVIEW / HARNESS') : inDomain && equipped ? (l ? '悬浮装备 / HARNESS' : 'DEPLOYED / HARNESS') : (l ? '背负装备 / HARNESS' : 'CARRIED / HARNESS');
+    $('[data-mc-loadout-label]').textContent = browsing ? (l ? '预览武器 / HARNESS' : 'WEAPON / HARNESS') : inDomain && equipped ? (l ? '悬浮武器 / HARNESS' : 'DEPLOYED / HARNESS') : (l ? '背负武器 / HARNESS' : 'WEAPON / HARNESS');
     $('[data-mc-wheel-label]').textContent = manual()
-      ? (l ? '拖动进度条浏览 · 点击区段确认' : 'USE THE SLIDER · CLICK A SLOT TO EQUIP')
-      : (l ? '滚动浏览 · 点击区段确认' : 'SCROLL TO BROWSE · CLICK A SLOT TO EQUIP');
+      ? (l ? '切换中心角色 · 点击外圈槽位装备武器' : 'PICK A MODEL · CLICK A SLOT TO EQUIP WEAPON')
+      : (l ? '切换中心角色 · 滚动或点击外圈装备武器' : 'SWITCH MODEL · SCROLL OR CLICK TO EQUIP WEAPON');
     $('[data-mc-episode-label]').textContent = l ? 'METACASE / 轨迹' : 'METACASE / TRACE';
     $('[data-mc-illustrative]').textContent = l ? '经济 · 金融 · 社科 / 三大方向，16 个二级目录。' : 'Economics · Finance · Social Science / 3 domains, 16 case categories.';
     $('[data-mc-slider-label]').textContent = l ? '探索完整解题轨迹' : 'Explore the complete episode';
@@ -169,7 +240,7 @@ if (chapter) {
     const local = clamp((state.progress-stops[state.phase])/(stops[state.phase+1]-stops[state.phase]));
     state.room = state.phase < 3 ? 0 : state.phase === 3 ? 1 : 2;
     if (state.phase === 1) state.harness = Math.min(7,Math.floor(local*8));
-    const key = `${state.phase}:${state.harness}:${state.equippedHarness}:${lang()}`;
+    const key = `${state.phase}:${state.model}:${state.harness}:${state.equippedHarness}:${lang()}`;
     if (lastKey !== key) { lastKey = key; paintCopy(); }
     const enter = ease((state.progress-.12)/.055), exit = ease((state.progress-.365)/.035);
     $('.mc-wheel').style.setProperty('--wheel-opacity',(enter*(1-exit)).toFixed(3));
@@ -253,7 +324,7 @@ if (chapter) {
   }
   // Portal links ride on their doorways: all three at the entrance and at the end, the one in focus in between.
   function projectPortals(list) {
-    const pin = $('.mc-pin'), allOpen = state.phase === 0 || state.phase === 5, roomPhase = state.phase >= 2 && state.phase <= 4;
+    const pin = $('.mc-pin'), allOpen = (state.phase === 0 && state.progress < .105) || state.phase === 5, roomPhase = state.phase >= 2 && state.phase <= 4;
     (list || []).forEach((p, i) => {
       const link = $(`[data-portal="${p.id}"]`); if (!link) return;
       // the wide shots show all three doors close together: a compact label in each doorway;
@@ -296,7 +367,7 @@ if (chapter) {
   async function load() {
     if(loading)return;loading=true;
     try {
-      const {createArenaScene}=await import('./arena-scene.js?v=20261027-emblems');
+      const {createArenaScene}=await import('./arena-scene.js?v=20261027-armory3d');
       scene=createArenaScene($('.mc-canvas'), { onWeaponProject: projectWeapon, onPortalProject: projectPortals }); scene.update(state);
       $('.mc-fallback').hidden=true;chapter.dataset.renderer='webgl';
     } catch(error) {
