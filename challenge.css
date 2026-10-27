@@ -34,22 +34,22 @@
 .demo-meta{display:flex;flex-wrap:wrap;gap:2px 14px;font-size:12px;line-height:1.7;color:var(--muted)}
 
 /* The business cases keep the goal and work product visible, with deeper context on demand. */
-#subtrack-professional .demo-deliverables{margin:10px 0 0;border-top:1px solid var(--line)}
-#subtrack-professional .demo-deliverables>div{display:grid;grid-template-columns:48px minmax(0,1fr);gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
-#subtrack-professional .demo-deliverables dt{font-family:var(--mono);font-size:12px;color:var(--ink)}
-#subtrack-professional .demo-deliverables dd{margin:0}
-#subtrack-professional .demo-brief{margin-top:8px}
-#subtrack-professional .demo-brief summary{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:10px 0;cursor:pointer;list-style:none;font-weight:600;color:var(--ink)}
-#subtrack-professional .demo-brief summary::-webkit-details-marker{display:none}
-#subtrack-professional .demo-brief summary::after{content:'+';font-family:var(--mono);font-size:18px;font-weight:400}
-#subtrack-professional .demo-brief[open] summary::after{content:'−'}
-#subtrack-professional .demo-brief summary:focus-visible{outline:2px solid var(--ink);outline-offset:4px;border-radius:2px}
-#subtrack-professional .demo-brief-body{padding:0 0 16px}
-#subtrack-professional .demo-brief h5{margin:16px 0 6px;font-size:13px;font-weight:600;line-height:1.5;color:var(--ink)}
-#subtrack-professional .demo-brief h5:first-child{margin-top:4px}
-#subtrack-professional .demo-brief ul{margin:0;padding-left:19px}
-#subtrack-professional .demo-brief li+li{margin-top:8px}
-#subtrack-professional .demo-source-note{margin-top:8px;font-size:12px;line-height:1.7;color:var(--muted)}
+:is(#subtrack-professional,#subtrack-professional-hr) .demo-deliverables{margin:10px 0 0;border-top:1px solid var(--line)}
+:is(#subtrack-professional,#subtrack-professional-hr) .demo-deliverables>div{display:grid;grid-template-columns:48px minmax(0,1fr);gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+:is(#subtrack-professional,#subtrack-professional-hr) .demo-deliverables dt{font-family:var(--mono);font-size:12px;color:var(--ink)}
+:is(#subtrack-professional,#subtrack-professional-hr) .demo-deliverables dd{margin:0}
+:is(#subtrack-professional,#subtrack-professional-hr) .demo-brief{margin-top:8px}
+:is(#subtrack-professional,#subtrack-professional-hr) .demo-brief summary{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:10px 0;cursor:pointer;list-style:none;font-weight:600;color:var(--ink)}
+:is(#subtrack-professional,#subtrack-professional-hr) .demo-brief summary::-webkit-details-marker{display:none}
+:is(#subtrack-professional,#subtrack-professional-hr) .demo-brief summary::after{content:'+';font-family:var(--mono);font-size:18px;font-weight:400}
+:is(#subtrack-professional,#subtrack-professional-hr) .demo-brief[open] summary::after{content:'−'}
+:is(#subtrack-professional,#subtrack-professional-hr) .demo-brief summary:focus-visible{outline:2px solid var(--ink);outline-offset:4px;border-radius:2px}
+:is(#subtrack-professional,#subtrack-professional-hr) .demo-brief-body{padding:0 0 16px}
+:is(#subtrack-professional,#subtrack-professional-hr) .demo-brief h5{margin:16px 0 6px;font-size:13px;font-weight:600;line-height:1.5;color:var(--ink)}
+:is(#subtrack-professional,#subtrack-professional-hr) .demo-brief h5:first-child{margin-top:4px}
+:is(#subtrack-professional,#subtrack-professional-hr) .demo-brief ul{margin:0;padding-left:19px}
+:is(#subtrack-professional,#subtrack-professional-hr) .demo-brief li+li{margin-top:8px}
+:is(#subtrack-professional,#subtrack-professional-hr) .demo-source-note{margin-top:8px;font-size:12px;line-height:1.7;color:var(--muted)}
 
 .track-facts{display:grid;grid-template-columns:minmax(0,1fr);margin:0;border-top:1px solid var(--line)}
 .track-body .track-facts{align-self:start}

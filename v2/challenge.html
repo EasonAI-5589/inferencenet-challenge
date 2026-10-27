@@ -6,26 +6,27 @@
   <meta name="color-scheme" content="dark light">
   <meta name="referrer" content="no-referrer">
   <title>Challenge — Metacase Challenge</title>
-  <meta name="description" content="Explore the Metacase Challenge: econometric replication and business analysis tasks, recorded agent runs, independent evaluation and ways to participate.">
+  <meta name="description" content="Explore the Metacase Challenge: three tracks (economics, finance and social science) with sixteen classes, recorded agent runs, independent evaluation and ways to participate.">
   <meta property="og:title" content="Metacase Challenge — Challenge">
-  <meta property="og:description" content="Explore the Metacase Challenge: econometric replication and business analysis tasks, recorded agent runs, independent evaluation and ways to participate.">
+  <meta property="og:description" content="Explore the Metacase Challenge: three tracks (economics, finance and social science) with sixteen classes, recorded agent runs, independent evaluation and ways to participate.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="../assets/favicon-v2.svg">
   <link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <script src="theme.js?v=20261022-v2-ambient"></script>
   <link rel="stylesheet" href="../styles.css?v=20261019-motion">
   <link rel="stylesheet" href="../site.css?v=20261019-motion">
-  <link rel="stylesheet" href="../challenge.css?v=20261023-dev-cards">
+  <link rel="stylesheet" href="../challenge.css?v=20261027-tracks">
   <script src="../site.js?v=20261019-motion" defer></script>
   <link rel="stylesheet" href="../language.css">
-  <script src="../language.js?v=20261027-site" defer></script>
+  <script src="../language.js?v=20261027-tracks" defer></script>
   <link rel="stylesheet" href="v2.css?v=20261026-metacase-brand2">
-  <link rel="stylesheet" href="skin.css?v=20261023-dev-cards">
+  <link rel="stylesheet" href="skin.css?v=20261027-tracks">
   <link rel="stylesheet" href="scene.css?v=20261022-v2-ambient">
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script src="backdrop.js?v=20261022-v2-ambient" defer></script>
   <script src="v2.js?v=20261022-v2-ambient" defer></script>
   <script src="scene.js?v=20261022-v2-ambient" defer></script>
+  <script type="module" src="portal-warp.js?v=20261027-warp"></script>
 </head>
 <body class="v2-content v2-page-challenge" data-tone="0">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -88,12 +89,12 @@
     <section class="page-hero container" data-backdrop="dev100" aria-labelledby="page-title">
       <p class="kicker">Challenge · Global Metacase Initiative</p>
       <h1 id="page-title">The Metacase <em>Challenge.</em></h1>
-      <p class="lead">A series of open challenges from the Global Metacase Initiative for AI agents in business, finance and the social sciences. Each challenge forms a subtrack with its own tasks and evaluation criteria.</p>
+      <p class="lead">Open challenges from the Global Metacase Initiative for AI agents in economics, finance and the social sciences. Three tracks follow the Metacase classification: sixteen classes, each with its own sources, tasks and grading.</p>
     </section>
 
     <nav class="subnav" aria-label="On this page">
       <ol class="container">
-        <li><a href="#tracks"><span class="subnav-number">01</span>Subtracks</a></li>
+        <li><a href="#tracks"><span class="subnav-number">01</span>Tracks</a></li>
         <li><a href="#timeline"><span class="subnav-number">02</span>Timeline</a></li>
         <li><a href="#awards"><span class="subnav-number">03</span>Awards</a></li>
         <li><a href="#take-part"><span class="subnav-number">04</span>Take part</a></li>
@@ -101,128 +102,325 @@
     </nav>
 
     <section class="section container" id="tracks" aria-labelledby="tracks-title">
-      <div class="section-heading compact"><div><p class="kicker">01 / Subtracks</p><h2 id="tracks-title">Challenge subtracks</h2></div><p class="lead">Each subtrack evaluates agent workflows through its tasks, deliverables and scoring criteria.</p></div>
+      <div class="section-heading compact"><div><p class="kicker">01 / Tracks</p><h2 id="tracks-title">Three tracks, sixteen classes</h2></div><p class="lead">The challenge follows the Metacase classification in metacase-harbor v0.1. Each track is a field; each class in it has its own sources, task count and grading.</p></div>
 
-      <article class="track" id="subtrack-econometric" aria-labelledby="subtrack-econometric-title">
-        <div class="track-head"><span class="pill">Subtrack 01</span><span class="track-tag">Dev100 · 100 tasks</span></div>
-        <h3 id="subtrack-econometric-title">Econometric replication</h3>
-        <p class="track-summary">Reproduce empirical findings from real research data. An AI agent writes and runs code to recover a published coefficient, its standard error and its p-value.</p>
-        <div class="replication-data" id="replication-data">
-          <h4>Research data on Hugging Face</h4>
-          <p>The research dataset collects empirical research tasks from economics, finance, accounting, management, operations research and information systems. Task packages combine research data, analysis instructions and reference replication materials.</p>
-          <p>The Hugging Face repository provides the dataset card, task lists, files and citation information.</p>
-          <a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener"><span>Open the dataset on Hugging Face</span> <span aria-hidden="true">↗</span></a>
-          <p class="dataset-access">Files require signing in to Hugging Face and accepting the repository’s access conditions.</p>
-        </div>
-        <div class="replication-task-set" id="replication-dev100">
-          <div class="replication-task-intro">
-            <h4>Dev100: 100 econometric replication tasks</h4>
-            <p>The econometric replication challenge will open-source the existing Dev100 task set. Agents inspect the data, implement the specified analysis and submit results for independent evaluation.</p>
-            <a class="text-link" href="leaderboard.html#leaderboard-dev100">Explore Dev100 / v10 development results <span aria-hidden="true">→</span></a>
-          </div>
-          <dl class="track-facts">
-            <div><dt>Input</dt><dd>The research data and the exact instruction the model receives.</dd></div>
-            <div><dt>Output</dt><dd>A result file with three numbers: the coefficient, the standard error and the p-value.</dd></div>
-            <div><dt>Evaluation</dt><dd>An independent evaluator checks the three numbers against reference results that the model never sees during the run.</dd></div>
-          </dl>
-        </div>
-        <figure id="replication-demo" class="track-video replication-demo" aria-labelledby="demo-replication-title">
-            <video width="1920" height="1080" controls playsinline preload="metadata" poster="../assets/video/agent-replay-task0001-poster.jpg?v=20261018-deepagents-flow-v3-2" aria-label="Econometric replication example">
-              <source src="../assets/video/agent-replay-task0001.mp4?v=20261018-deepagents-flow-v3-2" type="video/mp4">
-              <a href="../assets/video/agent-replay-task0001.mp4?v=20261018-deepagents-flow-v3-2">Download the replay video (MP4)</a>
-            </video>
-            <figcaption>
-              <p class="demo-label"><span class="pill">Replication demo</span><code>task 0001</code></p>
-              <h4 id="demo-replication-title"><span data-no-translate>Consumption smoothing in interwar Japan</span></h4>
-              <p>The agent reads research data, runs an analysis and submits results for independent evaluation.</p>
-              <p class="demo-spec"><span>Research dataset</span> · <span data-no-translate>Journal of Economic History · Table 3 · Panel A</span></p>
-              <p class="demo-meta"><span data-no-translate>GPT-5.6 Sol · DeepAgents</span><span>4 min 45 sec · English synthetic narration · English / Chinese captions · DeepAgents execution walkthrough</span></p>
-            </figcaption>
-          </figure>
-        <div class="track-links">
-          <a class="text-link" href="replication.html">Explore Subtrack 1 <span aria-hidden="true">→</span></a>
-          <a class="text-link" href="evolution.html#improvement-directions">Explore improvement directions <span aria-hidden="true">→</span></a>
-        </div>
+      <nav class="track-gates" aria-label="Tracks">
+        <a class="track-gate" href="#track-econ" data-gate="econ" style="--accent: var(--track-1); --accent-soft: var(--track-1-soft)"><span class="gate-ring" aria-hidden="true"><i></i><i></i><i></i></span><small>Track 01</small><b>Economics</b><span><b class="tnum">152</b> candidate records · 5 classes</span></a>
+        <a class="track-gate" href="#track-fin" data-gate="fin" style="--accent: var(--track-2); --accent-soft: var(--track-2-soft)"><span class="gate-ring" aria-hidden="true"><i></i><i></i><i></i></span><small>Track 02</small><b>Finance</b><span><b class="tnum">90</b> candidate records · 6 classes</span></a>
+        <a class="track-gate" href="#track-soc" data-gate="soc" style="--accent: var(--track-3); --accent-soft: var(--track-3-soft)"><span class="gate-ring" aria-hidden="true"><i></i><i></i><i></i></span><small>Track 03</small><b>Social science</b><span><b class="tnum">43</b> candidate records · 5 classes</span></a>
+      </nav>
+
+      <article class="track field-track" id="track-econ" aria-labelledby="track-econ-title" style="--accent: var(--track-1); --accent-soft: var(--track-1-soft)">
+        <div class="track-head"><span class="pill">Track 01</span><span class="track-tag">152 candidate records · 5 classes</span></div>
+        <h3 id="track-econ-title">Economics</h3>
+        <p class="track-summary">From published research to live data: replicate empirical estimates, read central-bank language, forecast market moves and build economic datasets.</p>
+        <ol class="class-list">
+          <li class="class-item" id="class-econ-replication" data-status="partial">
+            <div class="class-row">
+              <span class="class-call mono" data-no-translate>econ.replication</span>
+              <h4 class="class-name">Econometric replication</h4>
+              <span class="class-count"><b class="tnum">100</b> records</span>
+              <span class="class-status">Partial</span>
+            </div>
+            <p class="class-desc">Reproduce a published regression coefficient from the paper&#x27;s own data (OLS, DID, IV, RDD).</p>
+            <dl class="class-facts"><div><dt>Sources</dt><dd data-no-translate>Dev100</dd></div><div><dt>Grading</dt><dd>Deterministic</dd></div></dl>
+              <div class="class-feature" id="subtrack-econometric" aria-labelledby="subtrack-econometric-title">
+                <p class="feature-label" id="subtrack-econometric-title"><span class="pill">Subtrack 01</span><span class="track-tag">Dev100 · 100 tasks</span></p>
+                <p class="track-summary">Reproduce empirical findings from real research data. An AI agent writes and runs code to recover a published coefficient, its standard error and its p-value.</p>
+                <div class="replication-data" id="replication-data">
+                  <h4>Research data on Hugging Face</h4>
+                  <p>The research dataset collects empirical research tasks from economics, finance, accounting, management, operations research and information systems. Task packages combine research data, analysis instructions and reference replication materials.</p>
+                  <p>The Hugging Face repository provides the dataset card, task lists, files and citation information.</p>
+                  <a class="text-link" href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener"><span>Open the dataset on Hugging Face</span> <span aria-hidden="true">↗</span></a>
+                  <p class="dataset-access">Files require signing in to Hugging Face and accepting the repository’s access conditions.</p>
+                </div>
+                <div class="replication-task-set" id="replication-dev100">
+                  <div class="replication-task-intro">
+                    <h4>Dev100: 100 econometric replication tasks</h4>
+                    <p>The econometric replication challenge will open-source the existing Dev100 task set. Agents inspect the data, implement the specified analysis and submit results for independent evaluation.</p>
+                    <a class="text-link" href="leaderboard.html#leaderboard-dev100">Explore Dev100 / v10 development results <span aria-hidden="true">→</span></a>
+                  </div>
+                  <dl class="track-facts">
+                    <div><dt>Input</dt><dd>The research data and the exact instruction the model receives.</dd></div>
+                    <div><dt>Output</dt><dd>A result file with three numbers: the coefficient, the standard error and the p-value.</dd></div>
+                    <div><dt>Evaluation</dt><dd>An independent evaluator checks the three numbers against reference results that the model never sees during the run.</dd></div>
+                  </dl>
+                </div>
+                <figure id="replication-demo" class="track-video replication-demo" aria-labelledby="demo-replication-title">
+                    <video width="1920" height="1080" controls playsinline preload="metadata" poster="../assets/video/agent-replay-task0001-poster.jpg?v=20261018-deepagents-flow-v3-2" aria-label="Econometric replication example">
+                      <source src="../assets/video/agent-replay-task0001.mp4?v=20261018-deepagents-flow-v3-2" type="video/mp4">
+                      <a href="../assets/video/agent-replay-task0001.mp4?v=20261018-deepagents-flow-v3-2">Download the replay video (MP4)</a>
+                    </video>
+                    <figcaption>
+                      <p class="demo-label"><span class="pill">Replication demo</span><code>task 0001</code></p>
+                      <h4 id="demo-replication-title"><span data-no-translate>Consumption smoothing in interwar Japan</span></h4>
+                      <p>The agent reads research data, runs an analysis and submits results for independent evaluation.</p>
+                      <p class="demo-spec"><span>Research dataset</span> · <span data-no-translate>Journal of Economic History · Table 3 · Panel A</span></p>
+                      <p class="demo-meta"><span data-no-translate>GPT-5.6 Sol · DeepAgents</span><span>4 min 45 sec · English synthetic narration · English / Chinese captions · DeepAgents execution walkthrough</span></p>
+                    </figcaption>
+                  </figure>
+                <div class="track-links">
+                  <a class="text-link" href="replication.html">Explore Subtrack 1 <span aria-hidden="true">→</span></a>
+                  <a class="text-link" href="evolution.html#improvement-directions">Explore improvement directions <span aria-hidden="true">→</span></a>
+                </div>
+              </div>
+          </li>
+          <li class="class-item" id="class-econ-data" data-status="ready">
+            <div class="class-row">
+              <span class="class-call mono" data-no-translate>econ.data</span>
+              <h4 class="class-name">Economic &amp; business data engineering</h4>
+              <span class="class-count"><b class="tnum">22</b> records</span>
+              <span class="class-status">Ready</span>
+            </div>
+            <p class="class-desc">SQL and dbt over banking, retail, e-commerce and TPC-H style economic data.</p>
+            <dl class="class-facts"><div><dt>Sources</dt><dd data-no-translate>bird-bench@parity · spider2-dbt@1.0</dd></div><div><dt>Grading</dt><dd>Deterministic</dd></div></dl>
+          </li>
+          <li class="class-item" id="class-econ-markets" data-status="ready">
+            <div class="class-row">
+              <span class="class-call mono" data-no-translate>econ.markets</span>
+              <h4 class="class-name">Market movement forecasting</h4>
+              <span class="class-count"><b class="tnum">15</b> records</span>
+              <span class="class-status">Ready</span>
+            </div>
+            <p class="class-desc">Predict stock price movement from tweets and historical prices (ACL18, BigData22, CIKM18).</p>
+            <dl class="class-facts"><div><dt>Sources</dt><dd data-no-translate>pixiu@parity</dd></div><div><dt>Grading</dt><dd>Deterministic</dd></div></dl>
+          </li>
+          <li class="class-item" id="class-econ-monetary" data-status="ready">
+            <div class="class-row">
+              <span class="class-call mono" data-no-translate>econ.monetary</span>
+              <h4 class="class-name">Monetary policy communication</h4>
+              <span class="class-count"><b class="tnum">15</b> records</span>
+              <span class="class-status">Ready</span>
+            </div>
+            <p class="class-desc">Classify the hawkish / dovish stance of FOMC statements and minutes.</p>
+            <dl class="class-facts"><div><dt>Sources</dt><dd data-no-translate>pixiu@parity</dd></div><div><dt>Grading</dt><dd>Deterministic</dd></div></dl>
+          </li>
+          <li class="class-item" id="class-econ-statistics" data-status="gap">
+            <div class="class-row">
+              <span class="class-call mono" data-no-translate>econ.statistics</span>
+              <h4 class="class-name">Official statistics synthesis</h4>
+              <span class="class-count"><b class="tnum">0</b> records</span>
+              <span class="class-status">To add</span>
+            </div>
+            <p class="class-desc">Gather and combine figures from statistical offices and international organisations into a structured answer.</p>
+            <dl class="class-facts"><div><dt>Sources</dt><dd data-no-translate>deepsynth adapter (to generate)</dd></div><div><dt>Grading</dt><dd>Deterministic + LLM judge</dd></div></dl>
+          </li>
+        </ol>
       </article>
 
-      <article class="track" id="subtrack-professional" aria-labelledby="subtrack-professional-title">
-        <div class="track-head"><span class="pill">Subtrack 02</span><span class="track-tag">Finance &amp; HR</span></div>
-        <h3 id="subtrack-professional-title">Business Analysis &amp; Deliverables</h3>
-        <p class="track-summary">Complex business scenarios contributed by Prof. Liwen Zhang’s team at Shanghai University of Finance and Economics. Agents work across multiple source documents to produce reports and spreadsheets, assessed against task-specific rubrics.</p>
-        <div class="track-demos">
-          <figure class="track-video" aria-labelledby="demo-finance-title">
-            <video width="1920" height="1080" controls playsinline preload="metadata" poster="../assets/video/finance-story-demo-poster.jpg?v=20261019-claude-relay-v2" aria-label="Month-end close review example">
-              <source src="../assets/video/finance-story-demo.mp4?v=20261019-claude-relay-v2" type="video/mp4">
-              <a href="../assets/video/finance-story-demo.mp4?v=20261019-claude-relay-v2">Download the finance demo (MP4)</a>
-            </video>
-            <figcaption>
-              <p class="demo-label"><span class="pill">Finance demo</span><code>FIN-T1-003</code></p>
-              <h4 id="demo-finance-title">Month-end close review</h4>
-              <p>Before the July books are locked, review proposed accounting entries, reconcile the evidence and prepare a correction plan for approval.</p>
-              <p class="demo-meta"><span data-no-translate>qwen3.7-max · Claude Code</span><span>4 min 55 sec · English narration · English / Chinese captions</span></p>
-              <dl class="demo-deliverables" aria-label="Finance deliverables">
-                <div><dt data-no-translate>Word</dt><dd>A remediation report explaining the proposed entries, financial statement effects and approvals needed.</dd></div>
-                <div><dt data-no-translate>Excel</dt><dd>Calculation and review workpapers retaining source values, intermediate results and formulas.</dd></div>
-              </dl>
-              <details class="demo-brief">
-                <summary>Task brief and review focus</summary>
-                <div class="demo-brief-body">
-                  <h5>Materials</h5>
-                  <p>Transaction and valuation records, interest and exchange rates, subsidiary statements, accounting policies, risk-management decisions and correspondence.</p>
-                  <h5>Core work</h5>
-                  <ul>
-                    <li>Review each unposted entry and recommend acceptance, replacement or rejection with supporting reasons.</li>
-                    <li>Recalculate valuation, foreign exchange and translation effects, distinguishing the current close, comparative information and a future disposal scenario.</li>
-                    <li>Connect the report to the workbook and schedule evidence requests, review and approval, separating urgent work before the close from later follow-up.</li>
-                  </ul>
-                  <h5>Review focus</h5>
-                  <p>Accounting judgment, calculations, source traceability, consistency between files, a feasible review schedule and documented approval requirements.</p>
+      <article class="track field-track" id="track-fin" aria-labelledby="track-fin-title" style="--accent: var(--track-2); --accent-soft: var(--track-2-soft)">
+        <div class="track-head"><span class="pill">Track 02</span><span class="track-tag">90 candidate records · 6 classes</span></div>
+        <h3 id="track-fin-title">Finance</h3>
+        <p class="track-summary">The work of analysts and accountants: answer questions from filings, analyse payments, read financial text, reason with numbers, judge credit risk and close the books.</p>
+        <ol class="class-list">
+          <li class="class-item" id="class-fin-nlp" data-status="ready">
+            <div class="class-row">
+              <span class="class-call mono" data-no-translate>fin.nlp</span>
+              <h4 class="class-name">Financial text understanding</h4>
+              <span class="class-count"><b class="tnum">20</b> records</span>
+              <span class="class-status">Ready</span>
+            </div>
+            <p class="class-desc">Sentiment, news headlines, entity recognition and ESG issues in financial text.</p>
+            <dl class="class-facts"><div><dt>Sources</dt><dd data-no-translate>pixiu@parity</dd></div><div><dt>Grading</dt><dd>Deterministic</dd></div></dl>
+          </li>
+          <li class="class-item" id="class-fin-accounting" data-status="partial">
+            <div class="class-row">
+              <span class="class-call mono" data-no-translate>fin.accounting</span>
+              <h4 class="class-name">Accounting close &amp; finance deliverables</h4>
+              <span class="class-count"><b class="tnum">15</b> records</span>
+              <span class="class-status">Partial</span>
+            </div>
+            <p class="class-desc">Month-end close remediation and accounting data pipelines (QuickBooks, Xero, Zuora, recurring revenue).</p>
+            <dl class="class-facts"><div><dt>Sources</dt><dd data-no-translate>sufe/fin-t1-003 · spider2-dbt@1.0 · ade-bench@1.0</dd></div><div><dt>Grading</dt><dd>Deterministic + Rubric</dd></div></dl>
+              <div class="class-feature" id="subtrack-professional" aria-labelledby="subtrack-professional-title">
+                <p class="feature-label"><span class="pill">Subtrack 02</span><span class="track-tag">Finance &amp; HR</span></p>
+                <h4 id="subtrack-professional-title" class="feature-title">Business Analysis &amp; Deliverables</h4>
+                <p class="track-summary">Complex business scenarios contributed by Prof. Liwen Zhang’s team at Shanghai University of Finance and Economics. Agents work across multiple source documents to produce reports and spreadsheets, assessed against task-specific rubrics.</p>
+                <figure class="track-video" aria-labelledby="demo-finance-title">
+                  <video width="1920" height="1080" controls playsinline preload="metadata" poster="../assets/video/finance-story-demo-poster.jpg?v=20261019-claude-relay-v2" aria-label="Month-end close review example">
+                    <source src="../assets/video/finance-story-demo.mp4?v=20261019-claude-relay-v2" type="video/mp4">
+                    <a href="../assets/video/finance-story-demo.mp4?v=20261019-claude-relay-v2">Download the finance demo (MP4)</a>
+                  </video>
+                  <figcaption>
+                    <p class="demo-label"><span class="pill">Finance demo</span><code>FIN-T1-003</code></p>
+                    <h4 id="demo-finance-title">Month-end close review</h4>
+                    <p>Before the July books are locked, review proposed accounting entries, reconcile the evidence and prepare a correction plan for approval.</p>
+                    <p class="demo-meta"><span data-no-translate>qwen3.7-max · Claude Code</span><span>4 min 55 sec · English narration · English / Chinese captions</span></p>
+                    <dl class="demo-deliverables" aria-label="Finance deliverables">
+                      <div><dt data-no-translate>Word</dt><dd>A remediation report explaining the proposed entries, financial statement effects and approvals needed.</dd></div>
+                      <div><dt data-no-translate>Excel</dt><dd>Calculation and review workpapers retaining source values, intermediate results and formulas.</dd></div>
+                    </dl>
+                    <details class="demo-brief">
+                      <summary>Task brief and review focus</summary>
+                      <div class="demo-brief-body">
+                <h5>Materials</h5>
+                <p>Transaction and valuation records, interest and exchange rates, subsidiary statements, accounting policies, risk-management decisions and correspondence.</p>
+                <h5>Core work</h5>
+                <ul>
+                  <li>Review each unposted entry and recommend acceptance, replacement or rejection with supporting reasons.</li>
+                  <li>Recalculate valuation, foreign exchange and translation effects, distinguishing the current close, comparative information and a future disposal scenario.</li>
+                  <li>Connect the report to the workbook and schedule evidence requests, review and approval, separating urgent work before the close from later follow-up.</li>
+                </ul>
+                <h5>Review focus</h5>
+                <p>Accounting judgment, calculations, source traceability, consistency between files, a feasible review schedule and documented approval requirements.</p>
+              </div>
+            </details>
+            <p class="demo-source-note">Simulated business scenarios and transaction data, with original public reference documents.</p>
+          </figcaption>
+        </figure>
+                <dl class="track-facts">
+                  <div><dt>Evaluation</dt><dd>An independent judge scores the files against a task-specific rubric that the agent never sees.</dd></div>
+                </dl>
+                <div class="track-links">
+                  <a class="text-link" href="professional-tasks.html">Explore Subtrack 2 <span aria-hidden="true">→</span></a>
+                  <a class="text-link" href="teams.html#partners">Meet the partner team <span aria-hidden="true">→</span></a>
                 </div>
-              </details>
-              <p class="demo-source-note">Simulated business scenarios and transaction data, with original public reference documents.</p>
-            </figcaption>
-          </figure>
-          <figure class="track-video" aria-labelledby="demo-hr-title">
-            <video width="1920" height="1080" controls playsinline preload="metadata" poster="../assets/video/hr-agent-replay-poster.jpg?v=20261019-claude-relay-v2" aria-label="Training and procurement acceptance example">
-              <source src="../assets/video/hr-agent-replay.mp4?v=20261019-claude-relay-v2" type="video/mp4">
-              <a href="../assets/video/hr-agent-replay.mp4?v=20261019-claude-relay-v2">Download the HR demo (MP4)</a>
-            </video>
-            <figcaption>
-              <p class="demo-label"><span class="pill">HR demo</span><code>HR-T3-114</code></p>
-              <h4 id="demo-hr-title">Training and procurement acceptance</h4>
-              <p>In a fictional cold-chain warehousing scenario, connect learning, workplace behavior and operational evidence to assess supervisor training and recommend supplier acceptance and payment treatment.</p>
-              <p class="demo-meta"><span data-no-translate>qwen3.7-max · Claude Code</span><span>4 min 05 sec · English narration · English / Chinese captions</span></p>
-              <dl class="demo-deliverables" aria-label="HR deliverables">
-                <div><dt data-no-translate>Excel</dt><dd>A decision workbook linking learning, behavior, operational comparisons and procurement decisions to the source evidence.</dd></div>
-                <div><dt data-no-translate>Word</dt><dd>A Chinese decision memorandum setting out findings, evidence limits, acceptance and payment recommendations, and corrective actions.</dd></div>
-              </dl>
-              <details class="demo-brief">
-                <summary>Task brief and review focus</summary>
-                <div class="demo-brief-body">
-                  <h5>Materials</h5>
-                  <p>Roster and attendance records, assessments, workplace observations, coaching records, work orders, operating metrics and procurement rules.</p>
-                  <h5>Core work</h5>
-                  <ul>
-                    <li>Check the eligible population, attendance and assessment records to evaluate learning gains and retention.</li>
-                    <li>Link opportunities to behavior observations, then compare operational changes with a center whose training was deferred and account for on-site disruptions.</li>
-                    <li>Apply procurement rules to recommend acceptance, amounts to submit for approval, retain or defer, and corrective actions with owners and closure conditions.</li>
-                  </ul>
-                  <h5>Review focus</h5>
-                  <p>Consistent samples, reproducible analysis, opportunity-adjusted behavior assessment and evidence-based acceptance and payment recommendations.</p>
-                </div>
-              </details>
-              <p class="demo-source-note">Fictional entities and synthetic learning and operational records for evaluation, coaching and procurement acceptance.</p>
-            </figcaption>
-          </figure>
-        </div>
-        <dl class="track-facts">
-          <div><dt>Evaluation</dt><dd>An independent judge scores the files against a task-specific rubric that the agent never sees.</dd></div>
-        </dl>
-        <div class="track-links">
-          <a class="text-link" href="professional-tasks.html">Explore Subtrack 2 <span aria-hidden="true">→</span></a>
-          <a class="text-link" href="teams.html#partners">Meet the partner team <span aria-hidden="true">→</span></a>
-        </div>
+              </div>
+          </li>
+          <li class="class-item" id="class-fin-credit" data-status="ready">
+            <div class="class-row">
+              <span class="class-call mono" data-no-translate>fin.credit</span>
+              <h4 class="class-name">Credit risk &amp; fraud</h4>
+              <span class="class-count"><b class="tnum">15</b> records</span>
+              <span class="class-status">Ready</span>
+            </div>
+            <p class="class-desc">Credit scoring and fraud detection from tabular borrower and transaction features.</p>
+            <dl class="class-facts"><div><dt>Sources</dt><dd data-no-translate>pixiu@parity</dd></div><div><dt>Grading</dt><dd>Deterministic</dd></div></dl>
+          </li>
+          <li class="class-item" id="class-fin-numeric" data-status="ready">
+            <div class="class-row">
+              <span class="class-call mono" data-no-translate>fin.numeric</span>
+              <h4 class="class-name">Financial numerical reasoning</h4>
+              <span class="class-count"><b class="tnum">15</b> records</span>
+              <span class="class-status">Ready</span>
+            </div>
+            <p class="class-desc">Table and text numeric reasoning over financial reports (FinQA, TAT-QA) and CFA-style questions.</p>
+            <dl class="class-facts"><div><dt>Sources</dt><dd data-no-translate>pixiu@parity</dd></div><div><dt>Grading</dt><dd>Deterministic</dd></div></dl>
+          </li>
+          <li class="class-item" id="class-fin-payments" data-status="ready">
+            <div class="class-row">
+              <span class="class-call mono" data-no-translate>fin.payments</span>
+              <h4 class="class-name">Payments &amp; transaction data analysis</h4>
+              <span class="class-count"><b class="tnum">15</b> records</span>
+              <span class="class-status">Ready</span>
+            </div>
+            <p class="class-desc">Multi-step Python analysis over payment records, fee schedules and merchant data.</p>
+            <dl class="class-facts"><div><dt>Sources</dt><dd data-no-translate>dabstep@1.0</dd></div><div><dt>Grading</dt><dd>Deterministic</dd></div></dl>
+          </li>
+          <li class="class-item" id="class-fin-filings" data-status="ready">
+            <div class="class-row">
+              <span class="class-call mono" data-no-translate>fin.filings</span>
+              <h4 class="class-name">Financial research &amp; filings QA</h4>
+              <span class="class-count"><b class="tnum">10</b> records</span>
+              <span class="class-status">Ready</span>
+            </div>
+            <p class="class-desc">Analyst-style questions answered from SEC filings and company disclosures.</p>
+            <dl class="class-facts"><div><dt>Sources</dt><dd data-no-translate>financeagent@public</dd></div><div><dt>Grading</dt><dd>LLM judge</dd></div></dl>
+          </li>
+        </ol>
       </article>
+
+      <article class="track field-track" id="track-soc" aria-labelledby="track-soc-title" style="--accent: var(--track-3); --accent-soft: var(--track-3-soft)">
+        <div class="track-head"><span class="pill">Track 03</span><span class="track-tag">43 candidate records · 5 classes</span></div>
+        <h3 id="track-soc-title">Social science</h3>
+        <p class="track-summary">Law and regulation, people and organisations, business operations, and social and survey data.</p>
+        <ol class="class-list">
+          <li class="class-item" id="class-soc-law" data-status="ready">
+            <div class="class-row">
+              <span class="class-call mono" data-no-translate>soc.law</span>
+              <h4 class="class-name">Law &amp; regulation</h4>
+              <span class="class-count"><b class="tnum">20</b> records</span>
+              <span class="class-status">Ready</span>
+            </div>
+            <p class="class-desc">Chinese legal knowledge, statute recall and case-outcome prediction (LawBench).</p>
+            <dl class="class-facts"><div><dt>Sources</dt><dd data-no-translate>lawbench@1.0</dd></div><div><dt>Grading</dt><dd>Deterministic</dd></div></dl>
+          </li>
+          <li class="class-item" id="class-soc-society" data-status="ready">
+            <div class="class-row">
+              <span class="class-call mono" data-no-translate>soc.society</span>
+              <h4 class="class-name">Society, education &amp; survey data</h4>
+              <span class="class-count"><b class="tnum">12</b> records</span>
+              <span class="class-status">Ready</span>
+            </div>
+            <p class="class-desc">Education, survey and social-media data analysis.</p>
+            <dl class="class-facts"><div><dt>Sources</dt><dd data-no-translate>bird-bench@parity · spider2-dbt@1.0</dd></div><div><dt>Grading</dt><dd>Deterministic</dd></div></dl>
+          </li>
+          <li class="class-item" id="class-soc-business" data-status="partial">
+            <div class="class-row">
+              <span class="class-call mono" data-no-translate>soc.business</span>
+              <h4 class="class-name">Business operations &amp; CRM</h4>
+              <span class="class-count"><b class="tnum">6</b> records</span>
+              <span class="class-status">Partial</span>
+            </div>
+            <p class="class-desc">Marketing, sales and customer-support data in CRM and support tools.</p>
+            <dl class="class-facts"><div><dt>Sources</dt><dd data-no-translate>spider2-dbt@1.0 · crmarena adapter (to generate)</dd></div><div><dt>Grading</dt><dd>Deterministic + LLM judge</dd></div></dl>
+          </li>
+          <li class="class-item" id="class-soc-hr" data-status="partial">
+            <div class="class-row">
+              <span class="class-call mono" data-no-translate>soc.hr</span>
+              <h4 class="class-name">HR &amp; organisational analytics</h4>
+              <span class="class-count"><b class="tnum">5</b> records</span>
+              <span class="class-status">Partial</span>
+            </div>
+            <p class="class-desc">Training effectiveness and procurement review, recruiting and workforce data pipelines.</p>
+            <dl class="class-facts"><div><dt>Sources</dt><dd data-no-translate>synthbench/hr-t3-114 · spider2-dbt@1.0 · theagentcompany adapter (to generate)</dd></div><div><dt>Grading</dt><dd>Deterministic + Rubric</dd></div></dl>
+              <div class="class-feature" id="subtrack-professional-hr">
+                <p class="feature-label"><span class="pill">Subtrack 02</span><span class="track-tag">Finance &amp; HR</span></p>
+                <figure class="track-video" aria-labelledby="demo-hr-title">
+                  <video width="1920" height="1080" controls playsinline preload="metadata" poster="../assets/video/hr-agent-replay-poster.jpg?v=20261019-claude-relay-v2" aria-label="Training and procurement acceptance example">
+                    <source src="../assets/video/hr-agent-replay.mp4?v=20261019-claude-relay-v2" type="video/mp4">
+                    <a href="../assets/video/hr-agent-replay.mp4?v=20261019-claude-relay-v2">Download the HR demo (MP4)</a>
+                  </video>
+                  <figcaption>
+                    <p class="demo-label"><span class="pill">HR demo</span><code>HR-T3-114</code></p>
+                    <h4 id="demo-hr-title">Training and procurement acceptance</h4>
+                    <p>In a fictional cold-chain warehousing scenario, connect learning, workplace behavior and operational evidence to assess supervisor training and recommend supplier acceptance and payment treatment.</p>
+                    <p class="demo-meta"><span data-no-translate>qwen3.7-max · Claude Code</span><span>4 min 05 sec · English narration · English / Chinese captions</span></p>
+                    <dl class="demo-deliverables" aria-label="HR deliverables">
+                      <div><dt data-no-translate>Excel</dt><dd>A decision workbook linking learning, behavior, operational comparisons and procurement decisions to the source evidence.</dd></div>
+                      <div><dt data-no-translate>Word</dt><dd>A Chinese decision memorandum setting out findings, evidence limits, acceptance and payment recommendations, and corrective actions.</dd></div>
+                    </dl>
+                    <details class="demo-brief">
+                      <summary>Task brief and review focus</summary>
+                      <div class="demo-brief-body">
+                <h5>Materials</h5>
+                <p>Roster and attendance records, assessments, workplace observations, coaching records, work orders, operating metrics and procurement rules.</p>
+                <h5>Core work</h5>
+                <ul>
+                  <li>Check the eligible population, attendance and assessment records to evaluate learning gains and retention.</li>
+                  <li>Link opportunities to behavior observations, then compare operational changes with a center whose training was deferred and account for on-site disruptions.</li>
+                  <li>Apply procurement rules to recommend acceptance, amounts to submit for approval, retain or defer, and corrective actions with owners and closure conditions.</li>
+                </ul>
+                <h5>Review focus</h5>
+                <p>Consistent samples, reproducible analysis, opportunity-adjusted behavior assessment and evidence-based acceptance and payment recommendations.</p>
+              </div>
+            </details>
+            <p class="demo-source-note">Fictional entities and synthetic learning and operational records for evaluation, coaching and procurement acceptance.</p>
+          </figcaption>
+        </figure>
+                <dl class="track-facts">
+                  <div><dt>Evaluation</dt><dd>An independent judge scores the files against a task-specific rubric that the agent never sees.</dd></div>
+                </dl>
+                <div class="track-links">
+                  <a class="text-link" href="professional-tasks.html">Explore Subtrack 2 <span aria-hidden="true">→</span></a>
+                  <a class="text-link" href="teams.html#partners">Meet the partner team <span aria-hidden="true">→</span></a>
+                </div>
+              </div>
+          </li>
+          <li class="class-item" id="class-soc-psychology" data-status="gap">
+            <div class="class-row">
+              <span class="class-call mono" data-no-translate>soc.psychology</span>
+              <h4 class="class-name">Psychology &amp; cognitive science</h4>
+              <span class="class-count"><b class="tnum">0</b> records</span>
+              <span class="class-status">To add</span>
+            </div>
+            <p class="class-desc">Data-driven analysis tasks from psychology and cognitive-science papers.</p>
+            <dl class="class-facts"><div><dt>Sources</dt><dd data-no-translate>scienceagentbench adapter (to generate)</dd></div><div><dt>Grading</dt><dd>Mixed</dd></div></dl>
+          </li>
+        </ol>
+      </article>
+
+      <p class="class-note">Counts are candidate records in the metacase-harbor v0.1 selection (26 October 2026): task records curated from public benchmarks and partner material, not yet reviewed as complete Metacases. Ready classes have at least five pinned, runnable public tasks; partial classes depend on restricted material or adapters still to be generated.</p>
     </section>
 
     <section class="section container ruled v2-system" id="system" aria-labelledby="system-title">

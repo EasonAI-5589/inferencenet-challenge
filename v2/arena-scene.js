@@ -38,7 +38,10 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
     pointer: { x: 0, y: 0 },
     paused: false,
     language: "en",
+    portalFocus: "",
+    portalCharge: false,
   };
+  let frameDt = 1 / 60;
   const colors = ARENA_DOMAINS.map(domain => domain.color),
     harnessColors = [
       0x61ebd7, 0xa791ff, 0xe5bd96, 0xb7d9ec, 0xf48cbe, 0x7dcbf7, 0xf4bd61,
@@ -499,27 +502,79 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
       [0.65, 0.735],
       [0.84, 0.915],
     ];
-  // Each doorway is a portal to its track: a swirling veil in the field's colour, just
-  // behind the doors, so the room stays visible through it. Brightest for the room in focus.
-  function portalVeil(group, color) {
+  // Each doorway is a portal to its track: a vortex in the field's colour fills the opening
+  // (spiral arms falling inward, a flickering rim, arcs of light), sparks are drawn into it
+  // and a ring of glyphs turns on the floor before it. The room stays visible through the
+  // middle; pointing at a portal's link makes it surge, and stepping through floods it.
+  const NOISE = `float h21(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+    float n21(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h21(i),h21(i+vec2(1.,0.)),f.x),mix(h21(i+vec2(0.,1.)),h21(i+vec2(1.,1.)),f.x),f.y);}`;
+  const sparkScale = { value: 1 };
+  function portalVeil(group, color, index) {
+    const uniforms = { time: { value: 0 }, power: { value: 0 }, surge: { value: 0 }, tint: { value: new THREE.Color(color) } };
+    const additive = { transparent: true, depthWrite: false, blending: THREE.AdditiveBlending };
     const mat = new THREE.ShaderMaterial({
-      uniforms: { time: { value: 0 }, power: { value: 0 }, tint: { value: new THREE.Color(color) } },
-      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide,
+      uniforms, ...additive, side: THREE.DoubleSide,
       vertexShader: "varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}",
-      fragmentShader: `varying vec2 vUv;uniform float time;uniform float power;uniform vec3 tint;
-        void main(){vec2 q=(vUv-.5)*vec2(1.,1.15);float r=length(q);float a=atan(q.y,q.x);
-        float edge=smoothstep(.64,.44,r);float rim=smoothstep(.34,.5,r)*edge;
-        float swirl=.5+.5*sin(a*3.-r*18.+time*2.2);float rings=.5+.5*sin(r*26.-time*3.);
-        float core=smoothstep(.55,0.,r);
-        float glow=(core*.28+swirl*rings*.32*edge+rim*.75)*power;
-        gl_FragColor=vec4(tint*glow*1.5+vec3(rim*power*.22),glow);
+      fragmentShader: `varying vec2 vUv;uniform float time;uniform float power;uniform float surge;uniform vec3 tint;${NOISE}
+        void main(){vec2 q=(vUv-.5)*vec2(2.,2.34);float r=length(q),a=atan(q.y,q.x),t=time*(1.+surge*1.6),z=log(max(r,.03));
+        float inside=smoothstep(1.03,.93,r);
+        float arms=pow(.5+.5*sin(a*3.-z*7.+t*2.4),3.);
+        float flow=n21(vec2(a*1.6+t*.5,z*4.-t*2.));
+        float swirl=(arms*.75+flow*.45)*smoothstep(.2,.92,r)*inside;
+        float rings=pow(.5+.5*sin(z*11.-t*5.),6.)*inside*smoothstep(.05,.6,r);
+        float rim=exp(-pow((r-.97)*16.,2.))*(1.+.45*sin(a*11.-t*6.)+.5*flow);
+        float arcs=smoothstep(.72,1.,n21(vec2(a*5.,t*2.6)))*exp(-pow((r-1.04)*10.,2.));
+        float core=exp(-r*r*5.)*surge;
+        vec3 hot=mix(tint,vec3(1.),.6);
+        vec3 col=tint*(swirl*.85+rings*.42+surge*.4*inside)+hot*(rim*1.25+arcs*1.9)+vec3(core*1.3);
+        gl_FragColor=vec4(col*power*(1.+surge*.6),1.);
         #include <colorspace_fragment>
         }`,
     });
     allMaterials.add(mat);
     const veil = new THREE.Mesh(geometry("portal-veil", () => new THREE.PlaneGeometry(5.3, 6.2)), mat);
     veil.position.set(0, 3.7, 1.2); veil.renderOrder = 2; group.add(veil);
-    return { veil, mat };
+    // sparks: each follows an inward spiral from in front of the doorway into its centre
+    const N = 72, seeds = new Float32Array(N * 3);
+    for (let k = 0; k < N * 3; k++) seeds[k] = Math.abs((Math.sin((k + 1) * 12.9898 + index * 78.233) * 43758.5453) % 1);
+    const sparkGeometry = new THREE.BufferGeometry();
+    sparkGeometry.setAttribute("position", new THREE.Float32BufferAttribute(new Float32Array(N * 3), 3));
+    sparkGeometry.setAttribute("seed", new THREE.Float32BufferAttribute(seeds, 3));
+    const sparkMat = new THREE.ShaderMaterial({
+      uniforms: { ...uniforms, scale: sparkScale }, ...additive,
+      vertexShader: `attribute vec3 seed;uniform float time;uniform float power;uniform float surge;uniform float scale;varying float vA;
+        void main(){float sp=.35+seed.z*.65;float u=fract(seed.y+time*.16*sp*(1.+surge*2.5));
+        float rr=mix(1.22,.06,pow(u,1.35)),ang=seed.x*6.2832+u*(5.+seed.z*3.);
+        vec3 p=vec3(cos(ang)*rr*2.55,3.7+sin(ang)*rr*2.98,1.25+(1.-u)*(.4+seed.z*1.8));
+        vec4 mv=modelViewMatrix*vec4(p,1.);gl_Position=projectionMatrix*mv;
+        gl_PointSize=scale*(.07+.09*seed.z)*(1.-.5*u)/max(.1,-mv.z);
+        vA=smoothstep(0.,.15,u)*(1.-smoothstep(.8,1.,u))*power*(.55+surge);}`,
+      fragmentShader: `uniform vec3 tint;varying float vA;
+        void main(){float d=length(gl_PointCoord-.5);float g=smoothstep(.5,0.,d);g*=g;
+        gl_FragColor=vec4(mix(tint,vec3(1.),.35+.5*g)*g*vA*1.8,1.);
+        #include <colorspace_fragment>
+        }`,
+    });
+    allMaterials.add(sparkMat);
+    const sparks = new THREE.Points(sparkGeometry, sparkMat); sparks.frustumCulled = false; sparks.renderOrder = 3; group.add(sparks);
+    // the glyph ring on the floor before the doorway
+    const glyphMat = new THREE.ShaderMaterial({
+      uniforms, ...additive,
+      vertexShader: "varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}",
+      fragmentShader: `varying vec2 vUv;uniform float time;uniform float power;uniform float surge;uniform vec3 tint;
+        void main(){vec2 q=vUv-.5;float r=length(q)*2.,a=atan(q.y,q.x),t=time*(1.+surge*2.);
+        float ring=exp(-pow((r-.94)*40.,2.))+exp(-pow((r-.72)*55.,2.))*.7;
+        float ticks=step(.55,fract(a*36./6.2832+t*.15))*smoothstep(.78,.8,r)*smoothstep(.9,.88,r);
+        float runes=step(.7,fract(a*12./6.2832-t*.08))*step(.5,fract(r*9.))*smoothstep(.45,.5,r)*smoothstep(.68,.64,r)*.5;
+        float k=(ring+ticks*.6+runes+exp(-r*r*3.)*.3*surge)*smoothstep(1.,.96,r);
+        gl_FragColor=vec4(mix(tint,vec3(1.),.25)*k*power*(.55+surge),1.);
+        #include <colorspace_fragment>
+        }`,
+    });
+    allMaterials.add(glyphMat);
+    const glyph = new THREE.Mesh(geometry("portal-glyph", () => new THREE.PlaneGeometry(4.4, 4.4)), glyphMat);
+    glyph.rotation.x = -Math.PI / 2; glyph.position.set(0, 0.04, 4.6); glyph.renderOrder = 1; group.add(glyph);
+    return { veil, mat, uniforms, sparks, glyph, surge: 0 };
   }
   const portalPoint = vec(), portalList = [];
   const rooms = roomDefs.map((def, index) => {
@@ -745,7 +800,7 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
       prompt = challengePrompt(group, ["#246d68", "#855c1c", "#65519e"][index]);
     const subtracks = createRoomSubtracks({ domain: ARENA_DOMAINS[index], index });
     group.add(subtracks.root);
-    const portal = portalVeil(group, color);
+    const portal = portalVeil(group, color, index);
     return {
       group,
       portal,
@@ -1313,6 +1368,8 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
     const transitioning = Math.abs(state.progress - progress) > 0.00015,
       ambient = !reduced && !state.paused;
     if (ambient) time += dt;
+    frameDt = dt;
+    sparkScale.value = height * renderer.getPixelRatio() / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2));
     progress +=
       (state.progress - progress) * (reduced ? 1 : Math.min(1, dt * 7.5));
     pointerX +=
@@ -1506,20 +1563,27 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
       room.chamberLight.intensity = active ? 40 : 17;
       // the portal: lit for the room in focus, and for all three at the entrance and at the end
       const overview = 1 - smooth(0.13, 0.17, p), finale = smooth(0.92, 0.96, p);
-      const power = Math.max(active ? 1 : 0.2, overview * 0.75, finale);
-      room.portal.mat.uniforms.power.value = power;
-      room.portal.mat.uniforms.time.value = ambient ? time : 0;
+      const power = Math.max(active ? 1 : 0.25, overview * 0.95, finale);
+      // pointed at: a surge; stepped through: a flood
+      const want = state.portalFocus === ARENA_DOMAINS[i].id ? (state.portalCharge ? 2.4 : 0.7) : 0;
+      room.portal.surge += (want - room.portal.surge) * Math.min(1, frameDt * (state.portalCharge ? 4 : 6));
+      room.portal.uniforms.power.value = power;
+      room.portal.uniforms.surge.value = room.portal.surge;
+      room.portal.uniforms.time.value = ambient ? time : 0;
       room.group.updateMatrixWorld();
-      // two anchors: the threshold (for the full link) and the middle of the doorway (for a compact one)
+      // two anchors: the threshold (for the full link) and the foot of the doorway (for a compact one,
+      // below the vortex so the portal itself stays in view)
       portalPoint.set(0, 0.95, 2.75); room.group.localToWorld(portalPoint).project(camera);
       const low = { x: (portalPoint.x + 1) * width / 2, y: (1 - portalPoint.y) * height / 2, ok: portalPoint.z > -1 && portalPoint.z < 1 && Math.abs(portalPoint.x) < 0.96 && Math.abs(portalPoint.y) < 0.96 };
-      portalPoint.set(0, 3.6, 1.6); room.group.localToWorld(portalPoint).project(camera);
+      portalPoint.set(0, 1.25, 2.1); room.group.localToWorld(portalPoint).project(camera);
       portalList[i] = {
         id: ARENA_DOMAINS[i].id, x: low.x, y: low.y, visible: low.ok,
         mx: (portalPoint.x + 1) * width / 2, my: (1 - portalPoint.y) * height / 2,
         midVisible: portalPoint.z > -1 && portalPoint.z < 1 && Math.abs(portalPoint.x) < 0.96 && Math.abs(portalPoint.y) < 0.96,
         active, power,
       };
+      portalPoint.set(0, 3.7, 1.2); room.group.localToWorld(portalPoint).project(camera); // the vortex's centre, where a warp begins
+      Object.assign(portalList[i], { cx: (portalPoint.x + 1) * width / 2, cy: (1 - portalPoint.y) * height / 2, centreVisible: portalPoint.z > -1 && portalPoint.z < 1 && Math.abs(portalPoint.x) < 1 && Math.abs(portalPoint.y) < 1 });
       room.halo.material.opacity = active ? 0.2 : 0.075;
       room.scan.visible = active;
       room.scan.position.y = 1.2 + ((((p - start) / (end - start)) * 11) % 5.4);
@@ -1728,6 +1792,8 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
           y: clamp(next.pointer.y || 0, -1, 1),
         };
       if (typeof next.paused === "boolean") state.paused = next.paused;
+      if (typeof next.portalFocus === "string") state.portalFocus = next.portalFocus;
+      if (typeof next.portalCharge === "boolean") state.portalCharge = next.portalCharge;
       if (next.language) state.language = next.language === "zh" ? "zh" : "en";
       wake();
     },

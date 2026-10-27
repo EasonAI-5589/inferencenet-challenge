@@ -23,7 +23,7 @@
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script src="v2.js?v=20261022-v2-ambient" defer></script>
   <script type="module" src="metacase.js?v=20261027-relay"></script>
-  <script type="module" src="arena.js?v=20261027-portal2"></script>
+  <script type="module" src="arena.js?v=20261027-warp"></script>
 </head>
 <body class="v2-home mc-home">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -514,7 +514,7 @@
       <span class="mc-kicker mc-visually-hidden" data-mc-kicker>01 / THE ENTRANCE</span>
       <h2 id="system-title">Three portals.<br><em>Three tracks.</em></h2>
       <p data-mc-body>Economics, Finance and Social Science. Step through a portal to reach its track: the tasks, the data and how runs are scored.</p>
-      <a class="mc-enter" data-mc-enter href="challenge.html#subtrack-econometric" hidden>Enter the Economics track →</a>
+      <a class="mc-enter" data-mc-enter href="challenge.html?via=portal#track-econ" hidden>Enter the Economics track →</a>
       <span class="mc-case-code" data-mc-code>THREE TRACKS · SIXTEEN CASE CATEGORIES</span>
       <div class="mc-domain-overview" data-mc-overview><span>econ/ 5</span><span>fin/ 6</span><span>soc/ 5</span></div>
       <aside class="mc-domain-directory" data-mc-directory hidden aria-label="Case categories"><p class="mono" data-mc-directory-title></p><small class="mc-directory-hint" data-mc-directory-hint>SWIPE →</small><ul data-mc-directory-list></ul></aside>
@@ -528,9 +528,9 @@
       <span class="mc-carried" data-mc-carried hidden>NOT EQUIPPED · CLICK TO CONFIRM</span>
     </div>
     <nav class="mc-portals" aria-label="Enter a track">
-      <a class="mc-portal" data-portal="econ" href="challenge.html#subtrack-econometric" style="--pc: var(--track-1)"><small>Portal 1 · Economics</small><b>Enter the Economics track</b><em>Economics</em><i aria-hidden="true">→</i></a>
-      <a class="mc-portal" data-portal="fin" href="challenge.html#demo-finance-title" style="--pc: var(--track-2)"><small>Portal 2 · Finance</small><b>Enter the Finance track</b><em>Finance</em><i aria-hidden="true">→</i></a>
-      <a class="mc-portal" data-portal="soc" href="challenge.html#demo-hr-title" style="--pc: var(--mc-violet)"><small>Portal 3 · Social Science</small><b>Enter the Social Science track</b><em>Social Science</em><i aria-hidden="true">→</i></a>
+      <a class="mc-portal" data-portal="econ" href="challenge.html?via=portal#track-econ" style="--pc: var(--track-1)"><small>Portal 1 · Economics</small><b>Enter the Economics track</b><em>Economics</em><i aria-hidden="true">→</i></a>
+      <a class="mc-portal" data-portal="fin" href="challenge.html?via=portal#track-fin" style="--pc: var(--track-2)"><small>Portal 2 · Finance</small><b>Enter the Finance track</b><em>Finance</em><i aria-hidden="true">→</i></a>
+      <a class="mc-portal" data-portal="soc" href="challenge.html?via=portal#track-soc" style="--pc: var(--mc-violet)"><small>Portal 3 · Social Science</small><b>Enter the Social Science track</b><em>Social Science</em><i aria-hidden="true">→</i></a>
     </nav>
     <div class="mc-floating-harness" data-mc-floating-harness aria-hidden="true" hidden><small data-mc-floating-status>HARNESS · READY</small><strong data-mc-floating-name></strong></div>
     <span class="mc-equipment-status" role="status" aria-live="polite"></span>
@@ -578,9 +578,9 @@
       <p class="mc-sub">The Challenge follows the first three fields of the Metacase network: economics, finance and social science. Tasks, examples, timeline and awards are on the Challenge page.</p>
     </div>
     <div class="mc-grid mc-grid-3">
-      <a class="mc-card mc-card-link mc-r" href="challenge.html#subtrack-econometric" style="--tc: var(--track-1)"><div class="mc-art" data-art="replication"></div><div class="mc-card-body"><p class="mono">Economics · Dev100 · 100 tasks</p><h3>Economics</h3><p>Rebuild published empirical results from research data and specifications, starting with econometric replication.</p><span class="mc-go"><span>Explore economics</span> <span aria-hidden="true">→</span></span></div></a>
-      <a class="mc-card mc-card-link mc-r" href="challenge.html#subtrack-professional" style="--tc: var(--track-2)"><div class="mc-art" data-art="business"></div><div class="mc-card-body"><p class="mono">Finance · Accounting close demo</p><h3>Finance</h3><p>Reconcile ledgers and policy, weigh corrections and deliver workbooks and reviews that withstand checking.</p><span class="mc-go"><span>Explore finance</span> <span aria-hidden="true">→</span></span></div></a>
-      <a class="mc-card mc-card-link mc-r" href="challenge.html#subtrack-professional" style="--tc: var(--mc-violet)"><div class="mc-art" data-art="social"></div><div class="mc-card-body"><p class="mono">Social science · HR demo</p><h3>Social science</h3><p>Turn people, survey and organisational evidence into a decision, with its findings and limits stated.</p><span class="mc-go"><span>Explore social science</span> <span aria-hidden="true">→</span></span></div></a>
+      <a class="mc-card mc-card-link mc-r" href="challenge.html#track-econ" style="--tc: var(--track-1)"><div class="mc-art" data-art="replication"></div><div class="mc-card-body"><p class="mono">Economics · Dev100 · 100 tasks</p><h3>Economics</h3><p>Rebuild published empirical results from research data and specifications, starting with econometric replication.</p><span class="mc-go"><span>Explore economics</span> <span aria-hidden="true">→</span></span></div></a>
+      <a class="mc-card mc-card-link mc-r" href="challenge.html#track-fin" style="--tc: var(--track-2)"><div class="mc-art" data-art="business"></div><div class="mc-card-body"><p class="mono">Finance · Accounting close demo</p><h3>Finance</h3><p>Reconcile ledgers and policy, weigh corrections and deliver workbooks and reviews that withstand checking.</p><span class="mc-go"><span>Explore finance</span> <span aria-hidden="true">→</span></span></div></a>
+      <a class="mc-card mc-card-link mc-r" href="challenge.html#track-soc" style="--tc: var(--mc-violet)"><div class="mc-art" data-art="social"></div><div class="mc-card-body"><p class="mono">Social science · HR demo</p><h3>Social science</h3><p>Turn people, survey and organisational evidence into a decision, with its findings and limits stated.</p><span class="mc-go"><span>Explore social science</span> <span aria-hidden="true">→</span></span></div></a>
     </div>
     <div class="mc-facts-row mc-r">
       <div><b class="tnum" data-count="100">100</b><span>Dev100 tasks</span></div>
