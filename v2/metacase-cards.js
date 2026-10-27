@@ -9,7 +9,7 @@ const loopPhase = (t, period, offset = 0) => ((t + offset) % period) / period;
 const pulse = (u, a, b) => smooth((u - a) / .08) * (1 - smooth((u - b) / .08));
 
 const BUILDERS = {
-  // a case opens into its seven layers and closes again
+  // a case opens into its five stages and closes again
   complete(g) {
     const plates = STAGE_COLORS.map((c, i) => {
       const p = new THREE.Group(); g.add(p);
@@ -20,8 +20,9 @@ const BUILDERS = {
     const top = tile({ sig: 0, edge: PALETTE.violet, size: 1.38 }); g.add(top);
     return (t) => {
       const u = loopPhase(t, 6), open = smooth(u / .28) * (1 - smooth((u - .72) / .22));
-      plates.forEach((p, i) => { p.position.y = i * lerp(.15, .5, open); p.rotation.y = (i - 3) * .07 * open; p.position.x = (i - 3) * .08 * open; });
-      top.position.y = 7 * lerp(.15, .5, open); top.rotation.y = .2 * open;
+      const mid = (plates.length - 1) / 2;
+      plates.forEach((p, i) => { p.position.y = i * lerp(.15, .5, open); p.rotation.y = (i - mid) * .09 * open; p.position.x = (i - mid) * .1 * open; });
+      top.position.y = plates.length * lerp(.15, .5, open); top.rotation.y = .2 * open;
       g.rotation.y = -.5 + Math.sin(t * .4) * .15;
     };
   },
@@ -70,8 +71,8 @@ const BUILDERS = {
     const dot = ball(rec, .04, mat(PALETTE.rose, { emissive: PALETTE.rose, intensity: 2 }), .12, .08, .12, 8);
     const stoneMats = stones.map(s => (s.material = s.material.clone()));
     return (t) => {
-      const u = loopPhase(t, 7), along = clamp(u / .85) * 6, k = Math.floor(along), f = along - k;
-      const a = pts[Math.min(6, k)], b = pts[Math.min(6, k + 1)];
+      const last = pts.length - 1, u = loopPhase(t, 7), along = clamp(u / .85) * last, k = Math.floor(along), f = along - k;
+      const a = pts[Math.min(last, k)], b = pts[Math.min(last, k + 1)];
       bot.root.position.set(lerp(a.x, b.x, f), .1, lerp(a.z, b.z, f));
       bot.root.rotation.y = Math.atan2(b.x - a.x, b.z - a.z) || 0;
       bot.update(t, u < .85 ? 1 : 0);

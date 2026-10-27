@@ -16,13 +16,13 @@
   <script>document.documentElement.classList.add("js")</script>
   <script src="../site.js?v=20261019-motion" defer></script>
   <link rel="stylesheet" href="../language.css">
-  <script src="../language.js?v=20261027-site" defer></script>
+  <script src="../language.js?v=20261027-popup" defer></script>
   <link rel="stylesheet" href="v2.css?v=20261027-copy2">
   <link rel="stylesheet" href="arena.css?v=20261027-portal2">
-  <link rel="stylesheet" href="metacase.css?v=20261027-team">
+  <link rel="stylesheet" href="metacase.css?v=20261027-popup2">
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script src="v2.js?v=20261022-v2-ambient" defer></script>
-  <script type="module" src="metacase.js?v=20261027-relay"></script>
+  <script type="module" src="metacase.js?v=20261027-popup"></script>
   <script type="module" src="arena.js?v=20261027-warp"></script>
 </head>
 <body class="v2-home mc-home">
@@ -127,21 +127,19 @@
   <div class="mc-scene-pin" data-view="anatomy">
     <div class="wrap mc-scene-head">
       <p class="mc-label mono"><span>01</span>The Metacase</p>
-      <h2 id="metacase-title"><span>The whole episode,</span> <em>not just the answer.</em></h2>
-      <p class="mc-sub">A Metacase records one problem-solving episode end to end: the task, what was known, what was tried, what happened and what was learned.</p>
+      <h2 id="metacase-title"><span>From flat text to a</span> <em>living episode.</em></h2>
+      <p class="mc-sub">Standard benchmarks keep only the prompt and the final score, discarding how a problem was framed, what failed, and why a strategy worked. A Metacase records the full episode across Economics, Finance, and Social Science — and slices it at a strict cutoff into an executable Metacase Challenge task where Models and Harnesses run, get verified, and leave reusable experience.</p>
     </div>
     <ol class="mc-notes" data-notes="anatomy">
-      <li data-note="0" style="--tc: var(--track-1)"><b class="mono">Ch 1</b><strong>Task &amp; evidence</strong><span>The problem as posed, and the raw inputs: documents, web pages, data and recordings.</span></li>
-      <li data-note="1" style="--tc: var(--mc-blue)"><b class="mono">Ch 2</b><strong>Priors</strong><span>What experts and institutions already knew, and how they handled similar problems.</span></li>
-      <li data-note="2" style="--tc: var(--mc-violet)"><b class="mono">Ch 3</b><strong>Candidate plans</strong><span>The approaches on the table, including the ones that were dropped.</span></li>
-      <li data-note="3" style="--tc: var(--mc-violet)"><b class="mono">Ch 4</b><strong>Decision</strong><span>The reasoning that picked one plan, and the trade-offs behind it.</span></li>
-      <li data-note="4" style="--tc: var(--mc-rose)"><b class="mono">Ch 5</b><strong>Trajectory</strong><span>Every step actually taken, in order: the tool calls of a person or an agent.</span></li>
-      <li data-note="5" style="--tc: var(--track-2)"><b class="mono">Ch 6</b><strong>Outcome</strong><span>What happened, checked against the goal: the feedback signal.</span></li>
-      <li data-note="6" style="--tc: var(--mc-green)"><b class="mono">Ch 7</b><strong>Reflection</strong><span>Why it worked or failed, and what to do differently next time.</span></li>
-      <li data-note="7" class="mc-note-signature"><b class="mono">Signature</b><strong>Solution signature</strong><span>Closed, the Metacase keeps a compact signature of how the problem was solved: the key for finding episodes with the same structure.</span></li>
+      <li data-note="0" style="--tc: var(--track-1)"><b class="mono">Ch 1</b><strong>Raw evidence &amp; cutoff</strong><span>Freeze a real episode at the decision cutoff — raw papers, filings, ledgers, and tables, with hindsight stripped out — to form a leak-free Challenge task.</span></li>
+      <li data-note="1" style="--tc: var(--mc-violet)"><b class="mono">Ch 2</b><strong>Priors &amp; strategy trade-offs</strong><span>Ground the problem in institutional rules and prior practice, weigh competing candidate routes, set aside flawed paths, and commit to a strategy.</span></li>
+      <li data-note="2" style="--tc: var(--mc-blue)"><b class="mono">Ch 3</b><strong>Model × Harness trajectory</strong><span>Inside a reproducible Harbor container, a Model + Harness executes step-by-step tool calls — writing code, querying data, and building auditable deliverables.</span></li>
+      <li data-note="3" style="--tc: var(--track-2)"><b class="mono">Ch 4</b><strong>Verified outcome &amp; rubric</strong><span>Code verifiers and multi-dimensional rubrics grade the deliverable against ground truth, separating reasoning errors from environment faults.</span></li>
+      <li data-note="4" style="--tc: var(--mc-green)"><b class="mono">Ch 5</b><strong>Reflection &amp; experience reuse</strong><span>Distill why the trajectory succeeded or broke — turning one graded trial into reusable experience for human researchers and self-evolving harnesses.</span></li>
+      <li data-note="5" class="mc-note-signature"><b class="mono">Signature</b><strong>Solution signature</strong><span>Closed again, the Metacase carries its five-stage solution signature on the fore-edge — the key for retrieving episodes solved the same way across fields.</span></li>
     </ol>
     <div class="wrap mc-scene-foot">
-      <ol class="mc-rail" aria-hidden="true"><li>Task</li><li>Priors</li><li>Plans</li><li>Decision</li><li>Trajectory</li><li>Outcome</li><li>Reflection</li></ol>
+      <ol class="mc-rail" aria-hidden="true"><li>Cutoff</li><li>Strategy</li><li>Trajectory</li><li>Verification</li><li>Reflection</li></ol>
     </div>
   </div>
 </section>
