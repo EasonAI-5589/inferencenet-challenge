@@ -9,7 +9,7 @@ const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const ease = x => { const p = clamp(x); return p * p * (3 - 2 * p); };
-const V = '?v=20261027-retrieval';
+const V = '?v=20261027-run';
 
 /* ---- layout helpers ---- */
 const siteHeader = $('.site-header'), subnav = $('.mc-subnav');
@@ -166,6 +166,11 @@ import('./mc-stage.js' + V).then(({ createStage }) => {
   if (initiative) stage.add({ el: initiative, near: 1, postOptions: { bloom: .3, threshold: .9, vignette: .3, feather: [240, 280] }, build: story,
     progress: r => 1 + .5 * clamp((innerHeight - r.top) / (innerHeight + r.height)) });
 
+  // 05: one run under the four rules, from evidence to a shelved Metacase
+  const rules = $('#rules'), runTags = $$('[data-tags="run"] [data-tag]', rules);
+  if (rules) stage.add({ el: $('.mc-scene-pin', rules), near: 1.5, postOptions: { bloom: .32, threshold: .9, vignette: .2, feather: FEATHER }, progress: () => pinProgress(rules),
+    build: () => import('./metacase-run.js' + V).then(m => m.createRun({ reduce, safe: safeArea($('.mc-scene-pin', rules)), onProject: list => list.forEach((s, i) => place(runTags[i], s)) })) });
+
   // card vignettes
   $$('.mc-art').forEach(el => stage.add({ el, near: 1, build: () => import('./metacase-cards.js' + V).then(m => m.createCard(el.dataset.art)) }));
 
@@ -227,6 +232,8 @@ if (anatomySection) sceneControllers.push([anatomySection, chapter(anatomySectio
   notes: true,
 })]);
 if (structureSection) sceneControllers.push([structureSection, chapter(structureSection, { steps: p => (p < .4 ? 0 : p < .75 ? 1 : 2) })]);
+const rulesSection = $('#rules');
+if (rulesSection) sceneControllers.push([rulesSection, chapter(rulesSection, { steps: p => (p < .28 ? 0 : p < .5 ? 1 : p < .71 ? 2 : 3) })]);
 if (netSection) {
   const update = chapter(netSection, { steps: p => (p < .26 ? 0 : p < .5 ? 1 : p < .76 ? 2 : 3) });
   sceneControllers.push([netSection, p => {

@@ -17,7 +17,7 @@ const redirects = {
   ...Object.fromEntries(pages.map(page => [page, `v2/${page}`])),
   'data.html': 'v2/challenge.html#replication-data', 'agent.html': 'v2/evolution.html#improvement-directions',
 };
-const v2Files = ['v2/v2.css', 'v2/home.css', 'v2/skin.css', 'v2/theme.js', 'v2/v2.js', 'v2/home.js', 'v2/backdrop.js', 'v2/scene.css', 'v2/scene.js', 'v2/arena.css', 'v2/arena.js', 'v2/arena-scene.js', 'v2/arena-motion.js', 'v2/arena-models.js', 'v2/metacase.css', 'v2/metacase.js', 'v2/metacase-world.js', 'v2/metacase-library.js', 'v2/metacase-courier.js', 'v2/metacase-anatomy.js', 'v2/metacase-archive.js', 'v2/metacase-cards.js', 'v2/mc-stage.js', 'v2/mc-toon.js', 'v2/mc-kit.js', 'v2/arena-data.js', 'v2/arena-campus.js', 'v2/arena-subtracks.js', 'v2/mc-rail.js', 'v2/portal-warp.js'];
+const v2Files = ['v2/v2.css', 'v2/home.css', 'v2/skin.css', 'v2/theme.js', 'v2/v2.js', 'v2/home.js', 'v2/backdrop.js', 'v2/scene.css', 'v2/scene.js', 'v2/arena.css', 'v2/arena.js', 'v2/arena-scene.js', 'v2/arena-motion.js', 'v2/arena-models.js', 'v2/metacase.css', 'v2/metacase.js', 'v2/metacase-world.js', 'v2/metacase-library.js', 'v2/metacase-courier.js', 'v2/metacase-anatomy.js', 'v2/metacase-archive.js', 'v2/metacase-run.js', 'v2/metacase-cards.js', 'v2/mc-stage.js', 'v2/mc-toon.js', 'v2/mc-kit.js', 'v2/arena-data.js', 'v2/arena-campus.js', 'v2/arena-subtracks.js', 'v2/mc-rail.js', 'v2/portal-warp.js'];
 const allRedirects = { ...redirects, ...v2Redirects };
 export const publicFiles = [
   ...Object.keys(redirects),

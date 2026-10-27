@@ -378,9 +378,9 @@ html[lang="zh-CN"] .mc-title { letter-spacing: -0.02em; line-height: 1.12; max-w
 html[lang="zh-CN"] .mc-initiative-text { line-height: 1.85; }
 
 
-/* 01: on wide screens the subhead sits beside the title, so the pop-up book keeps its height */
+/* 01 and 05: on wide screens the subhead sits beside the title, so the picture keeps its height */
 @media (min-width: 1100px) {
-  .mc-home #metacase .mc-scene-head { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); column-gap: clamp(32px, 4vw, 72px); align-items: end; }
-  .mc-home #metacase .mc-scene-head > .mc-label, .mc-home #metacase .mc-scene-head > h2 { grid-column: 1; }
-  .mc-home #metacase .mc-scene-head > .mc-sub { grid-column: 2; grid-row: 1 / span 2; align-self: end; max-width: 40em; margin: 0; font-size: 15px; line-height: 1.6; }
+  .mc-home :is(#metacase, #rules) .mc-scene-head { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); column-gap: clamp(32px, 4vw, 72px); align-items: end; }
+  .mc-home :is(#metacase, #rules) .mc-scene-head > .mc-label, .mc-home :is(#metacase, #rules) .mc-scene-head > h2 { grid-column: 1; }
+  .mc-home :is(#metacase, #rules) .mc-scene-head > .mc-sub { grid-column: 2; grid-row: 1 / span 2; align-self: end; max-width: 40em; margin: 0; font-size: 15px; line-height: 1.6; }
 }

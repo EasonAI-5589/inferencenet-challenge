@@ -16,13 +16,13 @@
   <script>document.documentElement.classList.add("js")</script>
   <script src="../site.js?v=20261019-motion" defer></script>
   <link rel="stylesheet" href="../language.css">
-  <script src="../language.js?v=20261027-retrieval" defer></script>
+  <script src="../language.js?v=20261027-run" defer></script>
   <link rel="stylesheet" href="v2.css?v=20261027-copy2">
   <link rel="stylesheet" href="arena.css?v=20261027-portal2">
-  <link rel="stylesheet" href="metacase.css?v=20261027-popup2">
+  <link rel="stylesheet" href="metacase.css?v=20261027-run">
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script src="v2.js?v=20261022-v2-ambient" defer></script>
-  <script type="module" src="metacase.js?v=20261027-retrieval"></script>
+  <script type="module" src="metacase.js?v=20261027-run"></script>
   <script type="module" src="arena.js?v=20261027-warp"></script>
 </head>
 <body class="v2-home mc-home">
@@ -556,19 +556,28 @@
   </div>
 </section>
 
-<!-- ================= HOW A RUN BECOMES A METACASE ================= -->
-<section class="mc-section" id="rules" aria-labelledby="rules-title">
-  <div class="wrap">
-    <div class="mc-head mc-r">
+<!-- ================= 05 THE RULES: one run, from evidence to a Metacase ================= -->
+<section class="mc-scene" id="rules" aria-labelledby="rules-title" style="--len: 400vh">
+  <div class="mc-scene-pin" data-view="run">
+    <div class="mc-tags" data-tags="run" aria-hidden="true">
+      <span data-tag="0" style="--tc: var(--track-1)"><b>Deliverable</b><i>Not a single answer</i></span>
+      <span data-tag="1" style="--tc: var(--track-2)"><b>Reference</b><i>Sealed until scoring</i></span>
+      <span data-tag="2" style="--tc: var(--mc-blue)"><b>Same case</b><i>Three harnesses</i></span>
+      <span data-tag="3" style="--tc: var(--mc-violet)"><b>Metacase</b><i>The whole run, kept</i></span>
+    </div>
+    <div class="wrap mc-scene-head">
       <p class="mc-label mono"><span>05</span>The Metacase Challenge</p>
       <h2 id="rules-title"><span>Fair runs,</span> <em>full trajectories.</em></h2>
       <p class="mc-sub">The Challenge is the first pipeline into the Metacase network. Four rules keep every run comparable and every trajectory worth reviewing.</p>
     </div>
-    <div class="mc-grid mc-grid-4">
-      <article class="mc-card mc-r"><div class="mc-art" data-art="complete"></div><div class="mc-card-body"><h3>End-to-end tasks</h3><p>Agents work from the original evidence to a finished deliverable, not a single answer.</p></div></article>
-      <article class="mc-card mc-r"><div class="mc-art" data-art="withheld"></div><div class="mc-card-body"><h3>Hidden references</h3><p>Reference results and rubrics stay hidden from agents until evaluation.</p></div></article>
-      <article class="mc-card mc-r"><div class="mc-art" data-art="same"></div><div class="mc-card-body"><h3>Same tasks for everyone</h3><p>Every entry in a track faces the same data, materials and evaluation.</p></div></article>
-      <article class="mc-card mc-r"><div class="mc-art" data-art="recorded"></div><div class="mc-card-body"><h3>Full trajectories</h3><p>Each run keeps its reasoning, actions and outcome, so the result can be inspected.</p></div></article>
+    <ol class="wrap mc-captions">
+      <li data-caption="0"><b class="mono">End-to-end tasks</b><span>Agents work from the original evidence to a finished deliverable, not a single answer.</span></li>
+      <li data-caption="1"><b class="mono">Hidden references</b><span>Reference results and rubrics stay hidden from agents until evaluation.</span></li>
+      <li data-caption="2"><b class="mono">Same tasks for everyone</b><span>Every entry in a track faces the same data, materials and evaluation.</span></li>
+      <li data-caption="3"><b class="mono">Full trajectories</b><span>Each run keeps its reasoning, actions and outcome, so the result can be inspected.</span></li>
+    </ol>
+    <div class="wrap mc-scene-foot">
+      <ol class="mc-rail" aria-hidden="true"><li>End-to-end</li><li>Hidden references</li><li>Same tasks</li><li>Full trajectories</li></ol>
     </div>
   </div>
 </section>

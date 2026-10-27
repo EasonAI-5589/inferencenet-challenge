@@ -1159,5 +1159,13 @@
   "Credit decision": "授信决策",
   "Same topic": "同一主题",
   "Different path": "路径不同",
-  "Same path": "路径相同"
+  "Same path": "路径相同",
+  "Not a single answer": "不只是一个答案",
+  "Reference": "参考结果",
+  "Sealed until scoring": "评分前一直封存",
+  "Same case": "同一个案例",
+  "Three harnesses": "三种 Harness",
+  "The whole run, kept": "整次运行完整保留",
+  "End-to-end": "端到端",
+  "Same tasks": "同题同评"
 }

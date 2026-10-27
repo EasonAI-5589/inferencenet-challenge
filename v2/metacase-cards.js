@@ -1,87 +1,13 @@
 /* metacase-cards.js — small 3D pictures for the homepage cards, in the same toy kit
- * and light as the chapters: how a run becomes a Metacase, the tracks, the two kinds
- * of reader and the invitation. Each is a looping vignette drawn by the shared stage. */
+ * and light as the chapters: the tracks, the two kinds of reader and the invitation.
+ * Each is a looping vignette drawn by the shared stage. */
 import * as THREE from '../assets/vendor/three/three.module.js';
-import { PALETTE, mat, add, block, cyl, ball, tile, volume, robot, person, buildings, tree, island, crane, scaffold, bookStack, lights, signaturePoints, STAGE_COLORS, rbox } from './mc-kit.js';
+import { PALETTE, mat, add, block, tile, volume, robot, person, buildings, tree, island, crane, scaffold, bookStack, lights, STAGE_COLORS, rbox } from './mc-kit.js';
 import { clamp, smooth, ramp, lerp, fitCamera, glowSprite } from './mc-stage.js';
 
 const loopPhase = (t, period, offset = 0) => ((t + offset) % period) / period;
-const pulse = (u, a, b) => smooth((u - a) / .08) * (1 - smooth((u - b) / .08));
 
 const BUILDERS = {
-  // a case opens into its five stages and closes again
-  complete(g) {
-    const plates = STAGE_COLORS.map((c, i) => {
-      const p = new THREE.Group(); g.add(p);
-      add(p, rbox(2.2, .14, 1.5, .05), mat(0xf7f5f0), 0, .07, 0);
-      add(p, rbox(2.24, .04, 1.54, .02), mat(c, { emissive: c, intensity: .3 }), 0, .05, 0, false);
-      return p;
-    });
-    const top = tile({ sig: 0, edge: PALETTE.violet, size: 1.38 }); g.add(top);
-    return (t) => {
-      const u = loopPhase(t, 6), open = smooth(u / .28) * (1 - smooth((u - .72) / .22));
-      const mid = (plates.length - 1) / 2;
-      plates.forEach((p, i) => { p.position.y = i * lerp(.15, .5, open); p.rotation.y = (i - mid) * .09 * open; p.position.x = (i - mid) * .1 * open; });
-      top.position.y = plates.length * lerp(.15, .5, open); top.rotation.y = .2 * open;
-      g.rotation.y = -.5 + Math.sin(t * .4) * .15;
-    };
-  },
-  // the reference stays sealed until evaluation
-  withheld(g) {
-    const inner = tile({ sig: 3, edge: PALETTE.amber, size: 1 }); inner.position.y = .55; g.add(inner);
-    const glass = add(g, rbox(2.3, 1.9, 1.7, .12), mat(0xcfe0ff, { opacity: .16, rough: .1 }), 0, 1, 0, false);
-    const edges = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(2.3, 1.9, 1.7)), new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: .55 }));
-    edges.position.y = 1; g.add(edges);
-    block(g, 2.5, .18, 1.9, PALETTE.stone, 0, -.05, 0, .05);
-    const lock = new THREE.Group(); lock.position.set(0, .75, .95); g.add(lock);
-    block(lock, .55, .48, .2, PALETTE.amber, 0, -.3, 0, .08);
-    ball(lock, .06, PALETTE.ink, 0, -.1, .11, 8);
-    const shackle = add(lock, new THREE.TorusGeometry(.18, .05, 8, 20, Math.PI), mat(PALETTE.slate), 0, .18, 0);
-    const light = glowSprite(PALETTE.amber, 2.6, 0); light.position.y = .8; g.add(light);
-    return (t) => {
-      const u = loopPhase(t, 5), open = pulse(u, .45, .85);
-      shackle.position.y = .18 + open * .16; shackle.rotation.y = open * .8;
-      inner.position.y = .55 + open * .35; inner.userData.mark.material.emissiveIntensity = .3 + open * 1.4;
-      light.material.opacity = open * .7;
-      g.rotation.y = -.45 + Math.sin(t * .4) * .12;
-    };
-  },
-  // three different agents, the same case each
-  same(g) {
-    const tiles = [], bots = [];
-    [-1.6, 0, 1.6].forEach((x, i) => {
-      cyl(g, .45, .5, .42, PALETTE.stone, x, 0, .55, 24);
-      const t = tile({ sig: 2, edge: PALETTE.sky, size: .55 }); t.position.set(x, .5, .55); g.add(t); tiles.push(t);
-      const b = robot([0xf7f5f0, PALETTE.amber, PALETTE.teal][i]); b.root.position.set(x, 0, -.55); b.root.scale.setScalar(1.1); g.add(b.root); bots.push(b);
-    });
-    return (t) => {
-      const beat = .6 + Math.max(0, Math.sin(t * 2.4)) * 1.2;
-      tiles.forEach((tl, i) => { tl.userData.mark.material.emissiveIntensity = beat; tl.rotation.y = Math.sin(t * .8) * .3; tl.position.y = .5 + Math.sin(t * 2.4) * .04; });
-      bots.forEach(b => b.update(t, 0));
-      g.rotation.y = Math.sin(t * .35) * .15;
-    };
-  },
-  // every step of the run leaves a trace
-  recorded(g) {
-    const pts = signaturePoints(0, 4.4, 2.4);
-    const stones = pts.map((p, i) => add(g, new THREE.CylinderGeometry(.24, .26, .1, 20), mat(0xf7f5f0, { emissive: STAGE_COLORS[i], intensity: 0 }), p.x, .05, p.z));
-    const bot = robot(0xf7f5f0); bot.root.scale.setScalar(.85); g.add(bot.root);
-    const rec = new THREE.Group(); g.add(rec);
-    block(rec, .36, .26, .22, PALETTE.ink, 0, -.13, 0, .05); cyl(rec, .07, .09, .12, PALETTE.slate, 0, -.06, .14, 12).rotation.x = Math.PI / 2;
-    const dot = ball(rec, .04, mat(PALETTE.rose, { emissive: PALETTE.rose, intensity: 2 }), .12, .08, .12, 8);
-    const stoneMats = stones.map(s => (s.material = s.material.clone()));
-    return (t) => {
-      const last = pts.length - 1, u = loopPhase(t, 7), along = clamp(u / .85) * last, k = Math.floor(along), f = along - k;
-      const a = pts[Math.min(last, k)], b = pts[Math.min(last, k + 1)];
-      bot.root.position.set(lerp(a.x, b.x, f), .1, lerp(a.z, b.z, f));
-      bot.root.rotation.y = Math.atan2(b.x - a.x, b.z - a.z) || 0;
-      bot.update(t, u < .85 ? 1 : 0);
-      stoneMats.forEach((m, i) => { m.emissiveIntensity = i <= along + .2 ? 1.1 : 0; });
-      rec.position.set(bot.root.position.x - .6, 1.6, bot.root.position.z + .8); rec.lookAt(bot.root.position);
-      dot.visible = Math.sin(t * 6) > 0;
-      g.rotation.y = -.15 + Math.sin(t * .25) * .08;
-    };
-  },
   // economics: data points pulled into a fitted line on the economics island
   replication(g) {
     const isl = island({ radius: 2.1, grass: 0xa9dccf, seed: 4 }); g.add(isl);
@@ -233,7 +159,6 @@ const BUILDERS = {
   },
 };
 const FRAMING = { // camera target y, distance, elevation[, always show the full width]
-  complete: [1.4, 9, .42], withheld: [1, 8, .32], same: [.7, 8, .28], recorded: [.3, 7, .5],
   replication: [1.3, 10, .3], business: [1.4, 10, .3], social: [1.4, 10, .3], next: [1.2, 9.5, .32],
   ai: [1.4, 8.5, .22], people: [1.1, 8, .22], join: [1.1, 10, .34, true],
 };
