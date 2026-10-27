@@ -9,7 +9,7 @@ const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const ease = x => { const p = clamp(x); return p * p * (3 - 2 * p); };
-const V = '?v=20261027-copy2';
+const V = '?v=20261027-relay';
 
 /* ---- layout helpers ---- */
 const siteHeader = $('.site-header'), subnav = $('.mc-subnav');
@@ -94,6 +94,23 @@ function bookHandoff() {
   return (handoffK = clamp(((total - (top - pinTop)) / total - .03) / .97));
 }
 const carrying = () => courierReady && heroLib && anatomyObj && !reduce;
+
+/* ---- 01 → 02 → 03: the closed Metacase goes on, desk to reading table to library ---- */
+// From the moment chapter a lets go of its pin (0) to the moment chapter b pins (1).
+// The chapters and the couriers read the same values, as for the hero hand-off.
+function between(a, b) {
+  const pinA = a && $('.mc-scene-pin', a), pinB = b && $('.mc-scene-pin', b);
+  if (!pinA || !pinB) return 1;
+  const pinTop = parseFloat(getComputedStyle(pinB).top) || 0, h = pinA.offsetHeight;
+  const span = Math.max(1, b.getBoundingClientRect().top - a.getBoundingClientRect().bottom + h);
+  return clamp(((pinTop - a.getBoundingClientRect().bottom + h) / span - .02) / .98);
+}
+const memo = fn => { let at = -1, value = 0; return () => { const now = performance.now(); if (now - at > 4) { at = now; value = fn(); } return value; }; };
+const k12 = memo(() => between($('#metacase'), $('#structure'))), k23 = memo(() => between($('#structure'), $('#net')));
+let archiveObj = null, storyLib = null, relay12 = false, relay23 = false;
+const RELEASE = .05; // the chapter keeps its book until the courier, in the same place, has faded in
+const carried12 = () => relay12 && anatomyObj && archiveObj && !reduce;
+const carried23 = () => relay23 && archiveObj && storyLib && !reduce;
 const courierEl = document.createElement('div');
 courierEl.className = 'mc-courier'; courierEl.setAttribute('aria-hidden', 'true');
 document.body.append(courierEl);
@@ -124,21 +141,29 @@ import('./mc-stage.js' + V).then(({ createStage }) => {
 
   // 01: the Metacase opens
   const anatomy = $('#metacase'), notes = $$('[data-notes="anatomy"] li', anatomy);
-  stage.add({ el: $('.mc-scene-pin', anatomy), near: 2.5, postOptions: { bloom: .32, threshold: .9, vignette: .2 }, progress: () => pinProgress(anatomy),
-    build: () => import('./metacase-anatomy.js' + V).then(m => anatomyObj = m.createAnatomy({ reduce, safe: safeArea($('.mc-scene-pin', anatomy)), held: () => carrying() && bookHandoff() < HANDOVER, onProject: (list, extra) => {
+  const FEATHER = [72, 150]; // the chapters fade into the page at their upper and lower edges
+  stage.add({ el: $('.mc-scene-pin', anatomy), near: 2.5, postOptions: { bloom: .32, threshold: .9, vignette: .2, feather: FEATHER }, progress: () => pinProgress(anatomy),
+    build: () => import('./metacase-anatomy.js' + V).then(m => anatomyObj = m.createAnatomy({ reduce, safe: safeArea($('.mc-scene-pin', anatomy)), held: () => (carrying() && bookHandoff() < HANDOVER) || (carried12() && k12() > RELEASE), onProject: (list, extra) => {
       list.forEach((s, i) => place(notes[i], { ...s, opacity: s.active ? s.opacity : 0 }));
       place(notes[7], { ...extra.signature, opacity: extra.draw, visible: extra.draw > .05, active: true });
     } })) });
 
   // 02: the archive answers by structure
   const structure = $('#structure'), archiveTags = $$('[data-tags="archive"] [data-tag]', structure);
-  stage.add({ el: $('.mc-scene-pin', structure), near: 2.5, postOptions: { bloom: .34, threshold: .9, vignette: .2 }, progress: () => pinProgress(structure),
-    build: () => import('./metacase-archive.js' + V).then(m => m.createArchive({ reduce, safe: safeArea($('.mc-scene-pin', structure)), onProject: list => list.forEach((s, i) => place(archiveTags[i], s)) })) });
+  stage.add({ el: $('.mc-scene-pin', structure), near: 2.5, postOptions: { bloom: .34, threshold: .9, vignette: .2, feather: FEATHER }, progress: () => pinProgress(structure),
+    build: () => import('./metacase-archive.js' + V).then(m => archiveObj = m.createArchive({ reduce, safe: safeArea($('.mc-scene-pin', structure)),
+      held: () => (carried12() && k12() < HANDOVER) || (carried23() && k23() > RELEASE), onProject: list => list.forEach((s, i) => place(archiveTags[i], s)) })) });
 
   // 03: the library, cross-referenced wing by wing
   const net = $('#net'), worldTags = $$('[data-tags="world"] [data-tag]', net);
-  stage.add({ el: $('.mc-scene-pin', net), postOptions: { bloom: .35, threshold: .9, vignette: .22 }, progress: () => pinProgress(net),
-    build: () => import('./metacase-library.js' + V).then(m => m.createLibrary({ mode: 'story', reduce, onProject: list => list.forEach((s, i) => place(worldTags[i], s)) })) });
+  let storyBuild = null;
+  const story = () => storyBuild ||= import('./metacase-library.js' + V).then(m => storyLib = m.createLibrary({ mode: 'story', reduce, held: () => carried23() && k23() < HANDOVER, onProject: list => list.forEach((s, i) => place(worldTags[i], s)) }));
+  stage.add({ el: $('.mc-scene-pin', net), near: 2, postOptions: { bloom: .35, threshold: .9, vignette: .22, feather: FEATHER }, progress: () => pinProgress(net), build: story });
+  // 03 → 04: the same library goes on behind the initiative statement, rising to a plan of
+  // its three wings, which chapter 04 then lists in the same order
+  const initiative = $('#initiative');
+  if (initiative) stage.add({ el: initiative, near: 1, postOptions: { bloom: .3, threshold: .9, vignette: .3, feather: [240, 280] }, build: story,
+    progress: r => 1 + .5 * clamp((innerHeight - r.top) / (innerHeight + r.height)) });
 
   // card vignettes
   $$('.mc-art').forEach(el => stage.add({ el, near: 1, build: () => import('./metacase-cards.js' + V).then(m => m.createCard(el.dataset.art)) }));
@@ -149,11 +174,28 @@ import('./mc-stage.js' + V).then(({ createStage }) => {
     const top = createStage(courierCanvas, { reduce, clipTop });
     top.add({ el: courierEl, near: 0, build: () => import('./metacase-courier.js' + V).then(m => {
       const courier = m.createCourier({
-        progress: bookHandoff,
+        progress: bookHandoff, clip: clipTop,
         from: () => heroLib && { ...heroLib.featuredView(), rect: hero.getBoundingClientRect(), sources: heroLib.sources() },
         to: () => { if (!anatomyObj) return null; const rect = anatomyPin.getBoundingClientRect(); return { ...anatomyObj.restView(rect), rect }; },
       });
       courierReady = true; onScroll();
+      return courier;
+    }) });
+    // desk → reading table → library: the same book, now closed on its signature
+    const structurePin = $('.mc-scene-pin', structure), netPin = $('.mc-scene-pin', net);
+    const view = (el, get) => { const rect = el.getBoundingClientRect(); return { ...get(rect), rect }; };
+    top.add({ el: courierEl, near: 0, build: () => import('./metacase-courier.js' + V).then(m => {
+      const courier = m.createCourier({ progress: k12, signed: true, media: false, pull: m.PULLS.desk, clip: clipTop,
+        from: () => anatomyObj && view(anatomyPin, r => anatomyObj.endView(r)),
+        to: () => archiveObj && view(structurePin, r => archiveObj.queryView(r, 0)) });
+      relay12 = true; onScroll();
+      return courier;
+    }) });
+    top.add({ el: courierEl, near: 0, build: () => import('./metacase-courier.js' + V).then(m => {
+      const courier = m.createCourier({ progress: k23, signed: true, media: false, pull: m.PULLS.desk, clip: clipTop,
+        from: () => archiveObj && view(structurePin, r => archiveObj.queryView(r, 1)),
+        to: () => storyLib && view(netPin, r => storyLib.tableView(r)) });
+      relay23 = true; onScroll();
       return courier;
     }) });
   }
@@ -236,10 +278,15 @@ function onScroll() {
   requestAnimationFrame(() => {
     ticking = false;
     sceneControllers.forEach(([section, fn]) => { if (getComputedStyle($('.mc-scene-pin', section)).position === 'sticky') fn(pinProgress(section)); });
-    if (courierReady) {
-      const k = bookHandoff();
-      courierEl.style.display = k > 0 && k < 1 ? '' : 'none';
-      courierCanvas.style.opacity = (1 - ease((k - HANDOVER) / (1 - HANDOVER))).toFixed(3);
+    if (courierReady || relay12 || relay23) {
+      const live = k => k > 0 && k < 1, landed = k => 1 - ease((k - HANDOVER) / (1 - HANDOVER));
+      const k1 = courierReady ? bookHandoff() : 0, k2 = relay12 ? k12() : 0, k3 = relay23 ? k23() : 0;
+      courierEl.style.display = live(k1) || live(k2) || live(k3) ? '' : 'none';
+      // desk → table passes behind chapter 02's heading, as the chapters do; the others fly over
+      // the page (the hero's text backdrop, the reader cards between 02 and 03)
+      courierCanvas.style.zIndex = live(k2) ? '0' : '';
+      const k = live(k1) ? k1 : live(k2) ? k2 : k3;
+      courierCanvas.style.opacity = (live(k1) ? landed(k) : Math.min(ease(k / RELEASE), landed(k))).toFixed(3);
     }
     navUpdate();
   });

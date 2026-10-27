@@ -206,3 +206,35 @@
 @media (max-width:860px) {
   .mc-directory-hint { display:block; position:absolute; right:11px; top:9px; color:var(--text-secondary); font:400 8px/1.5 var(--font-mono); }
 }
+
+/* ---- portals: each room is the way into its track ---- */
+.mc-portals { position:absolute; inset:0; z-index:5; pointer-events:none; }
+.mc-portal { position:absolute; top:0; left:0; display:grid; grid-template-columns:auto auto; align-items:center; column-gap:14px; padding:12px 16px 12px 18px; border-radius:16px;
+  border:1px solid color-mix(in oklab,var(--pc) 60%,transparent); background:color-mix(in oklab,#0a0f1a 78%,transparent); color:var(--text-primary); text-decoration:none;
+  box-shadow:0 0 0 1px color-mix(in oklab,var(--pc) 20%,transparent), 0 14px 40px -12px color-mix(in oklab,var(--pc) 70%,transparent); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  opacity:0; visibility:hidden; pointer-events:none; transition:opacity .35s, visibility .35s, box-shadow .25s, border-color .25s; will-change:transform; }
+.mc-portal small { grid-column:1; font:500 10px/1.3 var(--font-mono); letter-spacing:.1em; text-transform:uppercase; color:var(--pc); }
+.mc-portal b { grid-column:1; font:650 16px/1.25 var(--font-sans); letter-spacing:-.01em; }
+.mc-portal i { grid-column:2; grid-row:1 / 3; display:grid; place-items:center; width:34px; height:34px; border-radius:50%; font-style:normal; font-weight:700; color:#0a0f1a; background:var(--pc); transition:transform .25s; }
+.mc-portal.is-on { opacity:1; visibility:visible; pointer-events:auto; }
+.mc-portal em { display:none; font:650 15px/1.2 var(--font-sans); font-style:normal; letter-spacing:-.01em; white-space:nowrap; }
+.mc-portal.is-compact { grid-template-columns:auto auto; column-gap:10px; padding:8px 8px 8px 14px; border-radius:999px; }
+.mc-portal.is-compact small, .mc-portal.is-compact b { display:none; }
+.mc-portal.is-compact em { display:block; grid-column:1; }
+.mc-portal.is-compact i { grid-row:auto; width:28px; height:28px; }
+.mc-portal.is-active { padding:14px 18px 14px 20px; border-color:var(--pc); box-shadow:0 0 0 1px var(--pc), 0 0 46px -6px var(--pc); }
+.mc-portal.is-active b { font-size:18px; }
+.mc-portal:hover, .mc-portal:focus-visible { border-color:var(--pc); box-shadow:0 0 0 1px var(--pc), 0 0 52px -4px var(--pc); }
+.mc-portal:hover i, .mc-portal:focus-visible i { transform:translateX(3px); }
+.mc-enter { display:inline-flex; align-items:center; margin-top:18px; padding:11px 18px; border-radius:999px; font:600 15px/1 var(--font-sans); text-decoration:none; color:#0a0f1a;
+  background:var(--domain-accent,var(--track-1)); box-shadow:0 10px 30px -10px var(--domain-accent,var(--track-1)); pointer-events:auto; }
+.mc-enter[hidden] { display:none; }
+.mc-enter:hover { filter:brightness(1.08); }
+/* without the 3D room, the portals become a plain row of links under the copy */
+.mc-chapter[data-renderer="fallback"] .mc-portals, .mc-chapter:not([data-portals]) .mc-portals { position:absolute; inset:auto auto 230px var(--mc-gutter,4%); display:flex; flex-wrap:wrap; gap:10px; }
+.mc-chapter[data-renderer="fallback"] .mc-portal, .mc-chapter:not([data-portals]) .mc-portal { position:static; opacity:1; visibility:visible; pointer-events:auto; transform:none !important; }
+@media (max-width:700px) {
+  .mc-portal { padding:9px 12px 9px 14px; column-gap:10px; border-radius:12px; }
+  .mc-portal b { font-size:13px; } .mc-portal.is-active b { font-size:14px; }
+  .mc-portal i { width:26px; height:26px; }
+}

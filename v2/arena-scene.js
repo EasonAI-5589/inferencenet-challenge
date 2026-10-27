@@ -9,7 +9,7 @@ import { pageBackground } from "./mc-stage.js";
 import { ARENA_DOMAINS, HARNESS_NAMES } from "./arena-data.js";
 import { createCampusDetails } from "./arena-campus.js";
 import { createRoomSubtracks } from "./arena-subtracks.js";
-export function createArenaScene(canvas, { onWeaponProject } = {}) {
+export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = {}) {
   const renderer = new THREE.WebGLRenderer({
     canvas,
     antialias: true,
@@ -499,6 +499,29 @@ export function createArenaScene(canvas, { onWeaponProject } = {}) {
       [0.65, 0.735],
       [0.84, 0.915],
     ];
+  // Each doorway is a portal to its track: a swirling veil in the field's colour, just
+  // behind the doors, so the room stays visible through it. Brightest for the room in focus.
+  function portalVeil(group, color) {
+    const mat = new THREE.ShaderMaterial({
+      uniforms: { time: { value: 0 }, power: { value: 0 }, tint: { value: new THREE.Color(color) } },
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide,
+      vertexShader: "varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}",
+      fragmentShader: `varying vec2 vUv;uniform float time;uniform float power;uniform vec3 tint;
+        void main(){vec2 q=(vUv-.5)*vec2(1.,1.15);float r=length(q);float a=atan(q.y,q.x);
+        float edge=smoothstep(.64,.44,r);float rim=smoothstep(.34,.5,r)*edge;
+        float swirl=.5+.5*sin(a*3.-r*18.+time*2.2);float rings=.5+.5*sin(r*26.-time*3.);
+        float core=smoothstep(.55,0.,r);
+        float glow=(core*.28+swirl*rings*.32*edge+rim*.75)*power;
+        gl_FragColor=vec4(tint*glow*1.5+vec3(rim*power*.22),glow);
+        #include <colorspace_fragment>
+        }`,
+    });
+    allMaterials.add(mat);
+    const veil = new THREE.Mesh(geometry("portal-veil", () => new THREE.PlaneGeometry(5.3, 6.2)), mat);
+    veil.position.set(0, 3.7, 1.2); veil.renderOrder = 2; group.add(veil);
+    return { veil, mat };
+  }
+  const portalPoint = vec(), portalList = [];
   const rooms = roomDefs.map((def, index) => {
     const group = new THREE.Group();
     group.position.set(def.x, 0, def.z);
@@ -722,8 +745,10 @@ export function createArenaScene(canvas, { onWeaponProject } = {}) {
       prompt = challengePrompt(group, ["#246d68", "#855c1c", "#65519e"][index]);
     const subtracks = createRoomSubtracks({ domain: ARENA_DOMAINS[index], index });
     group.add(subtracks.root);
+    const portal = portalVeil(group, color);
     return {
       group,
+      portal,
       doors,
       core,
       chamberLight,
@@ -1479,6 +1504,22 @@ export function createArenaScene(canvas, { onWeaponProject } = {}) {
         d.scale.x = 1 - open * 0.94;
       });
       room.chamberLight.intensity = active ? 40 : 17;
+      // the portal: lit for the room in focus, and for all three at the entrance and at the end
+      const overview = 1 - smooth(0.13, 0.17, p), finale = smooth(0.92, 0.96, p);
+      const power = Math.max(active ? 1 : 0.2, overview * 0.75, finale);
+      room.portal.mat.uniforms.power.value = power;
+      room.portal.mat.uniforms.time.value = ambient ? time : 0;
+      room.group.updateMatrixWorld();
+      // two anchors: the threshold (for the full link) and the middle of the doorway (for a compact one)
+      portalPoint.set(0, 0.95, 2.75); room.group.localToWorld(portalPoint).project(camera);
+      const low = { x: (portalPoint.x + 1) * width / 2, y: (1 - portalPoint.y) * height / 2, ok: portalPoint.z > -1 && portalPoint.z < 1 && Math.abs(portalPoint.x) < 0.96 && Math.abs(portalPoint.y) < 0.96 };
+      portalPoint.set(0, 3.6, 1.6); room.group.localToWorld(portalPoint).project(camera);
+      portalList[i] = {
+        id: ARENA_DOMAINS[i].id, x: low.x, y: low.y, visible: low.ok,
+        mx: (portalPoint.x + 1) * width / 2, my: (1 - portalPoint.y) * height / 2,
+        midVisible: portalPoint.z > -1 && portalPoint.z < 1 && Math.abs(portalPoint.x) < 0.96 && Math.abs(portalPoint.y) < 0.96,
+        active, power,
+      };
       room.halo.material.opacity = active ? 0.2 : 0.075;
       room.scan.visible = active;
       room.scan.position.y = 1.2 + ((((p - start) / (end - start)) * 11) % 5.4);
@@ -1507,6 +1548,7 @@ export function createArenaScene(canvas, { onWeaponProject } = {}) {
         if (child.material?.map) child.rotation.y = -room.core.rotation.y;
       });
     });
+    onPortalProject?.(portalList);
     if (state.language !== language) {
       language = state.language;
       rooms.forEach((room) =>

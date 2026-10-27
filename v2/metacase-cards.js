@@ -2,7 +2,7 @@
  * and light as the chapters: how a run becomes a Metacase, the tracks, the two kinds
  * of reader and the invitation. Each is a looping vignette drawn by the shared stage. */
 import * as THREE from '../assets/vendor/three/three.module.js';
-import { PALETTE, mat, add, block, cyl, ball, tile, robot, person, buildings, tree, island, crane, scaffold, bookStack, lights, signaturePoints, STAGE_COLORS, rbox } from './mc-kit.js';
+import { PALETTE, mat, add, block, cyl, ball, tile, volume, robot, person, buildings, tree, island, crane, scaffold, bookStack, lights, signaturePoints, STAGE_COLORS, rbox } from './mc-kit.js';
 import { clamp, smooth, ramp, lerp, fitCamera, glowSprite } from './mc-stage.js';
 
 const loopPhase = (t, period, offset = 0) => ((t + offset) % period) / period;
@@ -173,29 +173,68 @@ const BUILDERS = {
       g.rotation.y = .3 + Math.sin(t * .3) * .1;
     };
   },
-  // the invitation: people carry cases onto a bridge that grows toward the archive
+  // the invitation: contributors bring new cases to the shelves, and the room fills as they arrive
   join(g) {
-    const isl = island({ radius: 2.4, grass: 0xbfe8e4, seed: 12 }); isl.position.set(-3.2, 0, 0); g.add(isl);
-    const hub = island({ radius: 1.8, grass: 0xc9c2ef, seed: 14 }); hub.position.set(3.6, .6, -1); g.add(hub);
-    const tower = new THREE.Group(); tower.position.set(3.6, .6, -1); g.add(tower);
-    for (let k = 0; k < 12; k++) { const t = tile({ sig: k % 5, edge: [PALETTE.teal, PALETTE.amber, PALETTE.sky, PALETTE.rose, PALETTE.violet, PALETTE.green][k % 6], size: .42 }); const a = k * 1.1; t.position.set(Math.cos(a) * .2, k * .12, Math.sin(a) * .2); t.rotation.y = -a; tower.add(t); }
-    const beacon = glowSprite(0xb5a8ff, 2.4, .7); beacon.position.set(3.6, 2.4, -1); g.add(beacon);
-    const start = new THREE.Vector3(-1, 0, 0), end = new THREE.Vector3(2, .6, -.8), N = 6;
-    const slots = Array.from({ length: N }, (_, k) => { const u = (k + .5) / N, p = start.clone().lerp(end, u); p.y += Math.sin(u * Math.PI) * .4; const t = tile({ sig: 2, edge: PALETTE.teal, size: .5 }); t.position.copy(p); t.quaternion.setFromUnitVectors(new THREE.Vector3(1, 0, 0), end.clone().sub(start).normalize()); g.add(t); return { t, p }; });
-    const carriers = [0, 1, 2].map(k => { const p = person(70 + k, { carry: [PALETTE.teal, PALETTE.amber, PALETTE.rose][k] }); p.root.scale.setScalar(.75); g.add(p.root); return p; });
+    add(g, new THREE.CylinderGeometry(3.5, 3.6, .2, 56), mat(0x6e5440), 0, -.1, 0).castShadow = false;
+    add(g, new THREE.CylinderGeometry(1.8, 1.8, .02, 48), mat(0x34436e), .3, .01, .9, false);
+    const shelf = new THREE.Group(); shelf.position.z = -1.3; g.add(shelf);
+    const BW = 1.25, H = 2.2, ROWS = [.14, .86, 1.58], FIELDS = [PALETTE.teal, PALETTE.amber, PALETTE.violet];
+    const open = [];
+    FIELDS.forEach((c, i) => {
+      const x0 = (i - 1) * BW;
+      block(shelf, BW, H, .1, PALETTE.ink, x0, 0, -.26, .02);
+      [-1, 1].forEach(s => block(shelf, .07, H, .54, 0x7a5a42, x0 + s * (BW / 2 - .035), 0, 0, .02));
+      block(shelf, BW + .06, .12, .6, mat(c, { emissive: c, intensity: .22 }), x0, H, 0, .03);
+      ROWS.forEach((y, r) => {
+        block(shelf, BW - .07, .04, .5, 0x8a6a4a, x0, y - .04, 0, .01).castShadow = false;
+        let x = x0 - BW / 2 + .09, k = 0;
+        while (x < x0 + BW / 2 - .22) {
+          const w = [.1, .12, .11, .13][(k + r + i) % 4], h = [.46, .52, .5, .42][(k * 3 + r + i) % 4];
+          if (r === 2 - (i % 2) && k >= 4) open.push({ x: x + w / 2, y, w, h, c }); // room still to fill
+          else block(shelf, w, h, .34, mat(new THREE.Color(c).lerp(new THREE.Color(0x1a1d26), [.1, .3, 0, .2][(k + r) % 4]).getHex()), x + w / 2, y, .04, .01).castShadow = false;
+          x += w + .006; k++;
+        }
+      });
+    });
+    open.forEach(o => { block(shelf, o.w, o.h, .34, mat(0xdfe6ff, { opacity: .14 }), o.x, o.y, .04, .01).castShadow = false; });
+    const arrivals = open.map(o => { const m = block(shelf, o.w, o.h, .34, mat(o.c, { emissive: o.c, intensity: .3 }), o.x, o.y, .04, .01); m.castShadow = false; return m; });
+    const glow = glowSprite(0xffe2b0, 5, .12); glow.position.set(0, 1.6, -.6); g.add(glow);
+    // two people and an agent, each bringing one case at a time
+    const carriers = [0, 1, 2].map(j => {
+      const c = j === 2 ? robot(0xf7f5f0) : person(70 + j * 5, { carry: PALETTE.cream });
+      if (c.load) c.load.visible = false;
+      c.root.scale.setScalar(.72); g.add(c.root);
+      const book = volume({ color: FIELDS[j], sig: j }); book.scale.setScalar(.75); book.rotation.y = Math.PI / 2;
+      book.position.set(0, j === 2 ? .55 : .5, .3); c.root.add(book);
+      return { c, book, from: new THREE.Vector3(-3.4, 0, 1.2 + j * .55), to: new THREE.Vector3(3.4, 0, 1.6 - j * .4) };
+    });
+    const P = 9, STEP = 3, at = new THREE.Vector3(), next = new THREE.Vector3(), slot = new THREE.Vector3();
     return (t) => {
-      const u = loopPhase(t, 8), built = Math.floor(clamp(u / .8) * N + 1);
-      slots.forEach((s, k) => { s.t.visible = k < built; s.t.position.y = s.p.y + (k === built - 1 ? (1 - smooth((u * N / .8) % 1)) * 1.2 : 0); });
-      carriers.forEach((c, k) => { const v = (t * .12 + k / 3) % 1, p = new THREE.Vector3(-4.2, 0, .6).lerp(start.clone().lerp(end, .9 * Math.min(1, built / N)), v); c.root.position.copy(p); c.root.rotation.y = Math.PI / 2; c.update(t, 1); });
-      tower.rotation.y = t * .2; beacon.material.opacity = .55 + Math.sin(t * 2) * .2;
-      g.rotation.y = Math.sin(t * .2) * .08;
+      // one delivery every STEP seconds; after twelve the shelves hold a moment, then begin again
+      const done = (Math.floor(Math.max(0, t - 1.5) / STEP) + (t >= 1.5 ? 1 : 0)) % (open.length + 1);
+      arrivals.forEach((m, n) => { const k = n < done ? 1 : 0; m.scale.setScalar(Math.max(.001, lerp(m.scale.x, k, .12))); m.visible = m.scale.x > .01; });
+      carriers.forEach(({ c, book, from, to }, j) => {
+        const u = (((t - STEP * j + 3) % P) + P) % P / P, n = STEP * Math.floor((t - STEP * j + 3) / P) + j;
+        const o = open[n % (open.length + 1)] || open[open.length - 1];
+        slot.set(o.x, 0, shelf.position.z + .55);
+        if (u < .5) { at.copy(from).lerp(slot, smooth(u / .5)); next.copy(slot); }
+        else if (u < .58) { at.copy(slot); next.copy(slot).add(new THREE.Vector3(0, 0, -1)); }
+        else { at.copy(slot).lerp(to, smooth((u - .58) / .42)); next.copy(to); }
+        c.root.position.copy(at);
+        if (next.distanceToSquared(at) > 1e-4) c.root.rotation.y = Math.atan2(next.x - at.x, next.z - at.z);
+        c.root.visible = u > .02 && u < .98;
+        book.visible = u < .5;
+        c.update(t, u < .5 || u > .58 ? 1 : 0);
+      });
+      glow.material.opacity = .12 + .04 * Math.sin(t * 1.5);
+      g.rotation.y = Math.sin(t * .2) * .1;
     };
   },
 };
-const FRAMING = { // camera target y, distance, elevation
+const FRAMING = { // camera target y, distance, elevation[, always show the full width]
   complete: [1.4, 9, .42], withheld: [1, 8, .32], same: [.7, 8, .28], recorded: [.3, 7, .5],
   replication: [1.3, 10, .3], business: [1.4, 10, .3], social: [1.4, 10, .3], next: [1.2, 9.5, .32],
-  ai: [1.4, 8.5, .22], people: [1.1, 8, .22], join: [1, 13, .3],
+  ai: [1.4, 8.5, .22], people: [1.1, 8, .22], join: [1.1, 10, .34, true],
 };
 
 export function createCard(kind) {
@@ -204,14 +243,21 @@ export function createCard(kind) {
   l.key.position.set(-4, 9, 7);
   const g = new THREE.Group(); scene.add(g);
   const step = BUILDERS[kind](g);
-  const [ty, dist, el] = FRAMING[kind];
+  const [ty, dist, el, whole = false] = FRAMING[kind];
   const target = new THREE.Vector3(0, ty, 0);
+  // the picture's half-width: a tall, narrow card (and the invitation, always) shows all of
+  // it from side to side; elsewhere the hand-set framing may crop it on purpose
+  step(0); g.updateMatrixWorld(true);
+  const box = new THREE.Box3();
+  g.traverse(o => { if (o.isMesh) box.expandByObject(o); });
+  const half = Math.max(-box.min.x, box.max.x);
   return {
     scene, camera,
     update(dt, t, p, rect) {
       step(t);
       const narrow = rect.width / rect.height < 1.1;
-      const d = dist * (narrow ? 1.15 : 1);
+      const across = Math.tan(Math.PI / 12) * rect.width / Math.max(1, rect.height); // tan of half the horizontal field of view
+      const d = Math.max(dist * (narrow ? 1.15 : 1), whole || narrow ? half / across / .94 + half * Math.sin(el) : 0);
       camera.position.set(0, ty + Math.sin(el) * d, Math.cos(el) * d);
       camera.lookAt(target);
       fitCamera(camera, rect, { fov: 30 });

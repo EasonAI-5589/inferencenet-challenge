@@ -4,7 +4,7 @@
  * fore-edge. Closed again, the seven tab tips trace the book's signature: the shape of
  * how the problem was solved. Rendered by the shared stage (mc-stage.js). */
 import * as THREE from '../assets/vendor/three/three.module.js';
-import { BOOK, labelPlane, labelTexture, METACASE_LABEL, PALETTE, mat, add, block, cyl, ball, rbox, lights, person, robot, buildings, bookStack, tabDepth, STAGE_COLORS } from './mc-kit.js';
+import { BOOK, bookTabs, labelPlane, labelTexture, METACASE_LABEL, PALETTE, mat, add, block, cyl, ball, rbox, lights, person, robot, buildings, bookStack, tabDepth, STAGE_COLORS } from './mc-kit.js';
 import { clamp, smooth, ramp, lerp, pageBackground, fitSafe, fitBox, toView, glowSprite } from './mc-stage.js';
 
 const { PW, PD, T, BOARD } = BOOK;             // page width (x), page depth (z), page block, cover board (shared with closedBook)
@@ -140,22 +140,9 @@ export function createAnatomy({ onProject = () => {}, safe = () => null, held = 
   const leafPivot = new THREE.Group(); book.add(leafPivot);
   const leaf = add(leafPivot, rbox(PW, .01, PD, .004), edge, PW / 2, 0, 0); leaf.castShadow = true;
 
-  // chapter tabs on the fore-edge (x = PW): together they trace the signature
-  const tabs = [], tips = [];
-  for (let i = 0; i < 7; i++) {
-    const td = .12 + tabDepth(SIG, i, 2.6), z = -PD / 2 + PD * (.1 + .8 * (i + .5) / 7), y = BOARD + T * .5 - .09;
-    const tab = new THREE.Group(); tab.position.set(PW - .02, y, z); book.add(tab);
-    add(tab, rbox(td + .04, .18, .3, .025), mat(STAGE_COLORS[i], { emissive: STAGE_COLORS[i], intensity: .25 }), (td + .04) / 2, .09, 0);
-    tabs.push(tab); tips.push(new THREE.Vector3(PW + td, y + .2, z));
-  }
-  // the signature thread through the tab tips, drawn when the book is closed
-  const threadMat = mat(0xfff6e0, { emissive: 0xfff1d0, intensity: .9 });
-  const nodes = tips.map((p, i) => ball(scene, .06, mat(STAGE_COLORS[i], { emissive: STAGE_COLORS[i], intensity: 1.1 }), p.x, p.y + .02, p.z, 14));
-  const links = tips.slice(1).map((p, i) => {
-    const a = tips[i], len = a.distanceTo(p), m = add(scene, new THREE.CylinderGeometry(.018, .018, 1, 8), threadMat, 0, 0, 0, false);
-    m.position.copy(a).lerp(p, .5).setY(a.y + .02); m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), p.clone().sub(a).normalize()); m.userData.len = len;
-    return m;
-  });
+  // chapter tabs on the fore-edge (x = PW) and the signature thread through their tips,
+  // drawn when the book is closed (the same pieces the couriers and chapters 02–03 show)
+  const { tabs, tips, nodes, links } = bookTabs(book, SIG);
   const sigGlow = glowSprite(0xffe7b8, 2.6, 0); sigGlow.position.set(PW + .35, rightTop, 0); scene.add(sigGlow);
 
   // the seven pop-ups
@@ -189,11 +176,17 @@ export function createAnatomy({ onProject = () => {}, safe = () => null, held = 
   }
   // Where the closed book rests at the start of the chapter, for a view of the given size:
   // the courier lands the carried book exactly here.
-  const restCamera = new THREE.PerspectiveCamera(34, 1, .1, 120);
+  const restCamera = new THREE.PerspectiveCamera(34, 1, .1, 120), endCamera = new THREE.PerspectiveCamera(34, 1, .1, 120);
   function restView(rect) {
     aimCamera(restCamera, rect, 0, -1, 0);
     book.updateMatrixWorld();
     return { camera: restCamera, matrix: book.matrixWorld, key: light.key.position };
+  }
+  // Where it lies at the end, closed on its signature: the next courier picks it up here.
+  function endView(rect) {
+    aimCamera(endCamera, rect, 0, 7, 1);
+    book.updateMatrixWorld();
+    return { camera: endCamera, matrix: book.matrixWorld, key: light.key.position };
   }
 
   function update(dt, t, p, rect) {
@@ -239,7 +232,7 @@ export function createAnatomy({ onProject = () => {}, safe = () => null, held = 
 
     // camera: the closed book, the open spread, then the fore-edge with its signature
     aimCamera(camera, rect, openness, b, draw);
-    book.visible = !held();
+    book.visible = sigGlow.visible = !held();
     book.updateMatrixWorld();
 
     onProject(pops.map((pop, i) => {
@@ -249,5 +242,5 @@ export function createAnatomy({ onProject = () => {}, safe = () => null, held = 
   }
   function setTheme() { const bg = pageBackground(); scene.background = bg; scene.fog = new THREE.Fog(bg, 16, 40); }
   setTheme();
-  return { scene, camera, update, setTheme, restView };
+  return { scene, camera, update, setTheme, restView, endView };
 }
