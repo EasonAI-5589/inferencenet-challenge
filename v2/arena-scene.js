@@ -6,9 +6,9 @@ import { catmullRom } from "./arena-motion.js";
 import { toon, toonify, createPost } from "./mc-toon.js";
 import { person, robot, tile, PALETTE } from "./mc-kit.js";
 import { pageBackground } from "./mc-stage.js";
-import { ARENA_DOMAINS, HARNESS_NAMES, MODEL_CHARACTERS } from "./arena-data.js";
-import { createCampusDetails } from "./arena-campus.js";
-import { createRoomSubtracks } from "./arena-subtracks.js";
+import { ARENA_DOMAINS, HARNESS_NAMES, MODEL_CHARACTERS } from "./arena-data.js?v=20261027-frontgun";
+import { createCampusDetails } from "./arena-campus.js?v=20261027-frontgun";
+import { createRoomSubtracks } from "./arena-subtracks.js?v=20261027-frontgun";
 export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = {}) {
   const renderer = new THREE.WebGLRenderer({
     canvas,
@@ -976,7 +976,7 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
     chestMat,
     torsoArmor,
     0,
-    0.36,
+    0.41,
     0.198,
   );
   chestPlane.castShadow = false;
@@ -1083,17 +1083,20 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
     body.add(mount);
     return mount;
   });
-  // One world-space mount follows a back anchor, then glides into an aiming
-  // position beside the robot. Keeping the parent stable makes reverse seeking exact.
+  // Front-right carry & showcase mounts so the 3D weapon is ALWAYS held in front of the robot
+  // (never hidden behind its back), then glides into an aiming hover position inside the track tunnels.
   const backAnchor = new THREE.Group();
-  backAnchor.position.set(-0.35, 1.5, -0.69);
-  backAnchor.rotation.set(-Math.PI / 2, 0, 0.25);
+  backAnchor.position.set(0.56, 0.72, 0.76);
+  backAnchor.rotation.set(0.16, Math.PI * 0.62, -0.1);
   body.add(backAnchor);
-  box(body, 0.42, 0.13, 0.14, metal, -0.26, 0.96, -0.57, 0.035);
+  const frontShowcaseAnchor = new THREE.Group();
+  frontShowcaseAnchor.position.set(0.52, 1.36, 0.55);
+  frontShowcaseAnchor.rotation.set(-0.78, Math.PI * 0.52, 0.28);
+  body.add(frontShowcaseAnchor);
   const weaponMount = new THREE.Group();
   stage.add(weaponMount);
-  const backPosition = vec(), hoverPosition = vec(), cameraRight = vec();
-  const backRotation = new THREE.Quaternion(), aimRotation = new THREE.Quaternion();
+  const backPosition = vec(), showcasePosition = vec(), hoverPosition = vec(), cameraRight = vec();
+  const backRotation = new THREE.Quaternion(), showcaseRotation = new THREE.Quaternion(), aimRotation = new THREE.Quaternion();
   const aimMatrix = new THREE.Matrix4(), muzzleAxis = vec(0, 0, 1);
   const aimVector = vec(), actualAim = vec(), labelPosition = vec(), weaponRotation = new THREE.Quaternion();
   let weapons = harnessColors.map((_, i) => {
@@ -1133,40 +1136,42 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
   const inventoryGuns = harnessColors.map((c, i) => {
     const mount = new THREE.Group();
     inventory.add(mount);
-    // 3D beveled metallic weapon pedestal + glowing holo-rings
-    const baseDisc = cylinder(mount, 0.3, 0.36, 0.07, hull, 0, -0.2, 0, 24);
+    // 3D beveled metallic weapon pedestal placed slightly behind/below the 3D weapon
+    // so the 3D weapon itself sits 100% in the foreground of its bay
+    const baseDisc = cylinder(mount, 0.28, 0.34, 0.06, hull, 0, -0.18, -0.14, 24);
     baseDisc.rotation.x = 0.32;
     const platform = ring(
       mount,
-      0.34,
-      0.022,
+      0.32,
+      0.02,
       weaponLights[i],
       0,
-      -0.16,
-      0.02,
+      -0.14,
+      -0.1,
       false,
     );
     platform.rotation.x = 0.32;
     const orbitRing = ring(
       mount,
-      0.4,
-      0.012,
+      0.38,
+      0.011,
       weaponLights[i],
       0,
-      0.02,
-      0,
+      0.0,
+      -0.08,
       false,
     );
     orbitRing.rotation.set(0.85, 0.3, 0);
     const model = weapon(i);
+    model.position.set(0, 0.03, 0.16);
     model.rotation.set(0.24, Math.PI * 0.68, -0.14);
-    model.scale.setScalar(0.58);
+    model.scale.setScalar(0.75);
     mount.add(model);
     return { mount, model, platform, orbitRing, baseDisc };
   });
   inventory.visible = false;
   let modelLibrary;
-  import("./arena-models.js")
+  import("./arena-models.js?v=20261027-frontgun")
     .then(({ loadArenaWeapons }) => loadArenaWeapons())
     .then((library) => {
       if (disposed) {
@@ -1178,15 +1183,16 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
       weapons = library.weapons;
       weapons.forEach(toonify);
       weapons.forEach((w, i) => {
-        w.scale.setScalar(1.65);
+        w.scale.setScalar(1.85);
         w.rotation.set(0, 0, 0);
-        w.visible = i === state.equippedHarness;
+        w.visible = i === (state.equippedHarness ?? state.harness ?? 0);
         weaponMount.add(w);
         const slot = inventoryGuns[i];
         slot.mount.remove(slot.model);
         const preview = w.clone(true);
         preview.visible = true;
-        preview.scale.setScalar(1.02);
+        preview.position.set(0, 0.03, 0.16);
+        preview.scale.setScalar(1.22);
         preview.rotation.set(0.22, Math.PI * 0.68, -0.14);
         slot.mount.add(preview);
         slot.model = preview;
@@ -1621,7 +1627,7 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
     const enginePower = (1 - takeoff) * airborne * (0.45 + braking * 0.75) +
       takeoff * (1.05 + travel * 0.25);
     const inTrackTunnel = smooth(0.37, 0.41, p) * (1 - smooth(0.92, 0.96, p));
-    toyRobot.root.scale.setScalar(mix(2.85, 2.15, inTrackTunnel));
+    toyRobot.root.scale.setScalar(mix(mix(2.85, 2.32, inventoryAmount), 2.15, inTrackTunnel));
     agent.position.y += hover;
     body.position.y = 0;
     body.scale.set(1 + impact * 0.018, 1 - impact * 0.045, 1 + impact * 0.018);
@@ -1653,22 +1659,25 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
       landingDustPositions[i * 3 + 2] = Math.sin(angle) * radius;
     }
     landingDustGeometry.attributes.position.needsUpdate = true;
+    const activeWeaponIdx = state.equippedHarness !== null ? state.equippedHarness : (state.harness ?? 0);
     weapons.forEach((w, i) => {
-      w.visible = state.equippedHarness !== null && i === state.equippedHarness;
+      w.visible = i === activeWeaponIdx;
     });
     agentGround.position.set(heroPos.x, 0.07, heroPos.z);
-    agentGround.material =
-      state.equippedHarness === null
-        ? dim
-        : weaponLights[state.equippedHarness];
+    agentGround.material = weaponLights[activeWeaponIdx] || dim;
     agentHalo.position.set(heroPos.x, 2 + hover, heroPos.z);
-    heroLight.position.copy(agent.position).add(vec(mix(-1.6, 1.2, inTrackTunnel), 2.8, mix(2, 3.4, inTrackTunnel)));
-    heroLight.intensity = mix(16, 48, inTrackTunnel);
+    const frontLightMix = Math.max(inTrackTunnel, inventoryAmount);
+    heroLight.position.copy(agent.position).add(vec(mix(-1.6, 1.1, frontLightMix), 2.8, mix(2, 3.4, frontLightMix)));
+    heroLight.intensity = mix(18, 48, frontLightMix);
     agent.updateMatrixWorld(true);
     const activeRoom = p >= 0.76 ? 2 : p >= 0.57 ? 1 : 0;
     const deployment = smooth(0.355, 0.425, p) * (1 - smooth(0.925, 0.98, p));
     backAnchor.getWorldPosition(backPosition);
     backAnchor.getWorldQuaternion(backRotation);
+    frontShowcaseAnchor.getWorldPosition(showcasePosition);
+    frontShowcaseAnchor.getWorldQuaternion(showcaseRotation);
+    backPosition.lerp(showcasePosition, inventoryAmount);
+    backRotation.slerp(showcaseRotation, inventoryAmount);
     cameraRight.set(1, 0, 0).applyQuaternion(camera.quaternion);
     cameraRight.y = 0; cameraRight.normalize();
     hoverPosition.copy(agent.position).addScaledVector(cameraRight, 2.05);
@@ -1677,11 +1686,11 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
     aimMatrix.lookAt(roomTargets[activeRoom], weaponMount.position, up);
     aimRotation.setFromRotationMatrix(aimMatrix);
     weaponMount.quaternion.copy(backRotation).slerp(aimRotation, deployment);
-    weapons.forEach(w => w.scale.setScalar(mix(1.65, 2.05, deployment)));
+    weapons.forEach(w => w.scale.setScalar(mix(mix(1.55, 1.12, inventoryAmount), 2.1, deployment)));
     weaponMount.updateMatrixWorld(true);
-    const selectedWeapon = weapons[state.equippedHarness];
-    const selectedName = HARNESS_NAMES[state.equippedHarness] || "";
-    const mode = deployment > 0.01 ? "hover" : "back";
+    const selectedWeapon = weapons[activeWeaponIdx];
+    const selectedName = HARNESS_NAMES[activeWeaponIdx] || "";
+    const mode = deployment > 0.01 ? "hover" : "front";
     let aimDot = 0;
     if (selectedWeapon) {
       selectedWeapon.getWorldQuaternion(weaponRotation);
@@ -1735,17 +1744,17 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
     applyCharacterModel(state.model || 0);
     inventory.visible = inventoryAmount > 0.01;
     wheelLight.visible = inventory.visible;
-    wheelLight.intensity = 22 * inventoryAmount;
+    wheelLight.intensity = 10 * inventoryAmount;
     wheelLight.position.copy(camera.position);
-    // Place each of the 8 3D weapons at the exact unprojected screen ray of its wheel sector,
+    // Place each of the 8 3D weapons in the foreground (slotDist = 3.1, 1.65 units IN FRONT of the robot),
     // compensating for camera.setViewOffset(-0.07 * width * wheelShift)
     const wheelDiam = mobile
       ? Math.min(width * 0.82, Math.max(260, Math.min(330, height - 395)))
       : Math.min(width * 0.46, height * 0.64, 540);
     const wheelCx = width * (mobile ? 0.5 : 0.58);
     const wheelCy = height * (mobile ? 0.4 : 0.46);
-    const slotRadiusPx = (198 / 600) * wheelDiam;
-    const slotDist = 5.8;
+    const slotRadiusPx = (210 / 600) * wheelDiam;
+    const slotDist = 3.1;
     camera.updateMatrixWorld();
     inventoryGuns.forEach(({ mount, model, platform, orbitRing }, i) => {
       const a = -Math.PI / 2 + (i / 8) * Math.PI * 2;
@@ -1756,12 +1765,12 @@ export function createArenaScene(canvas, { onWeaponProject, onPortalProject } = 
       mount.position.copy(camera.position).addScaledVector(slotRay, slotDist);
       mount.quaternion.copy(camera.quaternion);
       const selected = i === state.harness || i === state.equippedHarness;
-      const scalePop = inventoryAmount * (selected ? 1.15 : 0.9);
+      const scalePop = 0.42 * inventoryAmount * (selected ? 1.18 : 0.94);
       mount.scale.setScalar(Math.max(0.001, scalePop));
       model.rotation.y =
         Math.PI * 0.68 + (ambient ? Math.sin(time * 1.1 + i * 0.8) * 0.32 : 0);
-      model.rotation.x = 0.24 + (selected ? 0.08 : 0);
-      const baseScale = canvas.dataset.weaponAssets === "kenney-cc0" ? 0.86 : 0.55;
+      model.rotation.x = 0.22 + (selected ? 0.08 : 0);
+      const baseScale = canvas.dataset.weaponAssets === "kenney-cc0" ? 0.94 : 0.62;
       model.scale.setScalar(baseScale);
       platform.scale.setScalar(selected ? 1.14 : 0.88);
       if (orbitRing && ambient) orbitRing.rotation.z = time * (selected ? 1.6 : 0.6) + i;

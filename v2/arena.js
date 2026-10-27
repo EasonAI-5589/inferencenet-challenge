@@ -1,6 +1,6 @@
 /* A single scroll-owned timeline: camera, equipment, rooms and evidence all follow it. */
-import { createSignatureRail } from './mc-rail.js?v=20261027-books4';
-import { ARENA_DOMAINS, HARNESS_NAMES, MODEL_CHARACTERS } from './arena-data.js';
+import { createSignatureRail } from './mc-rail.js?v=20261027-frontgun';
+import { ARENA_DOMAINS, HARNESS_NAMES, MODEL_CHARACTERS } from './arena-data.js?v=20261027-frontgun';
 
 const chapter = document.querySelector('.mc-chapter');
 if (chapter) {
@@ -13,7 +13,7 @@ if (chapter) {
   const clamp = (x, lo = 0, hi = 1) => Math.max(lo, Math.min(hi, x));
   const ease = x => { const p = clamp(x); return p * p * (3 - 2 * p); };
   const lang = () => document.documentElement.lang.startsWith('zh') ? 1 : 0;
-  const state = { progress: 0, arrival: manual() ? 1 : 0, phase: 0, model: 0, modelSpin: 0, harness: 0, equippedHarness: null, room: 0, pointer: { x: 0, y: 0 }, paused: reduced.matches, language: lang() ? 'zh' : 'en' };
+  const state = { progress: 0, arrival: manual() ? 1 : 0, phase: 0, model: 0, modelSpin: 0, harness: 0, equippedHarness: 0, room: 0, pointer: { x: 0, y: 0 }, paused: reduced.matches, language: lang() ? 'zh' : 'en' };
   const models = MODEL_CHARACTERS;
   const harnesses = [
     { name: 'DeepSeek Harness', lines: ['DeepSeek', 'Harness'], code: 'W-01', type: ['Plugin runtime', '插件运行时'], description: ['Swap the runtime weapon. Recompose the tools, context and feedback around your chosen model character.', '切换运行时武器，围绕当前模型角色重新组织工具、上下文与反馈。'] },
@@ -379,14 +379,14 @@ if (chapter) {
       const href = link.href;
       const chosenHarness = state.equippedHarness ?? state.harness ?? 0;
       try { localStorage.setItem('metacase-loadout', JSON.stringify({ model: state.model || 0, harness: chosenHarness })); } catch {}
-      setTimeout(() => import('./portal-warp.js?v=20261027-robotwarp').then(m => m.warp({ x, y, track: id, href, model: state.model || 0, harness: chosenHarness, lang: lang() })).catch(() => { location.href = href; }), scene ? 260 : 0);
+      setTimeout(() => import('./portal-warp.js?v=20261027-frontgun').then(m => m.warp({ x, y, track: id, href, model: state.model || 0, harness: chosenHarness, lang: lang() })).catch(() => { location.href = href; }), scene ? 260 : 0);
     });
   });
   addEventListener('pageshow', event => { if (event.persisted) { state.portalCharge = false; state.portalFocus = ''; scene?.update(state); } });
   async function load() {
     if(loading)return;loading=true;
     try {
-      const {createArenaScene}=await import('./arena-scene.js?v=20261027-robotwarp');
+      const {createArenaScene}=await import('./arena-scene.js?v=20261027-frontgun');
       scene=createArenaScene($('.mc-canvas'), { onWeaponProject: projectWeapon, onPortalProject: projectPortals }); scene.update(state);
       $('.mc-fallback').hidden=true;chapter.dataset.renderer='webgl';
     } catch(error) {

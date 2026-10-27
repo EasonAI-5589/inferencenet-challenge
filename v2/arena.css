@@ -60,14 +60,21 @@
 .mc-wheel .mc-item-code { fill:var(--harness-accent); font:600 10px var(--font-mono); text-anchor:middle; letter-spacing:.12em; opacity:.85; }
 .mc-wheel .mc-item-name { fill:var(--text-primary); font:650 15px var(--font-sans); text-anchor:middle; letter-spacing:-.015em; paint-order:stroke; stroke:rgb(6 10 18 / 88%); stroke-width:4px; stroke-linejoin:round; }
 .mc-wheel .mc-item-icon { color:var(--harness-accent); }
-/* When the 3D WebGL blasters are rendered inside each wheel bay, hide the 2D SVG fallback icon */
+/* When the 3D WebGL blasters are rendered inside each wheel bay, hide the 2D SVG fallback icon
+   and remove the dark SVG sector tint/window so the 3D weapons sit 100% in the foreground */
 .mc-chapter[data-renderer="webgl"] .mc-wheel .mc-item-icon { opacity:0; }
+.mc-chapter[data-renderer="webgl"] .mc-wheel .mc-sector-depth,
+.mc-chapter[data-renderer="webgl"] .mc-wheel .mc-sector-window,
+.mc-chapter[data-renderer="webgl"] .mc-wheel-hub-badge { display:none; }
+.mc-chapter[data-renderer="webgl"] .mc-wheel .mc-sector { fill:rgb(0 0 0 / 0.1%); stroke:color-mix(in oklab,var(--text-primary) 24%,transparent); }
+.mc-chapter[data-renderer="webgl"] .mc-wheel .is-active .mc-sector,
+.mc-chapter[data-renderer="webgl"] .mc-wheel [data-wheel-item]:hover .mc-sector { fill:color-mix(in oklab,var(--harness-accent) 6%,transparent); stroke:var(--harness-accent); stroke-width:2.4; }
 .mc-wheel .mc-gun-shadow-layer { fill:rgb(3 6 12 / 90%); stroke:rgb(0 0 0 / 80%); stroke-width:2; stroke-linejoin:round; }
 .mc-wheel .mc-gun-body-layer { fill:color-mix(in oklab,var(--harness-accent) 36%,#1d283a); stroke:color-mix(in oklab,var(--harness-accent) 82%,white); stroke-width:1.8; stroke-linejoin:round; }
 .mc-wheel .mc-gun-top-layer { fill:color-mix(in oklab,var(--harness-accent) 68%,white); opacity:.92; }
 .mc-wheel .mc-gun-core-layer { fill:#ffffff; stroke:var(--harness-accent); stroke-width:1; }
 .mc-wheel .is-active .mc-item-name { fill:color-mix(in oklab,var(--harness-accent) 75%,white); }
-.mc-wheel-hub-badge { position:absolute; left:50%; top:71%; translate:-50% -50%; display:grid; justify-items:center; gap:2px; padding:4px 12px; border-radius:999px; border:1.5px solid var(--model-accent,var(--track-1)); background:color-mix(in oklab,#070b14 88%,transparent); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); box-shadow:0 0 20px -4px var(--model-accent,var(--track-1)), 0 8px 24px -6px rgb(0 0 0 / 75%); white-space:nowrap; }
+.mc-wheel-hub-badge { position:absolute; left:50%; top:79%; translate:-50% -50%; display:grid; justify-items:center; gap:2px; padding:4px 12px; border-radius:999px; border:1.5px solid var(--model-accent,var(--track-1)); background:color-mix(in oklab,#070b14 88%,transparent); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); box-shadow:0 0 20px -4px var(--model-accent,var(--track-1)), 0 8px 24px -6px rgb(0 0 0 / 75%); white-space:nowrap; }
 .mc-wheel-hub-badge small { font:600 8.5px/1.2 var(--font-mono); letter-spacing:.08em; text-transform:uppercase; color:var(--model-accent,var(--track-1)); }
 .mc-wheel-hub-badge strong { font:700 13px/1.2 var(--font-sans); color:#fff; }
 .mc-model-roster { position:absolute; z-index:10; left:50%; bottom:-14px; translate:-50% 0; display:flex; flex-wrap:nowrap; gap:6px; padding:6px 10px; border-radius:999px; border:1px solid var(--mc-line); background:color-mix(in oklab,#080d1a 92%,transparent); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 16px 36px -8px rgb(0 0 0 / 75%); white-space:nowrap; pointer-events:auto; }

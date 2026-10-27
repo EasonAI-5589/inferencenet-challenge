@@ -1,7 +1,7 @@
 /* portal-warp.js — continuous dark-space 3D tunnel flight where the armed Robot Hero
  * is the visual centerpiece flying from index.html into challenge.html, plus the live
  * Three.js 3D guardian robot mounted beside each track on the Challenge page. */
-import { ARENA_DOMAINS, HARNESS_NAMES, MODEL_CHARACTERS } from './arena-data.js';
+import { ARENA_DOMAINS, HARNESS_NAMES, MODEL_CHARACTERS } from './arena-data.js?v=20261027-frontgun';
 
 export const PORTAL_COLORS = { econ: '#4fd1c5', fin: '#f2b545', soc: '#9d8df1' };
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
