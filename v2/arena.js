@@ -25,7 +25,7 @@ if (chapter) {
     { name: 'mini-SWE-agent', lines: ['mini-SWE', 'agent'], type: ['Minimal loop', '精简执行循环'], description: ['Strip the loop back to its essentials. Architecture is a variable; evidence remains the anchor.', '将循环简化到核心。架构可以改变，证据始终是依据。'] },
   ];
   // Each room is a portal to its track on the Challenge page.
-  const TRACKS = { econ: 'challenge.html#subtrack-econometric', fin: 'challenge.html#demo-finance-title', soc: 'challenge.html#demo-hr-title' };
+  const TRACKS = { econ: 'challenge.html?via=portal#track-econ', fin: 'challenge.html?via=portal#track-fin', soc: 'challenge.html?via=portal#track-soc' };
   const domainHeadlines = [
     ['Evidence to insight.', '从证据理解经济。'],
     ['Make it add up.', '让每一项都有依据。'],
@@ -260,11 +260,34 @@ if (chapter) {
       link.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -50%)`;
     });
     chapter.dataset.portals = 'projected';
+    (list || []).forEach(p => { lastPortals[p.id] = p; });
   }
+  // Pointing at a portal makes its doorway surge; stepping through floods it, warps the
+  // page into it and opens its track on the Challenge page.
+  const lastPortals = {};
+  const portalOf = link => link.dataset.portal || (state.phase >= 2 && state.phase <= 4 ? ARENA_DOMAINS[state.room].id : '');
+  $$('[data-portal], [data-mc-enter]').forEach(link => {
+    const focus = on => { if (state.portalCharge) return; state.portalFocus = on ? portalOf(link) : ''; scene?.update(state); };
+    link.addEventListener('pointerenter', () => focus(true));
+    link.addEventListener('pointerleave', () => focus(false));
+    link.addEventListener('focus', () => focus(true));
+    link.addEventListener('blur', () => focus(false));
+    link.addEventListener('click', event => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const id = portalOf(link); if (!id) return;
+      event.preventDefault();
+      const pin = $('.mc-pin').getBoundingClientRect(), p = lastPortals[id], r = link.getBoundingClientRect();
+      const at = p && p.centreVisible, x = at ? pin.left + p.cx : r.left + r.width / 2, y = at ? pin.top + p.cy : r.top + r.height / 2;
+      state.portalFocus = id; state.portalCharge = true; scene?.update(state);
+      const href = link.href;
+      setTimeout(() => import('./portal-warp.js?v=20261027-warp').then(m => m.warp({ x, y, track: id, href })).catch(() => { location.href = href; }), scene ? 260 : 0);
+    });
+  });
+  addEventListener('pageshow', event => { if (event.persisted) { state.portalCharge = false; state.portalFocus = ''; scene?.update(state); } });
   async function load() {
     if(loading)return;loading=true;
     try {
-      const {createArenaScene}=await import('./arena-scene.js?v=20261027-portal2');
+      const {createArenaScene}=await import('./arena-scene.js?v=20261027-warp');
       scene=createArenaScene($('.mc-canvas'), { onWeaponProject: projectWeapon, onPortalProject: projectPortals }); scene.update(state);
       $('.mc-fallback').hidden=true;chapter.dataset.renderer='webgl';
     } catch(error) {

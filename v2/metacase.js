@@ -9,7 +9,7 @@ const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const ease = x => { const p = clamp(x); return p * p * (3 - 2 * p); };
-const V = '?v=20261027-relay';
+const V = '?v=20261027-popup';
 
 /* ---- layout helpers ---- */
 const siteHeader = $('.site-header'), subnav = $('.mc-subnav');
@@ -33,8 +33,8 @@ const place = (el, s) => {
   el.classList.toggle('on', !!s.active);
 };
 
-/* ---- the signature rail: chapter progress drawn as a seven-step signature ---- */
-const SIG = [0, -.6, .2, -.9, .1, .7, -.2];
+/* ---- the signature rail: chapter progress drawn as the Metacase's five-stage signature ---- */
+const SIG = [0, -.7, .4, -.9, .6]; // SIGNATURES[0] in mc-kit.js: the signature of chapter 01's book
 function rail(ol) {
   if (!ol) return () => {};
   const items = $$('li', ol), n = items.length, NS = 'http://www.w3.org/2000/svg';
@@ -46,7 +46,7 @@ function rail(ol) {
   let length = 0;
   const layout = () => {
     const w = ol.clientWidth, h = 26; svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
-    const pts = items.map((_, i) => [(i + .5) / n * w, h / 2 + SIG[Math.round(i / Math.max(1, n - 1) * 6)] * (h / 2 - 5)]);
+    const pts = items.map((_, i) => [(i + .5) / n * w, h / 2 + SIG[Math.round(i / Math.max(1, n - 1) * (SIG.length - 1))] * (h / 2 - 5)]);
     const str = pts.map(p => p.join(',')).join(' ');
     base.setAttribute('points', str); ink.setAttribute('points', str);
     dots.forEach((d, i) => { d.setAttribute('cx', pts[i][0]); d.setAttribute('cy', pts[i][1]); });
@@ -145,7 +145,7 @@ import('./mc-stage.js' + V).then(({ createStage }) => {
   stage.add({ el: $('.mc-scene-pin', anatomy), near: 2.5, postOptions: { bloom: .32, threshold: .9, vignette: .2, feather: FEATHER }, progress: () => pinProgress(anatomy),
     build: () => import('./metacase-anatomy.js' + V).then(m => anatomyObj = m.createAnatomy({ reduce, safe: safeArea($('.mc-scene-pin', anatomy)), held: () => (carrying() && bookHandoff() < HANDOVER) || (carried12() && k12() > RELEASE), onProject: (list, extra) => {
       list.forEach((s, i) => place(notes[i], { ...s, opacity: s.active ? s.opacity : 0 }));
-      place(notes[7], { ...extra.signature, opacity: extra.draw, visible: extra.draw > .05, active: true });
+      place(notes[STAGES], { ...extra.signature, opacity: extra.draw, visible: extra.draw > .05, active: true });
     } })) });
 
   // 02: the archive answers by structure
@@ -217,9 +217,12 @@ function chapter(section, { steps, rail: railSteps = steps, notes = false }) {
   };
 }
 const anatomySection = $('#metacase'), structureSection = $('#structure'), netSection = $('#net');
+// Chapter 01 has five stages while the book is open (.13–.8 of its scroll, as in
+// metacase-anatomy.js), then the signature once it is closed.
+const STAGES = 5, stageAt = p => clamp(Math.floor((p - .13) / .67 * STAGES), 0, STAGES - 1);
 if (anatomySection) sceneControllers.push([anatomySection, chapter(anatomySection, {
-  steps: p => (p > .88 ? 7 : p < .06 ? -1 : clamp(Math.floor((p - .08) / .72 * 7), 0, 6)),
-  rail: p => (p < .06 ? -1 : clamp(Math.floor((p - .08) / .72 * 7), 0, 6)),
+  steps: p => (p > .88 ? STAGES : p < .06 ? -1 : stageAt(p)),
+  rail: p => (p < .06 ? -1 : stageAt(p)),
   notes: true,
 })]);
 if (structureSection) sceneControllers.push([structureSection, chapter(structureSection, { steps: p => (p < .36 ? 0 : p < .7 ? 1 : 2) })]);

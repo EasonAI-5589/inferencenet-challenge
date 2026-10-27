@@ -187,23 +187,26 @@ export function tree(scale = 1, color = PALETTE.leaf) {
   return g;
 }
 /* ---- the Metacase tile: a white slab, a domain-coloured edge, and its signature —
- * the seven-step shape of how the problem was solved — raised on top. ---- */
+ * the five-stage shape of how the problem was solved — raised on top. ---- */
 export const SIGNATURES = [
-  [0, -.6, .2, -.9, .1, .7, -.2],
-  [0, .5, .9, .4, -.3, -.6, .2],
-  [0, -.3, -.5, .4, .8, .3, .9],
-  [0, .8, -.2, .6, -.7, .1, -.4],
-  [0, -.1, .6, .9, .2, -.5, -.8],
+  [0, -.7, .4, -.9, .6],
+  [0, .6, .9, -.3, -.6],
+  [0, -.4, -.7, .8, .5],
+  [0, .8, -.5, .6, -.8],
+  [0, -.2, .7, .9, -.6],
 ];
-export const STAGE_COLORS = [0x45b5b0, 0x45b5b0, 0x7d6ad8, 0x7d6ad8, 0xf2b545, 0xf2b545, 0x3f9d6a];
+// The five stages of a Metacase: evidence & cutoff, priors & strategy, trajectory,
+// verified outcome, reflection & reuse.
+export const STAGE_COLORS = [0x45b5b0, 0x7d6ad8, 0x6aa8e8, 0xf2b545, 0x3f9d6a];
 // Points of a signature laid across a w × d face (x along the steps, z as the bend).
 export function signaturePoints(sig, w, d, y = 0) {
-  return SIGNATURES[sig].map((dz, i) => new THREE.Vector3(-w / 2 + w * i / 6, y, dz * d / 2));
+  const n = SIGNATURES[sig].length;
+  return SIGNATURES[sig].map((dz, i) => new THREE.Vector3(-w / 2 + w * i / (n - 1), y, dz * d / 2));
 }
 export function signatureGeometry(sig, w, d, r = .028) {
   return cached(`sig:${sig}:${w}:${d}:${r}`, () => {
     const pts = signaturePoints(sig, w, d), parts = [];
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < pts.length - 1; i++) {
       const a = pts[i], b = pts[i + 1], len = a.distanceTo(b), g = new THREE.CylinderGeometry(r, r, len, 6, 1);
       g.rotateZ(Math.PI / 2); g.rotateY(-Math.atan2(b.z - a.z, b.x - a.x)); g.translate((a.x + b.x) / 2, 0, (a.z + b.z) / 2);
       parts.push(g);
@@ -298,8 +301,8 @@ export function lights(scene, { span = 24, shadowSize = 2048 } = {}) {
   return { hemi, key, rim };
 }
 
-/* ---- the Metacase as a book: seven chapters, marked by tabs on the fore-edge ---- */
-// How far chapter tab i of a signature sticks out of the pages. The seven tab tips
+/* ---- the Metacase as a book: five stages, marked by tabs on the fore-edge ---- */
+// How far stage tab i of a signature sticks out of the pages. The five tab tips
 // together trace the signature: the shape of how the problem was solved.
 export const tabDepth = (sig, i, scale = 1) => (.06 + (SIGNATURES[sig][i] + 1) * .1) * scale;
 // A standing volume on y = 0: spine towards +z, fore-edge (with its chapter tabs) towards -z.
@@ -317,12 +320,12 @@ export function volume({ color = PALETTE.teal, sig = 0, w = .16, h = .62, d = .4
     const title = labelPlane(METACASE_LABEL(), d * .5, h * .19); title.rotation.set(0, sd * Math.PI / 2, 0); title.position.set(x + sd * .0045, h * .6, d * .04); g.add(title);
     [h * .14, h * .84].forEach(y => block(g, .006, h * .018, d * .9, gilt, x, y, 0, .002).castShadow = false);
   });
-  const tabs = [], tips = [], s = h / 10;
-  for (let i = 0; i < 7; i++) {
-    const td = tabDepth(sig, i, d / .44 * .5), y = h * .12 + i * s * 1.12;
-    const tab = block(g, w * .46, s * .62, td + .02, mat(STAGE_COLORS[i]), 0, y, -d * .49 - td / 2 + .01, .008);
+  const tabs = [], tips = [], n = SIGNATURES[sig].length, s = h * .66 / (n - 1), th = s * .56;
+  for (let i = 0; i < n; i++) {
+    const td = tabDepth(sig, i, d / .44 * .5), y = h * .12 + i * s;
+    const tab = block(g, w * .46, th, td + .02, mat(STAGE_COLORS[i]), 0, y, -d * .49 - td / 2 + .01, .008);
     tab.castShadow = false; tabs.push(tab);
-    tips.push(new THREE.Vector3(0, y + s * .31, -d * .49 - td));
+    tips.push(new THREE.Vector3(0, y + th / 2, -d * .49 - td));
   }
   g.userData = { tabs, tips, w, h, d, sig };
   return g;
@@ -387,18 +390,19 @@ export function closedBook() {
   [[0, -PD / 2 + .14, PW - .1, .025], [0, PD / 2 - .14, PW - .1, .025]].forEach(([x, z, w, d]) => add(front, rbox(w, .01, d, .004), gilt, x, BOARD / 2 + .004, z, false));
   [-1, 1].forEach(sx => add(front, rbox(.025, .01, PD - .28, .004), gilt, sx * (PW / 2 - .1), BOARD / 2 + .004, 0, false));
   [-1, 1].forEach(sx => [-1, 1].forEach(sz => add(front, rbox(.22, .016, .22, .02), gilt, sx * (PW / 2 - .04), BOARD / 2 + .002, sz * (PD / 2 - .02), false)));
-  [0, 3, 5].forEach((i, k) => add(front, rbox(.1, .012, .1, .02), mat(STAGE_COLORS[i]), -.25 + k * .25, BOARD / 2 + .008, .35, false));
+  [0, 2, 4].forEach((i, k) => add(front, rbox(.1, .012, .1, .02), mat(STAGE_COLORS[i]), -.25 + k * .25, BOARD / 2 + .008, .35, false));
   return g;
 }
 // The chapter tabs on a closedBook()'s fore-edge and the thread through their tips: the
 // Metacase's signature. Chapter 01 grows them chapter by chapter; the couriers and the
-// later chapters show the same book with all seven in place.
+// later chapters show the same book with all five in place.
 export function bookTabs(book, sig = 0) {
   const { PW, PD, T, BOARD } = BOOK, tabs = [], tips = [];
-  for (let i = 0; i < 7; i++) {
-    const td = .12 + tabDepth(sig, i, 2.6), z = -PD / 2 + PD * (.1 + .8 * (i + .5) / 7), y = BOARD + T * .5 - .09;
+  const n = SIGNATURES[sig].length;
+  for (let i = 0; i < n; i++) {
+    const td = .12 + tabDepth(sig, i, 2.6), z = -PD / 2 + PD * (.1 + .8 * (i + .5) / n), y = BOARD + T * .5 - .09;
     const tab = new THREE.Group(); tab.position.set(PW - .02, y, z); book.add(tab);
-    add(tab, rbox(td + .04, .18, .3, .025), mat(STAGE_COLORS[i], { emissive: STAGE_COLORS[i], intensity: .25 }), (td + .04) / 2, .09, 0);
+    add(tab, rbox(td + .04, .18, .38, .025), mat(STAGE_COLORS[i], { emissive: STAGE_COLORS[i], intensity: .25 }), (td + .04) / 2, .09, 0);
     tabs.push(tab); tips.push(new THREE.Vector3(PW + td, y + .2, z));
   }
   const thread = mat(0xfff6e0, { emissive: 0xfff1d0, intensity: .9 });
