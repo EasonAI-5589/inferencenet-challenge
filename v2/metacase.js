@@ -3,7 +3,7 @@
  * this file registers them, keeps the notes, captions, tags and signature rails in step
  * with scrolling, and handles reveals, counters and the section nav. Visible text stays
  * in the page so language.js translates it. */
-import { createSignatureRail } from './mc-rail.js?v=20261027-books3';
+import { createSignatureRail } from './mc-rail.js?v=20261027-books4';
 
 const root = document.documentElement;
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -11,7 +11,7 @@ const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const ease = x => { const p = clamp(x); return p * p * (3 - 2 * p); };
-const V = '?v=20261027-books3';
+const V = '?v=20261027-books4';
 
 /* ---- layout helpers ---- */
 const siteHeader = $('.site-header'), subnav = $('.mc-subnav');

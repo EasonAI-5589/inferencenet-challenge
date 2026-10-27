@@ -1,5 +1,5 @@
 /* A single scroll-owned timeline: camera, equipment, rooms and evidence all follow it. */
-import { createSignatureRail } from './mc-rail.js?v=20261027-books3';
+import { createSignatureRail } from './mc-rail.js?v=20261027-books4';
 import { ARENA_DOMAINS, HARNESS_NAMES, MODEL_CHARACTERS } from './arena-data.js';
 
 const chapter = document.querySelector('.mc-chapter');
