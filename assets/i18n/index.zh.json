@@ -1281,5 +1281,16 @@
   "Chinese legal knowledge, statute recall and case-outcome prediction.": "中国法律知识、法条记忆与案件结果预测。",
   "tasks in": "道题目，分为",
   "Economics, finance and social science come first: each offers public evidence, documented decisions and outputs that can be checked. Open a field's book to see its classes.": "经济、金融和社科最先展开：这三个领域都有公开证据、有据可查的决策过程，以及可以核验的产出。打开任一领域的书卷，查看它包含的类别。",
-  "SQL and dbt over banking, retail, e-commerce and wholesale supply-chain data.": "在银行、零售、电商与批发供应链数据上写 SQL / dbt。"
+  "SQL and dbt over banking, retail, e-commerce and wholesale supply-chain data.": "在银行、零售、电商与批发供应链数据上写 SQL / dbt。",
+  "Previous page": "上一页",
+  "Next page": "下一页",
+  "Book pages": "书页",
+  "More classes are being added to this field.": "这一领域正在陆续加入更多类别。",
+  "Page 1 of 6": "第 1 页，共 6 页",
+  "Page 2 of 6": "第 2 页，共 6 页",
+  "Page 3 of 6": "第 3 页，共 6 页",
+  "Page 4 of 6": "第 4 页，共 6 页",
+  "Page 5 of 6": "第 5 页，共 6 页",
+  "Page 6 of 6": "第 6 页，共 6 页",
+  "Class 6 · in preparation": "第六类 · 筹备中"
 }

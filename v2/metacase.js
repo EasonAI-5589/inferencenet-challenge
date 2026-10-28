@@ -11,7 +11,7 @@ const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const ease = x => { const p = clamp(x); return p * p * (3 - 2 * p); };
-const V = '?v=20261028-fieldspop';
+const V = '?v=20261029-flip';
 
 /* ---- layout helpers ---- */
 const siteHeader = $('.site-header'), subnav = $('.mc-subnav');
@@ -271,14 +271,15 @@ function countUp(node) {
   requestAnimationFrame(step);
 }
 
-/* ---- 04: the field books. With this script the three books share one stage: the chosen field's
- * book stands open in the middle, the largest, and its classes rise out of its pages as paper
- * slips that settle in a column on either side of it (below 1180px, in a list under the books);
- * the other two wait at the sides, smaller and dimmer. Choosing one of them brings it to the
- * middle, the books trading places as on a carousel, while the slips on show fold back into their
- * own book. Every move starts from wherever things are, so a quick second choice simply turns
- * them round. The books are tabs with the usual keys: arrows (Home, End) move between them.
- * Without the script every field's classes are simply listed under its name. ---- */
+/* ---- 04: the field books. With this script the three books share one stage, as on a carousel:
+ * the chosen field's book in the middle, the other two smaller at the sides (a click, or the
+ * arrow keys on the tabs, brings one to the middle). The chosen field is then read as a book: an
+ * HTML book in the field's colour stands open in the middle of the stage, over its 3D picture,
+ * and its leaves turn about the spine — two pages at a time on wide screens ([1|2] → [3|4] →
+ * [5|6]), one at a time on narrow ones. Choosing another field closes the book and fades it, the
+ * books trade places, and the new field's book grows out of its picture and opens its cover.
+ * Every step checks that it is still wanted, so quick choices settle on the last one. Without
+ * the script every field's pages are simply listed under its name. ---- */
 const fieldbooks = $('[data-fieldbooks]');
 // The 3D stage draws the field books back to front: the one crossing behind, those at the sides, the chosen one.
 const bookDepth = el => {
@@ -286,81 +287,184 @@ const bookDepth = el => {
   return book ? () => (book.classList.contains('is-crossing') ? 1 : book.dataset.slot === 'center' ? 3 : 2) : undefined;
 };
 if (fieldbooks) {
-  const row = $('.mc-bookrow', fieldbooks), books = $$('[role="tab"]', row);
-  const panels = books.map(tab => $('#' + tab.getAttribute('aria-controls')));
-  const N = books.length, PAGES = [.56, .44]; // where a book's open pages are in its picture
-  const MOVE = 560, EASE = 'cubic-bezier(0.05, 0.7, 0.1, 1)'; // --duration-emphasized, --ease-emphasized
-  const RISE = 260, ROW = 70, GAP = 14; // slips rise once their book is nearly in the middle, row after row
-  const TILT = [-.8, .5, -.4, .7, -.5, .35]; // slips set down by hand, not quite square
-  let chosen = Math.max(0, books.findIndex(tab => tab.getAttribute('aria-selected') === 'true'));
-  let seen = reduce, flights = [];
+  const row = $('.mc-bookrow', fieldbooks), tabs = $$('[role="tab"]', row);
+  const panels = tabs.map(tab => $('#' + tab.getAttribute('aria-controls')));
+  const N = tabs.length;
+  const MOVE = 560, EASE = 'cubic-bezier(0.05, 0.7, 0.1, 1)', STD = 'cubic-bezier(0.2, 0, 0, 1)'; // --duration-emphasized, --ease-*
+  const CLOSE = 250, ARRIVE = 300, TURN = 650; // the book closing and fading; growing out of its picture; a leaf turning
+  const wideMQ = matchMedia('(min-width: 900px)');
+  let wide = wideMQ.matches, chosen = Math.max(0, tabs.findIndex(tab => tab.getAttribute('aria-selected') === 'true'));
+  let gen = 0, flights = [], seen = reduce, wanted = chosen;
+  const wait = ms => new Promise(done => setTimeout(done, ms));
+  const make = (cls, ...kids) => { const el = document.createElement('div'); el.className = cls; el.append(...kids.filter(Boolean)); return el; };
   fieldbooks.classList.add('is-books');
-  panels.forEach(panel => { panel.tabIndex = 0; });
-  const slotOf = k => (k === chosen ? 'center' : (k - chosen + N) % N === 1 ? 'right' : 'left');
-  // positions in the stage come from the layout, which the books' flights leave alone
-  const at = el => { let x = 0, y = 0; for (let n = el; n && n !== fieldbooks; n = n.offsetParent) { x += n.offsetLeft; y += n.offsetTop; } return { x, y }; };
-  const art = book => $('.mc-art', book);
-  const pages = book => { const a = art(book), p = at(a); return { x: p.x + a.offsetWidth * PAGES[0], y: p.y + a.offsetHeight * PAGES[1] }; };
-  const halves = panel => { const items = $$('.mc-slip', panel), half = Math.ceil(items.length / 2); return [items.slice(0, half), items.slice(half)]; };
-  const tall = list => list.reduce((sum, li) => sum + li.offsetHeight, 0) + GAP * Math.max(0, list.length - 1);
 
-  // Lay out the stage for the current choice: the books in their slots, every field's slips in
-  // their places, and for each slip the way back into its own book (--ox, --oy).
-  function place() {
-    const css = getComputedStyle(fieldbooks), wide = css.getPropertyValue('--fb-wide').trim() === '1';
-    const gap = parseFloat(css.getPropertyValue('--fb-gap')) || 22, centre = books[chosen];
-    const columns = panels.map(halves);
-    if (wide) panels.forEach((panel, f) => columns[f].forEach((list, c) => list.forEach(li => { li.dataset.side = c ? 'r' : 'l'; })));
-    else panels.forEach(panel => $$('.mc-slip', panel).forEach(li => { li.dataset.side = 's'; li.style.left = li.style.top = ''; li.style.removeProperty('--tilt'); }));
-    let H = centre.offsetHeight;
-    if (wide) columns.forEach(pair => pair.forEach(list => { H = Math.max(H, tall(list)); }));
-    H = Math.round(H + (wide ? 48 : 0));
-    row.style.height = `${H}px`;
-    // the books stand on the line through the middle of the chosen book's picture
-    const top = Math.round((H - centre.offsetHeight) / 2), axis = top + art(centre).offsetTop + art(centre).offsetHeight / 2;
-    books.forEach(book => { book.style.top = `${book === centre ? top : Math.round(axis - art(book).offsetTop - art(book).offsetHeight / 2)}px`; });
-    panels.forEach((panel, f) => {
-      const o = pages(books[f]), items = $$('.mc-slip', panel);
-      const hinge = (li, x, y, delay) => {
-        li.style.setProperty('--ox', `${Math.round(o.x - x)}px`);
-        li.style.setProperty('--oy', `${Math.round(o.y - y)}px`);
-        li.style.setProperty('--d', delay);
-      };
-      if (wide) columns[f].forEach((list, c) => {
-        let y = (H - tall(list)) / 2;
-        list.forEach((li, r) => {
-          const w = li.offsetWidth, h = li.offsetHeight, x = c ? centre.offsetLeft + centre.offsetWidth + gap : centre.offsetLeft - gap - w;
-          li.style.left = `${Math.round(x)}px`; li.style.top = `${Math.round(y)}px`;
-          li.style.setProperty('--tilt', `${TILT[(r * 2 + c) % TILT.length]}deg`);
-          hinge(li, c ? x : x + w, y + h / 2, r * ROW + c * 35);
-          y += h + GAP;
-        });
-      });
-      else items.forEach((li, i) => { const p = at(li); hinge(li, p.x + li.offsetWidth / 2, p.y, Math.min(i, 6) * 55); });
-      items.forEach((li, i) => li.style.setProperty('--fd', (items.length - 1 - i) * 18));
+  // The cover's emblem, as on the 3D book's label (metacase-cards.js emblem()).
+  function emblem(field) {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 512 256'); svg.setAttribute('class', 'mc-emblem'); svg.setAttribute('aria-hidden', 'true'); svg.setAttribute('focusable', 'false');
+    let ink = '';
+    if (field === 'fin') ink = [[136, 132, 64], [196, 112, 72], [256, 128, 52], [316, 92, 76], [376, 72, 70]]
+      .map(([x, y, h], k) => `<g${k === 2 ? ' class="is-down"' : ''}><rect x="${x - 17}" y="${y}" width="34" height="${h}"/><rect x="${x - 3}" y="${y - 20}" width="6" height="${h + 40}"/></g>`).join('');
+    else if (field === 'soc') ink = [170, 256, 342].map(x => `<circle cx="${x}" cy="104" r="27"/><path d="M${x - 52} 206a52 52 0 0 1 104 0z"/>`).join('');
+    else ink = [[118, 176], [158, 150], [196, 164], [236, 128], [272, 138], [312, 106], [352, 114], [390, 84]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="11"/>`).join('') + '<path class="is-line" d="M100 184 412 74"/>';
+    svg.innerHTML = `<rect class="is-paper" width="512" height="256"/><rect class="is-rule" x="14" y="14" width="484" height="228"/><g class="is-ink">${ink}</g>`;
+    return svg;
+  }
+
+  // Where a page is read: wide books show two pages a spread (page 1 on the back of the cover),
+  // narrow ones a page at a time; position 0 is the closed cover.
+  const spreadOf = page => (wide ? Math.ceil(page / 2) : page);
+  const shown = b => { const n = b.pages.length; return !b.s ? [] : wide ? [2 * b.s - 1, 2 * b.s].filter(p => p <= n) : [b.s]; };
+
+  // One book per field. Its pages (the articles the generator wrote) are moved onto the faces of
+  // its leaves; the list they came from stays behind, empty and hidden.
+  const books = panels.map((panel, f) => {
+    const b = {
+      panel, tab: tabs[f], field: panel.dataset.field, pages: $$('.mc-page', panel), slots: $$('.mc-pages > li', panel),
+      head: $('.mc-flip-head', panel), ui: $('.mc-flip-ui', panel), dots: $$('[data-page]', panel), turns: $$('[data-turn]', panel),
+      book: make('mc-book'), leaves: [], s: 0, settle: 0, z: 0, next: 0, anims: [],
+    };
+    b.live = document.createElement('p');
+    b.live.className = 'mc-visually-hidden'; b.live.setAttribute('aria-live', 'polite'); b.live.dataset.noTranslate = '';
+    $('.mc-pages', panel).after(b.book);
+    panel.append(b.live);
+    b.ui.hidden = false;
+    panel.tabIndex = 0;
+    bind(b);
+    b.turns.forEach(btn => btn.addEventListener('click', () => step(b, Number(btn.dataset.turn))));
+    b.dots.forEach(dot => dot.addEventListener('click', () => turnTo(b, spreadOf(Number(dot.dataset.page)), { announce: true })));
+    // a click on the left-hand page turns back, on the right-hand one forward; a swipe sideways too
+    let press = null, swiped = false;
+    b.book.addEventListener('pointerdown', event => { press = { x: event.clientX, y: event.clientY }; swiped = false; });
+    b.book.addEventListener('pointerup', event => {
+      if (!press) return;
+      const dx = event.clientX - press.x, dy = event.clientY - press.y; press = null;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.2) { swiped = true; step(b, dx < 0 ? 1 : -1); }
+    });
+    b.book.addEventListener('click', event => {
+      if (swiped) { swiped = false; return; }
+      if (!b.s) { turnTo(b, 1, { announce: true }); return; }
+      const r = b.book.getBoundingClientRect(), x = event.clientX - r.left;
+      step(b, x < (wide ? r.width / 2 : r.width * .3) ? -1 : 1);
+    });
+    panel.addEventListener('keydown', event => {
+      const dir = { ArrowLeft: -1, PageUp: -1, ArrowRight: 1, PageDown: 1 }[event.key];
+      if (!dir || event.altKey || event.ctrlKey || event.metaKey) return;
+      event.preventDefault();
+      step(b, dir);
+    });
+    return b;
+  });
+
+  // The leaves of a book. Wide: the cover (its back is page 1), then a leaf for each two pages,
+  // the last page lying on the board under them all. Narrow: the cover, then a leaf a page.
+  function bind(b, page = 0) {
+    b.pages.forEach((article, i) => b.slots[i].append(article));
+    b.book.replaceChildren();
+    const cover = make('mc-face is-front mc-cover', make('mc-cover-label', b.head, emblem(b.field)));
+    const [first, ...rest] = b.pages, plan = [];
+    if (wide) {
+      plan.push([cover, make('mc-face is-back mc-board-page', first)]);
+      while (rest.length > 1) plan.push([make('mc-face is-front', rest.shift()), make('mc-face is-back', rest.shift())]);
+    } else {
+      plan.push([cover]);
+      [first, ...rest].slice(0, -1).forEach(article => plan.push([make('mc-face is-front', article)]));
+      rest.splice(0, rest.length - 1);
+    }
+    b.book.append(make('mc-case'), make('mc-ribbon'), make('mc-leaf is-base', make('mc-face is-front', rest[0] || make('mc-page is-blank'))));
+    b.leaves = plan.map(([front, back], i) => { const leaf = make(`mc-leaf${i ? '' : ' is-cover'}`, front, back); b.book.append(leaf); return leaf; });
+    b.s = page ? spreadOf(page) : 0;
+    lay(b);
+    sync(b);
+  }
+
+  // the stack at rest: turned leaves on the left, the last turned on top; the others on the right, the first on top
+  function lay(b) {
+    clearTimeout(b.settle); b.z = 0; b.next = 0;
+    b.book.dataset.s = b.s; b.book.style.removeProperty('--dur');
+    b.leaves.forEach((leaf, i) => {
+      leaf.classList.remove('is-turning', 'is-back');
+      leaf.classList.toggle('is-turned', i < b.s);
+      leaf.classList.toggle('is-gone', !wide && i < b.s); // a narrow book's turned leaves are out of sight
+      leaf.style.zIndex = i < b.s ? 10 + i : 10 + b.leaves.length - i;
+      leaf.style.removeProperty('--delay');
     });
   }
 
-  // Bring field `next` to the middle. The books fly from where they are to their new slots (FLIP);
+  // Turn to position s. Several leaves turn one after another, each setting off when the one
+  // before it is upright; a leaf already turning simply turns round. `together`: all at once (closing).
+  function turnTo(b, s, { together = false, dur = TURN, announce = false } = {}) {
+    s = Math.max(0, Math.min(b.leaves.length, s));
+    const from = b.s;
+    if (s === from) { if (announce) sync(b, true); return; }
+    b.s = s; b.book.dataset.s = s;
+    if (reduce) { lay(b); sync(b, announce); return; }
+    b.book.style.setProperty('--dur', `${dur}ms`);
+    const order = [];
+    if (s > from) for (let i = from; i < s; i++) order.push(i); else for (let i = from - 1; i >= s; i--) order.push(i);
+    const now = performance.now();
+    order.forEach(i => {
+      const leaf = b.leaves[i], busy = leaf.classList.contains('is-turning');
+      const start = together || busy ? now : Math.max(now, b.next);
+      if (!together) b.next = start + dur / 2;
+      leaf.style.setProperty('--delay', `${Math.round(start - now)}ms`);
+      leaf.style.zIndex = 40 + ++b.z;
+      if (!busy) { leaf.classList.remove('is-turning'); void leaf.offsetWidth; }
+      leaf.classList.add('is-turning');
+      leaf.classList.toggle('is-back', s < from);
+      leaf.classList.remove('is-gone');
+      leaf.classList.toggle('is-turned', i < s);
+    });
+    clearTimeout(b.settle);
+    b.settle = setTimeout(() => lay(b), Math.max(0, b.next - now) + dur + 80);
+    sync(b, announce);
+  }
+  const step = (b, dir) => { if (b.s) turnTo(b, Math.max(1, Math.min(b.leaves.length, b.s + dir)), { announce: true }); else if (dir > 0) turnTo(b, 1, { announce: true }); };
+
+  // the index and the buttons follow the pages on show; the pages read out when the reader turns them
+  function sync(b, announce = false) {
+    const on = shown(b), zh = (root.lang || '').startsWith('zh');
+    b.dots.forEach(dot => { const k = on.includes(Number(dot.dataset.page)); dot.classList.toggle('is-on', k); if (k) dot.setAttribute('aria-current', 'true'); else dot.removeAttribute('aria-current'); });
+    b.turns.forEach(btn => btn.setAttribute('aria-disabled', String(btn.dataset.turn < 0 ? b.s <= 1 : b.s >= b.leaves.length)));
+    if (announce) b.live.textContent = on.map(p => { const page = b.pages[p - 1]; return `${$('.mc-folio .mc-visually-hidden', page)?.textContent.trim() ?? p}${zh ? '：' : ': '}${$('.mc-page-name', page).textContent.trim()}`; }).join(zh ? '；' : '; ');
+  }
+
+  /* -- the stage -- */
+  const slotOf = k => (k === chosen ? 'center' : (k - chosen + N) % N === 1 ? 'right' : 'left');
+  const art = tab => $('.mc-art', tab);
+  // Lay out the stage for the current choice: the chosen book's label above the open book, the
+  // other two books level with its middle (wide), or in a row above it (narrow).
+  function place() {
+    const centre = tabs[chosen], a = art(centre), label = $('.mc-fbook-label', centre);
+    const panel = panels[chosen], bookH = books[chosen].book.offsetHeight;
+    let top;
+    if (wide) {
+      centre.style.top = '0px';
+      top = a.offsetTop;
+      tabs.forEach(tab => { if (tab !== centre) tab.style.top = `${Math.round(top + bookH / 2 - art(tab).offsetTop - art(tab).offsetHeight / 2)}px`; });
+    } else {
+      const side = Math.max(...tabs.filter(tab => tab !== centre).map(tab => tab.offsetHeight));
+      tabs.forEach(tab => { tab.style.top = tab === centre ? `${Math.round(Math.max(0, (side - label.offsetHeight) / 2))}px` : '0px'; });
+      top = Math.max(side, label.offsetHeight) + 16;
+    }
+    fieldbooks.style.setProperty('--book-top', `${Math.round(top)}px`);
+    row.style.height = `${Math.round(top + panel.offsetHeight)}px`;
+  }
+
+  // Bring field `next` to the middle: the books fly from where they are to their new slots (FLIP);
   // the one going from one side to the other passes behind the chosen one, a little smaller.
-  function choose(next, animate = true) {
-    const fly = animate && !reduce && books.every(book => book.dataset.slot);
-    const before = fly ? books.map(book => book.getBoundingClientRect()) : null, was = books.map(book => book.dataset.slot);
+  function rotate(next, fly) {
+    const before = fly ? tabs.map(tab => tab.getBoundingClientRect()) : null, was = tabs.map(tab => tab.dataset.slot);
     flights.forEach(flight => flight.cancel()); flights = [];
     chosen = next;
-    books.forEach((tab, k) => {
-      const on = k === next, slot = slotOf(k);
-      tab.setAttribute('aria-selected', String(on)); tab.tabIndex = on ? 0 : -1;
-      tab.classList.toggle('is-crossing', fly && was[k] !== 'center' && slot !== 'center' && slot !== was[k]);
+    tabs.forEach((tab, k) => {
+      const slot = slotOf(k);
+      tab.classList.toggle('is-crossing', !!fly && was[k] !== 'center' && slot !== 'center' && slot !== was[k]);
       tab.dataset.slot = slot;
     });
     place();
-    panels.forEach((panel, k) => {
-      panel.classList.toggle('is-current', k === next);
-      if (k !== next) panel.classList.remove('is-open');
-    });
-    if (seen) rise(panels[next], animate ? RISE : 0);
-    if (before) books.forEach((tab, k) => {
+    if (before) tabs.forEach((tab, k) => {
       const a = before[k], b = tab.getBoundingClientRect();
       const dx = a.left - b.left, dy = a.top - b.top, sx = a.width / b.width, sy = a.height / b.height;
       if (Math.abs(dx) < 1 && Math.abs(dy) < 1 && Math.abs(sx - 1) < .01) return;
@@ -370,61 +474,122 @@ if (fieldbooks) {
         : [from, to];
       const move = tab.animate(frames, { duration: MOVE, easing: EASE });
       move.finished.then(() => tab.classList.remove('is-crossing'), () => {});
-      // its caption changes size with its slot: hidden in flight, it fades in as the book arrives
+      // its caption changes with its slot: hidden in flight, it fades in as the book arrives
       flights.push(move, $('.mc-fbook-label', tab).animate([{ opacity: 0 }, { opacity: 0, offset: .4 }, { opacity: 1 }], { duration: MOVE }));
     });
     stage?.request();
   }
-  function rise(panel, delay) {
-    if (panel.classList.contains('is-open')) return;
-    // slips folded away out of sight start from the book in the middle, not from where it stood;
-    // slips still on their way back turn round at once
-    const first = $('.mc-slip', panel), away = !first || getComputedStyle(first).opacity === '0';
-    if (away) { panel.classList.add('is-snap'); void panel.offsetWidth; panel.classList.remove('is-snap'); }
-    panel.style.setProperty('--rise', `${away ? delay : 0}ms`);
-    panel.classList.add('is-open');
+
+  const reading = (b, on) => { b.tab.classList.toggle('is-reading', on); stage?.request(); };
+  const stop = b => { b.anims.forEach(anim => anim.cancel()); b.anims = []; };
+  const busy = b => b.anims.some(anim => anim.playState === 'running');
+  // the open book closes and fades; its 3D picture shows again underneath
+  async function putAway(b, my) {
+    reading(b, false);
+    const o = Number(getComputedStyle(b.book).opacity);
+    stop(b);
+    turnTo(b, 0, { together: true, dur: CLOSE });
+    b.anims = [b.book, b.ui].map(el => el.animate([{ opacity: o }, { opacity: 0 }], { duration: CLOSE, easing: STD, fill: 'forwards' }));
+    await wait(CLOSE);
+    if (my !== gen) return false;
+    hide(b);
+    return true;
+  }
+  function hide(b) { stop(b); reading(b, false); b.panel.classList.remove('is-shown'); b.s = 0; lay(b); sync(b); }
+  // the chosen field's book grows out of its picture, closed, then opens its cover
+  async function bringOut(b, my, page) {
+    b.panel.classList.add('is-shown');
+    place();
+    const a = art(b.tab).getBoundingClientRect(), c = b.leaves[0].getBoundingClientRect();
+    b.book.style.transformOrigin = wide ? '75% 50%' : '50% 50%';
+    const k = a.width ? Math.min(.86, Math.max(.3, Math.min(a.width * .62 / c.width, a.height * .7 / c.height))) : .9;
+    const dx = a.width ? a.left + a.width / 2 - (c.left + c.width / 2) : 0, dy = a.width ? a.top + a.height / 2 - (c.top + c.height / 2) : 0;
+    stop(b);
+    b.anims = [
+      b.book.animate([{ transform: `translate(${dx}px, ${dy}px) scale(${k})`, opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: ARRIVE, easing: EASE }),
+      b.ui.animate([{ opacity: 0 }, { opacity: 1 }], { duration: ARRIVE, delay: ARRIVE * .6, easing: STD, fill: 'backwards' }),
+    ];
+    await wait(ARRIVE * .4);
+    if (my !== gen) return;
+    reading(b, true);
+    await wait(ARRIVE * .6);
+    if (my !== gen) return;
+    if (seen) turnTo(b, page ? spreadOf(page) : 1);
   }
 
-  // a link to a field or to one of its classes (#fb-fin, #fb-fin-nlp) brings that field's book to the middle
+  async function choose(next, { animate = true, page = 0 } = {}) {
+    const my = ++gen, fly = animate && !reduce && tabs.every(tab => tab.dataset.slot);
+    wanted = next;
+    tabs.forEach((tab, k) => { tab.setAttribute('aria-selected', String(k === next)); tab.tabIndex = k === next ? 0 : -1; });
+    const target = books[next];
+    if (!fly) {
+      books.forEach(b => { if (b !== target) hide(b); });
+      rotate(next, false);
+      target.panel.classList.add('is-shown');
+      stop(target); reading(target, true); place();
+      target.s = seen ? spreadOf(page || 1) : 0; lay(target); sync(target);
+      return;
+    }
+    const out = books.filter(b => b.panel.classList.contains('is-shown'));
+    if (out.length === 1 && out[0] === target && chosen === next && !busy(target)) { // already open here
+      turnTo(target, page ? spreadOf(page) : Math.max(1, target.s), { announce: !!page });
+      return;
+    }
+    for (const b of out) if (!(await putAway(b, my))) return;
+    if (chosen !== next) {
+      rotate(next, true);
+      await wait(MOVE * .8);
+      if (my !== gen) return;
+    }
+    await bringOut(target, my, page);
+  }
+
+  // a link to a field or to one of its pages (#fb-fin, #fb-fin-nlp) opens that field's book there
   const linked = () => {
     let id = '';
     try { id = decodeURIComponent(location.hash.slice(1)); } catch { /* not a field */ }
     const target = id && document.getElementById(id);
-    return target ? books.findIndex((tab, i) => tab === target || panels[i].contains(target)) : -1;
+    const f = target ? tabs.findIndex((tab, i) => tab === target || panels[i].contains(target)) : -1;
+    return f < 0 ? null : { f, page: books[f].pages.findIndex(article => article === target || article.contains(target)) + 1 };
   };
-  if (linked() >= 0) chosen = linked();
-  addEventListener('hashchange', () => { const k = linked(); if (k >= 0 && k !== chosen) choose(k); });
+  let start = linked();
+  if (start) chosen = start.f;
+  addEventListener('hashchange', () => { const to = linked(); if (to) choose(to.f, { page: to.page }); });
 
-  books.forEach((tab, i) => {
-    tab.addEventListener('click', () => { if (i !== chosen) choose(i); });
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => { if (i !== wanted) choose(i); });
     tab.addEventListener('keydown', event => {
       const to = { ArrowRight: i + 1, ArrowDown: i + 1, ArrowLeft: i - 1, ArrowUp: i - 1, Home: 0, End: N - 1 }[event.key];
       if (to === undefined) return;
       event.preventDefault();
       const k = (to + N) % N;
-      books[k].focus();
-      if (k !== chosen) choose(k);
+      tabs[k].focus();
+      if (k !== wanted) choose(k);
     });
   });
-  // the first layout is not animated
-  panels.forEach(panel => panel.classList.add('is-snap'));
-  choose(chosen, false);
-  void fieldbooks.offsetWidth;
-  panels.forEach(panel => panel.classList.remove('is-snap'));
-  // measured again whenever the stage or a slip changes size (the window, the fonts, the language)
-  let queued = 0;
-  const watch = new ResizeObserver(() => { if (!queued) queued = requestAnimationFrame(() => { queued = 0; place(); stage?.request(); }); });
-  [fieldbooks, ...$$('.mc-slip, .mc-fbook-label', fieldbooks)].forEach(el => watch.observe(el));
-  // the slips first rise when the stage comes into view
+  // the first layout is not animated; the cover opens when the stage comes into view
+  choose(chosen, { animate: false, page: start?.page || 0 });
   if (!seen) {
     const reveal = new IntersectionObserver(entries => {
       if (!entries.some(entry => entry.isIntersecting)) return;
       reveal.disconnect();
       seen = true;
-      rise(panels[chosen], 160);
+      const b = books[chosen];
+      if (b.panel.classList.contains('is-shown') && !b.s) turnTo(b, start?.page ? spreadOf(start.page) : 1);
     }, { threshold: .35 });
     reveal.observe(row);
   }
+  // two pages or one: the books are bound again when the window crosses the line
+  wideMQ.addEventListener('change', () => {
+    const at = books.map(b => shown(b)[0] || 0);
+    wide = wideMQ.matches;
+    books.forEach((b, i) => bind(b, at[i]));
+    place(); stage?.request();
+  });
+  // measured again whenever the stage or a label changes size (the window, the fonts, the language)
+  let queued = 0;
+  const watch = new ResizeObserver(() => { if (!queued) queued = requestAnimationFrame(() => { queued = 0; place(); stage?.request(); }); });
+  [fieldbooks, ...$$('.mc-fbook-label', fieldbooks)].forEach(el => watch.observe(el));
 }
 
 // cards catch a light where the pointer is

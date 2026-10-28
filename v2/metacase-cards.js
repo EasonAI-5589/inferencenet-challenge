@@ -68,6 +68,7 @@ const BUILDERS = {
     const lamps = light ? [light.hemi, light.key, light.rim] : [], full = lamps.map(lamp => lamp.intensity);
     let open = 0, lift = 0, lit = 1;
     return t => {
+      g.visible = !tab?.classList.contains('is-reading'); // the page's own open book stands in its place
       const on = tab?.getAttribute('aria-selected') === 'true', hover = !!tab?.matches(':hover');
       open = lerp(open, on ? 1 : 0, STILL ? 1 : .07); lift = lerp(lift, on ? 1 : hover ? .45 : 0, STILL ? 1 : .1);
       lit = lerp(lit, on ? 1 : hover ? .82 : .6, STILL ? 1 : .08);
