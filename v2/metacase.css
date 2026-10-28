@@ -287,7 +287,8 @@ html[lang^="zh"] .mc-en-only { display: none; }
 .mc-home .v2-footer { margin-top: 0; background: var(--bg-canvas); }
 
 /* ---------- 04 The catalogue: three wings of call-numbered classes ---------- */
-.mc-catalogue { background: linear-gradient(180deg, transparent, color-mix(in oklab, var(--surface-1) 55%, transparent) 30%, transparent); }
+/* (clipped sideways: slips folded into a book at the edge of the stage must not widen the page) */
+.mc-catalogue { overflow-x: clip; background: linear-gradient(180deg, transparent, color-mix(in oklab, var(--surface-1) 55%, transparent) 30%, transparent); }
 .mc-catalogue-meta { display: grid; grid-template-columns: repeat(3, auto) 1fr; gap: 56px; align-items: end; margin: -16px 0 40px; padding-bottom: 28px; border-bottom: 1px solid var(--border-hairline); }
 .mc-catalogue-meta b { display: block; font-size: clamp(40px, 4.4vw, 64px); font-weight: 650; letter-spacing: -0.045em; line-height: 1; }
 .mc-catalogue-meta span { color: var(--text-tertiary); font-size: 14px; }
@@ -304,63 +305,99 @@ html[lang^="zh"] .mc-en-only { display: none; }
 .mc-gallery-chips li.more { border-style: dashed; border-color: var(--border-strong); color: var(--text-tertiary); }
 .mc-gallery-chips li.more::before { display: none; }
 
-/* ---------- 04 · the field books (scripts/build-fields.mjs writes them; metacase.js opens them) ----------
+/* ---------- 04 · the field books (scripts/build-fields.mjs writes them; metacase.js stages them) ----------
    Each field is a toy book on a plinth, drawn by the shared stage in its colour like every other
-   book on the page. Chosen, it opens, and below it the same book lies open on a spread listing
-   all of its classes, each with its number of tasks and its share of the field, printed on the
-   cream, gilt-edged stock of the 3D pages. Without the script every book's pages simply show. */
+   book on the page, and each of its classes is a slip of the cream, gilt-edged stock of the 3D
+   pages: its call number, its name and one line on what it asks of an agent. With the script the
+   books share one stage: the chosen field's book stands open in the middle, the other two wait,
+   smaller and dimmer, at the sides, and the chosen field's slips rise out of its pages to settle in
+   a column on either side of it (below 1180px, in a list under the books). Without the script every
+   field's slips are simply listed under its name. */
 .mc-bookrow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 24px); margin: 0 0 30px; }
-.mc-fbook { position: relative; display: grid; grid-template-rows: auto 1fr; padding: 0; border-radius: 18px; border: 1px solid var(--border-hairline); background: none; overflow: hidden;
-  color: var(--text-primary); font: inherit; text-align: left; cursor: pointer; transition: border-color .3s, box-shadow .3s, translate .35s var(--ease-emphasized); }
-.mc-fbook .mc-art { aspect-ratio: 16 / 10; border-bottom: 1px solid var(--border-hairline); background: radial-gradient(70% 80% at 50% 80%, color-mix(in oklab, var(--tc) 12%, transparent), transparent 72%); }
-.mc-fbook-label { display: grid; align-content: start; gap: 4px; padding: 14px 18px 16px; }
+.mc-fbook { position: relative; display: grid; grid-template-rows: auto 1fr; padding: 0; border: 0; border-radius: 18px; background: none;
+  color: var(--text-primary); font: inherit; text-align: center; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.mc-fbook .mc-art { display: block; aspect-ratio: 16 / 10; border-radius: 16px; background: radial-gradient(54% 46% at 50% 86%, color-mix(in oklab, var(--tc) 14%, transparent), transparent 76%); }
+.mc-fbook-label { display: grid; justify-items: center; align-content: start; gap: 2px; padding: 10px 6px 2px; transition: color .3s var(--ease-standard); }
 .mc-fbook small { color: var(--tc); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; }
 .mc-fbook-title { font-size: clamp(20px, 1.8vw, 24px); font-weight: 650; letter-spacing: -.02em; line-height: 1.15; }
-.mc-fbook-n { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 2px 6px; font-size: 13px; color: var(--text-secondary); }
-.mc-fbook-n b { font-size: 16px; font-weight: 650; color: var(--text-primary); }
-.mc-fbook-n > span { white-space: nowrap; }
-.mc-fbook-n i { font-style: normal; color: var(--text-tertiary); }
-.mc-fbook:hover { border-color: color-mix(in oklab, var(--tc) 45%, var(--border-hairline)); translate: 0 -2px; }
-.mc-fbook[aria-selected="true"] { border-color: color-mix(in oklab, var(--tc) 85%, transparent); box-shadow: 0 0 0 1px color-mix(in oklab, var(--tc) 55%, transparent), 0 26px 48px -30px var(--tc); }
-.mc-fbook[aria-selected="true"] .mc-art { background: radial-gradient(70% 80% at 50% 80%, color-mix(in oklab, var(--tc) 26%, transparent), transparent 72%); }
-.is-books .mc-fbook[aria-selected="false"] .mc-fbook-label { opacity: .72; }
-.mc-fbook:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 3px; }
+.mc-fbook-n { font-size: 13px; color: var(--text-secondary); }
+.mc-fbook-n b { font-weight: 650; color: var(--text-primary); }
+.mc-fbook:focus-visible { outline: 2px solid var(--tc); outline-offset: 4px; border-radius: 18px; }
 
-/* the open book: the field's cloth cover with its gilt rule, and two cream pages, each with a gilt
-   border like the printed cards in chapter 01 */
-.mc-spread { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding: 16px 16px 20px; border-radius: 22px; color: #1f2a3a;
-  background: linear-gradient(160deg, color-mix(in oklab, var(--tc) 94%, #fff), color-mix(in oklab, var(--tc) 72%, #1f2a3a));
-  box-shadow: inset 0 2px 0 rgb(255 255 255 / 24%), inset 0 -5px 0 rgb(0 0 0 / 20%), 0 34px 60px -34px rgb(0 0 0 / 70%); }
-.mc-spread::before { content: ""; position: absolute; inset: 6px 6px 9px; border: 2px solid rgb(216 180 106 / 85%); border-radius: 17px; pointer-events: none; }
-.mc-spread + .mc-spread { margin-top: 28px; }
-.is-books .mc-spread + .mc-spread { margin-top: 0; }
-.mc-spread[hidden] { display: none; }
-.mc-spread::after { content: ""; position: absolute; left: 22px; right: 22px; bottom: 7px; height: 8px; border-radius: 0 0 6px 6px;
-  background: repeating-linear-gradient(0deg, #f6efe0 0 2px, #ddd3bf 2px 3px); opacity: .9; }
-.mc-page { position: relative; z-index: 1; min-height: 440px; padding: clamp(24px, 2.8vw, 38px); background: #f6efe0; }
-.mc-page::after { content: ""; position: absolute; inset: 8px; border: 2px solid rgb(216 180 106 / 60%); border-radius: inherit; pointer-events: none; }
-.mc-page-l { border-radius: 10px 3px 3px 10px; background: linear-gradient(90deg, #f6efe0 70%, #ebe1cc); }
-.mc-page-r { border-radius: 3px 10px 10px 3px; background: linear-gradient(90deg, #e9dfc9, #f6efe0 22%); }
-.mc-page-r::before { content: ""; position: absolute; top: -16px; right: 40px; z-index: 1; width: 16px; height: 70px; background: color-mix(in oklab, var(--tc) 55%, #1f2a3a); clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%); }
-.mc-page-head { display: grid; gap: 4px; padding-bottom: 14px; border-bottom: 2px solid var(--tc); }
-.mc-page-head small { color: #6b7280; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; }
-.mc-page-head h3 { font-size: clamp(24px, 2.2vw, 30px); font-weight: 700; letter-spacing: -.02em; color: #1f2a3a; }
-.mc-page-head p { color: #4b5563; font-size: 14px; }
-.mc-page-head p b { color: #1f2a3a; }
-.mc-toc-n { font-size: clamp(24px, 2.2vw, 30px); font-weight: 700; letter-spacing: -.03em; line-height: 1; color: #1f2a3a; }
-.mc-toc-bar { position: relative; display: block; height: 6px; margin-top: 12px; border-radius: 3px; background: rgb(31 42 58 / 9%); overflow: hidden; }
-.mc-toc-bar::after { content: ""; position: absolute; inset: 0 auto 0 0; width: calc(var(--share) * 100%); border-radius: 3px; background: var(--tc); }
-/* every class is a short section of the page: its call number, name and count, the bar of its
-   share of the field, and one line on what it asks of an agent */
-.mc-page-head + .mc-entry { margin-top: 22px; }
-.mc-entry + .mc-entry { margin-top: 20px; padding-top: 20px; border-top: 2px dashed rgb(31 42 58 / 14%); }
-.mc-entry-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "call call" "name n"; align-items: baseline; gap: 4px 16px; }
-.mc-entry-head .mc-call { grid-area: call; color: color-mix(in oklab, var(--tc) 55%, #1f2a3a); font-size: 11px; letter-spacing: .02em; text-transform: none; }
-.mc-entry-head h4 { grid-area: name; margin: 0; font-size: clamp(17px, 1.5vw, 20px); font-weight: 700; letter-spacing: -.015em; line-height: 1.25; color: #1f2a3a; }
-.mc-entry-n { grid-area: n; display: inline-flex; align-items: baseline; gap: 6px; color: #4b5563; font-size: 13px; white-space: nowrap; }
-.mc-entry-desc { margin-top: 10px; font-size: 14.5px; line-height: 1.6; color: #2b3445; }
-.mc-spread.is-opening { animation: mc-book-open .55s var(--ease-emphasized); transform-origin: 50% 0; }
-@keyframes mc-book-open { from { opacity: 0; transform: perspective(1400px) rotateX(-10deg) scale(.97); } }
+/* the slips: cream stock with a gilt rule like the printed cards in chapter 01, and a strut in the
+   field's colour on the edge that faces the book */
+.mc-slips + .mc-slips { margin-top: 32px; }
+.mc-slips-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+.mc-slips-head small { color: var(--tc); font-size: 11px; letter-spacing: .1em; }
+.mc-slips-head b { font-size: 20px; font-weight: 650; letter-spacing: -.015em; }
+.mc-slips ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 248px), 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
+.mc-slip { position: relative; display: grid; align-content: start; gap: 4px; padding: 15px 17px 16px 19px; border-radius: 10px; color: #1f2a3a; background: #f6efe0;
+  box-shadow: inset 0 0 0 1px rgb(31 42 58 / 7%), 0 1px 2px rgb(0 0 0 / 16%), 0 18px 30px -20px rgb(0 0 0 / 70%); }
+.mc-slip::before { content: ""; position: absolute; inset: 5px; border: 1.5px solid rgb(216 180 106 / 55%); border-radius: 6px; pointer-events: none; }
+.mc-slip::after { content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; border-radius: 10px 0 0 10px; background: var(--tc); }
+.mc-slip .mc-call { color: color-mix(in oklab, var(--tc) 55%, #1f2a3a); font-size: 11px; letter-spacing: .02em; text-transform: none; }
+.mc-slip-name { font-size: 15.5px; font-weight: 700; line-height: 1.3; letter-spacing: -.012em; }
+.mc-slip-desc { margin-top: 2px; font-size: 12.5px; line-height: 1.5; color: #4b5563; }
+[data-theme="light"] .mc-slip { box-shadow: inset 0 0 0 1px rgb(31 42 58 / 10%), 0 1px 2px rgb(14 20 32 / 8%), 0 16px 28px -20px rgb(14 20 32 / 40%); }
+
+/* the stage (metacase.js measures the books and places the slips; the CSS gives the slots) */
+.mc-fieldbooks.is-books { --fb-gap: 22px; --book-w: clamp(150px, 44%, 300px); --side-w: clamp(84px, 23%, 168px); --spring: var(--ease-emphasized);
+  position: relative; display: grid; grid-template-columns: minmax(0, 1fr); }
+/* a spring of 0.5 s perceived duration and 0.2 bounce, sampled until it has settled (640 ms) */
+@supports (transition-timing-function: linear(0, 1)) {
+  .mc-fieldbooks.is-books { --spring: linear(0, 0.009 1.8%, 0.039 3.8%, 0.096 6.3%, 0.193 9.5%, 0.509 19%, 0.634 23.3%, 0.733 27.3%, 0.813 31.3%, 0.88 35.5%, 0.934 40.3%, 0.973 45.5%, 1.001 52%, 1.014 60.8%, 1.009 80.3%, 1); }
+}
+.is-books .mc-slips-head { display: none; }
+.is-books .mc-bookrow { position: relative; display: block; height: 320px; margin: 0; }
+.is-books .mc-fbook { position: absolute; top: 0; left: calc(50% - var(--book-w) / 2); z-index: 2; width: var(--side-w); transform-origin: 0 0; }
+.is-books .mc-fbook[data-slot="center"] { width: var(--book-w); z-index: 3; }
+.is-books .mc-fbook[data-slot="left"] { left: 0; }
+.is-books .mc-fbook[data-slot="right"] { left: calc(100% - var(--side-w)); }
+.is-books .mc-fbook.is-crossing { z-index: 1; }
+.is-books .mc-fbook .mc-art { aspect-ratio: 5 / 4; }
+.is-books .mc-fbook[data-slot="center"] .mc-art { aspect-ratio: 6 / 5; background: radial-gradient(50% 42% at 50% 88%, color-mix(in oklab, var(--tc) 26%, transparent), transparent 76%); }
+.is-books .mc-fbook:not([data-slot="center"]) .mc-fbook-label { padding-top: 6px; color: var(--text-secondary); }
+.is-books .mc-fbook:not([data-slot="center"]) .mc-fbook-title { font-size: 15px; font-weight: 600; }
+.is-books .mc-fbook:not([data-slot="center"]) small { font-size: 9.5px; opacity: .8; }
+.is-books .mc-fbook:not([data-slot="center"]) .mc-fbook-n { display: none; }
+@media (hover: hover) and (pointer: fine) { .is-books .mc-fbook:not([data-slot="center"]):hover .mc-fbook-label { color: var(--text-primary); } }
+
+/* the slips of the chosen field are out; the others lie folded in their books, and their list is
+   hidden once it has folded away. Folded, a slip is small, edge-on and at its book's open pages:
+   --ox/--oy (set by metacase.js) lead from its hinge to them. It rises on a spring, row by row
+   (--rise, --d), and folds back quickly, last slip first (--fd). */
+.is-books .mc-slips { position: relative; z-index: 4; grid-row: 2; grid-column: 1; margin-top: 26px; visibility: hidden; transition: visibility 0s linear .6s; }
+.is-books .mc-slips + .mc-slips { margin-top: 26px; }
+.is-books .mc-slips.is-current { visibility: visible; transition-delay: 0s; }
+.is-books .mc-slips:focus-visible { outline: none; }
+.is-books .mc-slips:focus-visible .mc-slip { outline: 2px solid var(--tc); outline-offset: 3px; }
+.is-books .mc-slips ul { position: relative; perspective: 1100px; }
+.is-books .mc-slip { transform-origin: 50% 0; transform: translate(0px, 0px) rotateX(0deg) rotateY(0deg) rotate(var(--tilt, 0deg)) scale(1);
+  transition: transform 640ms var(--spring) calc(var(--rise, 0ms) + var(--d, 0) * 1ms), opacity 200ms var(--ease-standard) calc(var(--rise, 0ms) + var(--d, 0) * 1ms), translate .2s ease, box-shadow .2s ease; }
+.is-books .mc-slips:not(.is-open) .mc-slip { opacity: 0; transform: translate(var(--ox, 0px), var(--oy, 0px)) rotateX(var(--fx, 0deg)) rotateY(var(--fy, 0deg)) rotate(0deg) scale(.3);
+  transition: transform 260ms var(--ease-standard) calc(var(--fd, 0) * 1ms), opacity 180ms var(--ease-standard) calc(var(--fd, 0) * 1ms), translate .2s ease, box-shadow .2s ease; }
+.is-books .mc-slips.is-snap, .is-books .mc-slips.is-snap .mc-slip { transition: none; }
+.is-books .mc-slip[data-side="s"] { --fx: 72deg; }
+.is-books .mc-slip[data-side="s"]::after { inset: 0 0 auto 0; width: auto; height: 4px; border-radius: 10px 10px 0 0; }
+.is-books .mc-slip[data-side="s"] { padding: 17px 17px 16px; }
+@media (hover: hover) and (pointer: fine) {
+  .is-books .mc-slips.is-open .mc-slip:hover { translate: 0 -3px; box-shadow: inset 0 0 0 1px rgb(31 42 58 / 7%), 0 2px 4px rgb(0 0 0 / 18%), 0 26px 38px -22px rgb(0 0 0 / 75%); }
+  [data-theme="light"] .is-books .mc-slips.is-open .mc-slip:hover { box-shadow: inset 0 0 0 1px rgb(31 42 58 / 10%), 0 2px 4px rgb(14 20 32 / 10%), 0 24px 34px -22px rgb(14 20 32 / 45%); }
+}
+/* wide screens: the books in a row, the chosen one large in the middle, its slips in two columns
+   beside it (the first half of its classes on the left, as on the left-hand page) */
+@media (min-width: 1180px) {
+  .mc-fieldbooks.is-books { --fb-wide: 1; --side-w: 140px; --col-w: clamp(224px, 19vw, 244px); --book-w: calc(100% - 2 * var(--side-w) - 2 * var(--col-w) - 4 * var(--fb-gap)); }
+  .is-books .mc-slips, .is-books .mc-slips + .mc-slips { position: absolute; inset: 0; grid-area: auto; margin: 0; pointer-events: none; }
+  .is-books .mc-slips ul { position: absolute; inset: 0; display: block; }
+  .is-books .mc-slip { position: absolute; width: var(--col-w); }
+  .is-books .mc-slips.is-open .mc-slip { pointer-events: auto; }
+  .is-books .mc-slip[data-side="l"] { --fy: 80deg; transform-origin: 100% 50%; padding: 15px 19px 16px 17px; }
+  .is-books .mc-slip[data-side="l"]::after { inset: 0 0 0 auto; border-radius: 0 10px 10px 0; }
+  .is-books .mc-slip[data-side="r"] { --fy: -80deg; transform-origin: 0 50%; }
+  .is-books .mc-fbook[data-slot="center"] .mc-fbook-label { gap: 3px; padding-top: 8px; }
+  .is-books .mc-fbook[data-slot="center"] .mc-fbook-title { font-size: 26px; }
+}
 
 /* The Challenge uses the same label, glass, typography and signature rail.
  * Its responsive layout lives in arena.css. */
@@ -419,29 +456,24 @@ html[lang^="zh"] .mc-en-only { display: none; }
   .mc-results-stats small { display: none; }
   .mc-results-actions .btn { flex: 1 1 100%; justify-content: space-between; }
   .mc-bookrow { gap: 8px; margin-bottom: 22px; }
-  .mc-fbook { border-radius: 14px; }
   .mc-fbook .mc-art { aspect-ratio: 1 / 1; }
-  .mc-fbook-label { gap: 2px; padding: 8px 10px 10px; }
+  .mc-fbook-label { padding: 8px 4px 2px; }
   .mc-fbook small { font-size: 9px; letter-spacing: .06em; }
   .mc-fbook-title { font-size: 15px; }
-  .mc-fbook-n { display: grid; gap: 0; font-size: 11px; }
-  .mc-fbook-n i { display: none; }
-  .mc-fbook-n b { font-size: 14px; }
-  .mc-spread { grid-template-columns: 1fr; padding: 12px 12px 18px; border-radius: 18px; }
-  .mc-spread::before { inset: 4px 4px 7px; border-radius: 14px; }
-  .mc-page { min-height: 0; padding: 22px 20px; }
-  .mc-page-l { border-radius: 10px 10px 3px 3px; background: linear-gradient(180deg, #f6efe0 80%, #ebe1cc); }
-  .mc-page-r { border-radius: 3px 3px 10px 10px; background: linear-gradient(180deg, #e9dfc9, #f6efe0 14%); }
-  .mc-page-r::before { top: auto; bottom: -10px; right: 24px; height: 40px; }
-  .mc-toc-n { font-size: 24px; }
+  .mc-fbook-n { font-size: 11px; }
+  .is-books .mc-fbook[data-slot="center"] .mc-fbook-title { font-size: 18px; }
+  .is-books .mc-fbook:not([data-slot="center"]) .mc-fbook-title { font-size: 12.5px; }
+  .is-books .mc-fbook:not([data-slot="center"]) small { display: none; }
+  .is-books .mc-slips, .is-books .mc-slips + .mc-slips { margin-top: 18px; }
+  .mc-slips ul { gap: 12px; }
 }
 
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   .js .mc-in, .js .mc-r { animation: none; opacity: 1; translate: none; transition: none; }
   .mc-rail li, .mc-rail li.on, .mc-rail li.is-active { transition: none; translate: none; }
-  .mc-fbook, .mc-fbook:hover { transition: none; translate: none; }
-  .mc-spread.is-opening { animation: none; }
+  .mc-fbook-label { transition: none; }
+  .is-books .mc-slips, .is-books .mc-slip { transition: none !important; }
 }
 
 

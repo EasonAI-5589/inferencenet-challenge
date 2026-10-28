@@ -16,13 +16,13 @@
   <script>document.documentElement.classList.add("js")</script>
   <script src="../site.js?v=20261019-motion" defer></script>
   <link rel="stylesheet" href="../language.css">
-  <script src="../language.js?v=20261027-fields" defer></script>
+  <script src="../language.js?v=20261028-fieldspop" defer></script>
   <link rel="stylesheet" href="v2.css?v=20261027-copy2">
   <link rel="stylesheet" href="arena.css?v=20261028-cascade">
-  <link rel="stylesheet" href="metacase.css?v=20261027-fields3">
+  <link rel="stylesheet" href="metacase.css?v=20261028-fieldspop">
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
   <script src="v2.js?v=20261022-v2-ambient" defer></script>
-  <script type="module" src="metacase.js?v=20261028-failcase"></script>
+  <script type="module" src="metacase.js?v=20261028-fieldspop"></script>
   <script type="module" src="arena.js?v=20261028-cascade"></script>
 </head>
 <body class="v2-home mc-home">
@@ -207,7 +207,7 @@
     <div class="mc-head mc-r">
       <p class="mc-label mono"><span>04</span>The first fields</p>
       <h2 id="fields-title"><span>Three fields to start,</span> <em>sixteen classes of cases.</em></h2>
-      <p class="mc-sub">Economics, finance and social science come first: each offers public evidence, documented decisions and outputs that can be checked. Open a field's book to see its classes and how many tasks each holds.</p>
+      <p class="mc-sub">Economics, finance and social science come first: each offers public evidence, documented decisions and outputs that can be checked. Open a field's book to see its classes.</p>
     </div>
     <div class="mc-catalogue-meta mc-r">
       <div><b class="tnum" data-count="285">285</b><span>tasks</span></div>
@@ -216,13 +216,13 @@
     </div>
 <!-- fields:books:start (written by scripts/build-fields.mjs from metacase-harbor metacase/summary.json, v0.1) -->
 <div class="mc-fieldbooks" data-fieldbooks>
-  <div class="mc-bookrow" role="tablist" aria-label="Fields">
+  <div class="mc-bookrow" role="tablist" aria-label="Fields" data-tabs="manual">
     <button class="mc-fbook" type="button" role="tab" id="fb-tab-econ" aria-controls="fb-econ" aria-selected="true" style="--tc: var(--track-1)">
       <span class="mc-art" data-art="field" data-field="econ" aria-hidden="true"></span>
       <span class="mc-fbook-label">
         <small class="mono">Field 01</small>
         <b class="mc-fbook-title">Economics</b>
-        <span class="mc-fbook-n"><span><b class="tnum">152</b> <span>tasks</span></span> <i aria-hidden="true">·</i> <span><b class="tnum">5</b> <span>classes</span></span></span>
+        <span class="mc-fbook-n"><b class="tnum">5</b> <span>classes</span></span>
       </span>
     </button>
     <button class="mc-fbook" type="button" role="tab" id="fb-tab-fin" aria-controls="fb-fin" aria-selected="false" style="--tc: var(--track-2)">
@@ -230,7 +230,7 @@
       <span class="mc-fbook-label">
         <small class="mono">Field 02</small>
         <b class="mc-fbook-title">Finance</b>
-        <span class="mc-fbook-n"><span><b class="tnum">90</b> <span>tasks</span></span> <i aria-hidden="true">·</i> <span><b class="tnum">6</b> <span>classes</span></span></span>
+        <span class="mc-fbook-n"><b class="tnum">6</b> <span>classes</span></span>
       </span>
     </button>
     <button class="mc-fbook" type="button" role="tab" id="fb-tab-soc" aria-controls="fb-soc" aria-selected="false" style="--tc: var(--mc-violet)">
@@ -238,111 +238,105 @@
       <span class="mc-fbook-label">
         <small class="mono">Field 03</small>
         <b class="mc-fbook-title">Social science</b>
-        <span class="mc-fbook-n"><span><b class="tnum">43</b> <span>tasks</span></span> <i aria-hidden="true">·</i> <span><b class="tnum">5</b> <span>classes</span></span></span>
+        <span class="mc-fbook-n"><b class="tnum">5</b> <span>classes</span></span>
       </span>
     </button>
   </div>
-  <section class="mc-spread" id="fb-econ" role="tabpanel" aria-labelledby="fb-tab-econ" style="--tc: var(--track-1)">
-    <div class="mc-page mc-page-l">
-      <header class="mc-page-head"><small class="mono">Field 01</small><h3>Economics</h3><p><b class="tnum">152</b> <span>tasks in</span> <b class="tnum">5</b> <span>classes</span></p></header>
-      <article class="mc-entry" id="fb-econ-replication">
-        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>econ.replication</span><h4>Econometric replication</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">100</b> <span>tasks</span></span></header>
-        <span class="mc-toc-bar" style="--share: 0.658" aria-hidden="true"></span>
-        <p class="mc-entry-desc">Reproduce a published regression coefficient from the paper's own data.</p>
-      </article>
-      <article class="mc-entry" id="fb-econ-data">
-        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>econ.data</span><h4>Economic &amp; business data engineering</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">22</b> <span>tasks</span></span></header>
-        <span class="mc-toc-bar" style="--share: 0.145" aria-hidden="true"></span>
-        <p class="mc-entry-desc">SQL and dbt over banking, retail, e-commerce and wholesale supply-chain data.</p>
-      </article>
-    </div>
-    <div class="mc-page mc-page-r">
-      <article class="mc-entry" id="fb-econ-markets">
-        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>econ.markets</span><h4>Market movement forecasting</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">15</b> <span>tasks</span></span></header>
-        <span class="mc-toc-bar" style="--share: 0.099" aria-hidden="true"></span>
-        <p class="mc-entry-desc">Predict stock price movement from tweets and historical prices.</p>
-      </article>
-      <article class="mc-entry" id="fb-econ-monetary">
-        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>econ.monetary</span><h4>Monetary policy communication</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">15</b> <span>tasks</span></span></header>
-        <span class="mc-toc-bar" style="--share: 0.099" aria-hidden="true"></span>
-        <p class="mc-entry-desc">Classify the hawkish / dovish stance of FOMC statements and minutes.</p>
-      </article>
-      <article class="mc-entry" id="fb-econ-statistics">
-        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>econ.statistics</span><h4>Official statistics synthesis</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">0</b> <span>tasks</span></span></header>
-        <span class="mc-toc-bar" style="--share: 0.000" aria-hidden="true"></span>
-        <p class="mc-entry-desc">Gather and combine figures from statistical offices and international organisations into a structured answer.</p>
-      </article>
-    </div>
-  </section>
-  <section class="mc-spread" id="fb-fin" role="tabpanel" aria-labelledby="fb-tab-fin" style="--tc: var(--track-2)">
-    <div class="mc-page mc-page-l">
-      <header class="mc-page-head"><small class="mono">Field 02</small><h3>Finance</h3><p><b class="tnum">90</b> <span>tasks in</span> <b class="tnum">6</b> <span>classes</span></p></header>
-      <article class="mc-entry" id="fb-fin-nlp">
-        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>fin.nlp</span><h4>Financial text understanding</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">20</b> <span>tasks</span></span></header>
-        <span class="mc-toc-bar" style="--share: 0.222" aria-hidden="true"></span>
-        <p class="mc-entry-desc">Sentiment, news headlines, entity recognition and ESG issues in financial text.</p>
-      </article>
-      <article class="mc-entry" id="fb-fin-accounting">
-        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>fin.accounting</span><h4>Accounting close &amp; finance deliverables</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">15</b> <span>tasks</span></span></header>
-        <span class="mc-toc-bar" style="--share: 0.167" aria-hidden="true"></span>
-        <p class="mc-entry-desc">Month-end close remediation and accounting data pipelines.</p>
-      </article>
-      <article class="mc-entry" id="fb-fin-credit">
-        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>fin.credit</span><h4>Credit risk &amp; fraud</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">15</b> <span>tasks</span></span></header>
-        <span class="mc-toc-bar" style="--share: 0.167" aria-hidden="true"></span>
-        <p class="mc-entry-desc">Credit scoring and fraud detection from tabular borrower and transaction features.</p>
-      </article>
-    </div>
-    <div class="mc-page mc-page-r">
-      <article class="mc-entry" id="fb-fin-numeric">
-        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>fin.numeric</span><h4>Financial numerical reasoning</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">15</b> <span>tasks</span></span></header>
-        <span class="mc-toc-bar" style="--share: 0.167" aria-hidden="true"></span>
-        <p class="mc-entry-desc">Table and text numeric reasoning over financial reports and CFA-style questions.</p>
-      </article>
-      <article class="mc-entry" id="fb-fin-payments">
-        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>fin.payments</span><h4>Payments &amp; transaction data analysis</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">15</b> <span>tasks</span></span></header>
-        <span class="mc-toc-bar" style="--share: 0.167" aria-hidden="true"></span>
-        <p class="mc-entry-desc">Multi-step Python analysis over payment records, fee schedules and merchant data.</p>
-      </article>
-      <article class="mc-entry" id="fb-fin-filings">
-        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>fin.filings</span><h4>Financial research &amp; filings QA</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">10</b> <span>tasks</span></span></header>
-        <span class="mc-toc-bar" style="--share: 0.111" aria-hidden="true"></span>
-        <p class="mc-entry-desc">Analyst-style questions answered from SEC filings and company disclosures.</p>
-      </article>
-    </div>
-  </section>
-  <section class="mc-spread" id="fb-soc" role="tabpanel" aria-labelledby="fb-tab-soc" style="--tc: var(--mc-violet)">
-    <div class="mc-page mc-page-l">
-      <header class="mc-page-head"><small class="mono">Field 03</small><h3>Social science</h3><p><b class="tnum">43</b> <span>tasks in</span> <b class="tnum">5</b> <span>classes</span></p></header>
-      <article class="mc-entry" id="fb-soc-law">
-        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>soc.law</span><h4>Law &amp; regulation</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">20</b> <span>tasks</span></span></header>
-        <span class="mc-toc-bar" style="--share: 0.465" aria-hidden="true"></span>
-        <p class="mc-entry-desc">Chinese legal knowledge, statute recall and case-outcome prediction.</p>
-      </article>
-      <article class="mc-entry" id="fb-soc-society">
-        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>soc.society</span><h4>Society, education &amp; survey data</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">12</b> <span>tasks</span></span></header>
-        <span class="mc-toc-bar" style="--share: 0.279" aria-hidden="true"></span>
-        <p class="mc-entry-desc">Education, survey and social-media data analysis.</p>
-      </article>
-    </div>
-    <div class="mc-page mc-page-r">
-      <article class="mc-entry" id="fb-soc-business">
-        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>soc.business</span><h4>Business operations &amp; CRM</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">6</b> <span>tasks</span></span></header>
-        <span class="mc-toc-bar" style="--share: 0.140" aria-hidden="true"></span>
-        <p class="mc-entry-desc">Marketing, sales and customer-support data in CRM and support tools.</p>
-      </article>
-      <article class="mc-entry" id="fb-soc-hr">
-        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>soc.hr</span><h4>HR &amp; organisational analytics</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">5</b> <span>tasks</span></span></header>
-        <span class="mc-toc-bar" style="--share: 0.116" aria-hidden="true"></span>
-        <p class="mc-entry-desc">Training effectiveness and procurement review, recruiting and workforce data pipelines.</p>
-      </article>
-      <article class="mc-entry" id="fb-soc-psychology">
-        <header class="mc-entry-head"><span class="mc-call mono" data-no-translate>soc.psychology</span><h4>Psychology &amp; cognitive science</h4><span class="mc-entry-n"><b class="mc-toc-n tnum">0</b> <span>tasks</span></span></header>
-        <span class="mc-toc-bar" style="--share: 0.000" aria-hidden="true"></span>
-        <p class="mc-entry-desc">Data-driven analysis tasks from psychology and cognitive-science papers.</p>
-      </article>
-    </div>
-  </section>
+  <div class="mc-slips" id="fb-econ" role="tabpanel" aria-labelledby="fb-tab-econ" style="--tc: var(--track-1)">
+    <p class="mc-slips-head"><small class="mono">Field 01</small> <b>Economics</b></p>
+    <ul>
+      <li class="mc-slip" id="fb-econ-replication">
+        <span class="mc-call mono" data-no-translate>econ.replication</span>
+        <b class="mc-slip-name">Econometric replication</b>
+        <span class="mc-slip-desc">Reproduce a published regression coefficient from the paper's own data.</span>
+      </li>
+      <li class="mc-slip" id="fb-econ-data">
+        <span class="mc-call mono" data-no-translate>econ.data</span>
+        <b class="mc-slip-name">Economic &amp; business data engineering</b>
+        <span class="mc-slip-desc">SQL and dbt over banking, retail, e-commerce and wholesale supply-chain data.</span>
+      </li>
+      <li class="mc-slip" id="fb-econ-markets">
+        <span class="mc-call mono" data-no-translate>econ.markets</span>
+        <b class="mc-slip-name">Market movement forecasting</b>
+        <span class="mc-slip-desc">Predict stock price movement from tweets and historical prices.</span>
+      </li>
+      <li class="mc-slip" id="fb-econ-monetary">
+        <span class="mc-call mono" data-no-translate>econ.monetary</span>
+        <b class="mc-slip-name">Monetary policy communication</b>
+        <span class="mc-slip-desc">Classify the hawkish / dovish stance of FOMC statements and minutes.</span>
+      </li>
+      <li class="mc-slip" id="fb-econ-statistics">
+        <span class="mc-call mono" data-no-translate>econ.statistics</span>
+        <b class="mc-slip-name">Official statistics synthesis</b>
+        <span class="mc-slip-desc">Gather and combine figures from statistical offices and international organisations into a structured answer.</span>
+      </li>
+    </ul>
+  </div>
+  <div class="mc-slips" id="fb-fin" role="tabpanel" aria-labelledby="fb-tab-fin" style="--tc: var(--track-2)">
+    <p class="mc-slips-head"><small class="mono">Field 02</small> <b>Finance</b></p>
+    <ul>
+      <li class="mc-slip" id="fb-fin-nlp">
+        <span class="mc-call mono" data-no-translate>fin.nlp</span>
+        <b class="mc-slip-name">Financial text understanding</b>
+        <span class="mc-slip-desc">Sentiment, news headlines, entity recognition and ESG issues in financial text.</span>
+      </li>
+      <li class="mc-slip" id="fb-fin-accounting">
+        <span class="mc-call mono" data-no-translate>fin.accounting</span>
+        <b class="mc-slip-name">Accounting close &amp; finance deliverables</b>
+        <span class="mc-slip-desc">Month-end close remediation and accounting data pipelines.</span>
+      </li>
+      <li class="mc-slip" id="fb-fin-credit">
+        <span class="mc-call mono" data-no-translate>fin.credit</span>
+        <b class="mc-slip-name">Credit risk &amp; fraud</b>
+        <span class="mc-slip-desc">Credit scoring and fraud detection from tabular borrower and transaction features.</span>
+      </li>
+      <li class="mc-slip" id="fb-fin-numeric">
+        <span class="mc-call mono" data-no-translate>fin.numeric</span>
+        <b class="mc-slip-name">Financial numerical reasoning</b>
+        <span class="mc-slip-desc">Table and text numeric reasoning over financial reports and CFA-style questions.</span>
+      </li>
+      <li class="mc-slip" id="fb-fin-payments">
+        <span class="mc-call mono" data-no-translate>fin.payments</span>
+        <b class="mc-slip-name">Payments &amp; transaction data analysis</b>
+        <span class="mc-slip-desc">Multi-step Python analysis over payment records, fee schedules and merchant data.</span>
+      </li>
+      <li class="mc-slip" id="fb-fin-filings">
+        <span class="mc-call mono" data-no-translate>fin.filings</span>
+        <b class="mc-slip-name">Financial research &amp; filings QA</b>
+        <span class="mc-slip-desc">Analyst-style questions answered from SEC filings and company disclosures.</span>
+      </li>
+    </ul>
+  </div>
+  <div class="mc-slips" id="fb-soc" role="tabpanel" aria-labelledby="fb-tab-soc" style="--tc: var(--mc-violet)">
+    <p class="mc-slips-head"><small class="mono">Field 03</small> <b>Social science</b></p>
+    <ul>
+      <li class="mc-slip" id="fb-soc-law">
+        <span class="mc-call mono" data-no-translate>soc.law</span>
+        <b class="mc-slip-name">Law &amp; regulation</b>
+        <span class="mc-slip-desc">Chinese legal knowledge, statute recall and case-outcome prediction.</span>
+      </li>
+      <li class="mc-slip" id="fb-soc-society">
+        <span class="mc-call mono" data-no-translate>soc.society</span>
+        <b class="mc-slip-name">Society, education &amp; survey data</b>
+        <span class="mc-slip-desc">Education, survey and social-media data analysis.</span>
+      </li>
+      <li class="mc-slip" id="fb-soc-business">
+        <span class="mc-call mono" data-no-translate>soc.business</span>
+        <b class="mc-slip-name">Business operations &amp; CRM</b>
+        <span class="mc-slip-desc">Marketing, sales and customer-support data in CRM and support tools.</span>
+      </li>
+      <li class="mc-slip" id="fb-soc-hr">
+        <span class="mc-call mono" data-no-translate>soc.hr</span>
+        <b class="mc-slip-name">HR &amp; organisational analytics</b>
+        <span class="mc-slip-desc">Training effectiveness and procurement review, recruiting and workforce data pipelines.</span>
+      </li>
+      <li class="mc-slip" id="fb-soc-psychology">
+        <span class="mc-call mono" data-no-translate>soc.psychology</span>
+        <b class="mc-slip-name">Psychology &amp; cognitive science</b>
+        <span class="mc-slip-desc">Data-driven analysis tasks from psychology and cognitive-science papers.</span>
+      </li>
+    </ul>
+  </div>
 </div>
 <!-- fields:books:end -->
   </div>

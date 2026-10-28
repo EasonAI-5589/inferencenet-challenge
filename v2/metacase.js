@@ -11,7 +11,7 @@ const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const ease = x => { const p = clamp(x); return p * p * (3 - 2 * p); };
-const V = '?v=20261028-failcase';
+const V = '?v=20261028-fieldspop';
 
 /* ---- layout helpers ---- */
 const siteHeader = $('.site-header'), subnav = $('.mc-subnav');
@@ -164,7 +164,7 @@ import('./mc-stage.js' + V).then(({ createStage }) => {
     build: () => import('./metacase-run.js' + V).then(m => m.createRun({ reduce, safe: safeArea($('.mc-scene-pin', rules)), onProject: list => list.forEach((s, i) => place(runTags[i], s)) })) });
 
   // card vignettes
-  $$('.mc-art').forEach(el => stage.add({ el, near: 1, build: () => import('./metacase-cards.js' + V).then(m => m.createCard(el.dataset.art, el)) }));
+  $$('.mc-art').forEach(el => stage.add({ el, near: 1, order: bookDepth(el), build: () => import('./metacase-cards.js' + V).then(m => m.createCard(el.dataset.art, el)) }));
 
   // the courier: on its own canvas, while the Metacase travels from shelf to desk
   if (!reduce) {
@@ -271,37 +271,159 @@ function countUp(node) {
   requestAnimationFrame(step);
 }
 
-/* ---- 04: the field books. Choosing a field opens its book on two pages that list all of its
- * classes, each with its number of tasks. The books are tabs with the usual keys: arrows (Home,
- * End) move between them. Without this script every book's pages are simply shown, one after
- * the other. ---- */
+/* ---- 04: the field books. With this script the three books share one stage: the chosen field's
+ * book stands open in the middle, the largest, and its classes rise out of its pages as paper
+ * slips that settle in a column on either side of it (below 1180px, in a list under the books);
+ * the other two wait at the sides, smaller and dimmer. Choosing one of them brings it to the
+ * middle, the books trading places as on a carousel, while the slips on show fold back into their
+ * own book. Every move starts from wherever things are, so a quick second choice simply turns
+ * them round. The books are tabs with the usual keys: arrows (Home, End) move between them.
+ * Without the script every field's classes are simply listed under its name. ---- */
 const fieldbooks = $('[data-fieldbooks]');
+// The 3D stage draws the field books back to front: the one crossing behind, those at the sides, the chosen one.
+const bookDepth = el => {
+  const book = el.closest('.mc-fbook');
+  return book ? () => (book.classList.contains('is-crossing') ? 1 : book.dataset.slot === 'center' ? 3 : 2) : undefined;
+};
 if (fieldbooks) {
+  const row = $('.mc-bookrow', fieldbooks), books = $$('[role="tab"]', row);
+  const panels = books.map(tab => $('#' + tab.getAttribute('aria-controls')));
+  const N = books.length, PAGES = [.56, .44]; // where a book's open pages are in its picture
+  const MOVE = 560, EASE = 'cubic-bezier(0.05, 0.7, 0.1, 1)'; // --duration-emphasized, --ease-emphasized
+  const RISE = 260, ROW = 70, GAP = 14; // slips rise once their book is nearly in the middle, row after row
+  const TILT = [-.8, .5, -.4, .7, -.5, .35]; // slips set down by hand, not quite square
+  let chosen = Math.max(0, books.findIndex(tab => tab.getAttribute('aria-selected') === 'true'));
+  let seen = reduce, flights = [];
   fieldbooks.classList.add('is-books');
-  const replay = (el, name) => { if (reduce) return; el.classList.remove(name); void el.offsetWidth; el.classList.add(name); };
-  const tablist = (list, show) => {
-    const tabs = $$('[role="tab"]', list);
-    const select = (i, animate = true) => tabs.forEach((tab, k) => {
-      tab.setAttribute('aria-selected', String(k === i)); tab.tabIndex = k === i ? 0 : -1;
-      show(tab, k === i, animate);
-    });
-    tabs.forEach((tab, i) => {
-      tab.addEventListener('click', () => select(i));
-      tab.addEventListener('keydown', event => {
-        const to = { ArrowRight: i + 1, ArrowDown: i + 1, ArrowLeft: i - 1, ArrowUp: i - 1, Home: 0, End: tabs.length - 1 }[event.key];
-        if (to === undefined) return;
-        event.preventDefault();
-        const k = (to + tabs.length) % tabs.length;
-        tabs[k].focus(); select(k);
+  panels.forEach(panel => { panel.tabIndex = 0; });
+  const slotOf = k => (k === chosen ? 'center' : (k - chosen + N) % N === 1 ? 'right' : 'left');
+  // positions in the stage come from the layout, which the books' flights leave alone
+  const at = el => { let x = 0, y = 0; for (let n = el; n && n !== fieldbooks; n = n.offsetParent) { x += n.offsetLeft; y += n.offsetTop; } return { x, y }; };
+  const art = book => $('.mc-art', book);
+  const pages = book => { const a = art(book), p = at(a); return { x: p.x + a.offsetWidth * PAGES[0], y: p.y + a.offsetHeight * PAGES[1] }; };
+  const halves = panel => { const items = $$('.mc-slip', panel), half = Math.ceil(items.length / 2); return [items.slice(0, half), items.slice(half)]; };
+  const tall = list => list.reduce((sum, li) => sum + li.offsetHeight, 0) + GAP * Math.max(0, list.length - 1);
+
+  // Lay out the stage for the current choice: the books in their slots, every field's slips in
+  // their places, and for each slip the way back into its own book (--ox, --oy).
+  function place() {
+    const css = getComputedStyle(fieldbooks), wide = css.getPropertyValue('--fb-wide').trim() === '1';
+    const gap = parseFloat(css.getPropertyValue('--fb-gap')) || 22, centre = books[chosen];
+    const columns = panels.map(halves);
+    if (wide) panels.forEach((panel, f) => columns[f].forEach((list, c) => list.forEach(li => { li.dataset.side = c ? 'r' : 'l'; })));
+    else panels.forEach(panel => $$('.mc-slip', panel).forEach(li => { li.dataset.side = 's'; li.style.left = li.style.top = ''; li.style.removeProperty('--tilt'); }));
+    let H = centre.offsetHeight;
+    if (wide) columns.forEach(pair => pair.forEach(list => { H = Math.max(H, tall(list)); }));
+    H = Math.round(H + (wide ? 48 : 0));
+    row.style.height = `${H}px`;
+    // the books stand on the line through the middle of the chosen book's picture
+    const top = Math.round((H - centre.offsetHeight) / 2), axis = top + art(centre).offsetTop + art(centre).offsetHeight / 2;
+    books.forEach(book => { book.style.top = `${book === centre ? top : Math.round(axis - art(book).offsetTop - art(book).offsetHeight / 2)}px`; });
+    panels.forEach((panel, f) => {
+      const o = pages(books[f]), items = $$('.mc-slip', panel);
+      const hinge = (li, x, y, delay) => {
+        li.style.setProperty('--ox', `${Math.round(o.x - x)}px`);
+        li.style.setProperty('--oy', `${Math.round(o.y - y)}px`);
+        li.style.setProperty('--d', delay);
+      };
+      if (wide) columns[f].forEach((list, c) => {
+        let y = (H - tall(list)) / 2;
+        list.forEach((li, r) => {
+          const w = li.offsetWidth, h = li.offsetHeight, x = c ? centre.offsetLeft + centre.offsetWidth + gap : centre.offsetLeft - gap - w;
+          li.style.left = `${Math.round(x)}px`; li.style.top = `${Math.round(y)}px`;
+          li.style.setProperty('--tilt', `${TILT[(r * 2 + c) % TILT.length]}deg`);
+          hinge(li, c ? x : x + w, y + h / 2, r * ROW + c * 35);
+          y += h + GAP;
+        });
       });
+      else items.forEach((li, i) => { const p = at(li); hinge(li, p.x + li.offsetWidth / 2, p.y, Math.min(i, 6) * 55); });
+      items.forEach((li, i) => li.style.setProperty('--fd', (items.length - 1 - i) * 18));
     });
-    select(Math.max(0, tabs.findIndex(tab => tab.getAttribute('aria-selected') === 'true')), false);
+  }
+
+  // Bring field `next` to the middle. The books fly from where they are to their new slots (FLIP);
+  // the one going from one side to the other passes behind the chosen one, a little smaller.
+  function choose(next, animate = true) {
+    const fly = animate && !reduce && books.every(book => book.dataset.slot);
+    const before = fly ? books.map(book => book.getBoundingClientRect()) : null, was = books.map(book => book.dataset.slot);
+    flights.forEach(flight => flight.cancel()); flights = [];
+    chosen = next;
+    books.forEach((tab, k) => {
+      const on = k === next, slot = slotOf(k);
+      tab.setAttribute('aria-selected', String(on)); tab.tabIndex = on ? 0 : -1;
+      tab.classList.toggle('is-crossing', fly && was[k] !== 'center' && slot !== 'center' && slot !== was[k]);
+      tab.dataset.slot = slot;
+    });
+    place();
+    panels.forEach((panel, k) => {
+      panel.classList.toggle('is-current', k === next);
+      if (k !== next) panel.classList.remove('is-open');
+    });
+    if (seen) rise(panels[next], animate ? RISE : 0);
+    if (before) books.forEach((tab, k) => {
+      const a = before[k], b = tab.getBoundingClientRect();
+      const dx = a.left - b.left, dy = a.top - b.top, sx = a.width / b.width, sy = a.height / b.height;
+      if (Math.abs(dx) < 1 && Math.abs(dy) < 1 && Math.abs(sx - 1) < .01) return;
+      const from = { transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})` }, to = { transform: 'none' };
+      const frames = tab.classList.contains('is-crossing')
+        ? [from, { offset: .5, transform: `translate(${dx / 2}px, ${dy / 2 - 24}px) scale(${(sx + 1) * .38}, ${(sy + 1) * .38})` }, to]
+        : [from, to];
+      const move = tab.animate(frames, { duration: MOVE, easing: EASE });
+      move.finished.then(() => tab.classList.remove('is-crossing'), () => {});
+      // its caption changes size with its slot: hidden in flight, it fades in as the book arrives
+      flights.push(move, $('.mc-fbook-label', tab).animate([{ opacity: 0 }, { opacity: 0, offset: .4 }, { opacity: 1 }], { duration: MOVE }));
+    });
+    stage?.request();
+  }
+  function rise(panel, delay) {
+    if (panel.classList.contains('is-open')) return;
+    // slips folded away out of sight start from the book in the middle, not from where it stood
+    const first = $('.mc-slip', panel);
+    if (first && getComputedStyle(first).opacity === '0') { panel.classList.add('is-snap'); void panel.offsetWidth; panel.classList.remove('is-snap'); }
+    panel.style.setProperty('--rise', `${delay}ms`);
+    panel.classList.add('is-open');
+  }
+
+  // a link to a field or to one of its classes (#fb-fin, #fb-fin-nlp) brings that field's book to the middle
+  const linked = () => {
+    let id = '';
+    try { id = decodeURIComponent(location.hash.slice(1)); } catch { /* not a field */ }
+    const target = id && document.getElementById(id);
+    return target ? books.findIndex((tab, i) => tab === target || panels[i].contains(target)) : -1;
   };
-  tablist($('.mc-bookrow', fieldbooks), (tab, on, animate) => {
-    const spread = $('#' + tab.getAttribute('aria-controls'));
-    spread.hidden = !on;
-    if (on && animate) replay(spread, 'is-opening');
+  if (linked() >= 0) chosen = linked();
+  addEventListener('hashchange', () => { const k = linked(); if (k >= 0 && k !== chosen) choose(k); });
+
+  books.forEach((tab, i) => {
+    tab.addEventListener('click', () => { if (i !== chosen) choose(i); });
+    tab.addEventListener('keydown', event => {
+      const to = { ArrowRight: i + 1, ArrowDown: i + 1, ArrowLeft: i - 1, ArrowUp: i - 1, Home: 0, End: N - 1 }[event.key];
+      if (to === undefined) return;
+      event.preventDefault();
+      const k = (to + N) % N;
+      books[k].focus();
+      if (k !== chosen) choose(k);
+    });
   });
+  // the first layout is not animated
+  panels.forEach(panel => panel.classList.add('is-snap'));
+  choose(chosen, false);
+  void fieldbooks.offsetWidth;
+  panels.forEach(panel => panel.classList.remove('is-snap'));
+  // measured again whenever the stage or a slip changes size (the window, the fonts, the language)
+  let queued = 0;
+  const watch = new ResizeObserver(() => { if (!queued) queued = requestAnimationFrame(() => { queued = 0; place(); stage?.request(); }); });
+  [fieldbooks, ...$$('.mc-slip, .mc-fbook-label', fieldbooks)].forEach(el => watch.observe(el));
+  // the slips first rise when the stage comes into view
+  if (!seen) {
+    const reveal = new IntersectionObserver(entries => {
+      if (!entries.some(entry => entry.isIntersecting)) return;
+      reveal.disconnect();
+      seen = true;
+      rise(panels[chosen], 160);
+    }, { threshold: .35 });
+    reveal.observe(row);
+  }
 }
 
 // cards catch a light where the pointer is
