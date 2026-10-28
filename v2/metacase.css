@@ -414,15 +414,15 @@ html:not(.js) .mc-fbook .mc-art { display: none; }
 .mc-book .mc-board-page .mc-page { box-shadow: -1px 0 0 #e4d8bf, -2px 0 0 #f6efe0, -3px 0 0 #d9ccb1, -4px 0 0 #f1e8d4; }
 .mc-book .mc-page::before { inset: 11px; }
 .mc-book .mc-call { font-size: 12px; }
-.mc-book .mc-page-name { margin-top: 18px; font-size: clamp(21px, 8.6cqi, 29px); line-height: 1.16; letter-spacing: -.022em; text-wrap: balance; }
+.mc-book .mc-page-name { margin-top: 20cqi; font-size: clamp(21px, 8.6cqi, 29px); line-height: 1.16; letter-spacing: -.022em; text-wrap: balance; }
 .mc-book .mc-page-name::after { content: ""; display: block; width: 58px; height: 9px; margin-top: 18px; opacity: .9;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 58 9'%3E%3Cpath d='M0 4.5h22M36 4.5h22' stroke='%23c19d55' stroke-width='1'/%3E%3Cpath d='M29 .8l3.7 3.7L29 8.2l-3.7-3.7z' fill='%23c19d55'/%3E%3C/svg%3E") no-repeat; }
 .mc-book .mc-page-desc { margin-top: 16px; font-size: clamp(15px, 5cqi, 17px); line-height: 1.55; }
 .mc-book .mc-folio { font-size: 12px; }
 /* a class still to come: an unwritten page, pencilled, with faint ruled lines */
-.mc-book .mc-page.is-pending { background: repeating-linear-gradient(180deg, transparent 0 30px, rgb(94 110 140 / 16%) 30px 31px) 0 46% / 100% 52% no-repeat,
+.mc-book .mc-page.is-pending { background: repeating-linear-gradient(180deg, transparent 0 30px, rgb(94 110 140 / 16%) 30px 31px) 50% 88% / calc(100% - 44px) 34% no-repeat,
   linear-gradient(90deg, rgb(92 66 22 / 24%), rgb(92 66 22 / 6%) 5%, transparent 12%), linear-gradient(180deg, #f9f3e6, #f2e8d3); }
-.mc-book .mc-page.is-pending .mc-page-name { margin-top: 40px; font-weight: 450; font-size: clamp(19px, 7.4cqi, 25px); }
+.mc-book .mc-page.is-pending .mc-page-name { margin-top: calc(20cqi + 18px); font-weight: 450; font-size: clamp(19px, 7.4cqi, 25px); } /* level with a named page's heading */
 .mc-book .mc-page.is-pending .mc-page-name::after { opacity: .35; }
 .mc-book .mc-page.is-blank { height: 100%; }
 /* the closed cover: the field's colour, gilt hairlines, its name and emblem */
@@ -465,16 +465,16 @@ html:not(.js) .mc-fbook .mc-art { display: none; }
 }
 /* narrow screens: one page at a time, the books in a row above it, the buttons under it */
 @media (max-width: 899px) {
-  .mc-fieldbooks.is-books { --bd: 8px; --gut: 5px; --pw: min(86vw, 360px); --book-w: calc(var(--gut) + var(--pw) + var(--bd)); --side-w: clamp(84px, 27cqw, 128px); }
+  .mc-fieldbooks.is-books { --bd: 8px; --gut: 5px; --pw: min(86vw, 360px); --ph: calc(var(--pw) * 1.2); --book-w: calc(var(--gut) + var(--pw) + var(--bd)); --side-w: clamp(84px, 27cqw, 128px); }
   .is-books .mc-fbook[data-slot="center"] { left: calc(var(--side-w) + 8px); width: calc(100% - 2 * var(--side-w) - 16px); }
   .is-books .mc-fbook[data-slot="center"] .mc-art { display: none; }
   .is-books .mc-fbook[data-slot="center"] .mc-fbook-label { padding: 0; }
   .is-books .mc-fbook .mc-art { aspect-ratio: 1 / 1; }
-  .is-books .mc-flip, .is-books .mc-flip + .mc-flip { gap: 28px; }
+  .is-books .mc-flip, .is-books .mc-flip + .mc-flip { gap: 32px; }
   .mc-case { left: 0; width: 100%; border-radius: 3px 8px 8px 3px; }
   .mc-leaf { left: var(--gut); }
   .mc-leaf.is-cover { left: 0; width: 100%; }
-  .mc-ribbon { left: calc(var(--gut) + 30px); }
+  .mc-ribbon { left: auto; right: 36px; height: 30px; }
 }
 
 /* The Challenge uses the same label, glass, typography and signature rail.

@@ -404,10 +404,12 @@ if (fieldbooks) {
     const order = [];
     if (s > from) for (let i = from; i < s; i++) order.push(i); else for (let i = from - 1; i >= s; i--) order.push(i);
     const now = performance.now();
+    let last = now;
     order.forEach(i => {
       const leaf = b.leaves[i], busy = leaf.classList.contains('is-turning');
       const start = together || busy ? now : Math.max(now, b.next);
       if (!together) b.next = start + dur / 2;
+      last = Math.max(last, start);
       leaf.style.setProperty('--delay', `${Math.round(start - now)}ms`);
       leaf.style.zIndex = 40 + ++b.z;
       if (!busy) { leaf.classList.remove('is-turning'); void leaf.offsetWidth; }
@@ -417,7 +419,7 @@ if (fieldbooks) {
       leaf.classList.toggle('is-turned', i < s);
     });
     clearTimeout(b.settle);
-    b.settle = setTimeout(() => lay(b), Math.max(0, b.next - now) + dur + 80);
+    b.settle = setTimeout(() => lay(b), last - now + dur + 80);
     sync(b, announce);
   }
   const step = (b, dir) => { if (b.s) turnTo(b, Math.max(1, Math.min(b.leaves.length, b.s + dir)), { announce: true }); else if (dir > 0) turnTo(b, 1, { announce: true }); };
