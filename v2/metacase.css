@@ -307,11 +307,11 @@ html[lang^="zh"] .mc-en-only { display: none; }
 
 /* ---------- 04 · the field books (scripts/build-fields.mjs writes them; metacase.js stages them) ----------
    Each field is a toy book on a plinth, drawn by the shared stage in its colour like every other
-   book on the page, and each of its classes is a page of cream, gilt-ruled stock: its call
-   number, its name and one line on what it asks of an agent. With the script the books share one
-   stage, as on a carousel, and the chosen field is read as an HTML book standing open in the
-   middle: two pages a spread on wide screens, one page at a time below 900px. Without the script
-   every field's pages are simply listed under its name. */
+   book on the page, and its six class slots are printed three to a page across an open two-page
+   spread of cream, gilt-ruled stock: call number, class name and one line on what it asks of an
+   agent. With the script the three books share one stage, as on a carousel, and the chosen field
+   is read as an HTML book standing open in the middle, showing all six classes at once without
+   manual page-flipping. Without the script every field's classes are simply listed under its name. */
 .mc-bookrow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 24px); margin: 0 0 30px; }
 .mc-fbook { position: relative; display: grid; grid-template-rows: auto 1fr; padding: 0; border: 0; border-radius: 18px; background: none;
   color: var(--text-primary); font: inherit; text-align: center; cursor: pointer; -webkit-tap-highlight-color: transparent; }
@@ -329,7 +329,7 @@ html:not(.js) .mc-fbook .mc-art { display: none; }
   border-radius: 3px 8px 8px 3px; background: linear-gradient(90deg, color-mix(in oklab, var(--tc) 62%, #1f2a3a) 0 10%, var(--tc) 10%);
   box-shadow: inset -4px 0 0 #f6efe0, inset -6px 0 0 #ddd3bf, 0 16px 26px -14px rgb(0 0 0 / 65%); }
 
-/* the pages: cream stock with a gilt rule like the printed cards in chapter 01 (listed, without the script) */
+/* the class cards: cream stock with a gilt rule like the printed cards in chapter 01 (listed, without the script) */
 .mc-flip + .mc-flip { margin-top: 32px; }
 .mc-flip-head { display: flex; align-items: baseline; gap: 10px; margin: 0 0 14px; }
 .mc-flip-head small { color: var(--tc); font-size: 11px; letter-spacing: .1em; }
@@ -341,21 +341,19 @@ html:not(.js) .mc-fbook .mc-art { display: none; }
 .mc-page .mc-call { position: relative; color: color-mix(in oklab, var(--tc) 62%, #1f2a3a); font-size: 11.5px; letter-spacing: .03em; text-transform: none; }
 .mc-page-name { position: relative; font-size: 17px; font-weight: 700; line-height: 1.25; letter-spacing: -.015em; }
 .mc-page-desc { position: relative; font-size: 14px; line-height: 1.55; color: #4b5563; }
-.mc-folio { position: relative; margin-top: auto; padding-top: 6px; color: #8b8270; font-size: 11px; text-align: center; }
-.mc-folio .mono { font-size: 11px; letter-spacing: .12em; }
 .mc-page.is-pending .mc-page-name { color: #8d939d; font-style: italic; font-weight: 500; }
 .mc-page.is-pending .mc-page-desc { color: #8d939d; font-style: italic; }
 [data-theme="light"] .mc-page { box-shadow: inset 0 0 0 1px rgb(31 42 58 / 10%), 0 1px 2px rgb(14 20 32 / 8%), 0 16px 28px -20px rgb(14 20 32 / 40%); }
 
 /* the stage: the chosen field's label above its open book, the other two books level with the
-   book's middle (metacase.js measures; the CSS gives the sizes). A page is 4:3 tall. */
-.mc-fieldbooks.is-books { --g: 18px; --btn: 44px; --bd: 10px; --gut: 0px;
-  --side-w: clamp(96px, 12cqw, 168px);
-  --pw: clamp(220px, min((100cqw - 2 * var(--side-w) - 2 * var(--btn) - 4 * var(--g)) / 2 - var(--bd), (100svh - 330px) * .75), 352px);
-  --ph: calc(var(--pw) * 4 / 3); --book-w: calc(2 * (var(--pw) + var(--bd))); --book-h: calc(var(--ph) + 2 * var(--bd));
-  --art-w: calc((var(--pw) + var(--bd)) * 1.3);
+   book's middle (metacase.js measures; the CSS gives the sizes). */
+.mc-fieldbooks.is-books { --g: 22px; --bd: 10px; --gut: 0px;
+  --side-w: clamp(100px, 12cqw, 164px);
+  --pw: clamp(250px, (100cqw - 2 * var(--side-w) - 2 * var(--g)) / 2 - var(--bd), 392px);
+  --ph: clamp(440px, calc(var(--pw) * 1.22), 484px); --book-w: calc(2 * (var(--pw) + var(--bd))); --book-h: calc(var(--ph) + 2 * var(--bd));
+  --art-w: calc((var(--pw) + var(--bd)) * 1.25);
   position: relative; container-type: inline-size; }
-.is-books .mc-bookrow { position: relative; display: block; height: 680px; margin: 0; }
+.is-books .mc-bookrow { position: relative; display: block; height: 620px; margin: 0; }
 .is-books .mc-fbook { position: absolute; top: 0; left: calc(50% - var(--side-w) / 2); z-index: 2; width: var(--side-w); transform-origin: 0 0; }
 .is-books .mc-fbook[data-slot="center"] { left: calc(50% - var(--art-w) / 2); width: var(--art-w); z-index: 3; grid-template-rows: auto auto; }
 .is-books .mc-fbook[data-slot="left"] { left: 0; }
@@ -373,27 +371,27 @@ html:not(.js) .mc-fbook .mc-art { display: none; }
 @media (hover: hover) and (pointer: fine) { .is-books .mc-fbook:not([data-slot="center"]):hover .mc-fbook-label { color: var(--text-primary); } }
 
 /* the open book: the tabpanel of the chosen field, over its picture */
-.is-books .mc-flip, .is-books .mc-flip + .mc-flip { position: absolute; top: var(--book-top, 70px); left: 50%; z-index: 5; display: grid; justify-items: center; gap: 30px;
+.is-books .mc-flip, .is-books .mc-flip + .mc-flip { position: absolute; top: var(--book-top, 70px); left: 50%; z-index: 5; display: grid; justify-items: center;
   width: var(--book-w); margin: 0; translate: -50% 0; border-radius: 12px; outline: none; }
 .is-books .mc-flip:not(.is-shown) { visibility: hidden; pointer-events: none; }
 .is-books .mc-flip:focus-visible { outline: 2px solid var(--tc); outline-offset: 10px; }
 .is-books .mc-pages { display: none; }
 .mc-book { --board: color-mix(in oklab, var(--tc) 58%, #0f1522); --dur: 650ms; position: relative; width: var(--book-w); height: var(--book-h);
-  cursor: pointer; touch-action: pan-y; user-select: none; -webkit-user-select: none; transition: translate var(--dur) var(--ease-standard); }
-/* the back board under the right-hand pages (the left-hand board is the inside of the cover) */
+  transition: translate var(--dur) var(--ease-standard); }
+/* the back board under the right-hand page (the left-hand board is the inside of the cover) */
 .mc-case { position: absolute; top: 0; bottom: 0; left: 50%; width: calc(var(--pw) + var(--bd)); border-radius: 2px 7px 7px 2px;
   background: linear-gradient(90deg, rgb(0 0 0 / 22%), transparent 6%), var(--board); box-shadow: 0 34px 50px -30px rgb(0 0 0 / 80%), 0 2px 5px rgb(0 0 0 / 30%); }
-.mc-ribbon { position: absolute; z-index: 5; left: calc(50% + 38px); top: calc(100% - 14px); width: 11px; height: 38px;
+.mc-ribbon { position: absolute; z-index: 5; left: calc(50% + 38px); top: calc(100% - 14px); width: 11px; height: 36px; pointer-events: none;
   background: linear-gradient(90deg, #7d1a20, #b8323a 45%, #93242b); clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 78%, 0 100%); }
-/* a leaf turns about the spine; its two faces are two pages, back to back */
+/* the cover leaf turns about the spine to open the left-hand page */
 .mc-leaf { position: absolute; top: var(--bd); left: 50%; width: var(--pw); height: var(--ph); transform-origin: 0 50%; transform-style: preserve-3d;
-  transform: perspective(2200px) rotateY(0deg); transition: transform var(--dur) cubic-bezier(.45, .05, .3, 1) var(--delay, 0ms); pointer-events: none; }
+  transform: perspective(2200px) rotateY(0deg); transition: transform var(--dur) cubic-bezier(.45, .05, .3, 1) var(--delay, 0ms); }
 .mc-leaf.is-turned { transform: perspective(2200px) rotateY(-180deg); }
 .mc-leaf.is-cover { top: 0; width: calc(var(--pw) + var(--bd)); height: var(--book-h); }
-.mc-leaf.is-gone { visibility: hidden; }
+.mc-leaf.is-gone { visibility: hidden; pointer-events: none; }
 .mc-face { position: absolute; inset: 0; overflow: hidden; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .mc-face.is-back { transform: rotateY(180deg); }
-/* the shadow sweeping a page as it lifts (the front darkens, then the back lightens as it lands) */
+/* the shadow sweeping the cover and left page as the book opens or closes */
 .mc-face::after { content: ""; position: absolute; inset: 0; z-index: 2; opacity: 0; pointer-events: none; background: linear-gradient(90deg, rgb(24 16 4 / 6%), rgb(24 16 4 / 42%)); }
 .mc-face.is-back::after { background: linear-gradient(270deg, rgb(24 16 4 / 6%), rgb(24 16 4 / 42%)); }
 .mc-leaf.is-turning > .mc-face.is-front::after { animation: mc-shade-lift var(--dur) linear var(--delay, 0ms) both; }
@@ -406,27 +404,27 @@ html:not(.js) .mc-fbook .mc-art { display: none; }
 .mc-board-page { padding: var(--bd) 0 var(--bd) var(--bd); border-radius: 7px 2px 2px 7px;
   background: linear-gradient(270deg, rgb(0 0 0 / 22%), transparent 6%), var(--board); box-shadow: 0 34px 50px -30px rgb(0 0 0 / 80%), 0 2px 5px rgb(0 0 0 / 30%); }
 
-/* a page in the book: call number, name, an ornament, the line, the folio */
-.mc-book .mc-page { container-type: inline-size; gap: 0; padding: clamp(24px, 9%, 34px) clamp(22px, 9.5%, 34px) 18px; border-radius: 0 3px 3px 0;
-  background: linear-gradient(90deg, rgb(92 66 22 / 24%), rgb(92 66 22 / 6%) 5%, transparent 12%), linear-gradient(180deg, #f9f3e6, #f2e8d3); box-shadow: none; }
-.mc-book .is-back .mc-page, .mc-book .mc-board-page .mc-page { border-radius: 3px 0 0 3px;
-  background: linear-gradient(270deg, rgb(92 66 22 / 24%), rgb(92 66 22 / 6%) 5%, transparent 12%), linear-gradient(180deg, #f9f3e6, #f2e8d3); }
-.mc-book .mc-board-page .mc-page { box-shadow: -1px 0 0 #e4d8bf, -2px 0 0 #f6efe0, -3px 0 0 #d9ccb1, -4px 0 0 #f1e8d4; }
-.mc-book .mc-page::before { inset: 11px; }
-.mc-book .mc-call { font-size: 12px; }
-.mc-book .mc-page-name { margin-top: 20cqi; font-size: clamp(21px, 8.6cqi, 29px); line-height: 1.16; letter-spacing: -.022em; text-wrap: balance; }
-.mc-book .mc-page-name::after { content: ""; display: block; width: 58px; height: 9px; margin-top: 18px; opacity: .9;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 58 9'%3E%3Cpath d='M0 4.5h22M36 4.5h22' stroke='%23c19d55' stroke-width='1'/%3E%3Cpath d='M29 .8l3.7 3.7L29 8.2l-3.7-3.7z' fill='%23c19d55'/%3E%3C/svg%3E") no-repeat; }
-.mc-book .mc-page-desc { margin-top: 16px; font-size: clamp(15px, 5cqi, 17px); line-height: 1.55; }
-.mc-book .mc-folio { font-size: 12px; }
-/* a class still to come: an unwritten page, pencilled, with faint ruled lines */
-.mc-book .mc-page.is-pending { background: repeating-linear-gradient(180deg, transparent 0 30px, rgb(94 110 140 / 16%) 30px 31px) 50% 88% / calc(100% - 44px) 34% no-repeat,
-  linear-gradient(90deg, rgb(92 66 22 / 24%), rgb(92 66 22 / 6%) 5%, transparent 12%), linear-gradient(180deg, #f9f3e6, #f2e8d3); }
-.mc-book .mc-page.is-pending .mc-page-name { margin-top: calc(20cqi + 18px); font-weight: 450; font-size: clamp(19px, 7.4cqi, 25px); } /* level with a named page's heading */
-.mc-book .mc-page.is-pending .mc-page-name::after { opacity: .35; }
-.mc-book .mc-page.is-blank { height: 100%; }
+/* each of the two open pages (.mc-sheet) holds three classes separated by a gilt dashed rule */
+.mc-sheet { position: relative; container-type: inline-size; display: grid; grid-template-rows: repeat(3, minmax(0, 1fr)); width: 100%; height: 100%;
+  padding: clamp(20px, 6%, 28px) clamp(22px, 7%, 32px); border-radius: 0 3px 3px 0; color: #1f2a3a;
+  background: linear-gradient(90deg, rgb(92 66 22 / 24%), rgb(92 66 22 / 6%) 5%, transparent 12%), linear-gradient(180deg, #f9f3e6, #f2e8d3); }
+.mc-sheet::before { content: ""; position: absolute; inset: 10px; border: 1px solid rgb(201 166 90 / 50%); border-radius: 3px; pointer-events: none; }
+.mc-board-page .mc-sheet, .mc-sheet.is-left { border-radius: 3px 0 0 3px;
+  background: linear-gradient(270deg, rgb(92 66 22 / 24%), rgb(92 66 22 / 6%) 5%, transparent 12%), linear-gradient(180deg, #f9f3e6, #f2e8d3);
+  box-shadow: -1px 0 0 #e4d8bf, -2px 0 0 #f6efe0, -3px 0 0 #d9ccb1, -4px 0 0 #f1e8d4; }
+.mc-book .mc-page { display: flex; flex-direction: column; justify-content: center; gap: 3px; height: auto; padding: 10px 4px; border-radius: 0; background: none; box-shadow: none; }
+.mc-book .mc-page::before { display: none; }
+.mc-book .mc-page:first-child { padding-top: 0; }
+.mc-book .mc-page:last-child { padding-bottom: 0; }
+.mc-book .mc-page + .mc-page { border-top: 1px dashed rgb(168 138 76 / 42%); }
+.mc-book .mc-call { font-size: 11px; line-height: 1.25; }
+.mc-book .mc-page-name { font-size: clamp(16.5px, 4.7cqi, 19.5px); font-weight: 700; line-height: 1.22; letter-spacing: -.018em; text-wrap: balance; }
+.mc-book .mc-page-desc { margin-top: 2px; font-size: clamp(13px, 3.7cqi, 14.5px); line-height: 1.46; color: #4b5563; }
+/* a class still to come: pencilled, with faint ruled lines in its third of the page */
+.mc-book .mc-page.is-pending { background: repeating-linear-gradient(180deg, transparent 0 22px, rgb(94 110 140 / 15%) 22px 23px) 50% 92% / 100% 48px no-repeat; }
+.mc-book .mc-page.is-pending .mc-page-name { font-weight: 450; font-size: clamp(16px, 4.4cqi, 18.5px); }
 /* the closed cover: the field's colour, gilt hairlines, its name and emblem */
-.mc-cover { display: grid; place-items: center; padding: 16% 14% 18% 16%; border-radius: 2px 7px 7px 2px; color: #fbf6ea;
+.mc-cover { display: grid; place-items: center; padding: 16% 14% 18% 16%; border-radius: 2px 7px 7px 2px; color: #fbf6ea; cursor: pointer;
   background: radial-gradient(110% 70% at 28% 18%, rgb(255 255 255 / 16%), transparent 62%), linear-gradient(90deg, rgb(0 0 0 / 30%), rgb(0 0 0 / 0) 6%, rgb(255 255 255 / 8%) 7.5%, transparent 9%),
     color-mix(in oklab, var(--tc) 68%, #0f1522); box-shadow: 0 34px 50px -30px rgb(0 0 0 / 80%), 0 2px 5px rgb(0 0 0 / 30%); }
 .mc-cover::before { content: ""; position: absolute; inset: 14px 14px 14px 24px; border: 1px solid rgb(232 205 140 / 70%); border-radius: 3px; box-shadow: inset 0 0 0 3px transparent, inset 0 0 0 4px rgb(232 205 140 / 30%); pointer-events: none; }
@@ -442,39 +440,26 @@ html:not(.js) .mc-fbook .mc-art { display: none; }
 .mc-emblem .is-line { fill: none; stroke: color-mix(in oklab, var(--tc) 62%, #1f2a3a); stroke-width: 6; }
 [data-theme="light"] .mc-case, [data-theme="light"] .mc-board-page, [data-theme="light"] .mc-cover { box-shadow: 0 30px 44px -28px rgb(14 20 32 / 55%), 0 2px 4px rgb(14 20 32 / 18%); }
 
-/* turning by hand: the buttons beside the book, the index under it */
-.is-books .mc-flip-ui { display: flex; align-items: center; justify-content: center; gap: 14px; }
-.mc-flip-turn { display: grid; place-items: center; width: var(--btn, 44px); height: var(--btn, 44px); padding: 0; border-radius: 50%; border: 1px solid var(--border-strong);
-  background: color-mix(in oklab, var(--surface-1) 75%, transparent); color: var(--text-primary); cursor: pointer; transition: border-color .2s var(--ease-standard), color .2s var(--ease-standard), opacity .2s var(--ease-standard); }
-.mc-flip-turn svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.mc-flip-turn[aria-disabled="true"] { opacity: .3; cursor: default; }
-.mc-flip-turn:focus-visible, .mc-flip-index button:focus-visible { outline: 2px solid var(--tc); outline-offset: 3px; }
-@media (hover: hover) and (pointer: fine) { .mc-flip-turn:not([aria-disabled="true"]):hover { border-color: var(--tc); color: var(--tc); } .mc-flip-index button:not(.is-on):hover { border-color: var(--tc); color: var(--text-primary); } }
-.mc-flip-index { display: flex; gap: 8px; }
-.mc-flip-index button { display: grid; place-items: center; width: 30px; height: 30px; padding: 0; border-radius: 50%; border: 1px solid var(--border-strong); background: none;
-  color: var(--text-secondary); font: 400 12px/1 var(--font-mono); cursor: pointer; transition: background-color .2s var(--ease-standard), border-color .2s var(--ease-standard), color .2s var(--ease-standard); }
-.mc-flip-index button.is-pending { border-style: dashed; border-color: color-mix(in oklab, var(--text-secondary) 60%, transparent); }
-.mc-flip-index button.is-on { border-color: transparent; background: color-mix(in oklab, var(--tc) 80%, #0f1522); color: #fff; }
-.mc-flip-index button.is-on.is-pending { border: 1px dashed rgb(255 255 255 / 70%); }
 @media (min-width: 900px) {
   /* closed, the book is moved over so that its cover stands in the middle */
   .mc-book[data-s="0"] { translate: calc((var(--pw) + var(--bd)) / -2) 0; }
-  .is-books .mc-flip-turn { position: absolute; top: calc(var(--book-h) / 2 - var(--btn) / 2); }
-  .is-books .mc-flip-turn[data-turn="-1"] { left: calc(-1 * (var(--g) + var(--btn))); }
-  .is-books .mc-flip-turn[data-turn="1"] { right: calc(-1 * (var(--g) + var(--btn))); }
 }
-/* narrow screens: one page at a time, the books in a row above it, the buttons under it */
+/* narrow screens: the two pages stack inside the open book, the other two books in a row above */
 @media (max-width: 899px) {
-  .mc-fieldbooks.is-books { --bd: 8px; --gut: 5px; --pw: min(86vw, 360px); --ph: calc(var(--pw) * 1.2); --book-w: calc(var(--gut) + var(--pw) + var(--bd)); --side-w: clamp(84px, 27cqw, 128px); }
+  .mc-fieldbooks.is-books { --bd: 8px; --gut: 5px; --pw: min(90vw, 360px); --book-w: calc(var(--pw) + 2 * var(--bd)); --side-w: clamp(84px, 27cqw, 128px); }
   .is-books .mc-fbook[data-slot="center"] { left: calc(var(--side-w) + 8px); width: calc(100% - 2 * var(--side-w) - 16px); }
   .is-books .mc-fbook[data-slot="center"] .mc-art { display: none; }
   .is-books .mc-fbook[data-slot="center"] .mc-fbook-label { padding: 0; }
   .is-books .mc-fbook .mc-art { aspect-ratio: 1 / 1; }
-  .is-books .mc-flip, .is-books .mc-flip + .mc-flip { gap: 32px; }
-  .mc-case { left: 0; width: 100%; border-radius: 3px 8px 8px 3px; }
-  .mc-leaf { left: var(--gut); }
-  .mc-leaf.is-cover { left: 0; width: 100%; }
-  .mc-ribbon { left: auto; right: 36px; height: 30px; }
+  .mc-book { height: auto; }
+  .mc-case { left: 0; width: 100%; border-radius: 6px; }
+  .mc-leaf.is-base { position: relative; top: 0; left: 0; width: 100%; height: auto; padding: var(--bd); transform: none; }
+  .mc-leaf.is-base > .mc-face { position: relative; inset: auto; display: grid; gap: 4px; box-shadow: none; }
+  .mc-sheet, .mc-sheet.is-left { height: auto; grid-template-rows: none; padding: 18px 20px; border-radius: 4px 4px 2px 2px;
+    background: linear-gradient(180deg, #f9f3e6, #f2e8d3); box-shadow: none; }
+  .mc-sheet.is-right { border-radius: 2px 2px 4px 4px; background: linear-gradient(180deg, #eee3cc, #f9f3e6 14%, #f2e8d3); }
+  .mc-leaf.is-cover { left: 0; width: 100%; height: 100%; }
+  .mc-ribbon { left: auto; right: 28px; height: 28px; }
 }
 
 /* The Challenge uses the same label, glass, typography and signature rail.
