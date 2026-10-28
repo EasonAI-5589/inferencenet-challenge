@@ -1280,6 +1280,8 @@
   "Table and text numeric reasoning over financial reports and CFA-style questions.": "基于财报表格与文本的数值推理及 CFA 式题目。",
   "Chinese legal knowledge, statute recall and case-outcome prediction.": "中国法律知识、法条记忆与案件结果预测。",
   "tasks in": "道题目，分为",
-  "Economics, finance and social science come first: each offers public evidence, documented decisions and outputs that can be checked. Open a field's book to see its classes and how many tasks each holds.": "经济、金融和社科最先展开：这三个领域都有公开证据、有据可查的决策过程，以及可以核验的产出。打开任一领域的书卷，查看它包含的类别与各类别的题目数量。",
-  "SQL and dbt over banking, retail, e-commerce and wholesale supply-chain data.": "在银行、零售、电商与批发供应链数据上写 SQL / dbt。"
+  "Economics, finance and social science come first: each offers public evidence, documented decisions and outputs that can be checked. Open a field's book to see its classes.": "经济、金融和社科最先展开：这三个领域都有公开证据、有据可查的决策过程，以及可以核验的产出。打开任一领域的书卷，查看它包含的类别。",
+  "SQL and dbt over banking, retail, e-commerce and wholesale supply-chain data.": "在银行、零售、电商与批发供应链数据上写 SQL / dbt。",
+  "More classes are being added to this field.": "这一领域正在陆续加入更多类别。",
+  "Class 6 · in preparation": "第六类 · 筹备中"
 }

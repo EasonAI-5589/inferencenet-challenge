@@ -54,18 +54,25 @@ function fieldBook(field) {
   return { root: g, hinge };
 }
 
+// Without motion a chosen book is simply open (the stage then only draws when asked to).
+const STILL = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const BUILDERS = {
-  // a field's book on its plinth: chosen, it rises, turns to the reader and opens its cover
-  field(g, el) {
+  // a field's book on its plinth: chosen, it rises, turns to the reader and opens its cover; the
+  // books waiting at the sides of the stage stand in less light
+  field(g, el, light) {
     plinth(g, 0, 1);
     const tab = el?.closest('[role="tab"]'), book = fieldBook(el?.dataset.field);
     const holder = new THREE.Group(); holder.scale.setScalar(.62); g.add(holder);
     book.root.rotation.x = Math.PI / 2; book.root.position.set(-BOOK.PW / 2, BOOK.PD / 2, -(BOOK.T + BOOK.BOARD * 2) / 2); holder.add(book.root);
     const halo = glowSprite(0xffe7b8, 2.8, 0); halo.position.set(.1, 1.4, -.5); g.add(halo);
-    let open = 0, lift = 0;
+    const lamps = light ? [light.hemi, light.key, light.rim] : [], full = lamps.map(lamp => lamp.intensity);
+    let open = 0, lift = 0, lit = 1;
     return t => {
+      g.visible = !tab?.classList.contains('is-reading'); // the page's own open book stands in its place
       const on = tab?.getAttribute('aria-selected') === 'true', hover = !!tab?.matches(':hover');
-      open = lerp(open, on ? 1 : 0, .07); lift = lerp(lift, on ? 1 : hover ? .45 : 0, .1);
+      open = lerp(open, on ? 1 : 0, STILL ? 1 : .07); lift = lerp(lift, on ? 1 : hover ? .45 : 0, STILL ? 1 : .1);
+      lit = lerp(lit, on ? 1 : hover ? .82 : .6, STILL ? 1 : .08);
+      lamps.forEach((lamp, k) => { lamp.intensity = full[k] * lit; });
       const o = smooth(open);
       book.hinge.rotation.z = o * 1.95;                                   // the cover swings round to the left
       holder.position.set(o * .35, .3 + lift * .12 + Math.sin(t * 1.4) * .02 * lift, 0);
@@ -263,7 +270,7 @@ export function createCard(kind, node) {
   const l = lights(scene, { span: 7, shadowSize: 512 });
   l.key.position.set(-4, 9, 7);
   const g = new THREE.Group(); scene.add(g);
-  const step = BUILDERS[kind](g, node);
+  const step = BUILDERS[kind](g, node, l);
   const [ty, dist, el, whole = false] = FRAMING[kind];
   const target = new THREE.Vector3(0, ty, 0);
   // the picture's half-width: a tall, narrow card (and the invitation, always) shows all of

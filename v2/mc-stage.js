@@ -22,11 +22,14 @@ export function createStage(canvas, { reduce = false, clipTop = () => 0 } = {}) 
     if (w !== W || h !== H) { W = w; H = h; renderer.setSize(W, H, false); }
   };
 
-  /* A view: { el, build() → { scene, camera, update(dt, t, progress, rect) }, post?, progress?(), onFrame?(object, rect), near? } */
+  /* A view: { el, build() → { scene, camera, update(dt, t, progress, rect) }, post?, progress?(), onFrame?(object, rect), near?, order?() } */
   function add(view) {
     views.push(Object.assign({ near: 1.5, object: null, building: false, post: null, postSize: '' }, view));
     request();
   }
+  // Views that can overlap (the field books passing one another) draw back to front by order();
+  // the others keep the order they were added in.
+  const inOrder = () => (views.some(v => v.order) ? [...views].sort((a, b) => (a.order?.() ?? 0) - (b.order?.() ?? 0)) : views);
 
   function draw(now) {
     const dt = Math.min(.05, (now - last) / 1000); last = now;
@@ -37,7 +40,7 @@ export function createStage(canvas, { reduce = false, clipTop = () => 0 } = {}) 
     renderer.clear(true, true, true);
     const top = clipTop();
     let animating = false;
-    for (const v of views) {
+    for (const v of inOrder()) {
       const r = v.el.getBoundingClientRect();
       const near = r.bottom > -H * v.near && r.top < H * (1 + v.near) && r.width > 0;
       if (near && !v.object && !v.building) {
