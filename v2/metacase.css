@@ -323,6 +323,12 @@ html[lang^="zh"] .mc-en-only { display: none; }
 .mc-fbook-n { font-size: 13px; color: var(--text-secondary); }
 .mc-fbook-n b { font-weight: 650; color: var(--text-primary); }
 .mc-fbook:focus-visible { outline: 2px solid var(--tc); outline-offset: 4px; border-radius: 18px; }
+/* without the script there is no picture to draw; without WebGL a flat book in the field's colour stands in */
+html:not(.js) .mc-fbook .mc-art { display: none; }
+.mc-no3d .mc-fbook .mc-art, .mc-fbook .mc-art[data-renderer="fallback"] { display: block; position: relative; }
+.mc-no3d .mc-fbook .mc-art::before, .mc-fbook .mc-art[data-renderer="fallback"]::before { content: ""; position: absolute; left: 50%; bottom: 14%; width: 28%; aspect-ratio: 3 / 4; translate: -50% 0;
+  border-radius: 3px 8px 8px 3px; background: linear-gradient(90deg, color-mix(in oklab, var(--tc) 62%, #1f2a3a) 0 10%, var(--tc) 10%);
+  box-shadow: inset -4px 0 0 #f6efe0, inset -6px 0 0 #ddd3bf, 0 16px 26px -14px rgb(0 0 0 / 65%); }
 
 /* the slips: cream stock with a gilt rule like the printed cards in chapter 01, and a strut in the
    field's colour on the edge that faces the book */
@@ -378,7 +384,7 @@ html[lang^="zh"] .mc-en-only { display: none; }
   transition: transform 260ms var(--ease-standard) calc(var(--fd, 0) * 1ms), opacity 180ms var(--ease-standard) calc(var(--fd, 0) * 1ms), translate .2s ease, box-shadow .2s ease; }
 .is-books .mc-slips.is-snap, .is-books .mc-slips.is-snap .mc-slip { transition: none; }
 .is-books .mc-slip[data-side="s"] { --fx: 72deg; }
-.is-books .mc-slip[data-side="s"]::after { inset: 0 0 auto 0; width: auto; height: 4px; border-radius: 10px 10px 0 0; }
+.is-books .mc-slip[data-side="s"]::after { inset: 0 18px auto; width: auto; height: 3px; border-radius: 0 0 3px 3px; }
 .is-books .mc-slip[data-side="s"] { padding: 17px 17px 16px; }
 @media (hover: hover) and (pointer: fine) {
   .is-books .mc-slips.is-open .mc-slip:hover { translate: 0 -3px; box-shadow: inset 0 0 0 1px rgb(31 42 58 / 7%), 0 2px 4px rgb(0 0 0 / 18%), 0 26px 38px -22px rgb(0 0 0 / 75%); }

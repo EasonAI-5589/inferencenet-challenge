@@ -377,10 +377,11 @@ if (fieldbooks) {
   }
   function rise(panel, delay) {
     if (panel.classList.contains('is-open')) return;
-    // slips folded away out of sight start from the book in the middle, not from where it stood
-    const first = $('.mc-slip', panel);
-    if (first && getComputedStyle(first).opacity === '0') { panel.classList.add('is-snap'); void panel.offsetWidth; panel.classList.remove('is-snap'); }
-    panel.style.setProperty('--rise', `${delay}ms`);
+    // slips folded away out of sight start from the book in the middle, not from where it stood;
+    // slips still on their way back turn round at once
+    const first = $('.mc-slip', panel), away = !first || getComputedStyle(first).opacity === '0';
+    if (away) { panel.classList.add('is-snap'); void panel.offsetWidth; panel.classList.remove('is-snap'); }
+    panel.style.setProperty('--rise', `${away ? delay : 0}ms`);
     panel.classList.add('is-open');
   }
 
