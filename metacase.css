@@ -241,13 +241,12 @@ html[lang^="zh"] .mc-en-only { display: none; }
 .mc-results-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); grid-template-areas: "head stats" "actions stats"; gap: 20px clamp(28px, 4vw, 56px); padding: clamp(24px, 3vw, 40px);
   border-radius: 24px; border: 1px solid var(--border-hairline);
   background: radial-gradient(70% 120% at 0% 0%, color-mix(in oklab, var(--track-1) 12%, transparent), transparent 60%), color-mix(in oklab, var(--surface-1) 88%, transparent);
-  box-shadow: var(--inner-highlight), var(--shadow-card); }
+  box-shadow: var(--inner-highlight); }
 .mc-results-head { grid-area: head; display: grid; align-content: start; gap: 14px; }
 .mc-results-head h2 { font-size: clamp(28px, 2.8vw, 40px); line-height: 1.08; letter-spacing: -0.03em; font-weight: 650; }
 .mc-results-scope { color: var(--text-secondary); font-size: 15px; line-height: 1.6; }
 .mc-results-stats { grid-area: stats; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; align-self: center; }
-.mc-results-stats li { display: grid; align-content: start; gap: 2px; padding: 0 14px 16px; border-radius: 16px; border: 1px solid var(--border-hairline); overflow: hidden;
-  background: color-mix(in oklab, var(--surface-2) 65%, transparent); box-shadow: var(--inner-highlight); }
+.mc-results-stats li { display: grid; align-content: start; gap: 2px; padding: 0 14px 16px; border-radius: 16px; border: 1px solid var(--border-hairline); overflow: hidden; }
 .mc-results-stats .mc-art { aspect-ratio: 4 / 3; margin: 0 -14px 6px; border-bottom: 1px solid var(--border-hairline); background: radial-gradient(80% 90% at 50% 70%, color-mix(in oklab, var(--tc) 16%, transparent), transparent 70%); }
 .mc-results-stats b { font-size: clamp(36px, 3.4vw, 52px); font-weight: 650; letter-spacing: -0.045em; line-height: 1; color: var(--text-primary); font-variant-numeric: tabular-nums; }
 .mc-results-stats span { font-size: 14px; font-weight: 600; color: var(--tc); }
@@ -259,10 +258,11 @@ html[lang^="zh"] .mc-en-only { display: none; }
 .mc-submit-label { color: var(--text-tertiary); font-size: 13px; font-weight: 500; }
 .mc-submit-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .mc-submit-list a { display: grid; gap: 4px; height: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border-hairline); text-decoration: none;
-  background: color-mix(in oklab, var(--surface-2) 45%, transparent); box-shadow: var(--inner-highlight);
   transition: border-color var(--duration-base) var(--ease-standard), background-color var(--duration-base) var(--ease-standard), transform var(--duration-fast) var(--ease-standard); }
-.mc-submit-list a:hover { border-color: var(--border-strong); background: color-mix(in oklab, var(--surface-2) 85%, transparent); transform: translateY(-1px); }
-.mc-submit-list a:active { transform: translateY(1px); }
+@media (hover: hover) and (pointer: fine) {
+  .mc-submit-list a:hover { border-color: var(--border-strong); background: color-mix(in oklab, var(--surface-2) 70%, transparent); }
+}
+.mc-submit-list a:active { transform: scale(.98); }
 .mc-submit-list b { font-size: 15px; font-weight: 600; color: var(--text-primary); }
 .mc-submit-list b::after { content: " ↗"; color: var(--track-1); }
 .mc-submit-list span { font-size: 13px; line-height: 1.45; color: var(--text-secondary); }
@@ -286,7 +286,7 @@ html[lang^="zh"] .mc-en-only { display: none; }
 /* ---------- 08 The team ---------- */
 .mc-join-card { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); align-items: stretch; border-radius: 28px; border: 1px solid var(--border-hairline); overflow: hidden;
   background: radial-gradient(80% 120% at 100% 0%, color-mix(in oklab, var(--mc-violet) 16%, transparent), transparent 60%), color-mix(in oklab, var(--surface-1) 86%, transparent);
-  box-shadow: var(--inner-highlight), var(--shadow-card); }
+  box-shadow: var(--inner-highlight); }
 .mc-join-copy { padding: clamp(40px, 6vw, 88px); background: linear-gradient(90deg, var(--surface-1), color-mix(in oklab, var(--surface-1) 70%, transparent)); }
 .mc-join-copy h2 { margin-top: 16px; }
 .mc-join-card .mc-art { aspect-ratio: auto; min-height: 420px; }
@@ -297,8 +297,7 @@ html[lang^="zh"] .mc-en-only { display: none; }
 .mc-team-kicker { margin-bottom: 14px; color: var(--text-tertiary); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
 .mc-people { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
 .mc-people-mini { grid-template-columns: 1fr; }
-.mc-person { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; align-items: start; padding: 16px; border: 1px solid var(--border-hairline); border-radius: 16px; background: var(--surface-1); box-shadow: var(--inner-highlight); transition: border-color var(--duration-base) var(--ease-standard); }
-.mc-person:hover, .mc-org:hover { border-color: var(--border-strong); }
+.mc-person { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; align-items: start; padding: 16px; border: 1px solid var(--border-hairline); border-radius: 16px; background: var(--surface-1); box-shadow: var(--inner-highlight); }
 .mc-person img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
 .mc-person div { display: grid; gap: 3px; min-width: 0; }
 .mc-person a, .mc-org h3 a { color: var(--text-primary); font-size: 16px; font-weight: 650; text-decoration: none; transition: color var(--duration-fast) var(--ease-standard); }
@@ -308,7 +307,7 @@ html[lang^="zh"] .mc-en-only { display: none; }
 .mc-people-mini .mc-person { grid-template-columns: 48px minmax(0, 1fr); align-items: center; }
 .mc-people-mini .mc-person img { width: 48px; height: 48px; }
 /* an organisation card: its name and university, and its director inside it */
-.mc-org { display: grid; align-content: start; gap: 4px; padding: 20px; border: 1px solid var(--border-hairline); border-radius: 18px; background: var(--surface-1); box-shadow: var(--inner-highlight); transition: border-color var(--duration-base) var(--ease-standard); }
+.mc-org { display: grid; align-content: start; gap: 4px; padding: 20px; border: 1px solid var(--border-hairline); border-radius: 18px; background: var(--surface-1); box-shadow: var(--inner-highlight); }
 .mc-org h3 { font-size: 18px; letter-spacing: -.015em; }
 .mc-org-full { color: var(--text-secondary); font-size: 13.5px; line-height: 1.45; }
 .mc-org .mc-person { margin-top: 12px; padding: 14px 0 0; border: 0; border-top: 1px solid var(--border-hairline); border-radius: 0; background: none; box-shadow: none; }
@@ -395,14 +394,19 @@ html:not(.js) .mc-fbook .mc-art { display: none; }
 /* the stage: the chosen field's label above its open book, the other two books level with the
    book's middle (metacase.js measures; the CSS gives the sizes). Scrolling through the track steps
    through all three field books in turn while the stage stays pinned in view. */
-.mc-fieldbooks-track { position: relative; height: calc(var(--book-stage-h, 580px) + 185vh); }
+.mc-fieldbooks-track { position: relative; height: calc(var(--book-stage-h, 640px) + 200vh); }
 .mc-fieldbooks.is-books { --g: 22px; --bd: 10px; --gut: 0px;
   --side-w: clamp(100px, 12cqw, 164px);
   --pw: clamp(250px, (100cqw - 2 * var(--side-w) - 2 * var(--g)) / 2 - var(--bd), 392px);
-  --ph: clamp(360px, min(calc(var(--pw) * 1.22), calc(100svh - var(--mc-pin-top, 112px) - 136px)), 484px);
+  --ph: clamp(360px, min(calc(var(--pw) * 1.22), calc(100svh - var(--mc-pin-top, 112px) - 184px)), 484px);
   --book-w: calc(2 * (var(--pw) + var(--bd))); --book-h: calc(var(--ph) + 2 * var(--bd));
   --art-w: calc((var(--pw) + var(--bd)) * 1.25);
-  position: sticky; top: calc(var(--mc-pin-top, 112px) + 10px); z-index: 4; container-type: inline-size; }
+  position: sticky; top: calc(var(--mc-pin-top, 112px) + 12px); z-index: 4; container-type: inline-size; }
+/* the field rail under the pinned stage: which of the three books is open, and how far through it the reader is */
+.mc-fields-rail { display: none; }
+@media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
+  .mc-fields-rail { display: flex; margin-top: 34px; }
+}
 .is-books .mc-bookrow { position: relative; display: block; height: 620px; margin: 0; }
 .is-books .mc-fbook { position: absolute; top: 0; left: calc(50% - var(--side-w) / 2); z-index: 2; width: var(--side-w); transform-origin: 0 0; }
 .is-books .mc-fbook[data-slot="center"] { left: calc(50% - var(--art-w) / 2); width: var(--art-w); z-index: 3; grid-template-rows: auto auto; }

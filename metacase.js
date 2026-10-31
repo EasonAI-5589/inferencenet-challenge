@@ -292,17 +292,49 @@ if (fieldbooks) {
   const row = $('.mc-bookrow', fieldbooks), tabs = $$('[role="tab"]', row);
   const panels = tabs.map(tab => $('#' + tab.getAttribute('aria-controls')));
   const N = tabs.length, HALF = 3;
-  const MOVE = 460, EASE = 'cubic-bezier(0.05, 0.7, 0.1, 1)', STD = 'cubic-bezier(0.2, 0, 0, 1)'; // --duration-emphasized, --ease-*
+  const MOVE = 520, EASE = 'cubic-bezier(0.05, 0.7, 0.1, 1)', STD = 'cubic-bezier(0.2, 0, 0, 1)'; // --duration-emphasized, --ease-*
+  const SHIFT = 'cubic-bezier(0.65, 0.05, 0.36, 1)'; // books trading places move on screen: ease in and out
   const CLOSE = 200, ARRIVE = 240, TURN = 520; // the book closing and fading; growing out of its picture; the cover opening
   const wideMQ = matchMedia('(min-width: 900px)');
   let wide = wideMQ.matches, chosen = Math.max(0, tabs.findIndex(tab => tab.getAttribute('aria-selected') === 'true'));
-  let gen = 0, flights = [], seen = reduce, wanted = chosen, clickScrollUntil = 0;
+  let gen = 0, flights = [], seen = reduce, wanted = chosen;
+  // scrolling: where the stage sticks, how far through the track the reader is, and a field the
+  // page is being scrolled to after a click (scroll positions on the way there do not choose)
+  let stickTop = 0, lockField = -1, lockUntil = 0;
   const wait = ms => new Promise(done => setTimeout(done, ms));
   const make = (cls, ...kids) => { const el = document.createElement('div'); el.className = cls; el.append(...kids.filter(Boolean)); return el; };
+  // The stage sticks in view while the reader scrolls through a taller track; each third of the
+  // track opens one field's book, in order, and scrolling back opens them in reverse.
   const track = make('mc-fieldbooks-track');
   fieldbooks.before(track);
   track.append(fieldbooks);
   fieldbooks.classList.add('is-books');
+  const pinned = () => !reduce && getComputedStyle(fieldbooks).position === 'sticky';
+  // Under the stage, the same bookmark rail as the pinned chapters: one tab per field, the current
+  // one standing up and filling as its third of the track is read. The tabs above remain the
+  // controls for keyboards and assistive technology; the rail is a pointer shortcut.
+  const progress = document.createElement('ol');
+  progress.className = 'mc-rail mc-fields-rail';
+  progress.setAttribute('aria-hidden', 'true');
+  const steps = tabs.map((tab, i) => {
+    const li = document.createElement('li');
+    li.textContent = $('.mc-fbook-title', tab).textContent.trim();
+    li.style.setProperty('--rc', tab.style.getPropertyValue('--tc'));
+    li.addEventListener('click', () => selectField(i));
+    progress.append(li);
+    return li;
+  });
+  fieldbooks.append(progress);
+  function paintRail(p) {
+    const band = clamp(p) * N;
+    progress.style.setProperty('--rc', tabs[wanted].style.getPropertyValue('--tc'));
+    progress.style.setProperty('--rail-p', clamp(p).toFixed(4));
+    steps.forEach((li, i) => {
+      li.classList.toggle('on', i === wanted);
+      li.classList.toggle('done', i < wanted);
+      li.style.setProperty('--step-p', (i < wanted ? 1 : i > wanted ? 0 : clamp(band - i)).toFixed(3));
+    });
+  }
 
   // The cover's emblem, as on the 3D book's label (metacase-cards.js emblem()).
   function emblem(field) {
@@ -418,7 +450,14 @@ if (fieldbooks) {
     fieldbooks.style.setProperty('--book-top', `${Math.round(top)}px`);
     const stageH = Math.round(top + panel.offsetHeight);
     row.style.height = `${stageH}px`;
-    track.style.setProperty('--book-stage-h', `${stageH}px`);
+    // pinned, the stage (books and rail) stands centred in the space under the header and section nav
+    if (pinned()) {
+      const pin = (siteHeader?.offsetHeight || 64) + (subnav?.offsetHeight || 48);
+      const railH = progress.offsetHeight + 20;
+      stickTop = Math.round(pin + Math.max(12, (innerHeight - pin - stageH - railH) / 2));
+      fieldbooks.style.top = `${stickTop}px`;
+    } else fieldbooks.style.removeProperty('top');
+    track.style.setProperty('--book-stage-h', `${fieldbooks.offsetHeight}px`);
   }
 
   // Bring field `next` to the middle: the books fly from where they are to their new slots (FLIP);
@@ -441,7 +480,7 @@ if (fieldbooks) {
       const frames = tab.classList.contains('is-crossing')
         ? [from, { offset: .5, transform: `translate(${dx / 2}px, ${dy / 2 - 24}px) scale(${(sx + 1) * .38}, ${(sy + 1) * .38})` }, to]
         : [from, to];
-      const move = tab.animate(frames, { duration: MOVE, easing: EASE });
+      const move = tab.animate(frames, { duration: MOVE, easing: SHIFT });
       move.finished.then(() => tab.classList.remove('is-crossing'), () => {});
       // its caption changes with its slot: hidden in flight, it fades in as the book arrives
       flights.push(move, $('.mc-fbook-label', tab).animate([{ opacity: 0 }, { opacity: 0, offset: .4 }, { opacity: 1 }], { duration: MOVE }));
@@ -522,23 +561,26 @@ if (fieldbooks) {
     return f < 0 ? null : { f };
   };
   let start = linked();
-  if (start) { chosen = start.f; clickScrollUntil = performance.now() + 900; }
+  if (start) chosen = start.f;
   addEventListener('hashchange', () => { const to = linked(); if (to) selectField(to.f); });
 
+  // the track's geometry: how far through it the reader is (0 before the stage sticks, 1 after it lets go)
+  const trackProgress = () => {
+    const range = track.offsetHeight - fieldbooks.offsetHeight;
+    return range > 0 ? clamp((stickTop - track.getBoundingClientRect().top) / range) : 0;
+  };
+  // A click (a side book, a rail tab, the arrow keys, a link) opens that field at once and scrolls the
+  // page to the middle of its third of the track; positions passed on the way do not choose.
   function selectField(next) {
     seen = true;
     if (next !== wanted) choose(next);
-    if (!reduce && getComputedStyle(fieldbooks).position === 'sticky') {
-      const pinTop = parseFloat(getComputedStyle(fieldbooks).top) || 122;
-      const r = track.getBoundingClientRect(), range = track.offsetHeight - fieldbooks.offsetHeight;
-      if (range > 0 && r.top <= innerHeight && r.bottom >= 0) {
-        const targetP = [.16, .5, .84][next] ?? (next + .5) / N;
-        const targetY = scrollY + r.top - pinTop + targetP * range;
-        clickScrollUntil = performance.now() + 750;
-        if (window.__lenis) window.__lenis.scrollTo(targetY, { duration: .65 });
-        else window.scrollTo({ top: targetY, behavior: 'smooth' });
-      }
-    }
+    if (!pinned()) return;
+    const r = track.getBoundingClientRect(), range = track.offsetHeight - fieldbooks.offsetHeight;
+    if (range <= 0 || r.top > innerHeight || r.bottom < 0) return;
+    const y = scrollY + r.top - stickTop + (next + .5) / N * range;
+    lockField = next; lockUntil = performance.now() + 1400;
+    if (window.__lenis) window.__lenis.scrollTo(y, { duration: .8 });
+    else window.scrollTo({ top: y, behavior: 'smooth' });
   }
 
   tabs.forEach((tab, i) => {
@@ -552,9 +594,10 @@ if (fieldbooks) {
       selectField(k);
     });
   });
-  // the first layout is not animated; the cover opens when the stage comes into view,
-  // and scrolling down through the sticky track opens each of the three books in turn
+  // the first layout is not animated; the cover opens when the stage comes into view
   choose(chosen, { animate: false });
+  paintRail(pinned() ? trackProgress() : (chosen + .5) / N);
+  if (start) addEventListener('load', () => selectField(start.f), { once: true });
   if (!seen) {
     const reveal = new IntersectionObserver(entries => {
       if (!entries.some(entry => entry.isIntersecting)) return;
@@ -565,35 +608,28 @@ if (fieldbooks) {
     }, { threshold: .35 });
     reveal.observe(row);
   }
+  // Each third of the track belongs to one field. A field changes only once the reader is a little
+  // past the boundary (so resting on it never flickers between two books), and a change made while
+  // the stage is out of view is laid out at once, so the page is never caught mid-turn on arrival.
+  const HOLD = .04;
   scrollFields = () => {
-    if (reduce || performance.now() < clickScrollUntil) return;
-    if (getComputedStyle(fieldbooks).position !== 'sticky') return;
-    const pinTop = parseFloat(getComputedStyle(fieldbooks).top) || 122;
-    const r = track.getBoundingClientRect(), range = track.offsetHeight - fieldbooks.offsetHeight;
-    if (range <= 0) return;
-    if (r.top <= innerHeight * .7 && !seen) {
+    if (!pinned()) return;
+    const p = trackProgress();
+    const r = track.getBoundingClientRect(), near = r.bottom > 0 && r.top < innerHeight;
+    if (!seen && r.top < innerHeight * .7) {
       seen = true;
       const b = books[chosen];
       if (b.panel.classList.contains('is-shown') && !b.s) turnTo(b, 1);
     }
-    if (r.top > pinTop + 28) {
-      if (r.top < innerHeight && wanted !== 0) choose(0);
-      return;
-    }
-    if (r.bottom < pinTop + fieldbooks.offsetHeight * .35) {
-      if (r.bottom > 0 && wanted !== N - 1) choose(N - 1);
-      return;
-    }
-    const p = clamp((pinTop - r.top) / range, 0, 1);
+    const at = Math.min(N - 1, Math.floor(p * N));
     let next = wanted;
-    if (p < .31) next = 0;
-    else if (p >= .69) next = 2;
-    else if (p >= .35 && p < .65) next = 1;
-    else if (wanted === 0 && p >= .33) next = 1;
-    else if (wanted === 1 && p >= .67) next = 2;
-    else if (wanted === 2 && p < .65) next = 1;
-    else if (wanted === 1 && p < .31) next = 0;
-    if (next !== wanted) { seen = true; choose(next); }
+    if (p > (wanted + 1) / N + HOLD || p < wanted / N - HOLD) next = at;
+    if (lockField >= 0) {
+      if (at === lockField || performance.now() > lockUntil) lockField = -1;
+      else next = wanted;
+    }
+    if (next !== wanted) choose(next, { animate: near });
+    paintRail(p);
   };
   // two pages side by side or stacked: the books are bound again when the window crosses the line
   wideMQ.addEventListener('change', () => {
@@ -606,6 +642,8 @@ if (fieldbooks) {
   let queued = 0;
   const watch = new ResizeObserver(() => { if (!queued) queued = requestAnimationFrame(() => { queued = 0; place(); stage?.request(); }); });
   [fieldbooks, ...$$('.mc-fbook-label', fieldbooks)].forEach(el => watch.observe(el));
+  // the window's height moves where the pinned stage centres, even when the stage keeps its size
+  addEventListener('resize', () => { if (!queued) queued = requestAnimationFrame(() => { queued = 0; place(); scrollFields(); }); });
 }
 
 // cards catch a light where the pointer is
