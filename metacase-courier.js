@@ -7,7 +7,7 @@
  * it on chapter 03's. Each is drawn over a fixed, full-window element, so it can cross
  * from one chapter into the next; it matches both ends by measuring where each scene
  * shows the book. */
-import * as THREE from '../assets/vendor/three/three.module.js';
+import * as THREE from './assets/vendor/three/three.module.js';
 import { BOOK, BOOK_CENTRE, closedBook, bookTabs, lights, rbox, PALETTE } from './mc-kit.js';
 import { clamp, smooth, ramp, lerp, glowSprite } from './mc-stage.js';
 

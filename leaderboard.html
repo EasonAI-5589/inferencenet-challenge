@@ -3,17 +3,262 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
   <meta name="referrer" content="no-referrer">
-  <meta http-equiv="refresh" content="0; url=v2/leaderboard.html">
-  <link rel="canonical" href="v2/leaderboard.html">
   <title>Leaderboard — Metacase Challenge</title>
-  <script>location.replace('v2/leaderboard.html' + location.search + location.hash)</script>
+  <meta name="description" content="Development results for 14 models and four harnesses on the 100-task Dev100 set, with recorded settings, provenance and evaluation evidence.">
+  <meta property="og:title" content="Metacase Challenge — Dev100 Leaderboard">
+  <meta property="og:description" content="Development results for 14 models and four harnesses on the 100-task Dev100 set, with recorded settings, provenance and evaluation evidence.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon-v2.svg">
+  <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <script src="theme.js?v=20261022-v2-ambient"></script>
+  <link rel="stylesheet" href="styles.css?v=20261019-motion">
+  <link rel="stylesheet" href="site.css?v=20261019-motion">
+  <link rel="stylesheet" href="mountain.css">
+  <link rel="stylesheet" href="leaderboard.css?v=20261019-motion">
+  <script src="site.js?v=20261019-motion" defer></script>
+  <script type="module" src="leaderboard-dev100.js?v=20261027-site"></script>
+  <link rel="stylesheet" href="language.css">
+  <script src="language.js?v=20261027-site" defer></script>
+  <link rel="stylesheet" href="v2.css?v=20261026-metacase-brand2">
+  <link rel="stylesheet" href="skin.css?v=20261022-v2-ambient">
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <script src="backdrop.js?v=20261022-v2-ambient" defer></script>
+  <script src="v2.js?v=20261022-v2-ambient" defer></script>
 </head>
-<body>
-  <main>
-    <h1>Metacase Challenge</h1>
-    <p>This page is now part of the Metacase Challenge site.</p>
-    <p><a href="v2/leaderboard.html">Continue to Leaderboard</a></p>
+<body class="v2-content v2-page-leaderboard" data-tone="3">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="lg-dk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:oklch(80% 0.12 195)"/><stop offset="1" style="stop-color:oklch(82% 0.14 75)"/></linearGradient>
+    <linearGradient id="lg-lt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:oklch(52% 0.10 200)"/><stop offset="1" style="stop-color:oklch(58% 0.14 60)"/></linearGradient>
+    <linearGradient id="gl-dk" gradientUnits="userSpaceOnUse" x1="7.6" y1="24.5" x2="16" y2="9.9"><stop offset="0" style="stop-color:oklch(80% 0.12 195)"/><stop offset="1" style="stop-color:#EEF2F7"/></linearGradient>
+    <linearGradient id="gr-dk" gradientUnits="userSpaceOnUse" x1="24.4" y1="24.5" x2="16" y2="9.9"><stop offset="0" style="stop-color:oklch(82% 0.14 75)"/><stop offset="1" style="stop-color:#EEF2F7"/></linearGradient>
+    <linearGradient id="gl-lt" gradientUnits="userSpaceOnUse" x1="7.6" y1="24.5" x2="16" y2="9.9"><stop offset="0" style="stop-color:oklch(52% 0.10 200)"/><stop offset="1" style="stop-color:#0E1420"/></linearGradient>
+    <linearGradient id="gr-lt" gradientUnits="userSpaceOnUse" x1="24.4" y1="24.5" x2="16" y2="9.9"><stop offset="0" style="stop-color:oklch(58% 0.14 60)"/><stop offset="1" style="stop-color:#0E1420"/></linearGradient>
+  </defs>
+  <!-- Primary · Derivation: ∴ with the two premises drawn up into the conclusion -->
+  <symbol id="logo-p" viewBox="0 0 32 32">
+    <path d="M7.6 24.5 16 9.9" fill="none" style="stroke:var(--logo-gl)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M24.4 24.5 16 9.9" fill="none" style="stroke:var(--logo-gr)" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="7.6" cy="24.5" r="3" style="fill:var(--logo-t1)"/>
+    <circle cx="24.4" cy="24.5" r="4.2" style="fill:var(--logo-t2)"/>
+    <circle cx="16" cy="9.9" r="5.4" style="fill:var(--logo-node)"/>
+  </symbol>
+  <!-- Compact · Therefore: the bare symbol, for 20px and below -->
+  <symbol id="logo-c" viewBox="0 0 32 32">
+    <circle cx="7.6" cy="24.5" r="3.8" style="fill:var(--logo-t1)"/>
+    <circle cx="24.4" cy="24.5" r="5" style="fill:var(--logo-t2)"/>
+    <circle cx="16" cy="9.9" r="6" style="fill:var(--logo-node)"/>
+  </symbol>
+  <!-- Seal · Verified: ∴ inside an evaluation ring, for badges, awards and certificates -->
+  <symbol id="logo-s" viewBox="0 0 32 32">
+    <circle cx="16" cy="16" r="14.6" fill="none" style="stroke:var(--logo-g)" stroke-width="1.4"/>
+    <g transform="translate(16 16) scale(.6) translate(-16 -16)">
+      <path d="M7.6 24.5 16 9.9M24.4 24.5 16 9.9" fill="none" style="stroke:var(--logo-node)" stroke-width="2.4" stroke-linecap="round" opacity=".55"/>
+      <circle cx="7.6" cy="24.5" r="3.4" style="fill:var(--logo-t1)"/>
+      <circle cx="24.4" cy="24.5" r="4.4" style="fill:var(--logo-t2)"/>
+      <circle cx="16" cy="9.9" r="5.8" style="fill:var(--logo-node)"/>
+    </g>
+  </symbol>
+</svg>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="reading-progress" aria-hidden="true"><span id="reading-progress"></span></div>
+  <header class="site-header">
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="wordmark" href="index.html"><svg class="v2-mark lg-anim" width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><circle class="halo" cx="16" cy="9.9" r="5.4" fill="none" style="stroke:var(--logo-node)" stroke-width="1"/><path class="e-l" d="M7.6 24.5 16 9.9" fill="none" style="stroke:var(--logo-gl)" stroke-width="2" stroke-linecap="round" pathLength="1"/><path class="e-r" d="M24.4 24.5 16 9.9" fill="none" style="stroke:var(--logo-gr)" stroke-width="2" stroke-linecap="round" pathLength="1"/><circle class="d-l" cx="7.6" cy="24.5" r="3" style="fill:var(--logo-t1)"/><circle class="d-r" cx="24.4" cy="24.5" r="4.2" style="fill:var(--logo-t2)"/><circle class="d-t" cx="16" cy="9.9" r="5.4" style="fill:var(--logo-node)"/></svg><span data-no-translate>Metacase <span class="net">Challenge</span></span></a>
+      <div class="nav-links open" id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="challenge.html">Challenge</a>
+        <a href="harness.html">Harness</a>
+        <a href="evolution.html">Self-evolving</a>
+        <a href="leaderboard.html" aria-current="page">Leaderboard</a>
+        <a href="teams.html">Teams</a>
+      </div>
+      <div class="nav-controls">
+        <button class="theme-toggle" data-theme-toggle aria-label="Switch to dark theme" aria-pressed="true" type="button" hidden>
+          <span class="theme-icon" aria-hidden="true"></span><span data-theme-label>Dark</span>
+        </button>
+        <button class="menu-toggle" type="button" aria-controls="nav-links" aria-expanded="true" hidden>Menu <span aria-hidden="true">−</span></button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="page-hero container" data-backdrop="bump" aria-labelledby="page-title">
+      <p class="kicker">Leaderboard · October 2026</p>
+      <h1 id="page-title">Dev100 Leaderboard</h1>
+      <p class="lead">Development results on Dev100, the existing 100-task set planned for Challenge 1: Econometric replication. This page presents the v10 comparison of 14 models and four harnesses, with recorded settings and evaluation evidence. These are development results, not an official Challenge ranking.</p>
+      <nav class="board-nav" aria-label="On this page"><a href="#leaderboard-dev100">Dev100 / v10 development release</a><a href="#leaderboard-dev100-report">v10 report summary</a><a href="#research">Research directions</a></nav>
+    </section>
+    <section class="section container ruled board-section" id="leaderboard-dev100" aria-labelledby="dev100-title">
+      <div class="section-heading board-heading">
+        <div><p class="kicker">01 / Dev100 · v10</p><h2 id="dev100-title">Dev100 / v10 development release</h2></div>
+        <div><p class="lead">Challenge 1: Econometric replication will open-source the existing Dev100 set of 100 tasks. Its task package, official rules, submission channel and dates have not been published. The v10 table below preserves development results for 14 models × 4 harnesses; it is not an official Challenge ranking.</p><ul class="page-meta"><li>100 tasks per combination</li><li>56 combinations</li><li><a href="#leaderboard-dev100-report">v10 final report</a></li><li>Report generated <time datetime="2026-10-11T16:35:49Z">11 Oct 2026</time></li></ul></div>
+      </div>
+      <!-- dev100-ranking:start -->
+<div class="paired-board dev-board" data-dev-leaderboard>
+  <div class="paired-controls" hidden>
+    <label><span>Harness</span><select data-ranking-view aria-label="Filter harness"><option value="all">All harnesses</option><option value="deepagents" data-no-translate>DeepAgents</option><option value="deepseek" data-no-translate>DeepSeek Harness</option><option value="claude" data-no-translate>Claude Agent SDK</option><option value="openai_agents" data-no-translate>OpenAI Agents SDK</option></select></label>
+    <label><span>Rank by</span><select data-ranking-metric aria-label="Ranking metric"><option value="perfect">Full replication</option><option value="partial">Coefficient and SE within 5%</option><option value="coefficient_only">Coefficient within 5%</option><option value="direction">Correct sign</option><option value="significance">Correct significance</option></select></label>
+  </div>
+  <figure class="mountain" data-ranking-mountain hidden><div class="mountain-canvas"></div></figure>
+  <p class="dev-chart-note" data-chart-note hidden>Choose one harness to draw its mountain. The grid and the table list all 56 combinations.</p>
+  <div class="dev-overview" data-ranking-overview hidden></div>
+  <p class="paired-scroll-note">Scroll the table to see all metrics →</p>
+  <div class="table-scroll" tabindex="0" role="region" aria-label="Development results"><table class="dev-table">
+    <caption>Scores (%) on 100 development tasks</caption>
+    <thead><tr><th scope="col">#</th><th scope="col">Model</th><th scope="col">Harness</th><th scope="col" data-metric="perfect" aria-sort="descending">Full replication</th><th scope="col" data-metric="partial" aria-sort="none">Coefficient and SE within 5%</th><th scope="col" data-metric="coefficient_only" aria-sort="none">Coefficient within 5%</th><th scope="col" data-metric="direction" aria-sort="none">Correct sign</th><th scope="col" data-metric="significance" aria-sort="none">Correct significance</th><th scope="col" class="dev-count">Unknown or missing (ranked metric)</th><th scope="col" class="dev-count">Scored</th><th scope="col" class="dev-count">Failed</th><th scope="col" class="dev-count">Unknown</th><th scope="col" class="dev-source">Source mix</th></tr></thead>
+    <tbody><tr data-board="dev100-v10" data-run-model="gpt56-sol" data-run-harness="claude"><td>1</td><th scope="row" data-no-translate>GPT-5.6 Sol</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>Claude Agent SDK</span></td><td class="is-sorted">67.0%</td><td>70.0%</td><td>75.0%</td><td>94.0%</td><td>82.0%</td><td class="dev-count">4</td><td class="dev-count">96</td><td class="dev-count">2</td><td class="dev-count">2</td><td class="dev-source"><span>Inherited SDK</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="gpt56-sol" data-run-harness="deepagents"><td>2</td><th scope="row" data-no-translate>GPT-5.6 Sol</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepAgents</span></td><td class="is-sorted">65.0%</td><td>68.0%</td><td>76.0%</td><td>96.0%</td><td>83.0%</td><td class="dev-count">2</td><td class="dev-count">98</td><td class="dev-count">2</td><td class="dev-count">0</td><td class="dev-source"><span>New</span> 4 · <span>Offline-derived</span> 96</td></tr>
+<tr data-board="dev100-v10" data-run-model="gpt61-sol" data-run-harness="openai_agents"><td>3</td><th scope="row" data-no-translate>GPT-6.1 Sol</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>OpenAI Agents SDK</span></td><td class="is-sorted">61.0%</td><td>67.0%</td><td>72.0%</td><td>88.0%</td><td>77.0%</td><td class="dev-count">10</td><td class="dev-count">90</td><td class="dev-count">7</td><td class="dev-count">3</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="gpt56-sol" data-run-harness="deepseek"><td>4</td><th scope="row" data-no-translate>GPT-5.6 Sol</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepSeek Harness</span></td><td class="is-sorted">60.0%</td><td>66.0%</td><td>73.0%</td><td>93.0%</td><td>78.0%</td><td class="dev-count">4</td><td class="dev-count">96</td><td class="dev-count">2</td><td class="dev-count">2</td><td class="dev-source"><span>Inherited SDK</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="gpt56-sol" data-run-harness="openai_agents"><td>4</td><th scope="row" data-no-translate>GPT-5.6 Sol</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>OpenAI Agents SDK</span></td><td class="is-sorted">60.0%</td><td>65.0%</td><td>73.0%</td><td>93.0%</td><td>79.0%</td><td class="dev-count">5</td><td class="dev-count">95</td><td class="dev-count">5</td><td class="dev-count">0</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="gpt61-sol" data-run-harness="claude"><td>4</td><th scope="row" data-no-translate>GPT-6.1 Sol</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>Claude Agent SDK</span></td><td class="is-sorted">60.0%</td><td>65.0%</td><td>72.0%</td><td>90.0%</td><td>78.0%</td><td class="dev-count">6</td><td class="dev-count">94</td><td class="dev-count">4</td><td class="dev-count">2</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="gpt6-astra" data-run-harness="deepseek"><td>7</td><th scope="row" data-no-translate>GPT-6 Astra</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepSeek Harness</span></td><td class="is-sorted">59.0%</td><td>60.0%</td><td>70.0%</td><td>85.0%</td><td>76.0%</td><td class="dev-count">11</td><td class="dev-count">89</td><td class="dev-count">9</td><td class="dev-count">2</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="gpt6-astra" data-run-harness="claude"><td>7</td><th scope="row" data-no-translate>GPT-6 Astra</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>Claude Agent SDK</span></td><td class="is-sorted">59.0%</td><td>67.0%</td><td>74.0%</td><td>88.0%</td><td>79.0%</td><td class="dev-count">9</td><td class="dev-count">91</td><td class="dev-count">5</td><td class="dev-count">4</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="gpt6-astra" data-run-harness="deepagents"><td>9</td><th scope="row" data-no-translate>GPT-6 Astra</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepAgents</span></td><td class="is-sorted">58.0%</td><td>63.0%</td><td>71.0%</td><td>90.0%</td><td>76.0%</td><td class="dev-count">7</td><td class="dev-count">93</td><td class="dev-count">3</td><td class="dev-count">4</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="gpt6-astra" data-run-harness="openai_agents"><td>9</td><th scope="row" data-no-translate>GPT-6 Astra</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>OpenAI Agents SDK</span></td><td class="is-sorted">58.0%</td><td>62.0%</td><td>69.0%</td><td>83.0%</td><td>72.0%</td><td class="dev-count">14</td><td class="dev-count">86</td><td class="dev-count">11</td><td class="dev-count">3</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="claude-opus55" data-run-harness="openai_agents"><td>11</td><th scope="row" data-no-translate>Claude Opus 5.5</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>OpenAI Agents SDK</span></td><td class="is-sorted">57.0%</td><td>65.0%</td><td>74.0%</td><td>90.0%</td><td>78.0%</td><td class="dev-count">8</td><td class="dev-count">92</td><td class="dev-count">5</td><td class="dev-count">3</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="claude-opus55" data-run-harness="deepseek"><td>12</td><th scope="row" data-no-translate>Claude Opus 5.5</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepSeek Harness</span></td><td class="is-sorted">55.0%</td><td>65.0%</td><td>72.0%</td><td>86.0%</td><td>73.0%</td><td class="dev-count">10</td><td class="dev-count">90</td><td class="dev-count">10</td><td class="dev-count">0</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="claude-fable51" data-run-harness="deepseek"><td>12</td><th scope="row" data-no-translate>Claude Fable 5.1</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepSeek Harness</span></td><td class="is-sorted">55.0%</td><td>62.0%</td><td>70.0%</td><td>83.0%</td><td>68.0%</td><td class="dev-count">14</td><td class="dev-count">86</td><td class="dev-count">10</td><td class="dev-count">4</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="gpt61-sol" data-run-harness="deepagents"><td>12</td><th scope="row" data-no-translate>GPT-6.1 Sol</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepAgents</span></td><td class="is-sorted">55.0%</td><td>60.0%</td><td>72.0%</td><td>88.0%</td><td>74.0%</td><td class="dev-count">9</td><td class="dev-count">91</td><td class="dev-count">7</td><td class="dev-count">2</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="gpt61-sol" data-run-harness="deepseek"><td>12</td><th scope="row" data-no-translate>GPT-6.1 Sol</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepSeek Harness</span></td><td class="is-sorted">55.0%</td><td>59.0%</td><td>69.0%</td><td>86.0%</td><td>74.0%</td><td class="dev-count">11</td><td class="dev-count">89</td><td class="dev-count">6</td><td class="dev-count">5</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="claude-opus55" data-run-harness="claude"><td>16</td><th scope="row" data-no-translate>Claude Opus 5.5</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>Claude Agent SDK</span></td><td class="is-sorted">54.0%</td><td>62.0%</td><td>69.0%</td><td>87.0%</td><td>75.0%</td><td class="dev-count">10</td><td class="dev-count">90</td><td class="dev-count">6</td><td class="dev-count">4</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="claude-fable51" data-run-harness="deepagents"><td>16</td><th scope="row" data-no-translate>Claude Fable 5.1</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepAgents</span></td><td class="is-sorted">54.0%</td><td>65.0%</td><td>74.0%</td><td>90.0%</td><td>72.0%</td><td class="dev-count">8</td><td class="dev-count">92</td><td class="dev-count">5</td><td class="dev-count">3</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="claude-fable51" data-run-harness="claude"><td>16</td><th scope="row" data-no-translate>Claude Fable 5.1</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>Claude Agent SDK</span></td><td class="is-sorted">54.0%</td><td>63.0%</td><td>74.0%</td><td>89.0%</td><td>73.0%</td><td class="dev-count">9</td><td class="dev-count">91</td><td class="dev-count">7</td><td class="dev-count">2</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="kimi-k3" data-run-harness="claude"><td>19</td><th scope="row" data-no-translate>Kimi K3</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>Claude Agent SDK</span></td><td class="is-sorted">51.0%</td><td>57.0%</td><td>66.0%</td><td>78.0%</td><td>65.0%</td><td class="dev-count">18</td><td class="dev-count">82</td><td class="dev-count">13</td><td class="dev-count">5</td><td class="dev-source"><span>Inherited SDK</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="claude-opus48" data-run-harness="claude"><td>19</td><th scope="row" data-no-translate>Claude Opus 4.8</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>Claude Agent SDK</span></td><td class="is-sorted">51.0%</td><td>61.0%</td><td>72.0%</td><td>89.0%</td><td>72.0%</td><td class="dev-count">7</td><td class="dev-count">93</td><td class="dev-count">5</td><td class="dev-count">2</td><td class="dev-source"><span>Inherited SDK</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="claude-fable51" data-run-harness="openai_agents"><td>19</td><th scope="row" data-no-translate>Claude Fable 5.1</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>OpenAI Agents SDK</span></td><td class="is-sorted">51.0%</td><td>60.0%</td><td>69.0%</td><td>83.0%</td><td>68.0%</td><td class="dev-count">14</td><td class="dev-count">86</td><td class="dev-count">9</td><td class="dev-count">5</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="claude-opus55" data-run-harness="deepagents"><td>22</td><th scope="row" data-no-translate>Claude Opus 5.5</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepAgents</span></td><td class="is-sorted">50.0%</td><td>58.0%</td><td>66.0%</td><td>81.0%</td><td>66.0%</td><td class="dev-count">16</td><td class="dev-count">84</td><td class="dev-count">10</td><td class="dev-count">6</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="gemini38-flash" data-run-harness="openai_agents"><td>23</td><th scope="row" data-no-translate>Gemini 3.8 Flash</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>OpenAI Agents SDK</span></td><td class="is-sorted">49.0%</td><td>51.0%</td><td>55.0%</td><td>66.0%</td><td>60.0%</td><td class="dev-count">32</td><td class="dev-count">68</td><td class="dev-count">28</td><td class="dev-count">4</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="kimi-k3" data-run-harness="deepseek"><td>24</td><th scope="row" data-no-translate>Kimi K3</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepSeek Harness</span></td><td class="is-sorted">48.0%</td><td>54.0%</td><td>62.0%</td><td>77.0%</td><td>67.0%</td><td class="dev-count">20</td><td class="dev-count">80</td><td class="dev-count">14</td><td class="dev-count">6</td><td class="dev-source"><span>Inherited SDK</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="claude-opus48" data-run-harness="deepagents"><td>25</td><th scope="row" data-no-translate>Claude Opus 4.8</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepAgents</span></td><td class="is-sorted">45.0%</td><td>59.0%</td><td>71.0%</td><td>92.0%</td><td>71.0%</td><td class="dev-count">6</td><td class="dev-count">94</td><td class="dev-count">6</td><td class="dev-count">0</td><td class="dev-source"><span>New</span> 14 · <span>Offline-derived</span> 86</td></tr>
+<tr data-board="dev100-v10" data-run-model="gemini31-pro" data-run-harness="deepagents"><td>26</td><th scope="row" data-no-translate>Gemini 3.1 Pro</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepAgents</span></td><td class="is-sorted">42.0%</td><td>4.0%</td><td>7.0%</td><td>10.0%</td><td>7.0%</td><td class="dev-count">5</td><td class="dev-count">95</td><td class="dev-count">5</td><td class="dev-count">0</td><td class="dev-source"><span>New</span> 15 · <span>Historical</span> 85</td></tr>
+<tr data-board="dev100-v10" data-run-model="kimi-k3" data-run-harness="deepagents"><td>26</td><th scope="row" data-no-translate>Kimi K3</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepAgents</span></td><td class="is-sorted">42.0%</td><td>10.0%</td><td>14.0%</td><td>16.0%</td><td>13.0%</td><td class="dev-count">6</td><td class="dev-count">94</td><td class="dev-count">4</td><td class="dev-count">2</td><td class="dev-source"><span>New</span> 22 · <span>Historical</span> 78</td></tr>
+<tr data-board="dev100-v10" data-run-model="gemini31-pro" data-run-harness="openai_agents"><td>28</td><th scope="row" data-no-translate>Gemini 3.1 Pro</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>OpenAI Agents SDK</span></td><td class="is-sorted">41.0%</td><td>55.0%</td><td>66.0%</td><td>78.0%</td><td>63.0%</td><td class="dev-count">21</td><td class="dev-count">79</td><td class="dev-count">21</td><td class="dev-count">0</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="claude-opus48" data-run-harness="deepseek"><td>28</td><th scope="row" data-no-translate>Claude Opus 4.8</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepSeek Harness</span></td><td class="is-sorted">41.0%</td><td>55.0%</td><td>67.0%</td><td>87.0%</td><td>66.0%</td><td class="dev-count">10</td><td class="dev-count">90</td><td class="dev-count">9</td><td class="dev-count">1</td><td class="dev-source"><span>Inherited SDK</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="kimi-k3" data-run-harness="openai_agents"><td>30</td><th scope="row" data-no-translate>Kimi K3</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>OpenAI Agents SDK</span></td><td class="is-sorted">40.0%</td><td>46.0%</td><td>53.0%</td><td>64.0%</td><td>51.0%</td><td class="dev-count">32</td><td class="dev-count">68</td><td class="dev-count">19</td><td class="dev-count">13</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="claude-opus48" data-run-harness="openai_agents"><td>30</td><th scope="row" data-no-translate>Claude Opus 4.8</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>OpenAI Agents SDK</span></td><td class="is-sorted">40.0%</td><td>51.0%</td><td>67.0%</td><td>87.0%</td><td>67.0%</td><td class="dev-count">10</td><td class="dev-count">90</td><td class="dev-count">9</td><td class="dev-count">1</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="gemini31-pro" data-run-harness="claude"><td>32</td><th scope="row" data-no-translate>Gemini 3.1 Pro</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>Claude Agent SDK</span></td><td class="is-sorted">39.0%</td><td>47.0%</td><td>56.0%</td><td>72.0%</td><td>59.0%</td><td class="dev-count">26</td><td class="dev-count">74</td><td class="dev-count">20</td><td class="dev-count">6</td><td class="dev-source"><span>Inherited SDK</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="gemini38-flash" data-run-harness="deepseek"><td>32</td><th scope="row" data-no-translate>Gemini 3.8 Flash</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepSeek Harness</span></td><td class="is-sorted">39.0%</td><td>40.0%</td><td>43.0%</td><td>54.0%</td><td>47.0%</td><td class="dev-count">44</td><td class="dev-count">56</td><td class="dev-count">33</td><td class="dev-count">11</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="qwen37-max" data-run-harness="deepseek"><td>34</td><th scope="row" data-no-translate>Qwen3.7-Max</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepSeek Harness</span></td><td class="is-sorted">35.0%</td><td>41.0%</td><td>46.0%</td><td>60.0%</td><td>51.0%</td><td class="dev-count">38</td><td class="dev-count">62</td><td class="dev-count">35</td><td class="dev-count">3</td><td class="dev-source"><span>Inherited SDK</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="deepseek-v41-flash" data-run-harness="claude"><td>35</td><th scope="row" data-no-translate>DeepSeek V4.1 Flash</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>Claude Agent SDK</span></td><td class="is-sorted">34.0%</td><td>39.0%</td><td>50.0%</td><td>61.0%</td><td>48.0%</td><td class="dev-count">35</td><td class="dev-count">65</td><td class="dev-count">26</td><td class="dev-count">9</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="qwen37-max" data-run-harness="openai_agents"><td>36</td><th scope="row" data-no-translate>Qwen3.7-Max</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>OpenAI Agents SDK</span></td><td class="is-sorted">32.0%</td><td>36.0%</td><td>40.0%</td><td>52.0%</td><td>41.0%</td><td class="dev-count">46</td><td class="dev-count">54</td><td class="dev-count">33</td><td class="dev-count">13</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="qwen37-max" data-run-harness="deepagents"><td>37</td><th scope="row" data-no-translate>Qwen3.7-Max</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepAgents</span></td><td class="is-sorted">30.0%</td><td>10.0%</td><td>14.0%</td><td>22.0%</td><td>15.0%</td><td class="dev-count">31</td><td class="dev-count">69</td><td class="dev-count">31</td><td class="dev-count">0</td><td class="dev-source"><span>New</span> 54 · <span>Historical</span> 46</td></tr>
+<tr data-board="dev100-v10" data-run-model="gemini38-flash" data-run-harness="deepagents"><td>38</td><th scope="row" data-no-translate>Gemini 3.8 Flash</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepAgents</span></td><td class="is-sorted">29.0%</td><td>33.0%</td><td>36.0%</td><td>42.0%</td><td>35.0%</td><td class="dev-count">58</td><td class="dev-count">42</td><td class="dev-count">56</td><td class="dev-count">2</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="qwen38-max" data-run-harness="deepseek"><td>39</td><th scope="row" data-no-translate>Qwen3.8-Max</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepSeek Harness</span></td><td class="is-sorted">28.0%</td><td>30.0%</td><td>41.0%</td><td>47.0%</td><td>42.0%</td><td class="dev-count">49</td><td class="dev-count">51</td><td class="dev-count">29</td><td class="dev-count">20</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="deepseek-v41-flash" data-run-harness="deepagents"><td>40</td><th scope="row" data-no-translate>DeepSeek V4.1 Flash</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepAgents</span></td><td class="is-sorted">26.0%</td><td>31.0%</td><td>41.0%</td><td>49.0%</td><td>39.0%</td><td class="dev-count">49</td><td class="dev-count">51</td><td class="dev-count">39</td><td class="dev-count">10</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="deepseek-v41-flash" data-run-harness="deepseek"><td>40</td><th scope="row" data-no-translate>DeepSeek V4.1 Flash</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepSeek Harness</span></td><td class="is-sorted">26.0%</td><td>30.0%</td><td>31.0%</td><td>35.0%</td><td>32.0%</td><td class="dev-count">64</td><td class="dev-count">36</td><td class="dev-count">48</td><td class="dev-count">16</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="glm53" data-run-harness="claude"><td>40</td><th scope="row" data-no-translate>GLM 5.3</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>Claude Agent SDK</span></td><td class="is-sorted">26.0%</td><td>33.0%</td><td>37.0%</td><td>44.0%</td><td>37.0%</td><td class="dev-count">55</td><td class="dev-count">45</td><td class="dev-count">45</td><td class="dev-count">10</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="qwen38-max" data-run-harness="deepagents"><td>40</td><th scope="row" data-no-translate>Qwen3.8-Max</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepAgents</span></td><td class="is-sorted">26.0%</td><td>36.0%</td><td>46.0%</td><td>54.0%</td><td>45.0%</td><td class="dev-count">46</td><td class="dev-count">54</td><td class="dev-count">26</td><td class="dev-count">20</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="qwen38-max" data-run-harness="openai_agents"><td>40</td><th scope="row" data-no-translate>Qwen3.8-Max</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>OpenAI Agents SDK</span></td><td class="is-sorted">26.0%</td><td>31.0%</td><td>40.0%</td><td>48.0%</td><td>39.0%</td><td class="dev-count">47</td><td class="dev-count">53</td><td class="dev-count">36</td><td class="dev-count">11</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="deepseek-v4-pro" data-run-harness="claude"><td>45</td><th scope="row" data-no-translate>DeepSeek V4 Pro</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>Claude Agent SDK</span></td><td class="is-sorted">24.0%</td><td>29.0%</td><td>31.0%</td><td>49.0%</td><td>36.0%</td><td class="dev-count">49</td><td class="dev-count">51</td><td class="dev-count">44</td><td class="dev-count">5</td><td class="dev-source"><span>Inherited SDK</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="deepseek-v41-flash" data-run-harness="openai_agents"><td>46</td><th scope="row" data-no-translate>DeepSeek V4.1 Flash</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>OpenAI Agents SDK</span></td><td class="is-sorted">22.0%</td><td>26.0%</td><td>30.0%</td><td>36.0%</td><td>30.0%</td><td class="dev-count">63</td><td class="dev-count">37</td><td class="dev-count">51</td><td class="dev-count">12</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="glm53" data-run-harness="deepagents"><td>47</td><th scope="row" data-no-translate>GLM 5.3</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepAgents</span></td><td class="is-sorted">19.0%</td><td>22.0%</td><td>24.0%</td><td>31.0%</td><td>26.0%</td><td class="dev-count">67</td><td class="dev-count">33</td><td class="dev-count">56</td><td class="dev-count">11</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="gemini31-pro" data-run-harness="deepseek"><td>48</td><th scope="row" data-no-translate>Gemini 3.1 Pro</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepSeek Harness</span></td><td class="is-sorted">18.0%</td><td>23.0%</td><td>24.0%</td><td>30.0%</td><td>26.0%</td><td class="dev-count">69</td><td class="dev-count">31</td><td class="dev-count">67</td><td class="dev-count">2</td><td class="dev-source"><span>Inherited SDK</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="deepseek-v4-pro" data-run-harness="deepseek"><td>48</td><th scope="row" data-no-translate>DeepSeek V4 Pro</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepSeek Harness</span></td><td class="is-sorted">18.0%</td><td>24.0%</td><td>29.0%</td><td>36.0%</td><td>31.0%</td><td class="dev-count">62</td><td class="dev-count">38</td><td class="dev-count">56</td><td class="dev-count">6</td><td class="dev-source"><span>Inherited SDK</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="deepseek-v4-pro" data-run-harness="deepagents"><td>50</td><th scope="row" data-no-translate>DeepSeek V4 Pro</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepAgents</span></td><td class="is-sorted">17.0%</td><td>4.0%</td><td>4.0%</td><td>5.0%</td><td>5.0%</td><td class="dev-count">67</td><td class="dev-count">33</td><td class="dev-count">59</td><td class="dev-count">8</td><td class="dev-source"><span>New</span> 73 · <span>Historical</span> 27</td></tr>
+<tr data-board="dev100-v10" data-run-model="glm53" data-run-harness="deepseek"><td>51</td><th scope="row" data-no-translate>GLM 5.3</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>DeepSeek Harness</span></td><td class="is-sorted">13.0%</td><td>14.0%</td><td>15.0%</td><td>19.0%</td><td>18.0%</td><td class="dev-count">81</td><td class="dev-count">19</td><td class="dev-count">75</td><td class="dev-count">6</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="qwen38-max" data-run-harness="claude"><td>51</td><th scope="row" data-no-translate>Qwen3.8-Max</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>Claude Agent SDK</span></td><td class="is-sorted">13.0%</td><td>15.0%</td><td>20.0%</td><td>23.0%</td><td>20.0%</td><td class="dev-count">75</td><td class="dev-count">25</td><td class="dev-count">64</td><td class="dev-count">11</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="glm53" data-run-harness="openai_agents"><td>53</td><th scope="row" data-no-translate>GLM 5.3</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>OpenAI Agents SDK</span></td><td class="is-sorted">9.0%</td><td>10.0%</td><td>11.0%</td><td>14.0%</td><td>12.0%</td><td class="dev-count">86</td><td class="dev-count">14</td><td class="dev-count">77</td><td class="dev-count">9</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="deepseek-v4-pro" data-run-harness="openai_agents"><td>54</td><th scope="row" data-no-translate>DeepSeek V4 Pro</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>OpenAI Agents SDK</span></td><td class="is-sorted">8.0%</td><td>10.0%</td><td>13.0%</td><td>22.0%</td><td>17.0%</td><td class="dev-count">78</td><td class="dev-count">22</td><td class="dev-count">66</td><td class="dev-count">12</td><td class="dev-source"><span>New</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="qwen37-max" data-run-harness="claude"><td>55</td><th scope="row" data-no-translate>Qwen3.7-Max</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>Claude Agent SDK</span></td><td class="is-sorted">5.0%</td><td>7.0%</td><td>8.0%</td><td>11.0%</td><td>7.0%</td><td class="dev-count">87</td><td class="dev-count">13</td><td class="dev-count">82</td><td class="dev-count">5</td><td class="dev-source"><span>Inherited SDK</span> 100</td></tr>
+<tr data-board="dev100-v10" data-run-model="gemini38-flash" data-run-harness="claude"><td>55</td><th scope="row" data-no-translate>Gemini 3.8 Flash</th><td class="dev-harness"><span class="harness-tag harness" data-no-translate>Claude Agent SDK</span></td><td class="is-sorted">5.0%</td><td>5.0%</td><td>6.0%</td><td>6.0%</td><td>6.0%</td><td class="dev-count">94</td><td class="dev-count">6</td><td class="dev-count">90</td><td class="dev-count">4</td><td class="dev-source"><span>New</span> 100</td></tr></tbody>
+  </table></div>
+  <div class="paired-foot"><span>Every score uses all 100 tasks; failed and unknown runs stay in the denominator.</span><a href="assets/data/dev100-v10-results.csv" download>Download development results CSV ↓</a></div>
+  <p class="dev-missing-note">† Includes scored tasks with no recorded value for this metric: historical DeepAgents results recorded Full replication only.</p>
+  <p class="paired-status visually-hidden" data-ranking-status role="status">v10 final report · 11 Oct 2026</p>
+</div>
+<div class="dev-report" id="leaderboard-dev100-report">
+  <h3>v10 report summary</h3>
+  <dl class="dev-report-facts">
+    <div><dt>Report</dt><dd><code>four-harness-dev100-20261011-v10-recovered01</code> · <code>sha256:8b110f06092a</code></dd></div>
+    <div><dt>Report generated</dt><dd><time datetime="2026-10-11">2026-10-11</time></dd></div>
+    <div><dt>Dataset</dt><dd><span>Dev100 development set (100 tasks)</span> · 100 <span>tasks</span> · <span>Development split</span></dd></div>
+    <div><dt>Dataset relation</dt><dd><span>The development split of a pinned 100-task selection drawn from Selected_1000 (dataset revision 59f9512); tasks are not published.</span></dd></div>
+    <div><dt>Task slots</dt><dd>5,600</dd></div>
+    <div><dt>Scored</dt><dd>3,786</dd></div>
+    <div><dt>Full replication</dt><dd>2,204</dd></div>
+    <div><dt>Failed</dt><dd>1,502 <span class="run-card-breakdown">(<span>Infrastructure</span> 128 · <span>Billing, within infrastructure</span> 105 · <span>Model-attributed</span> 0 · <span>Unattributed</span> 1,374)</span></dd></div>
+    <div><dt>Unknown</dt><dd>312 <span class="run-card-breakdown">(<span>Infrastructure</span> 163 · <span>Provider rejection</span> 1 · <span>Provider access</span> 3 · <span>Other provider error</span> 38 · <span>Deadline</span> 3 · <span>Unattributed</span> 104)</span></dd></div>
+    <div><dt>Pending</dt><dd>0</dd></div>
+    <div><dt>Provenance mix</dt><dd><ul class="run-card-dist"><li><span>New native run</span> · 3982 <span>tasks</span></li><li><span>Offline-derived DeepAgents metric</span> · 182 <span>tasks</span></li><li><span>Historical DeepAgents metric</span> · 236 <span>tasks</span></li><li><span>Inherited native SDK run</span> · 1200 <span>tasks</span></li></ul></dd></div>
+    <div><dt>New-run stages</dt><dd>10</dd></div>
+    <div><dt>Attempt ledger</dt><dd><code>logical_selected_new_slots</code> 3,982 · <code>physical_scheduled_attempts</code> 4,138 · <code>superseded_attempts</code> 156 · <code>superseded_zero_api</code> 28 · <code>superseded_infrastructure</code> 28 · <code>superseded_queue</code> 36 · <code>superseded_operator_interruption</code> 64</dd></div>
+    <div><dt>Unknown reasons</dt><dd><code>collateral_study_interruption</code> 158 · <code>unclassified_unknown</code> 104 · <code>upstream_transport</code> 37 · <code>upstream_rate_limit</code> 5 · <code>provider_access</code> 3 · <code>task_deadline_exhausted</code> 3 · <code>upstream_content_policy</code> 1 · <code>upstream_provider_error</code> 1</dd></div>
+    <div><dt>Failure reasons</dt><dd><code>harness_runtime_error</code> 381 · <code>model_call_limit_exhausted</code> 318 · <code>no_single_fenced_python_program</code> 246 · <code>final_execution_failed</code> 229 · <code>output_limit_exhausted</code> 150 · <code>provider_billing_http_402</code> 105 · <code>wall_time_exhausted</code> 32 · <code>cancelled_before_dispatch</code> 27 · <code>provider_request_error</code> 14</dd></div>
+    <div><dt>Acceptance</dt><dd><code>controller_stage</code> <code>finished</code> · <code>controller_finished_at</code> <code>2026-10-11T16:35:50.157877+00:00</code> · <code>report_exit_code</code> 0 · <code>independent_delivery_audit_passed</code> <code>true</code> · <code>evidence</code> <span>Stated in the server visualization README and data.json and in the study&#39;s daily report and handoff; the underlying receipts were not accessible to this audit.</span></dd></div>
+  </dl>
+  <p class="dev-report-links"><a class="text-link" href="assets/data/dev100-v10-results.json">Development data JSON</a><a class="text-link" href="assets/data/dev100-v10-results-provenance.json">Development provenance</a><a class="text-link" href="assets/data/dev100-v10-results.csv">Development results CSV</a></p>
+</div>
+<!-- dev100-ranking:end -->
+      <details class="paired-notes dev-method" id="leaderboard-dev100-method">
+        <summary>Evaluation protocol, metrics and ModularRSI update</summary>
+        <div class="paired-methods">
+          <article><h3>Tasks and four baseline harnesses</h3><p>Dev100 comprises 100 econometric replication tasks from Selected_1000 (dataset revision 59f9512). Every combination evaluates 14 models across four harness configurations: DeepAgents 0.7.13, DeepSeek Harness 0.1.5rc1, Claude Agent SDK 0.2.165 (Claude Code CLI 2.1.294) and an OpenAI Agents SDK 0.23.1 runtime, under shared per-task caps of 6 model calls, 4 <code>run_python</code> tool calls, 32,768 output tokens and 1,800 s wall time.</p></article>
+          <article><h3>ModularRSI-evolved DeepAgents (67.0%)</h3><p>Applying ModularRSI self-evolution to DeepAgents (evolving loop, tool-use, completion and LangGraph <code>ToolNode</code> observation-audit feedback) raises GPT-5.6 Sol from 64.0% to <strong>67.0%</strong> strict replication on a fresh paired Dev100 run (98% compilation, 78% partial replication, 95% correct sign, 81% significance), matching the top 67.0% score on the board. <a href="evolution.html#rsi-versions">Explore the ModularRSI results <span aria-hidden="true">→</span></a></p></article>
+        </div>
+        <ul>
+          <li><strong>Full replication</strong>: coefficient and standard error within 1% relative error; p-value within 0.01 absolute error (<code>local-paper-v1</code>).</li>
+          <li><strong>Coefficient and SE within 5%</strong>: coefficient and standard error both within 5% relative error.</li>
+          <li><strong>Coefficient within 5%</strong>: coefficient relative error at most 5%.</li>
+          <li><strong>Correct sign</strong>: estimated coefficient and reference share the same sign.</li>
+          <li><strong>Correct significance</strong>: correct sign and the same p-value threshold band (p &lt; 0.01, 0.01–0.05, 0.05–0.1, ≥ 0.1).</li>
+        </ul>
+        <p><a href="#leaderboard-dev100-report">Report summary</a> · <a href="assets/data/dev100-v10-results.json">Data JSON</a> · <a href="assets/data/dev100-v10-results-provenance.json">Release provenance</a> · <a href="assets/data/dev100-v10-results.csv" download>Download results CSV <span aria-hidden="true">↓</span></a></p>
+      </details>
+    </section>
+    <section class="section container ruled" id="research" aria-labelledby="research-title">
+      <div class="section-heading">
+        <div><p class="kicker">02 / Research</p><h2 id="research-title">Research directions</h2></div>
+        <p class="lead">We study how models and harnesses work together across econometric replication and business analysis, turning execution trajectories into better harnesses and model training signals.</p>
+      </div>
+      <ol class="card-grid research-directions">
+        <li class="card" id="model-harness-coupling">
+          <p class="card-label">01</p>
+          <h3>Model–Harness Coupling &amp; Harbor Integration</h3>
+          <p>Compare how different models interact with library, SDK and CLI harnesses, and unify econometric and business evaluations on the Harbor container framework.</p>
+          <a class="text-link" href="harness.html">Harness: architecture, Harbor integration and four compared <span aria-hidden="true">→</span></a>
+        </li>
+        <li class="card" id="harness-self-evolution">
+          <p class="card-label">02</p>
+          <h3>Self-Evolving Harnesses (ModularRSI · 64% → 67%)</h3>
+          <p>Evolve modular harness hooks and observation-audit feedback from execution traces. On Dev100, ModularRSI-evolved DeepAgents reaches 67.0% strict replication with GPT-5.6 Sol.</p>
+          <a class="text-link" href="evolution.html#rsi-versions">See our ModularRSI implementation and results <span aria-hidden="true">→</span></a>
+        </li>
+        <li class="card" id="trajectory-post-training">
+          <p class="card-label">03</p>
+          <h3>Trajectory-Based Post-Training &amp; Co-Evolution</h3>
+          <p>Use verified agent trajectories, tool feedback and rubric evaluations to drive supervised fine-tuning, reinforcement learning and model–harness co-evolution.</p>
+          <a class="text-link" href="evolution.html#improvement-directions">Explore training and co-evolution directions <span aria-hidden="true">→</span></a>
+        </li>
+      </ol>
+    </section>
+    <div class="container"><nav class="page-footer-nav" aria-label="Page sequence"><a href="evolution.html"><small>Previous</small><span>← Self-evolving</span></a><a href="teams.html"><small>Next</small><span>Teams →</span></a></nav></div>
   </main>
+  <footer class="v2-footer">
+    <div class="wrap">
+      <div class="cols">
+        <div class="brandcol">
+          <a class="lock" href="index.html"><svg aria-hidden="true"><use href="#logo-p"/></svg><span data-no-translate>Metacase <span class="net">Challenge</span></span></a>
+          <p>AI Agents for Business, Finance and Social Science.</p>
+        </div>
+        <div><h4>Pages</h4><ul>
+          <li><a href="challenge.html">Challenge</a></li><li><a href="harness.html">Harness</a></li>
+          <li><a href="evolution.html">Self-evolving</a></li><li><a href="leaderboard.html">Leaderboard</a></li>
+          <li><a href="teams.html">Teams</a></li></ul></div>
+        <div><h4>Resources</h4><ul>
+          <li><a href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener">Research dataset source</a></li>
+          <li><a href="https://github.com/HKU-Business-AI-Center/Econometrics-Agent" target="_blank" rel="noopener">Econometrics-Agent code</a></li>
+          <li><a href="https://github.com/EasonAI-5589/metacase-challenge" target="_blank" rel="noopener">Website source</a></li></ul></div>
+        <div><h4>Contact</h4><ul>
+          <li><a href="teams.html#contact">Contact us</a></li>
+          <li><a href="teams.html">Meet the team</a></li></ul></div>
+      </div>
+      <div class="footer-mark" aria-hidden="true" data-no-translate><span data-parallax="-0.08">Metacase<span> Challenge</span></span></div>
+      <div class="bottom"><span data-no-translate>© 2026 Global Metacase Initiative · NTU GIFTS</span><span class="mono" data-no-translate>∴ METACASE · CHALLENGE</span></div>
+    </div>
+  </footer>
 </body>
 </html>

@@ -1,7 +1,7 @@
 /* mc-toon.js — the shared toy look of the homepage's 3D chapters: soft matte
  * materials and one post pass that adds a gentle glow to bright surfaces and light,
  * a soft vignette and, optionally, depth outlines. Local Three.js r170 only. */
-import * as THREE from '../assets/vendor/three/three.module.js';
+import * as THREE from './assets/vendor/three/three.module.js';
 
 let gradient;
 // Four flat tones: shadow, core, light and a narrow highlight.

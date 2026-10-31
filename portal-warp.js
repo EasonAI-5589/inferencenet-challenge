@@ -41,7 +41,7 @@ const loadoutLine = l => `${MODEL_CHARACTERS[l.model].provider} · ${MODEL_CHARA
 let kitPromise;
 function deps() {
   kitPromise ||= Promise.all([
-    import('../assets/vendor/three/three.module.js'), import('./mc-kit.js'), import('./arena-models.js'),
+    import('./assets/vendor/three/three.module.js'), import('./mc-kit.js'), import('./arena-models.js'),
   ]).then(([THREE, kit, { loadArenaWeapons }]) => ({ THREE, kit, weapons: loadArenaWeapons().catch(() => null) }));
   return kitPromise;
 }

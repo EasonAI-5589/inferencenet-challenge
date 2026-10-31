@@ -1,5 +1,5 @@
 /* Load as a classic head script before stylesheets. Before the page first paints
- * it restores the saved theme (first visits always use light, independent of OS)
+ * it restores the saved theme (first visits to v2 use dark, independent of OS)
  * and settles two things that cannot wait for deferred scripts: whether a Chinese
  * page holds its paint until translated, and whether the homepage plays its
  * entrance. The data-theme it sets also tells site.css that the header controls
@@ -7,10 +7,11 @@
 (() => {
   const storageKey = "inferencenet-theme";
   const root = document.documentElement;
-  let theme = "light";
+  let theme = "dark";
+  root.classList.add("js");
   try {
-    if (window.localStorage.getItem(storageKey) === "dark") theme = "dark";
-  } catch { /* Private browsing or storage policy: retain the light default. */ }
+    if (window.localStorage.getItem(storageKey) === "light") theme = "light";
+  } catch { /* Private browsing or storage policy: retain the dark default. */ }
 
   const apply = () => {
     root.dataset.theme = theme;
@@ -49,8 +50,8 @@
   // A page prerendered in the background (site.js) takes the theme current when it is shown.
   if (document.prerendering) {
     document.addEventListener("prerenderingchange", () => {
-      let next = "light";
-      try { if (window.localStorage.getItem(storageKey) === "dark") next = "dark"; } catch {}
+      let next = "dark";
+      try { if (window.localStorage.getItem(storageKey) === "light") next = "light"; } catch {}
       if (next !== theme) { theme = next; apply(); syncButtons(); }
     }, { once: true });
   }

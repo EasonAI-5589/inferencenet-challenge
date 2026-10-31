@@ -3,17 +3,554 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
   <meta name="referrer" content="no-referrer">
-  <meta http-equiv="refresh" content="0; url=v2/index.html">
-  <link rel="canonical" href="v2/index.html">
-  <title>Metacase Challenge</title>
-  <script>location.replace('v2/index.html' + location.search + location.hash)</script>
+  <title>Metacase Challenge — Global Metacase Initiative</title>
+  <meta name="description" content="The Global Metacase Initiative is building a reusable network of Metacases: end-to-end records of how problems were understood, decided and solved, so AI systems and people can learn from similar problem-solving structures, not just similar facts. The Metacase Challenge is its first pipeline.">
+  <meta property="og:title" content="Metacase Challenge — Global Metacase Initiative">
+  <meta property="og:description" content="The Global Metacase Initiative is building a reusable network of Metacases: end-to-end records of how problems were understood, decided and solved, so AI systems and people can learn from similar problem-solving structures, not just similar facts. The Metacase Challenge is its first pipeline.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon-v2.svg">
+  <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <script src="theme.js?v=20261022-v2-ambient"></script>
+  <script>document.documentElement.classList.add("js")</script>
+  <script src="site.js?v=20261019-motion" defer></script>
+  <link rel="stylesheet" href="language.css">
+  <script src="language.js?v=20261031-team" defer></script>
+  <link rel="stylesheet" href="v2.css?v=20261027-copy2">
+  <link rel="stylesheet" href="arena.css?v=20261031-home">
+  <link rel="stylesheet" href="metacase.css?v=20261031-team">
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+  <script src="v2.js?v=20261022-v2-ambient" defer></script>
+  <script type="module" src="metacase.js?v=20261029-spread"></script>
+  <script type="module" src="arena.js?v=20261028-cascade"></script>
 </head>
-<body>
-  <main>
-    <h1>Metacase Challenge</h1>
-    <p>This page is now part of the Metacase Challenge site.</p>
-    <p><a href="v2/index.html">Continue to Metacase Challenge</a></p>
-  </main>
+<body class="v2-home mc-home">
+  <a class="skip-link" href="#main">Skip to content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="lg-dk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:oklch(80% 0.12 195)"/><stop offset="1" style="stop-color:oklch(82% 0.14 75)"/></linearGradient>
+    <linearGradient id="lg-lt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:oklch(52% 0.10 200)"/><stop offset="1" style="stop-color:oklch(58% 0.14 60)"/></linearGradient>
+    <linearGradient id="gl-dk" gradientUnits="userSpaceOnUse" x1="7.6" y1="24.5" x2="16" y2="9.9"><stop offset="0" style="stop-color:oklch(80% 0.12 195)"/><stop offset="1" style="stop-color:#EEF2F7"/></linearGradient>
+    <linearGradient id="gr-dk" gradientUnits="userSpaceOnUse" x1="24.4" y1="24.5" x2="16" y2="9.9"><stop offset="0" style="stop-color:oklch(82% 0.14 75)"/><stop offset="1" style="stop-color:#EEF2F7"/></linearGradient>
+    <linearGradient id="gl-lt" gradientUnits="userSpaceOnUse" x1="7.6" y1="24.5" x2="16" y2="9.9"><stop offset="0" style="stop-color:oklch(52% 0.10 200)"/><stop offset="1" style="stop-color:#0E1420"/></linearGradient>
+    <linearGradient id="gr-lt" gradientUnits="userSpaceOnUse" x1="24.4" y1="24.5" x2="16" y2="9.9"><stop offset="0" style="stop-color:oklch(58% 0.14 60)"/><stop offset="1" style="stop-color:#0E1420"/></linearGradient>
+  </defs>
+  <!-- Primary · Derivation: ∴ with the two premises drawn up into the conclusion -->
+  <symbol id="logo-p" viewBox="0 0 32 32">
+    <path d="M7.6 24.5 16 9.9" fill="none" style="stroke:var(--logo-gl)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M24.4 24.5 16 9.9" fill="none" style="stroke:var(--logo-gr)" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="7.6" cy="24.5" r="3" style="fill:var(--logo-t1)"/>
+    <circle cx="24.4" cy="24.5" r="4.2" style="fill:var(--logo-t2)"/>
+    <circle cx="16" cy="9.9" r="5.4" style="fill:var(--logo-node)"/>
+  </symbol>
+  <!-- Compact · Therefore: the bare symbol, for 20px and below -->
+  <symbol id="logo-c" viewBox="0 0 32 32">
+    <circle cx="7.6" cy="24.5" r="3.8" style="fill:var(--logo-t1)"/>
+    <circle cx="24.4" cy="24.5" r="5" style="fill:var(--logo-t2)"/>
+    <circle cx="16" cy="9.9" r="6" style="fill:var(--logo-node)"/>
+  </symbol>
+  <!-- Seal · Verified: ∴ inside an evaluation ring, for badges, awards and certificates -->
+  <symbol id="logo-s" viewBox="0 0 32 32">
+    <circle cx="16" cy="16" r="14.6" fill="none" style="stroke:var(--logo-g)" stroke-width="1.4"/>
+    <g transform="translate(16 16) scale(.6) translate(-16 -16)">
+      <path d="M7.6 24.5 16 9.9M24.4 24.5 16 9.9" fill="none" style="stroke:var(--logo-node)" stroke-width="2.4" stroke-linecap="round" opacity=".55"/>
+      <circle cx="7.6" cy="24.5" r="3.4" style="fill:var(--logo-t1)"/>
+      <circle cx="24.4" cy="24.5" r="4.4" style="fill:var(--logo-t2)"/>
+      <circle cx="16" cy="9.9" r="5.8" style="fill:var(--logo-node)"/>
+    </g>
+  </symbol>
+</svg>
+
+  <header class="site-header">
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="wordmark" href="index.html"><svg class="v2-mark lg-anim" width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><circle class="halo" cx="16" cy="9.9" r="5.4" fill="none" style="stroke:var(--logo-node)" stroke-width="1"/><path class="e-l" d="M7.6 24.5 16 9.9" fill="none" style="stroke:var(--logo-gl)" stroke-width="2" stroke-linecap="round" pathLength="1"/><path class="e-r" d="M24.4 24.5 16 9.9" fill="none" style="stroke:var(--logo-gr)" stroke-width="2" stroke-linecap="round" pathLength="1"/><circle class="d-l" cx="7.6" cy="24.5" r="3" style="fill:var(--logo-t1)"/><circle class="d-r" cx="24.4" cy="24.5" r="4.2" style="fill:var(--logo-t2)"/><circle class="d-t" cx="16" cy="9.9" r="5.4" style="fill:var(--logo-node)"/></svg><span data-no-translate>Metacase <span class="net">Challenge</span></span></a>
+      <div class="nav-links open" id="nav-links">
+        <a href="index.html" aria-current="page">Home</a>
+        <a href="challenge.html">Challenge</a>
+        <a href="harness.html">Harness</a>
+        <a href="evolution.html">Self-evolving</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="teams.html">Teams</a>
+      </div>
+      <div class="nav-controls">
+        <button class="theme-toggle" data-theme-toggle aria-label="Switch to dark theme" aria-pressed="true" type="button" hidden>
+          <span class="theme-icon" aria-hidden="true"></span><span data-theme-label>Dark</span>
+        </button>
+        <button class="menu-toggle" type="button" aria-controls="nav-links" aria-expanded="true" hidden>Menu <span aria-hidden="true">−</span></button>
+      </div>
+    </nav>
+  </header>
+
+
+<main id="main" tabindex="-1">
+<!-- ================= HERO: the Metacase network (drawn as bookcases) ================= -->
+<header class="mc-hero" id="top">
+  <div class="mc-tags" data-tags="hero" aria-hidden="true">
+    <span data-tag="0" style="--tc: var(--track-1)"><b>Economics</b><i>152 records</i></span>
+    <span data-tag="1" style="--tc: var(--track-2)"><b>Finance</b><i>90 records</i></span>
+    <span data-tag="2" style="--tc: var(--mc-violet)"><b>Social science</b><i>43 records</i></span>
+  </div>
+  <div class="wrap mc-hero-inner">
+    <p class="mc-eyebrow mono mc-in" style="--d:.05s">Global Metacase Initiative</p>
+    <h1 class="mc-title"><span class="mc-in" style="--d:.12s">Metacase</span> <em class="mc-in" style="--d:.26s">Challenge</em></h1>
+    <p class="mc-lead mc-in" style="--d:.42s">We present the <b>Metacase Challenge<span class="mc-zh-only" data-no-translate>（Metacase Challenge）</span><span class="mc-en-only"> </span></b>— an open benchmark and research arena built around reusable <b>Metacases</b> across Economics, Finance, and Social Science. Each Metacase records an end-to-end problem-solving episode: from original context and raw evidence to prior domain practice, candidate strategies, Model × Harness trajectories, verified outcomes, and reusable lessons.</p>
+    <p class="mc-lead-more mc-in" style="--d:.5s">The goal is for both AI systems and researchers to retrieve and reason over similar problem-solving and decision structures across fields, turning validated episodes into a foundation for experience-based AI.</p>
+    <div class="mc-cta mc-in" style="--d:.56s">
+      <a class="btn btn-primary" href="challenge.html"><span>Join the Challenge</span><span class="arrow" aria-hidden="true"><i>→</i><i>→</i></span></a>
+      <a class="btn btn-secondary" href="#fields"><span>Explore the fields</span><span class="arrow" aria-hidden="true" style="--icon: var(--i-arrow-s)"><i>↓</i><i>↓</i></span></a>
+      <a class="mc-text-link" href="challenge.html#replication-demo"><span class="mc-play" aria-hidden="true"></span><span>Watch an agent run</span></a>
+    </div>
+    <div class="mc-hosts mc-in" style="--d:.66s">
+      <div class="mc-host-crests" role="group" aria-label="Research institutions">
+        <a href="teams.html#ntu-gifts" title="Nanyang Technological University, Singapore"><span class="ntu-crest"><img src="assets/institutions/ntu-university-official.png" width="3006" height="1079" alt="Nanyang Technological University, Singapore"></span></a>
+        <a href="teams.html#hku-ai-agents-lab" title="The University of Hong Kong"><img src="assets/institutions/hku-university-crest.png" width="310" height="310" alt="The University of Hong Kong"></a>
+        <a href="teams.html#sufe-aiflm-lab" title="Shanghai University of Finance and Economics"><span class="sufe-crest" role="img" aria-label="Shanghai University of Finance and Economics"></span></a>
+      </div>
+      <p class="mc-host mono">Hosted by NTU GIFTS · with HKU and SUFE</p>
+    </div>
+  </div>
+</header>
+
+<nav class="subnav mc-subnav" aria-label="On this page">
+  <div class="wrap">
+    <a href="#metacase" data-spy="metacase"><span class="n mono">01</span><span>Metacase</span></a>
+    <a href="#structure" data-spy="structure"><span class="n mono">02</span><span>Retrieval</span></a>
+    <a href="#net" data-spy="net"><span class="n mono">03</span><span>Network</span></a>
+    <a href="#fields" data-spy="fields"><span class="n mono">04</span><span>Fields</span></a>
+    <a href="#arena" data-spy="arena"><span class="n mono">05</span><span>Challenge</span></a>
+    <a href="#rules" data-spy="rules"><span class="n mono">06</span><span>Participate</span></a>
+    <a href="#tracks" data-spy="tracks"><span class="n mono">07</span><span>Results</span></a>
+    <a href="#team" data-spy="team"><span class="n mono">08</span><span>Team</span></a>
+  </div>
+  <span class="mc-subnav-bar" aria-hidden="true"></span>
+</nav>
+
+<!-- ================= 01 THE METACASE: a case opens, layer by layer ================= -->
+<section class="mc-scene" id="metacase" aria-labelledby="metacase-title" style="--len: 300vh">
+  <div class="mc-scene-pin" data-view="anatomy">
+    <div class="wrap mc-scene-head">
+      <p class="mc-label mono"><span>01</span>The Metacase</p>
+      <h2 id="metacase-title"><span>A Metacase is one episode,</span> <em>recorded end to end.</em></h2>
+      <p class="mc-sub">A Metacase is the full record of one episode of problem-solving, decision-making, or task completion — from the raw evidence to the reusable lesson. Each Challenge task is drawn from a curated, representative long-horizon complex problem at the point of decision: the agent sees only what was known then, and the references used for scoring stay hidden from it.</p>
+    </div>
+    <ol class="mc-notes" data-notes="anatomy">
+      <li data-note="0" style="--tc: var(--track-1)"><b class="mono">01</b><strong>Context &amp; Evidence</strong><em class="mono" data-page="key">Goal · Evidence · Constraints</em><span>We collect highly representative, challenging long-horizon complex problems from real-world practice — preserving the goal, raw evidence, and constraints as they stood at the decision cutoff, with zero hindsight leakage.</span><small hidden data-page="line">What was known, and when</small><small hidden data-page="line">Representative long-horizon complex problems</small></li>
+      <li data-note="1" style="--tc: var(--mc-violet)"><b class="mono">02</b><strong>Prior Practice &amp; Strategy</strong><em class="mono" data-page="key">Practice · Options · Trade-offs</em><span>Relevant knowledge and the earlier practice of people or institutions, the candidate approaches, the trade-offs between them, and why one was chosen and others set aside.</span><small hidden data-page="line">Candidate approaches, weighed</small><small hidden data-page="line">Why one was chosen, others set aside</small></li>
+      <li data-note="2" style="--tc: var(--mc-blue)"><b class="mono">03</b><strong>Actions &amp; Execution</strong><em class="mono" data-page="key">Steps · Tools · Intermediate work</em><span>What was actually done: the steps, the tools used and the intermediate work produced. For an agent this is a Model + Harness run: the model decides, the harness carries out the tool calls and keeps the log.</span><small hidden data-page="line">Every step and tool call, in order</small><small hidden data-page="line">The model decides, the harness executes</small><small hidden data-page="steps">Read · Plan · Execute · Deliver</small></li>
+      <li data-note="3" style="--tc: var(--track-2)"><b class="mono">04</b><strong>Outcomes &amp; Verification</strong><em class="mono" data-page="key">Deliverable · Result · Checks · Limits</em><span>The final deliverable, what came of it, how it was checked and where the check falls short. An outcome may be a success, a partial success or a failure; all three are kept.</span><small hidden data-page="line">Checked against a reference or rubric</small><small hidden data-page="line">Pass, partial or fail: all are kept</small></li>
+      <li data-note="4" style="--tc: var(--mc-green)"><b class="mono">05</b><strong>Reflection &amp; Reuse</strong><em class="mono" data-page="key">What held · What failed · When it applies</em><span>Which judgements held and which did not, the conditions under which the experience applies, and what the next attempt should borrow or change.</span><small hidden data-page="line">The conditions under which it held</small><small hidden data-page="line">What the next attempt should change</small></li>
+      <li data-note="5" class="mc-note-signature"><b class="mono">Signature</b><strong>Solution signature</strong><em class="mono">Cross-case structure · retrieval</em><span>Closed again, each stage leaves a tab on the fore-edge; together they trace the problem-solving structure of this case so similar solution paths can be retrieved and compared across fields.</span></li>
+    </ol>
+    <div class="wrap mc-scene-foot">
+      <ol class="mc-rail" aria-label="Stages of a Metacase"><li>Context</li><li>Strategy</li><li>Actions</li><li>Outcomes</li><li>Reflection</li></ol>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 02 STRUCTURE: retrieval by how problems were solved ================= -->
+<section class="mc-scene" id="structure" aria-labelledby="structure-title" style="--len: 290vh">
+  <div class="mc-scene-pin" data-view="archive">
+    <div class="mc-tags" data-tags="archive" aria-hidden="true">
+      <span data-tag="0" style="--tc: var(--track-1)"><b>Economics</b></span>
+      <span data-tag="1" style="--tc: var(--track-2)"><b>Finance</b></span>
+      <span data-tag="2" style="--tc: var(--mc-violet)"><b>Social science</b></span>
+    </div>
+    <div class="mc-tags mc-verdicts" data-tags="verdict" aria-hidden="true">
+      <span data-tag="0" style="--tc: var(--mc-blue)"><b>This case</b><i>Credit decision</i></span>
+      <span data-tag="1" style="--tc: var(--mc-rose)"><b>Different path</b><i>Same topic</i></span>
+      <span data-tag="2" style="--tc: var(--track-1)"><b>Same path</b><i>Economics</i></span>
+      <span data-tag="3" style="--tc: var(--mc-violet)"><b>Same path</b><i>Social science</i></span>
+    </div>
+    <div class="wrap mc-scene-head">
+      <p class="mc-label mono"><span>02</span>Retrieval</p>
+      <h2 id="structure-title"><span>Retrieve experience by</span> <em>how a problem was solved.</em></h2>
+      <p class="mc-sub">Every Metacase carries a solution signature: how the evidence was framed, which options were weighed, the order of actions, and how the outcome was checked. Searching by that structure finds cases worked the same way across fields — providing a better way to aggregate and organize agent trajectories into reusable experience.</p>
+    </div>
+    <ol class="wrap mc-captions">
+      <li data-caption="0"><b class="mono">Topic match</b><span>A topic search for this credit decision returns more credit cases. Laid over its signature, their paths split at most stages: they weighed evidence, acted and checked in other ways. A shared topic does not mean the experience applies.</span></li>
+      <li data-caption="1"><b class="mono">Solution match</b><span>A signature search returns cases from economics and social science whose stages correspond: evidence organised alike, options compared, the same order of action, a similar check. Each ringed stage is a step that lines up; the slips are a schematic of that comparison.</span></li>
+      <li data-caption="2"><b class="mono">Reuse</b><span>A person or an agent reads the matched cases for their evidence, trade-offs, outcomes and limits, decides what is worth carrying over, and tests it on the new task. A match informs the next attempt; it does not supply the answer.</span></li>
+    </ol>
+    <div class="wrap mc-scene-foot">
+      <ol class="mc-rail" aria-label="Steps of retrieval"><li>Topic match</li><li>Solution match</li><li>Reuse</li></ol>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 03 THE METACASE NETWORK: fields, shared structures, reuse, new cases ================= -->
+<section class="mc-scene" id="net" aria-labelledby="net-title" style="--len: 370vh">
+  <span class="mc-anchor" id="foundation" aria-hidden="true"></span>
+  <div class="mc-scene-pin" data-view="world">
+    <div class="mc-tags" data-tags="world" aria-hidden="true">
+      <span data-tag="0" style="--tc: var(--track-1)"><b>Economics</b><i>152 records</i></span>
+      <span data-tag="1" style="--tc: var(--track-2)"><b>Finance</b><i>90 records</i></span>
+      <span data-tag="2" style="--tc: var(--mc-violet)"><b>Social science</b><i>43 records</i></span>
+    </div>
+    <div class="wrap mc-scene-head">
+      <p class="mc-label mono"><span>03</span><b>The network</b></p>
+      <h2 id="net-title"><span>A reusable network</span> <em>of Metacases.</em></h2>
+      <p class="mc-sub">Metacases are linked wherever their solution structures correspond, within a field and across fields. Each reviewed case adds a record and its links, so a new problem can start from related experience instead of from scratch.</p>
+    </div>
+    <ol class="wrap mc-captions">
+      <li data-caption="0"><b class="mono">Field by field</b><span>Each field grows from its own cases: economics, finance and social science, each with its own data, institutions and practice.</span></li>
+      <li data-caption="1"><b class="mono">Linked by solution path</b><span>Where cases in different fields were worked through the same way, their signatures correspond and the network links them.</span></li>
+      <li data-caption="2"><b class="mono">Transfer</b><span>People and agents follow those links to see how a comparable problem was handled elsewhere, then test whether the approach carries over.</span></li>
+      <li data-caption="3" class="mc-caption-statement"><b class="mono">The foundation</b><span>A foundation for experience-based AI.</span><small>That is the aim: as reviewed cases accumulate, new problems start from more recorded experience. The first fields are economics, finance and social science; healthcare, policy and law belong to the longer-term vision.</small></li>
+    </ol>
+    <div class="wrap mc-scene-foot">
+      <ol class="mc-rail" aria-label="Steps of the network"><li>Fields</li><li>Links</li><li>Transfer</li><li>Foundation</li></ol>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 04 THE FIRST FIELDS: three fields, sixteen classes ================= -->
+<section class="mc-section mc-catalogue" id="fields" aria-labelledby="fields-title">
+  <div class="wrap">
+    <div class="mc-head mc-r">
+      <p class="mc-label mono"><span>04</span>The first fields</p>
+      <h2 id="fields-title"><span>Three fields to start,</span> <em>sixteen classes of cases.</em></h2>
+      <p class="mc-sub">Economics, finance and social science come first: each offers public evidence, documented decisions and outputs that can be checked. Open a field's book to see its classes.</p>
+    </div>
+    <div class="mc-catalogue-meta mc-r">
+      <div><b class="tnum" data-count="285">285</b><span>tasks</span></div>
+      <div><b class="tnum" data-count="3">3</b><span>fields</span></div>
+      <div><b class="tnum" data-count="16">16</b><span>classes</span></div>
+    </div>
+<!-- fields:books:start (written by scripts/build-fields.mjs from metacase-harbor metacase/summary.json, v0.1) -->
+<div class="mc-fieldbooks" data-fieldbooks>
+  <div class="mc-bookrow" role="tablist" aria-label="Fields" data-tabs="manual">
+    <button class="mc-fbook" type="button" role="tab" id="fb-tab-econ" aria-controls="fb-econ" aria-selected="true" style="--tc: var(--track-1)">
+      <span class="mc-art" data-art="field" data-field="econ" aria-hidden="true"></span>
+      <span class="mc-fbook-label">
+        <small class="mono">Field 01</small>
+        <b class="mc-fbook-title">Economics</b>
+        <span class="mc-fbook-n"><b class="tnum">5</b> <span>classes</span></span>
+      </span>
+    </button>
+    <button class="mc-fbook" type="button" role="tab" id="fb-tab-fin" aria-controls="fb-fin" aria-selected="false" style="--tc: var(--track-2)">
+      <span class="mc-art" data-art="field" data-field="fin" aria-hidden="true"></span>
+      <span class="mc-fbook-label">
+        <small class="mono">Field 02</small>
+        <b class="mc-fbook-title">Finance</b>
+        <span class="mc-fbook-n"><b class="tnum">6</b> <span>classes</span></span>
+      </span>
+    </button>
+    <button class="mc-fbook" type="button" role="tab" id="fb-tab-soc" aria-controls="fb-soc" aria-selected="false" style="--tc: var(--mc-violet)">
+      <span class="mc-art" data-art="field" data-field="soc" aria-hidden="true"></span>
+      <span class="mc-fbook-label">
+        <small class="mono">Field 03</small>
+        <b class="mc-fbook-title">Social science</b>
+        <span class="mc-fbook-n"><b class="tnum">5</b> <span>classes</span></span>
+      </span>
+    </button>
+  </div>
+  <div class="mc-flip" id="fb-econ" role="tabpanel" aria-labelledby="fb-tab-econ" data-field="econ" style="--tc: var(--track-1)">
+    <p class="mc-flip-head"><small class="mono">Field 01</small> <b>Economics</b></p>
+    <ol class="mc-pages">
+      <li><article class="mc-page" id="fb-econ-replication" aria-labelledby="fb-econ-replication-name">
+        <p class="mc-call mono" data-no-translate>econ.replication</p>
+        <h3 class="mc-page-name" id="fb-econ-replication-name">Econometric replication</h3>
+        <p class="mc-page-desc">Reproduce a published regression coefficient from the paper's own data.</p>
+      </article></li>
+      <li><article class="mc-page" id="fb-econ-data" aria-labelledby="fb-econ-data-name">
+        <p class="mc-call mono" data-no-translate>econ.data</p>
+        <h3 class="mc-page-name" id="fb-econ-data-name">Economic &amp; business data engineering</h3>
+        <p class="mc-page-desc">SQL and dbt over banking, retail, e-commerce and wholesale supply-chain data.</p>
+      </article></li>
+      <li><article class="mc-page" id="fb-econ-markets" aria-labelledby="fb-econ-markets-name">
+        <p class="mc-call mono" data-no-translate>econ.markets</p>
+        <h3 class="mc-page-name" id="fb-econ-markets-name">Market movement forecasting</h3>
+        <p class="mc-page-desc">Predict stock price movement from tweets and historical prices.</p>
+      </article></li>
+      <li><article class="mc-page" id="fb-econ-monetary" aria-labelledby="fb-econ-monetary-name">
+        <p class="mc-call mono" data-no-translate>econ.monetary</p>
+        <h3 class="mc-page-name" id="fb-econ-monetary-name">Monetary policy communication</h3>
+        <p class="mc-page-desc">Classify the hawkish / dovish stance of FOMC statements and minutes.</p>
+      </article></li>
+      <li><article class="mc-page" id="fb-econ-statistics" aria-labelledby="fb-econ-statistics-name">
+        <p class="mc-call mono" data-no-translate>econ.statistics</p>
+        <h3 class="mc-page-name" id="fb-econ-statistics-name">Official statistics synthesis</h3>
+        <p class="mc-page-desc">Gather and combine figures from statistical offices and international organisations into a structured answer.</p>
+      </article></li>
+      <li><article class="mc-page is-summary" id="fb-econ-class-6" aria-labelledby="fb-econ-class-6-name">
+        <p class="mc-call mono">Field summary</p>
+        <h3 class="mc-page-name tnum" id="fb-econ-class-6-name">152 tasks · 5 classes</h3>
+        <p class="mc-page-desc">Every task is scored against references the agent never sees.</p>
+        <a class="mc-page-go" href="challenge.html#track-econ"><span>Enter the Economics track</span><span aria-hidden="true">→</span></a>
+      </article></li>
+    </ol>
+  </div>
+  <div class="mc-flip" id="fb-fin" role="tabpanel" aria-labelledby="fb-tab-fin" data-field="fin" style="--tc: var(--track-2)">
+    <p class="mc-flip-head"><small class="mono">Field 02</small> <b>Finance</b></p>
+    <ol class="mc-pages">
+      <li><article class="mc-page" id="fb-fin-nlp" aria-labelledby="fb-fin-nlp-name">
+        <p class="mc-call mono" data-no-translate>fin.nlp</p>
+        <h3 class="mc-page-name" id="fb-fin-nlp-name">Financial text understanding</h3>
+        <p class="mc-page-desc">Sentiment, news headlines, entity recognition and ESG issues in financial text.</p>
+      </article></li>
+      <li><article class="mc-page" id="fb-fin-accounting" aria-labelledby="fb-fin-accounting-name">
+        <p class="mc-call mono" data-no-translate>fin.accounting</p>
+        <h3 class="mc-page-name" id="fb-fin-accounting-name">Accounting close &amp; finance deliverables</h3>
+        <p class="mc-page-desc">Month-end close remediation and accounting data pipelines.</p>
+      </article></li>
+      <li><article class="mc-page" id="fb-fin-credit" aria-labelledby="fb-fin-credit-name">
+        <p class="mc-call mono" data-no-translate>fin.credit</p>
+        <h3 class="mc-page-name" id="fb-fin-credit-name">Credit risk &amp; fraud</h3>
+        <p class="mc-page-desc">Credit scoring and fraud detection from tabular borrower and transaction features.</p>
+      </article></li>
+      <li><article class="mc-page" id="fb-fin-numeric" aria-labelledby="fb-fin-numeric-name">
+        <p class="mc-call mono" data-no-translate>fin.numeric</p>
+        <h3 class="mc-page-name" id="fb-fin-numeric-name">Financial numerical reasoning</h3>
+        <p class="mc-page-desc">Table and text numeric reasoning over financial reports and CFA-style questions.</p>
+      </article></li>
+      <li><article class="mc-page" id="fb-fin-payments" aria-labelledby="fb-fin-payments-name">
+        <p class="mc-call mono" data-no-translate>fin.payments</p>
+        <h3 class="mc-page-name" id="fb-fin-payments-name">Payments &amp; transaction data analysis</h3>
+        <p class="mc-page-desc">Multi-step Python analysis over payment records, fee schedules and merchant data.</p>
+      </article></li>
+      <li><article class="mc-page" id="fb-fin-filings" aria-labelledby="fb-fin-filings-name">
+        <p class="mc-call mono" data-no-translate>fin.filings</p>
+        <h3 class="mc-page-name" id="fb-fin-filings-name">Financial research &amp; filings QA</h3>
+        <p class="mc-page-desc">Analyst-style questions answered from SEC filings and company disclosures.</p>
+      </article></li>
+    </ol>
+  </div>
+  <div class="mc-flip" id="fb-soc" role="tabpanel" aria-labelledby="fb-tab-soc" data-field="soc" style="--tc: var(--mc-violet)">
+    <p class="mc-flip-head"><small class="mono">Field 03</small> <b>Social science</b></p>
+    <ol class="mc-pages">
+      <li><article class="mc-page" id="fb-soc-law" aria-labelledby="fb-soc-law-name">
+        <p class="mc-call mono" data-no-translate>soc.law</p>
+        <h3 class="mc-page-name" id="fb-soc-law-name">Law &amp; regulation</h3>
+        <p class="mc-page-desc">Chinese legal knowledge, statute recall and case-outcome prediction.</p>
+      </article></li>
+      <li><article class="mc-page" id="fb-soc-society" aria-labelledby="fb-soc-society-name">
+        <p class="mc-call mono" data-no-translate>soc.society</p>
+        <h3 class="mc-page-name" id="fb-soc-society-name">Society, education &amp; survey data</h3>
+        <p class="mc-page-desc">Education, survey and social-media data analysis.</p>
+      </article></li>
+      <li><article class="mc-page" id="fb-soc-business" aria-labelledby="fb-soc-business-name">
+        <p class="mc-call mono" data-no-translate>soc.business</p>
+        <h3 class="mc-page-name" id="fb-soc-business-name">Business operations &amp; CRM</h3>
+        <p class="mc-page-desc">Marketing, sales and customer-support data in CRM and support tools.</p>
+      </article></li>
+      <li><article class="mc-page" id="fb-soc-hr" aria-labelledby="fb-soc-hr-name">
+        <p class="mc-call mono" data-no-translate>soc.hr</p>
+        <h3 class="mc-page-name" id="fb-soc-hr-name">HR &amp; organisational analytics</h3>
+        <p class="mc-page-desc">Training effectiveness and procurement review, recruiting and workforce data pipelines.</p>
+      </article></li>
+      <li><article class="mc-page" id="fb-soc-psychology" aria-labelledby="fb-soc-psychology-name">
+        <p class="mc-call mono" data-no-translate>soc.psychology</p>
+        <h3 class="mc-page-name" id="fb-soc-psychology-name">Psychology &amp; cognitive science</h3>
+        <p class="mc-page-desc">Data-driven analysis tasks from psychology and cognitive-science papers.</p>
+      </article></li>
+      <li><article class="mc-page is-summary" id="fb-soc-class-6" aria-labelledby="fb-soc-class-6-name">
+        <p class="mc-call mono">Field summary</p>
+        <h3 class="mc-page-name tnum" id="fb-soc-class-6-name">43 tasks · 5 classes</h3>
+        <p class="mc-page-desc">Every task is scored against references the agent never sees.</p>
+        <a class="mc-page-go" href="challenge.html#track-soc"><span>Enter the Social science track</span><span aria-hidden="true">→</span></a>
+      </article></li>
+    </ol>
+  </div>
+</div>
+<!-- fields:books:end -->
+  </div>
+</section>
+
+<!-- ================= 05 THE METACASE CHALLENGE: the first pipeline into the Metacase network (own renderer) ================= -->
+<section class="mc-chapter" id="arena" aria-labelledby="system-title" data-no-translate>
+  <div class="mc-pin">
+    <canvas class="mc-canvas" aria-hidden="true"></canvas>
+    <div class="mc-vignette" aria-hidden="true"></div>
+    <div class="mc-corner mc-label mono"><span>05</span><b data-mc-name>THE METACASE CHALLENGE</b></div>
+    <div class="mc-scroll-cue"><span class="mc-scroll-mouse" aria-hidden="true"></span><span data-mc-scroll-hint>SCROLL TO EXPLORE</span></div>
+    <div class="mc-copy">
+      <span class="mc-kicker mc-visually-hidden" data-mc-kicker>01 / THE ENTRANCE</span>
+      <h2 id="system-title">Three portals.<br><em>Three tracks.</em></h2>
+      <p data-mc-body>Economics, Finance and Social Science. Step through a portal to reach its track: the tasks, the data and how runs are scored.</p>
+      <a class="mc-enter" data-mc-enter href="challenge.html?via=portal#track-econ" hidden>Enter the Economics track →</a>
+      <span class="mc-case-code" data-mc-code>THREE TRACKS · SIXTEEN CASE CATEGORIES</span>
+      <div class="mc-domain-overview" data-mc-overview><span>econ/ 5</span><span>fin/ 6</span><span>soc/ 5</span></div>
+      <aside class="mc-domain-directory" data-mc-directory hidden aria-label="Case categories"><p class="mono" data-mc-directory-title></p><small class="mc-directory-hint" data-mc-directory-hint>SWIPE →</small><ul data-mc-directory-list></ul></aside>
+    </div>
+    <div class="mc-wheel" role="group" aria-hidden="true" inert><svg viewBox="0 0 600 600"></svg><div class="mc-wheel-hub-badge" data-mc-hub-badge><small data-mc-hub-role>CHARACTER · MODEL</small><strong data-mc-hub-model>OpenAI · GPT-6 Astra</strong></div><div class="mc-model-roster" data-mc-model-roster role="group" aria-label="Select model provider"></div><span class="mc-wheel-label" data-mc-wheel-label>SCROLL TO BROWSE · CLICK A SLOT TO EQUIP</span></div>
+    <div class="mc-loadout">
+      <ol class="mc-steps">
+        <li class="mc-step" data-step="provider"><span class="mc-step-label" data-mc-step-label="0">1 · PROVIDER</span><div class="mc-model-chips" data-mc-model-chips role="group" aria-label="Model provider"></div></li>
+        <li class="mc-step" data-step="model"><span class="mc-step-label" data-mc-step-label="1">2 · MODEL</span><div class="mc-variant-chips" data-mc-variant-chips role="group" aria-label="Model"></div></li>
+        <li class="mc-step" data-step="effort"><span class="mc-step-label" data-mc-step-label="2">3 · EFFORT</span><div class="mc-effort"><div class="mc-effort-chips" data-mc-effort-chips role="group" aria-label="Reasoning effort"></div><span class="mc-effort-meter" data-mc-effort-meter aria-hidden="true"><i></i><i></i><i></i><i></i></span></div></li>
+        <li class="mc-step" data-step="harness">
+          <span class="mc-loadout-label" data-mc-loadout-label>4 · HARNESS</span>
+          <strong class="mc-equipped" data-mc-equipped>Awaiting a loadout</strong>
+          <span class="mc-loadout-type" data-mc-type>Choose a harness at the equipment wheel</span>
+          <button class="mc-confirm btn btn-secondary" type="button" hidden>EQUIP THIS HARNESS ↗</button>
+          <span class="mc-carried" data-mc-carried hidden>NOT EQUIPPED · CLICK TO CONFIRM</span>
+        </li>
+      </ol>
+      <p class="mc-loadout-summary" data-mc-loadout-summary>OpenAI · GPT-6 Astra · XHigh × DeepSeek Harness</p>
+    </div>
+    <nav class="mc-portals" aria-label="Enter a track">
+      <a class="mc-portal" data-portal="econ" href="challenge.html?via=portal#track-econ" style="--pc: var(--track-1)"><small>Portal 1 · Economics</small><b>Enter the Economics track</b><em>Economics</em><i aria-hidden="true">→</i></a>
+      <a class="mc-portal" data-portal="fin" href="challenge.html?via=portal#track-fin" style="--pc: var(--track-2)"><small>Portal 2 · Finance</small><b>Enter the Finance track</b><em>Finance</em><i aria-hidden="true">→</i></a>
+      <a class="mc-portal" data-portal="soc" href="challenge.html?via=portal#track-soc" style="--pc: var(--mc-violet)"><small>Portal 3 · Social Science</small><b>Enter the Social Science track</b><em>Social Science</em><i aria-hidden="true">→</i></a>
+    </nav>
+    <div class="mc-floating-harness" data-mc-floating-harness aria-hidden="true" hidden><small data-mc-floating-status>HARNESS · READY</small><strong data-mc-floating-name></strong></div>
+    <span class="mc-equipment-status" role="status" aria-live="polite"></span>
+    <div class="mc-phase-index"><b data-mc-index>01</b><span>/ 06</span></div>
+    <div class="mc-bottom">
+      <div class="mc-event"><span class="mc-event-label" data-mc-episode-label>METACASE / TRACE</span><p data-mc-event>Every case begins as a question, its raw evidence and the practice that came before.</p></div>
+      <ol class="mc-timeline mc-rail" aria-label="Episode chapters">
+        <li class="mc-chapter-mark is-active" data-mc-chapter="0"><i>01</i><span>ENTER</span></li>
+        <li class="mc-chapter-mark" data-mc-chapter="1"><i>02</i><span>EQUIP</span></li>
+        <li class="mc-chapter-mark" data-mc-chapter="2"><i>03</i><span>ECONOMICS</span></li>
+        <li class="mc-chapter-mark" data-mc-chapter="3"><i>04</i><span>FINANCE</span></li>
+        <li class="mc-chapter-mark" data-mc-chapter="4"><i>05</i><span>SOCIAL SCIENCE</span></li>
+        <li class="mc-chapter-mark" data-mc-chapter="5"><i>06</i><span>CHOOSE</span></li>
+      </ol>
+    </div>
+    <div class="mc-access"><label for="mc-progress" data-mc-slider-label>Explore the complete episode</label><input id="mc-progress" class="mc-scrub" type="range" min="0" max="1000" step="1" value="0"></div>
+    <p class="mc-endnote" data-mc-illustrative>Economics · Finance · Social Science / 3 domains, 16 case categories.</p>
+    <div class="mc-fallback"><strong>∴ METACASE CHALLENGE</strong><p>One agent. Many harnesses. Real cases, from evidence to experience.</p></div>
+  </div>
+</section>
+
+<!-- ================= 06 WHAT A PARTICIPANT DOES: from a case to a contribution ================= -->
+<section class="mc-scene" id="rules" aria-labelledby="rules-title" style="--len: 370vh">
+  <div class="mc-scene-pin" data-view="run">
+    <div class="mc-tags" data-tags="run" aria-hidden="true">
+      <span data-tag="0" style="--tc: var(--track-1)"><b>Case</b><i>Goal · evidence · constraints</i></span>
+      <span data-tag="1" style="--tc: var(--mc-violet)"><b>Model</b><i>Reasons and decides</i></span>
+      <span data-tag="2" style="--tc: var(--track-2)"><b>Harness</b><i>Tools · workflow · settings</i></span>
+      <span data-tag="3" style="--tc: var(--mc-blue)"><b>Trajectory</b><i>Every step logged</i></span>
+      <span data-tag="4" style="--tc: var(--track-1)"><b>Verifier</b><i>The only place the reference is used</i></span>
+      <span data-tag="5" style="--tc: var(--track-2)"><b>Result</b><i>Pass · partial · fail</i></span>
+      <span class="mc-tag-stack" data-tag="6" style="--tc: var(--mc-blue)"><b>A · Metacase</b><i>Structured case record</i></span>
+      <span class="mc-tag-stack" data-tag="7" style="--tc: var(--mc-rose)"><b>B · Model &amp; Harness</b><i>Packaged to rerun</i></span>
+      <span class="mc-tag-stack" data-tag="8" style="--tc: var(--mc-violet)"><b>C · Failure Case</b><i>Reproducible, diagnosed</i></span>
+    </div>
+    <div class="wrap mc-scene-head">
+      <p class="mc-label mono"><span>06</span>Participation workflow</p>
+      <h2 id="rules-title"><span>How to participate</span> <em>in the challenge.</em></h2>
+      <div class="mc-sub">
+        <p>What a participant does: take a case from one of the three tracks, run a model and its harness on it end to end, have the deliverable checked against references the agent never sees, and turn what happened into something others can inspect and reuse.</p>
+      </div>
+    </div>
+    <ol class="wrap mc-captions">
+      <li data-caption="0"><b class="mono">1 · Choose a case</b><span>The participant takes a case from a track and opens it: the task goal, the evidence available at the decision point and its constraints. Every entry in a track works from the same materials and is scored the same way.</span></li>
+      <li data-caption="1"><b class="mono">2 · Configure Model + Harness</b><span>They pick a model and the harness that runs it. The model reasons and decides; the harness supplies the tools, the workflow and the run settings, so the same model can behave differently in a different harness.</span></li>
+      <li data-caption="2"><b class="mono">3 · Execute and record</b><span>The agent reads the materials, plans, calls tools and writes files until it delivers end to end. Every step goes into the trajectory, so the whole run can be traced afterwards.</span></li>
+      <li data-caption="3"><b class="mono">4 · Verify and diagnose</b><span>The deliverable goes to an independent check against reference results and rubrics the agent never saw during the run. A result can be a pass, a partial pass or a failure, and the trajectory shows where it went wrong.</span></li>
+      <li data-caption="4"><b class="mono">5 · Contribute</b><span>What the run yields can be contributed in three forms: a Metacase, the structured record of the case; the Model &amp; Harness, packaged so the run can be repeated; or a Failure Case, a reproducible failure with its diagnosis (a low score alone is not one). Contribute one or more, separately from the choice of track.</span></li>
+    </ol>
+    <div class="wrap mc-scene-foot">
+      <ol class="mc-rail" aria-label="What a participant does"><li>Choose</li><li>Configure</li><li>Execute</li><li>Verify</li><li>Contribute</li></ol>
+    </div>
+  </div>
+</section>
+
+<section class="mc-section mc-results" id="tracks" aria-labelledby="results-title">
+  <div class="wrap">
+    <div class="mc-results-card mc-r">
+      <div class="mc-results-head">
+        <p class="mc-label mono"><span>07</span>Results so far</p>
+        <h2 id="results-title"><span>See how runs</span> <em>have been scored.</em></h2>
+        <p class="mc-results-scope">The Harbor benchmark catalog curates 285 task records across 3 fields and 16 classes. On its 100-task Dev100 econometric replication split, Harbor has evaluated 8 models across 5 agent harnesses (3,999 / 4,000 formal trials scored) and compared 9 harness configurations on GPT-5.6 Sol (900 / 900 trials scored), alongside the 14-model × 4-harness v10 development board.</p>
+      </div>
+      <ul class="mc-results-stats" aria-label="Benchmark snapshot">
+        <li style="--tc: var(--track-1)"><div class="mc-art" data-art="tasks"></div><b class="tnum" data-count="285">285</b><span>Candidate tasks</span><small>3 fields · 16 classes: 100 Dev100 replications, 183 Harbor registry tasks pinned at one commit, 2 local tasks</small></li>
+        <li style="--tc: var(--mc-violet)"><div class="mc-art" data-art="models"></div><b class="tnum">8 × 5</b><span>Models × harnesses on Dev100</span><small>3,999 / 4,000 trials scored</small><small data-no-translate>DeepAgents · Terminus-2 · Claude Agent SDK · OpenAI Agents SDK · DeepSeek Harness</small></li>
+        <li style="--tc: var(--track-2)"><div class="mc-art" data-art="harnesses"></div><b class="tnum" data-count="9">9</b><span>Harnesses on GPT-5.6 Sol</span><small>900 / 900 Dev100 trials scored</small></li>
+      </ul>
+      <div class="mc-results-actions">
+        <a class="btn btn-primary" href="leaderboard.html"><span>See the leaderboard</span><span class="arrow" aria-hidden="true"><i>→</i><i>→</i></span></a>
+        <a class="btn btn-secondary" href="challenge.html#replication-demo"><span>Watch an agent run</span><span class="arrow" aria-hidden="true"><i>→</i><i>→</i></span></a>
+      </div>
+      <div class="mc-submit">
+        <p class="mc-submit-label">Submit to the Challenge</p>
+        <ul class="mc-submit-list">
+          <li><a href="https://submit.inferencenet.cn/submit/harness/" target="_blank" rel="noopener"><b>Submit an agent / harness</b><span>A model and its harness, packaged to rerun</span></a></li>
+          <li><a href="https://submit.inferencenet.cn/submit/benchmark/" target="_blank" rel="noopener"><b>Submit a benchmark</b><span>A new task with its data and references</span></a></li>
+          <li><a href="https://submit.inferencenet.cn/submit/failure-case/" target="_blank" rel="noopener"><b>Submit a failure case</b><span>A reproducible failure with its diagnosis</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 08 GET INVOLVED ================= -->
+<section class="mc-section mc-join" id="team" aria-labelledby="team-title">
+  <div class="wrap">
+    <div class="mc-join-card mc-r">
+      <div class="mc-join-copy">
+        <p class="mc-label mono"><span>08</span>Team &amp; collaboration</p>
+        <h2 id="team-title"><span>Meet our team &amp;</span> <em>collaborations.</em></h2>
+        <p class="mc-sub">The Global Metacase Initiative is hosted by the Global Institute of Finance, Technology, and Society (GIFTS) at Nanyang Technological University. Two partner labs work with the Initiative on subtracks and research: HKU AI-Agents Lab (led by Ye Luo) and SUFE AIFLM Lab (led by Liwen Zhang).</p>
+        <div class="mc-cta">
+          <a class="btn btn-primary" href="teams.html"><span>Meet the team</span><span class="arrow" aria-hidden="true"><i>→</i><i>→</i></span></a>
+          <a class="btn btn-secondary" href="teams.html#contact"><span>Contact us</span><span class="arrow" aria-hidden="true"><i>→</i><i>→</i></span></a>
+        </div>
+      </div>
+      <div class="mc-art" data-art="join"></div>
+      <div class="mc-team">
+        <article class="mc-org mc-org-host" aria-labelledby="org-gifts">
+          <div class="mc-org-head">
+            <p class="mc-team-kicker mono">Host</p>
+            <h3 id="org-gifts"><a href="teams.html#ntu-gifts">NTU GIFTS</a></h3>
+            <p class="mc-org-full">Global Institute of Finance, Technology, and Society</p>
+            <p class="mc-org-note">Hosts the Global Metacase Initiative and its first pipeline, the Metacase Challenge.</p>
+          </div>
+          <div class="mc-person mc-person-lead"><img src="assets/people/lin-william-cong.jpg" width="240" height="240" alt="" loading="lazy"><div><a href="https://www.linwilliamcong.com/" target="_blank" rel="noopener" data-no-translate>Lin William Cong</a><b>Founding Director</b><span>President's Chair Professor of Finance, Computing and Data Science</span><span>Nanyang Business School &amp; CCDS, NTU</span></div></div>
+        </article>
+        <div class="mc-team-group mc-team-partners">
+          <p class="mc-team-kicker mono">In partnership with</p>
+          <div class="mc-orgs">
+            <article class="mc-org" aria-labelledby="org-hku">
+              <h3 id="org-hku"><a href="teams.html#hku-ai-agents-lab">HKU AI-Agents Lab</a></h3>
+              <p class="mc-org-full">The University of Hong Kong · CAMO</p>
+              <div class="mc-person"><img src="assets/people/ye-luo.jpg" width="240" height="240" alt="" loading="lazy"><div><a href="https://www.hkubs.hku.hk/people/ye-luo/" target="_blank" rel="noopener" data-no-translate>Ye Luo</a><b>Lab Director</b><span>Associate Professor, HKU Business School</span></div></div>
+            </article>
+            <article class="mc-org" aria-labelledby="org-sufe">
+              <h3 id="org-sufe"><a href="teams.html#sufe-aiflm-lab">SUFE AIFLM Lab</a></h3>
+              <p class="mc-org-full">Shanghai University of Finance and Economics</p>
+              <div class="mc-person"><img src="assets/people/liwen-zhang.jpg" width="240" height="240" alt="" loading="lazy"><div><a href="https://ssds.sufe.edu.cn/99/eb/c715a236011/page.htm" target="_blank" rel="noopener" data-no-translate>Liwen Zhang</a><b>Lab Director</b><span>Professor, School of Statistics and Data Science</span></div></div>
+            </article>
+          </div>
+        </div>
+        <div class="mc-team-group mc-team-students">
+          <p class="mc-team-kicker mono">Student leaders</p>
+          <ul class="mc-people mc-people-mini">
+            <li class="mc-person"><img src="assets/people/yichen-guo.jpg" width="240" height="240" alt="" loading="lazy"><div><a href="https://easonai-5589.github.io/" target="_blank" rel="noopener" data-no-translate>Yichen Guo</a><span>Metacase Challenge</span></div></li>
+            <li class="mc-person"><img src="assets/people/yujie-cai.jpg" width="240" height="240" alt="" loading="lazy"><div><a href="https://github.com/caiyujie" target="_blank" rel="noopener" data-no-translate>Yujie Cai</a><span>Metacase Challenge</span></div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="v2-footer">
+    <div class="wrap">
+      <div class="cols">
+        <div class="brandcol">
+          <a class="lock" href="index.html"><svg aria-hidden="true"><use href="#logo-p"/></svg><span data-no-translate>Metacase <span class="net">Challenge</span></span></a>
+          <p>Experience, made reusable.</p>
+        </div>
+        <div><h4>Pages</h4><ul>
+          <li><a href="challenge.html">Challenge</a></li><li><a href="harness.html">Harness</a></li>
+          <li><a href="evolution.html">Self-evolving</a></li><li><a href="leaderboard.html">Leaderboard</a></li>
+          <li><a href="teams.html">Teams</a></li></ul></div>
+        <div><h4>Resources</h4><ul>
+          <li><a href="https://huggingface.co/datasets/CamoAiLab/InferenceNet" target="_blank" rel="noopener">Research dataset source</a></li>
+          <li><a href="https://github.com/HKU-Business-AI-Center/Econometrics-Agent" target="_blank" rel="noopener">Econometrics-Agent code</a></li>
+          <li><a href="https://github.com/EasonAI-5589/metacase-challenge" target="_blank" rel="noopener">Website source</a></li></ul></div>
+        <div><h4>Contact</h4><ul>
+          <li><a href="teams.html#contact">Contact us</a></li>
+          <li><a href="teams.html">Meet the team</a></li></ul></div>
+      </div>
+      <div class="footer-mark" aria-hidden="true" data-no-translate><span data-parallax="-0.08">Metacase<span> Challenge</span></span></div>
+      <div class="bottom"><span>© 2026 Global Metacase Initiative · NTU GIFTS</span><span class="mono" data-no-translate>∴ METACASE · CHALLENGE</span></div>
+    </div>
+  </footer>
 </body>
 </html>

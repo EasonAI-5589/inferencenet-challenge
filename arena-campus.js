@@ -1,6 +1,6 @@
 /* The Challenge occupies the same warm library as the homepage. Bookcases,
  * reading tables and quiet case transfers leave the agent's approach lanes open. */
-import * as THREE from '../assets/vendor/three/three.module.js';
+import * as THREE from './assets/vendor/three/three.module.js';
 import { tile, bookStack, block, cyl, mat as kitMaterial, PALETTE } from './mc-kit.js';
 import { glowSprite } from './mc-stage.js';
 import { ARENA_DOMAINS } from './arena-data.js';

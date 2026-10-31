@@ -2,8 +2,8 @@
  * big-headed people and robots, small buildings, floating islands, clouds and, at the
  * centre of it all, the Metacase tile with its structure signature. Everything is
  * procedural; scenes compose these pieces. */
-import * as THREE from '../assets/vendor/three/three.module.js';
-import { mergeGeometries } from '../assets/vendor/three/BufferGeometryUtils.js';
+import * as THREE from './assets/vendor/three/three.module.js';
+import { mergeGeometries } from './assets/vendor/three/BufferGeometryUtils.js';
 
 export const PALETTE = {
   wall: 0xf1f2f4, stone: 0xd5d9e0, slate: 0x9aa3b2, ink: 0x2a2f3b, window: 0x334061, floor: 0x0e1015,

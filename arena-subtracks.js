@@ -1,6 +1,6 @@
 /* Case categories crown each portal doorway as a pure 3D constellation of
  * luminous emblems and orbital rings — no text signboards blocking the doorway. */
-import * as THREE from '../assets/vendor/three/three.module.js';
+import * as THREE from './assets/vendor/three/three.module.js';
 import { ARENA_DOMAINS } from './arena-data.js';
 
 const LIGHTS = [

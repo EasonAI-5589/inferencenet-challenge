@@ -7,27 +7,19 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 // The explicit public-file allowlist (plus the whole reviewed `assets/` tree).
 // Private test pages (`_*.html`), DESIGN.md, README.md and scripts/ are never listed.
-// The Metacase Challenge site is served from v2/. It shares assets/, the translation
-// dictionaries and the root scripts, and adds its own design files.
 export const pages = ['index.html', 'challenge.html', 'replication.html', 'harness.html', 'evolution.html', 'leaderboard.html', 'teams.html', 'professional-tasks.html'];
-export const v2Pages = pages.map(page => `v2/${page}`);
-const v2Redirects = { 'v2/data.html': 'challenge.html#replication-data', 'v2/agent.html': 'evolution.html#improvement-directions' };
-// The former InferenceNet pages at the root now send every visitor to the Metacase Challenge.
-const redirects = {
-  ...Object.fromEntries(pages.map(page => [page, `v2/${page}`])),
-  'data.html': 'v2/challenge.html#replication-data', 'agent.html': 'v2/evolution.html#improvement-directions',
-};
-const v2Files = ['v2/v2.css', 'v2/home.css', 'v2/skin.css', 'v2/theme.js', 'v2/v2.js', 'v2/home.js', 'v2/backdrop.js', 'v2/scene.css', 'v2/scene.js', 'v2/arena.css', 'v2/arena.js', 'v2/arena-scene.js', 'v2/arena-motion.js', 'v2/arena-models.js', 'v2/metacase.css', 'v2/metacase.js', 'v2/metacase-world.js', 'v2/metacase-library.js', 'v2/metacase-courier.js', 'v2/metacase-anatomy.js', 'v2/metacase-archive.js', 'v2/metacase-run.js', 'v2/metacase-cards.js', 'v2/mc-stage.js', 'v2/mc-toon.js', 'v2/mc-kit.js', 'v2/arena-data.js', 'v2/arena-campus.js', 'v2/arena-subtracks.js', 'v2/mc-rail.js', 'v2/portal-warp.js'];
-const allRedirects = { ...redirects, ...v2Redirects };
+const redirects = { 'data.html': 'challenge.html#replication-data', 'agent.html': 'evolution.html#improvement-directions' };
 export const publicFiles = [
-  ...Object.keys(redirects),
+  ...pages, ...Object.keys(redirects),
   'styles.css', 'site.css', 'language.css', 'mountain.css', 'index.css', 'challenge.css', 'data.css', 'agent.css', 'evolution.css', 'harness.css', 'leaderboard.css', 'teams.css', 'professional-tasks.css',
+  'v2.css', 'home.css', 'skin.css', 'scene.css', 'arena.css', 'metacase.css',
   'theme.js', 'site.js', 'language.js', 'charts.js', 'mountain.js', 'leaderboard.js', 'leaderboard-data.js', 'leaderboard-board.js', 'leaderboard-dev100.js', 'leaderboard-dev100-data.js', 'evolution.js',
-  ...v2Pages, ...Object.keys(v2Redirects), ...v2Files,
+  'v2.js', 'home.js', 'backdrop.js', 'scene.js', 'arena.js', 'arena-scene.js', 'arena-motion.js', 'arena-models.js', 'arena-data.js', 'arena-campus.js', 'arena-subtracks.js',
+  'metacase.js', 'metacase-world.js', 'metacase-library.js', 'metacase-courier.js', 'metacase-anatomy.js', 'metacase-archive.js', 'metacase-run.js', 'metacase-cards.js', 'mc-stage.js', 'mc-toon.js', 'mc-kit.js', 'mc-rail.js', 'portal-warp.js',
   '.nojekyll',
 ];
 for (const file of publicFiles) {
-  if (file.startsWith('_') || (file.includes('/') && !/^v2\/[^/_][^/]*$/.test(file)) || /\.md$/i.test(file)) throw new Error(`Not publishable: ${file}`);
+  if (file.startsWith('_') || file.includes('/') || /\.md$/i.test(file)) throw new Error(`Not publishable: ${file}`);
 }
 const publicSet = new Set(publicFiles);
 const textExtensions = new Set(['.html', '.css', '.js', '.json', '.csv', '.txt', '.svg']);
@@ -48,15 +40,15 @@ async function listAssets(directory, out = []) {
 const assetFiles = await listAssets(resolve(root, 'assets'));
 
 const documents = new Map();
-for (const file of [...Object.keys(redirects), ...v2Pages, ...Object.keys(v2Redirects)]) {
+for (const file of [...pages, ...Object.keys(redirects)]) {
   const html = await readFile(resolve(root, file), 'utf8');
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
   if (new Set(ids).size !== ids.length) throw new Error(`Duplicate HTML IDs in ${file}`);
   if (!html.includes('<html lang="en">') || !html.includes('name="viewport"')) throw new Error(`Missing document accessibility metadata in ${file}`);
   if ((html.match(/<h1\b/g) || []).length !== 1) throw new Error(`Expected exactly one <h1> in ${file}`);
   if (/\son[a-z]+="/i.test(html)) throw new Error(`Inline event handler in ${file}`);
-  if (Object.hasOwn(allRedirects, file)) {
-    const target = allRedirects[file];
+  if (Object.hasOwn(redirects, file)) {
+    const target = redirects[file];
     const refresh = [...html.matchAll(/<meta\b[^>]*>/gi)].map(match => match[0]).find(tag => /\bhttp-equiv="refresh"/i.test(tag));
     if (refresh?.match(/\bcontent="([^"]+)"/)?.[1] !== `0; url=${target}`) throw new Error(`Unexpected redirect target in ${file}`);
     const canonical = [...html.matchAll(/<link\b[^>]*>/gi)].map(match => match[0]).find(tag => /\brel="canonical"/.test(tag));
@@ -65,9 +57,8 @@ for (const file of [...Object.keys(redirects), ...v2Pages, ...Object.keys(v2Redi
     if (![...body.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g)].some(match => match[1] === target)) throw new Error(`Missing redirect fallback link in ${file}`);
     if (/\b(?:src|href)="(?:\.\.\/)?language\.(?:js|css)(?:\?[^"]*)?"/.test(html)) throw new Error(`Redirect should not load language controls in ${file}`);
   } else {
-    const up = file.startsWith('v2/') ? '../' : '';
-    if (!new RegExp(`\\bsrc="${up.replace(/\./g, '\\.')}language\\.js(?:\\?v=[A-Za-z0-9_-]+)?"`).test(html) || !html.includes(`href="${up}language.css"`)) throw new Error(`Missing language control assets in ${file}`);
-    await access(resolve(root, `assets/i18n/${file.replace(/^v2\//, '').replace('.html', '')}.zh.json`));
+    if (!/\bsrc="language\.js(?:\?v=[A-Za-z0-9_-]+)?"/.test(html) || !html.includes('href="language.css"')) throw new Error(`Missing language control assets in ${file}`);
+    await access(resolve(root, `assets/i18n/${file.replace('.html', '')}.zh.json`));
   }
   documents.set(file, { html, ids });
 }
@@ -125,7 +116,7 @@ for (const file of scanned) {
   if (/\/Users\/|127\.0\.0\.1|localhost|local\/runs|sources\.lock\.json/.test(source)) throw new Error(`Private workspace reference in ${file}`);
   if (/\/mnt\/|\b(?:\d{1,3}\.){3}\d{1,3}\b|\b[A-Z]:[\\/]/.test(source)) throw new Error(`Server path or address in ${file}`);
   if (/\bTODO\b|lorem ipsum/i.test(source)) throw new Error(`Placeholder text in ${file}`);
-  const translatedAsset = file === 'language.js' || file === 'v2/arena.js' || file === 'v2/arena-data.js' || file === 'v2/arena-scene.js' || /^assets\/i18n\/(index|challenge|replication|data|agent|harness|evolution|leaderboard|teams|professional-tasks)\.zh\.json$/.test(file);
+  const translatedAsset = file === 'language.js' || file === 'arena.js' || file === 'arena-data.js' || file === 'arena-scene.js' || /^assets\/i18n\/(index|challenge|replication|data|agent|harness|evolution|leaderboard|teams|professional-tasks)\.zh\.json$/.test(file);
   if (/[一-鿿]/.test(source) && !translatedAsset) throw new Error(`CJK text outside the reviewed translation layer in ${file}`);
   if (file.startsWith('assets/i18n/')) {
     const dictionary = JSON.parse(source);
@@ -135,4 +126,4 @@ for (const file of scanned) {
   }
 }
 const anchorCount = [...documents.values()].reduce((sum, doc) => sum + doc.ids.length, 0);
-console.log(`Checked ${v2Pages.length} content pages, ${Object.keys(redirects).length} root redirects and ${Object.keys(v2Redirects).length} v2 redirects, ${anchorCount} anchors, ${referenceCount} references, ${scanned.length} text files (${assetFiles.length} assets), public asset types and private-path boundaries.`);
+console.log(`Checked ${pages.length} content pages and ${Object.keys(redirects).length} redirects, ${anchorCount} anchors, ${referenceCount} references, ${scanned.length} text files (${assetFiles.length} assets), public asset types and private-path boundaries.`);

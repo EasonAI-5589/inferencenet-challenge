@@ -6,7 +6,7 @@
  * back. Searching by signature brings volumes from the other fields whose slips trace the
  * same line stage for stage; they stay beside the case, and an agent and a person step up
  * to read them. Rendered by the shared stage. */
-import * as THREE from '../assets/vendor/three/three.module.js';
+import * as THREE from './assets/vendor/three/three.module.js';
 import { PALETTE, BOOK, SIGNATURES, STAGE_COLORS, closedBook, bookTabs, mat, add, ball, block, rbox, volume, robot, person, lights } from './mc-kit.js';
 import { clamp, smooth, ramp, lerp, pageBackground, fitSafe, fitBox, toView, glowSprite } from './mc-stage.js';
 

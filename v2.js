@@ -52,15 +52,8 @@
     });
   };
   markArrows(document);
-
-  /* Links that scripts render relative to the page point back to the shared assets. */
-  const fixAssets = scope => {
-    if (scope.matches && scope.matches('a[href^="assets/"]')) scope.setAttribute("href", "../" + scope.getAttribute("href"));
-    if (scope.querySelectorAll) scope.querySelectorAll('a[href^="assets/"]').forEach(a => a.setAttribute("href", "../" + a.getAttribute("href")));
-  };
-  fixAssets(document.body);
   new MutationObserver(records => records.forEach(record => record.addedNodes.forEach(node => {
-    if (node.nodeType === 1) { fixAssets(node); markArrows(node); }
+    if (node.nodeType === 1) markArrows(node);
   }))).observe(document.body, { childList: true, subtree: true });
 
   /* The logo replays its derivation on hover. */

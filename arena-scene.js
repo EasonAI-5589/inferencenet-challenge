@@ -1,7 +1,7 @@
 /** The Metacase Challenge arena. Procedural geometry, local Three.js r170, reversible scroll choreography.
  * A Challenge reading room in the same library as the adjacent chapters.
  * Shared toy-kit geometry, warm wood, cream walls and theme-aware lighting. */
-import * as THREE from "../assets/vendor/three/three.module.js";
+import * as THREE from "./assets/vendor/three/three.module.js";
 import { catmullRom } from "./arena-motion.js";
 import { toon, toonify, createPost } from "./mc-toon.js";
 import { person, robot, tile, PALETTE } from "./mc-kit.js";

@@ -1,11 +1,11 @@
 #!/usr/bin/env node
-// Writes the "first fields" books of the v2 homepage (section 04) from metacase-harbor's
+// Writes the "first fields" books of the homepage (section 04) from metacase-harbor's
 // metacase/summary.json: one book per field, and in each book six class entries (call number,
 // name and a line on what it asks of an agent), shown three to a page across an open two-page
 // spread. Every book has six slots: a field with five classes ends with a summary slot (its task and
 // class counts from the summary, how runs are checked, and a link into its Challenge track).
 //   node scripts/build-fields.mjs path/to/metacase/summary.json
-// The block between the fields:books markers in v2/index.html is replaced, and the Chinese text
+// The block between the fields:books markers in index.html is replaced, and the Chinese text
 // (class names and descriptions from the summary, and the summary-slot lines) is written to
 // assets/i18n/index.zh.json. The descriptions leave out the benchmarks a class draws on: the page
 // says what a class asks of an agent, not where its tasks come from. The tablist is
@@ -15,7 +15,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 const [summaryPath] = process.argv.slice(2);
 if (!summaryPath) { console.error('usage: node scripts/build-fields.mjs path/to/summary.json'); process.exit(1); }
 const summary = JSON.parse(readFileSync(summaryPath, 'utf8'));
-const HTML = 'v2/index.html', ZH = 'assets/i18n/index.zh.json';
+const HTML = 'index.html', ZH = 'assets/i18n/index.zh.json';
 const START = '<!-- fields:books:start', END = '<!-- fields:books:end -->';
 const SLOTS = 6; // three classes on the left page, three on the right
 

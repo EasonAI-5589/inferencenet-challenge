@@ -5,8 +5,8 @@
  * Each returned group is centered at the origin with muzzle direction +Z and
  * longest (barrel) dimension 1. The renderer owns its back-mount transform.
  */
-import { Box3, Group, Vector3 } from '../assets/vendor/three/three.module.js';
-import { GLTFLoader } from '../assets/vendor/three/GLTFLoader.js';
+import { Box3, Group, Vector3 } from './assets/vendor/three/three.module.js';
+import { GLTFLoader } from './assets/vendor/three/GLTFLoader.js';
 
 export const ARENA_WEAPONS = Object.freeze([
   { harness: 'DeepSeek Harness', file: 'blaster-q.glb', silhouette: 'Split-prong blaster' },
@@ -17,7 +17,7 @@ export const ARENA_WEAPONS = Object.freeze([
   { harness: 'OpenCode', file: 'blaster-p.glb', silhouette: 'Three-barrel blaster' },
 ].map(entry => Object.freeze(entry)));
 
-const assetRoot = new URL('../assets/models/kenney-blasters/', import.meta.url);
+const assetRoot = new URL('./assets/models/kenney-blasters/', import.meta.url);
 
 function disposeResources(roots) {
   const geometries = new Set(), materials = new Set(), textures = new Set(), images = new Set();

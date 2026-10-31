@@ -4,7 +4,7 @@
  *   --mc-pin-top  where pinned scenes begin (under the header and the section nav)
  * Scoped to body.mc-home. Load after v2.css and arena.css. */
 
-@font-face { font-family: "Inter"; src: url("../assets/fonts/inter-latin.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("assets/fonts/inter-latin.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
 
 :root, [data-theme="dark"] {
   --mc-violet: oklch(74% 0.13 295);
@@ -103,7 +103,7 @@ html[lang^="zh"] .mc-en-only { display: none; }
 .mc-host-crests .ntu-crest { display: block; width: 44px; height: 56px; overflow: hidden; }
 .mc-host-crests .ntu-crest img { max-width: none; }
 .mc-host-crests .sufe-crest { display: block; width: 58px; height: 56px; background: #811c21;
-  -webkit-mask: url("../assets/institutions/sufe-university-transparent-official.png") left center / auto 56px no-repeat; mask: url("../assets/institutions/sufe-university-transparent-official.png") left center / auto 56px no-repeat; }
+  -webkit-mask: url("assets/institutions/sufe-university-transparent-official.png") left center / auto 56px no-repeat; mask: url("assets/institutions/sufe-university-transparent-official.png") left center / auto 56px no-repeat; }
 .mc-hero-key { position: relative; z-index: 2; display: flex; flex-wrap: wrap; gap: 8px 28px; padding-bottom: 28px; color: var(--text-tertiary); font: 400 12px var(--font-mono); letter-spacing: .06em; text-transform: uppercase; }
 .mc-hero-key span { display: inline-flex; align-items: center; gap: 10px; }
 .mc-hero-key i { display: inline-block; flex: none; }

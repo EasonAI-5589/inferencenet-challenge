@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
-const url = process.env.ARENA_URL || 'http://127.0.0.1:4198/v2/#arena';
+const url = process.env.ARENA_URL || 'http://127.0.0.1:4198/#arena';
 const browser = await chromium.launch({ ...(process.env.BROWSER_EXECUTABLE ? { executablePath: process.env.BROWSER_EXECUTABLE } : { channel: process.env.BROWSER_CHANNEL || 'chrome' }), headless: true });
 const reports = [];
 const names = ['DeepSeek Harness', 'DeepAgents', 'Claude Code', 'Codex CLI', 'OpenCode', 'OpenHands SDK', 'Terminus-2', 'mini-SWE-agent'];

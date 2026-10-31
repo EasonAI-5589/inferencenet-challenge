@@ -2,7 +2,7 @@
  * and light as the chapters: the tracks, the two kinds of reader, the invitation, the books of
  * the first fields and the benchmark snapshot. Each is a looping vignette drawn by the shared
  * stage. */
-import * as THREE from '../assets/vendor/three/three.module.js';
+import * as THREE from './assets/vendor/three/three.module.js';
 import { PALETTE, BOOK, mat, add, block, cyl, ball, tile, volume, robot, person, buildings, tree, island, crane, scaffold, bookStack, lights, STAGE_COLORS, rbox, labelPlane, blaster, terminal } from './mc-kit.js';
 import { clamp, smooth, ramp, lerp, fitCamera, glowSprite } from './mc-stage.js';
 

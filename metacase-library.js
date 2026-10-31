@@ -5,7 +5,7 @@
  * volumes in different wings that share a structure, and new volumes arrive in the
  * empty places. Used twice: the hero (ambient) and chapter 03 (scroll-driven:
  * own cases → shared structures → reuse → new cases arrive). */
-import * as THREE from '../assets/vendor/three/three.module.js';
+import * as THREE from './assets/vendor/three/three.module.js';
 import { PALETTE, BOOK, closedBook, bookTabs, mat, add, block, cyl, person, robot, tile, lights } from './mc-kit.js';
 import { clamp, smooth, ramp, lerp, pageBackground, fitCamera, toView, glowSprite } from './mc-stage.js';
 

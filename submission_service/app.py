@@ -631,7 +631,7 @@ def create_app(config=None):
 
     @app.get("/shared/v2.css")
     def shared_css():
-        return send_file(REPO / "v2/v2.css")
+        return send_file(REPO / "v2.css")
 
     @app.get("/assets/fonts/<name>")
     def font(name):

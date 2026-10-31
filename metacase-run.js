@@ -14,7 +14,7 @@
  *     Model & Harness (the armed agent itself) and a Failure Case (that page, standing as a
  *     diagnostic board).
  * Rendered by the shared stage; the page's labels follow the objects through onProject. */
-import * as THREE from '../assets/vendor/three/three.module.js';
+import * as THREE from './assets/vendor/three/three.module.js';
 import { PALETTE, BOOK, closedBook, bookTabs, mat, add, block, cyl, ball, rbox, robot, person, lights, blaster, lens, terminal } from './mc-kit.js';
 import { clamp, smooth, ramp, lerp, pageBackground, fitSafe, fitBox, toView, glowSprite } from './mc-stage.js';
 import { toonify } from './mc-toon.js';

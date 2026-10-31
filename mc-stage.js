@@ -2,7 +2,7 @@
  * transparent canvas sits behind the page; each view draws its scene into the
  * on-screen rectangle of its own element, so large pinned chapters and small card
  * illustrations share one context, one light model and one finish. */
-import * as THREE from '../assets/vendor/three/three.module.js';
+import * as THREE from './assets/vendor/three/three.module.js';
 import { createPost } from './mc-toon.js';
 
 export function createStage(canvas, { reduce = false, clipTop = () => 0 } = {}) {

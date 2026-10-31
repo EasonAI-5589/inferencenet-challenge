@@ -17,8 +17,7 @@ const devData = await exists(DEV_JSON) ? JSON.parse(await read(DEV_JSON)) : null
 const malformed = JSON.parse(await readFile(new URL('fixtures/dev100-malformed.json', import.meta.url), 'utf8'));
 const selected = selectedBoardDescriptor('assets/data/paired-results.json');
 const PAGE = 'https://example.org/leaderboard.html';
-// The Metacase Challenge pages live in v2/; the former root pages only redirect there.
-const PAGES = ['index.html', 'challenge.html', 'replication.html', 'harness.html', 'evolution.html', 'leaderboard.html', 'teams.html', 'professional-tasks.html'].map(page => `v2/${page}`);
+const PAGES = ['index.html', 'challenge.html', 'replication.html', 'harness.html', 'evolution.html', 'leaderboard.html', 'teams.html', 'professional-tasks.html'];
 const TAG = '20261018-dev100-challenge';
 const DEV100_TAG = '20261018-home-challenges';
 // The development data module was re-released when the site became the Metacase Challenge.
@@ -234,16 +233,16 @@ test('a malformed development source fails only the development board', async ()
 });
 
 test('exactly one development marker pair, only on the Leaderboard page', async () => {
-  const html = await read('v2/leaderboard.html');
+  const html = await read('leaderboard.html');
   assert.equal(html.split('<!-- dev100-ranking:start -->').length, 2);
   assert.equal(html.split('<!-- dev100-ranking:end -->').length, 2);
   assert.doesNotMatch(devBlock(html), /paired-ranking:/);
-  for (const page of PAGES.filter(name => name !== 'v2/leaderboard.html')) assert.doesNotMatch(await read(page), /dev100-ranking:|data-dev-leaderboard/, page);
+  for (const page of PAGES.filter(name => name !== 'leaderboard.html')) assert.doesNotMatch(await read(page), /dev100-ranking:|data-dev-leaderboard/, page);
 });
 
 test('public pages do not mount the historical board and Home and Leaderboard do not load its results', async () => {
   for (const page of PAGES) assert.doesNotMatch(await read(page), /paired-ranking:|data-paired-leaderboard/, page);
-  for (const page of ['v2/index.html', 'v2/leaderboard.html']) {
+  for (const page of ['index.html', 'leaderboard.html']) {
     const html = await read(page);
     assert.doesNotMatch(html, /id="leaderboard-selected-1000"|paired-results\.(?:json|csv)|(?:src|href)="leaderboard\.js(?:\?|"|$)/, page);
   }
@@ -367,7 +366,7 @@ const enclosing = (html, marker, tag) => {
 test('the Dev100 page explanation has a Chinese translation', async () => {
   const language = await read('language.js');
   const common = new Set([...language.slice(language.indexOf('const common = {'), language.indexOf('};')).matchAll(/'((?:[^'\\]|\\.)*)':/g)].map(match => match[1]));
-  const lb = await read('v2/leaderboard.html');
+  const lb = await read('leaderboard.html');
   const added = {
     leaderboard: [
       between(lb, '<section class="page-hero container" data-backdrop="bump" aria-labelledby="page-title">', '</section>'),

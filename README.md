@@ -3,10 +3,10 @@
 [Live website](https://easonai-5589.github.io/metacase-challenge/)
 
 Public website for the Metacase Challenge of the Global Metacase Initiative. The site is
-served from `v2/`; every page at the root (`index.html`, `challenge.html`, `harness.html`,
-`evolution.html`, `leaderboard.html`, `teams.html`, `replication.html`,
-`professional-tasks.html`, and the older `data.html` and `agent.html`) is a redirect to its
-Metacase Challenge page, keeping any `#anchor`. The former InferenceNet design is retired;
+served directly from the root (`index.html`, `challenge.html`, `harness.html`,
+`evolution.html`, `leaderboard.html`, `teams.html`, `replication.html`, and
+`professional-tasks.html`, with `data.html` and `agent.html` redirecting to their
+current sections while keeping any `#anchor`). The former InferenceNet design is retired;
 its files remain in the git history. InferenceNet now appears only as the name of the
 research dataset on Hugging Face (`CamoAiLab/InferenceNet`), and only in links.
 
@@ -17,18 +17,12 @@ For the next desktop UI and storytelling redesign, see the
 It records the SimuWorld comparison, design research, proposed page structure,
 implementation boundaries and acceptance criteria.
 
-### v2 design (`/v2/`)
+### Site architecture
 
-The redesign is published beside the current site at
-[`/v2/`](https://easonai-5589.github.io/metacase-challenge/v2/); the root pages
-are unchanged. `v2/index.html` is a new homepage. The other v2 pages carry the
-current pages' content with the v2 header, footer and theme layer, so content edits
-made to a root page must be repeated in its `v2/` copy until v2 replaces the root.
-
-The v2 homepage introduces the Global Metacase Initiative, explains a complete
+The homepage (`index.html`) introduces the Global Metacase Initiative, explains a complete
 Metacase, demonstrates retrieval by problem-solving structure, and shows the
 reusable network of Metacases across its first three fields (economics, finance,
-social science). The brand is **Metacase** (wordmark on every v2 page). The 3D
+social science). The brand is **Metacase** (wordmark on every page). The 3D
 scenes draw the network as a library (bookcases, volumes, a reading room; the
 arena uses the same finish); that picture is visual only, and no page copy uses
 library wording. The "first fields" section lists the
@@ -39,30 +33,29 @@ into that network. Its scroll-driven arena shows one agent, eight selectable
 harnesses and three case rooms across the two benchmark tracks. See the
 [arena handoff](docs/metacase-arena.md) for controls, asset licenses and checks.
 
-Edit `v2/index.html` and its modules directly; there is no homepage generation
+Edit `index.html` and its modules directly; there is no homepage generation
 step. The older external `v2build/build.py` generates the previous homepage and
 must not be used to overwrite this version.
 
 | Layer | Files |
 |---|---|
-| Design system for every v2 page: fonts, tokens for both themes, logo, buttons, links, icons, header and footer | `v2/v2.css` |
-| Homepage layout, captions, navigation and translation hooks | `v2/metacase.css`, `v2/metacase.js`, `assets/i18n/index.zh.json` |
-| Shared 3D stage, materials, case tiles and domain islands | `v2/mc-stage.js`, `v2/mc-toon.js`, `v2/mc-kit.js` |
-| Metacase anatomy, retrieval archive, the library (hero and chapter 03) and card scenes | `v2/metacase-anatomy.js`, `v2/metacase-archive.js`, `v2/metacase-library.js`, `v2/metacase-cards.js` (`v2/metacase-world.js` is the former archipelago, no longer loaded) |
-| Hero → 01 hand-off: the Metacase is drawn off its shelf (with a web page, a data sheet, a chart and a recording from other shelves), crosses the screen on its own top canvas and lands exactly on chapter 01's desk; hero, chapter 01 and the courier read one scroll value so the book is never shown twice | `v2/metacase-courier.js`, `closedBook()` in `v2/mc-kit.js`, `bookHandoff()` in `v2/metacase.js` |
-| Content pages: remaps the `styles.css` / `site.css` tokens and restyles the shared components; animated page header | `v2/skin.css`, `v2/v2.js` |
-| Header backdrops (one canvas renderer, one motif per page) | `v2/backdrop.js` |
-| Homepage arena: scroll camera, harness wheel, flying agent and challenge rooms | `v2/arena.css`, `v2/arena.js`, `v2/arena-scene.js`, `v2/arena-models.js`, `v2/arena-motion.js` |
-| Layered system scenes (`.v2-stack`, `data-scene`) on Challenge, Harness and Self-evolving: an interactive isometric L1–L3 stack whose tile labels come from each layer's chips | `v2/scene.css`, `v2/scene.js` |
-| Teams: institution logo wall on white plates, profile photos (`assets/people/`, sources in its `ATTRIBUTION.txt`) with monograms for anyone without one, contributor chips | `v2/skin.css` §16 |
-| Theme restore before paint; first visits to v2 use the dark theme | `v2/theme.js` |
+| Design system for every page: fonts, tokens for both themes, logo, buttons, links, icons, header and footer | `v2.css` |
+| Homepage layout, captions, navigation and translation hooks | `metacase.css`, `metacase.js`, `assets/i18n/index.zh.json` |
+| Shared 3D stage, materials, case tiles and domain islands | `mc-stage.js`, `mc-toon.js`, `mc-kit.js` |
+| Metacase anatomy, retrieval archive, the library (hero and chapter 03) and card scenes | `metacase-anatomy.js`, `metacase-archive.js`, `metacase-library.js`, `metacase-cards.js` (`metacase-world.js` is the former archipelago, no longer loaded) |
+| Hero → 01 hand-off: the Metacase is drawn off its shelf (with a web page, a data sheet, a chart and a recording from other shelves), crosses the screen on its own top canvas and lands exactly on chapter 01's desk; hero, chapter 01 and the courier read one scroll value so the book is never shown twice | `metacase-courier.js`, `closedBook()` in `mc-kit.js`, `bookHandoff()` in `metacase.js` |
+| Content pages: remaps the `styles.css` / `site.css` tokens and restyles the shared components; animated page header | `skin.css`, `v2.js` |
+| Header backdrops (one canvas renderer, one motif per page) | `backdrop.js` |
+| Homepage arena: scroll camera, harness wheel, flying agent and challenge rooms | `arena.css`, `arena.js`, `arena-scene.js`, `arena-models.js`, `arena-motion.js` |
+| Layered system scenes (`.v2-stack`, `data-scene`) on Challenge, Harness and Self-evolving: an interactive isometric L1–L3 stack whose tile labels come from each layer's chips | `scene.css`, `scene.js` |
+| Teams: institution logo wall on white plates, profile photos (`assets/people/`, sources in its `ATTRIBUTION.txt`) with monograms for anyone without one, contributor chips | `skin.css` §16 |
+| Theme restore before paint; first visits use the dark theme | `theme.js` |
 
-Every v2 page speaks of the Metacase Challenge throughout; InferenceNet appears only as the name of the research dataset (`CamoAiLab/InferenceNet`, Dev100). v2 pages load the root `site.js`, `language.js`, `charts.js` and page scripts from
-`../`, share `assets/` and the translation dictionaries in `assets/i18n/`, and keep
-the same storage keys, so the theme and language carry between the two designs.
+Every page speaks of the Metacase Challenge throughout; InferenceNet appears only as the name of the research dataset (`CamoAiLab/InferenceNet`, Dev100). Pages load `site.js`, `language.js`, `charts.js` and page scripts from the root,
+share `assets/` and the translation dictionaries in `assets/i18n/`, and keep
+the same storage keys.
 Smooth scrolling uses Lenis from jsDelivr; without it the pages fall back to native
-smooth scrolling. `scripts/check.mjs` checks the v2 pages with the same rules as the
-root pages.
+smooth scrolling. `scripts/check.mjs` checks all pages and assets.
 
 For the Build with us submission system, see the
 [submission intake handoff (2026-10-21)](docs/handoffs/2026-10-21-submission-intake.md),

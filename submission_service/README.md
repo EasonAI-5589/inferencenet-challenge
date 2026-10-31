@@ -70,7 +70,7 @@ acceptance or automatic evaluation is inferred from upload success.
 
 ## Deployment
 
-The reviewed bundle contains `submission_service/`, `v2/v2.css` and the two
+The reviewed bundle contains `submission_service/`, `v2.css` and the two
 required font files. Exclude caches, virtual environments and runtime data.
 Upload the bundle to `/tmp/inferencenet-intake-source.tar.gz`, and run the reviewed
 `deploy/install.sh` as root with a unique `intake-...` release name. It installs
