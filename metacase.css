@@ -32,7 +32,7 @@
 html:has(body.mc-home) { background: var(--bg-canvas); }
 .mc-home * { box-sizing: border-box; }
 html .mc-home { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
-body.mc-home { margin: 0; background: transparent; color: var(--text-primary); font: 400 17px/1.6 var(--font-sans); }
+body.mc-home { margin: 0; overflow-x: clip; background: transparent; color: var(--text-primary); font: 400 17px/1.6 var(--font-sans); }
 html[lang="zh-CN"] body.mc-home { line-height: 1.75; }
 :where(.mc-home) :where(h1, h2, h3) { margin: 0; text-wrap: balance; }
 :where(.mc-home) :where(p, figure, ol, ul) { margin: 0; }
@@ -327,8 +327,7 @@ html[lang^="zh"] .mc-en-only { display: none; }
 .mc-home .v2-footer { margin-top: 0; background: var(--bg-canvas); }
 
 /* ---------- 04 The catalogue: three wings of call-numbered classes ---------- */
-/* (clipped sideways: a leaf turning in the field books must never widen the page) */
-.mc-catalogue { overflow-x: clip; background: linear-gradient(180deg, transparent, color-mix(in oklab, var(--surface-1) 55%, transparent) 30%, transparent); }
+.mc-catalogue { background: linear-gradient(180deg, transparent, color-mix(in oklab, var(--surface-1) 55%, transparent) 30%, transparent); }
 .mc-catalogue-meta { display: grid; grid-template-columns: repeat(3, auto) 1fr; gap: 56px; align-items: end; margin: -16px 0 40px; padding-bottom: 28px; border-bottom: 1px solid var(--border-hairline); }
 .mc-catalogue-meta b { display: block; font-size: clamp(40px, 4.4vw, 64px); font-weight: 650; letter-spacing: -0.045em; line-height: 1; font-variant-numeric: tabular-nums; }
 .mc-catalogue-meta span { color: var(--text-tertiary); font-size: 14px; }
@@ -394,13 +393,16 @@ html:not(.js) .mc-fbook .mc-art { display: none; }
 [data-theme="light"] .mc-page { box-shadow: inset 0 0 0 1px rgb(31 42 58 / 10%), 0 1px 2px rgb(14 20 32 / 8%), 0 16px 28px -20px rgb(14 20 32 / 40%); }
 
 /* the stage: the chosen field's label above its open book, the other two books level with the
-   book's middle (metacase.js measures; the CSS gives the sizes). */
+   book's middle (metacase.js measures; the CSS gives the sizes). Scrolling through the track steps
+   through all three field books in turn while the stage stays pinned in view. */
+.mc-fieldbooks-track { position: relative; height: calc(var(--book-stage-h, 580px) + 185vh); }
 .mc-fieldbooks.is-books { --g: 22px; --bd: 10px; --gut: 0px;
   --side-w: clamp(100px, 12cqw, 164px);
   --pw: clamp(250px, (100cqw - 2 * var(--side-w) - 2 * var(--g)) / 2 - var(--bd), 392px);
-  --ph: clamp(440px, calc(var(--pw) * 1.22), 484px); --book-w: calc(2 * (var(--pw) + var(--bd))); --book-h: calc(var(--ph) + 2 * var(--bd));
+  --ph: clamp(360px, min(calc(var(--pw) * 1.22), calc(100svh - var(--mc-pin-top, 112px) - 136px)), 484px);
+  --book-w: calc(2 * (var(--pw) + var(--bd))); --book-h: calc(var(--ph) + 2 * var(--bd));
   --art-w: calc((var(--pw) + var(--bd)) * 1.25);
-  position: relative; container-type: inline-size; }
+  position: sticky; top: calc(var(--mc-pin-top, 112px) + 10px); z-index: 4; container-type: inline-size; }
 .is-books .mc-bookrow { position: relative; display: block; height: 620px; margin: 0; }
 .is-books .mc-fbook { position: absolute; top: 0; left: calc(50% - var(--side-w) / 2); z-index: 2; width: var(--side-w); transform-origin: 0 0; }
 .is-books .mc-fbook[data-slot="center"] { left: calc(50% - var(--art-w) / 2); width: var(--art-w); z-index: 3; grid-template-rows: auto auto; }
@@ -494,7 +496,8 @@ html:not(.js) .mc-fbook .mc-art { display: none; }
 }
 /* narrow screens: the two pages stack inside the open book, the other two books in a row above */
 @media (max-width: 899px) {
-  .mc-fieldbooks.is-books { --bd: 8px; --gut: 5px; --pw: min(90vw, 360px); --book-w: calc(var(--pw) + 2 * var(--bd)); --side-w: clamp(84px, 27cqw, 128px); }
+  .mc-fieldbooks-track { height: auto; }
+  .mc-fieldbooks.is-books { --bd: 8px; --gut: 5px; --pw: min(90vw, 360px); --book-w: calc(var(--pw) + 2 * var(--bd)); --side-w: clamp(84px, 27cqw, 128px); position: relative; top: auto; }
   .is-books .mc-fbook[data-slot="center"] { left: calc(var(--side-w) + 8px); width: calc(100% - 2 * var(--side-w) - 16px); }
   .is-books .mc-fbook[data-slot="center"] .mc-art { display: none; }
   .is-books .mc-fbook[data-slot="center"] .mc-fbook-label { padding: 0; }
@@ -585,6 +588,8 @@ html:not(.js) .mc-fbook .mc-art { display: none; }
   .js .mc-in, .js .mc-r { animation: none; opacity: 1; translate: none; transition: none; }
   .mc-rail li, .mc-rail li.on, .mc-rail li.is-active { transition: none; translate: none; }
   .mc-fbook-label { transition: none; }
+  .mc-fieldbooks-track { height: auto; }
+  .mc-fieldbooks.is-books { position: relative; top: auto; }
   .mc-book, .mc-leaf { transition: none !important; }
   .mc-face::after { animation: none !important; }
 }

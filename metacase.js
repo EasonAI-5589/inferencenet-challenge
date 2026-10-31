@@ -287,17 +287,21 @@ const bookDepth = el => {
   const book = el.closest('.mc-fbook');
   return book ? () => (book.classList.contains('is-crossing') ? 1 : book.dataset.slot === 'center' ? 3 : 2) : undefined;
 };
+let scrollFields = () => {};
 if (fieldbooks) {
   const row = $('.mc-bookrow', fieldbooks), tabs = $$('[role="tab"]', row);
   const panels = tabs.map(tab => $('#' + tab.getAttribute('aria-controls')));
   const N = tabs.length, HALF = 3;
-  const MOVE = 560, EASE = 'cubic-bezier(0.05, 0.7, 0.1, 1)', STD = 'cubic-bezier(0.2, 0, 0, 1)'; // --duration-emphasized, --ease-*
-  const CLOSE = 250, ARRIVE = 300, TURN = 650; // the book closing and fading; growing out of its picture; the cover opening
+  const MOVE = 460, EASE = 'cubic-bezier(0.05, 0.7, 0.1, 1)', STD = 'cubic-bezier(0.2, 0, 0, 1)'; // --duration-emphasized, --ease-*
+  const CLOSE = 200, ARRIVE = 240, TURN = 520; // the book closing and fading; growing out of its picture; the cover opening
   const wideMQ = matchMedia('(min-width: 900px)');
   let wide = wideMQ.matches, chosen = Math.max(0, tabs.findIndex(tab => tab.getAttribute('aria-selected') === 'true'));
-  let gen = 0, flights = [], seen = reduce, wanted = chosen;
+  let gen = 0, flights = [], seen = reduce, wanted = chosen, clickScrollUntil = 0;
   const wait = ms => new Promise(done => setTimeout(done, ms));
   const make = (cls, ...kids) => { const el = document.createElement('div'); el.className = cls; el.append(...kids.filter(Boolean)); return el; };
+  const track = make('mc-fieldbooks-track');
+  fieldbooks.before(track);
+  track.append(fieldbooks);
   fieldbooks.classList.add('is-books');
 
   // The cover's emblem, as on the 3D book's label (metacase-cards.js emblem()).
@@ -330,7 +334,7 @@ if (fieldbooks) {
       event.preventDefault();
       const k = (wanted + dir + N) % N;
       tabs[k].focus();
-      choose(k);
+      selectField(k);
     });
     return b;
   });
@@ -412,7 +416,9 @@ if (fieldbooks) {
       top = Math.max(side, label.offsetHeight) + 16;
     }
     fieldbooks.style.setProperty('--book-top', `${Math.round(top)}px`);
-    row.style.height = `${Math.round(top + panel.offsetHeight)}px`;
+    const stageH = Math.round(top + panel.offsetHeight);
+    row.style.height = `${stageH}px`;
+    track.style.setProperty('--book-stage-h', `${stageH}px`);
   }
 
   // Bring field `next` to the middle: the books fly from where they are to their new slots (FLIP);
@@ -445,7 +451,6 @@ if (fieldbooks) {
 
   const reading = (b, on) => { b.tab.classList.toggle('is-reading', on); stage?.request(); };
   const stop = b => { b.anims.forEach(anim => anim.cancel()); b.anims = []; };
-  const busy = b => b.anims.some(anim => anim.playState === 'running');
   // the open book closes and fades; its 3D picture shows again underneath
   async function putAway(b, my) {
     reading(b, false);
@@ -454,7 +459,7 @@ if (fieldbooks) {
     turnTo(b, 0, { together: true, dur: CLOSE });
     b.anims = [b.book.animate([{ opacity: o }, { opacity: 0 }], { duration: CLOSE, easing: STD, fill: 'forwards' })];
     await wait(CLOSE);
-    if (my !== gen) return false;
+    if (my !== gen) { hide(b); return false; }
     hide(b);
     return true;
   }
@@ -472,10 +477,10 @@ if (fieldbooks) {
       b.book.animate([{ transform: `translate(${dx}px, ${dy}px) scale(${k})`, opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: ARRIVE, easing: EASE }),
     ];
     await wait(ARRIVE * .4);
-    if (my !== gen) return;
+    if (my !== gen) { hide(b); return; }
     reading(b, true);
     await wait(ARRIVE * .6);
-    if (my !== gen) return;
+    if (my !== gen) { hide(b); return; }
     if (seen) turnTo(b, 1);
   }
 
@@ -493,7 +498,9 @@ if (fieldbooks) {
       return;
     }
     const out = books.filter(b => b.panel.classList.contains('is-shown'));
-    if (out.length === 1 && out[0] === target && chosen === next && !busy(target)) { // already open here
+    if (out.length === 1 && out[0] === target && chosen === next) { // already open or mid-close here
+      stop(target);
+      reading(target, true);
       turnTo(target, 1);
       return;
     }
@@ -515,21 +522,38 @@ if (fieldbooks) {
     return f < 0 ? null : { f };
   };
   let start = linked();
-  if (start) chosen = start.f;
-  addEventListener('hashchange', () => { const to = linked(); if (to) choose(to.f); });
+  if (start) { chosen = start.f; clickScrollUntil = performance.now() + 900; }
+  addEventListener('hashchange', () => { const to = linked(); if (to) selectField(to.f); });
+
+  function selectField(next) {
+    seen = true;
+    if (next !== wanted) choose(next);
+    if (!reduce && getComputedStyle(fieldbooks).position === 'sticky') {
+      const pinTop = parseFloat(getComputedStyle(fieldbooks).top) || 122;
+      const r = track.getBoundingClientRect(), range = track.offsetHeight - fieldbooks.offsetHeight;
+      if (range > 0 && r.top <= innerHeight && r.bottom >= 0) {
+        const targetP = [.16, .5, .84][next] ?? (next + .5) / N;
+        const targetY = scrollY + r.top - pinTop + targetP * range;
+        clickScrollUntil = performance.now() + 750;
+        if (window.__lenis) window.__lenis.scrollTo(targetY, { duration: .65 });
+        else window.scrollTo({ top: targetY, behavior: 'smooth' });
+      }
+    }
+  }
 
   tabs.forEach((tab, i) => {
-    tab.addEventListener('click', () => { if (i !== wanted) choose(i); });
+    tab.addEventListener('click', () => selectField(i));
     tab.addEventListener('keydown', event => {
       const to = { ArrowRight: i + 1, ArrowDown: i + 1, ArrowLeft: i - 1, ArrowUp: i - 1, Home: 0, End: N - 1 }[event.key];
       if (to === undefined) return;
       event.preventDefault();
       const k = (to + N) % N;
       tabs[k].focus();
-      if (k !== wanted) choose(k);
+      selectField(k);
     });
   });
-  // the first layout is not animated; the cover opens when the stage comes into view
+  // the first layout is not animated; the cover opens when the stage comes into view,
+  // and scrolling down through the sticky track opens each of the three books in turn
   choose(chosen, { animate: false });
   if (!seen) {
     const reveal = new IntersectionObserver(entries => {
@@ -541,6 +565,36 @@ if (fieldbooks) {
     }, { threshold: .35 });
     reveal.observe(row);
   }
+  scrollFields = () => {
+    if (reduce || performance.now() < clickScrollUntil) return;
+    if (getComputedStyle(fieldbooks).position !== 'sticky') return;
+    const pinTop = parseFloat(getComputedStyle(fieldbooks).top) || 122;
+    const r = track.getBoundingClientRect(), range = track.offsetHeight - fieldbooks.offsetHeight;
+    if (range <= 0) return;
+    if (r.top <= innerHeight * .7 && !seen) {
+      seen = true;
+      const b = books[chosen];
+      if (b.panel.classList.contains('is-shown') && !b.s) turnTo(b, 1);
+    }
+    if (r.top > pinTop + 28) {
+      if (r.top < innerHeight && wanted !== 0) choose(0);
+      return;
+    }
+    if (r.bottom < pinTop + fieldbooks.offsetHeight * .35) {
+      if (r.bottom > 0 && wanted !== N - 1) choose(N - 1);
+      return;
+    }
+    const p = clamp((pinTop - r.top) / range, 0, 1);
+    let next = wanted;
+    if (p < .31) next = 0;
+    else if (p >= .69) next = 2;
+    else if (p >= .35 && p < .65) next = 1;
+    else if (wanted === 0 && p >= .33) next = 1;
+    else if (wanted === 1 && p >= .67) next = 2;
+    else if (wanted === 2 && p < .65) next = 1;
+    else if (wanted === 1 && p < .31) next = 0;
+    if (next !== wanted) { seen = true; choose(next); }
+  };
   // two pages side by side or stacked: the books are bound again when the window crosses the line
   wideMQ.addEventListener('change', () => {
     const at = books.map(b => b.s);
@@ -585,6 +639,7 @@ function onScroll() {
   requestAnimationFrame(() => {
     ticking = false;
     sceneControllers.forEach(([section, fn]) => { if (getComputedStyle($('.mc-scene-pin', section)).position === 'sticky') fn(pinProgress(section)); });
+    scrollFields();
     if (courierReady || relay12 || relay23) {
       const live = k => k > 0 && k < 1, landed = k => 1 - ease((k - HANDOVER) / (1 - HANDOVER));
       const k1 = courierReady ? bookHandoff() : 0, k2 = relay12 ? k12() : 0, k3 = relay23 ? k23() : 0;
