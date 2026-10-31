@@ -249,6 +249,25 @@ html[lang^="zh"] .mc-en-only { display: none; }
 .mc-results-stats span { font-size: 14px; font-weight: 600; color: var(--tc); }
 .mc-results-stats small { font-size: 12.5px; line-height: 1.45; color: var(--text-tertiary); }
 .mc-results-actions { grid-area: actions; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; }
+/* the three ways to submit, under the results: one row of plain links, each with the thing it carries */
+.mc-results-card { grid-template-areas: "head stats" "actions stats" "submit submit"; }
+.mc-submit { grid-area: submit; display: grid; gap: 12px; padding-top: 20px; border-top: 1px solid var(--border-hairline); }
+.mc-submit-label { color: var(--text-tertiary); font-size: 13px; font-weight: 500; }
+.mc-submit-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.mc-submit-list a { display: grid; gap: 4px; height: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border-hairline); text-decoration: none;
+  transition: border-color var(--duration-base) var(--ease-standard), background-color var(--duration-base) var(--ease-standard); }
+.mc-submit-list a:hover { border-color: var(--border-strong); background: color-mix(in oklab, var(--surface-2) 60%, transparent); }
+.mc-submit-list a:active { transform: translateY(1px); }
+.mc-submit-list b { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+.mc-submit-list b::after { content: " ↗"; color: var(--track-1); }
+.mc-submit-list span { font-size: 13px; line-height: 1.45; color: var(--text-secondary); }
+/* the hero's third way in: a plain link to the recorded run, beside the two buttons */
+.mc-text-link { display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 6px; color: var(--text-secondary); font-size: 15px; font-weight: 600; text-decoration: none;
+  transition: color var(--duration-base) var(--ease-standard); }
+.mc-text-link:hover { color: var(--text-primary); }
+.mc-play { position: relative; width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border-strong); flex: none; transition: border-color var(--duration-base) var(--ease-standard); }
+.mc-play::after { content: ""; position: absolute; left: 11px; top: 9px; border-style: solid; border-width: 5px 0 5px 8px; border-color: transparent transparent transparent var(--track-1); }
+.mc-text-link:hover .mc-play { border-color: var(--track-1); }
 .mc-grid-4 .mc-card:nth-child(2) { --tc: var(--mc-violet); }
 .mc-grid-4 .mc-card:nth-child(3) { --tc: var(--track-2); }
 .mc-grid-4 .mc-card:nth-child(4) { --tc: var(--mc-green); }
@@ -277,6 +296,14 @@ html[lang^="zh"] .mc-en-only { display: none; }
 .mc-person { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; align-items: start; padding: 16px; }
 .mc-person img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
 .mc-person div, .mc-partners li { display: grid; gap: 3px; min-width: 0; }
+/* leadership cards in one row share their row tracks (subgrid), so the role and the affiliation
+   lines start at the same height in every card however long a neighbour's affiliation runs */
+@supports (grid-template-rows: subgrid) {
+  .mc-people:not(.mc-people-mini) { grid-auto-rows: auto; }
+  .mc-people:not(.mc-people-mini) .mc-person { grid-row: span 4; grid-template-rows: subgrid; row-gap: 3px; }
+  .mc-people:not(.mc-people-mini) .mc-person img { grid-row: 1 / span 4; }
+  .mc-people:not(.mc-people-mini) .mc-person div { grid-row: 1 / span 4; grid-template-rows: subgrid; gap: 0; }
+}
 .mc-person a, .mc-partners a { color: var(--text-primary); font-size: 16px; font-weight: 650; text-decoration: none; transition: color var(--duration-fast) var(--ease-standard); }
 .mc-person a:hover, .mc-partners a:hover { color: var(--track-1); }
 .mc-person b { color: var(--track-1); font-size: 13px; font-weight: 500; }
@@ -341,8 +368,15 @@ html:not(.js) .mc-fbook .mc-art { display: none; }
 .mc-page .mc-call { position: relative; color: color-mix(in oklab, var(--tc) 62%, #1f2a3a); font-size: 11.5px; letter-spacing: .03em; text-transform: none; }
 .mc-page-name { position: relative; font-size: 17px; font-weight: 700; line-height: 1.25; letter-spacing: -.015em; }
 .mc-page-desc { position: relative; font-size: 14px; line-height: 1.55; color: #4b5563; }
-.mc-page.is-pending .mc-page-name { color: #8d939d; font-style: italic; font-weight: 500; }
-.mc-page.is-pending .mc-page-desc { color: #8d939d; font-style: italic; }
+/* the closing slot of a field with five classes: its numbers, how it is checked, and the way in */
+.mc-page.is-summary .mc-call { color: #7a6a45; }
+.mc-page-go { position: relative; align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; margin-top: 4px; padding: 2px 0;
+  color: color-mix(in oklab, var(--tc) 55%, #1f2a3a); font-size: 14px; font-weight: 650; text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0% 1px; transition: background-size var(--duration-slow) var(--ease-standard); }
+.mc-page-go > span:last-child { transition: translate var(--duration-base) var(--ease-standard); }
+.mc-page-go:hover { background-size: 100% 1px; }
+.mc-page-go:hover > span:last-child { translate: 3px 0; }
+.mc-page-go:focus-visible { outline: 2px solid color-mix(in oklab, var(--tc) 60%, #1f2a3a); outline-offset: 3px; border-radius: 3px; }
 [data-theme="light"] .mc-page { box-shadow: inset 0 0 0 1px rgb(31 42 58 / 10%), 0 1px 2px rgb(14 20 32 / 8%), 0 16px 28px -20px rgb(14 20 32 / 40%); }
 
 /* the stage: the chosen field's label above its open book, the other two books level with the
@@ -420,9 +454,9 @@ html:not(.js) .mc-fbook .mc-art { display: none; }
 .mc-book .mc-call { font-size: 11px; line-height: 1.25; }
 .mc-book .mc-page-name { font-size: clamp(16.5px, 4.7cqi, 19.5px); font-weight: 700; line-height: 1.22; letter-spacing: -.018em; text-wrap: balance; }
 .mc-book .mc-page-desc { margin-top: 2px; font-size: clamp(13px, 3.7cqi, 14.5px); line-height: 1.46; color: #4b5563; }
-/* a class still to come: pencilled, with faint ruled lines in its third of the page */
-.mc-book .mc-page.is-pending { background: repeating-linear-gradient(180deg, transparent 0 22px, rgb(94 110 140 / 15%) 22px 23px) 50% 92% / 100% 48px no-repeat; }
-.mc-book .mc-page.is-pending .mc-page-name { font-weight: 450; font-size: clamp(16px, 4.4cqi, 18.5px); }
+/* the summary slot: the field's counts set a step larger, as the book's closing note */
+.mc-book .mc-page.is-summary { gap: 4px; }
+.mc-book .mc-page.is-summary .mc-page-name { font-size: clamp(17px, 4.9cqi, 20px); letter-spacing: -.02em; }
 /* the closed cover: the field's colour, gilt hairlines, its name and emblem */
 .mc-cover { display: grid; place-items: center; padding: 16% 14% 18% 16%; border-radius: 2px 7px 7px 2px; color: #fbf6ea; cursor: pointer;
   background: radial-gradient(110% 70% at 28% 18%, rgb(255 255 255 / 16%), transparent 62%), linear-gradient(90deg, rgb(0 0 0 / 30%), rgb(0 0 0 / 0) 6%, rgb(255 255 255 / 8%) 7.5%, transparent 9%),
@@ -511,7 +545,8 @@ html:not(.js) .mc-fbook .mc-art { display: none; }
   .mc-people, .mc-people-mini { grid-template-columns: 1fr; }
   .mc-grid-3 .mc-card:last-child .mc-art { aspect-ratio: 16 / 11; }
   .mc-catalogue-meta { grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  .mc-results-card { grid-template-columns: 1fr; grid-template-areas: "head" "stats" "actions"; }
+  .mc-results-card { grid-template-columns: 1fr; grid-template-areas: "head" "stats" "actions" "submit"; }
+  .mc-submit-list { grid-template-columns: 1fr; }
   .mc-results-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
   .mc-results-stats li { padding: 0 10px 12px; }
   .mc-results-stats .mc-art { margin: 0 -10px 6px; }

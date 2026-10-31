@@ -1282,6 +1282,16 @@
   "tasks in": "道题目，分为",
   "Economics, finance and social science come first: each offers public evidence, documented decisions and outputs that can be checked. Open a field's book to see its classes.": "经济、金融和社科最先展开：这三个领域都有公开证据、有据可查的决策过程，以及可以核验的产出。打开任一领域的书卷，查看它包含的类别。",
   "SQL and dbt over banking, retail, e-commerce and wholesale supply-chain data.": "在银行、零售、电商与批发供应链数据上写 SQL / dbt。",
-  "More classes are being added to this field.": "这一领域正在陆续加入更多类别。",
-  "Class 6 · in preparation": "第六类 · 筹备中"
+  "Every task is scored against references the agent never sees.": "每道题都对照 Agent 看不到的参考答案评分。",
+  "152 tasks · 5 classes": "152 道题 · 5 个类别",
+  "Enter the Economics track": "进入经济赛道",
+  "43 tasks · 5 classes": "43 道题 · 5 个类别",
+  "Enter the Social science track": "进入社科赛道",
+  "Field summary": "领域概览",
+  "Participate": "参与",
+  "Results": "结果",
+  "Submit to the Challenge": "向挑战赛提交",
+  "A model and its harness, packaged to rerun": "模型与其 Harness，打包后可重跑",
+  "A new task with its data and references": "新的任务，附数据与参考答案",
+  "A reproducible failure with its diagnosis": "可复现的失败案例，附诊断"
 }

@@ -1,5 +1,5 @@
 /* Challenge uses the homepage's typography, glass, palette, gutters and signature rail. */
-.mc-home .mc-chapter { --mc-top:var(--mc-pin-top); --mc-ink:var(--text-primary); --mc-muted:var(--text-secondary); --mc-gold:var(--track-2); --mc-mint:var(--track-1); position:relative; height:640svh; margin:0; color:var(--text-primary); background:var(--bg-canvas); scroll-margin-top:var(--mc-pin-top); z-index:1; }
+.mc-home .mc-chapter { --mc-top:var(--mc-pin-top); --mc-ink:var(--text-primary); --mc-muted:var(--text-secondary); --mc-gold:var(--track-2); --mc-mint:var(--track-1); position:relative; height:510svh; margin:0; color:var(--text-primary); background:var(--bg-canvas); scroll-margin-top:var(--mc-pin-top); z-index:1; }
 .mc-pin { position:sticky; top:var(--mc-pin-top); height:calc(100svh - var(--mc-pin-top)); min-height:520px; overflow:hidden; isolation:isolate; background:var(--bg-canvas); }
 .mc-canvas { position:absolute; inset:0; width:100%; height:100%; display:block; z-index:0; }
 .mc-vignette { position:absolute; inset:0; z-index:1; pointer-events:none; background:linear-gradient(90deg,color-mix(in oklab,var(--bg-canvas) 94%,transparent),color-mix(in oklab,var(--bg-canvas) 75%,transparent) 24%,transparent 48%),linear-gradient(180deg,color-mix(in oklab,var(--bg-canvas) 65%,transparent),transparent 26%,transparent 60%,color-mix(in oklab,var(--bg-canvas) 86%,transparent) 82%,var(--bg-canvas)); }
@@ -107,7 +107,7 @@
 .mc-wheel [data-wheel-item]:focus-visible .mc-sector { stroke:var(--text-primary); stroke-width:3; }
 .mc-wheel .is-equipped .mc-sector-inner { stroke-width:5.5; opacity:1; }
 .mc-wheel .mc-item-code { fill:var(--harness-accent); font:600 10px var(--font-mono); text-anchor:middle; letter-spacing:.12em; opacity:.85; }
-.mc-wheel .mc-item-name { fill:var(--text-primary); font:650 15px var(--font-sans); text-anchor:middle; letter-spacing:-.015em; paint-order:stroke; stroke:rgb(6 10 18 / 88%); stroke-width:4px; stroke-linejoin:round; }
+.mc-wheel .mc-item-name { fill:var(--text-primary); font:650 15px var(--font-sans); text-anchor:middle; letter-spacing:-.015em; paint-order:stroke; stroke:rgb(6 10 18 / 62%); stroke-width:2.5px; stroke-linejoin:round; filter:drop-shadow(0 1px 3px rgb(4 7 14 / 85%)); }
 .mc-wheel .mc-item-icon { color:var(--harness-accent); }
 /* When the 3D WebGL blasters are rendered inside each wheel bay, hide the 2D SVG fallback icon
    and remove the dark SVG sector tint/window so the 3D weapons sit 100% in the foreground */
@@ -156,7 +156,7 @@
   .mc-endnote { bottom:90px; }
 }
 @media (max-width:860px) {
-  .mc-home .mc-chapter { height:640svh; }
+  .mc-home .mc-chapter { height:510svh; }
   .mc-home .mc-corner { top:18px; }
   .mc-scroll-cue { top:20px; }
   .mc-scroll-cue span:last-child { display:none; }

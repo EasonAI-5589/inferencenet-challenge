@@ -2,11 +2,11 @@
 // Writes the "first fields" books of the v2 homepage (section 04) from metacase-harbor's
 // metacase/summary.json: one book per field, and in each book six class entries (call number,
 // name and a line on what it asks of an agent), shown three to a page across an open two-page
-// spread. Every book has six slots: a field with fewer classes ends with a slot that says,
-// honestly, that the sixth class is in preparation (no name, code or description is invented).
+// spread. Every book has six slots: a field with five classes ends with a summary slot (its task and
+// class counts from the summary, how runs are checked, and a link into its Challenge track).
 //   node scripts/build-fields.mjs path/to/metacase/summary.json
 // The block between the fields:books markers in v2/index.html is replaced, and the Chinese text
-// (class names and descriptions from the summary, and the pending-class note) is written to
+// (class names and descriptions from the summary, and the summary-slot lines) is written to
 // assets/i18n/index.zh.json. The descriptions leave out the benchmarks a class draws on: the page
 // says what a class asks of an agent, not where its tasks come from. The tablist is
 // data-tabs="manual": metacase.js, not site.js's generic tabs, decides what is shown.
@@ -31,11 +31,14 @@ const slug = id => id.replace(/\./g, '-');
 const NAMED = [['TPC-H style economic data', 'wholesale supply-chain data'], [' TPC-H 类经济数据', '批发供应链数据']];
 const describe = s => NAMED.reduce((t, [a, b]) => t.replace(a, b), s.replace(/\s*\([^)]*\)/g, '').replace(/（[^）]*）/g, '').trim());
 
-// The strings of a pending class slot, and their Chinese.
-const CN = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十'];
-const PENDING_LINE = 'More classes are being added to this field.';
-const UI = { [PENDING_LINE]: '这一领域正在陆续加入更多类别。' };
-const pending = k => `Class ${k} · in preparation`;
+// A field with fewer classes than slots closes its book with a summary slot: the field's task and
+// class counts from the summary, how runs are checked, and the way into its track. Nothing is
+// invented: the counts come from summary.json, the link from the Challenge page's track anchors.
+const CHECK_LINE = 'Every task is scored against references the agent never sees.';
+const UI = { [CHECK_LINE]: '每道题都对照 Agent 看不到的参考答案评分。', 'Field summary': '领域概览' };
+const FIELD_ZH = { econ: '经济', fin: '金融', soc: '社科' };
+const countLine = (tasks, n) => [`${tasks} tasks · ${n} classes`, `${tasks} 道题 · ${n} 个类别`];
+const enterLine = (field) => [`Enter the ${field.name} track`, `进入${FIELD_ZH[field.id]}赛道`];
 
 const categories = new Map(summary.categories.map(c => [c.id, c]));
 const zh = { ...UI };
@@ -46,6 +49,7 @@ FIELDS.forEach((field, f) => {
   // largest classes first, as in the summary's own listing
   const classes = [...cat.subcategories].sort((a, b) => b.task_count - a.task_count || a.name_en.localeCompare(b.name_en));
   const n = String(f + 1).padStart(2, '0'), open = f === 0, total = Math.max(SLOTS, classes.length);
+  if (classes.length < SLOTS - 1) throw new Error(`${field.id}: ${classes.length} classes leave more than one empty slot`);
   books.push(`    <button class="mc-fbook" type="button" role="tab" id="fb-tab-${field.id}" aria-controls="fb-${field.id}" aria-selected="${open}" style="--tc: ${field.color}">
       <span class="mc-art" data-art="field" data-field="${field.id}" aria-hidden="true"></span>
       <span class="mc-fbook-label">
@@ -65,12 +69,14 @@ FIELDS.forEach((field, f) => {
         <h3 class="mc-page-name" id="${id}-name">${esc(c.name_en)}</h3>
         <p class="mc-page-desc">${esc(desc)}</p>
       </article></li>`);
-    } else { // a class still to come: the slot is left pencilled
-      const name = pending(i);
-      zh[name] = `第${CN[i] ?? i}类 · 筹备中`;
-      pages.push(`      <li><article class="mc-page is-pending" id="${id}" aria-labelledby="${id}-name">
-        <h3 class="mc-page-name" id="${id}-name">${esc(name)}</h3>
-        <p class="mc-page-desc">${esc(PENDING_LINE)}</p>
+    } else { // the closing slot: the field in numbers, how it is checked, and the way into its track
+      const [count, countZh] = countLine(cat.task_count, classes.length), [enter, enterZh] = enterLine(field);
+      zh[count] = countZh; zh[enter] = enterZh;
+      pages.push(`      <li><article class="mc-page is-summary" id="${id}" aria-labelledby="${id}-name">
+        <p class="mc-call mono">Field summary</p>
+        <h3 class="mc-page-name tnum" id="${id}-name">${esc(count)}</h3>
+        <p class="mc-page-desc">${esc(CHECK_LINE)}</p>
+        <a class="mc-page-go" href="challenge.html#track-${field.id}"><span>${esc(enter)}</span><span aria-hidden="true">→</span></a>
       </article></li>`);
     }
   }
