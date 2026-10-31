@@ -2221,5 +2221,21 @@
   "The sandbox, data and files the agent acts on, and the evaluator that scores the final output.": "智能体操作的沙箱、数据与文件，以及为最终输出打分的评测器。",
   "Data and files": "数据与文件",
   "Run limits": "运行限制",
-  "Harness — Metacase Challenge": "Harness — Metacase Challenge · v2"
+  "Harness — Metacase Challenge": "Harness — Metacase Challenge · v2",
+  "From a runtime-systems perspective, the Cordis technical report (": "从运行时系统的视角看，Cordis 技术报告（",
+  "A Programming Paradigm for Spatiotemporal Composability": "《A Programming Paradigm for Spatiotemporal Composability》",
+  ", Shi, Zhang & Cui, Aug 2026) characterizes modern runtime agent harnesses across six functional pillars: composing diverse tool suites and execution environments, governing permissions and sandboxing, maintaining session state and persistence, providing context management and memory systems, orchestrating subagents and multi-agent workflows, and exposing interfaces to users and automation. Whereas model-synthesized reusable tools provide a narrower precursor, a self-evolving harness generates and deploys component-level modifications to its own runtime while serving tasks—making each self-modification an instance of dynamic composition that relies on": "，Shi, Zhang & Cui，2026 年 8 月）从六大职能模块界定了现代运行时 Agent Harness：组合多样化的工具套件与执行环境、治理权限与沙箱隔离、维护会话状态与持久化、提供上下文管理与记忆系统、编排子智能体与多智能体工作流，以及向用户与自动化流程暴露接口。相较于“模型合成可复用工具”这一窄义前身，自进化 Harness 在持续服务任务的同时生成并部署对其自身运行时组件的修改——每一次自我修改都是动态组合的一个实例，依赖",
+  "temporal composability": "时间可组合性",
+  "(revertible effects so unloading a faulty edit recovers state without a full restart) and": "（通过可逆效应使卸载问题修改时无需重启整个进程即可还原状态）与",
+  "spatial composability": "空间可组合性",
+  "(reactive coeffects so dependent modules adapt safely to live replacements).": "（通过响应式余效应使被依赖模块在热替换时安全协同）。",
+  "An execution loop runs a fixed harness configuration on a task; an optimization loop inspects trajectories and failure modes, proposes targeted edits across harness components (prompts, tool descriptions, observation formatting, middleware hooks or plugins), and retains only non-regressive improvements under a fixed evaluator. Beyond narrower precursors such as model-synthesized reusable tools, component-level self-modification treats every harness edit as an instance of dynamic composition—requiring temporal composability (revertible effects that avoid state-destroying restarts or disabled recovery) and spatial composability (reactive dependency resolution across modules).": "执行循环在单个任务上运行固定的 Harness 配置；优化循环则审视跨任务的运行轨迹与失败模式，对 Harness 各组件（提示词、工具描述、观察结果格式化、中间件钩子或插件）提出针对性修改，并在固定评测器下仅保留不退化的改进。超越“模型合成可复用工具”等窄义前身，组件级自我修改将每次 Harness 编辑视为一次动态组合实例——这要求具备时间可组合性（通过可逆效应避免丢弃状态的整进程重启或恢复机制自身瘫痪）与空间可组合性（跨模块的响应式依赖解析）。",
+  "The Self-evolving page presents the two-layer execution-and-optimization diagram, formalizes the runtime composability and admission guarantees (": "“自进化”页面展示了执行与优化双层架构图，梳理了运行时可组合性与准入理论保证（",
+  "Cordis": "Cordis",
+  "Harness-RSI": "Harness-RSI",
+  "), compares recent offline and online self-evolution methods (": "），横向对比了近期的离线与在线自进化方法（",
+  "Shi, Zhang & Cui, “A Programming Paradigm for Spatiotemporal Composability” / Cordis (Aug 2026)": "Shi, Zhang & Cui，《A Programming Paradigm for Spatiotemporal Composability》/ Cordis（2026 年 8 月）",
+  "· six runtime harness pillars, revertible effects and reactive coeffects.": " · 六大运行时 Harness 支柱、可逆效应与响应式余效应。",
+  "Self-Evolving Agent Harness / Harness-RSI (arXiv 2610.18813)": "Self-Evolving Agent Harness / Harness-RSI（arXiv 2610.18813）",
+  "A runtime agent harness is the executable system that runs a language model as an agent: it composes tool suites and execution environments, governs permissions and sandboxing, maintains session state and persistence, manages context and memory, orchestrates subagents and multi-agent workflows, and exposes interfaces to users and automation—deciding what the model sees, how actions run, and when the episode stops.": "运行时 Agent Harness 是将语言模型作为智能体运行的可执行系统：它组合工具套件与执行环境、治理权限与沙箱隔离、维护会话状态与持久化、管理上下文与记忆、编排子智能体与多智能体工作流，并向用户与自动化流程暴露接口——决定模型在每一步看到什么、操作如何执行，以及任务何时结束。"
 }
