@@ -11,15 +11,16 @@
   --mc-green: oklch(78% 0.13 155);
   --mc-rose: oklch(74% 0.14 15);
   --mc-blue: oklch(74% 0.12 250);
-  --mc-glass: color-mix(in oklab, var(--surface-1) 70%, transparent);
-  --mc-line: color-mix(in oklab, var(--text-primary) 14%, transparent);
+  --mc-glass: color-mix(in oklab, var(--surface-1) 78%, transparent);
+  --mc-line: color-mix(in oklab, var(--text-primary) 15%, transparent);
 }
 [data-theme="light"] {
   --mc-violet: oklch(52% 0.15 295);
   --mc-green: oklch(52% 0.13 155);
   --mc-rose: oklch(56% 0.16 15);
   --mc-blue: oklch(52% 0.13 250);
-  --mc-glass: color-mix(in oklab, var(--surface-1) 84%, transparent);
+  --mc-glass: color-mix(in oklab, var(--surface-1) 88%, transparent);
+  --mc-line: color-mix(in oklab, var(--text-primary) 14%, transparent);
 }
 :root {
   --mc-gutter: max(24px, calc((100vw - var(--content-max)) / 2 + 24px));
@@ -238,16 +239,19 @@ html[lang^="zh"] .mc-en-only { display: none; }
 #rules .mc-scene-head .mc-sub { padding: 10px 14px; border-radius: 12px; background: color-mix(in oklab, var(--bg-canvas) 70%, transparent); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 .mc-results { padding-top: clamp(40px, 6vh, 72px); padding-bottom: clamp(24px, 4vh, 48px); }
 .mc-results-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); grid-template-areas: "head stats" "actions stats"; gap: 20px clamp(28px, 4vw, 56px); padding: clamp(24px, 3vw, 40px);
-  border-radius: 24px; border: 1px solid var(--border-hairline); background: radial-gradient(70% 120% at 0% 0%, color-mix(in oklab, var(--track-1) 10%, transparent), transparent 60%); } /* no fill: the 3D stage draws behind the exhibits */
+  border-radius: 24px; border: 1px solid var(--border-hairline);
+  background: radial-gradient(70% 120% at 0% 0%, color-mix(in oklab, var(--track-1) 12%, transparent), transparent 60%), color-mix(in oklab, var(--surface-1) 88%, transparent);
+  box-shadow: var(--inner-highlight), var(--shadow-card); }
 .mc-results-head { grid-area: head; display: grid; align-content: start; gap: 14px; }
 .mc-results-head h2 { font-size: clamp(28px, 2.8vw, 40px); line-height: 1.08; letter-spacing: -0.03em; font-weight: 650; }
 .mc-results-scope { color: var(--text-secondary); font-size: 15px; line-height: 1.6; }
 .mc-results-stats { grid-area: stats; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; align-self: center; }
-.mc-results-stats li { display: grid; align-content: start; gap: 2px; padding: 0 14px 16px; border-radius: 16px; border: 1px solid var(--border-hairline); overflow: hidden; }
-.mc-results-stats .mc-art { aspect-ratio: 4 / 3; margin: 0 -14px 6px; border-bottom: 1px solid var(--border-hairline); background: radial-gradient(80% 90% at 50% 70%, color-mix(in oklab, var(--tc) 14%, transparent), transparent 70%); }
-.mc-results-stats b { font-size: clamp(36px, 3.4vw, 52px); font-weight: 650; letter-spacing: -0.045em; line-height: 1; color: var(--text-primary); }
+.mc-results-stats li { display: grid; align-content: start; gap: 2px; padding: 0 14px 16px; border-radius: 16px; border: 1px solid var(--border-hairline); overflow: hidden;
+  background: color-mix(in oklab, var(--surface-2) 65%, transparent); box-shadow: var(--inner-highlight); }
+.mc-results-stats .mc-art { aspect-ratio: 4 / 3; margin: 0 -14px 6px; border-bottom: 1px solid var(--border-hairline); background: radial-gradient(80% 90% at 50% 70%, color-mix(in oklab, var(--tc) 16%, transparent), transparent 70%); }
+.mc-results-stats b { font-size: clamp(36px, 3.4vw, 52px); font-weight: 650; letter-spacing: -0.045em; line-height: 1; color: var(--text-primary); font-variant-numeric: tabular-nums; }
 .mc-results-stats span { font-size: 14px; font-weight: 600; color: var(--tc); }
-.mc-results-stats small { font-size: 12.5px; line-height: 1.45; color: var(--text-tertiary); }
+.mc-results-stats small { font-size: 12.5px; line-height: 1.45; color: var(--text-tertiary); font-variant-numeric: tabular-nums; }
 .mc-results-actions { grid-area: actions; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; }
 /* the three ways to submit, under the results: one row of plain links, each with the thing it carries */
 .mc-results-card { grid-template-areas: "head stats" "actions stats" "submit submit"; }
@@ -255,8 +259,9 @@ html[lang^="zh"] .mc-en-only { display: none; }
 .mc-submit-label { color: var(--text-tertiary); font-size: 13px; font-weight: 500; }
 .mc-submit-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .mc-submit-list a { display: grid; gap: 4px; height: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border-hairline); text-decoration: none;
-  transition: border-color var(--duration-base) var(--ease-standard), background-color var(--duration-base) var(--ease-standard); }
-.mc-submit-list a:hover { border-color: var(--border-strong); background: color-mix(in oklab, var(--surface-2) 60%, transparent); }
+  background: color-mix(in oklab, var(--surface-2) 45%, transparent); box-shadow: var(--inner-highlight);
+  transition: border-color var(--duration-base) var(--ease-standard), background-color var(--duration-base) var(--ease-standard), transform var(--duration-fast) var(--ease-standard); }
+.mc-submit-list a:hover { border-color: var(--border-strong); background: color-mix(in oklab, var(--surface-2) 85%, transparent); transform: translateY(-1px); }
 .mc-submit-list a:active { transform: translateY(1px); }
 .mc-submit-list b { font-size: 15px; font-weight: 600; color: var(--text-primary); }
 .mc-submit-list b::after { content: " ↗"; color: var(--track-1); }
@@ -278,20 +283,22 @@ html[lang^="zh"] .mc-en-only { display: none; }
 .mc-card-link:hover .mc-go > span:last-child { translate: 4px 0; }
 .mc-card-open { border-style: dashed; }
 
-/* ---------- 06 The team ---------- */
+/* ---------- 08 The team ---------- */
 .mc-join-card { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); align-items: stretch; border-radius: 28px; border: 1px solid var(--border-hairline); overflow: hidden;
-  background: radial-gradient(80% 120% at 100% 0%, color-mix(in oklab, var(--mc-violet) 16%, transparent), transparent 60%); }
+  background: radial-gradient(80% 120% at 100% 0%, color-mix(in oklab, var(--mc-violet) 16%, transparent), transparent 60%), color-mix(in oklab, var(--surface-1) 86%, transparent);
+  box-shadow: var(--inner-highlight), var(--shadow-card); }
 .mc-join-copy { padding: clamp(40px, 6vw, 88px); background: linear-gradient(90deg, var(--surface-1), color-mix(in oklab, var(--surface-1) 70%, transparent)); }
 .mc-join-copy h2 { margin-top: 16px; }
 .mc-join-card .mc-art { aspect-ratio: auto; min-height: 420px; }
 /* the people, below the card's copy and picture: the host institute first, then the partner labs
    with their directors, then the student leaders */
 .mc-team { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 32px clamp(24px, 3vw, 48px);
-  padding: clamp(28px, 4vw, 48px) clamp(40px, 6vw, 88px) clamp(36px, 5vw, 64px); border-top: 1px solid var(--border-hairline); background: color-mix(in oklab, var(--surface-1) 88%, transparent); }
+  padding: clamp(28px, 4vw, 48px) clamp(40px, 6vw, 88px) clamp(36px, 5vw, 64px); border-top: 1px solid var(--border-hairline); background: color-mix(in oklab, var(--surface-1) 92%, transparent); }
 .mc-team-kicker { margin-bottom: 14px; color: var(--text-tertiary); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
 .mc-people { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
 .mc-people-mini { grid-template-columns: 1fr; }
-.mc-person { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; align-items: start; padding: 16px; border: 1px solid var(--border-hairline); border-radius: 16px; background: var(--surface-1); }
+.mc-person { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; align-items: start; padding: 16px; border: 1px solid var(--border-hairline); border-radius: 16px; background: var(--surface-1); box-shadow: var(--inner-highlight); transition: border-color var(--duration-base) var(--ease-standard); }
+.mc-person:hover, .mc-org:hover { border-color: var(--border-strong); }
 .mc-person img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
 .mc-person div { display: grid; gap: 3px; min-width: 0; }
 .mc-person a, .mc-org h3 a { color: var(--text-primary); font-size: 16px; font-weight: 650; text-decoration: none; transition: color var(--duration-fast) var(--ease-standard); }
@@ -301,20 +308,20 @@ html[lang^="zh"] .mc-en-only { display: none; }
 .mc-people-mini .mc-person { grid-template-columns: 48px minmax(0, 1fr); align-items: center; }
 .mc-people-mini .mc-person img { width: 48px; height: 48px; }
 /* an organisation card: its name and university, and its director inside it */
-.mc-org { display: grid; align-content: start; gap: 4px; padding: 20px; border: 1px solid var(--border-hairline); border-radius: 20px; background: var(--surface-1); }
+.mc-org { display: grid; align-content: start; gap: 4px; padding: 20px; border: 1px solid var(--border-hairline); border-radius: 18px; background: var(--surface-1); box-shadow: var(--inner-highlight); transition: border-color var(--duration-base) var(--ease-standard); }
 .mc-org h3 { font-size: 18px; letter-spacing: -.015em; }
 .mc-org-full { color: var(--text-secondary); font-size: 13.5px; line-height: 1.45; }
-.mc-org .mc-person { margin-top: 12px; padding: 14px 0 0; border: 0; border-top: 1px solid var(--border-hairline); border-radius: 0; background: none; }
+.mc-org .mc-person { margin-top: 12px; padding: 14px 0 0; border: 0; border-top: 1px solid var(--border-hairline); border-radius: 0; background: none; box-shadow: none; }
 .mc-orgs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 /* the host: full width, set apart by its accent and a larger name, its director on a raised panel */
 .mc-org-host { grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); align-items: center; gap: 20px clamp(24px, 4vw, 56px); padding: clamp(22px, 3vw, 32px);
-  border-color: color-mix(in oklab, var(--track-1) 38%, var(--border-hairline)); border-radius: 24px;
+  border-color: color-mix(in oklab, var(--track-1) 38%, var(--border-hairline)); border-radius: 20px;
   background: radial-gradient(90% 140% at 0% 0%, color-mix(in oklab, var(--track-1) 12%, transparent), transparent 62%), var(--surface-1); }
 .mc-org-host .mc-team-kicker { margin-bottom: 6px; color: var(--track-1); }
 .mc-org-host h3 a { font-size: clamp(26px, 2.4vw, 34px); letter-spacing: -.03em; }
 .mc-org-head { display: grid; gap: 6px; }
 .mc-org-note { margin-top: 4px; max-width: 34em; color: var(--text-secondary); font-size: 15px; line-height: 1.55; }
-.mc-org-host .mc-person-lead { margin: 0; padding: 18px; border: 1px solid var(--border-hairline); border-radius: 16px; background: color-mix(in oklab, var(--surface-2) 70%, transparent); }
+.mc-org-host .mc-person-lead { margin: 0; padding: 18px; border: 1px solid var(--border-hairline); border-radius: 14px; background: color-mix(in oklab, var(--surface-2) 72%, transparent); box-shadow: var(--inner-highlight); }
 .mc-org-host .mc-person-lead img { width: 80px; height: 80px; }
 .mc-person-lead { grid-template-columns: 80px minmax(0, 1fr); }
 .mc-home .v2-footer { margin-top: 0; background: var(--bg-canvas); }
@@ -323,11 +330,12 @@ html[lang^="zh"] .mc-en-only { display: none; }
 /* (clipped sideways: a leaf turning in the field books must never widen the page) */
 .mc-catalogue { overflow-x: clip; background: linear-gradient(180deg, transparent, color-mix(in oklab, var(--surface-1) 55%, transparent) 30%, transparent); }
 .mc-catalogue-meta { display: grid; grid-template-columns: repeat(3, auto) 1fr; gap: 56px; align-items: end; margin: -16px 0 40px; padding-bottom: 28px; border-bottom: 1px solid var(--border-hairline); }
-.mc-catalogue-meta b { display: block; font-size: clamp(40px, 4.4vw, 64px); font-weight: 650; letter-spacing: -0.045em; line-height: 1; }
+.mc-catalogue-meta b { display: block; font-size: clamp(40px, 4.4vw, 64px); font-weight: 650; letter-spacing: -0.045em; line-height: 1; font-variant-numeric: tabular-nums; }
 .mc-catalogue-meta span { color: var(--text-tertiary); font-size: 14px; }
 .mc-call { font-size: 11px; color: var(--text-tertiary); letter-spacing: .04em; }
 .mc-gallery-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 32px; align-items: center; margin-top: var(--mc-gap); padding: 26px 28px; border-radius: 20px; border: 1px dashed var(--border-strong);
-  background: radial-gradient(60% 140% at 100% 50%, color-mix(in oklab, var(--mc-rose) 9%, transparent), transparent 70%); }
+  background: radial-gradient(60% 140% at 100% 50%, color-mix(in oklab, var(--mc-rose) 9%, transparent), transparent 70%), color-mix(in oklab, var(--surface-1) 75%, transparent);
+  box-shadow: var(--inner-highlight); }
 .mc-gallery-copy { display: grid; gap: 6px; }
 .mc-gallery-copy .mono { color: var(--text-tertiary); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
 .mc-gallery-copy h3 { font-size: 20px; font-weight: 600; letter-spacing: -0.015em; }

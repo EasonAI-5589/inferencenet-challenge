@@ -123,10 +123,16 @@
 .mc-wheel .mc-gun-top-layer { fill:color-mix(in oklab,var(--harness-accent) 68%,white); opacity:.92; }
 .mc-wheel .mc-gun-core-layer { fill:#ffffff; stroke:var(--harness-accent); stroke-width:1; }
 .mc-wheel .is-active .mc-item-name { fill:color-mix(in oklab,var(--harness-accent) 75%,white); }
-.mc-wheel-hub-badge { position:absolute; left:50%; top:79%; translate:-50% -50%; display:grid; justify-items:center; gap:2px; padding:4px 12px; border-radius:999px; border:1.5px solid var(--model-accent,var(--track-1)); background:color-mix(in oklab,#070b14 88%,transparent); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); box-shadow:0 0 20px -4px var(--model-accent,var(--track-1)), 0 8px 24px -6px rgb(0 0 0 / 75%); white-space:nowrap; }
+[data-theme="light"] .mc-wheel .mc-item-name { stroke:rgb(255 255 255 / 82%); filter:drop-shadow(0 1px 2px rgb(14 20 32 / 25%)); }
+[data-theme="light"] .mc-wheel .is-active .mc-item-name { fill:color-mix(in oklab,var(--harness-accent) 78%,#0E1420); }
+[data-theme="light"] .mc-model-btn.is-active, [data-theme="light"] .mc-chip.is-active { color:#0E1420; background:color-mix(in oklab,var(--model-accent,var(--track-1)) 24%,var(--surface-1)); }
+[data-theme="light"] .mc-model-btn.is-active .mc-model-logo { color:var(--mc-mcolor,var(--track-1)); }
+[data-theme="light"] .mc-loadout { box-shadow:0 18px 42px -20px rgb(14 20 32 / 22%), var(--inner-highlight); }
+[data-theme="light"] .mc-wheel { filter:drop-shadow(0 20px 38px rgb(14 20 32 / 22%)); }
+.mc-wheel-hub-badge { position:absolute; left:50%; top:79%; translate:-50% -50%; display:grid; justify-items:center; gap:2px; padding:4px 12px; border-radius:999px; border:1.5px solid var(--model-accent,var(--track-1)); background:color-mix(in oklab,var(--surface-1) 88%,transparent); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); box-shadow:0 0 20px -4px var(--model-accent,var(--track-1)), 0 8px 24px -6px rgb(0 0 0 / 55%), var(--inner-highlight); white-space:nowrap; }
 .mc-wheel-hub-badge small { font:600 8.5px/1.2 var(--font-mono); letter-spacing:.08em; text-transform:uppercase; color:var(--model-accent,var(--track-1)); }
-.mc-wheel-hub-badge strong { font:700 13px/1.2 var(--font-sans); color:#fff; }
-.mc-model-roster { position:absolute; z-index:10; left:50%; bottom:-14px; translate:-50% 0; display:flex; flex-wrap:nowrap; gap:6px; padding:6px 10px; border-radius:999px; border:1px solid var(--mc-line); background:color-mix(in oklab,#080d1a 92%,transparent); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 16px 36px -8px rgb(0 0 0 / 75%); white-space:nowrap; pointer-events:auto; }
+.mc-wheel-hub-badge strong { font:700 13px/1.2 var(--font-sans); color:var(--text-primary); }
+.mc-model-roster { position:absolute; z-index:10; left:50%; bottom:-14px; translate:-50% 0; display:flex; flex-wrap:nowrap; gap:6px; padding:6px 10px; border-radius:999px; border:1px solid var(--mc-line); background:color-mix(in oklab,var(--surface-1) 92%,transparent); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 16px 36px -8px rgb(0 0 0 / 55%), var(--inner-highlight); white-space:nowrap; pointer-events:auto; }
 .mc-wheel-label { display:none; }
 /* Caption and shared signature rail sit on the same baseline as scenes above. */
 .mc-phase-index { display:none; }
@@ -308,8 +314,8 @@
 /* ---- portals: each room is the way into its track ---- */
 .mc-portals { position:absolute; inset:0; z-index:5; pointer-events:none; }
 .mc-portal { position:absolute; top:0; left:0; display:grid; grid-template-columns:auto auto; align-items:center; column-gap:14px; padding:12px 16px 12px 18px; border-radius:16px;
-  border:1px solid color-mix(in oklab,var(--pc) 60%,transparent); background:color-mix(in oklab,#0a0f1a 78%,transparent); color:var(--text-primary); text-decoration:none;
-  box-shadow:0 0 0 1px color-mix(in oklab,var(--pc) 20%,transparent), 0 14px 40px -12px color-mix(in oklab,var(--pc) 70%,transparent); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  border:1px solid color-mix(in oklab,var(--pc) 60%,transparent); background:color-mix(in oklab,var(--surface-1) 82%,transparent); color:var(--text-primary); text-decoration:none;
+  box-shadow:var(--inner-highlight), 0 0 0 1px color-mix(in oklab,var(--pc) 20%,transparent), 0 14px 40px -12px color-mix(in oklab,var(--pc) 70%,transparent); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
   opacity:0; visibility:hidden; pointer-events:none; transition:opacity .35s, visibility .35s, box-shadow .25s, border-color .25s; will-change:transform; }
 .mc-portal small { grid-column:1; font:500 10px/1.3 var(--font-mono); letter-spacing:.1em; text-transform:uppercase; color:var(--pc); }
 .mc-portal b { grid-column:1; font:650 16px/1.25 var(--font-sans); letter-spacing:-.01em; }

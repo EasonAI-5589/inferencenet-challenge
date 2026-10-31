@@ -10,7 +10,7 @@
   let theme = "dark";
   root.classList.add("js");
   try {
-    if (window.localStorage.getItem(storageKey) === "light") theme = "light";
+    window.localStorage.setItem(storageKey, "dark");
   } catch { /* Private browsing or storage policy: retain the dark default. */ }
 
   const apply = () => {
@@ -50,9 +50,7 @@
   // A page prerendered in the background (site.js) takes the theme current when it is shown.
   if (document.prerendering) {
     document.addEventListener("prerenderingchange", () => {
-      let next = "dark";
-      try { if (window.localStorage.getItem(storageKey) === "light") next = "light"; } catch {}
-      if (next !== theme) { theme = next; apply(); syncButtons(); }
+      if (theme !== "dark") { theme = "dark"; apply(); syncButtons(); }
     }, { once: true });
   }
 
