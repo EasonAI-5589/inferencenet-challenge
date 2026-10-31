@@ -1293,5 +1293,12 @@
   "Submit to the Challenge": "向挑战赛提交",
   "A model and its harness, packaged to rerun": "模型与其 Harness，打包后可重跑",
   "A new task with its data and references": "新的任务，附数据与参考答案",
-  "A reproducible failure with its diagnosis": "可复现的失败案例，附诊断"
+  "A reproducible failure with its diagnosis": "可复现的失败案例，附诊断",
+  "Host": "主办",
+  "In partnership with": "合作单位",
+  "Hosts the Global Metacase Initiative and its first pipeline, the Metacase Challenge.": "主办 Global Metacase Initiative 及其首个项目 Metacase 挑战赛。",
+  "Founding Director": "创始主任",
+  "Lab Director": "实验室主任",
+  "Associate Professor, HKU Business School": "香港大学商学院副教授",
+  "Professor, School of Statistics and Data Science": "统计与数据科学学院教授"
 }

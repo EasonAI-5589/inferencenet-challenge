@@ -284,33 +284,39 @@ html[lang^="zh"] .mc-en-only { display: none; }
 .mc-join-copy { padding: clamp(40px, 6vw, 88px); background: linear-gradient(90deg, var(--surface-1), color-mix(in oklab, var(--surface-1) 70%, transparent)); }
 .mc-join-copy h2 { margin-top: 16px; }
 .mc-join-card .mc-art { aspect-ratio: auto; min-height: 420px; }
-/* the people, below the card's copy and picture: leadership, student leaders, partner teams */
-.mc-team { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px clamp(24px, 3vw, 48px);
+/* the people, below the card's copy and picture: the host institute first, then the partner labs
+   with their directors, then the student leaders */
+.mc-team { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 32px clamp(24px, 3vw, 48px);
   padding: clamp(28px, 4vw, 48px) clamp(40px, 6vw, 88px) clamp(36px, 5vw, 64px); border-top: 1px solid var(--border-hairline); background: color-mix(in oklab, var(--surface-1) 88%, transparent); }
-.mc-team-group:first-child { grid-column: 1 / -1; }
 .mc-team-kicker { margin-bottom: 14px; color: var(--text-tertiary); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
-.mc-people, .mc-partners { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
-.mc-people { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.mc-people-mini { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.mc-person, .mc-partners li { border: 1px solid var(--border-hairline); border-radius: 16px; background: var(--surface-1); }
-.mc-person { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; align-items: start; padding: 16px; }
+.mc-people { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.mc-people-mini { grid-template-columns: 1fr; }
+.mc-person { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; align-items: start; padding: 16px; border: 1px solid var(--border-hairline); border-radius: 16px; background: var(--surface-1); }
 .mc-person img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
-.mc-person div, .mc-partners li { display: grid; gap: 3px; min-width: 0; }
-/* leadership cards in one row share their row tracks (subgrid), so the role and the affiliation
-   lines start at the same height in every card however long a neighbour's affiliation runs */
-@supports (grid-template-rows: subgrid) {
-  .mc-people:not(.mc-people-mini) { grid-auto-rows: auto; }
-  .mc-people:not(.mc-people-mini) .mc-person { grid-row: span 4; grid-template-rows: subgrid; row-gap: 3px; }
-  .mc-people:not(.mc-people-mini) .mc-person img { grid-row: 1 / span 4; }
-  .mc-people:not(.mc-people-mini) .mc-person div { grid-row: 1 / span 4; grid-template-rows: subgrid; gap: 0; }
-}
-.mc-person a, .mc-partners a { color: var(--text-primary); font-size: 16px; font-weight: 650; text-decoration: none; transition: color var(--duration-fast) var(--ease-standard); }
-.mc-person a:hover, .mc-partners a:hover { color: var(--track-1); }
+.mc-person div { display: grid; gap: 3px; min-width: 0; }
+.mc-person a, .mc-org h3 a { color: var(--text-primary); font-size: 16px; font-weight: 650; text-decoration: none; transition: color var(--duration-fast) var(--ease-standard); }
+.mc-person a:hover, .mc-org h3 a:hover { color: var(--track-1); }
 .mc-person b { color: var(--track-1); font-size: 13px; font-weight: 500; }
-.mc-person span, .mc-partners span { color: var(--text-secondary); font-size: 13px; line-height: 1.45; }
+.mc-person span { color: var(--text-secondary); font-size: 13px; line-height: 1.45; }
 .mc-people-mini .mc-person { grid-template-columns: 48px minmax(0, 1fr); align-items: center; }
 .mc-people-mini .mc-person img { width: 48px; height: 48px; }
-.mc-partners li { padding: 14px 16px; }
+/* an organisation card: its name and university, and its director inside it */
+.mc-org { display: grid; align-content: start; gap: 4px; padding: 20px; border: 1px solid var(--border-hairline); border-radius: 20px; background: var(--surface-1); }
+.mc-org h3 { font-size: 18px; letter-spacing: -.015em; }
+.mc-org-full { color: var(--text-secondary); font-size: 13.5px; line-height: 1.45; }
+.mc-org .mc-person { margin-top: 12px; padding: 14px 0 0; border: 0; border-top: 1px solid var(--border-hairline); border-radius: 0; background: none; }
+.mc-orgs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+/* the host: full width, set apart by its accent and a larger name, its director on a raised panel */
+.mc-org-host { grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); align-items: center; gap: 20px clamp(24px, 4vw, 56px); padding: clamp(22px, 3vw, 32px);
+  border-color: color-mix(in oklab, var(--track-1) 38%, var(--border-hairline)); border-radius: 24px;
+  background: radial-gradient(90% 140% at 0% 0%, color-mix(in oklab, var(--track-1) 12%, transparent), transparent 62%), var(--surface-1); }
+.mc-org-host .mc-team-kicker { margin-bottom: 6px; color: var(--track-1); }
+.mc-org-host h3 a { font-size: clamp(26px, 2.4vw, 34px); letter-spacing: -.03em; }
+.mc-org-head { display: grid; gap: 6px; }
+.mc-org-note { margin-top: 4px; max-width: 34em; color: var(--text-secondary); font-size: 15px; line-height: 1.55; }
+.mc-org-host .mc-person-lead { margin: 0; padding: 18px; border: 1px solid var(--border-hairline); border-radius: 16px; background: color-mix(in oklab, var(--surface-2) 70%, transparent); }
+.mc-org-host .mc-person-lead img { width: 80px; height: 80px; }
+.mc-person-lead { grid-template-columns: 80px minmax(0, 1fr); }
 .mc-home .v2-footer { margin-top: 0; background: var(--bg-canvas); }
 
 /* ---------- 04 The catalogue: three wings of call-numbered classes ---------- */
@@ -509,7 +515,8 @@ html:not(.js) .mc-fbook .mc-art { display: none; }
   .mc-join-card { grid-template-columns: 1fr; }
   .mc-join-card .mc-art { min-height: 320px; }
   .mc-team { grid-template-columns: 1fr; }
-  .mc-people { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .mc-org-host { grid-template-columns: 1fr; }
+  .mc-people-mini { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 860px) {
   :root { --mc-gutter: 16px; }
@@ -542,7 +549,7 @@ html:not(.js) .mc-fbook .mc-art { display: none; }
   .mc-tags i { display: none; }
   .mc-grid-2, .mc-grid-3, .mc-grid-4 { grid-template-columns: 1fr; }
   .mc-team { padding: 28px 20px 32px; }
-  .mc-people, .mc-people-mini { grid-template-columns: 1fr; }
+  .mc-people-mini, .mc-orgs { grid-template-columns: 1fr; }
   .mc-grid-3 .mc-card:last-child .mc-art { aspect-ratio: 16 / 11; }
   .mc-catalogue-meta { grid-template-columns: repeat(3, 1fr); gap: 24px; }
   .mc-results-card { grid-template-columns: 1fr; grid-template-areas: "head" "stats" "actions" "submit"; }
