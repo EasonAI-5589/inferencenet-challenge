@@ -108,4 +108,4 @@ The recorded reward is 0.208: 29 points, minus 7, over 106. One pilot run on a f
 
 28
 00:03:57,762 --> 00:04:04,613
-A professional task, an agent run, and an independent check. Explore more on the InferenceNet Challenge site.
+A professional task, an agent run, and an independent check. Explore more on the Metacase Challenge site.

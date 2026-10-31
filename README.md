@@ -110,8 +110,8 @@ of future updates unless explicitly requested again.
 | Business Analysis & Deliverables: Finance and HR cases, rubric scoring and pilot evidence | `professional-tasks.html`, `professional-tasks.css`, `assets/i18n/professional-tasks.zh.json`, `assets/data/professional-tasks-pilot.json` |
 | Former Data URL: compatibility redirect to Challenge's research data introduction | `data.html`; `data.css` remains available for Harness |
 | Former Agent URL: redirects to improvement directions | `agent.html`; `agent.css` remains shared by Harness and Self-evolving |
-| Harness: definition, system structure, selected 2025–2026 milestones, common mechanism comparison, catalogue by role, three breakdowns and InferenceNet’s four configurations | `harness.html`, `harness.css`; reuses `data.css`, `agent.css`, `evolution.css` |
-| Self-evolving: capability questions, model training and co-evolution directions, concept, research map by adaptation regime, method comparison, three detailed offline cases and InferenceNet’s development study | `evolution.html`, `evolution.css`, `evolution.js`, `assets/data/modular-rsi-evolution.json` |
+| Harness: definition, system structure, selected 2025–2026 milestones, common mechanism comparison, catalogue by role, three breakdowns and our four configurations | `harness.html`, `harness.css`; reuses `data.css`, `agent.css`, `evolution.css` |
+| Self-evolving: capability questions, model training and co-evolution directions, concept, research map by adaptation regime, method comparison, three detailed offline cases and our development study | `evolution.html`, `evolution.css`, `evolution.js`, `assets/data/modular-rsi-evolution.json` |
 | Leaderboard: the Dev100 / v10 development release | `leaderboard.html`, `leaderboard.css` |
 | About NTU GIFTS, leadership, student leaders and contributors, partner teams and Yichen Guo contact | `teams.html`, `teams.css` |
 | Shared layout, navigation and theme | `styles.css`, `site.css`, `site.js`, `theme.js` |
@@ -397,7 +397,7 @@ arXiv 2609.14857), Self-Harness (Zhang et al., arXiv 2606.09498) and Meta-Harnes
 description; the official repositories are listed separately, and their released
 code may differ from the papers.
 
-It then documents InferenceNet’s own development study, kept apart from the
+It then documents our own development study, kept apart from the
 papers: the first complete ModularRSI-style run on DeepAgents 0.7.13 (branch
 `dev-modular-rsi` of the private evaluator repository, commit `06f2890`; run
 `modrsi-real100-20261009-08`, frozen source `17f138b9`). It shows where the five
@@ -477,22 +477,22 @@ into this public repository.
 
 ## Research framing
 
-InferenceNet Challenge is a public series of challenges for AI agents. The
-homepage keeps InferenceNet Challenge as its main title. The hero first introduces
-the Global InferenceNet Initiative’s vision of shared infrastructure, then describes
+Metacase Challenge is a public series of challenges for AI agents. The
+homepage keeps Metacase Challenge as its main title. The hero first introduces
+the Global Metacase Initiative’s vision of shared infrastructure, then describes
 how the Challenge advances it through an open-source community, challenging
 problems, and a standard framework for model training and evaluation. The Initiative
 name links to the official NTU GIFTS description. Its Inference
 Challenge section presents each specific challenge as a subtrack with its own
 tasks and evaluation criteria.
-Econometric replication is one subtrack. The Global InferenceNet Initiative
+Econometric replication is one subtrack. The Global Metacase Initiative
 mission follows the [official NTU GIFTS description](https://www.ntu.edu.sg/gifts/research-and-innovation),
 covering agent training, evaluation and deployment across economics, finance,
 business and the social sciences. Research directions below the leaderboard cover
 model–harness coupling, harness self-evolution through automated
 design and evaluation, and trajectory-based model post-training (including
 distillation and reinforcement learning). The self-evolving direction links to the Self-evolving page’s concept and methods
-(`evolution.html#concept`) and to InferenceNet’s development study
+(`evolution.html#concept`) and to our development study
 (`evolution.html#practice`), which reports one development-set run; the other
 directions remain research aims, and no training dataset is claimed.
 Current evaluation settings and source records remain in expandable protocol
@@ -544,7 +544,7 @@ citations follow below.
 ## Harness: definition, ecosystem and breakdowns
 
 The reading order is Definition → Industry systems → Breakdowns → Compare →
-Self-evolution → InferenceNet → Update → Sources. The definition appears first,
+Self-evolution → Compare → Sources. The definition appears first,
 with a direct industry-map link and optional expanded terminology/boundaries.
 
 Section 02 (`harness.html#development`) starts with an architecture map of runnable
@@ -554,7 +554,7 @@ Dates refer to specific releases, papers or announcements, not uniformly to
 project creation; a collapsible primary-source table records the event type.
 A comparison at `#mechanisms` describes seven representative systems using the
 same six mechanism dimensions. The expanded catalogue remains in this section,
-with existing tab IDs and `#landscape` preserved. InferenceNet configurations
+with existing tab IDs and `#landscape` preserved. Evaluated configurations
 stay in section 06. Small screens can scroll wide figures horizontally.
 
 The Harness page defines a harness, the software that runs a model as an agent,
@@ -570,8 +570,8 @@ Superpowers 7.0.0 (an extension inside a host harness) and DeepSeek Harness
 0.1.5-rc.1 (a product harness that runs as its own process, broken down as
 driven through its SDK). The DeepAgents tab also keeps its two full figures from
 the previous version: the three-layer assembly (DeepAgents, LangChain’s
-create_agent graph and LangGraph, down to InferenceNet’s compiled graph) at
-`harness.html#deepagents-architecture`, and InferenceNet’s wiring on branch
+create_agent graph and LangGraph, down to our compiled graph) at
+`harness.html#deepagents-architecture`, and the historical wiring on branch
 dev-gyc-eval at 92e56c8 at `harness.html#deepagents-inferencenet`; that wiring’s
 budget is not the ModularRSI study’s. A comparison by slot follows, then a short section that
 separates running a harness from optimizing it and links to the Self-evolving

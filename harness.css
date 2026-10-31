@@ -71,7 +71,7 @@
 .harness-compare th[scope="row"]{min-width:140px}
 .harness-compare td{min-width:180px}
 
-/* 06 In InferenceNet: four current configurations, their evidence scope, then the historical wiring. */
+/* 06 In Metacase Challenge: four current configurations, their evidence scope, then the historical wiring. */
 .harness-page #configurations,.harness-page #historical-wiring{scroll-margin-top:calc(var(--header-h) + 58px)}
 .harness-page #configurations{margin-top:0}
 .config-intro{max-width:860px;margin:0 0 22px;font-size:15px;line-height:1.8;color:var(--soft)}

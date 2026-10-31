@@ -165,5 +165,5 @@ The recorded reward is 0.333: 57.25 of 172 weighted points. One pilot run's rubr
 
 34
 00:04:47,198 --> 00:04:54,050
-A professional task, an agent run, and an independent check. Explore more on the InferenceNet Challenge site.
-专业任务、Agent 运行、独立检验。更多内容见 InferenceNet Challenge 网站。
+A professional task, an agent run, and an independent check. Explore more on the Metacase Challenge site.
+专业任务、Agent 运行、独立检验。更多内容见 Metacase Challenge 网站。

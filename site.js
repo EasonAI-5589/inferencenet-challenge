@@ -1,4 +1,4 @@
-/* site.js — shared behaviours for the multi-page InferenceNet Challenge site.
+/* site.js — shared behaviours for the multi-page Metacase Challenge site.
  * Classic script, load with `defer` on every page. Provides: the mobile menu
  * (same behaviour as script.js), the reading-progress bar, in-page subnav
  * scroll-spy, generic accessible tabs for [role="tablist"], focusable scroll

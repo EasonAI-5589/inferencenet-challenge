@@ -1,4 +1,4 @@
-/* charts.js — dependency-free inline SVG charts for the InferenceNet Challenge site.
+/* charts.js — dependency-free inline SVG charts for the Metacase Challenge site.
  *
  * Exports: barList, stackedBars, pairedBars, ladder, mountCharts, render, formatNumber.
  * Every chart is a horizontal bar form (long category labels, phone-friendly),

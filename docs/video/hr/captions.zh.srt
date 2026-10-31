@@ -108,4 +108,4 @@ WP-A 的修正经受住了检验：裁判认可“附条件验收”这一状态
 
 28
 00:03:57,762 --> 00:04:04,613
-专业任务、Agent 运行、独立检验。更多内容见 InferenceNet Challenge 网站。
+专业任务、Agent 运行、独立检验。更多内容见 Metacase Challenge 网站。

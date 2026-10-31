@@ -1,4 +1,4 @@
-/* InferenceNet backdrop engine
+/* Metacase Challenge backdrop engine
  * One canvas renderer, several semantic modes:
  *   field         homepage: a sparse flow field that follows the active section
  *   dev100        Challenge: a 10 × 10 task matrix in perspective, cells resolving

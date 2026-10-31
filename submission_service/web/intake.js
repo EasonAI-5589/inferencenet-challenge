@@ -163,7 +163,7 @@ function translate() {
     element("span", ".", "accent"),
   );
   $("page-description").textContent = t(...definition.description);
-  document.title = t(...definition.title) + " · InferenceNet";
+  document.title = t(...definition.title) + " · Metacase Challenge";
   if (kind !== "mine") {
     $("guide-title").textContent = t(...definition.guide);
     $("guide-description").textContent = t(...definition.intro);

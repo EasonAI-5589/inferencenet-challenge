@@ -132,4 +132,4 @@ D02 更微妙：Agent 没有把借款汇兑损失记入现金流量套期储备�
 
 34
 00:04:47,198 --> 00:04:54,050
-专业任务、Agent 运行、独立检验。更多内容见 InferenceNet Challenge 网站。
+专业任务、Agent 运行、独立检验。更多内容见 Metacase Challenge 网站。
